@@ -13,7 +13,7 @@ const ROLE_CASES = [
       ["/admin/admissions", "Admissions"],
       ["/admin/bus-management", "Bus management"],
       ["/admin/buses", "Bus management"],
-      ["/admin/intelligence", "Vibeora Intelligence"],
+      ["/admin/intelligence", "CoreGrid Intelligence"],
       ["/admin/health-certificate", "Health certificate"],
       ["/messages", "Messages"],
       ["/notifications", "Notifications"],

@@ -4,11 +4,11 @@ import path from "node:path";
 export default defineConfig({
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
+      "@": path.resolve(__dirname, "./frontend/src"),
     },
   },
   test: {
     environment: "node",
-    include: ["src/**/*.test.{ts,tsx}"],
+    include: ["tests/**/*.test.{ts,tsx}"],
   },
 });
