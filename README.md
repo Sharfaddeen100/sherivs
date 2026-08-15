@@ -1,4 +1,4 @@
-# Remix of school OS
+# CoreGrid-scholar
 
 Build a complete multi-tenant School Management SaaS called
 
