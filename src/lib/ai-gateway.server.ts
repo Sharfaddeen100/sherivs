@@ -1,0 +1,10 @@
+import { createOpenAICompatible } from "@ai-sdk/openai-compatible";
+
+export function createAiGatewayProvider(apiKey: string) {
+  const key = apiKey || process.env.AI_API_KEY || "";
+  return createOpenAICompatible({
+    name: "ai-gateway",
+    baseURL: process.env.AI_GATEWAY_URL || "https://api.openai.com/v1",
+    headers: { Authorization: `Bearer ${key}` },
+  });
+}

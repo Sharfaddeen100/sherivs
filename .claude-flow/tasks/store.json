@@ -1,0 +1,57 @@
+{
+  "tasks": {
+    "task-1786700848016-ev93oq": {
+      "taskId": "task-1786700848016-ev93oq",
+      "type": "review",
+      "description": "Write a basic hello world function in TypeScript",
+      "priority": "normal",
+      "status": "pending",
+      "progress": 0,
+      "assignedTo": [],
+      "tags": [],
+      "createdAt": "2026-08-14T09:47:28.017Z",
+      "startedAt": null,
+      "completedAt": null
+    },
+    "task-1786745053294-lh2i73": {
+      "taskId": "task-1786745053294-lh2i73",
+      "type": "bug-fix",
+      "description": "C:\\Users\\USER\\Downloads\\remix-of-school-os-main\\remix-of-school-os-main>npm run dev",
+      "priority": "normal",
+      "status": "pending",
+      "progress": 0,
+      "assignedTo": [],
+      "tags": [],
+      "createdAt": "2026-08-14T22:04:13.295Z",
+      "startedAt": null,
+      "completedAt": null
+    },
+    "task-1786745336141-f214xq": {
+      "taskId": "task-1786745336141-f214xq",
+      "type": "bug-fix",
+      "description": "i can not npm run dev is bringing errors for me and i can not enter the browser because npm run dev is throwing errors for me.",
+      "priority": "normal",
+      "status": "pending",
+      "progress": 0,
+      "assignedTo": [],
+      "tags": [],
+      "createdAt": "2026-08-14T22:08:56.141Z",
+      "startedAt": null,
+      "completedAt": null
+    },
+    "task-1786745654567-498ikv": {
+      "taskId": "task-1786745654567-498ikv",
+      "type": "bug-fix",
+      "description": "\"Fix syntax error in src/routes/_authenticated/admin/classes.tsx line 102 by cleaning escaped characters, and verify or create the missing module src/integrations/supabase/auth-attacher.ts imported in src/start.ts\"",
+      "priority": "normal",
+      "status": "pending",
+      "progress": 0,
+      "assignedTo": [],
+      "tags": [],
+      "createdAt": "2026-08-14T22:14:14.567Z",
+      "startedAt": null,
+      "completedAt": null
+    }
+  },
+  "version": "3.0.0"
+}

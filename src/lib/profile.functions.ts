@@ -1,0 +1,75 @@
+/**
+ * Profile server functions shared by every role's /settings page.
+ *
+ * - getMyProfile: returns the editable subset of public.users for the caller.
+ * - updateMyProfile: patch the caller's own row.
+ * - setDigitalTwinOptOut: parents (and any role) can opt-out of AI calls.
+ *
+ * Super-admins don't have a tenant profile so these calls just no-op for them.
+ */
+import { createServerFn } from "@tanstack/react-start";
+import { z } from "zod";
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+
+const ProfilePatch = z.object({
+  full_name: z.string().trim().min(2).max(120).optional(),
+  phone: z.string().trim().max(40).nullable().optional(),
+  address: z.string().trim().max(400).nullable().optional(),
+  emergency_contact_name: z.string().trim().max(120).nullable().optional(),
+  emergency_contact: z.string().trim().max(40).nullable().optional(),
+  avatar_url: z.string().trim().url().nullable().optional(),
+});
+
+export type MyProfile = {
+  id: string;
+  full_name: string;
+  email: string | null;
+  role: string;
+  phone: string | null;
+  address: string | null;
+  avatar_url: string | null;
+  emergency_contact_name: string | null;
+  emergency_contact: string | null;
+  digital_twin_opt_out: boolean | null;
+};
+
+export const getMyProfile = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }): Promise<MyProfile | null> => {
+    const { supabase, userId } = context;
+    const { data, error } = await supabase
+      .from("users")
+      .select(
+        "id, full_name, email, role, phone, address, avatar_url, emergency_contact_name, emergency_contact, digital_twin_opt_out",
+      )
+      .eq("id", userId)
+      .maybeSingle();
+    if (error) throw new Error(error.message);
+    return (data as MyProfile) ?? null;
+  });
+
+export const updateMyProfile = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((i: unknown) => ProfilePatch.parse(i))
+  .handler(async ({ data, context }) => {
+    const { supabase, userId } = context;
+    if (Object.keys(data).length === 0) return { ok: true as const };
+    const { error } = await supabase.from("users").update(data).eq("id", userId);
+    if (error) throw new Error(error.message);
+    return { ok: true as const };
+  });
+
+const OptOutInput = z.object({ opt_out: z.boolean() });
+
+export const setDigitalTwinOptOut = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((i: unknown) => OptOutInput.parse(i))
+  .handler(async ({ data, context }) => {
+    const { supabase, userId } = context;
+    const { error } = await supabase
+      .from("users")
+      .update({ digital_twin_opt_out: data.opt_out })
+      .eq("id", userId);
+    if (error) throw new Error(error.message);
+    return { ok: true as const };
+  });

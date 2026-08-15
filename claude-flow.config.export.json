@@ -1,0 +1,45 @@
+{
+  "version": "3.5",
+  "agents": {
+    "defaultType": "coder",
+    "autoSpawn": false,
+    "maxConcurrent": 8,
+    "timeout": 300000,
+    "providers": []
+  },
+  "swarm": {
+    "topology": "hierarchical",
+    "maxAgents": 8,
+    "autoScale": false,
+    "coordinationStrategy": "leader",
+    "healthCheckInterval": 30000
+  },
+  "memory": {
+    "backend": "hybrid",
+    "persistPath": "./data/memory",
+    "cacheSize": 1000,
+    "enableHNSW": true,
+    "vectorDimension": 384
+  },
+  "mcp": {
+    "serverHost": "localhost",
+    "serverPort": 3000,
+    "autoStart": false,
+    "transportType": "stdio",
+    "tools": []
+  },
+  "cli": {
+    "colorOutput": true,
+    "interactive": true,
+    "verbosity": "normal",
+    "outputFormat": "text",
+    "progressStyle": "spinner"
+  },
+  "hooks": {
+    "enabled": true,
+    "autoExecute": true,
+    "hooks": []
+  },
+  "NVIDIA_API_KEY": "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",
+  "NVIDIA_BASE_URL": "https://integrate.api.nvidia.com/v1"
+}

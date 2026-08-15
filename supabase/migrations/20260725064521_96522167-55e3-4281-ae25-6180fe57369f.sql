@@ -1,0 +1,2 @@
+ALTER TABLE public.admission_applications DROP CONSTRAINT IF EXISTS admission_applications_status_check;
+ALTER TABLE public.admission_applications ADD CONSTRAINT admission_applications_status_check CHECK (status = ANY (ARRAY['pending','interview_scheduled','shortlisted','accepted','rejected','withdrawn','waitlist']));
