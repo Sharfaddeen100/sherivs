@@ -7,6 +7,5 @@ repository yet. Deployment is currently the hosted Supabase project plus the
 web app build output (`npm run build` -> `dist/`).
 
 Infrastructure work belongs to `architecture/phase-01-foundation.md` and
-`phase-23-enterprise-scale.md`. Environment requirements are documented in
+`phase-29-enterprise-scale.md`. Environment requirements are documented in
 `.env.example`.
-

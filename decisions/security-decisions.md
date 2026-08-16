@@ -46,8 +46,7 @@ PBAC, RLS, and multi-tenant architecture.
 **Decision:** The current role-based model (DB roles + dashboard routing +
 RLS) is mapped as the foundation. RBAC/ABAC/ReBAC/PBAC models are recorded as
 compatibility targets in `remaining-work.md` and will be introduced through
-the Security Engine phase (`architecture/phase-07-security-engine.md`).
+the Security Engine phase (`architecture/phase-08-security-engine.md`).
 
 **Consequences:** No authorization rewrite during migration; enterprise
 models are phased.
-

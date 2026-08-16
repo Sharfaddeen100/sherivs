@@ -24,28 +24,34 @@ Future implementation roadmap. Phases reference
 | --- | --- | --- |
 | 01 Foundation | CI/CD, observability, error tracking, deployment config in `infrastructure/` | now |
 | 02 Identity | Platform identity model, SSO/OIDC, account lifecycle | 01 |
-| 03 Multi-tenancy | Tenant hierarchy (school -> district -> state), tenant provisioning API | 02 |
+| 03 Multi-Tenancy | Tenant hierarchy (school -> district -> state), tenant provisioning API | 02 |
 | 04 Education Reality Engine | Curriculum, assessment, learning-objective model | 03 |
-| 05 Workspace Engine | Unified workspace for staff/student workflows | 04 |
-| 06 AI Agent System | Platform agents with scopes, audit trails (see `constitution/ai-agent-policy.md`) | 02, 07 |
-| 07 Security Engine | RBAC/ABAC/ReBAC/PBAC policy engine, security audit hardening | 02, 03 |
-| 08 Communication Platform | Messages/notifications/push as platform services | 01 |
-| 09 Payment & Billing Engine | Extract Paystack integration, billing, invoicing | 01, 03 |
-| 10 Data Platform | Data access layer, realtime contracts, backup/restore guarantees | 01 |
-| 11 Hardware Integration | Biometrics, geofence, QR/face attendance as a service | 07 |
-| 12 Digital Twin | Formalize digital-twin functions into an engine | 04, 10 |
-| 13 Automation Engine | Workflow/automation for school operations | 01 |
-| 14 Analytics Engine | Reporting, dashboards, data warehouse readiness | 10 |
-| 15 Government Education Cloud | District/state rollups, compliance | 03, 14 |
-| 16 Mobile Platform | Mobile app (see `mobile/`) | 08, 11 |
-| 17 Web Platform | Web platform ownership (current app) | now |
-| 18 AI Intelligence Layer | Gateway, model routing, evals, cost controls | 06 |
-| 19 Marketplace | Third-party app/school-content marketplace | 20 |
-| 20 Developer Platform | Public API, webhooks, SDKs | 01, 10 |
-| 21 CoreGrid Integration | CoreGrid ecosystem protocols | 20 |
-| 22 Globalization | i18n, l10n, multi-currency, regional compliance | 03, 09 |
-| 23 Enterprise Scale | High availability, sharding, multi-region | 01, 10 |
-| 24 Future Evolution | Long-term platform evolution governance | all |
+| 05 Core Application Runtime | Application runtime foundation, module boundaries, shared kernel | 01, 02 |
+| 06 Workspace Engine | Unified workspace for staff/student workflows | 04 |
+| 07 AI Agent System | Platform agents with scopes, audit trails (see `constitution/ai-agent-policy.md`) | 02, 08 |
+| 08 Security Engine | RBAC/ABAC/ReBAC/PBAC policy engine, security audit hardening | 02, 03 |
+| 09 Security Trust Fabric | Trust, attestation, key management, secure communication | 08 |
+| 10 Communication Platform | Messages/notifications/push as platform services | 01 |
+| 11 Academic Intelligence | Academic record, assessment, and progression intelligence | 04 |
+| 12 Scheduling Intelligence | Timetable and resource scheduling engine | 04, 05 |
+| 13 Financial System | Extract Paystack integration, billing, invoicing | 01, 03 |
+| 14 Data Platform | Data access layer, realtime contracts, backup/restore guarantees | 01 |
+| 15 Hardware Integration | Biometrics, geofence, QR/face attendance as a service | 08 |
+| 16 Digital Twin | Formalize digital-twin functions into an engine | 04, 14 |
+| 17 Automation Engine | Workflow/automation for school operations | 01 |
+| 18 Analytics Intelligence | Reporting, dashboards, data warehouse readiness | 14 |
+| 19 Command Centre | Unified operations dashboard and control plane | 06, 10 |
+| 20 Government Education Cloud | District/state rollups, compliance | 03, 18 |
+| 21 Global Cloud Fabric | Multi-region cloud fabric and edge distribution | 14, 29 |
+| 22 Mobile Platform | Mobile app (see `mobile/`) | 10, 15 |
+| 23 Web Platform | Web platform ownership (current app) | now |
+| 24 AI Intelligence Layer | Gateway, model routing, evals, cost controls | 07 |
+| 25 Marketplace | Third-party app/school-content marketplace | 26 |
+| 26 Developer Platform | Public API, webhooks, SDKs | 01, 14 |
+| 27 CoreGrid Integration | CoreGrid ecosystem protocols | 26 |
+| 28 Globalization | i18n, l10n, multi-currency, regional compliance | 03, 13 |
+| 29 Enterprise Scale | High availability, sharding, multi-region | 01, 14 |
+| 30 Future Evolution | Long-term platform evolution governance | all |
 
 ## Backend extraction plan (ADR-002 follow-up)
 
@@ -71,7 +77,7 @@ pipeline with verification.
 
 - **Now:** roles + dashboard routing + RLS (current model).
 - **Phase 02/03:** identity model, tenant hierarchy, claim structure.
-- **Phase 07:** policy engine supporting RBAC -> ABAC -> ReBAC -> PBAC with
+- **Phase 08:** policy engine supporting RBAC -> ABAC -> ReBAC -> PBAC with
   RLS as the enforcement boundary.
 
 ## Known deferred items
@@ -82,4 +88,3 @@ pipeline with verification.
   Scholar domains.
 - Replace deprecated `createServerFn().inputValidator()` calls.
 - Address `AdminDashboard` route export code-splitting warning.
-

@@ -8,9 +8,8 @@
 - Unit tests relocated to `tests/unit/`
 - Product spec archived to `docs/product-spec.md`
 - Identity renamed to CoreGrid Scholar (UI, metadata, README, docs)
-- Architecture (24 phases), constitution, decisions, progress, `.codex/`
-  scaffolding created
+- Architecture (30 phase skeletons), constitution, decisions, progress,
+  `.codex/` scaffolding created
 - Production build repaired and verified
 - `.env` untracked; `.env.example` added
 - `migration-report.md`, `architecture-map.md`, `remaining-work.md` written
-

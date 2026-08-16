@@ -28,7 +28,7 @@ The architecture follows five commitments:
 
 ## Phase map
 
-The platform evolves through 24 documented phases. Each phase file in this
+The platform evolves through 30 documented phases. Each phase file in this
 directory is intentionally empty; content is added as each phase is scoped
 and approved:
 
@@ -36,28 +36,34 @@ and approved:
 | --- | --- |
 | 01 | Foundation |
 | 02 | Identity |
-| 03 | Multi-tenancy |
+| 03 | Multi-Tenancy |
 | 04 | Education Reality Engine |
-| 05 | Workspace Engine |
-| 06 | AI Agent System |
-| 07 | Security Engine |
-| 08 | Communication Platform |
-| 09 | Payment & Billing Engine |
-| 10 | Data Platform |
-| 11 | Hardware Integration |
-| 12 | Digital Twin |
-| 13 | Automation Engine |
-| 14 | Analytics Engine |
-| 15 | Government Education Cloud |
-| 16 | Mobile Platform |
-| 17 | Web Platform |
-| 18 | AI Intelligence Layer |
-| 19 | Marketplace |
-| 20 | Developer Platform |
-| 21 | CoreGrid Integration |
-| 22 | Globalization |
-| 23 | Enterprise Scale |
-| 24 | Future Evolution |
+| 05 | Core Application Runtime |
+| 06 | Workspace Engine |
+| 07 | AI Agent System |
+| 08 | Security Engine |
+| 09 | Security Trust Fabric |
+| 10 | Communication Platform |
+| 11 | Academic Intelligence |
+| 12 | Scheduling Intelligence |
+| 13 | Financial System |
+| 14 | Data Platform |
+| 15 | Hardware Integration |
+| 16 | Digital Twin |
+| 17 | Automation Engine |
+| 18 | Analytics Intelligence |
+| 19 | Command Centre |
+| 20 | Government Education Cloud |
+| 21 | Global Cloud Fabric |
+| 22 | Mobile Platform |
+| 23 | Web Platform |
+| 24 | AI Intelligence Layer |
+| 25 | Marketplace |
+| 26 | Developer Platform |
+| 27 | CoreGrid Integration |
+| 28 | Globalization |
+| 29 | Enterprise Scale |
+| 30 | Future Evolution |
 
 ## Reading order for agents
 
@@ -69,4 +75,3 @@ Codex and other agents must read, in order:
 4. `progress/` - what exists, what is blocked, what is next
 
 Never create a feature outside an approved architecture phase.
-
