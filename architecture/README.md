@@ -9,11 +9,14 @@ single school to national education clouds.
 The architecture follows five commitments:
 
 1. **Clean boundaries before new features.** Every engine (Identity,
-   Multi-Tenancy, Education Reality, Workspace, AI Agents, Security,
-   Communication, Payments, Data, Hardware, Digital Twin, Automation,
-   Analytics, Mobile, Web, Intelligence, Marketplace, Developer Platform,
-   CoreGrid Integration, Globalization, Enterprise Scale) is planned as a
-   phase. No feature is built outside its phase.
+   Multi-Tenancy, Education Reality, Core Application Runtime, Workspace,
+   AI Agents, Security, Trust Fabric, Communication, Academic Intelligence,
+   Scheduling Intelligence, Financial System, Data, Hardware, Digital Twin,
+   Automation, Analytics, Command Centre, Government Cloud, Global Cloud
+   Fabric, Mobile, Web, Experience & Design, Workforce Identity,
+   Intelligence, Marketplace, Developer Platform, CoreGrid Integration,
+   Globalization, Enterprise Scale) is planned as a phase. No feature is
+   built outside its phase.
 2. **Data isolation is a database guarantee.** Tenant isolation is enforced
    by Postgres Row-Level Security, never only by application code.
 3. **The monolith is a feature, not a debt.** The current TanStack Start
@@ -28,7 +31,7 @@ The architecture follows five commitments:
 
 ## Phase map
 
-The platform evolves through 30 documented phases. Each phase file in this
+The platform evolves through 32 documented phases. Each phase file in this
 directory is intentionally empty; content is added as each phase is scoped
 and approved:
 
@@ -57,13 +60,15 @@ and approved:
 | 21 | Global Cloud Fabric |
 | 22 | Mobile Platform |
 | 23 | Web Platform |
-| 24 | AI Intelligence Layer |
-| 25 | Marketplace |
-| 26 | Developer Platform |
-| 27 | CoreGrid Integration |
-| 28 | Globalization |
-| 29 | Enterprise Scale |
-| 30 | Future Evolution |
+| 24 | CoreGrid Experience & Design Intelligence |
+| 25 | Institutional Onboarding, Administration & Workforce Identity Platform |
+| 26 | AI Intelligence Layer |
+| 27 | Marketplace |
+| 28 | Developer Platform |
+| 29 | CoreGrid Integration |
+| 30 | Globalization |
+| 31 | Enterprise Scale |
+| 32 | Future Evolution |
 
 ## Reading order for agents
 

@@ -28,7 +28,7 @@ Paystack payments                       ->  phase-13 financial system
   fees, subscriptions, webhooks         ->  billing engine
 
 AI assistants (components/ai)           ->  phase-07 ai-agent-system
-  AI gateway (lib/ai-gateway.server)    ->  phase-24 ai-intelligence-layer
+  AI gateway (lib/ai-gateway.server)    ->  phase-26 ai-intelligence-layer
   digital twin functions                ->  phase-16 digital-twin
 
 Bus tracking, geofence                  ->  phase-15 hardware-integration
@@ -38,9 +38,9 @@ Realtime (Supabase)                     ->  phase-14 data platform
 
 Playwright/Vitest tests                 ->  phase-01 foundation (tests/)
 Smoke scripts                           ->  scripts/ automation
-No deployment config                    ->  phase-01 + phase-29 infra
+No deployment config                    ->  phase-01 + phase-31 enterprise-scale
 No mobile app                           ->  phase-22 mobile-platform
-No marketplace/developer platform       ->  phase-25/26
+No marketplace/developer platform       ->  phase-27/28
 No education cloud                      ->  phase-20 government cloud
 ```
 
@@ -59,18 +59,20 @@ No education cloud                      ->  phase-20 government cloud
 | RLS verification | `database/queries` | 03 / 08 |
 | Audit logs | `audit_logs` table + `lib/audit.ts` | 08 Security Engine |
 | Payments/billing | Paystack + `fees`/`subscriptions` | 13 Financial System |
-| AI assistants | `components/ai`, `lib/*ai*` | 07 AI Agents / 24 Intelligence |
+| AI assistants | `components/ai`, `lib/*ai*` | 07 AI Agents / 26 Intelligence |
 | Digital twin | `lib/digital-twin.functions.ts` | 16 Digital Twin |
 | Push/messages | `lib/push*`, `messages*` | 10 Communication |
 | Geofence/attendance hardware | `lib/geofence.ts`, `attendance_logs` | 15 Hardware Integration |
 | Tests | `tests/unit`, `tests/e2e` | 01 Foundation |
 | Scripts/automation | `scripts/` | 01 / 17 Automation Engine |
-| Deployment | (none yet) | 01 Foundation / 29 Enterprise Scale |
+| Deployment | (none yet) | 01 Foundation / 31 Enterprise Scale |
 | Mobile | (none yet) | 22 Mobile Platform |
-| Marketplace | (none yet) | 25 Marketplace |
-| Developer platform | (none yet) | 26 Developer Platform |
+| Experience & design system | `frontend/src/components` | 24 CoreGrid Experience & Design Intelligence |
+| Workforce identity / onboarding | `users` + provisioning functions | 25 Institutional Onboarding & Workforce Identity |
+| Marketplace | (none yet) | 27 Marketplace |
+| Developer platform | (none yet) | 28 Developer Platform |
 | Education cloud | (none yet) | 20 Government Education Cloud |
-| Globalization | (none yet) | 28 Globalization |
+| Globalization | (none yet) | 30 Globalization |
 
 ## Principles preserved in the mapping
 

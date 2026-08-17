@@ -42,16 +42,18 @@ Future implementation roadmap. Phases reference
 | 18 Analytics Intelligence | Reporting, dashboards, data warehouse readiness | 14 |
 | 19 Command Centre | Unified operations dashboard and control plane | 06, 10 |
 | 20 Government Education Cloud | District/state rollups, compliance | 03, 18 |
-| 21 Global Cloud Fabric | Multi-region cloud fabric and edge distribution | 14, 29 |
+| 21 Global Cloud Fabric | Multi-region cloud fabric and edge distribution | 14, 31 |
 | 22 Mobile Platform | Mobile app (see `mobile/`) | 10, 15 |
 | 23 Web Platform | Web platform ownership (current app) | now |
-| 24 AI Intelligence Layer | Gateway, model routing, evals, cost controls | 07 |
-| 25 Marketplace | Third-party app/school-content marketplace | 26 |
-| 26 Developer Platform | Public API, webhooks, SDKs | 01, 14 |
-| 27 CoreGrid Integration | CoreGrid ecosystem protocols | 26 |
-| 28 Globalization | i18n, l10n, multi-currency, regional compliance | 03, 13 |
-| 29 Enterprise Scale | High availability, sharding, multi-region | 01, 14 |
-| 30 Future Evolution | Long-term platform evolution governance | all |
+| 24 CoreGrid Experience & Design Intelligence | Design language, component system, accessibility, UX intelligence | 23 |
+| 25 Institutional Onboarding, Administration & Workforce Identity Platform | School onboarding flows, administration console, staff identity lifecycle | 02, 03 |
+| 26 AI Intelligence Layer | Gateway, model routing, evals, cost controls | 07 |
+| 27 Marketplace | Third-party app/school-content marketplace | 28 |
+| 28 Developer Platform | Public API, webhooks, SDKs | 01, 14 |
+| 29 CoreGrid Integration | CoreGrid ecosystem protocols | 28 |
+| 30 Globalization | i18n, l10n, multi-currency, regional compliance | 03, 13 |
+| 31 Enterprise Scale | High availability, sharding, multi-region | 01, 14 |
+| 32 Future Evolution | Long-term platform evolution governance | all |
 
 ## Backend extraction plan (ADR-002 follow-up)
 

@@ -206,7 +206,7 @@ roadmap:
    - unit tests -> `tests/unit/`
    - README spec -> `docs/product-spec.md`
 5. Rename identity to CoreGrid Scholar (package, UI, metadata, docs).
-6. Create architecture (24 phases), constitution, decisions, progress, and
+6. Create architecture (32 phases), constitution, decisions, progress, and
    `.codex/` systems.
 7. Harden secrets handling (untrack `.env`, add `.env.example`).
 8. Verify build + unit tests; write deliverables.
@@ -243,4 +243,3 @@ roadmap:
    command.
 6. Plan the backend extraction and mobile/agent phases from
    `remaining-work.md`.
-

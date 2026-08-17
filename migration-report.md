@@ -63,8 +63,8 @@ All moves were performed with `git mv` (rename tracking preserved).
 
 ### Platform structure
 
-- `architecture/README.md` + 24 empty phase files
-  (`phase-01-foundation.md` ... `phase-24-future-evolution.md`)
+- `architecture/README.md` + 32 empty phase files
+  (`phase-01-foundation.md` ... `phase-32-future-evolution.md`)
 - `constitution/` - README + 6 policy placeholders
 - `decisions/` - README + architecture/technology/security decisions with
   real ADR entries from this migration
@@ -131,4 +131,3 @@ All moves were performed with `git mv` (rename tracking preserved).
 - Add CI (build, unit, e2e, secret scan, RLS check).
 - Ratify constitution policies; fill phase files.
 - Execute the roadmap in `remaining-work.md`.
-
