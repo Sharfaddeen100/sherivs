@@ -16,6 +16,9 @@ dist-ssr
 .nitro
 *.local
 
+# Supabase local machine state (project refs, pooler URLs)
+database/supabase/.temp/
+
 # Environment files (keep .env.example)
 .env
 .env.*

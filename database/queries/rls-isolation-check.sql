@@ -15,7 +15,17 @@ WHERE schemaname = 'public'
     'faqs','why_us_items','school_facilities','academic_programs','blog_posts',
     'parent_student_map','school_calendar','subscriptions','webhook_logs',
     'audit_logs','fraud_attempts','teacher_performance_profiles',
-    'super_admins','super_admin_logs'
+    'super_admins','super_admin_logs','admission_applications',
+    'ai_conversations','ai_interaction_log','attendance_verification_log',
+    'clinic_visits','digital_twin_calls','digital_twin_config',
+    'discipline_records','hostel_allocations','hostel_attendance',
+    'hostel_rooms','library_books','library_borrowings','news_reads',
+    'notification_preferences','platform_complaints','platform_config',
+    'school_ad_campaigns','school_api_keys','school_expense_budgets',
+    'school_expenses','school_gallery','school_geofence','school_meals',
+    'school_sports','school_staff','school_staff_types','school_transport',
+    'staff_leave','staff_payroll','student_platform_fee_ledger',
+    'study_sessions','teacher_biometrics','transport_buses'
   )
   AND NOT rowsecurity;
 
@@ -51,4 +61,28 @@ WHERE grantee = 'anon' AND table_schema = 'public' AND table_name = 'schools'
   AND privilege_type = 'SELECT'
 LIMIT 1;
 
+
+-- 5. Secrets: the legacy plaintext Paystack secret column must NEVER be
+--    readable by anon or authenticated through PostgREST.
+SELECT format('FAIL: %I.%I column %I is readable by %I', c.table_schema, c.table_name, c.column_name, c.grantee) AS issue
+FROM information_schema.column_privileges c
+WHERE c.table_schema = 'public'
+  AND c.table_name = 'schools'
+  AND c.column_name = 'paystack_secret_key'
+  AND c.grantee IN ('anon', 'authenticated')
+  AND c.privilege_type = 'SELECT';
+
+-- 6. Realtime: every table the application subscribes to must be in the
+--    supabase_realtime publication (otherwise channels silently never fire).
+SELECT format('FAIL: %s missing from supabase_realtime publication', t) AS issue
+FROM unnest(ARRAY[
+  'users','fees','grades','admission_applications','audit_logs',
+  'attendance','messages','notifications','attendance_logs','transport_buses'
+]) AS t
+WHERE NOT EXISTS (
+  SELECT 1 FROM pg_publication_tables p
+  WHERE p.pubname = 'supabase_realtime'
+    AND p.schemaname = 'public'
+    AND p.tablename = t
+);
 SELECT '✓ RLS isolation check passed' AS result;
