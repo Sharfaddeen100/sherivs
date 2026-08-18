@@ -89,4 +89,8 @@ pipeline with verification.
 - Update `PLATFORM_HOSTS` and `robots.txt` on DNS cutover to CoreGrid
   Scholar domains.
 - Replace deprecated `createServerFn().inputValidator()` calls.
+- Fix pre-existing typecheck debt (7 x TS2322: `PageHeader` `actions`
+  typed as `ReactNode` instead of an actions array) in admin routes
+  (audit, examinations, extracurricular, financial-reports, inventory,
+  payroll, visitors).
 - Address `AdminDashboard` route export code-splitting warning.

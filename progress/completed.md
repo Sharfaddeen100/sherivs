@@ -14,4 +14,10 @@
 - `.env` untracked; `.env.example` added
 - Lovable platform toolchain removed (`.lovable/`, dev dependency, error
   reporter, Bun lockfile)
+- Control plane established: `CONSTITUTION.md`, `PRINCIPLES.md`,
+  `REGISTRY.md`, `DEPENDENCY.md`, `BOUNDARIES.md`, `DECISIONS.md`,
+  `PROGRESS.md` + repaired `AGENTS.md`
+- Verified stack (`docs/stack.md`) and architecture documentation
+  (`docs/architecture/*`) created
+- Verification bundle added (`scripts/verification/check.ps1`)
 - `migration-report.md`, `architecture-map.md`, `remaining-work.md` written

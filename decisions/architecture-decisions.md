@@ -55,3 +55,23 @@ was performed.
 **Consequences:** `npm run build` and unit tests pass on the migration
 branch; defects and fixes are recorded in `migration-report.md`.
 
+## ADR-005 - Top-level control-plane documents (2026-08-18)
+
+**Context:** The repository's governance was spread across directory-based
+systems (`constitution/`, `decisions/`, `progress/`) without a small set of
+top-level control documents that act as the repository's operating system.
+Markdown files and directories were also at risk of being confused.
+
+**Decision:** Establish seven top-level control documents as files -
+`CONSTITUTION.md`, `PRINCIPLES.md`, `REGISTRY.md`, `DEPENDENCY.md`,
+`BOUNDARIES.md`, `DECISIONS.md`, `PROGRESS.md` - and repair `AGENTS.md` to
+reference them. The `.md` suffix means "Markdown document" and is never used
+for directories. Detailed policy, ADRs, and progress records remain in
+`constitution/`, `decisions/`, and `progress/` respectively; the root files
+are the authority and index.
+
+**Consequences:** A future engineer or agent can orient from seven files.
+Historical documents are preserved and classified rather than deleted.
+Commands are documented in Markdown and executed by scripts under
+`scripts/`.
+

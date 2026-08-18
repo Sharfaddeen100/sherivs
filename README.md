@@ -5,6 +5,18 @@ ecosystem: a multi-tenant education operating system for schools, districts,
 and government education clouds. It was migrated from the Remix School OS
 codebase without losing functionality.
 
+## Control plane
+
+Seven top-level documents govern this repository (files, not directories):
+
+- `CONSTITUTION.md` - non-negotiable rules
+- `PRINCIPLES.md` - engineering philosophy
+- `REGISTRY.md` - repository map
+- `DEPENDENCY.md` - dependency map
+- `BOUNDARIES.md` - architectural ownership
+- `DECISIONS.md` - decision index
+- `PROGRESS.md` - current state
+
 ## Platform structure
 
 ```
@@ -54,4 +66,3 @@ Agents and new engineers: read `architecture/README.md`,
 - `migration-report.md` - what changed
 - `architecture-map.md` - current system to CoreGrid Scholar mapping
 - `remaining-work.md` - future roadmap
-
