@@ -1,7 +1,7 @@
 /**
  * AI-assisted lesson plan draft generator.
- * Uses Lovable AI Gateway. Returns a structured draft the teacher can edit
- * before saving / submitting. Never persists anything itself.
+ * Uses the CoreGrid Scholar AI Gateway. Returns a structured draft the
+ * teacher can edit before saving / submitting. Never persists anything itself.
  */
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";

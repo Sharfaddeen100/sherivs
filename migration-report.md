@@ -32,7 +32,7 @@ Verification after migration:
 2. **Invalid CSS ordering** - `styles.css` placed `@import "tw-animate-css"`
    after `@source "../src"`. Imports moved above all other statements.
 3. **Missing Tailwind plugin** - `vite.config.ts` did not declare
-   `@tailwindcss/vite`, which the Lovable platform wrapper previously
+   `@tailwindcss/vite`, which the previous hosted platform wrapper previously
    injected. Added directly so local and production builds are
    self-contained. (This was the root cause of the CSS minification
    failures encountered during verification.)

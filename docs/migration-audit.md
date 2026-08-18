@@ -24,7 +24,7 @@ during migration so the platform ships verified:
 2. `src/styles.css` had a CSS `@import` after `@source`, violating the
    `@import`-must-precede-all-other-statements rule.
 3. `vite.config.ts` omitted the Tailwind v4 Vite plugin
-   (`@tailwindcss/vite`), which the Lovable platform wrapper used to
+   (`@tailwindcss/vite`), which the previous hosted platform wrapper used to
    supply; without it the local build cannot compile Tailwind CSS.
 
 The migration renames the project to **CoreGrid Scholar**, reorganizes the
@@ -109,7 +109,8 @@ Single full-stack web application:
 
 - No Dockerfile, CI/CD, or cloud configuration exists in the repository.
 - Hosted Supabase project is linked locally; web app builds with Vite.
-- `public/robots.txt` points the sitemap at a legacy Lovable host.
+- `public/robots.txt` pointed the sitemap at a legacy third-party host
+  (removed during migration).
 
 ### Testing infrastructure
 
@@ -157,7 +158,7 @@ All 727 tracked files were surveyed. Key areas:
 - **Tests:** 3 unit + 6 e2e files
 - **Scripts:** smoke test
 - **Docs:** README (archived to `docs/product-spec.md`), routes README
-- **Tooling state:** `.claude/`, `.claude-flow/`, `.lovable/`, `.swarm/`,
+- **Tooling state:** `.claude/`, `.claude-flow/`, `.swarm/`,
   `.tanstack/` (agent/IDE state, preserved in place)
 
 ---

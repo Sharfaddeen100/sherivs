@@ -12,4 +12,6 @@
   `.codex/` scaffolding created
 - Production build repaired and verified
 - `.env` untracked; `.env.example` added
+- Lovable platform toolchain removed (`.lovable/`, dev dependency, error
+  reporter, Bun lockfile)
 - `migration-report.md`, `architecture-map.md`, `remaining-work.md` written
