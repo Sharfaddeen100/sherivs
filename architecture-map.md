@@ -887,7 +887,7 @@ The architecture must support horizontal scaling without sacrificing:
 
 ---
 
-28. Phase 32 — Institutional Intelligence / Ecosystem Maturity
+28. Phase 32 — Future Evolution
 
 The final architecture evolves from a school-management application into a broader institutional intelligence platform.
 

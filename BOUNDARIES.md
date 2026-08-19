@@ -1,7 +1,7 @@
 CoreGrid Scholar — Architecture Boundaries
-Document:ARCHITECTURE-BOUNDARIES.md
+Document:BOUNDARIES.md
 System: CoreGrid Scholar
-Architecture: CoreGrid Scholar V2
+Architecture: CoreGrid Scholar
 Status: Normative / Canonical
 Authority: Architecture Governance Layer
 Scope: All CoreGrid Scholar phases, services, agents, clients, data stores, infrastructure, integrations, and future extensions
@@ -389,9 +389,9 @@ It does not own:
 
 ───
 
-19. Academic Learning Intelligence Boundary
+19. Academic Intelligence Boundary
 Phase 11
-Academic Learning Intelligence owns:
+Academic Intelligence owns:
 • learning analytics,
 • learning recommendations,
 • academic intelligence,
@@ -423,9 +423,9 @@ It does not own:
 
 ───
 
-21. Financial Operating System Boundary
+21. Financial System Boundary
 Phase 13
-Financial Operating System owns:
+Financial System owns:
 • billing,
 • invoices,
 • payments,
@@ -525,14 +525,14 @@ Analytics owns:
 • dashboards,
 • metrics,
 • forecasting,
-• decision intelligence,
+• analytics intelligence,
 • statistical analysis,
 • scenario analysis.
 Analytics does not become operational truth.
 
 ───
 
-27. Institutional Command Centre Boundary
+27. Command Centre Boundary
 Phase 19
 Command Centre owns:
 • institutional visibility,
@@ -697,8 +697,8 @@ Every new capability must eventually receive:
 
 ───
 
-39. Institutional Educational Runtime Boundary
-Phase 31
+39. Institutional Runtime Composition Boundary (Phase 05 - Core Application Runtime)
+Phase 05
 Institutional Educational Runtime composes existing educational capabilities.
 It owns the runtime representation of how CoreGrid Scholar operates as an educational system.
 It does not duplicate:
@@ -711,8 +711,8 @@ It orchestrates them through contracts.
 
 ───
 
-40. Adaptive Administration & Workforce Boundary
-Phase 32
+40. Workforce Identity & Administration Boundary (Phase 25 - Institutional Onboarding, Administration & Workforce Identity Platform)
+Phase 25
 This subsystem owns:
 • administrative role configuration,
 • workforce context,
@@ -1774,7 +1774,7 @@ Action
 ───
 
 140. Decision Boundary
-Decision intelligence provides decision support.
+Analytics intelligence provides decision support.
 Final authority belongs to the appropriate human or governed operational process.
 
 ───

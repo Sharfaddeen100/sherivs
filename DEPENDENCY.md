@@ -1,7 +1,7 @@
 CoreGrid Scholar — Architecture Dependency Map
-Document:ARCHITECTURE-DEPENDENCY-MAP.md
+Document:DEPENDENCY.md
 System: CoreGrid Scholar
-Architecture: CoreGrid Scholar V2
+Architecture: CoreGrid Scholar
 Status: Normative / Canonical
 Scope: Phase 01–Phase 32
 Authority: Architecture Governance Layer
@@ -75,9 +75,9 @@ Lower-level capability
 
 Example:
 text
-Institutional Command Centre
+Command Centre
         ↓
-Analytics & Decision Intelligence
+Analytics Intelligence
         ↓
 Data Platform
 
@@ -85,49 +85,48 @@ The reverse should not occur:
 text
 Data Platform
         ✕
-Institutional Command Centre
+Command Centre
 
 unless a clearly defined infrastructure or control contract requires it.
 
 ───
 
 4. Phase Inventory
-The canonical CoreGrid Scholar V2 architecture contains:
+The canonical CoreGrid Scholar architecture contains:
 text
-Phase 01 — Foundation
-Phase 02 — Identity
-Phase 03 — Multi-Tenancy
-Phase 04 — Education Reality Engine
-Phase 05 — Core Application Runtime
-Phase 06 — Workspace Engine
-Phase 07 — AI Agent System
-Phase 08 — Security Engine
-Phase 09 — Security Trust Fabric
-Phase 10 — Communication Platform
-Phase 11 — Academic Learning Intelligence
-Phase 12 — Scheduling & Timetable Intelligence
-Phase 13 — Payment, Billing & Financial Operating System
-Phase 14 — Data Platform
-Phase 15 — Hardware Integration
-Phase 16 — Digital Twin
-Phase 17 — Automation Engine
-Phase 18 — Analytics & Decision Intelligence
-Phase 19 — Institutional Command Centre
-Phase 20 — Government Education Cloud
-Phase 21 — Global Cloud Fabric
-Phase 22 — Mobile Platform
-Phase 23 — Web Platform
-Phase 24 — AI Intelligence Layer
-Phase 25 — Marketplace
-Phase 26 — Developer Platform
-Phase 27 — CoreGrid Integration
-Phase 28 — Globalization
-Phase 29 — Enterprise Scale
-Phase 30 — Future Evolution
-Phase 31 — Institutional Identity & Educational Runtime
-Phase 32 — Adaptive Institutional Administration & Workforce Runtime
-
-Note: Phase numbering must always follow ARCHITECTURE-REGISTRY.md. If the registry changes, this dependency map must be updated rather than creating a second competing phase inventory.
+Phase 01 - Foundation
+Phase 02 - Identity
+Phase 03 - Multi-Tenancy
+Phase 04 - Education Reality Engine
+Phase 05 - Core Application Runtime
+Phase 06 - Workspace Engine
+Phase 07 - AI Agent System
+Phase 08 - Security Engine
+Phase 09 - Security Trust Fabric
+Phase 10 - Communication Platform
+Phase 11 - Academic Intelligence
+Phase 12 - Scheduling Intelligence
+Phase 13 - Financial System
+Phase 14 - Data Platform
+Phase 15 - Hardware Integration
+Phase 16 - Digital Twin
+Phase 17 - Automation Engine
+Phase 18 - Analytics Intelligence
+Phase 19 - Command Centre
+Phase 20 - Government Education Cloud
+Phase 21 - Global Cloud Fabric
+Phase 22 - Mobile Platform
+Phase 23 - Web Platform
+Phase 24 - CoreGrid Experience & Design Intelligence
+Phase 25 - Institutional Onboarding, Administration & Workforce Identity Platform
+Phase 26 - AI Intelligence Layer
+Phase 27 - Marketplace
+Phase 28 - Developer Platform
+Phase 29 - CoreGrid Integration
+Phase 30 - Globalization
+Phase 31 - Enterprise Scale
+Phase 32 - Future Evolution
+Note: Phase numbering must always follow REGISTRY.md. If the registry changes, this dependency map must be updated rather than creating a second competing phase inventory.
 
 ───
 
@@ -554,7 +553,7 @@ P32
 
 ───
 
-17. Academic Learning Intelligence
+17. Academic Intelligence
 Phase 11
 Consumes:
 text
@@ -578,7 +577,7 @@ It does not own the underlying institutional reality.
 
 ───
 
-18. Scheduling & Timetable Intelligence
+18. Scheduling Intelligence
 Phase 12
 Consumes:
 text
@@ -613,7 +612,7 @@ P32
 
 ───
 
-19. Financial Operating System
+19. Financial System
 Phase 13
 Consumes:
 text
@@ -787,7 +786,7 @@ Human approval where required
 
 ───
 
-24. Analytics & Decision Intelligence
+24. Analytics Intelligence
 Phase 18
 Consumes derived and canonical information from:
 text
@@ -820,7 +819,7 @@ It does not become canonical operational truth.
 
 ───
 
-25. Institutional Command Centre
+25. Command Centre
 Phase 19
 Consumes:
 text
@@ -1150,8 +1149,8 @@ It must not bypass foundational boundaries merely because a future capability is
 
 ───
 
-37. Institutional Identity & Educational Runtime
-Phase 31
+37. Institutional Runtime Composition (Phase 05 - Core Application Runtime)
+Phase 05
 This phase represents the CoreGrid Scholar institutional runtime identity.
 It composes:
 text
@@ -1182,8 +1181,8 @@ It must not duplicate their internal implementations.
 
 ───
 
-38. Adaptive Institutional Administration & Workforce Runtime
-Phase 32
+38. Workforce Identity & Administration (Phase 25 - Institutional Onboarding, Administration & Workforce Identity Platform)
+Phase 25
 This phase composes:
 text
 Identity
@@ -1372,7 +1371,7 @@ These provide:
 • security,
 • trust,
 • controlled execution,
-• institutional command.
+• command.
 
 ───
 

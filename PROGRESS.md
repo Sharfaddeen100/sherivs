@@ -1,9 +1,9 @@
 COREGRID SCHOLAR — PROGRESS
 Project: CoreGrid Scholar
-Architecture: CoreGrid Scholar v2
+Architecture: CoreGrid Scholar
 Document: Engineering Progress Ledger
 Status: Active / Living Document
-Purpose: Track implementation progress against the approved CoreGrid Scholar v2 architecture.
+Purpose: Track implementation progress against the approved CoreGrid Scholar architecture.
 
 ───
 
@@ -12,11 +12,11 @@ This document records the current engineering state of CoreGrid Scholar.
 It does not redefine architecture.
 Architectural authority remains with:
 1. Constitution.md
-2. ARCHITECTURE-PRINCIPLES.md
-3. ARCHITECTURE-REGISTRY.md
-4. ARCHITECTURE-DEPENDENCY-MAP.md
-5. ARCHITECTURE-BOUNDARIES.md
-6. ARCHITECTURE-DECISIONS.md
+2. PRINCIPLES.md
+3. REGISTRY.md
+4. DEPENDENCY.md
+5. BOUNDARIES.md
+6. DECISIONS.md
 7. Individual phase architecture files
 If this document conflicts with an architecture document, the architecture document takes precedence.
 
@@ -153,7 +153,7 @@ without being incorrectly labelled "complete."
 
 ───
 
-5. CoreGrid Scholar v2 Phase Registry
+5. CoreGrid Scholar Phase Registry
 
 Phase
 Name
@@ -163,7 +163,7 @@ Validation
 Status
 
 01
-Platform Foundation
+Foundation
 Complete
 Pending
 Pending
@@ -219,7 +219,7 @@ Pending
 ARCHITECTURE_DEFINED
 
 09
-Security & Trust Fabric
+Security Trust Fabric
 Complete
 Pending
 Pending
@@ -233,21 +233,21 @@ Pending
 ARCHITECTURE_DEFINED
 
 11
-Academic & Learning Intelligence
+Academic Intelligence
 Complete
 Pending
 Pending
 ARCHITECTURE_DEFINED
 
 12
-Scheduling & Timetable Intelligence
+Scheduling Intelligence
 Complete
 Pending
 Pending
 ARCHITECTURE_DEFINED
 
 13
-Payment, Billing & Financial Operating System
+Financial System
 Complete
 Pending
 Pending
@@ -282,14 +282,14 @@ Pending
 ARCHITECTURE_DEFINED
 
 18
-Analytics & Decision Intelligence
+Analytics Intelligence
 Complete
 Pending
 Pending
 ARCHITECTURE_DEFINED
 
 19
-Institutional Command Centre
+Command Centre
 Complete
 Pending
 Pending
@@ -324,85 +324,85 @@ Pending
 ARCHITECTURE_DEFINED
 
 24
-AI Intelligence Layer
+CoreGrid Experience & Design Intelligence
 Complete
 Pending
 Pending
 ARCHITECTURE_DEFINED
 
 25
-Marketplace
+Institutional Onboarding, Administration & Workforce Identity Platform
 Complete
 Pending
 Pending
 ARCHITECTURE_DEFINED
 
 26
-Developer Platform
+AI Intelligence Layer
 Complete
 Pending
 Pending
 ARCHITECTURE_DEFINED
 
 27
-CoreGrid Integration
+Marketplace
 Complete
 Pending
 Pending
 ARCHITECTURE_DEFINED
 
 28
-Globalization
+Developer Platform
 Complete
 Pending
 Pending
 ARCHITECTURE_DEFINED
 
 29
-Enterprise Scale
+CoreGrid Integration
 Complete
 Pending
 Pending
 ARCHITECTURE_DEFINED
 
 30
-Future Evolution
+Globalization
 Complete
 Pending
 Pending
 ARCHITECTURE_DEFINED
 
 31
-Institutional Identity & Workforce Runtime
+Enterprise Scale
 Complete
 Pending
 Pending
 ARCHITECTURE_DEFINED
 
 32
-African Educational Runtime
+Future Evolution
 Complete
 Pending
 Pending
 ARCHITECTURE_DEFINED
 
 
-Phase numbering and names must remain synchronized with ARCHITECTURE-REGISTRY.md. If the registry changes, this table must be updated.
+Phase numbering and names must remain synchronized with REGISTRY.md. If the registry changes, this table must be updated.
 
 ───
 
 6. Current Architecture Milestone
 Milestone
-CoreGrid Scholar v2 Architecture Definition
+CoreGrid Scholar Architecture Definition
 Status: COMPLETE
 The architecture layer has been established for the current approved phase set.
 Completed architecture documents include:
 • README.md
-• ARCHITECTURE-REGISTRY.md
-• ARCHITECTURE-PRINCIPLES.md
-• ARCHITECTURE-DEPENDENCY-MAP.md
-• ARCHITECTURE-BOUNDARIES.md
-• ARCHITECTURE-DECISIONS.md
+• REGISTRY.md
+• PRINCIPLES.md
+• DEPENDENCY.md
+• BOUNDARIES.md
+• DECISIONS.md
 
 ───
 
@@ -419,28 +419,28 @@ phase-07-ai-agent-system.md
 phase-08-security-engine.md
 phase-09-security-trust-fabric.md
 phase-10-communication-platform.md
-phase-11-academic-learning-intelligence.md
-phase-12-scheduling-timetable-intelligence.md
-phase-13-payment-billing-financial-operating-system.md
+phase-11-academic-intelligence.md
+phase-12-scheduling-intelligence.md
+phase-13-financial-system.md
 phase-14-data-platform.md
 phase-15-hardware-integration.md
 phase-16-digital-twin.md
 phase-17-automation-engine.md
-phase-18-analytics-decision-intelligence.md
-phase-19-institutional-command-centre.md
+phase-18-analytics-intelligence.md
+phase-19-command-centre.md
 phase-20-government-education-cloud.md
 phase-21-global-cloud-fabric.md
 phase-22-mobile-platform.md
 phase-23-web-platform.md
-phase-24-ai-intelligence-layer.md
-phase-25-marketplace.md
-phase-26-developer-platform.md
-phase-27-coregrid-integration.md
-phase-28-globalization.md
-phase-29-enterprise-scale.md
-phase-30-future-evolution.md
-phase-31-institutional-identity-workforce-runtime.md
-phase-32-african-educational-runtime.md
+phase-24-coregrid-experience-design-intelligence.md
+phase-25-institutional-onboarding-administration-workforce-identity-platform.md
+phase-26-ai-intelligence-layer.md
+phase-27-marketplace.md
+phase-28-developer-platform.md
+phase-29-coregrid-integration.md
+phase-30-globalization.md
+phase-31-enterprise-scale.md
+phase-32-future-evolution.md
 
 
 ───
@@ -1170,7 +1170,7 @@ Status: NOT_STARTED
 
 ───
 
-M14 — Institutional Command
+M14 - Command Centre
 Status: NOT_STARTED
 
 ───
@@ -1198,7 +1198,7 @@ Status: NOT_STARTED
 35. Change Log
 Current Entry
 Date: Initial v2 progress ledger
-Change: Established the engineering progress framework for CoreGrid Scholar v2.
+Change: Established the engineering progress framework for CoreGrid Scholar.
 Status: Active.
 Future entries must record:
 text
@@ -1283,7 +1283,7 @@ COMPLETE
 
 39. Current Overall Project Status
 text
-CoreGrid Scholar v2
+CoreGrid Scholar
 
 Architecture
 ████████████████████ 100%

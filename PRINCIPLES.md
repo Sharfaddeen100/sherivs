@@ -1,7 +1,7 @@
 CoreGrid Scholar — Architecture Principles
-Document:ARCHITECTURE-PRINCIPLES.md
+Document:PRINCIPLES.md
 System: CoreGrid Scholar
-Architecture Generation: CoreGrid Scholar V2
+Architecture Generation: CoreGrid Scholar
 Status: Foundational / Normative
 Scope: Phase 01–Phase 32 and all future extensions
 Authority: Architecture Governance Layer
@@ -121,13 +121,13 @@ text
 Analytics
     consumes
         ↓
-Financial Operating System
+Financial System
 
 does not mean:
 text
 Analytics owns financial truth
 
-The canonical source remains the Financial Operating System.
+The canonical source remains the Financial System.
 This distinction must exist throughout the architecture.
 
 ───
@@ -1053,7 +1053,7 @@ Risk classification should determine the approval requirement.
 ───
 
 78. Principle: Analytics Does Not Become Authority
-Analytics and decision intelligence may generate:
+Analytics and analytics intelligence may generate:
 • insights,
 • forecasts,
 • recommendations,
@@ -1063,7 +1063,7 @@ They must not silently mutate canonical operational state.
 ───
 
 79. Principle: Evidence-Based Decisions
-Decision intelligence should expose evidence supporting its conclusions.
+Analytics intelligence should expose evidence supporting its conclusions.
 
 ───
 
@@ -1087,14 +1087,14 @@ Action
 
 ───
 
-81. Principle: Institutional Command Requires Truth
+81. Principle: Command Centre Requires Truth
 The command centre should consume trusted subsystem state.
 It must not create competing institutional truth.
 
 ───
 
 82. Principle: Command Is Orchestration, Not Ownership
-The Institutional Command Centre coordinates operations.
+The Command Centre coordinates operations.
 It does not become the canonical owner of every subsystem's data.
 
 ───

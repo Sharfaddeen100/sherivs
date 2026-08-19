@@ -1,7 +1,7 @@
-COREGRID SCHOLAR v2
+COREGRID SCHOLAR
 ARCHITECTURE REGISTRY
-Document:ARCHITECTURE-REGISTRY.md
-Architecture Version: CoreGrid Scholar v2
+Document:REGISTRY.md
+Architecture Version: CoreGrid Scholar
 Registry Status: Canonical
 Total Engineering Phases: 32
 Authority: Architecture Registry
@@ -9,7 +9,7 @@ Authority: Architecture Registry
 ───
 
 1. PURPOSE
-This document is the canonical registry of the CoreGrid Scholar v2 architecture.
+This document is the canonical registry of the CoreGrid Scholar architecture.
 It defines:
 • the official phase numbering;
 • the official phase names;
@@ -26,7 +26,7 @@ Each phase file contains the detailed architecture for its subsystem.
 ───
 
 2. CANONICAL ARCHITECTURE RULE
-The following 32 phases constitute the current approved CoreGrid Scholar v2 architecture.
+The following 32 phases constitute the current approved CoreGrid Scholar architecture.
 text
 Phase 01 → Phase 32
 
@@ -41,13 +41,13 @@ No phase may be:
 without an explicit architecture decision.
 Any structural change must be recorded in:
 text
-ARCHITECTURE-DECISIONS.md
+DECISIONS.md
 
 and reflected in:
 text
-ARCHITECTURE-REGISTRY.md
-ARCHITECTURE-DEPENDENCY-MAP.md
-ARCHITECTURE-BOUNDARIES.md
+REGISTRY.md
+DEPENDENCY.md
+BOUNDARIES.md
 
 and any affected phase documents.
 
@@ -67,20 +67,20 @@ architecture/
 ├── phase-08-security-engine.md
 ├── phase-09-security-trust-fabric.md
 ├── phase-10-communication-platform.md
-├── phase-11-academic-learning-intelligence.md
-├── phase-12-scheduling-timetable-intelligence.md
-├── phase-13-payment-billing-financial-operating-system.md
+├── phase-11-academic-intelligence.md
+├── phase-12-scheduling-intelligence.md
+├── phase-13-financial-system.md
 ├── phase-14-data-platform.md
 ├── phase-15-hardware-integration.md
 ├── phase-16-digital-twin.md
 ├── phase-17-automation-engine.md
-├── phase-18-analytics-decision-intelligence.md
-├── phase-19-institutional-command-centre.md
+├── phase-18-analytics-intelligence.md
+├── phase-19-command-centre.md
 ├── phase-20-government-education-cloud.md
 ├── phase-21-global-cloud-fabric.md
 ├── phase-22-mobile-platform.md
 ├── phase-23-web-platform.md
-├── phase-24-coregrid-experience-design-intelligence-platform.md
+├── phase-24-coregrid-experience-design-intelligence.md
 ├── phase-25-institutional-onboarding-administration-workforce-identity-platform.md
 ├── phase-26-ai-intelligence-layer.md
 ├── phase-27-marketplace.md
@@ -151,18 +151,18 @@ phase-10-communication-platform.md
 Communication
 
 11
-Academic Learning Intelligence
-phase-11-academic-learning-intelligence.md
+Academic Intelligence
+phase-11-academic-intelligence.md
 Academic intelligence
 
 12
-Scheduling Timetable Intelligence
-phase-12-scheduling-timetable-intelligence.md
+Scheduling Intelligence
+phase-12-scheduling-intelligence.md
 Scheduling
 
 13
-Payment Billing Financial Operating System
-phase-13-payment-billing-financial-operating-system.md
+Financial System
+phase-13-financial-system.md
 Financial infrastructure
 
 14
@@ -186,13 +186,13 @@ phase-17-automation-engine.md
 Automation
 
 18
-Analytics Decision Intelligence
-phase-18-analytics-decision-intelligence.md
+Analytics Intelligence
+phase-18-analytics-intelligence.md
 Analytics and decisions
 
 19
-Institutional Command Centre
-phase-19-institutional-command-centre.md
+Command Centre
+phase-19-command-centre.md
 Institutional operations
 
 20
@@ -216,8 +216,8 @@ phase-23-web-platform.md
 Web applications
 
 24
-CoreGrid Experience & Design Intelligence Platform
-phase-24-coregrid-experience-design-intelligence-platform.md
+CoreGrid Experience & Design Intelligence
+phase-24-coregrid-experience-design-intelligence.md
 UX/UI and experience intelligence
 
 25
@@ -461,9 +461,9 @@ Includes:
 
 ───
 
-15. PHASE 11 — ACADEMIC LEARNING INTELLIGENCE
+15. PHASE 11 — ACADEMIC INTELLIGENCE
 File:
-phase-11-academic-learning-intelligence.md
+phase-11-academic-intelligence.md
 Responsibility
 Educational learning and academic intelligence.
 Includes:
@@ -481,9 +481,9 @@ Includes:
 
 ───
 
-16. PHASE 12 — SCHEDULING & TIMETABLE INTELLIGENCE
+16. PHASE 12 — SCHEDULING INTELLIGENCE
 File:
-phase-12-scheduling-timetable-intelligence.md
+phase-12-scheduling-intelligence.md
 Responsibility
 Scheduling and temporal resource optimization.
 Includes:
@@ -501,9 +501,9 @@ Includes:
 
 ───
 
-17. PHASE 13 — PAYMENT, BILLING & FINANCIAL OPERATING SYSTEM
+17. PHASE 13 — FINANCIAL SYSTEM
 File:
-phase-13-payment-billing-financial-operating-system.md
+phase-13-financial-system.md
 Responsibility
 Financial operations.
 Includes:
@@ -596,9 +596,9 @@ Automation must respect identity, permissions and security boundaries.
 
 ───
 
-22. PHASE 18 — ANALYTICS & DECISION INTELLIGENCE
+22. PHASE 18 — ANALYTICS INTELLIGENCE
 File:
-phase-18-analytics-decision-intelligence.md
+phase-18-analytics-intelligence.md
 Responsibility
 Transforming CoreGrid data into analytical and decision-support capabilities.
 Includes:
@@ -614,9 +614,9 @@ Includes:
 
 ───
 
-23. PHASE 19 — INSTITUTIONAL COMMAND CENTRE
+23. PHASE 19 — COMMAND CENTRE
 File:
-phase-19-institutional-command-centre.md
+phase-19-command-centre.md
 Responsibility
 High-level institutional operational control surface.
 Aggregates authorized information from multiple CoreGrid systems.
@@ -703,9 +703,9 @@ Includes:
 
 ───
 
-28. PHASE 24 — COREGRID EXPERIENCE & DESIGN INTELLIGENCE PLATFORM
+28. PHASE 24 — COREGRID EXPERIENCE & DESIGN INTELLIGENCE
 File:
-phase-24-coregrid-experience-design-intelligence-platform.md
+phase-24-coregrid-experience-design-intelligence.md
 Responsibility
 The canonical experience, UI/UX and design intelligence layer of CoreGrid Scholar.
 Includes:
@@ -800,7 +800,7 @@ Includes:
 • AI memory;
 • model routing;
 • multimodal intelligence;
-• decision intelligence;
+• analytics intelligence;
 • AI personalization;
 • institutional intelligence.
 Phase 26 builds upon the foundational agent infrastructure in Phase 07.
@@ -1276,7 +1276,7 @@ Codex must not:
 50. CURRENT REGISTRY STATUS
 text
 Architecture Version:
-CoreGrid Scholar v2
+CoreGrid Scholar
 
 Canonical Phases:
 32
@@ -1297,7 +1297,7 @@ Dependency Architecture:
 DEFINED
 
 Architecture Decisions:
-GOVERNED BY ARCHITECTURE-DECISIONS.md
+GOVERNED BY DECISIONS.md
 
 
 ───
@@ -1315,20 +1315,20 @@ text
 08 security-engine
 09 security-trust-fabric
 10 communication-platform
-11 academic-learning-intelligence
-12 scheduling-timetable-intelligence
-13 payment-billing-financial-operating-system
+11 academic-intelligence
+12 scheduling-intelligence
+13 financial-system
 14 data-platform
 15 hardware-integration
 16 digital-twin
 17 automation-engine
-18 analytics-decision-intelligence
-19 institutional-command-centre
+18 analytics-intelligence
+19 command-centre
 20 government-education-cloud
 21 global-cloud-fabric
 22 mobile-platform
 23 web-platform
-24 coregrid-experience-design-intelligence-platform
+24 coregrid-experience-design-intelligence
 25 institutional-onboarding-administration-workforce-identity-platform
 26 ai-intelligence-layer
 27 marketplace
@@ -1342,7 +1342,7 @@ text
 ───
 
 52. FINAL AUTHORITY STATEMENT
-This registry defines the canonical CoreGrid Scholar v2 phase architecture.
+This registry defines the canonical CoreGrid Scholar phase architecture.
 The architecture contains exactly 32 phases.
 Phases 24 and 25 are first-class architectural phases and must not be omitted, absorbed into other phases, renumbered, or appended incorrectly.
 The canonical sequence is:
@@ -1357,20 +1357,20 @@ text
 08 Security Engine
 09 Security Trust Fabric
 10 Communication Platform
-11 Academic Learning Intelligence
-12 Scheduling & Timetable Intelligence
-13 Payment, Billing & Financial Operating System
+11 Academic Intelligence
+12 Scheduling Intelligence
+13 Financial System
 14 Data Platform
 15 Hardware Integration
 16 Digital Twin
 17 Automation Engine
-18 Analytics & Decision Intelligence
-19 Institutional Command Centre
+18 Analytics Intelligence
+19 Command Centre
 20 Government Education Cloud
 21 Global Cloud Fabric
 22 Mobile Platform
 23 Web Platform
-24 CoreGrid Experience & Design Intelligence Platform
+24 CoreGrid Experience & Design Intelligence
 25 Institutional Onboarding, Administration & Workforce Identity Platform
 26 AI Intelligence Layer
 27 Marketplace
@@ -1380,4 +1380,4 @@ text
 31 Enterprise Scale
 32 Future Evolution
 
-This is the authoritative phase sequence for CoreGrid Scholar v2 until superseded through formal architecture governance.
+This is the authoritative phase sequence for CoreGrid Scholar until superseded through formal architecture governance.
