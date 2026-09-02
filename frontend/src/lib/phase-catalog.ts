@@ -1,12 +1,13 @@
 /**
- * CoreGrid Phase Catalog — the canonical 40-phase architecture map used by
+ * CoreGrid Phase Catalog — the canonical 51-phase architecture map used by
  * the Command Centre's dynamic workspace.
  *
- * Mirrors `REGISTRY.md` (authoritative phase sequence). Each entry lists the
- * domain-module file prefixes that implement the phase and, where measured,
- * the phase's unit-test count. Test counts are sourced from PROGRESS.md rows.
- * Phases 33–40 carry status "architecture" (documents complete; implementation
- * pending) and therefore no measured test count yet.
+ * Mirrors `REGISTRY.md` (authoritative phase sequence) and `PROGRESS.md`
+ * (status truth). Each entry lists domain-module file prefixes for the phase
+ * and, where measured, the phase's unit-test count (sourced from PROGRESS.md
+ * rows). Phases 33–51 carry status "architecture" (documents complete;
+ * implementation pending) and therefore no measured test count yet. Display
+ * layers are groupings only; registry ownership is authoritative.
  */
 
 export type PhaseStatus = "active" | "architecture";
