@@ -35,10 +35,12 @@ function AdminVisitorsPage() {
     <PortalPage
       title="Visitor Management & Gate Control"
       subtitle="Real-time visitor tracking, pass management, and comprehensive security monitoring"
-      actions={[
-        { label: "Check In Visitor", onClick: () => {} },
-        { label: "Issue Pass", onClick: () => {} },
-      ]}
+      actions={
+        <>
+          <Button disabled>Check In Visitor</Button>
+          <Button variant="outline" disabled>Issue Pass</Button>
+        </>
+      }
     >
       <div className="space-y-6">
         {/* KPI Cards */}

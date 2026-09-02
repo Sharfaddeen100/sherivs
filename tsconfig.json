@@ -4,7 +4,8 @@
     "frontend/src/**/*.tsx",
     "vite.config.ts",
     "eslint.config.js",
-    "tests/**/*.ts"
+    "tests/**/*.ts",
+    "scripts/**/*.ts"
   ],
   "compilerOptions": {
     "target": "ES2022",
@@ -18,6 +19,8 @@
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": false,
     "noEmit": true,
+    "incremental": true,
+    "tsBuildInfoFile": "./.tanstack/typecheck.tsbuildinfo",
 
     /* Linting */
     "skipLibCheck": true,

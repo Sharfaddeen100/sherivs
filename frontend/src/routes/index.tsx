@@ -1,24 +1,25 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { useApp } from "@/contexts/app-context";
 import { dashboardPathForRole } from "@/lib/roles";
 import { PublicSchoolSite } from "@/components/public/site";
+import { CommandCentre } from "@/components/command-centre/command-centre";
 
 export const Route = createFileRoute("/")({
   component: Index,
   head: () => ({
     meta: [
-      { title: "CoreGrid Scholar — one platform for every school" },
+      { title: "CoreGrid Command Centre — African Educational Runtime" },
       {
         name: "description",
         content:
-          "Multi-tenant school management for admissions, academics, attendance, fees, parents, and a tenant-branded marketing site — all in one place.",
+          "The CoreGrid Command Centre: provision schools, role models, and policies across a 51-phase governed platform for African educational institutions.",
       },
-      { property: "og:title", content: "CoreGrid Scholar" },
+      { property: "og:title", content: "CoreGrid Command Centre" },
       {
         property: "og:description",
         content:
-          "Run admissions, academics, attendance, fees, and your public school site on one platform.",
+          "Provision schools, roles, and policies on a 51-phase governed educational runtime.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://universalschoolos.com/" },
@@ -136,66 +137,8 @@ function Index() {
     return <PublicSchoolSite school={school} />;
   }
 
-  // Platform marketing page — only when no tenant slug resolved
-  const continueHref = role ? dashboardPathForRole(role) : null;
-  const greetingName = profile?.full_name ?? superAdmin?.full_name ?? null;
-
-  return (
-    <div className="min-h-dvh">
-      <header className="border-b border-border">
-        <div className="mx-auto max-w-6xl flex items-center justify-between px-6 py-4">
-          <div className="flex items-center gap-2">
-            <div className="size-8 rounded-lg uos-tenant-bg grid place-items-center font-bold">U</div>
-            <span className="font-display font-bold">CoreGrid Scholar</span>
-          </div>
-          <nav className="flex items-center gap-3 text-sm">
-            {continueHref ? (
-              <Link
-                to={continueHref}
-                className="rounded-md bg-primary px-3 py-2 font-semibold text-primary-foreground"
-              >
-                {greetingName ? `Continue as ${greetingName.split(" ")[0]}` : "Open dashboard"}
-              </Link>
-            ) : (
-              <Link
-                to="/auth"
-                className="rounded-md bg-primary px-3 py-2 font-semibold text-primary-foreground"
-              >
-                Sign in
-              </Link>
-            )}
-          </nav>
-        </div>
-      </header>
-
-      <main className="mx-auto max-w-6xl px-6 py-20">
-        <h1 className="text-5xl md:text-6xl font-bold leading-tight">
-          One operating system for every school.
-        </h1>
-        <p className="mt-6 max-w-2xl text-lg text-muted-foreground">
-          Admissions, academics, attendance, fees, parent engagement, and a
-          tenant-branded marketing site — running on a single multi-tenant
-          backend with strict per-school isolation.
-        </p>
-        <div className="mt-10 grid sm:grid-cols-3 gap-4 max-w-3xl">
-          {[
-            { title: "Multi-tenant by default", body: "Every record is scoped to a school. Database RLS enforces isolation." },
-            { title: "Role-based portals", body: "Seven portals — super admin, admin, teacher, bursar, parent, student, HQ." },
-            { title: "Real data, real empty states", body: "No mock content. Add your data and it appears. Add nothing and you see guidance." },
-          ].map((f) => (
-            <div key={f.title} className="uos-card p-5">
-              <h3 className="font-semibold">{f.title}</h3>
-              <p className="mt-2 text-sm text-muted-foreground">{f.body}</p>
-            </div>
-          ))}
-        </div>
-      </main>
-
-      <footer className="border-t border-border">
-        <div className="mx-auto max-w-6xl px-6 py-6 text-xs text-muted-foreground">
-          © {new Date().getFullYear()} CoreGrid Scholar
-        </div>
-      </footer>
-    </div>
-  );
+  // CoreGrid Command Centre — the platform's primary workspace surface for the
+  // African Educational Runtime (Phases 1–51). Dynamic workspace: from here an
+  // authorized operator provisions a school, its role model, and its policies.
+  return <CommandCentre />;
 }

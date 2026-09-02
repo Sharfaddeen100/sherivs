@@ -35,10 +35,12 @@ function AdminPayrollPage() {
     <PortalPage
       title="Payroll Management System"
       subtitle="Salary administration, deductions, compliance, and comprehensive payroll analytics"
-      actions={[
-        { label: "Process Payroll", onClick: () => {} },
-        { label: "Generate Payslips", onClick: () => {} },
-      ]}
+      actions={
+        <>
+          <Button disabled>Process Payroll</Button>
+          <Button variant="outline" disabled>Generate Payslips</Button>
+        </>
+      }
     >
       <div className="space-y-6">
         {/* KPI Cards */}

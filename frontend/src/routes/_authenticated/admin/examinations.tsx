@@ -46,16 +46,12 @@ function AdminExaminationsPage() {
     <PortalPage
       title="Examination Management System"
       subtitle="Advanced exam scheduling, seating arrangements, and invigilation coordination"
-      actions={[
-        {
-          label: "Create Exam",
-          onClick: () => {},
-        },
-        {
-          label: "Export Schedule",
-          onClick: () => {},
-        },
-      ]}
+      actions={
+        <>
+          <Button disabled>Create Exam</Button>
+          <Button variant="outline" disabled>Export Schedule</Button>
+        </>
+      }
     >
       <div className="space-y-6">
         {/* KPI Cards */}

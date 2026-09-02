@@ -35,10 +35,12 @@ function AdminInventoryPage() {
     <PortalPage
       title="Inventory & Asset Management"
       subtitle="Real-time asset tracking, stock management, and equipment maintenance"
-      actions={[
-        { label: "Register Asset", onClick: () => {} },
-        { label: "Create Requisition", onClick: () => {} },
-      ]}
+      actions={
+        <>
+          <Button disabled>Register Asset</Button>
+          <Button variant="outline" disabled>Create Requisition</Button>
+        </>
+      }
     >
       <div className="space-y-6">
         {/* KPI Cards */}

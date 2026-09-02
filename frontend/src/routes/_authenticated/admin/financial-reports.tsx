@@ -35,10 +35,12 @@ function AdminFinancialReportsPage() {
     <PortalPage
       title="Financial Analytics & Reporting"
       subtitle="Revenue analysis, expense tracking, cash-flow management, and financial forecasting"
-      actions={[
-        { label: "Generate Report", onClick: () => {} },
-        { label: "Export Data", onClick: () => {} },
-      ]}
+      actions={
+        <>
+          <Button disabled>Generate Report</Button>
+          <Button variant="outline" disabled>Export Data</Button>
+        </>
+      }
     >
       <div className="space-y-6">
         {/* KPI Cards */}

@@ -35,10 +35,12 @@ function AdminExtracurricularPage() {
     <PortalPage
       title="Extracurricular & Activities Hub"
       subtitle="Comprehensive club management, student engagement, and event coordination"
-      actions={[
-        { label: "Create Club", onClick: () => {} },
-        { label: "Schedule Event", onClick: () => {} },
-      ]}
+      actions={
+        <>
+          <Button disabled>Create Club</Button>
+          <Button variant="outline" disabled>Schedule Event</Button>
+        </>
+      }
     >
       <div className="space-y-6">
         {/* KPI Cards */}

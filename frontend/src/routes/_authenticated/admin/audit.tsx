@@ -36,13 +36,12 @@ function AdminAuditPage() {
     <PortalPage
       title="Comprehensive Audit & Compliance System"
       subtitle="Complete activity logging, security monitoring, regulatory compliance, and forensic analysis"
-      actions={[
-        {
-          label: "View Detailed Logs",
-          onClick: () => navigate({ to: "/admin/audit-logs" }),
-        },
-        { label: "Export Report", onClick: () => {} },
-      ]}
+      actions={
+        <>
+          <Button onClick={() => navigate({ to: "/admin/audit-logs" })}>View Detailed Logs</Button>
+          <Button variant="outline" disabled>Export Report</Button>
+        </>
+      }
     >
       <div className="space-y-6">
         {/* KPI Cards */}

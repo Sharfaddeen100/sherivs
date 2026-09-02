@@ -31,7 +31,7 @@ The architecture follows five commitments:
 
 ## Phase map
 
-The platform evolves through 32 documented phases. Each phase file in this
+The platform evolves through 51 documented phases. Each phase file in this
 directory is intentionally empty; content is added as each phase is scoped
 and approved:
 
@@ -69,6 +69,25 @@ and approved:
 | 30 | Globalization |
 | 31 | Enterprise Scale |
 | 32 | Future Evolution |
+| 33 | Reality Intelligence Kernel |
+| 34 | Universal Cognitive Intelligence Engine |
+| 35 | Autonomous Agent Civilization OS |
+| 36 | Universal Memory & Knowledge Civilization Engine |
+| 37 | Simulation & Future Intelligence Engine |
+| 38 | Evolution Engine |
+| 39 | Governance & Alignment Engine |
+| 40 | Universal Runtime Fabric |
+| 41 | Reality Simulation & Autonomous Sandbox Civilization Engine |
+| 42 | Zero Trust Security & Adversarial Defense Civilization Engine |
+| 43 | Universal Interface & Connectivity Intelligence |
+| 44 | Planetary Distributed Infrastructure Engine |
+| 45 | AI Compute Civilization Engine |
+| 46 | Universal Digital Twin Civilization Layer |
+| 47 | Autonomous Engineering Self-Improvement Engine |
+| 48 | Civilization Knowledge Graph |
+| 49 | Autonomous Economy Engine |
+| 50 | Human Civilization Interface Layer |
+| 51 | Universal Reality Operating System Kernel |
 
 ## Reading order for agents
 

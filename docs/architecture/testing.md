@@ -11,7 +11,7 @@
 | Database isolation | psql script | `database/queries/rls-isolation-check.sql` | Requires DB access |
 | Smoke | curl script | `scripts/smoke.sh` | Requires dev server |
 | Build | Vite | - | Passing |
-| Typecheck | tsc | - | Failing (PRE-EXISTING: 7 x TS2322 in admin route headers) |
+| Typecheck | tsc | - | Active verification; the seven admin route-header TS2322 errors have been corrected and require a completed run |
 
 ## Policy
 
