@@ -99,3 +99,19 @@ Codex and other agents must read, in order:
 4. `progress/` - what exists, what is blocked, what is next
 
 Never create a feature outside an approved architecture phase.
+
+## Plan artifacts and machine-readable registry
+
+The repository carries the 51-phase execution plan artifacts produced by the platform-wide reconnaissance (2026-09-02). Read them with the phase documents:
+
+- `execution-plan.md` — the complete 51-phase architectural execution plan (stage map, per-phase delta to gate, completion gate, verification loop, stop conditions)
+- `capability-ownership-graph.md` — canonical capability → owner → consumers graph
+- `duplication-map.md` — capability duplication clusters and canonicalization decisions
+- `dependency-graph.md` — typed structural dependency graph and topological execution order
+- `engineering-section-completeness-matrix.md` — phase-document section coverage + L1–L5 maturity grid
+- `migration-plan.md` — the transformation path preserving valid infrastructure and upgrading to the universal model
+- `registry.json` — machine-readable architectural registry (51 phases, 50 capabilities, 15 duplication rows, 2 runtimes)
+- `scripts/verification/registry-validate.mjs` — registry invariant validator
+- `scripts/verification/engineering-sections.mjs` — completeness-matrix scanner
+
+Progress truth (statuses, test counts, evidence) lives in `PROGRESS.md`; these artifacts and the registry must never drift from it or from `REGISTRY.md`.

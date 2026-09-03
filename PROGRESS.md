@@ -154,6 +154,8 @@ Measured state of the CoreGrid platform as a whole. Every figure has evidence; n
 | Universal arc docs (33–40) | 8 full A→R docs | 2026-08-30 | `architecture/phase-33…40.md` |
 | Civilization/URIK skeleton docs (41–51) | 11 docs | 2026-08-30 | `architecture/phase-41…51.md` |
 | Architecture registry files in sync | REGISTRY, DEPENDENCY, BOUNDARIES, architecture-map, architecture/README, DECISIONS | 2026-09-02 | per-file phase lists = 51 |
+| Plan artifacts | 6 canonical plan docs (execution plan, ownership graph, duplication map, dependency graph, completeness matrix, migration plan) | 2026-09-02 | architecture/execution-plan.md, capability-ownership-graph.md, duplication-map.md, dependency-graph.md, engineering-section-completeness-matrix.md, migration-plan.md |
+| Machine-readable registry | schemaVersion 1: 51 phases, 50 capabilities, 15 duplications, 2 runtimes | 2026-09-02 | architecture/registry.json; scripts/verification/registry-validate.mjs PASSED |
 | Frontend phase catalog | 51 entries, 7 layers | 2026-09-02 | `frontend/src/lib/phase-catalog.ts`; `tests/unit/phase-catalog.test.ts` 6/6 |
 | Domain-layer library modules | 186 `.ts` files in `frontend/src/lib` | 2026-09-02 | directory inventory |
 | Domain phase modules (07–32) | unit-tested module sets per phase (see §11) | 2026-08-30 | PROGRESS rows / module prefixes |
@@ -309,7 +311,7 @@ Key dependency facts:
 
 ## 10. Engineering-Section Completeness Matrix
 
-The matrix is machine-derived by `scripts/verification/engineering-sections.mjs`, which parses every phase document across its actual heading dialect and classifies engineering sections against the canonical dictionary: Identity, Purpose, Ownership, Non-Ownership/Boundaries, Principles, Architecture, Contracts/API, Data Model, Events, Workflows, Security, Tenancy, AI Safety, Observability, Testing, Integration, Dependencies, Risks, Completion Criteria, Extensions. Detected dialects (2026-09-02 scan): 30 plain-numbered, 17 letter-dotted (`A.1`-style), 1 `# A.`-style, 1 `SECTION A`-style, 2 to-annotate.
+The matrix is machine-derived by `scripts/verification/engineering-sections.mjs`, which parses every phase document across its actual heading dialect and classifies engineering sections against the canonical dictionary: Identity, Purpose, Ownership, Non-Ownership/Boundaries, Principles, Architecture, Contracts/API, Data Model, Events, Workflows, Security, Tenancy, AI Safety, Observability, Testing, Integration, Dependencies, Risks, Completion Criteria, Extensions. Detected dialects (2026-09-02 scan): 30 plain-numbered, 17 letter-dotted (`A.1`-style), 1 `# A.`-style, 1 `SECTION A`-style, 2 to-annotate. Machine-auditable metadata lives in `architecture/registry.json` (validated by `scripts/verification/registry-validate.mjs`); canonical plan artifacts are indexed in `architecture/README.md`.
 
 Baseline completeness (evidence 2026-09-02):
 
