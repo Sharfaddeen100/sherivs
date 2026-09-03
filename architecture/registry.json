@@ -5,7 +5,7 @@
   "sourceOfTruth": ["REGISTRY.md", "PROGRESS.md", "architecture/phase-*.md", "frontend/src/lib/phase-catalog.ts"],
   "phaseCount": 51,
   "phases": [
-    {"id":"01","name":"Foundation","layer":"Foundations","status":"IMPLEMENTING","stage":"S1","levels":[true,false,false,false,false],"tests":null,"modules":[],"consumers":["all"],"notes":"infra: scripts, CI, configs"},
+    {"id":"01","name":"Foundation","layer":"Foundations","status":"IMPLEMENTING","stage":"S1","levels":[true,false,false,false,false],"tests":null,"modules":[],"consumers":["all"],"notes":"infra, CI, verification contracts + foundation-integrity suite (S1 2026-09-02)"},
     {"id":"02","name":"Identity","layer":"Foundations","status":"IMPLEMENTED","stage":"S1","levels":[true,false,true,false,false],"tests":null,"modules":["identity","identity-credentials","identity-lifecycle","identity-relationships","roles"],"consumers":["03","05","06","08","22","25","50"]},
     {"id":"03","name":"Multi-Tenancy","layer":"Foundations","status":"IMPLEMENTED","stage":"S1","levels":[true,false,true,false,false],"tests":null,"modules":["tenant","tenant-core","tenant-isolation","tenant-lifecycle","tenant-quota","tenant-topology"],"consumers":["all"]},
     {"id":"04","name":"Education Reality Engine","layer":"Foundations","status":"IMPLEMENTED","stage":"S2","levels":[true,false,true,false,false],"tests":null,"modules":["education-core","education-curriculum","education-institution","education-assessment","education-facilities","education-governance"],"consumers":["11","12","13","25"]},

@@ -340,7 +340,7 @@ Columns: L = highest engineering level achieved (§3.1). "Consumers" lists princ
 
 | ID | Layer | Status | L1–L5 | Modules (domain layer) | Tests | Consumers | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| 01 Foundation | Foundations | IMPLEMENTING | ✓ ◐ ◐ ✗ ◐ | — (infra: scripts/, .github/workflows/verify.yml, tsconfig, vite/vitest configs) | — | all | Foundation assets exist; legacy row "implementation pending" re-audited (2026-08-19 entry) |
+| 01 Foundation | Foundations | IMPLEMENTING | ✓ ◐ ◐ ✗ ◐ | — (infra: scripts/, .github/workflows/verify.yml, tsconfig, vite/vitest configs) | — | all | Foundation assets exist. S1 (2026-09-02): foundation-integrity suite (tests/unit/foundation.test.ts, 8 tests); registry + secrets verification contracts wired into npm verify/CI; committed GitHub PAT in .mcp.json surfaced by secret-scan and removed (owner rotation required) |
 | 02 Identity | Foundations | IMPLEMENTED | ✓ ◐ ✓ ◐ ◐ | identity, identity-credentials, identity-lifecycle, identity-relationships, roles | identity/roles/tenant suites | all | Auth + supabase middleware live; level audit outstanding |
 | 03 Multi-Tenancy | Foundations | IMPLEMENTED | ✓ ◐ ✓ ◐ ◐ | tenant, tenant-core, tenant-isolation, tenant-lifecycle, tenant-quota, tenant-topology | tenant suite + RLS checks | all | RLS via supabase migrations (30); RLS re-verification scheduled |
 | 04 Education Reality Engine | Foundations | IMPLEMENTED | ✓ ◐ ✓ ◐ ◐ | education-core, education-curriculum, education-institution, education-assessment, education-facilities, education-governance | education + institution suites | 11, 12, 13, 25 | Scholar domain ontology; legacy app routes use these structures |
@@ -507,6 +507,7 @@ Proposed ADR index (recorded in DECISIONS.md):
 | P08 security engine not wired as live middleware/gateway | No uniform enforcement layer on routes | S1 wiring + tests |
 | No penetration/adversarial testing (P42 at L1) | Unknown exposure surface | After P08 wired; S4 |
 | RLS re-verification outstanding for legacy migrations | Tenant isolation assurance | S1 DB/RLS test pass |
+| Committed GitHub PAT in .mcp.json (removed from HEAD 2026-09-02) | Credential exposure (secret-scan evidence) | Owner rotates/revokes token; history rewrite only under explicit human approval |
 
 ### 17.3 AI safety debt
 | Item | Impact | Plan |
@@ -562,6 +563,7 @@ Every validation row records evidence: date, scope, command/method, result.
 | 2026-09-02 | Typecheck | Whole project | `tsc --noEmit` (detached) | 0 errors |
 | 2026-09-02 | Full unit suite | Whole project (after 51-phase catalog) | `vitest run` (87 files) | 1,844 tests passing |
 | 2026-09-02 | Doc inventory | Phase docs + registry | file inventory | 51 phase docs; registry files sync at 51 |
+| 2026-09-02 | Foundation integrity suite | Phase 01 repository invariants | vitest tests/unit/foundation.test.ts | 8 tests passing; verify:registry + verify:secrets clean |
 | pending | Integration/contract suites | Cross-phase contracts (§9) | to be defined | per S1–S12 |
 | pending | Security / RLS / tenant isolation | P03/P08/P09 | `database/queries/rls-isolation-check.sql` + suites | per S1/S4 |
 | pending | Property/chaos/failure tests | Event fabric, workflows, idempotency | to be defined | per S1/S6 |
@@ -614,6 +616,17 @@ Normalized schema: Date · Author · Scope · Change · Validation · Status. En
 | Change | Replaced the Scholar-scoped PROGRESS.md with the platform-wide COREGRID Engineering Progress ledger: platform identity model (§2), five-level maturity law (§3/§6), system-truth dashboard (§5), capability ownership graph (§7), duplication map & canonicalization ledger (§8), dependency graph & execution order (§9), engineering-section completeness matrix (§10), canonical 51-phase registry (§11), runtime registry (§12), milestones rebuilt from execution stages (§13), consolidated debt/risk/priority registers (§17–§19), validation ledger (§20), normalized change log (§22). Historical content preserved in git. |
 | Validation | typecheck 0 errors (2026-09-02); full unit suite re-run 1,844 tests / 87 files (2026-09-02); no production code modified. |
 | Status | COMPLETE for ledger migration; execution continues at Stage S1 per §9/§13. |
+
+### 22.3 Current entry — Phase 01 (Foundation)
+
+| Field | Value |
+| --- | --- |
+| Date | 2026-09-02 |
+| Author | Cline (autonomous loop, §103) |
+| Scope | Phase 01 Foundation |
+| Change | Foundation-integrity test suite; registry + secrets verification contracts wired into npm run verify; committed GitHub PAT in .mcp.json surfaced by secret-scan and removed from HEAD |
+| Validation | foundation suite 8/8; verify:registry PASSED; verify:secrets PASSED |
+| Status | IMPLEMENTING — L1 ✓, L2 ◐, L3 ◐, L4 ✗, L5 ✗; gate partial; loop advances to Phase 02 |
 
 ---
 
