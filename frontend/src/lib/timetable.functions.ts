@@ -7,6 +7,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { generateText, Output } from "ai";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { requireSchoolAdminScope } from "@/lib/security-role-gate";
 
 const DAYS = ["monday", "tuesday", "wednesday", "thursday", "friday"] as const;
 
@@ -35,23 +36,17 @@ export const generateTimetableDraft = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .validator((i: unknown) => generateInput.parse(i))
   .handler(async ({ data, context }) => {
-    const { supabase, userId } = context;
-
-    const { data: me } = await supabase
-      .from("users")
-      .select("role, school_id")
-      .eq("id", userId)
-      .maybeSingle();
-    if (!me || !["admin", "principal"].includes(me.role))
-      throw new Error("Only admins or principals can generate timetables");
+    const { supabase } = context;
+    // Canonical Phase 08 school-admin gate (fail closed). Replaces the legacy
+    // inline users.role admin/principal read + check.
+    const schoolId = await requireSchoolAdminScope(supabase);
 
     const { data: klass } = await supabase
       .from("classes")
       .select("id, name, grade_level, school_id")
       .eq("id", data.class_id)
       .maybeSingle();
-    if (!klass || klass.school_id !== me.school_id)
-      throw new Error("Class not found in your school");
+    if (!klass || klass.school_id !== schoolId) throw new Error("Class not found in your school");
 
     const key = process.env.AI_API_KEY;
     if (!key) throw new Error("AI gateway not configured");
@@ -80,11 +75,12 @@ Times must be HH:MM 24h. day_of_week is lowercase (monday..friday).`;
     } catch (e) {
       const msg = e instanceof Error ? e.message : "AI generation failed";
       if (msg.includes("429")) throw new Error("AI rate limit reached. Try again in a moment.");
-      if (msg.includes("402")) throw new Error("AI credits exhausted. Top up in workspace settings.");
+      if (msg.includes("402"))
+        throw new Error("AI credits exhausted. Top up in workspace settings.");
       throw new Error(msg);
     }
 
-    return { class_id: data.class_id, school_id: me.school_id, slots: draft.slots };
+    return { class_id: data.class_id, school_id: schoolId, slots: draft.slots };
   });
 
 const saveInput = z.object({
@@ -99,21 +95,16 @@ export const saveTimetable = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .validator((i: unknown) => saveInput.parse(i))
   .handler(async ({ data, context }) => {
-    const { supabase, userId } = context;
-
-    const { data: me } = await supabase
-      .from("users")
-      .select("role, school_id")
-      .eq("id", userId)
-      .maybeSingle();
-    if (!me || !["admin", "principal"].includes(me.role))
-      throw new Error("Only admins or principals can save timetables");
+    const { supabase } = context;
+    // Canonical Phase 08 school-admin gate (fail closed). Replaces the legacy
+    // inline users.role admin/principal read + check.
+    const schoolId = await requireSchoolAdminScope(supabase);
 
     // Deactivate prior timetables for this class+year+term
     await supabase
       .from("timetables")
       .update({ is_active: false })
-      .eq("school_id", me.school_id)
+      .eq("school_id", schoolId)
       .eq("class_id", data.class_id)
       .eq("academic_year", data.academic_year)
       .eq("term", data.term);
@@ -121,7 +112,7 @@ export const saveTimetable = createServerFn({ method: "POST" })
     const { data: tt, error: ttErr } = await supabase
       .from("timetables")
       .insert({
-        school_id: me.school_id,
+        school_id: schoolId,
         class_id: data.class_id,
         academic_year: data.academic_year,
         term: data.term,
@@ -135,7 +126,7 @@ export const saveTimetable = createServerFn({ method: "POST" })
 
     const rows = data.slots.map((s) => ({
       timetable_id: tt.id,
-      school_id: me.school_id,
+      school_id: schoolId,
       day_of_week: s.day_of_week,
       period_number: s.period_number,
       start_time: s.start_time,

@@ -1,7 +1,7 @@
 /**
  * Notification fan-out helpers.
  *
- * These are admin/teacher-callable server fns that create rows in
+ * These are admin/principal-callable server fns that create rows in
  * `notifications` for a set of users derived from a domain event. They are
  * intentionally idempotent at the row level (no dedup, the UI just shows
  * the newest entry) and are called after the originating action has
@@ -10,27 +10,14 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-
-async function loadMe(supabase: any, userId: string) {
-  const { data, error } = await supabase
-    .from("users")
-    .select("id, role, school_id")
-    .eq("id", userId)
-    .maybeSingle();
-  if (error) throw new Error(error.message);
-  if (!data) throw new Error("Profile not found");
-  return data as { id: string; role: string; school_id: string };
-}
-
-function requireAdmin(role: string) {
-  if (!["admin", "principal"].includes(role)) throw new Error("Admin only");
-}
+import { requireSchoolAdminScope } from "@/lib/security-role-gate";
 
 /**
  * Best-effort web-push ping after in-app notification rows are created.
  * Loaded lazily so the server-only push module never enters a client bundle,
  * and never allowed to fail the notification fan-out itself.
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- supabase client param; server-side helper boundary (pre-existing shape).
 async function pushAfterInsert(supabase: any, userIds: string[]) {
   try {
     const { deliverPushToUsers } = await import("@/lib/push.server");
@@ -49,6 +36,7 @@ async function pushAfterInsert(supabase: any, userIds: string[]) {
  */
 type PrefCategory = "messages" | "announcements" | "grades" | "attendance" | "fees";
 async function filterByPrefs(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- supabase client param; server-side helper boundary (pre-existing shape).
   supabase: any,
   userIds: string[],
   category: PrefCategory,
@@ -56,14 +44,13 @@ async function filterByPrefs(
   if (!userIds.length) return [];
   const { data } = await supabase
     .from("notification_preferences")
-    .select(
-      `user_id, inapp_${category}, quiet_hours_start, quiet_hours_end`,
-    )
+    .select(`user_id, inapp_${category}, quiet_hours_start, quiet_hours_end`)
     .in("user_id", userIds);
   const rows = (data ?? []) as Array<{
     user_id: string;
     quiet_hours_start: string | null;
     quiet_hours_end: string | null;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- dynamic preference column projection (pre-existing shape).
     [k: string]: any;
   }>;
   const prefMap = new Map(rows.map((r) => [r.user_id, r]));
@@ -77,9 +64,7 @@ async function filterByPrefs(
     const sMin = sh * 60 + sm;
     const eMin = eh * 60 + em;
     if (sMin === eMin) return false;
-    return sMin < eMin
-      ? nowMin >= sMin && nowMin < eMin
-      : nowMin >= sMin || nowMin < eMin; // wraps midnight
+    return sMin < eMin ? nowMin >= sMin && nowMin < eMin : nowMin >= sMin || nowMin < eMin; // wraps midnight
   };
 
   return userIds.filter((uid) => {
@@ -90,7 +75,6 @@ async function filterByPrefs(
     return true;
   });
 }
-
 
 // ---------------- Grades published ----------------
 
@@ -104,14 +88,15 @@ export const notifyGradesPublished = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .validator((i: unknown) => GradesInput.parse(i))
   .handler(async ({ data, context }) => {
-    const { supabase, userId } = context;
-    const me = await loadMe(supabase, userId);
-    requireAdmin(me.role);
+    const { supabase } = context;
+    // Canonical Phase 08 school-admin gate (fail closed). Replaces the legacy
+    // inline users.role admin/principal read + check.
+    const schoolId = await requireSchoolAdminScope(supabase);
 
     const { data: students } = await supabase
       .from("students")
       .select("id, user_id")
-      .eq("school_id", me.school_id)
+      .eq("school_id", schoolId)
       .eq("class_id", data.class_id)
       .eq("is_active", true);
     const sList = (students ?? []) as { id: string; user_id: string | null }[];
@@ -131,10 +116,9 @@ export const notifyGradesPublished = createServerFn({ method: "POST" })
     const targets = await filterByPrefs(supabase, rawTargets, "grades");
     if (!targets.length) return { notified: 0 };
 
-
     const title = `Report card published — ${data.term} term ${data.academic_year}`;
     const rows = targets.map((uid) => ({
-      school_id: me.school_id,
+      school_id: schoolId,
       user_id: uid,
       title,
       message: "Your latest grades are now available to view.",
@@ -159,16 +143,19 @@ export const notifyFeesDue = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .validator((i: unknown) => FeesInput.parse(i))
   .handler(async ({ data, context }) => {
-    const { supabase, userId } = context;
-    const me = await loadMe(supabase, userId);
-    requireAdmin(me.role);
+    const { supabase } = context;
+    // Canonical Phase 08 school-admin gate (fail closed). Replaces the legacy
+    // inline users.role admin/principal read + check.
+    const schoolId = await requireSchoolAdminScope(supabase);
 
-    const cutoff = new Date(Date.now() + data.days_until_due * 86400_000).toISOString().slice(0, 10);
+    const cutoff = new Date(Date.now() + data.days_until_due * 86400_000)
+      .toISOString()
+      .slice(0, 10);
 
-    let q = supabase
+    const q = supabase
       .from("fees")
       .select("student_id, due_date, status, amount")
-      .eq("school_id", me.school_id)
+      .eq("school_id", schoolId)
       .neq("status", "paid")
       .lte("due_date", cutoff);
     const { data: fees } = await q;
@@ -178,7 +165,7 @@ export const notifyFeesDue = createServerFn({ method: "POST" })
       const { data: students } = await supabase
         .from("students")
         .select("id")
-        .eq("school_id", me.school_id)
+        .eq("school_id", schoolId)
         .eq("class_id", data.class_id);
       const allow = new Set((students ?? []).map((s) => s.id as string));
       due = due.filter((f) => allow.has(f.student_id));
@@ -196,8 +183,7 @@ export const notifyFeesDue = createServerFn({ method: "POST" })
     if (!parents.length) return { notified: 0 };
 
     const rows = parents.map((uid) => ({
-
-      school_id: me.school_id,
+      school_id: schoolId,
       user_id: uid,
       title: "Outstanding school fees",
       message: `You have unpaid invoices due within ${data.days_until_due} day(s). Please review.`,
@@ -225,10 +211,11 @@ export const pushNotification = createServerFn({ method: "POST" })
   .validator((i: unknown) => PushInput.parse(i))
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
-    const me = await loadMe(supabase, userId);
-    requireAdmin(me.role);
+    // Canonical Phase 08 school-admin gate (fail closed). Replaces the legacy
+    // inline users.role admin/principal read + check.
+    const schoolId = await requireSchoolAdminScope(supabase);
 
-    let q = supabase.from("users").select("id").eq("school_id", me.school_id).eq("is_active", true);
+    let q = supabase.from("users").select("id").eq("school_id", schoolId).eq("is_active", true);
     if (data.audience === "parents") q = q.eq("role", "parent");
     else if (data.audience === "teachers") q = q.eq("role", "teacher");
     else if (data.audience === "students") q = q.eq("role", "student");
@@ -238,8 +225,7 @@ export const pushNotification = createServerFn({ method: "POST" })
     if (!ids.length) return { notified: 0 };
 
     const rows = ids.map((uid) => ({
-
-      school_id: me.school_id,
+      school_id: schoolId,
       user_id: uid,
       title: data.title,
       message: data.message,
@@ -268,10 +254,15 @@ export const notifyCalendarEvent = createServerFn({ method: "POST" })
   .validator((i: unknown) => CalendarInput.parse(i))
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
-    const me = await loadMe(supabase, userId);
-    requireAdmin(me.role);
+    // Canonical Phase 08 school-admin gate (fail closed). Replaces the legacy
+    // inline users.role admin/principal read + check.
+    const schoolId = await requireSchoolAdminScope(supabase);
 
-    let q = supabase.from("users").select("id, role").eq("school_id", me.school_id).eq("is_active", true);
+    let q = supabase
+      .from("users")
+      .select("id, role")
+      .eq("school_id", schoolId)
+      .eq("is_active", true);
     if (data.target_audience === "parents") q = q.eq("role", "parent");
     else if (data.target_audience === "teachers") q = q.eq("role", "teacher");
     else if (data.target_audience === "students") q = q.eq("role", "student");
@@ -284,7 +275,7 @@ export const notifyCalendarEvent = createServerFn({ method: "POST" })
 
     const typeLabel = data.event_type ? data.event_type.replace(/_/g, " ") : "event";
     const rows = targets.map((uid) => ({
-      school_id: me.school_id,
+      school_id: schoolId,
       user_id: uid,
       title: `New ${typeLabel}: ${data.title}`,
       message: `Scheduled for ${data.start_date}. Open the calendar for details.`,
@@ -306,9 +297,10 @@ export const unlockFaceAccount = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .validator((i: unknown) => UnlockInput.parse(i))
   .handler(async ({ data, context }) => {
-    const { supabase, userId } = context;
-    const me = await loadMe(supabase, userId);
-    requireAdmin(me.role);
+    const { supabase } = context;
+    // Canonical Phase 08 school-admin gate (fail closed). Replaces the legacy
+    // inline users.role admin/principal read + check.
+    const schoolId = await requireSchoolAdminScope(supabase);
 
     const { data: target, error: tErr } = await supabase
       .from("users")
@@ -316,7 +308,7 @@ export const unlockFaceAccount = createServerFn({ method: "POST" })
       .eq("id", data.userId)
       .maybeSingle();
     if (tErr) throw new Error(tErr.message);
-    if (!target || target.school_id !== me.school_id) throw new Error("Not found");
+    if (!target || target.school_id !== schoolId) throw new Error("Not found");
 
     const { error } = await supabase
       .from("users")

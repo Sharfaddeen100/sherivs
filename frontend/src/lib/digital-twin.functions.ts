@@ -10,21 +10,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-
-async function loadMe(supabase: any, userId: string) {
-  const { data, error } = await supabase
-    .from("users")
-    .select("id, role, school_id")
-    .eq("id", userId)
-    .maybeSingle();
-  if (error) throw new Error(error.message);
-  if (!data) throw new Error("Profile not found");
-  return data as { id: string; role: string; school_id: string };
-}
-
-function requireAdmin(role: string) {
-  if (!["admin", "principal"].includes(role)) throw new Error("Admin only");
-}
+import { requireSchoolAdminScope } from "@/lib/security-role-gate";
 
 // ---------------- Save config ----------------
 
@@ -41,17 +27,23 @@ export const saveTwinConfig = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .validator((i: unknown) => ConfigInput.parse(i))
   .handler(async ({ data, context }) => {
-    const { supabase, userId } = context;
-    const me = await loadMe(supabase, userId);
-    requireAdmin(me.role);
+    const { supabase } = context;
+    // Canonical Phase 08 school-admin gate (fail closed). Replaces the legacy
+    // inline users.role admin/principal read + check.
+    const schoolId = await requireSchoolAdminScope(supabase);
 
     const { data: existing } = await supabase
       .from("digital_twin_config")
       .select("id")
-      .eq("school_id", me.school_id)
+      .eq("school_id", schoolId)
       .maybeSingle();
 
-    const payload: any = { ...data, school_knowledge: data.school_knowledge ?? {}, trigger_rules: data.trigger_rules ?? {} };
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Supabase upsert payload over a Zod-any JSON column (pre-existing shape).
+    const payload: any = {
+      ...data,
+      school_knowledge: data.school_knowledge ?? {},
+      trigger_rules: data.trigger_rules ?? {},
+    };
     if (existing) {
       const { error } = await supabase
         .from("digital_twin_config")
@@ -62,7 +54,7 @@ export const saveTwinConfig = createServerFn({ method: "POST" })
     }
     const { data: ins, error } = await supabase
       .from("digital_twin_config")
-      .insert({ ...payload, school_id: me.school_id })
+      .insert({ ...payload, school_id: schoolId })
       .select("id")
       .single();
     if (error) throw new Error(error.message);
@@ -87,14 +79,15 @@ export const placeTwinCall = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .validator((i: unknown) => CallInput.parse(i))
   .handler(async ({ data, context }) => {
-    const { supabase, userId } = context;
-    const me = await loadMe(supabase, userId);
-    requireAdmin(me.role);
+    const { supabase } = context;
+    // Canonical Phase 08 school-admin gate (fail closed). Replaces the legacy
+    // inline users.role admin/principal read + check.
+    const schoolId = await requireSchoolAdminScope(supabase);
 
     const { data: cfg } = await supabase
       .from("digital_twin_config")
       .select("id, is_active")
-      .eq("school_id", me.school_id)
+      .eq("school_id", schoolId)
       .maybeSingle();
 
     const gatewayKey = process.env.AI_API_KEY || process.env.TWILIO_API_KEY;
@@ -102,7 +95,7 @@ export const placeTwinCall = createServerFn({ method: "POST" })
     const twilioFrom = process.env.TWILIO_FROM_NUMBER;
 
     const baseRow = {
-      school_id: me.school_id,
+      school_id: schoolId,
       twin_config_id: cfg?.id ?? null,
       call_type: data.call_type,
       trigger_event: data.trigger_event ?? null,
@@ -149,6 +142,7 @@ export const placeTwinCall = createServerFn({ method: "POST" })
         Twiml: twiml,
       }),
     });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Twilio JSON body is an external, untyped response (pre-existing shape).
     const body: any = await resp.json().catch(() => ({}));
     if (!resp.ok) {
       const { data: row } = await supabase
@@ -160,7 +154,9 @@ export const placeTwinCall = createServerFn({ method: "POST" })
         })
         .select("id")
         .single();
-      throw new Error(`Twilio error [${resp.status}]: ${body?.message ?? "unknown"} (call id ${row?.id ?? "—"})`);
+      throw new Error(
+        `Twilio error [${resp.status}]: ${body?.message ?? "unknown"} (call id ${row?.id ?? "—"})`,
+      );
     }
 
     const { data: row, error } = await supabase

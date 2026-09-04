@@ -8,6 +8,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { requireSchoolAdminScope } from "@/lib/security-role-gate";
 
 const Input = z.object({
   frequency: z.enum(["daily", "weekly"]).default("daily"),
@@ -17,15 +18,10 @@ export const sendNotificationDigests = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .validator((i: unknown) => Input.parse(i))
   .handler(async ({ data, context }) => {
-    const { supabase, userId } = context;
-
-    const { data: me } = await supabase
-      .from("users")
-      .select("id, role, school_id")
-      .eq("id", userId)
-      .maybeSingle();
-    if (!me) throw new Error("Profile not found");
-    if (!["admin", "principal"].includes(me.role)) throw new Error("Admin only");
+    const { supabase } = context;
+    // Canonical Phase 08 school-admin gate (fail closed). Replaces the legacy
+    // inline users.role admin/principal read + check.
+    const schoolId = await requireSchoolAdminScope(supabase);
 
     const hours = data.frequency === "weekly" ? 168 : 24;
     const since = new Date(Date.now() - hours * 3600_000).toISOString();
@@ -33,7 +29,7 @@ export const sendNotificationDigests = createServerFn({ method: "POST" })
     const { data: prefs } = await supabase
       .from("notification_preferences")
       .select("user_id")
-      .eq("school_id", me.school_id)
+      .eq("school_id", schoolId)
       .eq("digest_frequency", data.frequency);
     const targetIds = (prefs ?? []).map((p) => p.user_id as string);
     if (!targetIds.length) return { sent: 0 };
@@ -43,7 +39,7 @@ export const sendNotificationDigests = createServerFn({ method: "POST" })
       const { data: rows } = await supabase
         .from("notifications")
         .select("type, title, created_at, is_read")
-        .eq("school_id", me.school_id)
+        .eq("school_id", schoolId)
         .eq("user_id", uid)
         .eq("is_read", false)
         .gte("created_at", since)
@@ -62,7 +58,7 @@ export const sendNotificationDigests = createServerFn({ method: "POST" })
         .join(", ");
 
       const { error } = await supabase.from("notifications").insert({
-        school_id: me.school_id,
+        school_id: schoolId,
         user_id: uid,
         title: `Your ${data.frequency} summary`,
         message: `${list.length} new updates in the last ${hours}h — ${parts}.`,
