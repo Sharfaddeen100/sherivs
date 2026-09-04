@@ -36,6 +36,7 @@ const ADOPTED = [
   "digital-twin.functions.ts",
   "expense-insights.functions.ts",
   "facilities.functions.ts",
+  "lesson-plan-ai.functions.ts",
   "messages-broadcast.functions.ts",
   "notification-digest.functions.ts",
   "notifications-fanout.functions.ts",
@@ -47,14 +48,25 @@ const ADOPTED = [
 ] as const;
 
 /**
- * Composite role-set families that still need the canonical gate. EMPTY since
- * 2026-09-03: attendance (school_admin/school_teacher/teaching_staff),
- * expense-insights (finance_staff) and messages-broadcast (teaching_staff
- * with audience policy) were adopted via the school-staff context kinds in
- * `security-role-gate.ts`. A new composite family must be added here with a
- * reason until a gate kind covers it — never silently.
+ * Families that are legitimately outside the canonical role gate, each with
+ * the audit reason recorded (2026-09-03 security review). Every
+ * `*.functions.ts` file must be in ADOPTED or here — an unclassified family
+ * fails CI.
  */
-const COMPOSITE_ROLE_TRACKED: Readonly<Record<string, string>> = {};
+const DOCUMENTED_EXEMPT: Readonly<Record<string, string>> = {
+  "bus-tracking.functions.ts":
+    "driver self-scope only (writes filtered by driver_id = auth.uid()); RLS finding queued: transport_buses policy is school-wide, not driver-scoped (DB re-verify)",
+  "demo-provision.functions.ts":
+    "public demo provisioning, environment-gated (ALLOW_DEMO_PROVISIONING=false default, foundation-pinned); service-role fixtures only",
+  "driver-portal.functions.ts":
+    "driver self-scope only (own bus reads/writes by driver_id = auth.uid()); same transport_buses RLS finding as bus-tracking",
+  "paystack.functions.ts":
+    "payment flow: fee rows are RLS-scoped on the authenticated client; webhook signature verification is the source of truth; parent/bursar roles are outside the school-admin gate by design",
+  "profile.functions.ts":
+    "self-scope only (own users row by id = auth.uid()); super-admins have no tenant profile (no-op)",
+  "push.functions.ts":
+    "delivery is self-limited by users RLS on user clients (push_token read only for visible rows); sendTestPush targets the caller; fanout reach across recipients requires DB re-verify",
+};
 
 /** Inline pure school-admin gate detectors (both dialects in use). */
 const INLINE_ADMIN_ARRAY_RE = /\[\s*["']admin["']\s*,\s*["']principal["']\s*\]/;
@@ -83,16 +95,19 @@ describe("P08 security engine — server-function enforcement surface", () => {
       const hasInlinePureAdmin =
         INLINE_ADMIN_ARRAY_RE.test(source) || INLINE_ADMIN_COMPARISON_RE.test(source);
       const importsGate = GATE_IMPORT_RE.test(source);
+      const exemption = DOCUMENTED_EXEMPT[name];
 
-      if (hasInlinePureAdmin && !importsGate && !COMPOSITE_ROLE_TRACKED[name]) {
+      if (hasInlinePureAdmin && !importsGate && !exemption) {
         offenders.push(name);
       }
 
       const status = importsGate
         ? "ADOPTED"
         : hasInlinePureAdmin
-          ? `COMPOSITE_TRACKED (${COMPOSITE_ROLE_TRACKED[name] ?? "unclassified!"})`
-          : "no admin gate";
+          ? `INLINE_WITHOUT_GATE (${exemption ?? "unclassified!"})`
+          : exemption
+            ? `EXEMPT (${exemption})`
+            : "unclassified!";
       inventory.push(`  ${name.padEnd(38)} ${status}`);
     }
 
@@ -102,8 +117,10 @@ describe("P08 security engine — server-function enforcement surface", () => {
     expect(offenders).toEqual([]);
   });
 
-  it("records no undocumented composite families (full adoption via staff kinds)", () => {
-    // When a family is adopted, move it from COMPOSITE_ROLE_TRACKED to ADOPTED.
-    expect(Object.keys(COMPOSITE_ROLE_TRACKED).sort()).toEqual([]);
+  it("classifies every server-function family as adopted or documented-exempt", () => {
+    const classified = new Set([...ADOPTED, ...Object.keys(DOCUMENTED_EXEMPT)]);
+    const unclassified = families.filter((f) => !classified.has(f));
+    expect(unclassified).toEqual([]);
+    expect(Object.keys(DOCUMENTED_EXEMPT).length).toBeGreaterThan(0);
   });
 });
