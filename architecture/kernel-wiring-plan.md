@@ -38,6 +38,12 @@ observation drafts), `kernel/domain-manifest.ts` (`validateManifest`),
 `runtime/scholar.ts`, `runtime/scholar-events.ts`, `runtime/scholar-reality.ts`.
 
 1. **`register-runtime.functions.ts`** — platform super-admin only.
+   Status: **CODE AUTHORED 2026-09-03 (NOT_VALIDATED)** at
+   `frontend/src/lib/register-runtime.functions.ts` (human-directed execution):
+   super-admin gate → `validateManifest` → `registryRowFromManifest` (status
+   forced `proposed`) → idempotent service-role upsert into `cg_domain_runtime`
+   → `super_admin_logs` audit. `transitionRuntimeStatus` advances lifecycle via
+   `applyRuntimeStatusTransition`. Full DB validation pending §1.
    - Validates a `RuntimeManifest` with `kernel/domain-manifest.ts
      validateManifest`.
    - Builds the row with `kernel/runtime-registry.ts

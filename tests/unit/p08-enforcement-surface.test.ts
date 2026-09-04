@@ -41,6 +41,7 @@ const ADOPTED = [
   "notification-digest.functions.ts",
   "notifications-fanout.functions.ts",
   "provisioning.functions.ts",
+  "register-runtime.functions.ts",
   "school-settings.functions.ts",
   "staff-accounts.functions.ts",
   "teachers.functions.ts",
