@@ -289,6 +289,14 @@ Identity is distinct from:
 • policy
 • context
 
+Registry record (2026-09-03, S1 level audit): status IMPLEMENTED — held for
+audit, not COMPLETE. L1 concept ✓ (universal identity architecture doc); L2
+data ◐ (legacy `users`/`super_admins` schema + typed identity-actor/role
+contracts; universal identity data model pending); L3 backend ✓ live (auth
+middleware + identity RLS + P08 role gates); L4 ◐ (legacy Scholar role
+surfaces); L5 ✗ (no phase at L5). The universal L2 identity data model is a
+tracked S1 item that must land before COMPLETE.
+
 ───
 
 PHASE 03 — MULTI-TENANCY CIVILIZATION LAYER
@@ -302,6 +310,13 @@ Responsibilities include:
 • sovereignty boundaries
 Core question:
 Which reality or organization does this entity belong to?
+
+Registry record (2026-09-03, S1 level audit): status IMPLEMENTED — held for
+audit, not COMPLETE. L1 concept ✓ (multi-tenancy architecture doc); L2 data ◐
+(flat `school_id` tenancy + RLS; tenant hierarchy/topology models pending);
+L3 backend ✓ live (RLS across the legacy migrations, P08 role gates,
+provisioning server functions); L4 ◐ (tenant role surfaces); L5 ✗ (no phase
+at L5). Tenant hierarchy (district → state rollups) is a tracked S1/S6 item.
 
 ───
 
@@ -335,6 +350,13 @@ domain-runtime manifest instance (`frontend/src/lib/runtime/scholar.ts` +
 above belong to the Scholar runtime layer — never to the CoreGrid kernel.
 Education terms are prohibited inside kernel sources (enforced by
 `tests/unit/kernel-purity.test.ts`).
+
+Registry record (2026-09-03, S1 level-audit addendum): status IMPLEMENTED —
+held for audit, not COMPLETE. L1 ✓ (education reality ontology + Scholar
+runtime manifest); L2 ◐ (legacy education schema; universal reality models
+pending alongside P33); L3 ✓ live for the legacy education domain functions
+(behind P08 role gates); the runtime/scholar manifest + cg_* substrate are
+NOT_VALIDATED (DB-gated); L4 ◐ (legacy Scholar app surfaces); L5 ✗.
 
 ───
 
