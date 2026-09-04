@@ -120,3 +120,53 @@ describe("P33 universal kernel — Runtime Installation Test", () => {
     expect(sql).not.toMatch(/GRANT .* TO anon|GRANT .* TO authenticated/i);
   });
 });
+
+describe("P33 universal kernel — dependency boundary (platform CoreGrid first)", () => {
+  const TS_KERNEL_SOURCES = KERNEL_SOURCES.filter((f) => f.endsWith(".ts"));
+  const SCHOLAR_RUNTIME_SOURCES = [
+    join(ROOT, "frontend/src/lib/runtime/scholar.ts"),
+    join(ROOT, "frontend/src/lib/runtime/scholar-events.ts"),
+    join(ROOT, "frontend/src/lib/runtime/scholar-reality.ts"),
+  ];
+
+  function importSpecifiers(file: string): string[] {
+    const source = readFileSync(file, "utf8");
+    return [...source.matchAll(/from\s+["']([^"']+)["']/g)].map((m) => m[1]);
+  }
+
+  it("kernel sources never import outside the kernel directory", () => {
+    const offenders: string[] = [];
+    for (const file of TS_KERNEL_SOURCES) {
+      for (const spec of importSpecifiers(file)) {
+        const allowed = spec.startsWith("./") || spec.startsWith("@/lib/kernel/");
+        if (!allowed) offenders.push(`${file.replace(/\\/g, "/").split("kernel/")[1]}: ${spec}`);
+      }
+    }
+    expect(offenders).toEqual([]);
+  });
+
+  it("Scholar runtime imports only kernel contracts or its own runtime module set", () => {
+    const offenders: string[] = [];
+    for (const file of SCHOLAR_RUNTIME_SOURCES) {
+      for (const spec of importSpecifiers(file)) {
+        const allowed =
+          spec.startsWith("./") ||
+          spec.startsWith("@/lib/kernel/") ||
+          spec.startsWith("@/lib/runtime/");
+        if (!allowed) {
+          offenders.push(`${file.replace(/\\/g, "/").split("runtime/")[1]}: ${spec}`);
+        }
+      }
+    }
+    expect(offenders).toEqual([]);
+  });
+
+  it("every Scholar runtime module consumes at least one kernel contract (installed on CoreGrid, never standalone)", () => {
+    for (const file of SCHOLAR_RUNTIME_SOURCES) {
+      const source = readFileSync(file, "utf8");
+      expect(source, `${file} must import a @/lib/kernel contract`).toMatch(
+        /@\/lib\/kernel\/[a-z-]+/,
+      );
+    }
+  });
+});
