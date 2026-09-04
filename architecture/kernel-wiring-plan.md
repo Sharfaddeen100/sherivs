@@ -69,7 +69,7 @@ observation drafts), `kernel/domain-manifest.ts` (`validateManifest`),
 
 ## 4. Verification (before production enablement)
 
-1. Unit: all kernel/runtime/role-gate suites (currently 1,934 whole-tree green).
+1. Unit: all kernel/runtime/role-gate suites (99 files/1,954 tests whole-tree green, typecheck 0 errors, 2026-09-03).
 2. Contract: registry validator + secret scan + foundation integrity.
 3. DB: RLS isolation check green; tenant A≠B isolation spec per kernel tables.
 4. E2E: register Scholar runtime → record a Scholar event → read back via a
