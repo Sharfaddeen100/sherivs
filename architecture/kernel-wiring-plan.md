@@ -59,6 +59,13 @@ observation drafts), `kernel/domain-manifest.ts` (`validateManifest`),
    - `recordEvent` — build via `eventDraft` (or `runtime/scholar-events.ts`
      for Scholar vocabulary); insert into `cg_event` with `state='pending'`
      and the caller's `idempotency_key` (outbox intent). Delivery transitions (publish/acknowledge/fail/requeue/retire) are governed by `kernel/outbox.ts`.
+   Status: **CODE AUTHORED 2026-09-03 (NOT_VALIDATED)** at
+   `frontend/src/lib/kernel-reality.functions.ts` (human-directed execution):
+   `writeEntity` / `writeRelationship` / `writeObservation` / `recordEvent`
+   implemented behind the school-admin gate with explicit same-tenant entity
+   checks (service role bypasses RLS, so the tenant boundary is enforced in
+   code) and pending-state outbox events with idempotency handling. The
+   platform (super-admin) write variant is deferred until DB validation.
 3. **Audit** — every write appends to the legacy audit surface
    (`super_admin_logs` / `audit_logs` by role path) with correlation_id;
    kernel tables themselves carry `recorded_at` + actor provenance.

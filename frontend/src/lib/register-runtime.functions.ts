@@ -30,6 +30,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { asKernelAdmin, type KernelAdminClient } from "@/lib/kernel-admin-client";
 import { requirePlatformSuperAdmin } from "@/lib/security-role-gate";
 import {
   isRuntimeManifestStatus,
@@ -44,20 +45,9 @@ import {
   type RuntimeRegistryRow,
 } from "@/lib/kernel/runtime-registry";
 
-/* ─────────────────────────────────────────────────────────────
- * Kernel substrate client surface
- * ────────────────────────────────────────────────────────────*/
-
-// The generated `Database` type does not yet include the cg_* substrate
-// tables (migration authored 2026-09-03, NOT applied/regenerated). The kernel
-// client is intentionally structural until the DB-backed validation pass
-// regenerates types.
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type KernelAdminClient = any;
-
-function asKernelAdmin(admin: unknown): KernelAdminClient {
-  return admin as KernelAdminClient;
-}
+// The generated `Database` type lags the authored (NOT applied) cg_* substrate
+// migration; the kernel client surface is shared with kernel-reality server
+// functions via `kernel-admin-client.ts` (imported at the top of this file).
 
 /* ─────────────────────────────────────────────────────────────
  * Validators

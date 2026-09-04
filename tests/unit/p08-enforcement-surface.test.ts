@@ -36,6 +36,7 @@ const ADOPTED = [
   "digital-twin.functions.ts",
   "expense-insights.functions.ts",
   "facilities.functions.ts",
+  "kernel-reality.functions.ts",
   "lesson-plan-ai.functions.ts",
   "messages-broadcast.functions.ts",
   "notification-digest.functions.ts",
