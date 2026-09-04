@@ -244,3 +244,146 @@ export function decideAccountAdministration(
 
   return { decision: "allow", actor: "school_admin", scope };
 }
+
+/* ─────────────────────────────────────────────────────────────
+ * School staff context (role sets beyond the school-admin kind)
+ * ────────────────────────────────────────────────────────────*/
+
+/**
+ * Scholar runtime staff roles. This is the Scholar-domain vocabulary of the
+ * legacy `public.users.role` column — never imported by the kernel. The gate
+ * resolves the actor's role through the existing `public.get_my_role()` RPC
+ * (no new database surface) and keeps role-set membership declarative here so
+ * every family authorizes through one module.
+ */
+export type SchoolStaffRole = "admin" | "principal" | "teacher" | "bursar";
+
+/**
+ * Role sets a server-function family may require. Membership mirrors the
+ * database truth (migration 20260620122110):
+ * - `school_admin`    → role IN (admin, principal)   == public.is_school_admin()
+ * - `school_teacher`  → role = teacher               (RLS: attendance_logs teacher-only)
+ * - `teaching_staff`  → role IN (admin, principal, teacher)
+ * - `finance_staff`   → role IN (admin, principal, bursar)
+ * Anything outside these sets fails closed.
+ */
+export type SchoolStaffKind =
+  "school_admin" | "school_teacher" | "teaching_staff" | "finance_staff";
+
+export const SCHOOL_STAFF_ROLES: Record<SchoolStaffKind, readonly SchoolStaffRole[]> = {
+  school_admin: ["admin", "principal"],
+  school_teacher: ["teacher"],
+  teaching_staff: ["admin", "principal", "teacher"],
+  finance_staff: ["admin", "principal", "bursar"],
+};
+
+const STAFF_REASONS = {
+  roleRequired: "Forbidden: role not authorized for this operation",
+  tenantUnresolved: "No school in scope",
+  gatewayDeny: "Forbidden: role access denied",
+} as const;
+
+export interface StaffDecisionSignals {
+  /** Actor role from `public.users` (resolved via `public.get_my_role()`). */
+  role?: string | null;
+  /** Resolved school scope. */
+  scope?: string | null;
+}
+
+export type StaffDecision =
+  | {
+      decision: "allow";
+      role: SchoolStaffRole;
+      scope: string;
+      reason: "Staff role verified";
+    }
+  | {
+      decision: "deny";
+      code: "role_required" | "tenant_unresolved" | "gateway_deny";
+      reason: string;
+    };
+
+/**
+ * Pure decision for a school-staff role set. Fails closed on any unknown,
+ * missing or malformed signal (AT.9): a role outside the set, a null/blank
+ * scope, or a non-allow security-gateway outcome is a DENY — never a silent
+ * grant.
+ */
+export function decideStaffRole(
+  kind: SchoolStaffKind,
+  signals: StaffDecisionSignals,
+): StaffDecision {
+  const allowed = SCHOOL_STAFF_ROLES[kind] as readonly string[];
+  const rawRole = signals.role?.trim().toLowerCase() ?? "";
+  if (!allowed.includes(rawRole)) {
+    return { decision: "deny", code: "role_required", reason: STAFF_REASONS.roleRequired };
+  }
+
+  const scope = signals.scope?.trim() ?? "";
+  if (scope === "") {
+    return { decision: "deny", code: "tenant_unresolved", reason: STAFF_REASONS.tenantUnresolved };
+  }
+
+  const gateway = evaluateSecurityGateway({
+    identityValid: true,
+    tenantContextValid: true,
+    sessionValid: true,
+    withinRateLimit: true,
+    requestIntegrityValid: true,
+    authorizationDecision: "ALLOW",
+  });
+  if (gateway.decision !== "allow") {
+    return { decision: "deny", code: "gateway_deny", reason: STAFF_REASONS.gatewayDeny };
+  }
+
+  return {
+    decision: "allow",
+    role: rawRole as SchoolStaffRole,
+    scope,
+    reason: "Staff role verified",
+  };
+}
+
+export interface SchoolStaffContext {
+  role: SchoolStaffRole;
+  schoolId: string;
+}
+
+const STAFF_SCOPE_RPC = "get_my_school_id";
+const STAFF_ROLE_RPC = "get_my_role";
+
+/**
+ * Resolve the actor's staff role + school scope from the existing database
+ * RPC primitives and evaluate the requested role set. Does not throw on DENY
+ * (callers needing composite any-of authorization may combine outcomes);
+ * throws only on an RPC-level error.
+ */
+export async function resolveStaffContext(
+  supabase: SupabaseRpcClient,
+  kind: SchoolStaffKind,
+): Promise<StaffDecision> {
+  const roleRes = await supabase.rpc(STAFF_ROLE_RPC);
+  if (roleRes.error) {
+    throw new Error(roleRes.error?.message ?? "Failed to verify staff role");
+  }
+  const scopeRes = await supabase.rpc(STAFF_SCOPE_RPC);
+  if (scopeRes.error) {
+    throw new Error(scopeRes.error?.message ?? "Failed to resolve scope");
+  }
+  return decideStaffRole(kind, {
+    role: (roleRes.data as string | null) ?? null,
+    scope: (scopeRes.data as string | null) ?? null,
+  });
+}
+
+/** Assert a school-staff role set; throws a canonical reason on DENY. */
+export async function requireStaffContext(
+  supabase: SupabaseRpcClient,
+  kind: SchoolStaffKind,
+): Promise<SchoolStaffContext> {
+  const gate = await resolveStaffContext(supabase, kind);
+  if (gate.decision !== "allow") {
+    throw new Error(gate.reason);
+  }
+  return { role: gate.role, schoolId: gate.scope };
+}

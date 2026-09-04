@@ -13,7 +13,10 @@
 import { describe, expect, it } from "vitest";
 import {
   decideAccountAdministration,
+  decideStaffRole,
   evaluateRoleGate,
+  requireStaffContext,
+  resolveStaffContext,
   type RoleGateKind,
   type RoleGateSignals,
 } from "@/lib/security-role-gate";
@@ -174,5 +177,134 @@ describe("decideAccountAdministration — composite account administration", () 
       targetSchoolId: null,
     });
     expect(gate).toMatchObject({ decision: "deny", code: "tenant_unresolved" });
+  });
+});
+
+describe("decideStaffRole — school-staff role sets", () => {
+  it("allows admin and principal for school_admin (mirrors is_school_admin)", () => {
+    expect(decideStaffRole("school_admin", { role: "admin", scope: "school-a" }).decision).toBe(
+      "allow",
+    );
+    expect(decideStaffRole("school_admin", { role: "principal", scope: "school-a" }).decision).toBe(
+      "allow",
+    );
+  });
+
+  it("allows teacher for school_teacher", () => {
+    const gate = decideStaffRole("school_teacher", { role: "teacher", scope: "school-a" });
+    expect(gate).toEqual({
+      decision: "allow",
+      role: "teacher",
+      scope: "school-a",
+      reason: "Staff role verified",
+    });
+  });
+
+  it("allows every teaching role for teaching_staff", () => {
+    for (const role of ["admin", "principal", "teacher"] as const) {
+      expect(decideStaffRole("teaching_staff", { role, scope: "school-a" }).decision).toBe("allow");
+    }
+  });
+
+  it("allows admin/principal/bursar for finance_staff", () => {
+    for (const role of ["admin", "principal", "bursar"] as const) {
+      expect(decideStaffRole("finance_staff", { role, scope: "school-a" }).decision).toBe("allow");
+    }
+  });
+
+  it("fails closed for roles outside the requested set", () => {
+    expect(decideStaffRole("teaching_staff", { role: "bursar", scope: "school-a" })).toMatchObject({
+      decision: "deny",
+      code: "role_required",
+    });
+    expect(decideStaffRole("finance_staff", { role: "teacher", scope: "school-a" })).toMatchObject({
+      decision: "deny",
+      code: "role_required",
+    });
+    expect(decideStaffRole("school_teacher", { role: "admin", scope: "school-a" })).toMatchObject({
+      decision: "deny",
+      code: "role_required",
+    });
+    expect(decideStaffRole("school_admin", { role: "student", scope: "school-a" }).decision).toBe(
+      "deny",
+    );
+  });
+
+  it("fails closed on unknown, null or malformed roles and blank scopes", () => {
+    expect(decideStaffRole("teaching_staff", { role: null, scope: "school-a" }).decision).toBe(
+      "deny",
+    );
+    expect(decideStaffRole("teaching_staff", { role: undefined, scope: "school-a" }).decision).toBe(
+      "deny",
+    );
+    expect(
+      decideStaffRole("teaching_staff", { role: "super_admin", scope: "school-a" }),
+    ).toMatchObject({
+      decision: "deny",
+      code: "role_required",
+    });
+    expect(decideStaffRole("teaching_staff", { role: "teacher", scope: null })).toMatchObject({
+      decision: "deny",
+      code: "tenant_unresolved",
+    });
+    expect(decideStaffRole("teaching_staff", { role: "teacher", scope: "   " })).toMatchObject({
+      decision: "deny",
+      code: "tenant_unresolved",
+    });
+  });
+
+  it("trims and normalizes case while preserving the canonical allow shape", () => {
+    const gate = decideStaffRole("teaching_staff", { role: "  Teacher  ", scope: "  school-a " });
+    expect(gate).toEqual({
+      decision: "allow",
+      role: "teacher",
+      scope: "school-a",
+      reason: "Staff role verified",
+    });
+  });
+
+  it("keeps deny reasons non-leaky", () => {
+    const deny = decideStaffRole("finance_staff", { role: "student", scope: "school-a" });
+    if (deny.decision === "deny") {
+      expect(deny.reason).not.toMatch(/at /);
+      expect(deny.reason).not.toMatch(/secret|token|password/i);
+    }
+  });
+});
+
+describe("resolveStaffContext / requireStaffContext — adapters over existing RPCs", () => {
+  function rpcStub(role: string | null, scope: string | null, error?: { message: string }) {
+    return {
+      rpc: async (name: string) => {
+        if (error) return { error };
+        if (name === "get_my_role") return { data: role, error: null };
+        if (name === "get_my_school_id") return { data: scope, error: null };
+        return { data: null, error: null };
+      },
+    };
+  }
+
+  it("resolves an allow for a teaching teacher", async () => {
+    const gate = await resolveStaffContext(rpcStub("teacher", "school-a"), "teaching_staff");
+    expect(gate).toMatchObject({ decision: "allow", role: "teacher", scope: "school-a" });
+  });
+
+  it("requireStaffContext returns the typed context on allow", async () => {
+    const ctx = await requireStaffContext(rpcStub("bursar", "school-a"), "finance_staff");
+    expect(ctx).toEqual({ role: "bursar", schoolId: "school-a" });
+  });
+
+  it("requireStaffContext throws the canonical reason on DENY", async () => {
+    await expect(
+      requireStaffContext(rpcStub("student", "school-a"), "finance_staff"),
+    ).rejects.toThrow("Forbidden: role not authorized for this operation");
+    await expect(requireStaffContext(rpcStub("teacher", null), "teaching_staff")).rejects.toThrow(
+      "No school in scope",
+    );
+  });
+
+  it("surfaces RPC-level errors instead of failing open", async () => {
+    const broken = rpcStub("teacher", "school-a", { message: "rpc down" });
+    await expect(resolveStaffContext(broken, "teaching_staff")).rejects.toThrow("rpc down");
   });
 });

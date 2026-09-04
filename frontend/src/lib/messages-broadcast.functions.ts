@@ -12,6 +12,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { requireStaffContext } from "@/lib/security-role-gate";
 
 const Audience = z.union([
   z.object({ kind: z.literal("class_students"), class_id: z.string().uuid() }),
@@ -33,17 +34,15 @@ export const broadcastMessage = createServerFn({ method: "POST" })
   .validator((i: unknown) => Input.parse(i))
   .handler(async ({ data, context }): Promise<BroadcastResult> => {
     const { supabase, userId } = context;
-
-    const { data: me } = await supabase
-      .from("users")
-      .select("id, role, school_id")
-      .eq("id", userId)
-      .maybeSingle();
-    if (!me) throw new Error("Profile not found");
-    const isAdmin = me.role === "admin" || me.role === "principal";
-    const isTeacher = me.role === "teacher";
+    // Canonical Phase 08 teaching-staff gate (admin/principal/teacher).
+    // Replaces the legacy inline users.role read + check. Audience-specific
+    // policy below (teacher → own class only; admin → any audience) branches
+    // on the canonical role — never on a client-supplied claim.
+    const staff = await requireStaffContext(supabase, "teaching_staff");
+    const { role: actorRole, schoolId } = staff;
+    const isAdmin = actorRole === "admin" || actorRole === "principal";
+    const isTeacher = actorRole === "teacher";
     if (!isAdmin && !isTeacher) throw new Error("Not allowed to broadcast");
-    const schoolId = me.school_id as string;
 
     // Resolve recipient ids
     let recipientIds: string[] = [];

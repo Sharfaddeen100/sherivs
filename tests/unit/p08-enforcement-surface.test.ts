@@ -32,8 +32,11 @@ const LIB_DIR = join(ROOT, "frontend/src/lib");
 
 /** Families that have adopted the canonical gate (import must be present). */
 const ADOPTED = [
+  "attendance.functions.ts",
   "digital-twin.functions.ts",
+  "expense-insights.functions.ts",
   "facilities.functions.ts",
+  "messages-broadcast.functions.ts",
   "notification-digest.functions.ts",
   "notifications-fanout.functions.ts",
   "provisioning.functions.ts",
@@ -44,19 +47,14 @@ const ADOPTED = [
 ] as const;
 
 /**
- * Families with a documented *composite* role authorization that legitimately
- * spans roles beyond the school-admin kind. They retain inline checks until a
- * broader gate kind (teacher/staff/finance) is designed — tracked debt, not
- * silent divergence.
+ * Composite role-set families that still need the canonical gate. EMPTY since
+ * 2026-09-03: attendance (school_admin/school_teacher/teaching_staff),
+ * expense-insights (finance_staff) and messages-broadcast (teaching_staff
+ * with audience policy) were adopted via the school-staff context kinds in
+ * `security-role-gate.ts`. A new composite family must be added here with a
+ * reason until a gate kind covers it — never silently.
  */
-const COMPOSITE_ROLE_TRACKED: Readonly<Record<string, string>> = {
-  "attendance.functions.ts":
-    "mints QR as admin/principal but also serves teacher sign-in and teacher-marked attendance (role=teacher) — needs a school-staff gate kind",
-  "expense-insights.functions.ts":
-    "authorizes admin/principal/bursar — bursar is outside the school-admin kind; needs a finance-role gate kind",
-  "messages-broadcast.functions.ts":
-    "authorizes admin/principal school-wide plus teacher-owner for their own class — needs a composite staff/owner gate",
-};
+const COMPOSITE_ROLE_TRACKED: Readonly<Record<string, string>> = {};
 
 /** Inline pure school-admin gate detectors (both dialects in use). */
 const INLINE_ADMIN_ARRAY_RE = /\[\s*["']admin["']\s*,\s*["']principal["']\s*\]/;
@@ -104,12 +102,8 @@ describe("P08 security engine — server-function enforcement surface", () => {
     expect(offenders).toEqual([]);
   });
 
-  it("composite-tracked entries still exist as documented debt (no silent drift)", () => {
+  it("records no undocumented composite families (full adoption via staff kinds)", () => {
     // When a family is adopted, move it from COMPOSITE_ROLE_TRACKED to ADOPTED.
-    expect(Object.keys(COMPOSITE_ROLE_TRACKED).sort()).toEqual([
-      "attendance.functions.ts",
-      "expense-insights.functions.ts",
-      "messages-broadcast.functions.ts",
-    ]);
+    expect(Object.keys(COMPOSITE_ROLE_TRACKED).sort()).toEqual([]);
   });
 });

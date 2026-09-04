@@ -8,49 +8,44 @@ import { createServerFn } from "@tanstack/react-start";
 import { generateText, Output } from "ai";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { requireStaffContext } from "@/lib/security-role-gate";
 import { createAiGatewayProvider } from "@/lib/ai-gateway.server";
 
 const InsightSchema = z.object({
   headline: z.string(),
   summary: z.string(),
-  alerts: z.array(z.object({
-    severity: z.enum(["info", "warn", "critical"]),
-    category: z.string(),
-    message: z.string(),
-  })).max(8),
+  alerts: z
+    .array(
+      z.object({
+        severity: z.enum(["info", "warn", "critical"]),
+        category: z.string(),
+        message: z.string(),
+      }),
+    )
+    .max(8),
   recommendations: z.array(z.string()).max(6),
 });
 
 export type ExpenseInsights = z.infer<typeof InsightSchema>;
 
-async function loadMe(supabase: any, userId: string) {
-  const { data, error } = await supabase
-    .from("users")
-    .select("id, role, school_id")
-    .eq("id", userId)
-    .maybeSingle();
-  if (error) throw new Error(error.message);
-  if (!data) throw new Error("Profile not found");
-  if (!["admin", "principal", "bursar"].includes(data.role)) throw new Error("Forbidden");
-  return data as { id: string; role: string; school_id: string };
-}
-
 export const getExpenseInsights = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }): Promise<ExpenseInsights> => {
-    const me = await loadMe(context.supabase, context.userId);
+    // Canonical Phase 08 finance-staff gate (admin/principal/bursar). Replaces
+    // the legacy inline users.role read + check.
+    const staff = await requireStaffContext(context.supabase, "finance_staff");
     const cutoff = new Date(Date.now() - 90 * 86400_000).toISOString().slice(0, 10);
 
     const [{ data: rows }, { data: budgets }] = await Promise.all([
       context.supabase
         .from("school_expenses")
         .select("amount, expense_category, expense_date")
-        .eq("school_id", me.school_id)
+        .eq("school_id", staff.schoolId)
         .gte("expense_date", cutoff),
       context.supabase
         .from("school_expense_budgets")
         .select("category, monthly_budget")
-        .eq("school_id", me.school_id),
+        .eq("school_id", staff.schoolId),
     ]);
 
     const byCat = new Map<string, number>();

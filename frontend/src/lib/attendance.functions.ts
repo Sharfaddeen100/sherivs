@@ -10,6 +10,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { requireSchoolAdminScope, requireStaffContext } from "@/lib/security-role-gate";
 
 const TOKEN_TTL_SECONDS = 30;
 const ALLOWED_STATUSES = ["present", "absent", "late", "excused"] as const;
@@ -17,7 +18,9 @@ const ALLOWED_STATUSES = ["present", "absent", "late", "excused"] as const;
 function randomToken(): string {
   const bytes = new Uint8Array(18);
   crypto.getRandomValues(bytes);
-  return Array.from(bytes, (b) => b.toString(36).padStart(2, "0")).join("").slice(0, 24);
+  return Array.from(bytes, (b) => b.toString(36).padStart(2, "0"))
+    .join("")
+    .slice(0, 24);
 }
 
 // -------------------------------------------------------------------------
@@ -31,22 +34,15 @@ export const generateTeacherCheckQr = createServerFn({ method: "POST" })
   .validator((i: unknown) => genQrSchema.parse(i))
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
-
-    const { data: me, error: meErr } = await supabase
-      .from("users")
-      .select("id, role, school_id")
-      .eq("id", userId)
-      .maybeSingle();
-    if (meErr) throw new Error(meErr.message);
-    if (!me) throw new Error("User profile not found");
-    if (!["admin", "principal"].includes(me.role))
-      throw new Error("Only admins can mint teacher sign-in codes");
+    // Canonical Phase 08 school-admin gate (admin/principal). Replaces the
+    // legacy inline users.role read + check.
+    const schoolId = await requireSchoolAdminScope(supabase);
 
     const token = randomToken();
     const expiresAt = new Date(Date.now() + TOKEN_TTL_SECONDS * 1000).toISOString();
 
     const { error } = await supabase.from("qr_tokens").insert({
-      school_id: me.school_id,
+      school_id: schoolId,
       token,
       type: data.mode, // CHECK constraint allows 'sign_in' | 'sign_out'
       expires_at: expiresAt,
@@ -66,16 +62,9 @@ export const teacherCheckWithQr = createServerFn({ method: "POST" })
   .validator((i: unknown) => teacherCheckSchema.parse(i))
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
-
-    const { data: me, error: meErr } = await supabase
-      .from("users")
-      .select("id, role, school_id")
-      .eq("id", userId)
-      .maybeSingle();
-    if (meErr) throw new Error(meErr.message);
-    if (!me) throw new Error("User profile not found");
-    if (me.role !== "teacher")
-      throw new Error("Only teachers can sign in with this code");
+    // Canonical Phase 08 school-teacher gate (role = teacher). Replaces the
+    // legacy inline users.role read + check.
+    const staff = await requireStaffContext(supabase, "school_teacher");
 
     const { data: tok, error: tokErr } = await supabase
       .from("qr_tokens")
@@ -88,7 +77,7 @@ export const teacherCheckWithQr = createServerFn({ method: "POST" })
       throw new Error("This code is not a teacher check-in code");
     if (tok.used) throw new Error("This code has already been used");
     if (new Date(tok.expires_at).getTime() < Date.now()) throw new Error("This code has expired");
-    if (tok.school_id !== me.school_id) throw new Error("Wrong school");
+    if (tok.school_id !== staff.schoolId) throw new Error("Wrong school");
 
     const { error: logErr } = await supabase.from("attendance_logs").insert({
       school_id: tok.school_id,
@@ -128,16 +117,9 @@ export const markClassAttendance = createServerFn({ method: "POST" })
   .validator((i: unknown) => markSchema.parse(i))
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
-
-    const { data: me, error: meErr } = await supabase
-      .from("users")
-      .select("id, role, school_id")
-      .eq("id", userId)
-      .maybeSingle();
-    if (meErr) throw new Error(meErr.message);
-    if (!me) throw new Error("User profile not found");
-    if (!["teacher", "admin", "principal"].includes(me.role))
-      throw new Error("Only teachers and admins can mark attendance");
+    // Canonical Phase 08 teaching-staff gate (admin/principal/teacher).
+    // Replaces the legacy inline users.role read + check.
+    const staff = await requireStaffContext(supabase, "teaching_staff");
 
     // Confirm the class belongs to the same school
     const { data: cls, error: clsErr } = await supabase
@@ -146,10 +128,10 @@ export const markClassAttendance = createServerFn({ method: "POST" })
       .eq("id", data.class_id)
       .maybeSingle();
     if (clsErr) throw new Error(clsErr.message);
-    if (!cls || cls.school_id !== me.school_id) throw new Error("Class not in your school");
+    if (!cls || cls.school_id !== staff.schoolId) throw new Error("Class not in your school");
 
     const rows = data.marks.map((m) => ({
-      school_id: me.school_id,
+      school_id: staff.schoolId,
       student_id: m.student_id,
       class_id: data.class_id,
       date: data.date,
