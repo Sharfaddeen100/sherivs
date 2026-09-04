@@ -15,7 +15,7 @@ const dispatchSchema = z.object({
 /** Deliver a push ping to a set of users in the caller's school. */
 export const dispatchPushToUsers = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input: unknown) => dispatchSchema.parse(input))
+  .validator((input: unknown) => dispatchSchema.parse(input))
   .handler(async ({ data, context }) => {
     const { deliverPushToUsers } = await import("@/lib/push.server");
     const result = await deliverPushToUsers(context.supabase, data.userIds);

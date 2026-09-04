@@ -39,7 +39,7 @@ const ConfigInput = z.object({
 
 export const saveTwinConfig = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((i: unknown) => ConfigInput.parse(i))
+  .validator((i: unknown) => ConfigInput.parse(i))
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
     const me = await loadMe(supabase, userId);
@@ -85,7 +85,7 @@ const GATEWAY_URL = process.env.TWILIO_GATEWAY_URL || "https://api.twilio.com/20
 
 export const placeTwinCall = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((i: unknown) => CallInput.parse(i))
+  .validator((i: unknown) => CallInput.parse(i))
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
     const me = await loadMe(supabase, userId);

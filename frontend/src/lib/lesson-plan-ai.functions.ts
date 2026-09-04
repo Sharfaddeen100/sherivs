@@ -33,7 +33,7 @@ export type LessonPlanDraft = z.infer<typeof Schema>;
 
 export const draftLessonPlan = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((i: unknown) => Input.parse(i))
+  .validator((i: unknown) => Input.parse(i))
   .handler(async ({ data }): Promise<LessonPlanDraft> => {
     const key = process.env.AI_API_KEY;
     if (!key) throw new Error("AI is not configured");

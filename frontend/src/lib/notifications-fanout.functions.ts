@@ -102,7 +102,7 @@ const GradesInput = z.object({
 
 export const notifyGradesPublished = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((i: unknown) => GradesInput.parse(i))
+  .validator((i: unknown) => GradesInput.parse(i))
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
     const me = await loadMe(supabase, userId);
@@ -157,7 +157,7 @@ const FeesInput = z.object({
 
 export const notifyFeesDue = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((i: unknown) => FeesInput.parse(i))
+  .validator((i: unknown) => FeesInput.parse(i))
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
     const me = await loadMe(supabase, userId);
@@ -222,7 +222,7 @@ const PushInput = z.object({
 
 export const pushNotification = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((i: unknown) => PushInput.parse(i))
+  .validator((i: unknown) => PushInput.parse(i))
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
     const me = await loadMe(supabase, userId);
@@ -265,7 +265,7 @@ const CalendarInput = z.object({
 
 export const notifyCalendarEvent = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((i: unknown) => CalendarInput.parse(i))
+  .validator((i: unknown) => CalendarInput.parse(i))
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
     const me = await loadMe(supabase, userId);
@@ -304,7 +304,7 @@ const UnlockInput = z.object({ userId: z.string().uuid() });
 
 export const unlockFaceAccount = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((i: unknown) => UnlockInput.parse(i))
+  .validator((i: unknown) => UnlockInput.parse(i))
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
     const me = await loadMe(supabase, userId);

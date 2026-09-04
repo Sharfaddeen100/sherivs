@@ -16,6 +16,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { requirePlatformSuperAdmin } from "@/lib/security-role-gate";
 import {
   emailField,
   nonEmptyText,
@@ -82,7 +83,7 @@ export const checkPlatformBootstrap = createServerFn({ method: "GET" }).handler(
 
 export const claimFirstSuperAdmin = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input: unknown) => claimSchema.parse(input))
+  .validator((input: unknown) => claimSchema.parse(input))
   .handler(async ({ data, context }) => {
     const { supabaseAdmin } = await import(
       "@/integrations/supabase/client.server"
@@ -140,14 +141,10 @@ export type CreateSchoolResult = {
 
 export const createSchoolWithAdmin = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input: unknown) => createSchoolSchema.parse(input))
+  .validator((input: unknown) => createSchoolSchema.parse(input))
   .handler(async ({ data, context }): Promise<CreateSchoolResult> => {
-    // Caller must be a super admin
-    const { data: isSuper, error: roleErr } = await context.supabase.rpc(
-      "is_super_admin",
-    );
-    if (roleErr) throw new Error(roleErr.message);
-    if (!isSuper) throw new Error("Forbidden: super admin only");
+    // Canonical Phase 08 role gate — platform super admin (fail closed).
+    await requirePlatformSuperAdmin(context.supabase);
 
     const { supabaseAdmin } = await import(
       "@/integrations/supabase/client.server"
@@ -251,9 +248,8 @@ export const createSchoolWithAdmin = createServerFn({ method: "POST" })
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function assertSuper(context: any) {
-  const { data, error } = await context.supabase.rpc("is_super_admin");
-  if (error) throw new Error(error.message);
-  if (!data) throw new Error("Forbidden: super admin only");
+  // Canonical Phase 08 role gate — platform super admin (fail closed).
+  await requirePlatformSuperAdmin(context.supabase);
 }
 
 const updateSchoolSchema = z.object({
@@ -267,7 +263,7 @@ const updateSchoolSchema = z.object({
 
 export const updateSchoolPlan = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input: unknown) => updateSchoolSchema.parse(input))
+  .validator((input: unknown) => updateSchoolSchema.parse(input))
   .handler(async ({ data, context }) => {
     await assertSuper(context);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
@@ -298,7 +294,7 @@ const resetPwSchema = z.object({ schoolId: z.string().uuid() });
 
 export const resetSchoolAdminPassword = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input: unknown) => resetPwSchema.parse(input))
+  .validator((input: unknown) => resetPwSchema.parse(input))
   .handler(async ({ data, context }) => {
     await assertSuper(context);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");

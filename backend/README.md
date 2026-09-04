@@ -11,7 +11,7 @@ Start application. Its BFF layer is co-located:
 - Server-only integrations: `frontend/src/integrations/supabase/*.server.ts`
 - SSR entry: `frontend/src/server.ts`, `frontend/src/start.ts`
 
-Extraction to this directory is tracked in `remaining-work.md` and
-`decisions/architecture-decisions.md` (ADR-002). Do not move these files
+Extraction to this directory is tracked in `remaining-work.md` and the
+recorded decisions in `DECISIONS.md`. Do not move these files
 without updating the build pipeline and re-verifying the production build.
 

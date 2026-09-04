@@ -1,0 +1,35 @@
+# CoreGrid repository line-ending & diff policy.
+# LF is canonical for every text file: Prettier/ESLint and the CI gates expect
+# LF; this file prevents CRLF churn on Windows checkouts and editors.
+* text=auto
+
+# Code and config (canonical LF).
+*.ts        text eol=lf
+*.tsx       text eol=lf
+*.js        text eol=lf
+*.mjs       text eol=lf
+*.cjs       text eol=lf
+*.json      text eol=lf
+*.css       text eol=lf
+*.sql       text eol=lf
+*.toml      text eol=lf
+*.yml       text eol=lf
+*.yaml      text eol=lf
+*.sh        text eol=lf
+*.ps1       text eol=lf
+
+# Markdown and plain-text governance docs (canonical LF).
+*.md        text eol=lf
+*.txt       text eol=lf
+
+# Binary and lockfile noise exclusions.
+*.png       binary
+*.jpg       binary
+*.jpeg      binary
+*.gif       binary
+*.webp      binary
+*.woff      binary
+*.woff2     binary
+*.ico       binary
+*.map       binary
+package-lock.json -diff

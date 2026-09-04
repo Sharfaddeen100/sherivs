@@ -119,7 +119,7 @@ export const getMyDriverBus = createServerFn({ method: "GET" })
 
 export const pushDriverLocation = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((i: unknown) => Coords.parse(i))
+  .validator((i: unknown) => Coords.parse(i))
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
     const { error } = await supabase
@@ -138,7 +138,7 @@ export const pushDriverLocation = createServerFn({ method: "POST" })
 
 export const setDriverBusStatus = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((i: unknown) => StatusInput.parse(i))
+  .validator((i: unknown) => StatusInput.parse(i))
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
     const { error } = await supabase
@@ -162,7 +162,7 @@ const NotifyInput = z.object({
 
 export const notifyBusArrival = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((i: unknown) => NotifyInput.parse(i))
+  .validator((i: unknown) => NotifyInput.parse(i))
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
 

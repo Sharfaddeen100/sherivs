@@ -328,6 +328,14 @@ CoreGrid Scholar is initially built upon this capability.
 Scholar is therefore:
 A major CoreGrid runtime, not the owner of CoreGrid architecture.
 
+Registry record (2026-09-03): Phase 04 is reframed as the Scholar
+domain-runtime manifest instance (`frontend/src/lib/runtime/scholar.ts` +
+`runtime/scholar-events.ts`), registered over the universal kernel substrate
+(`cg_*` tables + `kernel/*` contracts). The education responsibilities listed
+above belong to the Scholar runtime layer — never to the CoreGrid kernel.
+Education terms are prohibited inside kernel sources (enforced by
+`tests/unit/kernel-purity.test.ts`).
+
 ───
 
 PHASE 16 — DIGITAL TWIN CIVILIZATION LAYER
@@ -477,6 +485,11 @@ Provides:
 • application configuration
 • application integration
 
+Registry record (2026-09-03): status IMPLEMENTING per the S1 level audit —
+runtime-* domain modules are unit-tested but not yet live (L3-live missing);
+legacy server functions remain ad-hoc (partially behind the P08 role gate).
+Canonical event/job/query fabric is an S3 target.
+
 ───
 
 PHASE 06 — WORKSPACE INTELLIGENCE ENGINE
@@ -490,6 +503,11 @@ Provides:
 • intelligence-driven workspace composition
 A workspace is an interface/runtime context.
 It is not necessarily a separate application.
+
+Registry record (2026-09-03): status IMPLEMENTING per the S1 level audit —
+workspace-* modules are unit-tested but not live; genuine dynamic workspace
+composition is an S3 target (legacy role portals belong to the Scholar runtime
+layer, not to this phase).
 
 ───
 
@@ -651,6 +669,12 @@ Provides:
 • vulnerability controls
 • security monitoring
 • security infrastructure integration
+
+Registry record (2026-09-03): live enforcement surface exists —
+`security-role-gate` (school-admin + platform super-admin + composite account
+administration), first consumer of `security-core.evaluateSecurityGateway`,
+adopted across facilities/teachers/school-settings/staff-accounts/provisioning
+server functions. Full P08 canonicalization continues under execution plan S1.
 
 ───
 
@@ -2384,6 +2408,15 @@ RESERVED / GOVERNANCE REVIEW REQUIRED
 
 until the authoritative specification is established.
 This prevents architecture hallucination.
+
+Registry record (2026-09-03): per-phase statuses for phases 33–51 are held in
+`architecture/registry.json` and `PROGRESS.md`. P33 (Reality Intelligence
+Kernel) has an authored first implementation slice — kernel substrate
+migration (cg_entity/cg_relationship/cg_event/cg_observation/cg_domain_runtime)
+plus typed reality contracts, domain-runtime manifest schema, event outbox and
+runtime-registry logic; STATUS NOT_VALIDATED (no live database reachable in
+the authoring environment). Phases 34–51 remain ARCHITECTURE_DEFINED (no
+implementation started).
 
 ───
 

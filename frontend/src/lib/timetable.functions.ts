@@ -33,7 +33,7 @@ const generateInput = z.object({
 
 export const generateTimetableDraft = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((i: unknown) => generateInput.parse(i))
+  .validator((i: unknown) => generateInput.parse(i))
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
 
@@ -97,7 +97,7 @@ const saveInput = z.object({
 
 export const saveTimetable = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((i: unknown) => saveInput.parse(i))
+  .validator((i: unknown) => saveInput.parse(i))
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
 

@@ -8,5 +8,6 @@ Home of future CoreGrid AI agent systems (phase 07 -
 feature-level assistants. Platform agents are not built yet and must not be
 built until the AI Agent System phase is scoped.
 
-Governance: `constitution/ai-agent-policy.md` and
+Governance: `architecture/phase-07-ai-agent-system.md` (Phase 07
+specification), `architecture/phase-26-ai-intelligence-layer.md`, and
 `.codex/security-policy.md`.

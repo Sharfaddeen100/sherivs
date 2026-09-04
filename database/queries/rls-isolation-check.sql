@@ -29,14 +29,21 @@ WHERE schemaname = 'public'
   )
   AND NOT rowsecurity;
 
--- 2. Every public-schema table that has rowsecurity ON must have at least one policy.
-SELECT format('FAIL: %I.%I has RLS but ZERO policies', t.schemaname, t.tablename) AS issue
+-- 2. Every public-schema table that has rowsecurity ON must have at least one
+--    policy — UNLESS it is a deny-by-default control-plane table (RLS enabled,
+--    zero policies, zero anon/authenticated grants). Such tables are denied to
+--    both client roles by default and are therefore safe without policies.
+SELECT format('FAIL: %I.%I has RLS but ZERO policies and anon/authenticated grants', t.schemaname, t.tablename) AS issue
 FROM pg_tables t
 LEFT JOIN pg_policies p
   ON p.schemaname = t.schemaname AND p.tablename = t.tablename
+LEFT JOIN information_schema.role_table_grants g
+  ON g.table_schema = t.schemaname
+ AND g.table_name = t.tablename
+ AND g.grantee IN ('anon','authenticated')
 WHERE t.schemaname = 'public' AND t.rowsecurity
 GROUP BY t.schemaname, t.tablename
-HAVING count(p.policyname) = 0;
+HAVING count(p.policyname) = 0 AND count(g.grantee) > 0;
 
 -- 3. Anonymous role MUST NOT have blanket SELECT on PII-bearing tables.
 WITH risky AS (
@@ -62,7 +69,24 @@ WHERE grantee = 'anon' AND table_schema = 'public' AND table_name = 'schools'
 LIMIT 1;
 
 
--- 5. Secrets: the legacy plaintext Paystack secret column must NEVER be
+-- 5. Universal kernel substrate (cg_*): deny-by-default control plane.
+--    Every kernel table must have RLS enabled, and anon/authenticated must
+--    hold NO table privileges on any kernel table.
+SELECT format('FAIL: kernel table %I.%I has RLS DISABLED', schemaname, tablename) AS issue
+FROM pg_tables
+WHERE schemaname = 'public' AND tablename LIKE 'cg\_%' AND NOT rowsecurity;
+
+SELECT format('FAIL: anon/authenticated has %s on public.%s', g.privilege_type, g.table_name) AS issue
+FROM information_schema.role_table_grants g
+WHERE g.table_schema = 'public'
+  AND g.table_name LIKE 'cg\_%'
+  AND g.grantee IN ('anon','authenticated');
+
+SELECT format('NOTE: kernel table %I.%I is deny-by-default (RLS enabled)', t.schemaname, t.tablename) AS info
+FROM pg_tables t
+WHERE t.schemaname = 'public' AND t.tablename LIKE 'cg\_%' AND t.rowsecurity;
+
+-- 6. Secrets: the legacy plaintext Paystack secret column must NEVER be
 --    readable by anon or authenticated through PostgREST.
 SELECT format('FAIL: %I.%I column %I is readable by %I', c.table_schema, c.table_name, c.column_name, c.grantee) AS issue
 FROM information_schema.column_privileges c
@@ -72,7 +96,7 @@ WHERE c.table_schema = 'public'
   AND c.grantee IN ('anon', 'authenticated')
   AND c.privilege_type = 'SELECT';
 
--- 6. Realtime: every table the application subscribes to must be in the
+-- 7. Realtime: every table the application subscribes to must be in the
 --    supabase_realtime publication (otherwise channels silently never fire).
 SELECT format('FAIL: %s missing from supabase_realtime publication', t) AS issue
 FROM unnest(ARRAY[

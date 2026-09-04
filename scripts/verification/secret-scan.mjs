@@ -28,6 +28,8 @@ const PATTERNS = [
   { name: "private-key-block", re: /-----BEGIN [A-Z0-9 ]*PRIVATE KEY-----/ },
   { name: "stripe-live-key", re: /sk_live_[0-9A-Za-z]{16,}/ },
   { name: "supabase-secret-key", re: /sb_secret_[0-9A-Za-z_-]{20,}/ },
+  { name: "supabase-project-url", re: /https:\/\/[a-z0-9]{16,}\.supabase\.co/ },
+  { name: "supabase-publishable-key", re: /sb_publishable_[0-9A-Za-z_-]{20,}/ },
   { name: "aws-access-key", re: /\bAKIA[0-9A-Z]{16}\b/ },
   { name: "google-api-key", re: /\bAIza[0-9A-Za-z_-]{35}\b/ },
   { name: "github-pat", re: /\bghp_[0-9A-Za-z]{30,}\b/ },

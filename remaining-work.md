@@ -1,7 +1,8 @@
 # CoreGrid Scholar - Remaining Work
 
-Future implementation roadmap. Phases reference
-`architecture/phase-XX-*.md` files (content pending).
+Future implementation roadmap. Phase specifications live in
+`architecture/phase-XX-*.md`; status and evidence are tracked in
+`PROGRESS.md` and `architecture/registry.json`.
 
 ## Immediate follow-ups (before next release)
 
@@ -9,8 +10,8 @@ Future implementation roadmap. Phases reference
    role, `.mcp.json` GitHub token, Supabase keys in `.mcp.json`).
 2. **Move `.mcp.json` secrets to environment variables** so the file can be
    shared safely.
-3. **Ratify constitution** - replace placeholders in `constitution/` and
-   record ratification in `decisions/`.
+3. **Ratify constitution** - confirm `CONSTITUTION.md` is authoritative and
+   record ratification in `DECISIONS.md`.
 4. **Add CI** - build + unit tests + e2e + secret scan + RLS isolation
    check on every PR (`.codex/pull-request-policy.md`).
 5. **Single verification command** - add `scripts/check` (PowerShell +
@@ -28,7 +29,7 @@ Future implementation roadmap. Phases reference
 | 04 Education Reality Engine | Curriculum, assessment, learning-objective model | 03 |
 | 05 Core Application Runtime | Application runtime foundation, module boundaries, shared kernel | 01, 02 |
 | 06 Workspace Engine | Unified workspace for staff/student workflows | 04 |
-| 07 AI Agent System | Platform agents with scopes, audit trails (see `constitution/ai-agent-policy.md`) | 02, 08 |
+| 07 AI Agent System | Platform agents with scopes, audit trails (see `architecture/phase-07-ai-agent-system.md`) | 02, 08 |
 | 08 Security Engine | RBAC/ABAC/ReBAC/PBAC policy engine, security audit hardening | 02, 03 |
 | 09 Security Trust Fabric | Trust, attestation, key management, secure communication | 08 |
 | 10 Communication Platform | Messages/notifications/push as platform services | 01 |
@@ -71,8 +72,8 @@ Extraction criteria (do not extract before these are met):
 - Observability (logging, tracing, error capture) exists for the extracted
   service.
 
-When extracting, move modules to `backend/` per
-`decisions/architecture-decisions.md` (ADR-002) and update the build
+When extracting, move modules to `backend/` per the backend extraction
+criteria recorded in `DECISIONS.md` and update the build
 pipeline with verification.
 
 ## Authorization roadmap (SEC-004)
@@ -88,9 +89,10 @@ pipeline with verification.
   compatibility first).
 - Update `PLATFORM_HOSTS` and `robots.txt` on DNS cutover to CoreGrid
   Scholar domains.
-- Replace deprecated `createServerFn().inputValidator()` calls.
-- Fix pre-existing typecheck debt (7 x TS2322: `PageHeader` `actions`
+- ~~Replace deprecated `createServerFn().inputValidator()` calls~~ → **DONE 2026-09-03**: migrated to `.validator()` across 17 server-function modules (36 call sites); whole-tree typecheck 0 errors + production build PASS with zero deprecation warnings.
+- ~~Fix pre-existing typecheck debt (7 x TS2322: `PageHeader` `actions`
   typed as `ReactNode` instead of an actions array) in admin routes
   (audit, examinations, extracurricular, financial-reports, inventory,
-  payroll, visitors).
-- Address `AdminDashboard` route export code-splitting warning.
+  payroll, visitors)~~ → **RESOLVED (verified 2026-09-03)**: whole-tree
+  `tsc --noEmit` reports 0 errors; no TS2322 remains in the tree.
+- Address `AdminDashboard` route export code-splitting warning (verify on next CI).

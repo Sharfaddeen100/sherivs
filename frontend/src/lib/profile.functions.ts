@@ -50,7 +50,7 @@ export const getMyProfile = createServerFn({ method: "GET" })
 
 export const updateMyProfile = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((i: unknown) => ProfilePatch.parse(i))
+  .validator((i: unknown) => ProfilePatch.parse(i))
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
     if (Object.keys(data).length === 0) return { ok: true as const };
@@ -63,7 +63,7 @@ const OptOutInput = z.object({ opt_out: z.boolean() });
 
 export const setDigitalTwinOptOut = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((i: unknown) => OptOutInput.parse(i))
+  .validator((i: unknown) => OptOutInput.parse(i))
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
     const { error } = await supabase

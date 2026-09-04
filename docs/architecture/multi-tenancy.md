@@ -27,5 +27,5 @@ not a platform host. Platform hosts are runtime config in `tenant.ts`
 - Phase 03 (Multi-Tenancy) plans school -> district -> state hierarchy and
   tenant provisioning APIs.
 - Authorization evolution (RBAC/ABAC/ReBAC/PBAC) is tracked in
-  `decisions/security-decisions.md` (SEC-004).
+  `DECISIONS.md` and specified in `architecture/phase-08-security-engine.md`.
 

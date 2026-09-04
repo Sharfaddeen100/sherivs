@@ -7,6 +7,11 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import {
+  decideAccountAdministration,
+  resolveRoleGate,
+  type AccountAdministrationOutcome,
+} from "@/lib/security-role-gate";
 
 const CREATABLE_ROLES = [
   "admin",
@@ -55,44 +60,37 @@ function randomPassword() {
   return p;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function findAuthUserIdByEmail(admin: any, email: string) {
   // listUsers is paged; a single 1000-page lookup is enough for tenants
   // that don't exceed that size, and matches the rest of the codebase.
   const { data } = await admin.auth.admin.listUsers({ page: 1, perPage: 1000 });
-  return (data?.users ?? []).find((u: any) => u.email?.toLowerCase() === email.toLowerCase())?.id as
-    | string
-    | undefined;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return (data?.users ?? []).find((u: any) => u.email?.toLowerCase() === email.toLowerCase())
+    ?.id as string | undefined;
 }
 
 export const createStaffAccount = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input: unknown) => schema.parse(input))
+  .validator((input: unknown) => schema.parse(input))
   .handler(async ({ data, context }): Promise<CreateStaffAccountResult> => {
-    // Authorize: caller must be an admin/principal of a school, OR a super admin.
-    const { data: callerProfile } = await context.supabase
-      .from("users")
-      .select("school_id, role")
-      .eq("id", context.userId)
-      .maybeSingle();
+    // Canonical Phase 08 composite gate: platform super-admin OR same-school
+    // admin/principal. Replaces legacy direct role-row parsing.
+    const superGate = await resolveRoleGate(context.supabase, "platform_super_admin");
+    const adminGate =
+      superGate.decision === "allow"
+        ? null
+        : await resolveRoleGate(context.supabase, "school_admin");
 
-    const { data: superRow } = await context.supabase
-      .from("super_admins")
-      .select("id")
-      .eq("id", context.userId)
-      .maybeSingle();
+    const access = decideAccountAdministration({
+      platformSuper: superGate.decision === "allow",
+      schoolAdmin: adminGate?.decision === "allow",
+      schoolScope: adminGate?.decision === "allow" ? adminGate.scope : null,
+      targetSchoolId: null,
+    });
+    if (access.decision === "deny") throw new Error(access.reason);
 
-    const isSuper = !!superRow;
-    const isSchoolAdmin =
-      callerProfile && (callerProfile.role === "admin" || callerProfile.role === "principal");
-
-    if (!isSuper && !isSchoolAdmin) {
-      throw new Error("Forbidden: only school admins or super admins can create accounts");
-    }
-
-    const schoolId = callerProfile?.school_id as string | undefined;
-    if (!isSuper && !schoolId) {
-      throw new Error("You are not linked to a school");
-    }
+    const schoolId = access.scope ?? undefined;
 
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
@@ -146,38 +144,40 @@ export const createStaffAccount = createServerFn({ method: "POST" })
 
 export const resetStaffPassword = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input: unknown) =>
-    z.object({ userId: z.string().uuid() }).parse(input),
-  )
+  .validator((input: unknown) => z.object({ userId: z.string().uuid() }).parse(input))
   .handler(async ({ data, context }) => {
-    const { data: callerProfile } = await context.supabase
-      .from("users")
-      .select("school_id, role")
-      .eq("id", context.userId)
-      .maybeSingle();
-    const { data: superRow } = await context.supabase
-      .from("super_admins")
-      .select("id")
-      .eq("id", context.userId)
-      .maybeSingle();
-    const isSuper = !!superRow;
-    const isSchoolAdmin =
-      callerProfile && (callerProfile.role === "admin" || callerProfile.role === "principal");
-    if (!isSuper && !isSchoolAdmin) throw new Error("Forbidden");
-
+    // Canonical Phase 08 composite gate: platform super-admin OR same-school
+    // admin/principal, with the target same-tenant rule for school admins.
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
-    // If school admin, ensure the target user is in the same school.
-    if (!isSuper) {
+    const superGate = await resolveRoleGate(context.supabase, "platform_super_admin");
+    let access: AccountAdministrationOutcome;
+
+    if (superGate.decision === "allow") {
+      access = decideAccountAdministration({
+        platformSuper: true,
+        schoolAdmin: false,
+        schoolScope: null,
+        targetSchoolId: null,
+      });
+    } else {
+      const adminGate = await resolveRoleGate(context.supabase, "school_admin");
+      if (adminGate.decision !== "allow") throw new Error("Forbidden");
       const { data: target } = await supabaseAdmin
         .from("users")
         .select("school_id, email")
         .eq("id", data.userId)
         .maybeSingle();
-      if (!target || target.school_id !== callerProfile?.school_id) {
-        throw new Error("Not allowed to reset this user");
-      }
+      if (!target) throw new Error("Not allowed to reset this user");
+      access = decideAccountAdministration({
+        platformSuper: false,
+        schoolAdmin: true,
+        schoolScope: adminGate.scope,
+        targetSchoolId: (target.school_id as string | null) ?? null,
+      });
     }
+
+    if (access.decision === "deny") throw new Error(access.reason);
 
     const password = randomPassword();
     const { error } = await supabaseAdmin.auth.admin.updateUserById(data.userId, {

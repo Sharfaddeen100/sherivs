@@ -27,13 +27,14 @@ The architecture follows five commitments:
    archived product specification and remains constitutional.
 5. **AI is an agent, not a feature.** AI systems are designed as auditable
    agents with policies, permissions, and observability, per
-   `constitution/ai-agent-policy.md`.
+   `architecture/phase-07-ai-agent-system.md` (Phase 07 specification).
 
 ## Phase map
 
 The platform evolves through 51 documented phases. Each phase file in this
-directory is intentionally empty; content is added as each phase is scoped
-and approved:
+directory carries its architectural specification; implementation status,
+levels and evidence are tracked in `PROGRESS.md` and
+`architecture/registry.json` (never inside the normative phase docs):
 
 | Phase | Focus |
 | --- | --- |
@@ -94,9 +95,11 @@ and approved:
 Codex and other agents must read, in order:
 
 1. `architecture/` (this directory) - what we are building and why
-2. `constitution/` - the rules that override convenience
-3. `decisions/` - recorded decisions, including rejected alternatives
-4. `progress/` - what exists, what is blocked, what is next
+2. `CONSTITUTION.md` (root) - the rules that override convenience
+3. `PRINCIPLES.md` (root) - foundational architecture principles
+4. `DECISIONS.md` (root) - recorded decisions, including rejected alternatives
+5. `BOUNDARIES.md`, `DEPENDENCY.md`, `REGISTRY.md` (root) - boundaries, dependency topology, canonical registry
+6. `PROGRESS.md` (root) - what exists, what is blocked, what is next
 
 Never create a feature outside an approved architecture phase.
 
@@ -110,6 +113,7 @@ The repository carries the 51-phase execution plan artifacts produced by the pla
 - `dependency-graph.md` — typed structural dependency graph and topological execution order
 - `engineering-section-completeness-matrix.md` — phase-document section coverage + L1–L5 maturity grid
 - `migration-plan.md` — the transformation path preserving valid infrastructure and upgrading to the universal model
+- `kernel-wiring-plan.md` — the DB-backed S2 wiring sequence (runtime registry, event recording, persistence adapters); NOT EXECUTED until a database-backed runtime is available
 - `registry.json` — machine-readable architectural registry (51 phases, 50 capabilities, 15 duplication rows, 2 runtimes)
 - `scripts/verification/registry-validate.mjs` — registry invariant validator
 - `scripts/verification/engineering-sections.mjs` — completeness-matrix scanner

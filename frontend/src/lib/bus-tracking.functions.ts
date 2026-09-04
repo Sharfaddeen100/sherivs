@@ -51,7 +51,7 @@ export const getMyBus = createServerFn({ method: "GET" })
 
 export const updateBusLocation = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((i: unknown) => Coords.parse(i))
+  .validator((i: unknown) => Coords.parse(i))
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
     const { error } = await supabase
@@ -69,7 +69,7 @@ export const updateBusLocation = createServerFn({ method: "POST" })
 
 export const setMyBusStatus = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((i: unknown) => StatusInput.parse(i))
+  .validator((i: unknown) => StatusInput.parse(i))
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
     const { error } = await supabase

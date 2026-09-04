@@ -2,6 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { emailField, nonEmptyText, optionalText, phoneField } from "@/lib/validation";
+import { requireSchoolAdminScope } from "@/lib/security-role-gate";
 
 /**
  * Tenant-admin server functions that need privileged work (creating auth
@@ -36,12 +37,11 @@ function tempPassword() {
 
 export const inviteTeacher = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input: unknown) => inviteTeacherSchema.parse(input))
+  .validator((input: unknown) => inviteTeacherSchema.parse(input))
   .handler(async ({ data, context }): Promise<InviteTeacherResult> => {
-    const { data: isAdmin } = await context.supabase.rpc("is_school_admin");
-    if (!isAdmin) throw new Error("Forbidden: school admin only");
-    const { data: schoolId } = await context.supabase.rpc("get_my_school_id");
-    if (!schoolId) throw new Error("No school in scope");
+    // Canonical Phase 08 school-admin gate — resolves the actor's school
+    // scope and fails closed (replaces the legacy inline RPC checks).
+    const schoolId = await requireSchoolAdminScope(context.supabase);
 
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
@@ -93,10 +93,10 @@ const setActiveSchema = z.object({
 
 export const setTeacherActive = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input: unknown) => setActiveSchema.parse(input))
+  .validator((input: unknown) => setActiveSchema.parse(input))
   .handler(async ({ data, context }) => {
-    const { data: isAdmin } = await context.supabase.rpc("is_school_admin");
-    if (!isAdmin) throw new Error("Forbidden");
+    // Canonical Phase 08 school-admin gate (fail closed).
+    await requireSchoolAdminScope(context.supabase);
     // RLS already restricts to same school
     const { error } = await context.supabase
       .from("users")

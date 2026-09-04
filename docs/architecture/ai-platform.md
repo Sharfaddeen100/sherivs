@@ -23,7 +23,8 @@
 
 ## Governance
 
-- `constitution/ai-agent-policy.md` (placeholder pending ratification).
+- Agent governance: `architecture/phase-07-ai-agent-system.md` (Phase 07
+  specification) and the AI safety rules in `CONSTITUTION.md`.
 - Human oversight required for high-impact AI actions.
 - Platform agents (Planning, Academic, Operations, Finance, Communication,
   Analytics, Safety, Compliance, Research) are Planned under

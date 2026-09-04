@@ -163,6 +163,17 @@ async function ensureTenantUser(
 
 export const provisionDemoEnterprise = createServerFn({ method: "POST" }).handler(
   async (): Promise<DemoCredentials> => {
+    // Development-fixture isolation (Phase 01 §34/§45): demo reality may only be
+    // provisioned when an operator explicitly enables it in the environment.
+    // Default is OFF in every environment, including local. This server function
+    // creates live rows (school, auth users, classes, bus, subscription) with
+    // fixed credentials, so it must never run silently.
+    if (process.env.ALLOW_DEMO_PROVISIONING !== "true") {
+      throw new Error(
+        "Demo provisioning is disabled on this environment. Set ALLOW_DEMO_PROVISIONING=true to enable it.",
+      );
+    }
+
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
     const { id: schoolId, created } = await ensureSchool(supabaseAdmin);

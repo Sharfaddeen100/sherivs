@@ -15,7 +15,7 @@ const Input = z.object({
 
 export const sendNotificationDigests = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((i: unknown) => Input.parse(i))
+  .validator((i: unknown) => Input.parse(i))
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
 

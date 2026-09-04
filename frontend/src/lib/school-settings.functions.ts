@@ -8,6 +8,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { requireSchoolAdminScope } from "@/lib/security-role-gate";
 import {
   nonEmptyText,
   optionalText,
@@ -139,17 +140,11 @@ export type SchoolSettingsTab = z.infer<typeof tabSchema>["tab"];
 
 export const updateSchoolSettings = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input: unknown) => tabSchema.parse(input))
+  .validator((input: unknown) => tabSchema.parse(input))
   .handler(async ({ data, context }) => {
-    const { data: isAdmin, error: roleErr } =
-      await context.supabase.rpc("is_school_admin");
-    if (roleErr) throw new Error(roleErr.message);
-    if (!isAdmin) throw new Error("Forbidden: school admin only");
-
-    const { data: schoolId, error: sidErr } =
-      await context.supabase.rpc("get_my_school_id");
-    if (sidErr) throw new Error(sidErr.message);
-    if (!schoolId) throw new Error("No school in scope for this user");
+    // Canonical Phase 08 role gate — resolves the actor's school scope and
+    // fails closed (replaces the legacy inline RPC checks).
+    const schoolId = await requireSchoolAdminScope(context.supabase);
 
     const { error } = await context.supabase
       .from("schools")

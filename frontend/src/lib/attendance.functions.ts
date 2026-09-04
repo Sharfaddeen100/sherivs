@@ -28,7 +28,7 @@ const genQrSchema = z.object({ mode: z.enum(["sign_in", "sign_out"]) });
 
 export const generateTeacherCheckQr = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((i: unknown) => genQrSchema.parse(i))
+  .validator((i: unknown) => genQrSchema.parse(i))
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
 
@@ -63,7 +63,7 @@ const teacherCheckSchema = z.object({ token: z.string().trim().min(4).max(64) })
 
 export const teacherCheckWithQr = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((i: unknown) => teacherCheckSchema.parse(i))
+  .validator((i: unknown) => teacherCheckSchema.parse(i))
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
 
@@ -125,7 +125,7 @@ const markSchema = z.object({
 
 export const markClassAttendance = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((i: unknown) => markSchema.parse(i))
+  .validator((i: unknown) => markSchema.parse(i))
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
 

@@ -4,7 +4,7 @@
 > "Remix of School OS" project during the CoreGrid Scholar migration. It is
 > preserved verbatim as the source of truth for the School OS-era product
 > requirements (multi-tenancy, schema, empty-state rules). Product decisions
-> going forward are governed by `constitution/` and `decisions/`.
+> going forward are governed by `CONSTITUTION.md` and `DECISIONS.md` (root).
 
 The original spec opened with: "Build a complete multi-tenant School
 Management SaaS called 'Universal School OS' from scratch."

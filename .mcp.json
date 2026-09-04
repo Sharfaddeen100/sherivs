@@ -72,9 +72,7 @@
         "@joshuarileydev/supabase-mcp-server"
       ],
       "env": {
-        "npm_config_update_notifier": "false",
-        "SUPABASE_URL": "https://qimawwdlgjtudzufgeox.supabase.co",
-        "SUPABASE_SERVICE_ROLE_KEY": "sb_publishable_2PSAr0311iiJBNWnOs6pNA_yy7SQ8SY"
+        "npm_config_update_notifier": "false"
       }
     }
   }

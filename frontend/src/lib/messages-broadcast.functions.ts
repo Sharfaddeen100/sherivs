@@ -30,7 +30,7 @@ export type BroadcastResult = { sent: number; thread_id: string };
 
 export const broadcastMessage = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((i: unknown) => Input.parse(i))
+  .validator((i: unknown) => Input.parse(i))
   .handler(async ({ data, context }): Promise<BroadcastResult> => {
     const { supabase, userId } = context;
 

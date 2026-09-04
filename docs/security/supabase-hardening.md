@@ -95,3 +95,21 @@ psql "$DATABASE_URL" -f database/queries/rls-isolation-check.sql
   future forward migration once the encrypted `school_api_keys` flow is
   confirmed in production.
 
+## 2026-09-03 Addendum — remediation applied (Phase 01 S1 hardening)
+
+- `.mcp.json`: removed the embedded Supabase project URL and key material.
+  The `supabase` MCP server now expects `SUPABASE_URL` and a Supabase key
+  supplied by the host environment; no credential values remain in tracked
+  files. See AD-181.
+- `scripts/verification/secret-scan.mjs`: added `supabase-project-url` and
+  `supabase-publishable-key` patterns so any future regression fails CI.
+- Public demo provisioning (`demo-provision.functions.ts`) is now
+  environment-gated: it runs only when `ALLOW_DEMO_PROVISIONING=true`
+  (default `false`, documented in `.env.example`).
+- `tests/unit/foundation.test.ts` extended (8 → 12 tests) to mechanically
+  enforce the two invariants above.
+- **Residual (owner action):** rotating every credential that touched git
+  history remains outstanding; the publishable-key material removed from
+  `.mcp.json` should still be revoked/rotated at the Supabase project.
+
+

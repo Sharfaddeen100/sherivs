@@ -32,7 +32,7 @@ function paystackSecret(): string {
 
 export const initFeePayment = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((i: unknown) => initSchema.parse(i))
+  .validator((i: unknown) => initSchema.parse(i))
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
     const { data: fee, error } = await supabase
@@ -95,7 +95,7 @@ const verifySchema = z.object({ reference: z.string().min(6).max(200) });
 
 export const verifyFeePayment = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((i: unknown) => verifySchema.parse(i))
+  .validator((i: unknown) => verifySchema.parse(i))
   .handler(async ({ data, context }) => {
     const res = await fetch(
       `https://api.paystack.co/transaction/verify/${encodeURIComponent(data.reference)}`,

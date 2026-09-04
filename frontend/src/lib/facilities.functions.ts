@@ -9,6 +9,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { requireSchoolAdminScope } from "@/lib/security-role-gate";
 
 const nullableNumber = (max?: number) =>
   z
@@ -77,18 +78,14 @@ const transportSchema = z.object({
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function assertAdmin(ctx: { supabase: any }) {
-  const { data: isAdmin, error } = await ctx.supabase.rpc("is_school_admin");
-  if (error) throw new Error(error.message);
-  if (!isAdmin) throw new Error("Forbidden: school admin only");
-  const { data: schoolId, error: e2 } = await ctx.supabase.rpc("get_my_school_id");
-  if (e2) throw new Error(e2.message);
-  if (!schoolId) throw new Error("No school in scope");
-  return schoolId as string;
+  // Canonical Phase 08 school-admin gate (fail closed). Replaces the legacy
+  // inline is_school_admin()/get_my_school_id() ad-hoc checks.
+  return requireSchoolAdminScope(ctx.supabase);
 }
 
 export const upsertSchoolMeals = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input: unknown) => mealsSchema.parse(input))
+  .validator((input: unknown) => mealsSchema.parse(input))
   .handler(async ({ data, context }) => {
     const schoolId = await assertAdmin(context);
     const { error } = await context.supabase
@@ -100,7 +97,7 @@ export const upsertSchoolMeals = createServerFn({ method: "POST" })
 
 export const upsertSchoolTransport = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input: unknown) => transportSchema.parse(input))
+  .validator((input: unknown) => transportSchema.parse(input))
   .handler(async ({ data, context }) => {
     const schoolId = await assertAdmin(context);
     const { error } = await context.supabase

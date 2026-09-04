@@ -867,10 +867,13 @@ PROGRESS.md
 Supporting architecture systems include:
 text
 architecture/
-decisions/
-progress/
-.codex/
+database/
+frontend/
+tests/
+scripts/
 docs/
+.github/
+.codex/
 
 These documents are complementary.
 No single document should silently redefine another document's authority.

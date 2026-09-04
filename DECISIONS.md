@@ -2909,3 +2909,15 @@ Evolution Model: Incremental / Governed / Versioned
 Self-Modification: Restricted and validated
 Architectural Authority: CoreGrid Architecture Governance Layer
 This document is authoritative for architecture-level decisions unless superseded by a newer explicitly approved decision record.
+
+───
+
+194. AD-181 — FOUNDATION SECRETS & DEVELOPMENT-FIXTURE ISOLATION (2026-09-03)
+Decision:
+• No credential material — including Supabase project URLs, publishable keys, or sb_/ghp_ values — may be committed under tracked tooling/configuration files (for example .mcp.json). Tooling that requires service credentials must read them from the host environment.
+• Development-fixture reality provisioning (the public "try demo" school provisioner) is a development fixture. It must be disabled by default in every environment and may run only when an operator explicitly sets ALLOW_DEMO_PROVISIONING=true. It must never run silently against production.
+• The Phase 01 foundation integrity suite (tests/unit/foundation.test.ts) mechanically enforces both invariants, and the repository secret-scan now flags committed Supabase project URLs and publishable keys.
+Rationale:
+Phase 01 §34 (Secrets Management) and the Constitution's no-fake-reality / development-fixture isolation rules (§45). Repository archaeology (2026-09-02) found: (1) a tracked Supabase project URL and key material under .mcp.json, and (2) a public authentication surface whose server function created live school/auth rows with fixed credentials. Both violate the constitution.
+Owner: Phase 01 (Foundation). Blast radius: DOMAIN → PLATFORM (security posture).
+Status: RATIFIED (2026-09-03). Enforcement: secret-scan.mjs patterns + foundation.test.ts + .env.example default.
