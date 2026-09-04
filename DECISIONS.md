@@ -2921,3 +2921,81 @@ Rationale:
 Phase 01 §34 (Secrets Management) and the Constitution's no-fake-reality / development-fixture isolation rules (§45). Repository archaeology (2026-09-02) found: (1) a tracked Supabase project URL and key material under .mcp.json, and (2) a public authentication surface whose server function created live school/auth rows with fixed credentials. Both violate the constitution.
 Owner: Phase 01 (Foundation). Blast radius: DOMAIN → PLATFORM (security posture).
 Status: RATIFIED (2026-09-03). Enforcement: secret-scan.mjs patterns + foundation.test.ts + .env.example default.
+
+────────────────────────────────────────────────────────────────
+PLATFORM ADR SERIES — §8 CANONICALIZATION DECISIONS (PROPOSED)
+────────────────────────────────────────────────────────────────
+Each record below is PROPOSED. It documents the decision recommended by the
+existing cluster analysis (architecture/duplication-map.md §2) so it can be
+ratified, amended, or rejected by a human authority. No implementation of the
+affected phases (33–51) may begin under a PROPOSED record (PROGRESS §15).
+
+195. PLATFORM-003 — CANONICAL MEMORY / KNOWLEDGE OWNERSHIP (D1, D2, P48 projection)
+Decision (proposed):
+• P36 (Universal Memory & Knowledge Civilization Engine) is the single canonical owner of long-term memory and knowledge semantics.
+• P33 (Reality Intelligence Kernel) owns the universal reality primitives (cg_entity / cg_relationship / cg_event / cg_observation + ontology kernel) that memory and knowledge project over — projection, not duplication.
+• P48 (Civilization Knowledge Graph) is a derived graph projection over P33/P36 canonical state, not a competing store.
+• P07 agent-memory and P34/P35 consumers read through P36's contract; no second memory engine may be constructed.
+Rationale: duplication-map D1/D2 record memory and knowledge clusters appearing in 07/14/26/33/34/36/48. One capability, many consumers (AD-004).
+Owner: P36 (canonical) with P33 ontology kernel. Consumers: P07, P34, P35, P48, P51.
+Blast radius: PLATFORM → DOMAIN.
+Status: PROPOSED (2026-09-03). Ratification required before P36/P48 implementation.
+
+196. PLATFORM-004 — CANONICAL EVOLUTION OWNERSHIP (D3, D14)
+Decision (proposed):
+• P38 (Evolution Engine) is the canonical evolution engine owner.
+• P32 (Future Evolution) retains today's transitional evolution-* modules only as forward-only consumers until P38 lands; the reserved P38 module prefixes (D14) stand.
+• P47 (Autonomous Engineering Self-Improvement) consumes P38; no second evolution/self-improvement engine may be built (AGENTS.md self-improvement law).
+Rationale: duplication-map D3/D14; AD-004 single-owner rule.
+Owner: P38. Consumers: P32 (transitional), P47, P39.
+Blast radius: PLATFORM → ENGINEERING GOVERNANCE.
+Status: PROPOSED (2026-09-03). Ratification required before P38/P47 module implementation.
+
+197. PLATFORM-005 — DIGITAL TWIN CANONICAL OWNERSHIP (D4)
+Decision (proposed):
+• P16 (Digital Twin) remains the canonical live digital-twin infrastructure owner (existing live twin surface).
+• P46 (Universal Digital Twin Civilization Layer) is a federation registry that composes P16 twins across tenants/domains — never a second twin engine.
+• P33/P48 twin representations are projections over the same canonical state.
+Rationale: duplication-map D4; no duplicate-engine construction (risk register, PROGRESS §19).
+Owner: P16. Consumers: P46 (federation), P33/P48 (projection), P04/P15 domain twins.
+Blast radius: PLATFORM → DOMAIN.
+Status: PROPOSED (2026-09-03). Ratification required before P46 implementation.
+
+198. PLATFORM-006 — SIMULATION / SANDBOX SPLIT (D5, D37, D41)
+Decision (proposed):
+• P37 (Simulation & Future Intelligence Engine) is the single canonical simulator owner.
+• P41 (Reality Simulation & Autonomous Sandbox Civilization Engine) is an isolation/sandbox runtime boundary that executes P37 simulations under tenant/policy isolation — it contains no second simulation engine.
+• P35 civilization overlays and P16 twin-simulation consumers use the P37/P41 contract pair.
+Rationale: duplication-map D5; sandbox isolation must be a boundary, not a second engine.
+Owner: P37 (simulator) + P41 (sandbox boundary). Consumers: P35, P16, P49.
+Blast radius: PLATFORM → SAFETY (autonomous execution).
+Status: PROPOSED (2026-09-03). Ratification required before P37/P41 implementation.
+
+199. PLATFORM-007 — ZERO-TRUST / ADVERSARIAL OVERLAY (D7, P42)
+Decision (proposed):
+• P08 (Security Engine) remains the single enforcement authority; P09 (Security & Trust Fabric) supplies trust signals into P08 decisions.
+• P42 (Zero Trust & Adversarial Defense Civilization Engine) is an adversarial overlay that feeds detection/red-team signals INTO P08/P09 — it may not bypass, duplicate, or re-decide enforcement.
+Rationale: duplication-map D7; constitution authorization model (single decision authority, §16).
+Owner: P08 (enforcement) / P09 (trust) / P42 (adversarial overlay). Consumers: all phases.
+Blast radius: SECURITY (highest).
+Status: PROPOSED (2026-09-03). Ratification required before P42 implementation.
+
+200. PLATFORM-010 — KERNEL ↔ DOMAIN-RUNTIME BOUNDARY (supports P33–P51)
+Decision (proposed):
+• The P33 kernel substrate (cg_* primitives, kernel/* contracts, runtime-registry) is the only place universal primitives live; it is vocabulary-free (kernel-purity enforced).
+• Domain runtimes (Scholar R-001 first; healthcare/government/agriculture next) register over the generic contract via DomainRuntimeManifest — they extend state through kernel primitives, never by editing kernel sources or bypassing the registry.
+• P51 (Universal Reality OS Kernel) later composes all phase capabilities over this same contract surface.
+Rationale: AD-001 (CoreGrid is the platform); Scholar Independence law; kernel-purity + dependency-boundary tests.
+Owner: P33 (kernel) + P51 (composition). Consumers: all domain runtimes.
+Blast radius: PLATFORM (architecture boundary).
+Status: PROPOSED (2026-09-03). This record does not lift the DB-gate on kernel wiring; it ratifies the boundary rules already enforced by tests.
+
+201. PLATFORM-008 — DOMAIN-LAYER ROUTE-WIRING ORDER (P07–P32)
+Decision (proposed):
+• Legacy P07–P32 domain layers (today Scholar-scoped, L3, unwired) route to live server-function surfaces in dependency order S1→S6, each behind the P08 canonical role gate (13 adopted families + documented-exempt set, p08-enforcement-surface guard).
+• A domain capability advances only when it is consumed outside its owning phase (no isolated phase completion, §98) and is wired through the canonical gate + RLS boundary — never around them.
+• The kernel↔runtime boundary of PLATFORM-010 applies to any new universal capability introduced during this wiring.
+Rationale: PROGRESS §17.1 row (P07–P32 unwired); §25 objective 3 (Scholar vertical behind enforcement); single enforcement authority (AD-001/AD-004).
+Owner: each owning phase; enforcement authority P08. Consumers: Scholar R-001 vertical surfaces.
+Blast radius: DOMAIN → PLATFORM (integration order).
+Status: PROPOSED (2026-09-03). Ratification required before the S6 route-wiring gate is declared green.

@@ -466,7 +466,7 @@ Definition of Done — a work item is DONE only when applicable: implementation 
 | Blocker | Owner | Affected phase(s) | Dependency | Impact | Resolution / next action |
 | --- | --- | --- | --- | --- | --- |
 | DB-backed runtime environment unavailable — no local tooling (psql/docker/supabase absent); the only configured database is the remote hosted Supabase project in `.env` (service-role key; live environment; human authorization required) | Engineering | 33 (validation), 02/03 (L2), 08 (RLS re-verification), S3+ | none in this sandbox | Kernel substrate + contracts authored and test-pinned but NOT_VALIDATED; loop checkpointed at the DB gate (decision 2026-09-03) | Execute `architecture/kernel-wiring-plan.md` when a DB-backed environment is provided |
-| Open canonicalization decisions §8 D1–D5/D7 require human authority before those phases (33–51) are implemented | Governance | 33–51 (implementation gates) | ADRs PLATFORM-003…007 | P33–P51 implementation cannot start safely | Record ADRs in DECISIONS.md; obtain approval; then implement |
+| Open canonicalization decisions §8 D1–D5/D7 require human authority before those phases (33–51) are implemented | Governance | 33–51 (implementation gates) | ADRs PLATFORM-003…008/010 | P33–P51 implementation cannot start safely | ADR drafts PLATFORM-003…008/010 recorded PROPOSED in DECISIONS.md (2026-09-03); obtain human approval; then implement |
 
 ---
 
@@ -480,13 +480,14 @@ Proposed ADR index (recorded in DECISIONS.md):
 | --- | --- | --- |
 | PLATFORM-001 | Platform-wide progress ledger supersedes Scholar-scoped ledger | APPROVED (this document, 2026-09-02) |
 | PLATFORM-002 | Five-level engineering maturity model (L1–L5) as official measurement | APPROVED (this document, 2026-09-02) |
-| PLATFORM-003 | Memory & knowledge canonicalization (P33/P36/P48 vs P07/P14) | PROPOSED — required before P36/P48 implementation |
-| PLATFORM-004 | Evolution lifecycle canonical owner (P32 vs P38/P47) | PROPOSED — required before P38 implementation |
-| PLATFORM-005 | Digital twin canonical owner (P16 vs P46) | PROPOSED — required before P46 implementation |
-| PLATFORM-006 | Simulation engine vs sandbox runtime split (P37 vs P41) | PROPOSED — required before P37/P41 implementation |
-| PLATFORM-007 | Security layering contract (P08/P09/P42) | PROPOSED — required before P42 implementation |
-| PLATFORM-008 | Domain-layer route-wiring order for P07–P32 | PROPOSED — S1/S6 gate |
+| PLATFORM-003 | Memory & knowledge canonicalization (P33/P36/P48 vs P07/P14) | PROPOSED — drafted in DECISIONS.md (2026-09-03, §195); required before P36/P48 implementation |
+| PLATFORM-004 | Evolution lifecycle canonical owner (P32 vs P38/P47) | PROPOSED — drafted in DECISIONS.md (2026-09-03, §196); required before P38 implementation |
+| PLATFORM-005 | Digital twin canonical owner (P16 vs P46) | PROPOSED — drafted in DECISIONS.md (2026-09-03, §197); required before P46 implementation |
+| PLATFORM-006 | Simulation engine vs sandbox runtime split (P37 vs P41) | PROPOSED — drafted in DECISIONS.md (2026-09-03, §198); required before P37/P41 implementation |
+| PLATFORM-007 | Security layering contract (P08/P09/P42) | PROPOSED — drafted in DECISIONS.md (2026-09-03, §199); required before P42 implementation |
+| PLATFORM-008 | Domain-layer route-wiring order for P07–P32 | PROPOSED — drafted in DECISIONS.md (2026-09-03, §201); S1/S6 gate |
 | PLATFORM-009 | Package identity rename `coregrid-scholar` → platform namespace | DEFERRED — requires release impact analysis |
+| PLATFORM-010 | Kernel ↔ domain-runtime boundary (P33/P51; supports all runtimes) | PROPOSED — drafted in DECISIONS.md (2026-09-03, §200); ratifies test-enforced kernel-purity/dependency rules |
 
 ---
 
@@ -604,6 +605,7 @@ Every validation row records evidence: date, scope, command/method, result.
 | 2026-09-03 | P08 no-gate-family audit + lesson-plan-ai gate | Security | reviewed the previously "no-admin-gate" families against purpose + RLS: fixed lesson-plan-ai (pure-AI generator callable by any authenticated user → now `requireStaffContext("teaching_staff")` since it spends workspace AI credits); documented exemption reasons for profile/bus-tracking/driver-portal/paystack/demo-provision/push in the enforcement-surface guard (any unclassified family now fails CI); findings queued for DB re-verify: `transport_buses` policy is school-wide (not driver-scoped); `users` SELECT visibility affects fanout push reach | full unit suite 100 files/1,969 tests green (exit 0, 108s); whole-tree typecheck 0 errors (tsc8); ESLint exit 0 on touched files (incl. pre-existing prettier debt in lesson-plan-ai auto-fixed); registry P08 note + §17.2 updated (13 ADOPTED / 6 documented-exempt) |
 | 2026-09-03 | Production build re-validation (current tree) | Verification | `vite build` after P08 batches 2–4 (school-staff gate kinds, family adoptions, lesson-plan gating, guard hardening) | PASS — built in 37.2s (client + Nitro SSR dist emitted); restores the production-build claim on the current commit |
 | 2026-09-03 | Kernel dependency-boundary guards (platform-first enforcement) | Kernel governance | `kernel-purity.test.ts` extended: kernel TS sources may import only kernel-internal specifiers (no runtime/domain/app imports); Scholar runtime may import only kernel contracts or its own runtime module set; every Scholar runtime module must consume ≥1 kernel contract — installed on CoreGrid, never standalone. Import graph verified compliant; guard now CI-enforced | unit suite 100 files/1,972 tests green (exit 0, 122s); whole-tree typecheck 0 errors (tsc9); ESLint exit 0 |
+| 2026-09-03 | §8 canonicalization ADRs drafted (PROPOSED) | Governance | DECISIONS.md §195–§201: PLATFORM-003 (memory/knowledge P36+P33/P48), PLATFORM-004 (evolution P38), PLATFORM-005 (digital twin P16/P46), PLATFORM-006 (simulation P37 + sandbox P41), PLATFORM-007 (zero-trust P08/P09/P42), PLATFORM-010 (kernel↔runtime boundary; renumbered to avoid §16 collision), PLATFORM-008 (P07–P32 route-wiring order) — each status PROPOSED, grounded in duplication-map D-clusters; PROGRESS §16 index + §15 blocker row synced | no implementation started under PROPOSED records; awaiting human ratification; registry/suite state unchanged (100 files/1,972 tests, typecheck 0) |
 | pending | Integration/contract suites | Cross-phase contracts (§9) | to be defined | per S1–S12 |
 | pending | Security / RLS / tenant isolation | P03/P08/P09 | `database/queries/rls-isolation-check.sql` + suites | per S1/S4 |
 | pending | Property/chaos/failure tests | Event fabric, workflows, idempotency | to be defined | per S1/S6 |
