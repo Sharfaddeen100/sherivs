@@ -1,12 +1,17 @@
 # COREGRID — KERNEL WIRING PLAN (S2, DB-BACKED)
 
-Status: PLAN ARTIFACT (living document) — NOT EXECUTED.
+Status: EXECUTED (2026-09-04) on dev project `nwrflbpbhyiqdptmlccm` — 31
+migrations applied via Management API, `rls-isolation-check.sql` PASS, live
+kernel-wiring verification 11/11 (substrate presence, anon deny-by-default,
+`register runtime:scholar` → proposed, CHECK constraint, event pending +
+idempotency replay). Remaining: HTTP-layer E2E of the authored server
+functions once an app runtime is pointed at this project.
 Authority: CONSTITUTION.md > REGISTRY.md > DEPENDENCY.md > BOUNDARIES.md > DECISIONS.md > PROGRESS.md
-Version: 2026-09-03
+Version: 2026-09-03 (executed 2026-09-04)
 Purpose: The exact, safety-governed sequence for wiring the authored universal
-kernel substrate and runtime contracts to a live database. Execution is
-checkpointed (§105) until a database-backed runtime is available; this plan
-makes that execution deterministic and low-risk.
+kernel substrate and runtime contracts to a live database. Execution was
+checkpointed (§105) until a database-backed runtime was provided; the plan
+made that execution deterministic and low-risk.
 
 ---
 
