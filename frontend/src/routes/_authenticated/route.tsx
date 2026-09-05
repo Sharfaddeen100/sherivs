@@ -1,4 +1,11 @@
-import { createFileRoute, Outlet, redirect, Link, useNavigate, useRouter } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  Outlet,
+  redirect,
+  Link,
+  useNavigate,
+  useRouter,
+} from "@tanstack/react-router";
 import { useEffect } from "react";
 import { refreshPushTokenIfGranted } from "@/lib/push-client";
 import { supabase } from "@/integrations/supabase/client";
@@ -12,6 +19,7 @@ import { CommandCenterMount, openCommandCenter } from "@/components/command-cent
 import { Search as SearchIcon } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { useModKeyLabel } from "@/lib/kbd";
+import { PLATFORM_NAME, SCHOLAR_RUNTIME_NAME } from "@/lib/platform";
 import { ParentBottomNav, StudentBottomNav } from "@/components/mobile-bottom-nav";
 
 export const Route = createFileRoute("/_authenticated")({
@@ -23,17 +31,21 @@ export const Route = createFileRoute("/_authenticated")({
   },
   component: AuthenticatedLayout,
   pendingComponent: () => <PortalPageSkeleton />,
-  errorComponent: ({ error, reset }) => {
-    const router = useRouter();
-    return (
-      <RouteErrorBoundary
-        error={error}
-        reset={() => { reset(); router.invalidate(); }}
-      />
-    );
-  },
+  errorComponent: AuthenticatedRouteErrorComponent,
 });
 
+function AuthenticatedRouteErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
+  const router = useRouter();
+  return (
+    <RouteErrorBoundary
+      error={error}
+      reset={() => {
+        reset();
+        router.invalidate();
+      }}
+    />
+  );
+}
 
 function AuthenticatedLayout() {
   const { profile, superAdmin, school, role, loading, signOut } = useApp();
@@ -46,7 +58,6 @@ function AuthenticatedLayout() {
     void refreshPushTokenIfGranted(profile.id);
   }, [profile?.id]);
 
-
   if (loading) {
     return <div className="min-h-dvh grid place-items-center text-muted-foreground">Loading…</div>;
   }
@@ -57,12 +68,15 @@ function AuthenticatedLayout() {
         <div className="max-w-md uos-card p-8 text-center">
           <h1 className="font-display text-xl font-bold">Account not yet linked</h1>
           <p className="mt-3 text-sm text-muted-foreground">
-            Your sign-in is valid, but your account has not been linked to a school yet.
-            A school administrator (or a CoreGrid Scholar super admin) needs to assign
-            you a role before you can open a portal.
+            Your sign-in is valid, but your account has not been linked to a school yet. A school
+            administrator (or a CoreGrid platform super admin) needs to assign you a role before you
+            can open a portal.
           </p>
           <button
-            onClick={async () => { await signOut(); navigate({ to: "/auth", replace: true }); }}
+            onClick={async () => {
+              await signOut();
+              navigate({ to: "/auth", replace: true });
+            }}
             className="mt-6 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
           >
             Sign out
@@ -92,7 +106,7 @@ function AuthenticatedLayout() {
                   </div>
                   <div className="leading-tight min-w-0">
                     <div className="font-display font-bold text-sm truncate">
-                      {school?.name ?? "CoreGrid Scholar"}
+                      {school?.name ?? `${PLATFORM_NAME} · ${SCHOLAR_RUNTIME_NAME}`}
                     </div>
                     <div className="text-[10px] uppercase tracking-widest text-muted-foreground">
                       {role ? ROLE_LABEL[role] : "Portal"}
@@ -108,7 +122,9 @@ function AuthenticatedLayout() {
                 >
                   <SearchIcon className="size-3.5" />
                   <span>Search</span>
-                  <kbd className="rounded bg-muted px-1.5 py-0.5 text-[10px] font-mono">{modKey}K</kbd>
+                  <kbd className="rounded bg-muted px-1.5 py-0.5 text-[10px] font-mono">
+                    {modKey}K
+                  </kbd>
                 </button>
                 <button
                   onClick={openCommandCenter}
@@ -120,7 +136,10 @@ function AuthenticatedLayout() {
                 <ThemeToggle className="hidden xs:inline-flex" />
                 <span className="hidden sm:inline text-muted-foreground">{displayName}</span>
                 <button
-                  onClick={async () => { await signOut(); navigate({ to: "/auth", replace: true }); }}
+                  onClick={async () => {
+                    await signOut();
+                    navigate({ to: "/auth", replace: true });
+                  }}
                   className="rounded-md border border-border px-3 py-1.5 hover:bg-accent text-sm"
                 >
                   Sign out
@@ -134,7 +153,6 @@ function AuthenticatedLayout() {
           >
             <Outlet />
           </main>
-
         </div>
         {role === "parent" && <ParentBottomNav />}
         {role === "student" && <StudentBottomNav />}

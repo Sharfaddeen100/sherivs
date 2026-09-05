@@ -4,22 +4,23 @@ import { useApp } from "@/contexts/app-context";
 import { dashboardPathForRole } from "@/lib/roles";
 import { PublicSchoolSite } from "@/components/public/site";
 import { CommandCentre } from "@/components/command-centre/command-centre";
+import { PLATFORM_NAME, SCHOLAR_RUNTIME_DESCRIPTION } from "@/lib/platform";
 
 export const Route = createFileRoute("/")({
   component: Index,
   head: () => ({
     meta: [
-      { title: "CoreGrid Command Centre — African Educational Runtime" },
+      { title: `CoreGrid Command Centre — ${SCHOLAR_RUNTIME_DESCRIPTION}` },
       {
         name: "description",
         content:
-          "The CoreGrid Command Centre: provision schools, role models, and policies across a 51-phase governed platform for African educational institutions.",
+          "The CoreGrid Command Centre — the platform operating surface. Provision institutions, roles and policies on the Scholar runtime across a 51-phase governed platform.",
       },
-      { property: "og:title", content: "CoreGrid Command Centre" },
+      { property: "og:title", content: `${PLATFORM_NAME} Command Centre` },
       {
         property: "og:description",
         content:
-          "Provision schools, roles, and policies on a 51-phase governed educational runtime.",
+          "Provision schools, roles and policies on the CoreGrid platform's Scholar runtime.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://universalschoolos.com/" },
@@ -125,11 +126,7 @@ function Index() {
   }, [school]);
 
   if (loading) {
-    return (
-      <div className="min-h-dvh grid place-items-center text-muted-foreground">
-        Loading…
-      </div>
-    );
+    return <div className="min-h-dvh grid place-items-center text-muted-foreground">Loading…</div>;
   }
 
   // Tenant context (subdomain OR ?school=slug) → render that school's public site

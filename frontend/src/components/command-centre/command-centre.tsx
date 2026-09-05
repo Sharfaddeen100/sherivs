@@ -1,34 +1,51 @@
 import { useState, type ReactNode } from "react";
+import { flexRender, getCoreRowModel, useReactTable, type ColumnDef } from "@tanstack/react-table";
 import {
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-  type ColumnDef,
-} from "@tanstack/react-table";
-import {
-  Building2, CheckCircle2, ChevronRight, Landmark, Rocket, ShieldCheck,
-  Users, AlertCircle, Layers,
+  Building2,
+  CheckCircle2,
+  ChevronRight,
+  Landmark,
+  Rocket,
+  ShieldCheck,
+  Users,
+  AlertCircle,
+  Layers,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Card, CardContent, CardDescription, CardHeader, CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import {
-  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
 import {
-  Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "@/components/ui/table";
 import {
-  createInstitution, institutionId, type InstitutionType, type OwnershipType,
+  createInstitution,
+  institutionId,
+  type InstitutionType,
+  type OwnershipType,
 } from "@/lib/institution-core";
 import { createSecurityPolicy } from "@/lib/security-policy";
 import { ROLE_LABEL, type AppRole } from "@/lib/roles";
-import { PHASE_CATALOG, PHASE_LAYERS, PHASES_TOTAL, type PhaseCatalogEntry } from "@/lib/phase-catalog";
+import {
+  PHASE_CATALOG,
+  PHASE_LAYERS,
+  PHASES_TOTAL,
+  type PhaseCatalogEntry,
+} from "@/lib/phase-catalog";
 import type { TenantId } from "@/lib/tenant-core";
 
 const DEMO_TENANT = "tenant:coregrid-demo" as TenantId;
@@ -36,7 +53,15 @@ const DEMO_AUTHOR = "user:demo-administrator";
 const NOW = new Date().toISOString();
 
 const APP_ROLES: readonly AppRole[] = [
-  "super_admin", "hq", "admin", "principal", "teacher", "bursar", "parent", "student", "driver",
+  "super_admin",
+  "hq",
+  "admin",
+  "principal",
+  "teacher",
+  "bursar",
+  "parent",
+  "student",
+  "driver",
 ] as const;
 
 type Step = "school" | "roles" | "policies" | "launch";
@@ -59,10 +84,22 @@ interface CreatedPolicy {
 }
 
 const STEP_LABELS: Record<Step, { title: string; subtitle: string }> = {
-  school: { title: "1 · Create School", subtitle: "Provision a tenant institution through Phase 25 institutional contracts." },
-  roles: { title: "2 · Create Roles", subtitle: "Define the school's role model (Phases 02 identity + 25 workforce)." },
-  policies: { title: "3 · Create Policies", subtitle: "Attach governed security policies (Phase 08 security engine)." },
-  launch: { title: "4 · Launch", subtitle: "Review the provisioned runtime and enter the workspace." },
+  school: {
+    title: "1 · Create School",
+    subtitle: "Provision a tenant institution through Phase 25 institutional contracts.",
+  },
+  roles: {
+    title: "2 · Create Roles",
+    subtitle: "Define the school's role model (Phases 02 identity + 25 workforce).",
+  },
+  policies: {
+    title: "3 · Create Policies",
+    subtitle: "Attach governed security policies (Phase 08 security engine).",
+  },
+  launch: {
+    title: "4 · Launch",
+    subtitle: "Review the provisioned runtime and enter the workspace.",
+  },
 };
 
 export function CommandCentre() {
@@ -133,7 +170,14 @@ export function CommandCentre() {
         currency: schoolForm.currency,
       },
     ]);
-    setSchoolForm((f) => ({ ...f, legalName: "", officialEmailDomain: "", region: "", stateProvince: "", lga: "" }));
+    setSchoolForm((f) => ({
+      ...f,
+      legalName: "",
+      officialEmailDomain: "",
+      region: "",
+      stateProvince: "",
+      lga: "",
+    }));
     setStep("roles");
   };
 
@@ -168,7 +212,11 @@ export function CommandCentre() {
     }
     setPolicies((prev) => [
       ...prev,
-      { name: result.policy.name, environment: policyForm.environment, ruleCount: Object.keys(result.policy.rules).length },
+      {
+        name: result.policy.name,
+        environment: policyForm.environment,
+        ruleCount: Object.keys(result.policy.rules).length,
+      },
     ]);
     setPolicyForm((f) => ({ ...f, name: "", ruleKey: "" }));
     if (step === "policies") setStep("launch");
@@ -181,7 +229,7 @@ export function CommandCentre() {
     setError(null);
     setStep("school");
   };
-  
+
   return (
     <div className="min-h-dvh bg-background">
       <header className="border-b border-border bg-card/60 backdrop-blur">
@@ -195,15 +243,15 @@ export function CommandCentre() {
                 CoreGrid Command Centre
               </h1>
               <p className="text-xs text-muted-foreground">
-                African Educational Runtime · {PHASES_TOTAL} phases · one governed platform
+                CoreGrid platform · Scholar runtime (African Education) · {PHASES_TOTAL} phases
               </p>
             </div>
           </div>
           <div className="flex items-center gap-2">
             <Badge variant="outline" className="gap-1.5">
               <span className="size-1.5 rounded-full bg-emerald-500" />
-              {PHASE_CATALOG.filter((p) => p.status !== "architecture").length}/
-              {PHASES_TOTAL} phases implemented
+              {PHASE_CATALOG.filter((p) => p.status !== "architecture").length}/{PHASES_TOTAL}{" "}
+              phases implemented
             </Badge>
             <Button variant="outline" size="sm" asChild>
               <a href="/auth">Sign in</a>
@@ -214,7 +262,13 @@ export function CommandCentre() {
 
       <main className="mx-auto max-w-7xl px-6 py-8">
         <div className="grid gap-6 lg:grid-cols-[300px_1fr]">
-          <CapabilityPanel step={step} onJump={setStep} schools={schools} roles={roles} policies={policies} />
+          <CapabilityPanel
+            step={step}
+            onJump={setStep}
+            schools={schools}
+            roles={roles}
+            policies={policies}
+          />
           <div className="space-y-6">
             <StepperHeader step={step} />
             {error ? (
@@ -223,10 +277,28 @@ export function CommandCentre() {
                 {error}
               </div>
             ) : null}
-            {step === "school" ? <SchoolStep form={schoolForm} setForm={setSchoolForm} onCreate={createSchool} /> : null}
-            {step === "roles" ? <RolesStep roles={roles} onToggle={toggleRole} onNext={() => setStep("policies")} /> : null}
-            {step === "policies" ? <PoliciesStep form={policyForm} setForm={setPolicyForm} onCreate={createPolicy} onBack={() => setStep("roles")} /> : null}
-            {step === "launch" ? <LaunchStep schools={schools} roles={roles} policies={policies} onReset={resetWorkspace} /> : null}
+            {step === "school" ? (
+              <SchoolStep form={schoolForm} setForm={setSchoolForm} onCreate={createSchool} />
+            ) : null}
+            {step === "roles" ? (
+              <RolesStep roles={roles} onToggle={toggleRole} onNext={() => setStep("policies")} />
+            ) : null}
+            {step === "policies" ? (
+              <PoliciesStep
+                form={policyForm}
+                setForm={setPolicyForm}
+                onCreate={createPolicy}
+                onBack={() => setStep("roles")}
+              />
+            ) : null}
+            {step === "launch" ? (
+              <LaunchStep
+                schools={schools}
+                roles={roles}
+                policies={policies}
+                onReset={resetWorkspace}
+              />
+            ) : null}
             <PhaseRunway />
           </div>
         </div>
@@ -257,8 +329,8 @@ function CapabilityPanel(props: {
             Workspace
           </CardTitle>
           <CardDescription className="text-xs">
-            Permission-derived surface. Only capabilities you are authorized to
-            see are exposed here.
+            Permission-derived surface. Only capabilities you are authorized to see are exposed
+            here.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-1">
@@ -308,7 +380,9 @@ function CapabilityPanel(props: {
                 {done && s !== "launch" ? (
                   <CheckCircle2 className="size-4 text-emerald-500" />
                 ) : (
-                  <ChevronRight className={`size-4 ${active ? "text-primary" : "text-muted-foreground/40"}`} />
+                  <ChevronRight
+                    className={`size-4 ${active ? "text-primary" : "text-muted-foreground/40"}`}
+                  />
                 )}
                 <span className={active ? "font-semibold text-primary" : "text-muted-foreground"}>
                   {STEP_LABELS[s].title.replace(/^\d+ · /, "")}
@@ -348,10 +422,22 @@ function SchoolStep(props: {
 }) {
   const { form, setForm, onCreate } = props;
   const institutionTypes: InstitutionType[] = [
-    "nursery", "primary", "secondary", "senior_secondary", "sixth_form", "technical",
+    "nursery",
+    "primary",
+    "secondary",
+    "senior_secondary",
+    "sixth_form",
+    "technical",
   ];
   const ownershipTypes: OwnershipType[] = [
-    "private", "public", "government", "faith_based", "community", "board_governed", "network", "custom",
+    "private",
+    "public",
+    "government",
+    "faith_based",
+    "community",
+    "board_governed",
+    "network",
+    "custom",
   ];
   const set = (key: keyof typeof form, value: string) =>
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -385,7 +471,9 @@ function SchoolStep(props: {
             </SelectTrigger>
             <SelectContent>
               {institutionTypes.map((t) => (
-                <SelectItem key={t} value={t}>{t}</SelectItem>
+                <SelectItem key={t} value={t}>
+                  {t}
+                </SelectItem>
               ))}
             </SelectContent>
           </Select>
@@ -398,18 +486,29 @@ function SchoolStep(props: {
             </SelectTrigger>
             <SelectContent>
               {ownershipTypes.map((t) => (
-                <SelectItem key={t} value={t}>{t}</SelectItem>
+                <SelectItem key={t} value={t}>
+                  {t}
+                </SelectItem>
               ))}
             </SelectContent>
           </Select>
         </div>
         <div className="space-y-1.5">
           <Label htmlFor="country">Country *</Label>
-          <Input id="country" value={form.country} onChange={(e) => set("country", e.target.value)} />
+          <Input
+            id="country"
+            value={form.country}
+            onChange={(e) => set("country", e.target.value)}
+          />
         </div>
         <div className="space-y-1.5">
           <Label htmlFor="currency">Currency *</Label>
-          <Input id="currency" value={form.currency} onChange={(e) => set("currency", e.target.value)} placeholder="NGN" />
+          <Input
+            id="currency"
+            value={form.currency}
+            onChange={(e) => set("currency", e.target.value)}
+            placeholder="NGN"
+          />
         </div>
         <div className="space-y-1.5 sm:col-span-2">
           <Label htmlFor="emailDomain">Official email domain(s) *</Label>
@@ -422,15 +521,30 @@ function SchoolStep(props: {
         </div>
         <div className="space-y-1.5">
           <Label htmlFor="region">Region</Label>
-          <Input id="region" value={form.region} onChange={(e) => set("region", e.target.value)} placeholder="e.g. Africa / Lagos" />
+          <Input
+            id="region"
+            value={form.region}
+            onChange={(e) => set("region", e.target.value)}
+            placeholder="e.g. Africa / Lagos"
+          />
         </div>
         <div className="space-y-1.5">
           <Label htmlFor="state">State / Province</Label>
-          <Input id="state" value={form.stateProvince} onChange={(e) => set("stateProvince", e.target.value)} placeholder="e.g. Lagos" />
+          <Input
+            id="state"
+            value={form.stateProvince}
+            onChange={(e) => set("stateProvince", e.target.value)}
+            placeholder="e.g. Lagos"
+          />
         </div>
         <div className="space-y-1.5">
           <Label htmlFor="lga">Local Government Area</Label>
-          <Input id="lga" value={form.lga} onChange={(e) => set("lga", e.target.value)} placeholder="e.g. Ikeja" />
+          <Input
+            id="lga"
+            value={form.lga}
+            onChange={(e) => set("lga", e.target.value)}
+            placeholder="e.g. Ikeja"
+          />
         </div>
         <div className="flex items-end">
           <Button onClick={onCreate} className="w-full">
@@ -457,8 +571,8 @@ function RolesStep(props: {
           Role model
         </CardTitle>
         <CardDescription>
-          Select the roles this school needs. Roles are derived from the Phase 02 identity model
-          and Phase 25 workforce contracts.
+          Select the roles this school needs. Roles are derived from the Phase 02 identity model and
+          Phase 25 workforce contracts.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -545,7 +659,9 @@ function PoliciesStep(props: {
             </SelectTrigger>
             <SelectContent>
               {(["production", "staging", "test", "development"] as const).map((env) => (
-                <SelectItem key={env} value={env}>{env}</SelectItem>
+                <SelectItem key={env} value={env}>
+                  {env}
+                </SelectItem>
               ))}
             </SelectContent>
           </Select>
@@ -563,9 +679,7 @@ function PoliciesStep(props: {
           <Label>Effect</Label>
           <Select
             value={form.effect}
-            onValueChange={(v) =>
-              setForm((f) => ({ ...f, effect: v as typeof f.effect }))
-            }
+            onValueChange={(v) => setForm((f) => ({ ...f, effect: v as typeof f.effect }))}
           >
             <SelectTrigger>
               <SelectValue placeholder="Select effect" />
@@ -577,7 +691,9 @@ function PoliciesStep(props: {
           </Select>
         </div>
         <div className="flex items-center gap-2 sm:col-span-2">
-          <Button variant="outline" onClick={onBack}>Back</Button>
+          <Button variant="outline" onClick={onBack}>
+            Back
+          </Button>
           <Button onClick={onCreate}>Add policy</Button>
         </div>
       </CardContent>
@@ -600,18 +716,32 @@ function LaunchStep(props: {
           Runtime provisioned
         </CardTitle>
         <CardDescription>
-          Your African Educational Runtime is ready. The school, its role model, and its policy
-          set were all validated through the phase contracts.
+          The Scholar runtime is provisioned on CoreGrid. The school, roles and policy set were
+          validated through the phase contracts.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="grid gap-3 sm:grid-cols-3">
-          <SummaryCard title="Schools" icon={<Landmark className="size-4" />} rows={schools.map((s) => `${s.name} · ${s.country}`)} />
-          <SummaryCard title="Roles" icon={<Users className="size-4" />} rows={roles.map((r) => r.label)} />
-          <SummaryCard title="Policies" icon={<ShieldCheck className="size-4" />} rows={policies.map((p) => `${p.name} (${p.environment})`)} />
+          <SummaryCard
+            title="Schools"
+            icon={<Landmark className="size-4" />}
+            rows={schools.map((s) => `${s.name} · ${s.country}`)}
+          />
+          <SummaryCard
+            title="Roles"
+            icon={<Users className="size-4" />}
+            rows={roles.map((r) => r.label)}
+          />
+          <SummaryCard
+            title="Policies"
+            icon={<ShieldCheck className="size-4" />}
+            rows={policies.map((p) => `${p.name} (${p.environment})`)}
+          />
         </div>
         <div className="flex flex-wrap gap-2 pt-2">
-          <Button variant="outline" onClick={onReset}>Provision another school</Button>
+          <Button variant="outline" onClick={onReset}>
+            Provision another school
+          </Button>
           <Button asChild>
             <a href="/admin/dashboard">Enter school workspace</a>
           </Button>
@@ -635,7 +765,9 @@ function SummaryCard(props: { title: string; icon: ReactNode; rows: string[] }) 
       {rows.length > 0 ? (
         <ul className="mt-2 space-y-1 text-sm text-muted-foreground">
           {rows.map((r) => (
-            <li key={r} className="truncate">{r}</li>
+            <li key={r} className="truncate">
+              {r}
+            </li>
           ))}
         </ul>
       ) : (
@@ -646,15 +778,40 @@ function SummaryCard(props: { title: string; icon: ReactNode; rows: string[] }) 
 }
 
 const RUNWAY_COLUMNS: ColumnDef<PhaseCatalogEntry>[] = [
-  { accessorKey: "phase", header: "Phase", cell: (c) => <span className="font-mono text-xs">#{String(c.getValue())}</span> },
-  { accessorKey: "name", header: "Capability", cell: (c) => <span className="font-semibold">{String(c.getValue())}</span> },
+  {
+    accessorKey: "phase",
+    header: "Phase",
+    cell: (c) => <span className="font-mono text-xs">#{String(c.getValue())}</span>,
+  },
+  {
+    accessorKey: "name",
+    header: "Capability",
+    cell: (c) => <span className="font-semibold">{String(c.getValue())}</span>,
+  },
   {
     accessorKey: "layer",
     header: "Layer",
     cell: (c) => {
       const v = String(c.getValue());
-      const color = v === "Foundations" ? "bg-emerald-500/10 text-emerald-600" : v === "Intelligence" ? "bg-violet-500/10 text-violet-600" : v === "Runtime" ? "bg-sky-500/10 text-sky-600" : v === "Commerce" ? "bg-amber-500/10 text-amber-600" : v === "Universal" ? "bg-indigo-500/10 text-indigo-600" : v === "Civilization" ? "bg-teal-500/10 text-teal-600" : "bg-rose-500/10 text-rose-600";
-      return <Badge variant="secondary" className={`border-0 ${color}`}>{v}</Badge>;
+      const color =
+        v === "Foundations"
+          ? "bg-emerald-500/10 text-emerald-600"
+          : v === "Intelligence"
+            ? "bg-violet-500/10 text-violet-600"
+            : v === "Runtime"
+              ? "bg-sky-500/10 text-sky-600"
+              : v === "Commerce"
+                ? "bg-amber-500/10 text-amber-600"
+                : v === "Universal"
+                  ? "bg-indigo-500/10 text-indigo-600"
+                  : v === "Civilization"
+                    ? "bg-teal-500/10 text-teal-600"
+                    : "bg-rose-500/10 text-rose-600";
+      return (
+        <Badge variant="secondary" className={`border-0 ${color}`}>
+          {v}
+        </Badge>
+      );
     },
   },
   {
@@ -670,7 +827,12 @@ const RUNWAY_COLUMNS: ColumnDef<PhaseCatalogEntry>[] = [
   {
     accessorKey: "testCount",
     header: "Tests",
-    cell: (c) => (c.getValue() ? <span className="font-mono text-xs">{String(c.getValue())}</span> : <span className="text-xs text-muted-foreground">—</span>),
+    cell: (c) =>
+      c.getValue() ? (
+        <span className="font-mono text-xs">{String(c.getValue())}</span>
+      ) : (
+        <span className="text-xs text-muted-foreground">—</span>
+      ),
   },
   {
     id: "status",
@@ -704,10 +866,9 @@ function PhaseRunway() {
           {PHASES_TOTAL}-phase architecture runway
         </CardTitle>
         <CardDescription className="text-xs">
-          The complete CoreGrid build sequence — Phases 01–32 have implemented,
-          tested domain contracts (with explicit measured test suites);
-          Phases 33–51 are architecture-defined (documents complete, awaiting
-          domain-contract implementation).
+          The complete CoreGrid build sequence — Phases 01–32 have implemented, tested domain
+          contracts (with explicit measured test suites); Phases 33–51 are architecture-defined
+          (documents complete, awaiting domain-contract implementation).
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -717,7 +878,9 @@ function PhaseRunway() {
               <TableRow key={hg.id}>
                 {hg.headers.map((header) => (
                   <TableHead key={header.id}>
-                    {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(header.column.columnDef.header, header.getContext())}
                   </TableHead>
                 ))}
               </TableRow>
@@ -739,8 +902,3 @@ function PhaseRunway() {
     </Card>
   );
 }
-
-
-
-
-

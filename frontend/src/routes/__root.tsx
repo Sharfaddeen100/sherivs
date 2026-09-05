@@ -10,6 +10,7 @@ import { type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { AppProvider } from "@/contexts/app-context";
+import { PLATFORM_PAGE_DESCRIPTION, PLATFORM_PAGE_TITLE } from "@/lib/platform";
 import { Toaster } from "@/components/ui/sonner";
 import { RouteProgressBar } from "@/components/route-progress-bar";
 import { THEME_BOOTSTRAP_SCRIPT } from "@/lib/theme";
@@ -55,7 +56,9 @@ function ErrorComponent({ error, reset }: { error: Error; reset?: () => void }) 
             </button>
           )}
           <button
-            onClick={() => { if (typeof window !== "undefined") window.location.reload(); }}
+            onClick={() => {
+              if (typeof window !== "undefined") window.location.reload();
+            }}
             className="rounded-md border border-border px-4 py-2 text-sm font-semibold hover:bg-accent"
           >
             Reload page
@@ -71,17 +74,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "CoreGrid Scholar" },
-      {
-        name: "description",
-        content:
-          "CoreGrid Scholar — a multi-tenant school management platform for admissions, academics, attendance, fees, and parent engagement.",
-      },
-      { property: "og:title", content: "CoreGrid Scholar" },
-      { name: "twitter:title", content: "CoreGrid Scholar" },
-      { name: "description", content: "A multi-tenant School Management SaaS for comprehensive school administration." },
-      { property: "og:description", content: "A multi-tenant School Management SaaS for comprehensive school administration." },
-      { name: "twitter:description", content: "A multi-tenant School Management SaaS for comprehensive school administration." },
+      { title: PLATFORM_PAGE_TITLE },
+      { name: "description", content: PLATFORM_PAGE_DESCRIPTION },
+      { property: "og:title", content: PLATFORM_PAGE_TITLE },
+      { name: "twitter:title", content: PLATFORM_PAGE_TITLE },
+      { name: "description", content: PLATFORM_PAGE_DESCRIPTION },
+      { property: "og:description", content: PLATFORM_PAGE_DESCRIPTION },
+      { name: "twitter:description", content: PLATFORM_PAGE_DESCRIPTION },
       { property: "og:image", content: "https://universalschoolos.com/og-image.png" },
       { name: "twitter:image", content: "https://universalschoolos.com/og-image.png" },
       { name: "twitter:card", content: "summary_large_image" },

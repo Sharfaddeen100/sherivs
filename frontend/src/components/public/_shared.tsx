@@ -8,15 +8,8 @@
  */
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import {
-  Menu,
-  X,
-  Facebook,
-  Twitter,
-  Instagram,
-  Youtube,
-  Linkedin,
-} from "lucide-react";
+import { PLATFORM_NAME, SCHOLAR_RUNTIME_NAME } from "@/lib/platform";
+import { Menu, X, Facebook, Twitter, Instagram, Youtube, Linkedin } from "lucide-react";
 import type { SchoolRow } from "@/contexts/app-context";
 
 /* ------------------------------------------------------------------ */
@@ -199,7 +192,11 @@ const NAV_SECTIONS: Array<{ id: string; label: string; flag: keyof SchoolRow }> 
   { id: "academics", label: "Academics", flag: "section_programs_enabled" as keyof SchoolRow },
   { id: "facilities", label: "Facilities", flag: "section_facilities_enabled" as keyof SchoolRow },
   { id: "staff", label: "Staff", flag: "section_faculty_enabled" as keyof SchoolRow },
-  { id: "admissions-cta", label: "Admissions", flag: "section_admissions_enabled" as keyof SchoolRow },
+  {
+    id: "admissions-cta",
+    label: "Admissions",
+    flag: "section_admissions_enabled" as keyof SchoolRow,
+  },
   { id: "news", label: "News", flag: "section_news_enabled" as keyof SchoolRow },
   { id: "blog", label: "Blog", flag: "section_blog_enabled" as keyof SchoolRow },
   { id: "contact", label: "Contact", flag: "section_contact_enabled" as keyof SchoolRow },
@@ -429,9 +426,7 @@ export function Footer({ school, socials }: { school: SchoolRow; socials: Social
             )}
           </p>
           <SocialRow links={socials} className="mt-5" />
-          <p className="mt-6 text-[10px] uppercase tracking-widest text-white/30">
-            School portal
-          </p>
+          <p className="mt-6 text-[10px] uppercase tracking-widest text-white/30">School portal</p>
         </div>
         <div>
           <div className="mb-4 text-[10px] font-semibold uppercase tracking-[0.25em] text-white/40">
@@ -458,8 +453,8 @@ export function Footer({ school, socials }: { school: SchoolRow; socials: Social
             Login to Portal
           </Link>
           <p className="mt-3 text-xs leading-relaxed text-white/40">
-            Students, teachers, parents, and staff all use the same login. You
-            will be directed to your personal portal automatically.
+            Students, teachers, parents, and staff all use the same login. You will be directed to
+            your personal portal automatically.
           </p>
           <Link
             to="/admissions"
@@ -477,9 +472,7 @@ export function Footer({ school, socials }: { school: SchoolRow; socials: Social
             {school.email ? <li>{school.email as string}</li> : null}
             {school.address ? <li>{school.address as string}</li> : null}
             {!school.phone && !school.email && !school.address && (
-              <li className="italic text-white/30">
-                [ ADD CONTACT DETAILS IN SETTINGS ]
-              </li>
+              <li className="italic text-white/30">[ ADD CONTACT DETAILS IN SETTINGS ]</li>
             )}
           </ul>
         </div>
@@ -493,7 +486,9 @@ export function Footer({ school, socials }: { school: SchoolRow; socials: Social
           {school.section_rules_enabled !== false && <span>School Rules</span>}
           <span>Terms</span>
         </div>
-        <div>Built with CoreGrid Scholar</div>
+        <div>
+          Built on {PLATFORM_NAME} · {SCHOLAR_RUNTIME_NAME} runtime
+        </div>
       </div>
     </footer>
   );

@@ -4,9 +4,11 @@ import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
 import { useApp } from "@/contexts/app-context";
 import { dashboardPathForRole } from "@/lib/roles";
+import { PLATFORM_NAME, SCHOLAR_RUNTIME_NAME } from "@/lib/platform";
 import { provisionDemoEnterprise, DEMO_CREDENTIALS } from "@/lib/demo-provision.functions";
 
-const ADMIN_DEMO = DEMO_CREDENTIALS.find((account) => account.role === "admin") ?? DEMO_CREDENTIALS[0];
+const ADMIN_DEMO =
+  DEMO_CREDENTIALS.find((account) => account.role === "admin") ?? DEMO_CREDENTIALS[0];
 
 export const Route = createFileRoute("/auth")({
   ssr: false,
@@ -126,9 +128,9 @@ function AuthPage() {
           body: JSON.stringify({ event: "password_reset_requested", email }),
         });
         if (auditRes.status === 429) {
-          const body = (await auditRes.json().catch(() => null)) as
-            | { retry_after_ms?: number }
-            | null;
+          const body = (await auditRes.json().catch(() => null)) as {
+            retry_after_ms?: number;
+          } | null;
           const { formatDuration } = await import("@/lib/auth-helpers");
           throw new Error(
             `Too many reset requests. Please try again in ${formatDuration(body?.retry_after_ms ?? 60_000)}.`,
@@ -159,7 +161,15 @@ function AuthPage() {
           {school && (
             <div className="mb-4 flex items-center gap-3">
               {school.logo_url ? (
-                <img src={school.logo_url} alt="" width={40} height={40} loading="lazy" decoding="async" className="size-10 rounded-md object-cover" />
+                <img
+                  src={school.logo_url}
+                  alt=""
+                  width={40}
+                  height={40}
+                  loading="lazy"
+                  decoding="async"
+                  className="size-10 rounded-md object-cover"
+                />
               ) : (
                 <div className="size-10 rounded-md uos-tenant-bg grid place-items-center font-bold">
                   {(school.name?.[0] ?? "U") as string}
@@ -177,7 +187,7 @@ function AuthPage() {
           <p className="mt-1 text-sm text-muted-foreground">
             {mode === "forgot"
               ? "Enter the email tied to your account and we'll send you a reset link."
-              : "CoreGrid Scholar portal access"}
+              : `${PLATFORM_NAME} portal access — ${SCHOLAR_RUNTIME_NAME} runtime`}
           </p>
         </div>
 
@@ -264,8 +274,8 @@ function AuthPage() {
               <span>★</span> Enterprise demo
             </div>
             <p className="mt-1 text-xs text-muted-foreground">
-              One click provisions an Enterprise-tier school so every locked
-              feature (Expenses, Digital Twin, CoreGrid Intelligence, etc.) unlocks.
+              One click provisions an Enterprise-tier school so every locked feature (Expenses,
+              Digital Twin, CoreGrid Intelligence, etc.) unlocks.
             </p>
             <button
               type="button"
@@ -276,13 +286,20 @@ function AuthPage() {
               {demoBusy ? "Provisioning…" : "Sign in as Enterprise demo"}
             </button>
             <div className="mt-3 space-y-0.5 text-[11px] text-muted-foreground">
-              <div><span className="text-foreground">Email:</span> {ADMIN_DEMO.email}</div>
-              <div><span className="text-foreground">Password:</span> {ADMIN_DEMO.password}</div>
+              <div>
+                <span className="text-foreground">Email:</span> {ADMIN_DEMO.email}
+              </div>
+              <div>
+                <span className="text-foreground">Password:</span> {ADMIN_DEMO.password}
+              </div>
               <details className="mt-2">
                 <summary className="cursor-pointer text-foreground">Show all role logins</summary>
                 <div className="mt-2 grid gap-1">
                   {DEMO_CREDENTIALS.map((account) => (
-                    <div key={account.email} className="rounded-md border border-border/60 px-2 py-1">
+                    <div
+                      key={account.email}
+                      className="rounded-md border border-border/60 px-2 py-1"
+                    >
                       <div className="font-medium text-foreground">{account.label}</div>
                       <div>{account.email}</div>
                     </div>
