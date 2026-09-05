@@ -626,6 +626,8 @@ Every validation row records evidence: date, scope, command/method, result.
 
 
 
+| 2026-09-04 | Phase-04 Cluster C built — structure: cohorts/classes/streams/flexibility/graph (§22–25) | Scholar runtime | `scholar/cohort.ts` (§22: intake/cohort/class/stream/group/house/tutorial/practical/exam/custom containers; unique ids, acyclic parent tree, descendants). `scholar/class.ts` (§23: identity/level/programme/period/campus/room/teacher assignments/subjects/policies with reference-index validation). `scholar/stream.ts` (§24: science/arts/commercial/technical/vocational/agricultural/custom vocabulary — config, not defaults). `scholar/class-flexibility.ts` (§25: learner in different groups per activity; one-learner-one-group-per-activity invariant). `scholar/structure-graph.ts` (C5: structural edges projected onto cg_relationship via declared Scholar ontology relations only — offers/enrolls/teaches identity, belongs_to resolved by source/target types (learner→group=enrolls, program→group=composes), manifest type-constraint enforcement; no invented edges) | 9 scholar suites green (70 tests — Cluster C adds 13); whole-tree typecheck 0; ESLint exit 0. Cluster C complete: C1✓ C2✓ C3✓ C4✓ C5✓ → Cluster B (participation: student-context/staff-context/workload/student-groups/guardians over cg_identity) next |
+
 | pending | Integration/contract suites | Cross-phase contracts (§9) | to be defined | per S1–S12 |
 | pending | Security / RLS / tenant isolation | P03/P08/P09 | `database/queries/rls-isolation-check.sql` + suites | per S1/S4 |
 | pending | Property/chaos/failure tests | Event fabric, workflows, idempotency | to be defined | per S1/S6 |
