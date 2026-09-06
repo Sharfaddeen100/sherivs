@@ -20,6 +20,13 @@ import { PHASE_CATALOG } from "@/lib/phase-catalog";
 const ROOT = fileURLToPath(new URL("../..", import.meta.url));
 const archDir = join(ROOT, "architecture");
 
+/**
+ * Non-phase-spec planning/companion docs that may live beside the 51 phase
+ * specs. A planning doc MUST be registered here — unregistered companions
+ * fail the 51-phase invariant below.
+ */
+const PHASE_DOC_COMPANIONS = new Set(["phase-04-runtime-build-map.md"]);
+
 function trackedFiles(): string[] {
   return execFileSync("git", ["ls-files"], { encoding: "utf8", cwd: ROOT })
     .split("\n")
@@ -29,8 +36,15 @@ function trackedFiles(): string[] {
 
 describe("Phase 01 — phase document integrity", () => {
   it("registers exactly 51 phase documents", () => {
-    const docs = readdirSync(archDir).filter((f) => /^phase-\d{2}-.*\.md$/.test(f));
+    const docs = readdirSync(archDir).filter(
+      (f) => /^phase-\d{2}-.*\.md$/.test(f) && !PHASE_DOC_COMPANIONS.has(f),
+    );
     expect(docs.length).toBe(51);
+    // Every registered companion must actually exist (registration is enforced).
+    const present = new Set(readdirSync(archDir));
+    for (const companion of PHASE_DOC_COMPANIONS) {
+      expect(present.has(companion), `${companion} is registered as a companion`).toBe(true);
+    }
   });
 
   it("registry.json exists, parses, and registers phases 01–51 in order", () => {

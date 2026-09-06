@@ -159,8 +159,8 @@ Measured state of the CoreGrid platform as a whole. Every figure has evidence; n
 | Frontend phase catalog | 51 entries, 7 layers | 2026-09-02 | `frontend/src/lib/phase-catalog.ts`; `tests/unit/phase-catalog.test.ts` 6/6 |
 | Domain-layer library modules | 186 `.ts` files in `frontend/src/lib` | 2026-09-02 | directory inventory |
 | Domain phase modules (07–32) | unit-tested module sets per phase (see §11) | 2026-08-30 | PROGRESS rows / module prefixes |
-| Unit test files | 87 files in `tests/unit` | 2026-09-02 | directory inventory |
-| Last full unit-suite pass | 1,844 tests / 87 files | 2026-09-02 | `vitest run` full suite (after 51-phase catalog change); catalog test 6/6 |
+| Unit test files | 128 files in `tests/unit` | 2026-09-04 | directory inventory (incl. 27 Scholar suites) |
+| Last full unit-suite pass | 2,239 tests / 128 files | 2026-09-04 | `vitest run` full suite (128 files, incl. 27 Scholar suites + completion/assignment suites); catalog test 6/6 |
 | Typecheck | 0 errors | 2026-09-02 | `tsc --noEmit` detached run (0-byte output) |
 | Production build | passed (production build + `vite preview` verified) | 2026-08-30 | Command Centre verification session |
 | Command Centre surface | `/` route live; provision → roles → policy → launch verified | 2026-08-30 | Playwright/Chromium flow |
@@ -521,7 +521,7 @@ Proposed ADR index (recorded in DECISIONS.md):
 | Item | Impact | Plan |
 | --- | --- | --- |
 | No staging/production deployment pipeline | L5 unmet across all phases | After S6 vertical reaches L4 |
-| Full-suite baselines | — | 2026-09-02: 1,844 tests / 87 files; 2026-09-03 (current): 1,953 tests / 99 files green, typecheck 0 |
+| Full-suite baselines | — | 2026-09-02: 1,844 tests / 87 files; 2026-09-04 (current): 2,239 tests / 128 files green (incl. 27 Scholar suites), typecheck 0 |
 | Observability (logs/metrics/traces) only in domain modules | Live telemetry absent | S1/S6 with P05/P14 |
 
 ---
@@ -530,7 +530,7 @@ Proposed ADR index (recorded in DECISIONS.md):
 
 - P0 — **BLOCKED (DB-gated):** execute `architecture/kernel-wiring-plan.md` (migration validation → `register-runtime` → event/entity/relationship/observation recording → S3) once a database-backed environment is provided.
 - P1 — **BLOCKED (DB-gated):** P08 full enforcement surface + RLS re-verification; P02/P03 universal L2 models.
-- P2 — **ACTIVE (non-DB mode):** keep ledger/registry/governance accurate and the whole tree verified (1,953 tests / 99 files; typecheck 0); targeted quality gates on loop-touched artifacts.
+- P2 — **ACTIVE (non-DB mode):** keep ledger/registry/governance accurate and the whole tree verified (2,239 tests / 128 files; typecheck 0); targeted quality gates on loop-touched artifacts.
 - P3 — Canonicalization ADRs (PLATFORM-003…008) remain required before any P33–P51 domain implementation (unchanged).
 
 ---
@@ -656,6 +656,8 @@ Every validation row records evidence: date, scope, command/method, result.
 
 | 2026-09-04 | Phase-04 authoring scope CLOSE-OUT — build map 79/79 artifacts + completion suite + matrix (§184–199, O9) | Phase 04 completion | Final missing artifact `scholar/assignment.ts` built (§37 assignment engine: teacher/student/class/room/subject/equipment/supervisor assignments with unique-id + window-conflict detection; optimisation boundary = P12 §191). `scholar-completion.test.ts` added (§199 standard: unfamiliar 'community guild' institution configures itself end-to-end — build → validate → simulate non-destructive → govern (preview/auth/audit) → blueprint version). `architecture/phase-04-runtime-build-map.md` §20 Completion Matrix appended mapping every remaining work item to its OWNING phase/surface | FULL Scholar regression 27 files / 259 tests passing; whole-tree typecheck 0; ESLint 0; config wiring live DB verification 7/7 (unchanged). Phase-04 authoring: 79/79 artifacts, all clusters + F2 + O-suite implemented and unit-verified. Remaining operational items are tracked as OTHER-phase/surface work (P08 server-surface expansion + app-runtime HTTP E2E, P24 dashboard migration, P12 consumption, control-plane runtime activation (human authority), CI full-suite merge) — not Phase-04 authoring debt |
 
+| 2026-09-04 | FULL unit-suite merge — 27 Scholar suites folded into the whole-tree baseline | CI/verification | Full `vitest run` over all 128 `tests/unit` files (incl. every scholar-*.test.ts: clusters A–O, wiring-adjacent assignment/completion, simulation, property). Pre-merge guard fix: Phase-01 doc-integrity suite now uses an explicit PHASE_DOC_COMPANIONS allowlist (architecture/phase-04-runtime-build-map.md is a registered planning doc beside the 51 phase specs — unregistered companions still fail CI) | FULL CLEAN PASS — 128 files / 2,239 tests green (previously 100 files / 1,984); whole-tree typecheck 0. §5/§24/baseline figures refreshed to 2,239/128. Remaining work stays mapped to other phases/surfaces (P08 surface expansion + app-runtime HTTP E2E, P24 dashboard migration, P12 consumption, control-plane runtime activation, CI packaging) |
+
 | pending | Integration/contract suites | Cross-phase contracts (§9) | to be defined | per S1–S12 |
 | pending | Security / RLS / tenant isolation | P03/P08/P09 | `database/queries/rls-isolation-check.sql` + suites | per S1/S4 |
 | pending | Property/chaos/failure tests | Event fabric, workflows, idempotency | to be defined | per S1/S6 |
@@ -757,7 +759,7 @@ Measured status (evidence in §5 and §20):
 | Domain-layer implementation | P02–P06 IMPLEMENTED (audit pending); P07–P32 IMPLEMENTING (L3 domain layers, unit-tested, unwired) |
 | Architecture-only phases | P33–P51 ARCHITECTURE_DEFINED |
 | Live surfaces | Command Centre `/` (verified), Scholar role dashboards, API routes |
-| Tests | 1,844 tests / 87 files passing (2026-09-02); catalog test 6/6 |
+| Tests | 2,239 tests / 128 files passing (2026-09-04, incl. 27 Scholar suites); catalog test 6/6 |
 | Typecheck | 0 errors (2026-09-02) |
 | Highest maturity reached | L4 partial on P19/Command Centre and P02–P06/legacy surfaces; no phase at L5 |
 | Production readiness | not satisfied (checklist §21) |
