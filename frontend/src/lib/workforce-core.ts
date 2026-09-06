@@ -28,6 +28,16 @@
  * membership primitives; it never duplicates them (AGENTS.md 65).
  */
 
+/**
+ * ECOSYSTEM REFRAME (platform amendment, §0): the Scholar-flavored vocabulary
+ * below (institution, staff, teacher) is legacy R-001 consumption of CoreGrid
+ * Phase 25. The authoritative DOMAIN-FREE contracts live in
+ * `frontend/src/lib/onboarding/workforce-lifecycle.ts` (organization
+ * membership lifecycle, role change, transfer, SoD, offboarding); any org
+ * type and any future runtime consume those. This file is superseded for new
+ * work and kept only while R-001 UI still references it.
+ */
+
 import type { TenantId } from "./tenant-core";
 import type { InstitutionId, CampusId, ShiftId } from "./institution-core";
 
@@ -124,10 +134,12 @@ export interface CreateWorkforceRoleInput {
 }
 
 export type CreateWorkforceRoleResult =
-  | { ok: true; role: WorkforceRole }
-  | { ok: false; error: string };
+  { ok: true; role: WorkforceRole } | { ok: false; error: string };
 
-export function createWorkforceRole(input: CreateWorkforceRoleInput, now: string = new Date().toISOString()): CreateWorkforceRoleResult {
+export function createWorkforceRole(
+  input: CreateWorkforceRoleInput,
+  now: string = new Date().toISOString(),
+): CreateWorkforceRoleResult {
   const key = input.key.trim().toLowerCase();
   if (key === "") {
     return { ok: false, error: "Role key is required" };
@@ -174,7 +186,10 @@ export function createWorkforceRole(input: CreateWorkforceRoleInput, now: string
  * the explicit parent chain. Inheritance must be explicit.
  * ────────────────────────────────────────────────────────────*/
 
-export function resolveRoleInheritance(role: WorkforceRole, roleById: Map<WorkforceRoleId, WorkforceRole>): {
+export function resolveRoleInheritance(
+  role: WorkforceRole,
+  roleById: Map<WorkforceRoleId, WorkforceRole>,
+): {
   capabilities: string[];
   permissions: string[];
   policyRefs: string[];
@@ -207,10 +222,7 @@ export function resolveRoleInheritance(role: WorkforceRole, roleById: Map<Workfo
  * ────────────────────────────────────────────────────────────*/
 
 export type RoleConflictType =
-  | "conflicting_permissions"
-  | "incompatible_duties"
-  | "excessive_privilege"
-  | "separation_of_duty";
+  "conflicting_permissions" | "incompatible_duties" | "excessive_privilege" | "separation_of_duty";
 
 export interface RoleConflict {
   type: RoleConflictType;
@@ -328,7 +340,10 @@ export interface CreateWorkforceContextInput {
   effectiveTo?: string | null;
 }
 
-export function createWorkforceContext(input: CreateWorkforceContextInput, now: string = new Date().toISOString()): WorkforceContext {
+export function createWorkforceContext(
+  input: CreateWorkforceContextInput,
+  now: string = new Date().toISOString(),
+): WorkforceContext {
   return {
     id: input.id,
     tenantId: input.tenantId,
@@ -349,7 +364,10 @@ export function createWorkforceContext(input: CreateWorkforceContextInput, now: 
 }
 
 /** Is the context currently effective for the given instant? */
-export function isContextEffective(ctx: WorkforceContext, at: string = new Date().toISOString()): boolean {
+export function isContextEffective(
+  ctx: WorkforceContext,
+  at: string = new Date().toISOString(),
+): boolean {
   if (!ctx.isActive) return false;
   if (at < ctx.effectiveFrom) return false;
   if (ctx.effectiveTo !== null && at > ctx.effectiveTo) return false;
@@ -447,7 +465,9 @@ export function grantJustInTimeAccess(input: {
   if (input.durationMinutes <= 0 || input.durationMinutes > 1440) {
     return { ok: false, error: "Duration must be between 1 and 1440 minutes" };
   }
-  const expiresAt = new Date(new Date(now).getTime() + input.durationMinutes * 60_000).toISOString();
+  const expiresAt = new Date(
+    new Date(now).getTime() + input.durationMinutes * 60_000,
+  ).toISOString();
   return {
     ok: true,
     access: {
@@ -465,11 +485,17 @@ export function grantJustInTimeAccess(input: {
   };
 }
 
-export function revokeJustInTimeAccess(access: JustInTimeAccess, now: string = new Date().toISOString()): JustInTimeAccess {
+export function revokeJustInTimeAccess(
+  access: JustInTimeAccess,
+  now: string = new Date().toISOString(),
+): JustInTimeAccess {
   return { ...access, revokedAt: now };
 }
 
-export function isJustInTimeAccessActive(access: JustInTimeAccess, now: string = new Date().toISOString()): boolean {
+export function isJustInTimeAccessActive(
+  access: JustInTimeAccess,
+  now: string = new Date().toISOString(),
+): boolean {
   if (access.revokedAt !== null) return false;
   return now <= access.expiresAt;
 }
@@ -501,7 +527,9 @@ export const STAFF_LIFECYCLE_STATES: readonly StaffLifecycleState[] = [
   "ARCHIVED",
 ] as const;
 
-const STAFF_LIFECYCLE_TRANSITIONS: Readonly<Record<StaffLifecycleState, readonly StaffLifecycleState[]>> = {
+const STAFF_LIFECYCLE_TRANSITIONS: Readonly<
+  Record<StaffLifecycleState, readonly StaffLifecycleState[]>
+> = {
   INVITED: ["ACTIVATING", "DEACTIVATED"],
   ACTIVATING: ["ACTIVE", "SUSPENDED", "DEACTIVATED"],
   ACTIVE: ["SUSPENDED", "ON_LEAVE", "TRANSFERRED", "DEACTIVATED"],
@@ -512,7 +540,10 @@ const STAFF_LIFECYCLE_TRANSITIONS: Readonly<Record<StaffLifecycleState, readonly
   ARCHIVED: [],
 } as const;
 
-export function canTransitionStaffLifecycle(from: StaffLifecycleState, to: StaffLifecycleState): boolean {
+export function canTransitionStaffLifecycle(
+  from: StaffLifecycleState,
+  to: StaffLifecycleState,
+): boolean {
   return STAFF_LIFECYCLE_TRANSITIONS[from].includes(to);
 }
 
@@ -549,7 +580,8 @@ export function transitionStaffLifecycle(
  * Permission/workspace recalculation is triggered automatically.
  * ────────────────────────────────────────────────────────────*/
 
-export type TransferKind = "department" | "campus" | "role" | "shift" | "institution" | "school_group";
+export type TransferKind =
+  "department" | "campus" | "role" | "shift" | "institution" | "school_group";
 
 export interface StaffTransfer {
   id: WorkforceAssignmentId;
@@ -611,12 +643,7 @@ export interface Department {
 }
 
 export type ReportingRelationshipType =
-  | "manager"
-  | "supervisor"
-  | "department_head"
-  | "principal"
-  | "director"
-  | "hr_authority";
+  "manager" | "supervisor" | "department_head" | "principal" | "director" | "hr_authority";
 
 export const REPORTING_RELATIONSHIP_TYPES: readonly ReportingRelationshipType[] = [
   "manager",
@@ -684,7 +711,8 @@ export interface StaffProfile {
   /** Qualifications (display in authorized contexts only). */
   qualificationRefs: string[];
   /** Temporary staff category, if any (Section DK). */
-  temporaryCategory: "teacher" | "contractor" | "substitute" | "consultant" | "volunteer" | "intern" | null;
+  temporaryCategory:
+    "teacher" | "contractor" | "substitute" | "consultant" | "volunteer" | "intern" | null;
   /** Contract expiry for temporary staff (Section DL: expiring access). */
   contractExpiresAt: string | null;
   onboardingRef: string | null;
@@ -696,14 +724,12 @@ export interface StaffProfile {
  * Temporary staff (Section DK) get explicit expiration. A temporary profile with
  * an expired contract must never be considered active for authorization.
  */
-export function isStaffProfileActive(profile: StaffProfile, now: string = new Date().toISOString()): boolean {
-  if (profile.employmentStatus !== "active" && profile.employmentStatus !== "probation") return false;
+export function isStaffProfileActive(
+  profile: StaffProfile,
+  now: string = new Date().toISOString(),
+): boolean {
+  if (profile.employmentStatus !== "active" && profile.employmentStatus !== "probation")
+    return false;
   if (profile.contractExpiresAt !== null && profile.contractExpiresAt <= now) return false;
   return true;
 }
-
-
-
-
-
-
