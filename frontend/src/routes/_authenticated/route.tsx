@@ -20,7 +20,13 @@ import { Search as SearchIcon } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { useModKeyLabel } from "@/lib/kbd";
 import { PLATFORM_NAME, SCHOLAR_RUNTIME_NAME } from "@/lib/platform";
-import { ParentBottomNav, StudentBottomNav } from "@/components/mobile-bottom-nav";
+import { WorkspaceBottomNav } from "@/components/mobile-bottom-nav";
+import {
+  SCHOLAR_NAV_CONTRIBUTIONS,
+  scholarCapabilitiesForPortal,
+  type ScholarPortalKind,
+} from "@/lib/workspace-engine/nav-catalog";
+import { hasNavDestinations, resolveWorkspaceNav } from "@/lib/workspace-engine/navigation";
 
 export const Route = createFileRoute("/_authenticated")({
   ssr: false,
@@ -88,7 +94,19 @@ function AuthenticatedLayout() {
 
   const displayName = profile?.full_name ?? superAdmin?.full_name ?? "User";
   const dashHref = role ? dashboardPathForRole(role) : "/";
-  const hasBottomNav = role === "parent" || role === "student";
+
+  // Workspace-dynamic chrome: the mobile quick-nav is derived from the active
+  // runtime's contribution data + the viewer's authorized capabilities — no
+  // fixed portal bars (Scholar R-001 is currently the only mobile runtime).
+  const scholarPortalKind: ScholarPortalKind | null =
+    role === "parent" ? "parent" : role === "student" ? "student" : null;
+  const bottomNavSections = scholarPortalKind
+    ? resolveWorkspaceNav(
+        SCHOLAR_NAV_CONTRIBUTIONS,
+        scholarCapabilitiesForPortal(scholarPortalKind),
+      )
+    : [];
+  const hasBottomNav = hasNavDestinations(bottomNavSections);
 
   return (
     <SidebarProvider>
@@ -154,8 +172,7 @@ function AuthenticatedLayout() {
             <Outlet />
           </main>
         </div>
-        {role === "parent" && <ParentBottomNav />}
-        {role === "student" && <StudentBottomNav />}
+        {hasBottomNav && <WorkspaceBottomNav sections={bottomNavSections} />}
 
         <CommandCenterMount />
       </div>
