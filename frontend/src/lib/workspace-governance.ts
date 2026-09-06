@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Workspace Engine governance, configuration, and observability.
+ * CoreGrid — Phase 06 Workspace Engine governance, configuration, and observability (platform layer).
  *
  * Implements `architecture/phase-06-workspace-engine.md`:
  * - Workspace policy: available modules, allowed widgets, default layouts,
@@ -64,9 +64,7 @@ export interface WorkspaceConfigurationPolicy {
   allowCustomModules: boolean;
 }
 
-export type PolicyValidationResult =
-  | { ok: true }
-  | { ok: false; errors: string[] };
+export type PolicyValidationResult = { ok: true } | { ok: false; errors: string[] };
 
 /**
  * Validate a workspace policy against tenant/module/widget catalogs (Section CM).

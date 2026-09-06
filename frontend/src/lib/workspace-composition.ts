@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Workspace Engine composition domain.
+ * CoreGrid — Phase 06 Workspace Engine composition domain (platform layer).
  *
  * Implements `architecture/phase-06-workspace-engine.md`:
  * - Standalone navigation and embedded navigation (Sections Y, Z).
@@ -249,7 +249,11 @@ export function isModuleAvailable(
   principalCapabilities: string[],
 ): boolean {
   if (module.status !== "enabled") return false;
-  if (module.ownerCapability !== null && module.ownerCapability !== "" && !principalCapabilities.includes(module.ownerCapability)) {
+  if (
+    module.ownerCapability !== null &&
+    module.ownerCapability !== "" &&
+    !principalCapabilities.includes(module.ownerCapability)
+  ) {
     return false;
   }
   // Tenant-scoped module requires a tenant context.
@@ -295,8 +299,7 @@ export interface CreatePageInput {
 }
 
 export type CreatePageResult =
-  | { ok: true; page: WorkspacePage; auditEvent: WorkspaceAuditEvent }
-  | { ok: false; error: string };
+  { ok: true; page: WorkspacePage; auditEvent: WorkspaceAuditEvent } | { ok: false; error: string };
 
 export function createPage(
   input: CreatePageInput,
@@ -384,7 +387,9 @@ export function createDashboard(
     return { ok: false, error: "Dashboard name is required" };
   }
 
-  if (existingDashboards.some((d) => d.name === input.name && d.workspaceId === input.workspaceId)) {
+  if (
+    existingDashboards.some((d) => d.name === input.name && d.workspaceId === input.workspaceId)
+  ) {
     return { ok: false, error: `Dashboard ${input.name} already exists in this workspace` };
   }
 
@@ -575,8 +580,7 @@ export interface WorkspaceView extends WorkspaceTenantScopedEntity {
 }
 
 export type WorkspaceViewResult =
-  | { ok: true; view: WorkspaceView; auditEvent: WorkspaceAuditEvent }
-  | { ok: false; error: string };
+  { ok: true; view: WorkspaceView; auditEvent: WorkspaceAuditEvent } | { ok: false; error: string };
 
 export function createView(
   input: {
@@ -595,7 +599,14 @@ export function createView(
     return { ok: false, error: "View name is required" };
   }
 
-  if (existingViews.some((v) => v.name === input.name && v.workspaceId === input.workspaceId && v.creatorId === input.creatorId)) {
+  if (
+    existingViews.some(
+      (v) =>
+        v.name === input.name &&
+        v.workspaceId === input.workspaceId &&
+        v.creatorId === input.creatorId,
+    )
+  ) {
     return { ok: false, error: "A view with this name already exists for this creator" };
   }
 
@@ -642,16 +653,7 @@ export interface FilterDefinition {
   id: FilterId;
   /** Authorized/approved field (Section BH). */
   field: string;
-  operator:
-    | "eq"
-    | "neq"
-    | "gt"
-    | "gte"
-    | "lt"
-    | "lte"
-    | "in"
-    | "contains"
-    | "between";
+  operator: "eq" | "neq" | "gt" | "gte" | "lt" | "lte" | "in" | "contains" | "between";
   value: unknown;
   /** Boolean combination (Section BG). */
   and?: FilterDefinition[];
@@ -706,8 +708,7 @@ export function areGroupFieldsApproved(
  * ────────────────────────────────────────────────────────────*/
 
 export type ShareViewResult =
-  | { ok: true; view: WorkspaceView; auditEvent: WorkspaceAuditEvent }
-  | { ok: false; error: string };
+  { ok: true; view: WorkspaceView; auditEvent: WorkspaceAuditEvent } | { ok: false; error: string };
 
 export function shareView(
   view: WorkspaceView,
@@ -765,8 +766,7 @@ export interface PersonalizedSavedView {
 }
 
 export type SavePersonalizedViewResult =
-  | { ok: true; savedView: PersonalizedSavedView }
-  | { ok: false; error: string };
+  { ok: true; savedView: PersonalizedSavedView } | { ok: false; error: string };
 
 export function savePersonalizedView(
   input: Omit<PersonalizedSavedView, "createdAt" | "updatedAt"> & { now: string },
@@ -837,8 +837,7 @@ export function personalizeWidgetInstance(
 }
 
 export type PersonalizationResult =
-  | { ok: true; instance: WidgetInstance }
-  | { ok: false; error: string };
+  { ok: true; instance: WidgetInstance } | { ok: false; error: string };
 
 /* ─────────────────────────────────────────────────────────────
  * Workspace templates (Sections CI–CK)
@@ -868,9 +867,7 @@ export interface TemplateOverride {
  * Workspaces may inherit configuration from templates (Section CI).
  * Overrides must be explicit (Section CJ) and conflicts must resolve deterministically (Section CL).
  */
-export type ResolveOverrideResult =
-  | { ok: true; value: unknown }
-  | { ok: false; error: string };
+export type ResolveOverrideResult = { ok: true; value: unknown } | { ok: false; error: string };
 
 export function resolveTemplateValueFromOverrides(
   baseValue: unknown,

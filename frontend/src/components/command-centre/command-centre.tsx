@@ -243,7 +243,7 @@ export function CommandCentre() {
                 CoreGrid Command Centre
               </h1>
               <p className="text-xs text-muted-foreground">
-                CoreGrid platform · Scholar runtime (African Education) · {PHASES_TOTAL} phases
+                CoreGrid platform · {PHASES_TOTAL} phases
               </p>
             </div>
           </div>
@@ -716,8 +716,8 @@ function LaunchStep(props: {
           Runtime provisioned
         </CardTitle>
         <CardDescription>
-          The Scholar runtime is provisioned on CoreGrid. The school, roles and policy set were
-          validated through the phase contracts.
+          A CoreGrid domain runtime has been provisioned on the platform. The organization, roles
+          and policy set were validated through the phase contracts.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">

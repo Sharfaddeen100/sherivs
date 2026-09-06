@@ -7,6 +7,20 @@ Relationship: Cross-platform experience layer built above Phases 01–23 and con
 
 ───
 
+# 0. ECOSYSTEM-GENERIC SCOPE (authoritative amendment)
+
+Phase 24 is CoreGrid's cross-platform EXPERIENCE AUTHORITY for the entire
+ecosystem — not for any single domain or runtime. It governs how platform
+teams, institutions, organizations, companies, government agencies, teams and
+individuals experience CoreGrid across every device, and it renders every
+present and future domain runtime (Scholar R-001 is the first education
+runtime, never the only one). Personalization derives from identity, role,
+context, permissions, policies and organization (P02/P03/P08 semantics), never
+from a fixed product portal. Scholar-specific wording in this document appears
+only as a worked example.
+
+───
+
 A. IDENTITY
 A.1 Subsystem Identity
 Phase 24 is the CoreGrid Experience & Design Intelligence Platform.
@@ -2280,8 +2294,8 @@ The CoreGrid AI experience must include:
 
 ───
 
-FI. SCHOLAR CAPABILITY SURFACE
-CoreGrid Scholar capabilities should be accessible according to user authorization and role.
+FI. RUNTIME CAPABILITY SURFACE
+Every CoreGrid runtime's capabilities (for example, Scholar R-001) should be accessible according to user authorization and role.
 Potential capabilities include:
 • AI tutoring
 • research assistance

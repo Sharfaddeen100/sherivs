@@ -1,12 +1,26 @@
 
 Phase 06 — Workspace Engine
-CoreGrid Scholar Workspace Engine
+CoreGrid Workspace Engine
+
+───
+
+# 0. ECOSYSTEM-GENERIC SCOPE (authoritative amendment)
+
+Phase 06 is a CoreGrid PLATFORM capability. It is NOT tied to any single domain
+or runtime — not even Scholar R-001, the first education runtime. The same
+dynamic workspace serves every CoreGrid actor: platform teams, schools,
+universities, colleges, organizations, companies, government agencies,
+community institutions, teams and individuals — and every present and future
+domain runtime. A workspace's shape is always DERIVED from identity + role +
+context + permissions + policies + organization (P02/P03/P08 semantics) — never
+from a hard-coded portal label. Scholar-specific wording later in this document
+appears only as a worked example of one consuming runtime.
 
 ───
 
 A. IDENTITY
 A1. Subsystem Name
-CoreGrid Scholar Workspace Engine
+CoreGrid Workspace Engine
 Short name:
 Workspace Engine
 
@@ -14,7 +28,7 @@ Workspace Engine
 
 A2. Architectural Classification
 
-The Workspace Engine is the configurable human-and-system interaction environment for CoreGrid Scholar.
+The Workspace Engine is the configurable human-and-system interaction environment for CoreGrid.
 It provides the runtime model for:
 •	workspaces
 •	workspace types
@@ -50,13 +64,13 @@ A3. Architectural Position
 
 B. PURPOSE
 B1. Primary Purpose
-The Workspace Engine provides a consistent architecture for creating and operating configurable environments in which users, institutions, teams, and authorized agents interact with CoreGrid Scholar capabilities.
+The Workspace Engine provides a consistent architecture for creating and operating configurable environments in which users, institutions, teams, and authorized agents interact with CoreGrid capabilities.
 
 ───
 
 B2. Core Question
 Phase 06 answers:
-Where does a user actually work inside CoreGrid Scholar, and how can that environment adapt to the user's role, 
+Where does a user actually work inside CoreGrid, and how can that environment adapt to the user's role, 
 
 institution, permissions, tasks, and workflow without duplicating the underlying domain systems?
 
@@ -2177,7 +2191,7 @@ support disaster recovery.
 
 ID. FINAL SCOPE LOCK
 Phase 06 owns one primary architectural responsibility:
-Provide the configurable workspace environment through which authorized users and systems organize, discover, visualize, personalize, and interact with CoreGrid Scholar capabilities.
+Provide the configurable workspace environment through which authorized users and systems organize, discover, visualize, personalize, and interact with CoreGrid capabilities.
 The fundamental architecture is:
 
 

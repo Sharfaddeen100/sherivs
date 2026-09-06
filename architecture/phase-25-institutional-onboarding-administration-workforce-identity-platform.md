@@ -7,6 +7,23 @@ Next Phase: Phase 26 — CoreGrid AI Intelligence Layer
 
 ───
 
+# 0. ECOSYSTEM-GENERIC SCOPE (authoritative amendment)
+
+Phase 25 is CoreGrid's ORGANIZATION ONBOARDING, ADMINISTRATION & WORKFORCE
+IDENTITY platform for the ENTIRE ecosystem — it is not a school-only builder.
+Any CoreGrid organization may be onboarded through the same pipeline: a company,
+a government agency, a community institution, a non-profit, a university, a
+school group or a single school. Onboarding provisions an organization tenant
+(P03), its identity (P02), its initial administrator, its policy set and its
+dynamic workspace (P06), then lets every present and future domain runtime be
+activated for that organization (Scholar R-001 — education — is the first
+runtime, never the only one). Where this document says "school", read
+"organization/institution"; where it describes education-domain flows (e.g.,
+classroom attendance identity) those flows appear because Scholar R-001 is the
+first runtime consuming them — the onboarding machinery itself is domain-free.
+
+───
+
 A. IDENTITY
 Phase 25 is the Institutional Onboarding, Administration & Workforce Identity Platform.
 It is the subsystem responsible for transforming a newly created educational institution from:
