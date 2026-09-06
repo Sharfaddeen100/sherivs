@@ -225,3 +225,34 @@ imports kernel/L2 or existing gated surfaces.
 Implementation exists · typed over kernel/L2 · tests pass (incl. coherence) · migration applied
 + validated live · P08 gating where server-facing · no duplicate engine · registry + PROGRESS
 updated · consumed by ≥1 consumer (§98) before any COMPLETE claim.
+
+## 20. Phase-04 Completion Matrix (2026-09-04 close-out)
+
+Authoritative status of the Phase-04 authoring scope. Map §19 DoD is honoured:
+each item below names its verification; nothing is marked COMPLETE beyond what
+has evidence. Remaining OPERATIONAL wiring is tracked as the work of OTHER
+phases/surfaces — it is not Phase-04 authoring debt.
+
+| Scope | Artifacts | Verification |
+|---|---|---|
+| Clusters A–O typed modules (map §3–§17) | 79/79 map-declared artifacts exist (final gap `assignment.ts` closed 2026-09-04) | 84 files under `frontend/src/lib/scholar/`; each artifact unit-tested |
+| Scholar test suites | 27 files / 259 tests | `vitest run tests/unit/scholar-*.test.ts` → 27/27 files, 259/259 passed (2026-09-04) |
+| Whole-tree typecheck | — | `tsc --noEmit` → 0 errors |
+| Lint + parse | — | ESLint exit 0 on touched files; esbuild transform parse 0 |
+| P08 enforcement surface | config vertical ADOPTED | `p08-enforcement-surface.test.ts` green (machine-checked gate import) |
+| §98 first consumption | Scholar operating model on `cg_entity` | `scripts/verify-scholar-config-wiring.mjs` → 7/7 live DB PASS (write, supersede chain, cg_event audit, current-detail read, version-history read) |
+| §170 property guarantees | `scholar-property.test.ts` | green (auth boundary, deleted class, exclusivity, unavailable facility, revoked authority) |
+| §171–172 simulation archetypes | `scholar-simulation.test.ts` | 13 African archetypes green |
+| §199 completion standard | `scholar-completion.test.ts` | unfamiliar institution configures itself: build → validate → simulate → govern → version (green) |
+| §133 idempotency / §131–132 contracts | `event-contracts.ts`, `api-contracts.ts` (+ O3 AI context/safety) | green |
+
+Remaining work by OWNING surface/phase (NOT Phase-04 authoring):
+
+| Work item | Owner |
+|---|---|
+| HTTP-layer invocation of the config family + remaining surface functions (structure/curriculum/time/participation/attendance/assessment/facilities/…) | P08 enforcement + app runtime (S6 vertical wiring) |
+| Migrating legacy education-*/academic-* modules & dashboards onto Scholar modules + kernel substrate | P24 UI migration (S6), DECISIONS.md canonicalization ADRs (human authority) |
+| Full unit-suite regression merge (259 scholar tests into the ~100-file baseline) + §5/§20 refresh | CI (S1/S6) |
+| Runtime status proposed → active + institutional grading/timetable optimisation consumption | Control-plane lifecycle (human authority) / P12 |
+| Formal perf/device/offline suites beyond unit sanity | P05/P14/P15/P21 |
+
