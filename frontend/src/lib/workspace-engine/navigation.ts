@@ -23,6 +23,9 @@ export interface NavItemSeed {
   /** Icon registry key — the UI maps this to an icon; data never imports components. */
   iconKey: string;
   url: string;
+  /** Additional URLs/prefixes that count as "active" for highlighting. */
+  activeUrls?: readonly string[];
+  activePrefixes?: readonly string[];
   /** Authorized capabilities the item requires (AND). Empty = always visible. */
   capabilities?: readonly string[];
   orderHint: number;
@@ -33,6 +36,10 @@ export interface NavContribution {
   runtimeRef: string;
   sectionKey: string;
   sectionLabel?: string;
+  /** Group icon registry key (for collapsible sections). */
+  iconKey?: string;
+  /** Render as a collapsible group rather than a flat group. */
+  collapsible?: boolean;
   items: readonly NavItemSeed[];
 }
 
@@ -44,6 +51,8 @@ export interface WorkspaceNavSection {
   sectionKey: string;
   sectionLabel: string;
   runtimeRef: string;
+  iconKey: string;
+  collapsible: boolean;
   items: WorkspaceNavItem[];
 }
 
@@ -86,6 +95,8 @@ export function resolveWorkspaceNav(
       sectionKey: contribution.sectionKey,
       sectionLabel: contribution.sectionLabel ?? contribution.runtimeRef,
       runtimeRef: contribution.runtimeRef,
+      iconKey: contribution.iconKey ?? "group",
+      collapsible: contribution.collapsible ?? false,
       items: visibleItems.sort((a, b) => a.orderHint - b.orderHint),
     });
   }

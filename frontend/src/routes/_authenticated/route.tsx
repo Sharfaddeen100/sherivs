@@ -24,6 +24,7 @@ import { WorkspaceBottomNav } from "@/components/mobile-bottom-nav";
 import {
   SCHOLAR_NAV_CONTRIBUTIONS,
   scholarCapabilitiesForPortal,
+  scholarCapabilitiesForRole,
   type ScholarPortalKind,
 } from "@/lib/workspace-engine/nav-catalog";
 import { hasNavDestinations, resolveWorkspaceNav } from "@/lib/workspace-engine/navigation";
@@ -108,10 +109,16 @@ function AuthenticatedLayout() {
     : [];
   const hasBottomNav = hasNavDestinations(bottomNavSections);
 
+  // Sidebar chrome is resolved the same way: Scholar R-001 contributions x the
+  // viewer's authorized capabilities (org_admin collapsible groups, flat member workspaces).
+  const sidebarSections = role
+    ? resolveWorkspaceNav(SCHOLAR_NAV_CONTRIBUTIONS, scholarCapabilitiesForRole(role))
+    : [];
+
   return (
     <SidebarProvider>
       <div className="min-h-dvh flex w-full">
-        {role && <PortalSidebar role={role} />}
+        {role && <PortalSidebar sections={sidebarSections} />}
         <MobileSwipeToOpen />
         <div className="flex-1 flex flex-col min-w-0 overflow-x-hidden portal-content">
           <header className="border-b border-border">
