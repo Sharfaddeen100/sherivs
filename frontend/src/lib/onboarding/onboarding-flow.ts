@@ -192,6 +192,34 @@ export function advanceOnboarding(
   return { ok: true, onboarding: next };
 }
 
+/** Artifacts required to ENTER a stage (read-only view for progress/resume). */
+export function requiredArtifactsForStage(stage: OnboardingStage): readonly string[] {
+  return STAGE_ARTIFACTS[stage] ?? [];
+}
+
+export interface OnboardingProgress {
+  index: number;
+  currentStage: OnboardingStage;
+  nextStage: OnboardingStage | null;
+  ratio: number;
+  complete: boolean;
+}
+
+/** Progress + resume point for guided onboarding journeys (§BA/BB). */
+export function onboardingProgress(onboarding: OrganizationOnboarding): OnboardingProgress {
+  const index = STAGE_INDEX[onboarding.stage];
+  const total = ONBOARDING_STAGES.length;
+  const last = total - 1;
+  const complete = index === last;
+  return {
+    index,
+    currentStage: onboarding.stage,
+    nextStage: complete ? null : ONBOARDING_STAGES[index + 1],
+    ratio: complete ? 1 : index / last,
+    complete,
+  };
+}
+
 /** Onboarding is operationally complete when the organization is 'active'. */
 export function isOnboardingComplete(onboarding: OrganizationOnboarding): boolean {
   return onboarding.stage === "active";
