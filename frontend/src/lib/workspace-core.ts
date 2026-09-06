@@ -1,5 +1,6 @@
 /**
- * CoreGrid Scholar — Workspace Engine core domain model.
+ * CoreGrid — Phase 06 Workspace Engine core domain model (platform interaction
+ * layer; domain runtimes consume it).
  *
  * Implements `architecture/phase-06-workspace-engine.md`:
  * - A workspace is the configurable interaction layer; it is not the database,
