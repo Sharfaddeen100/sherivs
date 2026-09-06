@@ -192,6 +192,49 @@ try {
     evIns.data.event_type === EVENT_TYPE && evIns.data.tenant_id === tenantId,
     evIns.data.id,
   );
+
+  // Query surface: current-detail read returns the active (v2) model with its
+  // full spec; version history returns the chain oldest-first.
+  const detail = await svc
+    .from("cg_entity")
+    .select("attributes")
+    .eq("tenant_id", tenantId)
+    .eq("entity_type", ENTITY_TYPE)
+    .eq("state", "active")
+    .order("valid_from", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  if (detail.error) throw new Error(`detail read: ${detail.error.message}`);
+  const detailAttrs = detail.data?.attributes ?? {};
+  const detailVersion = detailAttrs?.blueprint?.version;
+  check(
+    "current-detail read (active v2 + spec present)",
+    detailVersion === 2 && Array.isArray(detailAttrs?.spec?.levels),
+    `version ${detailVersion}, ${detailAttrs?.spec?.levels?.length} levels`,
+  );
+
+  const history = await svc
+    .from("cg_entity")
+    .select("state, attributes")
+    .eq("tenant_id", tenantId)
+    .eq("entity_type", ENTITY_TYPE)
+    .order("valid_from", { ascending: true });
+  if (history.error) throw new Error(`history read: ${history.error.message}`);
+  const versions = (history.data ?? [])
+    .map((row) => {
+      const attributes = row?.attributes ?? {};
+      return { state: row?.state, version: attributes?.blueprint?.version };
+    })
+    .sort((a, b) => (a.version ?? 0) - (b.version ?? 0));
+  check(
+    "version-history read (oldest-first, superseded then active)",
+    versions.length === 2 &&
+      versions[0].version === 1 &&
+      versions[0].state === "superseded" &&
+      versions[1].version === 2 &&
+      versions[1].state === "active",
+    JSON.stringify(versions),
+  );
 } catch (err) {
   check("Scholar config wiring execution", false, err.message);
 } finally {

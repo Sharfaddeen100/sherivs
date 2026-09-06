@@ -202,6 +202,112 @@ export const publishInstitutionOperatingModel = createServerFn({ method: "POST" 
     };
   });
 
+export type CurrentOperatingModelDetailResult = {
+  entity_id: string;
+  tenant_id: string;
+  version: number;
+  reason: string;
+  published_at: string;
+  /** Serialized spec — clients re-validate through the pure Scholar contracts. */
+  spec_json: string | null;
+} | null;
+
+/**
+ * Read the CURRENT operating model INCLUDING its spec — own tenant only.
+ * The spec is returned as a JSON string (fully serializable); consumers parse
+ * it and re-validate with the pure scholar validators before rendering.
+ */
+export const getCurrentInstitutionOperatingModelDetail = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }): Promise<CurrentOperatingModelDetailResult> => {
+    const tenantId = await requireSchoolAdminScope(context.supabase);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const admin = asKernelAdmin(supabaseAdmin);
+
+    const { data, error } = await admin
+      .from("cg_entity")
+      .select("id, tenant_id, attributes")
+      .eq("tenant_id", tenantId)
+      .eq("entity_type", SCHOLAR_OPERATING_MODEL_ENTITY)
+      .eq("state", "active")
+      .order("valid_from", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    if (error) throw new Error(`operating model detail read failed: ${error.message}`);
+    if (!data) return null;
+
+    const attributes = (data.attributes ?? {}) as {
+      blueprint?: { version?: number; reason?: string; published_at?: string };
+      spec?: object;
+    };
+    let specJson: string | null = null;
+    try {
+      specJson = JSON.stringify(attributes.spec ?? {});
+    } catch {
+      specJson = null;
+    }
+    return {
+      entity_id: data.id as string,
+      tenant_id: (data.tenant_id as string) ?? tenantId,
+      version: attributes.blueprint?.version ?? 0,
+      reason: attributes.blueprint?.reason ?? "",
+      published_at: attributes.blueprint?.published_at ?? "",
+      spec_json: specJson,
+    };
+  });
+
+export type OperatingModelVersionSummary = {
+  entity_id: string;
+  version: number;
+  reason: string;
+  published_at: string;
+  state: string;
+};
+
+export type OperatingModelVersionListResult = {
+  tenant_id: string;
+  versions: OperatingModelVersionSummary[];
+};
+
+/**
+ * Version history (time-machine read over the kernel substrate version chain).
+ * Chronological (oldest first); each row's blueprint header carries the chain.
+ */
+export const listInstitutionOperatingModelVersions = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }): Promise<OperatingModelVersionListResult> => {
+    const tenantId = await requireSchoolAdminScope(context.supabase);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const admin = asKernelAdmin(supabaseAdmin);
+
+    const { data, error } = await admin
+      .from("cg_entity")
+      .select("id, state, attributes")
+      .eq("tenant_id", tenantId)
+      .eq("entity_type", SCHOLAR_OPERATING_MODEL_ENTITY)
+      .order("valid_from", { ascending: true });
+    if (error) throw new Error(`operating model history read failed: ${error.message}`);
+
+    const versions: OperatingModelVersionSummary[] = (data ?? []).map(
+      (row: { id?: unknown; state?: unknown; attributes?: unknown }) => {
+        const attributes = (row.attributes ?? {}) as {
+          blueprint?: { version?: number; reason?: string; published_at?: string };
+        };
+        return {
+          entity_id: row.id as string,
+          version: attributes.blueprint?.version ?? 0,
+          reason: attributes.blueprint?.reason ?? "",
+          published_at: attributes.blueprint?.published_at ?? "",
+          state: (row.state as string) ?? "",
+        };
+      },
+    ).sort(
+      (a: OperatingModelVersionSummary, b: OperatingModelVersionSummary) => a.version - b.version,
+    );
+
+    return { tenant_id: tenantId, versions };
+  });
+
 export type CurrentOperatingModelResult = {
   entity_id: string;
   tenant_id: string;
