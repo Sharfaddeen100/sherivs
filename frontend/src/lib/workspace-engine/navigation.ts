@@ -110,6 +110,16 @@ export function flattenQuickNav(sections: NavResolution, max = 5): readonly Work
   return flat.slice(0, Math.max(0, max));
 }
 
+/** First destination (orderHint 0) of the resolved chrome = the workspace home. */
+export function resolveWorkspaceHome(sections: NavResolution): string | null {
+  for (const section of sections) {
+    for (const item of section.items) {
+      if (item.orderHint === 0) return item.url;
+    }
+  }
+  return null;
+}
+
 /** Does this resolution contain any visible destination? */
 export function hasNavDestinations(sections: NavResolution): boolean {
   return sections.some((section) => section.items.length > 0);

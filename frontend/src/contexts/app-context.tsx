@@ -2,7 +2,8 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 import type { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { resolveTenantSlug } from "@/lib/tenant";
-import { type AppRole, dashboardPathForRole } from "@/lib/roles";
+import { type AppRole } from "@/lib/roles";
+import { scholarWorkspaceHome } from "@/lib/workspace-engine/nav-catalog";
 
 /**
  * UserProfile = row from public.users (tenant member).
@@ -145,7 +146,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
       cancelled = true;
       sub.subscription.unsubscribe();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Safe role-change handling: if an admin (or super-admin) changes the
@@ -176,7 +176,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
           if (next.role !== profile.role || next.school_id !== profile.school_id) {
             void load(session).then(() => {
               if (typeof window !== "undefined" && next.role) {
-                window.location.assign(dashboardPathForRole(next.role as AppRole));
+                window.location.assign(scholarWorkspaceHome(next.role as AppRole));
               }
             });
           }
@@ -189,8 +189,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile?.id, profile?.role, profile?.school_id]);
 
-
-  const role: AppRole | null = superAdmin ? "super_admin" : profile?.role ?? null;
+  const role: AppRole | null = superAdmin ? "super_admin" : (profile?.role ?? null);
 
   const value: AppState = {
     loading,

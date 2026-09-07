@@ -10,7 +10,6 @@ import { useEffect } from "react";
 import { refreshPushTokenIfGranted } from "@/lib/push-client";
 import { supabase } from "@/integrations/supabase/client";
 import { useApp } from "@/contexts/app-context";
-import { ROLE_LABEL, dashboardPathForRole } from "@/lib/roles";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { PortalSidebar } from "@/components/portal-sidebar";
 import { PortalPageSkeleton, RouteErrorBoundary } from "@/components/portal-shell";
@@ -25,6 +24,8 @@ import {
   SCHOLAR_NAV_CONTRIBUTIONS,
   scholarCapabilitiesForPortal,
   scholarCapabilitiesForRole,
+  scholarWorkspaceHome,
+  scholarWorkspaceLabelForRole,
   type ScholarPortalKind,
 } from "@/lib/workspace-engine/nav-catalog";
 import { hasNavDestinations, resolveWorkspaceNav } from "@/lib/workspace-engine/navigation";
@@ -94,7 +95,7 @@ function AuthenticatedLayout() {
   }
 
   const displayName = profile?.full_name ?? superAdmin?.full_name ?? "User";
-  const dashHref = role ? dashboardPathForRole(role) : "/";
+  const dashHref = role ? scholarWorkspaceHome(role) : "/";
 
   // Workspace-dynamic chrome: the mobile quick-nav is derived from the active
   // runtime's contribution data + the viewer's authorized capabilities — no
@@ -134,7 +135,7 @@ function AuthenticatedLayout() {
                       {school?.name ?? `${PLATFORM_NAME} · ${SCHOLAR_RUNTIME_NAME}`}
                     </div>
                     <div className="text-[10px] uppercase tracking-widest text-muted-foreground">
-                      {role ? ROLE_LABEL[role] : "Portal"}
+                      {role ? scholarWorkspaceLabelForRole(role) : "Workspace"}
                     </div>
                   </div>
                 </Link>

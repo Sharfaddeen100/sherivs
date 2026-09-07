@@ -7,6 +7,7 @@ import {
   flattenQuickNav,
   hasNavDestinations,
   itemVisibleForCapabilities,
+  resolveWorkspaceHome,
   resolveWorkspaceNav,
   type NavContribution,
   type NavItemSeed,
@@ -15,6 +16,7 @@ import {
   SCHOLAR_NAV_CONTRIBUTIONS,
   SCHOLAR_PORTAL_CAPABILITIES,
   scholarCapabilitiesForPortal,
+  scholarCapabilitiesForRole,
 } from "@/lib/workspace-engine/nav-catalog";
 
 function seed(key: string, overrides: Partial<NavItemSeed> = {}): NavItemSeed {
@@ -163,5 +165,28 @@ describe("Scholar R-001 nav catalog (runtime DATA seeds)", () => {
     expect(new Set(parentCaps).size).toBe(parentCaps.length);
     expect(new Set(studentCaps).size).toBe(studentCaps.length);
     expect(studentCaps.some((c) => parentCaps.includes(c))).toBe(false);
+  });
+});
+
+describe("resolveWorkspaceHome (chrome-derived landing)", () => {
+  it("returns the orderHint-0 destination of the resolved chrome", () => {
+    const allowed = new Set(["finance:pay"]);
+    const sections = resolveWorkspaceNav(FIXTURES, allowed);
+    expect(resolveWorkspaceHome(sections)).toBe("/x/a.home");
+  });
+
+  it("returns null when no destinations resolve", () => {
+    expect(resolveWorkspaceHome([])).toBe(null);
+  });
+
+  it("Scholar R-001 landings derive from capability sets, never a role switch", () => {
+    const teacher = scholarCapabilitiesForRole("teacher");
+    const admin = scholarCapabilitiesForRole("admin");
+    const teacherHome = resolveWorkspaceHome(
+      resolveWorkspaceNav(SCHOLAR_NAV_CONTRIBUTIONS, teacher),
+    );
+    const adminHome = resolveWorkspaceHome(resolveWorkspaceNav(SCHOLAR_NAV_CONTRIBUTIONS, admin));
+    expect(teacherHome).toBe("/teacher/dashboard");
+    expect(adminHome).toBe("/admin/dashboard");
   });
 });

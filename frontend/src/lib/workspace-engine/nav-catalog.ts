@@ -12,6 +12,7 @@
  */
 import type { NavContribution } from "./navigation";
 import type { AppRole } from "../roles";
+import { resolveWorkspaceHome, resolveWorkspaceNav } from "./navigation";
 
 export const RUNTIME_SCHOLAR = "runtime:scholar";
 
@@ -1141,4 +1142,36 @@ export function scholarCapabilitiesForRole(role: AppRole): ReadonlySet<string> {
   const kind: ScholarNavKind =
     role === "admin" || role === "principal" ? "org_admin" : (role as ScholarNavKind);
   return scholarCapabilitiesForKind(kind);
+}
+
+/* ─────────────────────────────────────────────────────────────
+ * Workspace landing + display labels (no role-switch redirects).
+ * The post-login landing IS the resolved workspace home.
+ * ────────────────────────────────────────────────────────────*/
+
+/** Scholar workspace display label for a legacy membership kind (UI copy only). */
+export const SCHOLAR_WORKSPACE_LABELS: Readonly<Record<ScholarNavKind, string>> = {
+  org_admin: "Organization administrator",
+  teacher: "Educator",
+  parent: "Parent / guardian",
+  student: "Learner",
+  bursar: "Finance officer",
+  hq: "HQ operator",
+  super_admin: "Platform administrator",
+  driver: "Driver",
+};
+
+export function scholarWorkspaceLabelForRole(role: AppRole): string {
+  const kind: ScholarNavKind =
+    role === "admin" || role === "principal" ? "org_admin" : (role as ScholarNavKind);
+  return SCHOLAR_WORKSPACE_LABELS[kind] ?? "Workspace member";
+}
+
+/**
+ * The workspace landing surface — the home item (orderHint 0) of the chrome
+ * resolved from authorized capabilities. Never a role-keyed switch.
+ */
+export function scholarWorkspaceHome(role: AppRole): string {
+  const sections = resolveWorkspaceNav(SCHOLAR_NAV_CONTRIBUTIONS, scholarCapabilitiesForRole(role));
+  return resolveWorkspaceHome(sections) ?? "/";
 }

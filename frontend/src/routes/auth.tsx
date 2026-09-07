@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
 import { useApp } from "@/contexts/app-context";
-import { dashboardPathForRole } from "@/lib/roles";
+import { scholarWorkspaceHome } from "@/lib/workspace-engine/nav-catalog";
 import { PLATFORM_NAME, SCHOLAR_RUNTIME_NAME } from "@/lib/platform";
 import { provisionDemoEnterprise, DEMO_CREDENTIALS } from "@/lib/demo-provision.functions";
 
@@ -52,7 +52,7 @@ function AuthPage() {
   // If already signed in, redirect to the right dashboard
   useEffect(() => {
     if (!loading && role) {
-      navigate({ to: dashboardPathForRole(role), replace: true });
+      navigate({ to: scholarWorkspaceHome(role), replace: true });
     }
   }, [loading, role, navigate]);
 

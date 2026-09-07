@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { useApp } from "@/contexts/app-context";
-import { dashboardPathForRole } from "@/lib/roles";
+import { scholarWorkspaceHome } from "@/lib/workspace-engine/nav-catalog";
 import { PublicSchoolSite } from "@/components/public/site";
 import { CommandCentre } from "@/components/command-centre/command-centre";
 import { PLATFORM_NAME, SCHOLAR_RUNTIME_DESCRIPTION } from "@/lib/platform";
@@ -14,13 +14,12 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "The CoreGrid Command Centre — the platform operating surface. Provision institutions, roles and policies on the Scholar runtime across a 51-phase governed platform.",
+          "The CoreGrid Command Centre — the platform operating surface. Provision organizations, roles and policies across a 51-phase governed platform.",
       },
       { property: "og:title", content: `${PLATFORM_NAME} Command Centre` },
       {
         property: "og:description",
-        content:
-          "Provision schools, roles and policies on the CoreGrid platform's Scholar runtime.",
+        content: "Provision organizations, roles and policies on the CoreGrid platform.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://universalschoolos.com/" },
@@ -36,7 +35,7 @@ function Index() {
   // Signed-in users (on the platform host, not a tenant site) → their dashboard
   useEffect(() => {
     if (!loading && role && !tenantSlug) {
-      navigate({ to: dashboardPathForRole(role), replace: true });
+      navigate({ to: scholarWorkspaceHome(role), replace: true });
     }
   }, [loading, role, tenantSlug, navigate]);
 

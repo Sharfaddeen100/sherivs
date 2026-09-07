@@ -1,7 +1,20 @@
+/**
+ * CoreGrid — workspace landing derivation tests.
+ *
+ * The legacy `dashboardPathForRole` role-switch was removed (de-hardcoding
+ * wave-4). Post-login landings are now derived from workspace chrome:
+ * Scholar R-001 contributions × authorized capabilities → home item.
+ * These tests pin the observable behaviour the legacy redirects provided so
+ * no consumer regresses.
+ */
 import { describe, expect, it } from "vitest";
-import { dashboardPathForRole, ROLE_LABEL, type AppRole } from "../../frontend/src/lib/roles";
+import type { AppRole } from "../../frontend/src/lib/roles";
+import {
+  scholarWorkspaceHome,
+  scholarWorkspaceLabelForRole,
+} from "../../frontend/src/lib/workspace-engine/nav-catalog";
 
-describe("dashboardPathForRole", () => {
+describe("workspace landing derivation (formerly dashboardPathForRole)", () => {
   const cases: Array<[AppRole, string]> = [
     ["super_admin", "/super-admin/dashboard"],
     ["hq", "/hq/dashboard"],
@@ -14,27 +27,25 @@ describe("dashboardPathForRole", () => {
     ["driver", "/driver/dashboard"],
   ];
 
-  it.each(cases)("routes %s -> %s", (role, path) => {
-    expect(dashboardPathForRole(role)).toBe(path);
+  it.each(cases)("resolves the workspace home for %s -> %s", (role, path) => {
+    expect(scholarWorkspaceHome(role)).toBe(path);
   });
 
-  it("has a label for every role that resolves to a dashboard", () => {
+  it("has a display label for every membership kind that resolves to a workspace", () => {
     for (const [role] of cases) {
-      expect(ROLE_LABEL[role]).toBeTruthy();
-      expect(dashboardPathForRole(role).startsWith("/")).toBe(true);
+      expect(scholarWorkspaceLabelForRole(role)).toBeTruthy();
+      expect(scholarWorkspaceHome(role).startsWith("/")).toBe(true);
     }
   });
 
-  it("returns a different dashboard when a user's role is changed", () => {
-    // Simulates: admin demotes themselves to teacher → realtime fires →
-    // app-context.tsx calls dashboardPathForRole(next.role) and redirects.
-    const before = dashboardPathForRole("admin");
-    const after = dashboardPathForRole("teacher");
+  it("redirects when a user's role changes (realtime bounce lands on the new home)", () => {
+    const before = scholarWorkspaceHome("admin");
+    const after = scholarWorkspaceHome("teacher");
     expect(before).not.toBe(after);
     expect(after).toBe("/teacher/dashboard");
   });
 
-  it("keeps principals on the admin dashboard (shared portal)", () => {
-    expect(dashboardPathForRole("principal")).toBe(dashboardPathForRole("admin"));
+  it("keeps principals on the org-admin workspace (shared admin chrome)", () => {
+    expect(scholarWorkspaceHome("principal")).toBe(scholarWorkspaceHome("admin"));
   });
 });
