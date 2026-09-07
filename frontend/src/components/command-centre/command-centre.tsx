@@ -32,14 +32,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  createInstitution,
-  institutionId,
-  type InstitutionType,
-  type OwnershipType,
-} from "@/lib/institution-core";
 import { createSecurityPolicy } from "@/lib/security-policy";
-import { ROLE_LABEL, type AppRole } from "@/lib/roles";
+import { createOrganizationOnboarding } from "@/lib/onboarding/onboarding-flow";
 import {
   PHASE_CATALOG,
   PHASE_LAYERS,
@@ -52,21 +46,33 @@ const DEMO_TENANT = "tenant:coregrid-demo" as TenantId;
 const DEMO_AUTHOR = "user:demo-administrator";
 const NOW = new Date().toISOString();
 
-const APP_ROLES: readonly AppRole[] = [
-  "super_admin",
-  "hq",
-  "admin",
-  "principal",
-  "teacher",
-  "bursar",
-  "parent",
-  "student",
-  "driver",
-] as const;
+/** Organization classes are DATA — any CoreGrid organization type may provision. */
+const ORG_TYPE_OPTIONS: readonly { value: string; label: string }[] = [
+  { value: "school", label: "School (education runtime)" },
+  { value: "university", label: "University / higher education" },
+  { value: "company", label: "Company / enterprise" },
+  { value: "government_agency", label: "Government agency" },
+  { value: "community_institution", label: "Community institution" },
+  { value: "non_profit", label: "Non-profit" },
+  { value: "network", label: "Network / group" },
+];
 
-type Step = "school" | "roles" | "policies" | "launch";
+/** Role CODES are data; authorization resolves in P08. No fixed portal roles. */
+const ORGANIZATION_ROLE_OPTIONS: readonly { code: string; label: string }[] = [
+  { code: "org_administrator", label: "Organization administrator" },
+  { code: "hr_officer", label: "HR officer" },
+  { code: "finance_officer", label: "Finance officer" },
+  { code: "operations_officer", label: "Operations officer" },
+  { code: "educator", label: "Educator" },
+  { code: "learner", label: "Learner" },
+  { code: "guardian", label: "Guardian" },
+  { code: "member_auditor", label: "Auditor" },
+  { code: "member_viewer", label: "Read-only member" },
+];
 
-interface CreatedSchool {
+type Step = "organization" | "roles" | "policies" | "launch";
+
+interface CreatedOrganization {
   id: string;
   name: string;
   type: string;
@@ -74,7 +80,7 @@ interface CreatedSchool {
   currency: string;
 }
 interface CreatedRole {
-  role: AppRole;
+  code: string;
   label: string;
 }
 interface CreatedPolicy {
@@ -84,13 +90,14 @@ interface CreatedPolicy {
 }
 
 const STEP_LABELS: Record<Step, { title: string; subtitle: string }> = {
-  school: {
-    title: "1 · Create School",
-    subtitle: "Provision a tenant institution through Phase 25 institutional contracts.",
+  organization: {
+    title: "1 · Create Organization",
+    subtitle:
+      "Provision a tenant organization through the Phase 25 onboarding pipeline (domain-free).",
   },
   roles: {
     title: "2 · Create Roles",
-    subtitle: "Define the school's role model (Phases 02 identity + 25 workforce).",
+    subtitle: "Define the organization's role model (role codes are data; P08 authorizes).",
   },
   policies: {
     title: "3 · Create Policies",
@@ -103,17 +110,16 @@ const STEP_LABELS: Record<Step, { title: string; subtitle: string }> = {
 };
 
 export function CommandCentre() {
-  const [step, setStep] = useState<Step>("school");
+  const [step, setStep] = useState<Step>("organization");
   const [error, setError] = useState<string | null>(null);
 
-  const [schools, setSchools] = useState<CreatedSchool[]>([]);
+  const [organizations, setOrganizations] = useState<CreatedOrganization[]>([]);
   const [roles, setRoles] = useState<CreatedRole[]>([]);
   const [policies, setPolicies] = useState<CreatedPolicy[]>([]);
 
-  const [schoolForm, setSchoolForm] = useState({
+  const [orgForm, setOrgForm] = useState({
     legalName: "",
-    institutionType: "secondary" as InstitutionType,
-    ownershipType: "private" as OwnershipType,
+    orgType: "school",
     country: "Nigeria",
     currency: "NGN",
     officialEmailDomain: "",
@@ -122,55 +128,34 @@ export function CommandCentre() {
     lga: "",
   });
 
-  const createSchool = () => {
+  const createOrganization = () => {
     setError(null);
-    const domains = schoolForm.officialEmailDomain
-      .split(",")
-      .map((d) => d.trim())
-      .filter(Boolean);
-    const result = createInstitution(
-      {
-        id: institutionId(`inst-${Date.now()}`),
-        tenantId: DEMO_TENANT,
-        profile: {
-          legalName: schoolForm.legalName,
-          displayName: schoolForm.legalName,
-          institutionType: schoolForm.institutionType,
-          ownershipType: schoolForm.ownershipType,
-          registrationRefs: [],
-          accreditationRefs: [],
-          country: schoolForm.country,
-          region: schoolForm.region || null,
-          stateProvince: schoolForm.stateProvince || null,
-          localGovernmentArea: schoolForm.lga || null,
-          officialEmailDomains: domains,
-          website: null,
-          currency: schoolForm.currency,
-          operatingDays: [],
-          operatingHours: null,
-        },
-        identityRef: "identity:institution:demo",
-        defaultPolicySetRef: "policy-set:default-admin",
-        initialAdministratorRef: DEMO_AUTHOR,
-        now: NOW,
-      },
-      NOW,
-    );
-    if (!result.ok) {
-      setError(result.error);
+    if (!orgForm.legalName.trim()) {
+      setError("A legal name is required to provision an organization.");
       return;
     }
-    setSchools((prev) => [
+    const onboarding = createOrganizationOnboarding({
+      onboardingId: `onb-org-${Date.now()}`,
+      organizationId: `org-${Date.now()}`,
+      orgType: orgForm.orgType,
+      actor: DEMO_AUTHOR,
+      createdAt: NOW,
+    });
+    if (!onboarding.ok) {
+      setError(onboarding.issues[0] ?? "Organization validation failed.");
+      return;
+    }
+    setOrganizations((prev) => [
       ...prev,
       {
-        id: result.institution.id,
-        name: result.profile.legalName,
-        type: schoolForm.institutionType,
-        country: schoolForm.country,
-        currency: schoolForm.currency,
+        id: onboarding.onboarding.organizationId,
+        name: orgForm.legalName.trim(),
+        type: onboarding.onboarding.orgType,
+        country: orgForm.country,
+        currency: orgForm.currency,
       },
     ]);
-    setSchoolForm((f) => ({
+    setOrgForm((f) => ({
       ...f,
       legalName: "",
       officialEmailDomain: "",
@@ -181,11 +166,13 @@ export function CommandCentre() {
     setStep("roles");
   };
 
-  const toggleRole = (role: AppRole) => {
+  const toggleRole = (code: string) => {
+    const option = ORGANIZATION_ROLE_OPTIONS.find((o) => o.code === code);
+    if (!option) return;
     setRoles((prev) =>
-      prev.some((r) => r.role === role)
-        ? prev.filter((r) => r.role !== role)
-        : [...prev, { role, label: ROLE_LABEL[role] }],
+      prev.some((r) => r.code === code)
+        ? prev.filter((r) => r.code !== code)
+        : [...prev, { code, label: option.label }],
     );
   };
 
@@ -223,11 +210,11 @@ export function CommandCentre() {
   };
 
   const resetWorkspace = () => {
-    setSchools([]);
+    setOrganizations([]);
     setRoles([]);
     setPolicies([]);
     setError(null);
-    setStep("school");
+    setStep("organization");
   };
 
   return (
@@ -265,7 +252,7 @@ export function CommandCentre() {
           <CapabilityPanel
             step={step}
             onJump={setStep}
-            schools={schools}
+            organizations={organizations}
             roles={roles}
             policies={policies}
           />
@@ -277,8 +264,8 @@ export function CommandCentre() {
                 {error}
               </div>
             ) : null}
-            {step === "school" ? (
-              <SchoolStep form={schoolForm} setForm={setSchoolForm} onCreate={createSchool} />
+            {step === "organization" ? (
+              <OrganizationStep form={orgForm} setForm={setOrgForm} onCreate={createOrganization} />
             ) : null}
             {step === "roles" ? (
               <RolesStep roles={roles} onToggle={toggleRole} onNext={() => setStep("policies")} />
@@ -293,7 +280,7 @@ export function CommandCentre() {
             ) : null}
             {step === "launch" ? (
               <LaunchStep
-                schools={schools}
+                organizations={organizations}
                 roles={roles}
                 policies={policies}
                 onReset={resetWorkspace}
@@ -310,13 +297,13 @@ export function CommandCentre() {
 function CapabilityPanel(props: {
   step: Step;
   onJump: (step: Step) => void;
-  schools: CreatedSchool[];
+  organizations: CreatedOrganization[];
   roles: CreatedRole[];
   policies: CreatedPolicy[];
 }) {
-  const { step, onJump, schools, roles, policies } = props;
+  const { step, onJump, organizations, roles, policies } = props;
   const items: { key: Step; label: string; icon: typeof Building2; count: number }[] = [
-    { key: "school", label: "Schools", icon: Landmark, count: schools.length },
+    { key: "organization", label: "Organizations", icon: Landmark, count: organizations.length },
     { key: "roles", label: "Roles", icon: Users, count: roles.length },
     { key: "policies", label: "Policies", icon: ShieldCheck, count: policies.length },
   ];
@@ -368,10 +355,10 @@ function CapabilityPanel(props: {
           <CardTitle className="text-sm">Provisioning pipeline</CardTitle>
         </CardHeader>
         <CardContent className="space-y-2 text-sm">
-          {(["school", "roles", "policies", "launch"] as const).map((s) => {
+          {(["organization", "roles", "policies", "launch"] as const).map((s) => {
             const active = step === s;
             const done =
-              (s === "school" && schools.length > 0) ||
+              (s === "organization" && organizations.length > 0) ||
               (s === "roles" && roles.length > 0) ||
               (s === "policies" && policies.length > 0) ||
               s === "launch";
@@ -405,11 +392,10 @@ function StepperHeader({ step }: { step: Step }) {
   );
 }
 
-function SchoolStep(props: {
+function OrganizationStep(props: {
   form: {
     legalName: string;
-    institutionType: InstitutionType;
-    ownershipType: OwnershipType;
+    orgType: string;
     country: string;
     currency: string;
     officialEmailDomain: string;
@@ -421,24 +407,7 @@ function SchoolStep(props: {
   onCreate: () => void;
 }) {
   const { form, setForm, onCreate } = props;
-  const institutionTypes: InstitutionType[] = [
-    "nursery",
-    "primary",
-    "secondary",
-    "senior_secondary",
-    "sixth_form",
-    "technical",
-  ];
-  const ownershipTypes: OwnershipType[] = [
-    "private",
-    "public",
-    "government",
-    "faith_based",
-    "community",
-    "board_governed",
-    "network",
-    "custom",
-  ];
+  const organizationTypes = ORG_TYPE_OPTIONS;
   const set = (key: keyof typeof form, value: string) =>
     setForm((prev) => ({ ...prev, [key]: value }));
   return (
@@ -446,11 +415,11 @@ function SchoolStep(props: {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Landmark className="size-4 text-muted-foreground" />
-          New institution
+          New organization
         </CardTitle>
         <CardDescription>
-          Validated by Phase 25 <code>createInstitution</code> — the same contract that governs
-          production provisioning.
+          Validated by the Phase 25 <code>createOrganizationOnboarding</code> pipeline — the same
+          domain-free contracts that govern production provisioning for every CoreGrid runtime.
         </CardDescription>
       </CardHeader>
       <CardContent className="grid gap-4 sm:grid-cols-2">
@@ -460,34 +429,19 @@ function SchoolStep(props: {
             id="legalName"
             value={form.legalName}
             onChange={(e) => set("legalName", e.target.value)}
-            placeholder="e.g. Greenfield International School"
+            placeholder="e.g. Greenfield Foundation"
           />
         </div>
         <div className="space-y-1.5">
-          <Label>Institution type *</Label>
-          <Select value={form.institutionType} onValueChange={(v) => set("institutionType", v)}>
+          <Label>Organization type *</Label>
+          <Select value={form.orgType} onValueChange={(v) => set("orgType", v)}>
             <SelectTrigger>
-              <SelectValue placeholder="Select type" />
+              <SelectValue placeholder="Select organization class" />
             </SelectTrigger>
             <SelectContent>
-              {institutionTypes.map((t) => (
-                <SelectItem key={t} value={t}>
-                  {t}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="space-y-1.5">
-          <Label>Ownership type</Label>
-          <Select value={form.ownershipType} onValueChange={(v) => set("ownershipType", v)}>
-            <SelectTrigger>
-              <SelectValue placeholder="Select ownership" />
-            </SelectTrigger>
-            <SelectContent>
-              {ownershipTypes.map((t) => (
-                <SelectItem key={t} value={t}>
-                  {t}
+              {organizationTypes.map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -516,7 +470,7 @@ function SchoolStep(props: {
             id="emailDomain"
             value={form.officialEmailDomain}
             onChange={(e) => set("officialEmailDomain", e.target.value)}
-            placeholder="greenfield.sch.ng (comma-separated for multiple)"
+            placeholder="hello@organization.example (comma-separated for multiple)"
           />
         </div>
         <div className="space-y-1.5">
@@ -549,7 +503,7 @@ function SchoolStep(props: {
         <div className="flex items-end">
           <Button onClick={onCreate} className="w-full">
             <Building2 className="size-4" />
-            Create school
+            Create organization
           </Button>
         </div>
       </CardContent>
@@ -559,7 +513,7 @@ function SchoolStep(props: {
 
 function RolesStep(props: {
   roles: CreatedRole[];
-  onToggle: (role: AppRole) => void;
+  onToggle: (code: string) => void;
   onNext: () => void;
 }) {
   const { roles, onToggle, onNext } = props;
@@ -571,26 +525,26 @@ function RolesStep(props: {
           Role model
         </CardTitle>
         <CardDescription>
-          Select the roles this school needs. Roles are derived from the Phase 02 identity model and
-          Phase 25 workforce contracts.
+          Select the roles this organization needs. Roles are derived from the Phase 02 identity
+          model and Phase 25 workforce contracts.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="flex flex-wrap gap-2">
-          {APP_ROLES.map((role) => {
-            const selected = roles.some((r) => r.role === role);
+          {ORGANIZATION_ROLE_OPTIONS.map((option) => {
+            const selected = roles.some((r) => r.code === option.code);
             return (
               <button
-                key={role}
+                key={option.code}
                 type="button"
-                onClick={() => onToggle(role)}
+                onClick={() => onToggle(option.code)}
                 className={`rounded-full border px-3 py-1.5 text-sm transition-colors ${
                   selected
                     ? "border-primary bg-primary/10 font-semibold text-primary"
                     : "border-border text-muted-foreground hover:bg-muted"
                 }`}
               >
-                {ROLE_LABEL[role]}
+                {option.label}
               </button>
             );
           })}
@@ -702,12 +656,12 @@ function PoliciesStep(props: {
 }
 
 function LaunchStep(props: {
-  schools: CreatedSchool[];
+  organizations: CreatedOrganization[];
   roles: CreatedRole[];
   policies: CreatedPolicy[];
   onReset: () => void;
 }) {
-  const { schools, roles, policies, onReset } = props;
+  const { organizations, roles, policies, onReset } = props;
   return (
     <Card>
       <CardHeader>
@@ -723,9 +677,9 @@ function LaunchStep(props: {
       <CardContent className="space-y-4">
         <div className="grid gap-3 sm:grid-cols-3">
           <SummaryCard
-            title="Schools"
+            title="Organizations"
             icon={<Landmark className="size-4" />}
-            rows={schools.map((s) => `${s.name} · ${s.country}`)}
+            rows={organizations.map((s) => `${s.name} · ${s.country}`)}
           />
           <SummaryCard
             title="Roles"
@@ -740,10 +694,10 @@ function LaunchStep(props: {
         </div>
         <div className="flex flex-wrap gap-2 pt-2">
           <Button variant="outline" onClick={onReset}>
-            Provision another school
+            Provision another organization
           </Button>
           <Button asChild>
-            <a href="/admin/dashboard">Enter school workspace</a>
+            <a href="/admin/dashboard">Enter organization workspace</a>
           </Button>
           <Button variant="ghost" asChild>
             <a href="/auth">Manage your account</a>
