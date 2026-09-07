@@ -14,6 +14,11 @@ import {
   type CreatableStaffRole,
   type CreateStaffAccountResult,
 } from "@/lib/staff-accounts.functions";
+import {
+  SCHOLAR_WORKFORCE_KINDS,
+  scholarWorkforceKindForMembershipKind,
+} from "@/lib/runtime/scholar-workforce";
+import { workforceFamilyLabel } from "@/lib/workforce-kinds";
 
 export const Route = createFileRoute("/_authenticated/admin/staff-accounts")({
   ssr: false,
@@ -24,16 +29,38 @@ export const Route = createFileRoute("/_authenticated/admin/staff-accounts")({
   ),
 });
 
-const ROLE_LABEL: Record<CreatableStaffRole, string> = {
-  admin: "School admin",
+const LEGACY_ROLE_FALLBACK: Record<CreatableStaffRole, string> = {
+  admin: "School administrator",
   principal: "Principal",
   teacher: "Teacher",
   bursar: "Bursar",
-  parent: "Parent",
+  parent: "Parent / guardian",
   student: "Student",
   driver: "Bus driver",
-  hq: "HQ",
+  hq: "HQ / platform operations",
 };
+
+/**
+ * Membership kinds are the coarse access signal; where a real African post
+ * exists in the Scholar workforce catalog (Head Teacher, Subject Teacher,
+ * Bursar, Driver...), that canonical title is preferred for display.
+ */
+function roleDisplayLabel(r: CreatableStaffRole): string {
+  return scholarWorkforceKindForMembershipKind(r)?.title ?? LEGACY_ROLE_FALLBACK[r] ?? r;
+}
+
+/** Catalog-driven position picker, grouped by workforce family. */
+const POSITION_GROUPS: Array<{ label: string; kinds: Array<{ code: string; title: string }> }> = [];
+for (const kind of SCHOLAR_WORKFORCE_KINDS) {
+  const last = POSITION_GROUPS[POSITION_GROUPS.length - 1];
+  if (!last || last.label !== workforceFamilyLabel(kind.family)) {
+    POSITION_GROUPS.push({ label: workforceFamilyLabel(kind.family), kinds: [] });
+  }
+  POSITION_GROUPS[POSITION_GROUPS.length - 1].kinds.push({
+    code: kind.kindCode,
+    title: kind.title,
+  });
+}
 
 function StaffAccountsPage() {
   const { school } = useApp();
@@ -44,6 +71,7 @@ function StaffAccountsPage() {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [role, setRole] = useState<CreatableStaffRole>("teacher");
+  const [positionCode, setPositionCode] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
@@ -75,6 +103,7 @@ function StaffAccountsPage() {
           fullName: fullName.trim(),
           email: email.trim(),
           role,
+          positionCode: positionCode.trim() ? positionCode.trim() : null,
           phone: phone.trim() || null,
           password: password.trim() || null,
         },
@@ -103,6 +132,8 @@ function StaffAccountsPage() {
         role,
         fullName: "Existing user",
         reused: true,
+        positionCode: null,
+        positionTitle: null,
       });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to reset password");
@@ -145,10 +176,33 @@ function StaffAccountsPage() {
             >
               {CREATABLE_STAFF_ROLES.map((r) => (
                 <option key={r} value={r}>
-                  {ROLE_LABEL[r]}
+                  {roleDisplayLabel(r)}
                 </option>
               ))}
             </select>
+          </Field>
+          <Field label="Position at the school (optional)">
+            <select
+              value={positionCode}
+              onChange={(e) => setPositionCode(e.target.value)}
+              className="uos-input"
+            >
+              <option value="">No position — staff only</option>
+              {POSITION_GROUPS.map((group) => (
+                <optgroup key={group.label} label={group.label}>
+                  {group.kinds.map((k) => (
+                    <option key={k.code} value={k.code}>
+                      {k.title}
+                    </option>
+                  ))}
+                </optgroup>
+              ))}
+            </select>
+            <p className="mt-1 text-[11px] text-muted-foreground">
+              The real post this person holds (Head of Department, Examination Officer, Lab
+              Technician...). Access still comes from the role above; the position records workforce
+              reality.
+            </p>
           </Field>
           <Field label="Phone (optional)">
             <input value={phone} onChange={(e) => setPhone(e.target.value)} className="uos-input" />
@@ -188,12 +242,18 @@ function StaffAccountsPage() {
                 <Copyable label="Password" value={issued.password} />
                 <div>
                   <span className="text-muted-foreground">Role:</span>{" "}
-                  <span className="font-medium">{ROLE_LABEL[issued.role]}</span>
+                  <span className="font-medium">{roleDisplayLabel(issued.role)}</span>
                 </div>
+                {issued.positionTitle && (
+                  <div>
+                    <span className="text-muted-foreground">Position:</span>{" "}
+                    <span className="font-medium">{issued.positionTitle}</span>
+                  </div>
+                )}
               </div>
               <p className="mt-2 text-[11px] text-muted-foreground">
-                These credentials work immediately on the sign-in page. This is the only
-                time the password is displayed — copy it now.
+                These credentials work immediately on the sign-in page. This is the only time the
+                password is displayed — copy it now.
               </p>
             </div>
           )}
@@ -214,7 +274,7 @@ function StaffAccountsPage() {
                   <div className="min-w-0">
                     <div className="truncate font-medium">{u.full_name}</div>
                     <div className="truncate text-xs text-muted-foreground">
-                      {u.email} · {u.role}
+                      {u.email} · {roleDisplayLabel(u.role as CreatableStaffRole)}
                     </div>
                   </div>
                   <button

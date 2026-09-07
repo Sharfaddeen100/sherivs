@@ -12,6 +12,9 @@ import {
   resolveRoleGate,
   type AccountAdministrationOutcome,
 } from "@/lib/security-role-gate";
+import { asKernelAdmin } from "@/lib/kernel-admin-client";
+import { SCHOLAR_RUNTIME_REF, scholarWorkforceKind } from "@/lib/runtime/scholar-workforce";
+import { WORKFORCE_KIND_CODES } from "@/lib/workforce-kinds";
 
 const CREATABLE_ROLES = [
   "admin",
@@ -38,6 +41,13 @@ const schema = z.object({
     .max(72)
     .optional()
     .nullable(),
+  /**
+   * Optional canonical workforce position (runtime:scholar catalog code).
+   * The position is workforce REALITY recorded against the cg_workforce_kind
+   * substrate; it is never an authorization input (Phase 08 stays the only
+   * authority). Membership kind (`role`) remains the coarse access signal.
+   */
+  positionCode: z.string().regex(WORKFORCE_KIND_CODES).optional().nullable(),
 });
 
 export type CreateStaffAccountResult = {
@@ -47,6 +57,8 @@ export type CreateStaffAccountResult = {
   role: CreatableStaffRole;
   fullName: string;
   reused: boolean;
+  positionCode: string | null;
+  positionTitle: string | null;
 };
 
 function randomPassword() {
@@ -132,6 +144,37 @@ export const createStaffAccount = createServerFn({ method: "POST" })
       if (uErr) throw new Error(uErr.message);
     }
 
+    // Record the canonical workforce position (workforce reality, advisory).
+    // Positions apply to staff accounts only — learners and guardians are
+    // Scholar ontology relationships (enrolls/guardians), never positions.
+    let positionTitle: string | null = null;
+    if (data.positionCode) {
+      if (!schoolId) throw new Error("A school scope is required to assign a position");
+      if (data.role === "parent" || data.role === "student") {
+        throw new Error(
+          "Positions apply to staff accounts only; parents and students are relationships.",
+        );
+      }
+      const kind = scholarWorkforceKind(data.positionCode);
+      if (!kind) throw new Error(`Unknown position kind "${data.positionCode}"`);
+      positionTitle = kind.title;
+      const kernelAdmin = asKernelAdmin(supabaseAdmin);
+      const { error: posErr } = await kernelAdmin.from("cg_workforce_position").insert({
+        tenant_ref: schoolId,
+        runtime_ref: SCHOLAR_RUNTIME_REF,
+        kind_code: kind.kindCode,
+        identity_ref: userId,
+        is_primary: true,
+        employment_type: "full_time",
+        started_on: new Date().toISOString().slice(0, 10),
+        status: "active",
+        attributes: {},
+      });
+      if (posErr) {
+        throw new Error(`Failed to record position "${kind.title}": ${posErr.message}`);
+      }
+    }
+
     return {
       userId,
       email: data.email,
@@ -139,6 +182,8 @@ export const createStaffAccount = createServerFn({ method: "POST" })
       role: data.role,
       fullName: data.fullName,
       reused,
+      positionCode: data.positionCode ?? null,
+      positionTitle,
     };
   });
 
