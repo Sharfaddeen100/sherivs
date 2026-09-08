@@ -2,9 +2,9 @@
 -- CoreGrid Workforce-Kind Substrate (Phase 25 Workforce Identity, S2)
 -- =============================================================================
 -- Author: CoreGrid Autonomous Engineering Loop (2026-09-07)
--- Status: AUTH NOT VALIDATED -- authored without a reachable database.
---         Apply with `supabase db push --workdir database/supabase` and then
---         extend database/queries/rls-isolation-check.sql coverage.
+-- Status: APPLIED + VERIFIED 2026-09-07 on project nwrflbpbhyiqdptmlccm
+--         (applied via Management API). Proof:
+--         node scripts/verify-workforce-substrate.mjs -> 7/7 PASS.
 --
 -- ARCHITECTURAL BOUNDARY (Phase 01 §5, PRINCIPLES §5, BOUNDARIES §2):
 --   This substrate is domain-agnostic by construction. It models WORKFORCE

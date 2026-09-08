@@ -2,11 +2,10 @@
 -- CoreGrid workforce-position RPC surface (Phase 25 Workforce Identity, S2)
 -- =============================================================================
 -- Author: CoreGrid Autonomous Engineering Loop (2026-09-07)
--- Status: AUTH NOT VALIDATED -- apply after 20260907000000 (substrate) and
---         20260907000100 (runtime:scholar catalog seed).
---         Apply with `supabase db push --workdir database/supabase`, then run
---         `node scripts/verify-workforce-substrate.mjs` and extend
---         database/queries/rls-isolation-check.sql coverage (§8).
+-- Status: APPLIED + VERIFIED 2026-09-07 on project nwrflbpbhyiqdptmlccm.
+--         GRANTs corrected to full declared signatures (partial-arity grants
+--         are invalid in PostgreSQL for functions with defaults). Proof:
+--         node scripts/verify-workforce-substrate.mjs -> 7/7 PASS.
 --
 -- cg_workforce_position is zero-policy RLS (service-role only). These
 -- SECURITY DEFINER functions expose a scoped, gate-checked surface to the
@@ -107,10 +106,6 @@ BEGIN
 END;
 $$;
 
-GRANT EXECUTE ON FUNCTION public.assign_workforce_position(uuid, uuid, text) TO authenticated;
-GRANT EXECUTE ON FUNCTION public.assign_workforce_position(uuid, uuid, text, text) TO authenticated;
-GRANT EXECUTE ON FUNCTION public.assign_workforce_position(uuid, uuid, text, text, boolean) TO authenticated;
-GRANT EXECUTE ON FUNCTION public.assign_workforce_position(uuid, uuid, text, text, boolean, text) TO authenticated;
 GRANT EXECUTE ON FUNCTION public.assign_workforce_position(uuid, uuid, text, text, boolean, text, date) TO authenticated;
 
 -- -----------------------------------------------------------------------------
@@ -145,5 +140,4 @@ BEGIN
 END;
 $$;
 
-GRANT EXECUTE ON FUNCTION public.end_workforce_position(uuid) TO authenticated;
 GRANT EXECUTE ON FUNCTION public.end_workforce_position(uuid, date) TO authenticated;

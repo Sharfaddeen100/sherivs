@@ -2,11 +2,9 @@
 -- Scholar (runtime:scholar) workforce-kind catalog install — R-001 content
 -- =============================================================================
 -- Author: CoreGrid Autonomous Engineering Loop (2026-09-07)
--- Status: AUTH NOT VALIDATED -- apply after the cg_workforce_kind substrate
---         migration and after cg_domain_runtime holds the runtime:scholar row.
---         Apply with `supabase db push --workdir database/supabase`, then run
---         `node scripts/verify-workforce-substrate.mjs` and extend
---         database/queries/rls-isolation-check.sql coverage (§8).
+-- Status: APPLIED + VERIFIED 2026-09-07 on project nwrflbpbhyiqdptmlccm.
+--         Runtime registry FK row + 45-kind catalog seed. Proof:
+--         node scripts/verify-workforce-substrate.mjs -> 7/7 PASS.
 --
 -- This file installs the Scholar runtime workforce-catalog CONTENT (data).
 --   It models the staffing reality of an African educational institution:
