@@ -13,6 +13,7 @@ import {
   type AccountAdministrationOutcome,
 } from "@/lib/security-role-gate";
 import { asKernelAdmin } from "@/lib/kernel-admin-client";
+import { identityDraft } from "@/lib/identity-registry";
 import { SCHOLAR_RUNTIME_REF, scholarWorkforceKind } from "@/lib/runtime/scholar-workforce";
 import { WORKFORCE_KIND_CODES } from "@/lib/workforce-kinds";
 
@@ -142,6 +143,31 @@ export const createStaffAccount = createServerFn({ method: "POST" })
         is_active: true,
       });
       if (uErr) throw new Error(uErr.message);
+    }
+
+    // Phase 02 closure: every new portal account is also registered as a
+    // canonical human identity in the universal registry (cg_identity) so the
+    // runtime account and the P02 identity model stay unified. Skipped on the
+    // reused (password-reset) path where the identity row already exists.
+    if (!reused && schoolId) {
+      const now = new Date().toISOString();
+      const identityRow = identityDraft(
+        {
+          kind: "human",
+          displayName: data.fullName,
+          externalSubject: userId,
+          tenantId: schoolId,
+          state: "active",
+          verified: true,
+        },
+        now,
+      );
+      const { error: identityErr } = await asKernelAdmin(supabaseAdmin)
+        .from("cg_identity")
+        .insert(identityRow);
+      if (identityErr) {
+        throw new Error(`Failed to register identity: ${identityErr.message}`);
+      }
     }
 
     // Record the canonical workforce position (workforce reality, advisory).

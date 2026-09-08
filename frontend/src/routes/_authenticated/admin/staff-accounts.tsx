@@ -19,6 +19,8 @@ import {
   scholarWorkforceKindForMembershipKind,
 } from "@/lib/runtime/scholar-workforce";
 import { workforceFamilyLabel } from "@/lib/workforce-kinds";
+import { listWorkforcePositions } from "@/lib/workforce-positions.functions";
+import { isOpenWorkforcePosition } from "@/lib/workforce-positions";
 
 export const Route = createFileRoute("/_authenticated/admin/staff-accounts")({
   ssr: false,
@@ -67,6 +69,7 @@ function StaffAccountsPage() {
   const qc = useQueryClient();
   const create = useServerFn(createStaffAccount);
   const reset = useServerFn(resetStaffPassword);
+  const listPositions = useServerFn(listWorkforcePositions);
 
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -92,6 +95,18 @@ function StaffAccountsPage() {
     },
   });
 
+  const positions = useQuery({
+    queryKey: ["workforce-positions", school?.id],
+    enabled: !!school?.id,
+    queryFn: async () => {
+      return listPositions({ data: {} });
+    },
+  });
+  const openPositionsFor = (userId: string) =>
+    (positions.data ?? []).filter(
+      (p) => p.identity_ref === userId && isOpenWorkforcePosition(p.status),
+    );
+
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     setBusy(true);
@@ -114,6 +129,7 @@ function StaffAccountsPage() {
       setPhone("");
       setPassword("");
       qc.invalidateQueries({ queryKey: ["staff-accounts"] });
+      qc.invalidateQueries({ queryKey: ["workforce-positions"] });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to create account");
     } finally {
@@ -276,6 +292,18 @@ function StaffAccountsPage() {
                     <div className="truncate text-xs text-muted-foreground">
                       {u.email} · {roleDisplayLabel(u.role as CreatableStaffRole)}
                     </div>
+                    {openPositionsFor(u.id).length > 0 && (
+                      <div className="mt-1.5 flex flex-wrap gap-1">
+                        {openPositionsFor(u.id).map((p) => (
+                          <span
+                            key={p.id}
+                            className="rounded-full border border-border bg-muted/30 px-2 py-0.5 text-[10px] font-medium"
+                          >
+                            {p.is_primary ? `★ ${p.kind_title}` : p.kind_title}
+                          </span>
+                        ))}
+                      </div>
+                    )}
                   </div>
                   <button
                     type="button"
