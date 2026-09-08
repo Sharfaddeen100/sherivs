@@ -4,6 +4,9 @@
 -- Author: CoreGrid Autonomous Engineering Loop (2026-09-07)
 -- Status: AUTH NOT VALIDATED -- apply after 20260907000000 (substrate) and
 --         20260907000100 (runtime:scholar catalog seed).
+--         Apply with `supabase db push --workdir database/supabase`, then run
+--         `node scripts/verify-workforce-substrate.mjs` and extend
+--         database/queries/rls-isolation-check.sql coverage (§8).
 --
 -- cg_workforce_position is zero-policy RLS (service-role only). These
 -- SECURITY DEFINER functions expose a scoped, gate-checked surface to the

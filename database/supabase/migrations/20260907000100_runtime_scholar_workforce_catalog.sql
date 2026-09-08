@@ -4,6 +4,9 @@
 -- Author: CoreGrid Autonomous Engineering Loop (2026-09-07)
 -- Status: AUTH NOT VALIDATED -- apply after the cg_workforce_kind substrate
 --         migration and after cg_domain_runtime holds the runtime:scholar row.
+--         Apply with `supabase db push --workdir database/supabase`, then run
+--         `node scripts/verify-workforce-substrate.mjs` and extend
+--         database/queries/rls-isolation-check.sql coverage (§8).
 --
 -- This file installs the Scholar runtime workforce-catalog CONTENT (data).
 --   It models the staffing reality of an African educational institution:
@@ -18,6 +21,19 @@
 --   authority_group below is an advisory hint for future capability
 --   installation waves — no database privilege reads it.
 -- =============================================================================
+
+-- Ensure the runtime registry row exists (FK target for the catalog seed).
+-- The full validated manifest is installed/refreshed by the register-runtime
+-- server function (upsert); this row only satisfies the catalog FK.
+INSERT INTO public.cg_domain_runtime (id, name, version, status, manifest)
+VALUES (
+  'runtime:scholar',
+  'Scholar — African Education Runtime',
+  '0.1.0',
+  'proposed',
+  '{}'::jsonb
+)
+ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO public.cg_workforce_kind
   (runtime_ref, kind_code, title, aliases, family, employment_class,

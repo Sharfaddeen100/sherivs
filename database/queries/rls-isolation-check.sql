@@ -109,4 +109,51 @@ WHERE NOT EXISTS (
     AND p.schemaname = 'public'
     AND p.tablename = t
 );
+
+-- 8. Workforce substrate (20260907000000/0100/0300): the catalog and position
+--    registry must be deny-by-default control-plane tables with the seeded
+--    runtime:scholar catalog present, structural guards installed, and the
+--    org-admin RPC surface present with scoped execute grants.
+SELECT format('FAIL: workforce table %I.%I has RLS DISABLED', schemaname, tablename) AS issue
+FROM pg_tables
+WHERE schemaname = 'public'
+  AND tablename IN ('cg_workforce_kind','cg_workforce_position')
+  AND NOT rowsecurity;
+
+SELECT format('FAIL: anon/authenticated has %s on public.%s', g.privilege_type, g.table_name) AS issue
+FROM information_schema.role_table_grants g
+WHERE g.table_schema = 'public'
+  AND g.table_name IN ('cg_workforce_kind','cg_workforce_position')
+  AND g.grantee IN ('anon','authenticated');
+
+SELECT format('FAIL: runtime:scholar catalog has %s kinds (expected 45)', count(*)) AS issue
+FROM public.cg_workforce_kind
+WHERE runtime_ref = 'runtime:scholar'
+HAVING count(*) <> 45;
+
+SELECT format('FAIL: workforce kind %I.%I lacks its single-primary partial index', 'cg_workforce_position', 'cg_workforce_position_one_primary_idx') AS issue
+FROM pg_indexes
+WHERE schemaname = 'public'
+  AND tablename = 'cg_workforce_position'
+  AND indexname = 'cg_workforce_position_one_primary_idx'
+HAVING count(*) = 0;
+
+SELECT format('FAIL: org-admin RPC %s missing', p.proname) AS issue
+FROM pg_proc p
+JOIN pg_namespace n ON n.oid = p.pronamespace
+WHERE n.nspname = 'public'
+  AND p.proname IN ('list_workforce_positions','assign_workforce_position','end_workforce_position')
+GROUP BY p.proname
+HAVING count(*) = 0;
+
+SELECT format('FAIL: authenticated lacks EXECUTE on public.%s', p.proname) AS issue
+FROM pg_proc p
+JOIN pg_namespace n ON n.oid = p.pronamespace
+LEFT JOIN information_schema.role_routine_grants g
+  ON g.specific_schema = n.nspname AND g.specific_name = p.oid::text AND g.grantee = 'authenticated'
+WHERE n.nspname = 'public'
+  AND p.proname IN ('list_workforce_positions','assign_workforce_position','end_workforce_position')
+GROUP BY p.proname, p.oid::text
+HAVING count(g.grantee) = 0;
+
 SELECT '✓ RLS isolation check passed' AS result;
