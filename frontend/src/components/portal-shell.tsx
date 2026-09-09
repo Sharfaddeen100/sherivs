@@ -3,6 +3,7 @@ import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { ChevronLeft, ChevronRight, Lock as LockIcon } from "lucide-react";
 import { SkeletonStatCard } from "@/components/skeleton";
 import { ErrorBoundary } from "@/components/error-boundary";
+import { PageTips } from "@/components/page-tips";
 import { cn } from "@/lib/utils";
 
 /**
@@ -27,9 +28,13 @@ export function PortalPage({
         style={{ animation: "slide-up 0.4s cubic-bezier(0.4,0,0.2,1) forwards" }}
       >
         <div className="w-full min-w-0 flex-1">
-          <h1 className="font-display text-xl font-bold tracking-tight break-words sm:text-3xl">{title}</h1>
+          <h1 className="font-display text-xl font-bold tracking-tight break-words sm:text-3xl">
+            {title}
+          </h1>
           {subtitle && (
-            <p className="mt-1.5 text-xs text-[color:var(--text-secondary)] break-words sm:mt-2 sm:text-sm">{subtitle}</p>
+            <p className="mt-1.5 text-xs text-[color:var(--text-secondary)] break-words sm:mt-2 sm:text-sm">
+              {subtitle}
+            </p>
           )}
         </div>
         {actions && (
@@ -38,6 +43,7 @@ export function PortalPage({
           </div>
         )}
       </header>
+      <PageTips />
       <div className="uos-stagger flex flex-col gap-4 sm:gap-6">
         <ErrorBoundary>{children}</ErrorBoundary>
       </div>
@@ -76,9 +82,9 @@ export function StatCard({
   hint?: string;
   isLoading?: boolean;
 }) {
-  if (isLoading) return <SkeletonStatCard />;
   const numeric = typeof value === "number" && Number.isFinite(value) ? value : null;
-  const display = useCountUp(numeric);
+  const display = useCountUp(numeric ?? 0);
+  if (isLoading) return <SkeletonStatCard />;
 
   const rendered =
     value === null || value === undefined || value === ""
@@ -89,9 +95,17 @@ export function StatCard({
 
   return (
     <div className="uos-stat min-w-0 p-3 sm:p-5">
-      <div className="truncate text-[11px] uppercase tracking-wide text-[color:var(--text-muted)] sm:text-xs">{label}</div>
-      <div className="mt-1.5 font-display text-xl font-bold tabular-nums truncate sm:mt-2 sm:text-3xl">{rendered}</div>
-      {hint && <div className="mt-1 truncate text-[11px] text-[color:var(--text-secondary)] sm:text-xs">{hint}</div>}
+      <div className="truncate text-[11px] uppercase tracking-wide text-[color:var(--text-muted)] sm:text-xs">
+        {label}
+      </div>
+      <div className="mt-1.5 font-display text-xl font-bold tabular-nums truncate sm:mt-2 sm:text-3xl">
+        {rendered}
+      </div>
+      {hint && (
+        <div className="mt-1 truncate text-[11px] text-[color:var(--text-secondary)] sm:text-xs">
+          {hint}
+        </div>
+      )}
     </div>
   );
 }
@@ -149,7 +163,9 @@ export function EmptyCard({
       <h3 className="font-display text-lg font-semibold">{title}</h3>
       <p className="mt-2 text-sm text-[color:var(--text-secondary)]">{body}</p>
       {cta && (
-        <p className="mt-4 text-xs uppercase tracking-widest text-[color:var(--text-muted)]">{cta}</p>
+        <p className="mt-4 text-xs uppercase tracking-widest text-[color:var(--text-muted)]">
+          {cta}
+        </p>
       )}
       {action && <div className="mt-5 flex justify-center">{action}</div>}
     </div>
@@ -160,21 +176,17 @@ export function EmptyCard({
  * RouteErrorBoundary — render-friendly error fallback that pairs with
  * TanStack Router's `errorComponent`. Logs the error and offers retry.
  */
-export function RouteErrorBoundary({
-  error,
-  reset,
-}: {
-  error: Error;
-  reset?: () => void;
-}) {
+export function RouteErrorBoundary({ error, reset }: { error: Error; reset?: () => void }) {
   // Useful in the browser console for diagnosis.
-  // eslint-disable-next-line no-console
+
   console.error("[route error]", error);
   const message = error?.message ?? "An unexpected error occurred.";
   return (
     <div className="mx-auto max-w-2xl px-4 py-12">
       <div className="uos-card p-8 text-center">
-        <div className="text-xs uppercase tracking-widest text-[color:var(--text-muted)]">Error</div>
+        <div className="text-xs uppercase tracking-widest text-[color:var(--text-muted)]">
+          Error
+        </div>
         <h2 className="mt-2 font-display text-xl font-bold">Something went wrong</h2>
         <p className="mt-2 text-sm text-[color:var(--text-secondary)] break-words">{message}</p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
@@ -187,7 +199,9 @@ export function RouteErrorBoundary({
             </button>
           )}
           <button
-            onClick={() => { if (typeof window !== "undefined") window.location.reload(); }}
+            onClick={() => {
+              if (typeof window !== "undefined") window.location.reload();
+            }}
             className="rounded-md border border-border px-4 py-2 text-sm font-semibold hover:bg-accent"
           >
             Reload page
@@ -281,17 +295,17 @@ export function SkeletonBlock({
   height?: string | number;
 }) {
   return (
-    <div
-      className={`uos-shimmer rounded-2xl ${className}`}
-      style={{ height }}
-      aria-hidden="true"
-    />
+    <div className={`uos-shimmer rounded-2xl ${className}`} style={{ height }} aria-hidden="true" />
   );
 }
 
 export function StatGridSkeleton({ count = 4 }: { count?: number }) {
   return (
-    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4" aria-busy="true" aria-label="Loading statistics">
+    <div
+      className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4"
+      aria-busy="true"
+      aria-label="Loading statistics"
+    >
       {Array.from({ length: count }).map((_, i) => (
         <div key={i} className="uos-stat p-5">
           <SkeletonLine width="40%" height="0.7rem" />
@@ -327,13 +341,7 @@ export function CardListSkeleton({
   );
 }
 
-export function TableSkeleton({
-  rows = 6,
-  columns = 4,
-}: {
-  rows?: number;
-  columns?: number;
-}) {
+export function TableSkeleton({ rows = 6, columns = 4 }: { rows?: number; columns?: number }) {
   return (
     <div className="uos-card overflow-hidden" aria-busy="true" aria-label="Loading table">
       <div
@@ -482,11 +490,7 @@ export function PortalPagination({
         Page {page} of {pageCount}
       </span>
       <div className="flex items-center gap-1">
-        <PagerBtn
-          onClick={() => goTo(page - 1)}
-          disabled={page <= 1}
-          ariaLabel="Previous page"
-        >
+        <PagerBtn onClick={() => goTo(page - 1)} disabled={page <= 1} ariaLabel="Previous page">
           <ChevronLeft className="size-4" />
         </PagerBtn>
         {windowed.map((p, idx) =>
@@ -515,11 +519,7 @@ export function PortalPagination({
             </button>
           ),
         )}
-        <PagerBtn
-          onClick={() => goTo(page + 1)}
-          disabled={page >= pageCount}
-          ariaLabel="Next page"
-        >
+        <PagerBtn onClick={() => goTo(page + 1)} disabled={page >= pageCount} ariaLabel="Next page">
           <ChevronRight className="size-4" />
         </PagerBtn>
       </div>
@@ -580,10 +580,12 @@ export function PageLink({
   return (
     <Link
       to="."
-      search={((prev: Record<string, unknown>) => ({
-        ...prev,
-        [PAGE_PARAM]: toPage === 1 ? undefined : toPage,
-      })) as never}
+      search={
+        ((prev: Record<string, unknown>) => ({
+          ...prev,
+          [PAGE_PARAM]: toPage === 1 ? undefined : toPage,
+        })) as never
+      }
       className={className}
     >
       {children}
