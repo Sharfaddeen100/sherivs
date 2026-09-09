@@ -5,6 +5,7 @@ import { describe, expect, it } from "vitest";
 import {
   DAY_PRESETS,
   recommendDayRoutines,
+  recommendSiteRoutines,
 } from "../../frontend/src/lib/scholar/day-recommendation";
 
 describe("school-day recommendation", () => {
@@ -64,5 +65,36 @@ describe("school-day recommendation", () => {
       windows: [DAY_PRESETS.fullDay_17],
     });
     expect(routines[0].blocks).toEqual([]);
+  });
+});
+
+describe("multi-campus site recommendation", () => {
+  it("resolves per-campus windows (different closing models + boarding)", () => {
+    const { sites, issues } = recommendSiteRoutines([
+      { campusRef: "main", name: "Main Campus", windows: [DAY_PRESETS.fullDay_17] },
+      {
+        campusRef: "annex",
+        name: "Annex Campus",
+        windows: [DAY_PRESETS.halfDay_12],
+        boardingPrep: { open: "18:00", close: "20:00" },
+      },
+    ]);
+    expect(issues).toEqual([]);
+    expect(sites).toHaveLength(2);
+    const main = sites.find((site) => site.campusRef === "main");
+    const annex = sites.find((site) => site.campusRef === "annex");
+    expect(main?.routines[0].close).toBe("17:00");
+    expect(annex?.routines).toHaveLength(2);
+    expect(annex?.routines[1].blocks[0]?.kind).toBe("boarding");
+  });
+
+  it("flags campuses without a reference and keeps valid campuses", () => {
+    const { sites, issues } = recommendSiteRoutines([
+      { campusRef: "", name: "Broken", windows: [DAY_PRESETS.fullDay_17] },
+      { campusRef: "valid", name: "Valid", windows: [DAY_PRESETS.fullDay_17] },
+    ]);
+    expect(issues.join(" ")).toContain("campusRef");
+    expect(sites).toHaveLength(1);
+    expect(sites[0].campusRef).toBe("valid");
   });
 });

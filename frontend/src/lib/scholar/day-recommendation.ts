@@ -85,3 +85,46 @@ export const DAY_PRESETS = {
   fullDay_17: { open: "07:30", close: "17:00" },
   extended_18: { open: "07:30", close: "18:00" },
 } as const satisfies Readonly<Record<string, AcademicWindow>>;
+
+export interface CampusSchoolWindow {
+  /** Stable campus/branch reference (multi-campus environment). */
+  campusRef: string;
+  /** Display name, e.g. "Main Campus". */
+  name: string;
+  windows: AcademicWindow[];
+  boardingPrep?: AcademicWindow | null;
+}
+
+export interface SiteRecommendation {
+  sites: Array<{ campusRef: string; routines: SchoolDayRoutine[] }>;
+  issues: string[];
+}
+
+/**
+ * Build validated routines for every campus of a multi-campus group. Each
+ * campus keeps its OWN windows — morning/afternoon shifts and boarding prep
+ * are resolved per campus so the timetable surface can bind sessions to a
+ * campus reference instead of assuming a single site.
+ */
+export function recommendSiteRoutines(sites: readonly CampusSchoolWindow[]): SiteRecommendation {
+  const issues: string[] = [];
+  const resolved: SiteRecommendation["sites"] = [];
+
+  for (const site of sites) {
+    if (!site.campusRef.trim()) {
+      issues.push("every campus requires a campusRef");
+      continue;
+    }
+    const recommendation = recommendDayRoutines({
+      name: site.name,
+      windows: site.windows,
+      boardingPrep: site.boardingPrep ?? null,
+    });
+    for (const issue of recommendation.issues) {
+      issues.push(`[${site.campusRef}] ${issue}`);
+    }
+    resolved.push({ campusRef: site.campusRef, routines: recommendation.routines });
+  }
+
+  return { sites: resolved, issues };
+}
