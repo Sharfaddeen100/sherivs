@@ -20,6 +20,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { useModKeyLabel } from "@/lib/kbd";
 import { PLATFORM_NAME, SCHOLAR_RUNTIME_NAME } from "@/lib/platform";
 import { WorkspaceBottomNav } from "@/components/mobile-bottom-nav";
+import { OfflineBanner } from "@/components/offline-banner";
 import {
   SCHOLAR_NAV_CONTRIBUTIONS,
   scholarCapabilitiesForPortal,
@@ -141,6 +142,7 @@ function AuthenticatedLayout() {
         {role && <PortalSidebar sections={sidebarSections} />}
         <MobileSwipeToOpen />
         <div className="flex-1 flex flex-col min-w-0 overflow-x-hidden portal-content">
+          <OfflineBanner />
           <header className="border-b border-border">
             <div className="flex items-center justify-between px-4 py-2 gap-3">
               <div className="flex items-center gap-2 min-w-0">
