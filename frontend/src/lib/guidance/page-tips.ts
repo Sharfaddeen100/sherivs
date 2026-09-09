@@ -62,6 +62,14 @@ export const PAGE_TIPS: ReadonlyArray<PageTips> = [
     tips: ["Catalog books, track borrowings and manage reading rooms from one place."],
   },
   {
+    patterns: ["/admin/school-profile"],
+    title: "School profile & templates",
+    tips: [
+      "Tick what your school ACTUALLY runs — CoreGrid recommends matching templates but never forces any feature on you.",
+      "A template is only a starting point; every choice stays reversible and your own mix is always supported.",
+    ],
+  },
+  {
     patterns: ["/admin"],
     title: "Administration",
     tips: [

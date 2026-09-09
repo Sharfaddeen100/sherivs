@@ -78,6 +78,7 @@ import { Route as AuthenticatedAdminNewsRouteImport } from './routes/_authentica
 import { Route as AuthenticatedAdminOperationsRouteImport } from './routes/_authenticated/admin/operations'
 import { Route as AuthenticatedAdminPayrollRouteImport } from './routes/_authenticated/admin/payroll'
 import { Route as AuthenticatedAdminReportCardsRouteImport } from './routes/_authenticated/admin/report-cards'
+import { Route as AuthenticatedAdminSchoolProfileRouteImport } from './routes/_authenticated/admin/school-profile'
 import { Route as AuthenticatedAdminSettingsRouteImport } from './routes/_authenticated/admin/settings'
 import { Route as AuthenticatedAdminStaffAccountsRouteImport } from './routes/_authenticated/admin/staff-accounts'
 import { Route as AuthenticatedAdminStudentIntelligenceRouteImport } from './routes/_authenticated/admin/student-intelligence'
@@ -530,6 +531,12 @@ const AuthenticatedAdminReportCardsRoute =
     path: '/report-cards',
     getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
+const AuthenticatedAdminSchoolProfileRoute =
+  AuthenticatedAdminSchoolProfileRouteImport.update({
+    id: '/school-profile',
+    path: '/school-profile',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
 const AuthenticatedAdminSettingsRoute =
   AuthenticatedAdminSettingsRouteImport.update({
     id: '/settings',
@@ -968,6 +975,7 @@ export interface FileRoutesByFullPath {
   '/admin/operations': typeof AuthenticatedAdminOperationsRoute
   '/admin/payroll': typeof AuthenticatedAdminPayrollRoute
   '/admin/report-cards': typeof AuthenticatedAdminReportCardsRoute
+  '/admin/school-profile': typeof AuthenticatedAdminSchoolProfileRoute
   '/admin/settings': typeof AuthenticatedAdminSettingsRoute
   '/admin/staff-accounts': typeof AuthenticatedAdminStaffAccountsRoute
   '/admin/student-intelligence': typeof AuthenticatedAdminStudentIntelligenceRoute
@@ -1100,6 +1108,7 @@ export interface FileRoutesByTo {
   '/admin/operations': typeof AuthenticatedAdminOperationsRoute
   '/admin/payroll': typeof AuthenticatedAdminPayrollRoute
   '/admin/report-cards': typeof AuthenticatedAdminReportCardsRoute
+  '/admin/school-profile': typeof AuthenticatedAdminSchoolProfileRoute
   '/admin/settings': typeof AuthenticatedAdminSettingsRoute
   '/admin/staff-accounts': typeof AuthenticatedAdminStaffAccountsRoute
   '/admin/student-intelligence': typeof AuthenticatedAdminStudentIntelligenceRoute
@@ -1234,6 +1243,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/operations': typeof AuthenticatedAdminOperationsRoute
   '/_authenticated/admin/payroll': typeof AuthenticatedAdminPayrollRoute
   '/_authenticated/admin/report-cards': typeof AuthenticatedAdminReportCardsRoute
+  '/_authenticated/admin/school-profile': typeof AuthenticatedAdminSchoolProfileRoute
   '/_authenticated/admin/settings': typeof AuthenticatedAdminSettingsRoute
   '/_authenticated/admin/staff-accounts': typeof AuthenticatedAdminStaffAccountsRoute
   '/_authenticated/admin/student-intelligence': typeof AuthenticatedAdminStudentIntelligenceRoute
@@ -1368,6 +1378,7 @@ export interface FileRouteTypes {
     | '/admin/operations'
     | '/admin/payroll'
     | '/admin/report-cards'
+    | '/admin/school-profile'
     | '/admin/settings'
     | '/admin/staff-accounts'
     | '/admin/student-intelligence'
@@ -1500,6 +1511,7 @@ export interface FileRouteTypes {
     | '/admin/operations'
     | '/admin/payroll'
     | '/admin/report-cards'
+    | '/admin/school-profile'
     | '/admin/settings'
     | '/admin/staff-accounts'
     | '/admin/student-intelligence'
@@ -1633,6 +1645,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/operations'
     | '/_authenticated/admin/payroll'
     | '/_authenticated/admin/report-cards'
+    | '/_authenticated/admin/school-profile'
     | '/_authenticated/admin/settings'
     | '/_authenticated/admin/staff-accounts'
     | '/_authenticated/admin/student-intelligence'
@@ -2200,6 +2213,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminReportCardsRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
+    '/_authenticated/admin/school-profile': {
+      id: '/_authenticated/admin/school-profile'
+      path: '/school-profile'
+      fullPath: '/admin/school-profile'
+      preLoaderRoute: typeof AuthenticatedAdminSchoolProfileRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
     '/_authenticated/admin/settings': {
       id: '/_authenticated/admin/settings'
       path: '/settings'
@@ -2682,6 +2702,7 @@ interface AuthenticatedAdminRouteRouteChildren {
   AuthenticatedAdminOperationsRoute: typeof AuthenticatedAdminOperationsRoute
   AuthenticatedAdminPayrollRoute: typeof AuthenticatedAdminPayrollRoute
   AuthenticatedAdminReportCardsRoute: typeof AuthenticatedAdminReportCardsRoute
+  AuthenticatedAdminSchoolProfileRoute: typeof AuthenticatedAdminSchoolProfileRoute
   AuthenticatedAdminSettingsRoute: typeof AuthenticatedAdminSettingsRoute
   AuthenticatedAdminStaffAccountsRoute: typeof AuthenticatedAdminStaffAccountsRoute
   AuthenticatedAdminStudentIntelligenceRoute: typeof AuthenticatedAdminStudentIntelligenceRoute
@@ -2751,6 +2772,7 @@ const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren
     AuthenticatedAdminOperationsRoute: AuthenticatedAdminOperationsRoute,
     AuthenticatedAdminPayrollRoute: AuthenticatedAdminPayrollRoute,
     AuthenticatedAdminReportCardsRoute: AuthenticatedAdminReportCardsRoute,
+    AuthenticatedAdminSchoolProfileRoute: AuthenticatedAdminSchoolProfileRoute,
     AuthenticatedAdminSettingsRoute: AuthenticatedAdminSettingsRoute,
     AuthenticatedAdminStaffAccountsRoute: AuthenticatedAdminStaffAccountsRoute,
     AuthenticatedAdminStudentIntelligenceRoute:

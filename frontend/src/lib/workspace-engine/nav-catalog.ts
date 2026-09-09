@@ -1110,6 +1110,14 @@ export const SCHOLAR_NAV_CONTRIBUTIONS: readonly NavContribution[] = [
         capabilities: ["r001:org_admin.settings"],
         orderHint: 4,
       },
+      {
+        key: "r001.org_admin.school_profile",
+        label: "School profile & templates",
+        iconKey: "settings",
+        url: "/admin/school-profile",
+        capabilities: ["r001:org_admin.school_profile"],
+        orderHint: 5,
+      },
     ],
   },
 ];
