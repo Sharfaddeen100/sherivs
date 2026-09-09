@@ -31,6 +31,7 @@ import {
   type ScholarPortalKind,
 } from "@/lib/workspace-engine/nav-catalog";
 import { hasNavDestinations, resolveWorkspaceNav } from "@/lib/workspace-engine/navigation";
+import { resolveMemberWorkspaceExperience } from "@/lib/experience/workspace-experience";
 import { scholarWorkspaceLabelForMember } from "@/lib/runtime/scholar-workforce-nav";
 import { getMyPrimaryWorkforcePosition } from "@/lib/workforce-positions.functions";
 import { useQuery } from "@tanstack/react-query";
@@ -117,6 +118,10 @@ function AuthenticatedLayout() {
         scholarWorkspaceLabelForRole(role),
       )
     : "Workspace";
+  const experience = resolveMemberWorkspaceExperience({
+    hour: new Date().getHours(),
+    memberLabel,
+  });
 
   // Workspace-dynamic chrome: the mobile quick-nav is derived from the active
   // runtime's contribution data + the viewer's authorized capabilities — no
@@ -158,7 +163,7 @@ function AuthenticatedLayout() {
                       {school?.name ?? `${PLATFORM_NAME} · ${SCHOLAR_RUNTIME_NAME}`}
                     </div>
                     <div className="text-[10px] uppercase tracking-widest text-muted-foreground">
-                      {memberLabel}
+                      {experience.roleTitle}
                     </div>
                   </div>
                 </Link>
@@ -183,7 +188,10 @@ function AuthenticatedLayout() {
                   <SearchIcon className="size-4" />
                 </button>
                 <ThemeToggle className="hidden xs:inline-flex" />
-                <span className="hidden sm:inline text-muted-foreground">{displayName}</span>
+                <span className="hidden sm:inline text-xs text-muted-foreground">
+                  {experience.greeting},{" "}
+                  <span className="font-medium text-foreground">{displayName}</span>
+                </span>
                 <button
                   onClick={async () => {
                     await signOut();
