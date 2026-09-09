@@ -95,4 +95,22 @@ export const endWorkforcePosition = createServerFn({ method: "POST" })
     return { ended: ended === true };
   });
 
+/**
+ * Self-scoped read: the authenticated member's OWN active primary position.
+ * No school-admin scope required — the RPC enforces identity_ref = auth.uid()
+ * inside the security-definer function. Returns null when the member has no
+ * primary position (or is a learner/parent/guardian).
+ */
+export const getMyPrimaryWorkforcePosition = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .validator((input: unknown) => z.object({}).parse(input))
+  .handler(async ({ context }): Promise<WorkforcePositionView | null> => {
+    const { data, error } = await asKernelAdmin(context.supabase).rpc(
+      "get_my_primary_workforce_position",
+    );
+    if (error) throw new Error(error.message);
+    const row = Array.isArray(data) && data.length > 0 ? data[0] : null;
+    return row ? parseWorkforcePositionView(row) : null;
+  });
+
 export type AssignWorkforcePositionResult = Awaited<ReturnType<typeof assignWorkforcePosition>>;

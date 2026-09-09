@@ -125,5 +125,14 @@ check(
   rpcProbe.error?.message ?? "ok",
 );
 
+// 6. Self-scoped position RPC (20260907000400): callable, returns no rows for
+//    the service role (no auth.uid()), proving zero data exposure.
+const selfProbe = await svc.rpc("get_my_primary_workforce_position");
+check(
+  "get_my_primary_workforce_position callable (20260907000400 applied)",
+  !selfProbe.error && Array.isArray(selfProbe.data) && selfProbe.data.length === 0,
+  selfProbe.error?.message ?? "ok (service role has no uid)",
+);
+
 console.log(failed ? "RESULT: FAILURES PRESENT" : "RESULT: ALL CHECKS PASSED");
 process.exit(failed ? 1 : 0);

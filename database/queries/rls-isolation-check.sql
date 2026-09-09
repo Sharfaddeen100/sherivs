@@ -142,7 +142,10 @@ SELECT format('FAIL: org-admin RPC %s missing', p.proname) AS issue
 FROM pg_proc p
 JOIN pg_namespace n ON n.oid = p.pronamespace
 WHERE n.nspname = 'public'
-  AND p.proname IN ('list_workforce_positions','assign_workforce_position','end_workforce_position')
+  AND p.proname IN (
+    'list_workforce_positions','assign_workforce_position',
+    'end_workforce_position','get_my_primary_workforce_position'
+  )
 GROUP BY p.proname
 HAVING count(*) = 0;
 
@@ -152,7 +155,10 @@ JOIN pg_namespace n ON n.oid = p.pronamespace
 LEFT JOIN information_schema.role_routine_grants g
   ON g.specific_schema = n.nspname AND g.specific_name = p.oid::text AND g.grantee = 'authenticated'
 WHERE n.nspname = 'public'
-  AND p.proname IN ('list_workforce_positions','assign_workforce_position','end_workforce_position')
+  AND p.proname IN (
+    'list_workforce_positions','assign_workforce_position',
+    'end_workforce_position','get_my_primary_workforce_position'
+  )
 GROUP BY p.proname, p.oid::text
 HAVING count(g.grantee) = 0;
 

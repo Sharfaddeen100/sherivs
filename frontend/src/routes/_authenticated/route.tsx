@@ -29,6 +29,10 @@ import {
   type ScholarPortalKind,
 } from "@/lib/workspace-engine/nav-catalog";
 import { hasNavDestinations, resolveWorkspaceNav } from "@/lib/workspace-engine/navigation";
+import { scholarWorkspaceLabelForMember } from "@/lib/runtime/scholar-workforce-nav";
+import { getMyPrimaryWorkforcePosition } from "@/lib/workforce-positions.functions";
+import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
 
 export const Route = createFileRoute("/_authenticated")({
   ssr: false,
@@ -59,6 +63,15 @@ function AuthenticatedLayout() {
   const { profile, superAdmin, school, role, loading, signOut } = useApp();
   const navigate = useNavigate();
   const modKey = useModKeyLabel();
+  const getMyPrimaryPosition = useServerFn(getMyPrimaryWorkforcePosition);
+
+  const myPosition = useQuery({
+    queryKey: ["my-primary-position", profile?.id, role],
+    enabled: !!profile?.id && !!role && role !== "parent" && role !== "student",
+    queryFn: async () => {
+      return getMyPrimaryPosition({ data: {} });
+    },
+  });
 
   // Keep the stored push subscription fresh for users who already opted in.
   useEffect(() => {
@@ -96,6 +109,12 @@ function AuthenticatedLayout() {
 
   const displayName = profile?.full_name ?? superAdmin?.full_name ?? "User";
   const dashHref = role ? scholarWorkspaceHome(role) : "/";
+  const memberLabel = role
+    ? scholarWorkspaceLabelForMember(
+        myPosition.data?.kind_code ?? null,
+        scholarWorkspaceLabelForRole(role),
+      )
+    : "Workspace";
 
   // Workspace-dynamic chrome: the mobile quick-nav is derived from the active
   // runtime's contribution data + the viewer's authorized capabilities — no
@@ -135,7 +154,7 @@ function AuthenticatedLayout() {
                       {school?.name ?? `${PLATFORM_NAME} · ${SCHOLAR_RUNTIME_NAME}`}
                     </div>
                     <div className="text-[10px] uppercase tracking-widest text-muted-foreground">
-                      {role ? scholarWorkspaceLabelForRole(role) : "Workspace"}
+                      {memberLabel}
                     </div>
                   </div>
                 </Link>
