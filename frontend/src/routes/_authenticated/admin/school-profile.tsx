@@ -1,7 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
 import { PortalPage } from "@/components/portal-shell";
 import { RoleGuard } from "@/components/role-guard";
+import { getOrganizationProfile, saveOrganizationProfile } from "@/lib/org-profile.functions";
 import { recommendTemplates } from "@/lib/onboarding/template-engine";
 import {
   SCHOLAR_SCHOOL_TEMPLATES,
@@ -36,6 +39,47 @@ export const Route = createFileRoute("/_authenticated/admin/school-profile")({
 function SchoolProfilePage() {
   const [selected, setSelected] = useState<ReadonlySet<string>>(new Set());
   const [closing, setClosing] = useState<ClosingPreset>("fullDay_17");
+  const qc = useQueryClient();
+  const getProfile = useServerFn(getOrganizationProfile);
+  const saveProfile = useServerFn(saveOrganizationProfile);
+  const [profileBusy, setProfileBusy] = useState(false);
+  const [profileMsg, setProfileMsg] = useState<string | null>(null);
+  const profileApplied = useRef(false);
+
+  const profileQuery = useQuery({
+    queryKey: ["org-school-profile"],
+    queryFn: async () => getProfile({ data: {} }),
+  });
+
+  useEffect(() => {
+    if (profileQuery.data && !profileApplied.current) {
+      setSelected(new Set(profileQuery.data.payload.features));
+      setClosing(profileQuery.data.payload.closingPreset);
+      profileApplied.current = true;
+    }
+  }, [profileQuery.data]);
+
+  async function handleSave() {
+    setProfileBusy(true);
+    setProfileMsg(null);
+    try {
+      await saveProfile({
+        data: {
+          profile: {
+            version: 1,
+            features: [...selected],
+            closingPreset: closing,
+          },
+        },
+      });
+      setProfileMsg("Saved — this profile will drive every surface for your school.");
+      qc.invalidateQueries({ queryKey: ["org-school-profile"] });
+    } catch (err) {
+      setProfileMsg(err instanceof Error ? err.message : "Save failed");
+    } finally {
+      setProfileBusy(false);
+    }
+  }
 
   const groups = useMemo(() => {
     const map = new Map<string, TemplateFeature[]>();
@@ -189,6 +233,33 @@ function SchoolProfilePage() {
           {boarding && (
             <span className="rounded-full bg-muted/40 px-2 py-1 text-[10px] font-medium text-muted-foreground">
               Boarding evening study on
+            </span>
+          )}
+        </div>
+
+        <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-border pt-3">
+          <button
+            type="button"
+            disabled={profileBusy}
+            onClick={() => void handleSave()}
+            className="rounded-md bg-primary px-3.5 py-1.5 text-xs font-semibold text-primary-foreground disabled:opacity-60"
+          >
+            {profileBusy ? "Saving…" : "Save school profile"}
+          </button>
+          {profileMsg && (
+            <span
+              className={
+                profileMsg.startsWith("Saved")
+                  ? "text-[11px] text-emerald-600 dark:text-emerald-400"
+                  : "text-[11px] text-destructive"
+              }
+            >
+              {profileMsg}
+            </span>
+          )}
+          {profileQuery.data && (
+            <span className="text-[10px] text-muted-foreground">
+              Loaded from a previous save — keep editing and save again.
             </span>
           )}
         </div>
