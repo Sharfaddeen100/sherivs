@@ -126,10 +126,10 @@ WHERE g.table_schema = 'public'
   AND g.table_name IN ('cg_workforce_kind','cg_workforce_position')
   AND g.grantee IN ('anon','authenticated');
 
-SELECT format('FAIL: runtime:scholar catalog has %s kinds (expected 45)', count(*)) AS issue
+SELECT format('FAIL: runtime:scholar catalog has %s kinds (expected 71)', count(*)) AS issue
 FROM public.cg_workforce_kind
 WHERE runtime_ref = 'runtime:scholar'
-HAVING count(*) <> 45;
+HAVING count(*) <> 71;
 
 SELECT format('FAIL: workforce kind %I.%I lacks its single-primary partial index', 'cg_workforce_position', 'cg_workforce_position_one_primary_idx') AS issue
 FROM pg_indexes

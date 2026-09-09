@@ -40,6 +40,13 @@ const SEED_SQL_PATH = join(
   "migrations",
   "20260907000100_runtime_scholar_workforce_catalog.sql",
 );
+const ECOSYSTEM_SEED_SQL_PATH = join(
+  ROOT,
+  "database",
+  "supabase",
+  "migrations",
+  "20260907000600_runtime_scholar_workforce_ecosystem_extension.sql",
+);
 
 describe("workforce-kind domain-neutral contract", () => {
   it("accepts a well-formed row", () => {
@@ -170,6 +177,10 @@ describe("Scholar (R-001) workforce catalog — African educational reality", ()
       "maintenance_technician",
       "chaplain",
       "sports_officer",
+      "madrassa_instructor",
+      "vocational_skills_coordinator",
+      "campus_director",
+      "shift_coordinator",
     ]) {
       expect(codes.has(expected)).toBe(true);
     }
@@ -198,12 +209,14 @@ describe("Scholar (R-001) workforce catalog — African educational reality", ()
 });
 
 describe("Scholar workforce catalog ↔ seeded database parity", () => {
-  it("matches the seed migration code-for-code and row-for-row", () => {
+  it("matches the seed migrations code-for-code and row-for-row (71 kinds)", () => {
     const sql = readFileSync(SEED_SQL_PATH, "utf8");
-    const seedCodes = new Set(
-      Array.from(sql.matchAll(/\('runtime:scholar',\s+'([a-z0-9_]+)',/g), (m) => m[1]),
-    );
-    expect(seedCodes.size).toBeGreaterThanOrEqual(30);
+    const ecosystem = readFileSync(ECOSYSTEM_SEED_SQL_PATH, "utf8");
+    const seedCodes = new Set([
+      ...Array.from(sql.matchAll(/\('runtime:scholar',\s+'([a-z0-9_]+)',/g), (m) => m[1]),
+      ...Array.from(ecosystem.matchAll(/\('runtime:scholar',\s+'([a-z0-9_]+)',/g), (m) => m[1]),
+    ]);
+    expect(seedCodes.size).toBeGreaterThanOrEqual(70);
     expect(seedCodes).toEqual(SCHOLAR_WORKFORCE_CODE_SET);
   });
 
