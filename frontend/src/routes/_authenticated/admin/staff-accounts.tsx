@@ -19,8 +19,12 @@ import {
   scholarWorkforceKindForMembershipKind,
 } from "@/lib/runtime/scholar-workforce";
 import { workforceFamilyLabel } from "@/lib/workforce-kinds";
-import { listWorkforcePositions } from "@/lib/workforce-positions.functions";
-import { isOpenWorkforcePosition } from "@/lib/workforce-positions";
+import {
+  assignWorkforcePosition,
+  endWorkforcePosition,
+  listWorkforcePositions,
+} from "@/lib/workforce-positions.functions";
+import { isOpenWorkforcePosition, type WorkforcePositionView } from "@/lib/workforce-positions";
 
 export const Route = createFileRoute("/_authenticated/admin/staff-accounts")({
   ssr: false,
@@ -292,18 +296,7 @@ function StaffAccountsPage() {
                     <div className="truncate text-xs text-muted-foreground">
                       {u.email} · {roleDisplayLabel(u.role as CreatableStaffRole)}
                     </div>
-                    {openPositionsFor(u.id).length > 0 && (
-                      <div className="mt-1.5 flex flex-wrap gap-1">
-                        {openPositionsFor(u.id).map((p) => (
-                          <span
-                            key={p.id}
-                            className="rounded-full border border-border bg-muted/30 px-2 py-0.5 text-[10px] font-medium"
-                          >
-                            {p.is_primary ? `★ ${p.kind_title}` : p.kind_title}
-                          </span>
-                        ))}
-                      </div>
-                    )}
+                    <PositionManager userId={u.id} positionRows={openPositionsFor(u.id)} />
                   </div>
                   <button
                     type="button"
@@ -350,6 +343,115 @@ function Copyable({ label, value }: { label: string; value: string }) {
       >
         {copied ? "Copied" : "Copy"}
       </button>
+    </div>
+  );
+}
+
+/**
+ * Per-account position manager: shows the member's open positions (★ primary)
+ * with one-tap end, plus a catalog-driven picker to assign an additional real
+ * post. Writes go through the org-admin RPCs (assign/end), which re-derive the
+ * tenant server-side; the UI only reflects workforce reality.
+ */
+function PositionManager({
+  userId,
+  positionRows,
+}: {
+  userId: string;
+  positionRows: WorkforcePositionView[];
+}) {
+  const qc = useQueryClient();
+  const assign = useServerFn(assignWorkforcePosition);
+  const end = useServerFn(endWorkforcePosition);
+  const [code, setCode] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const refresh = () => {
+    qc.invalidateQueries({ queryKey: ["workforce-positions"] });
+    qc.invalidateQueries({ queryKey: ["my-primary-position"] });
+  };
+
+  async function handleAssign() {
+    if (!code) return;
+    setBusy(true);
+    setError(null);
+    try {
+      await assign({ data: { userId, kindCode: code } });
+      setCode("");
+      refresh();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to assign position");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function handleEnd(positionId: string) {
+    setBusy(true);
+    setError(null);
+    try {
+      await end({ data: { positionId } });
+      refresh();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to end position");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <div className="mt-1.5 space-y-1.5">
+      {positionRows.length > 0 && (
+        <div className="flex flex-wrap gap-1">
+          {positionRows.map((p) => (
+            <span
+              key={p.id}
+              className="inline-flex items-center gap-1 rounded-full border border-border bg-muted/30 px-2 py-0.5 text-[10px] font-medium"
+            >
+              {p.is_primary ? `★ ${p.kind_title}` : p.kind_title}
+              <button
+                type="button"
+                aria-label={`End ${p.kind_title}`}
+                title="End this position"
+                disabled={busy}
+                onClick={() => void handleEnd(p.id)}
+                className="leading-none text-muted-foreground hover:text-destructive"
+              >
+                ×
+              </button>
+            </span>
+          ))}
+        </div>
+      )}
+      <div className="flex items-center gap-1.5">
+        <select
+          value={code}
+          onChange={(e) => setCode(e.target.value)}
+          aria-label="Add a position"
+          className="h-7 min-w-0 flex-1 rounded-md border border-border bg-background px-2 text-xs"
+        >
+          <option value="">Add a position…</option>
+          {POSITION_GROUPS.map((group) => (
+            <optgroup key={group.label} label={group.label}>
+              {group.kinds.map((k) => (
+                <option key={k.code} value={k.code}>
+                  {k.title}
+                </option>
+              ))}
+            </optgroup>
+          ))}
+        </select>
+        <button
+          type="button"
+          disabled={!code || busy}
+          onClick={() => void handleAssign()}
+          className="shrink-0 rounded-md border border-border px-2.5 py-1 text-[11px] font-medium hover:bg-muted/40 disabled:opacity-50"
+        >
+          {busy ? "Saving…" : "Add"}
+        </button>
+      </div>
+      {error && <p className="text-[10px] text-destructive">{error}</p>}
     </div>
   );
 }
