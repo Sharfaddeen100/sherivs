@@ -1115,6 +1115,22 @@ export const SCHOLAR_NAV_CONTRIBUTIONS: readonly NavContribution[] = [
 ];
 
 /* ─────────────────────────────────────────────────────────────
+ * R-001 feature-code index — every capability actually shipped in
+ * the Scholar contribution data (single home). Gate primitives use
+ * this set to fail closed on codes the runtime never declared.
+ * ────────────────────────────────────────────────────────────*/
+
+export const SCHOLAR_FEATURE_CODES: ReadonlySet<string> = new Set(
+  SCHOLAR_NAV_CONTRIBUTIONS.flatMap((contribution) =>
+    (contribution.items ?? []).flatMap((item) => item.capabilities ?? []),
+  ),
+);
+
+export function isScholarFeatureCode(code: string): boolean {
+  return SCHOLAR_FEATURE_CODES.has(code);
+}
+
+/* ─────────────────────────────────────────────────────────────
  * Scholar workspace kinds → authorized capability sets.
  * Single source: contribution item capability codes (prefix scan).
  * A viewer sees a section/item only when P08-equivalent membership grants
