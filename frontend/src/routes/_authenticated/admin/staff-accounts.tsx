@@ -24,7 +24,11 @@ import {
   endWorkforcePosition,
   listWorkforcePositions,
 } from "@/lib/workforce-positions.functions";
-import { isOpenWorkforcePosition, type WorkforcePositionView } from "@/lib/workforce-positions";
+import {
+  isOpenWorkforcePosition,
+  summarizeWorkforcePositions,
+  type WorkforcePositionView,
+} from "@/lib/workforce-positions";
 
 export const Route = createFileRoute("/_authenticated/admin/staff-accounts")({
   ssr: false,
@@ -110,6 +114,7 @@ function StaffAccountsPage() {
     (positions.data ?? []).filter(
       (p) => p.identity_ref === userId && isOpenWorkforcePosition(p.status),
     );
+  const roll = positions.data ? summarizeWorkforcePositions(positions.data) : null;
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -283,6 +288,26 @@ function StaffAccountsPage() {
           <h2 className="mb-3 font-display text-lg font-semibold">
             Existing accounts {school?.name ? `at ${school.name}` : ""}
           </h2>
+          {roll && (
+            <div className="mb-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
+              {[
+                { label: "People with positions", value: roll.people },
+                { label: "Open positions", value: roll.open },
+                { label: "Families represented", value: roll.families },
+                { label: "Primary posts", value: roll.primaries },
+              ].map((s) => (
+                <div
+                  key={s.label}
+                  className="rounded-lg border border-border bg-muted/20 px-3 py-2"
+                >
+                  <div className="font-display text-lg font-bold leading-none">{s.value}</div>
+                  <div className="mt-1 text-[10px] uppercase tracking-widest text-muted-foreground">
+                    {s.label}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
           <div className="uos-card divide-y divide-border">
             {list.isLoading ? (
               <div className="p-4 text-sm text-muted-foreground">Loading…</div>

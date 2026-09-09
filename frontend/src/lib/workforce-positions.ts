@@ -68,3 +68,35 @@ export function workforcePositionSummary(row: WorkforcePositionView): string {
 export function parseWorkforcePositionView(input: unknown): WorkforcePositionView {
   return workforcePositionViewSchema.parse(input);
 }
+
+export interface WorkforcePositionsSummary {
+  /** All recorded appointments (incl. ended/revoked). */
+  total: number;
+  /** Appointments currently on the staff roll. */
+  open: number;
+  /** Distinct people holding at least one appointment. */
+  people: number;
+  /** Distinct workforce families with at least one open appointment. */
+  families: number;
+  /** Open primary appointments. */
+  primaries: number;
+}
+
+/** Roll summary over an org's position rows (pure; used by HR surfaces). */
+export function summarizeWorkforcePositions(
+  rows: ReadonlyArray<WorkforcePositionView>,
+): WorkforcePositionsSummary {
+  const people = new Set<string>();
+  const families = new Set<string>();
+  let open = 0;
+  let primaries = 0;
+  for (const row of rows) {
+    people.add(row.identity_ref);
+    if (isOpenWorkforcePosition(row.status)) {
+      open += 1;
+      families.add(row.family);
+      if (row.is_primary) primaries += 1;
+    }
+  }
+  return { total: rows.length, open, people: people.size, families: families.size, primaries };
+}

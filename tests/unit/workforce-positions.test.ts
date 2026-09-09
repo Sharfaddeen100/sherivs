@@ -7,6 +7,7 @@ import {
   isWorkforceEmploymentType,
   isWorkforcePositionStatus,
   parseWorkforcePositionView,
+  summarizeWorkforcePositions,
   workforcePositionSummary,
   workforcePositionViewSchema,
   type WorkforcePositionView,
@@ -77,5 +78,43 @@ describe("workforce-position view contract", () => {
     const secondary = row({ is_primary: false, status: "ended", ended_on: "2026-08-30" });
     expect(isOpenWorkforcePosition(secondary.status)).toBe(false);
     expect(workforcePositionSummary(secondary)).toBe("Subject and Class Teacher (ended)");
+  });
+});
+
+describe("summarizeWorkforcePositions (HR roll)", () => {
+  it("rolls totals, people, families and primaries from open positions only", () => {
+    const rows = [
+      row({ identity_ref: "22222222-2222-4222-8222-222222222222", is_primary: true }), // open
+      row({
+        identity_ref: "33333333-3333-4333-8333-333333333333",
+        kind_code: "laboratory_technician",
+        kind_title: "Laboratory Technician",
+        family: "learning_support",
+        is_primary: false,
+      }),
+      row({
+        identity_ref: "22222222-2222-4222-8222-222222222222",
+        kind_code: "examination_officer",
+        kind_title: "Examination Officer",
+        is_primary: false,
+      }),
+      row({
+        identity_ref: "44444444-4444-4444-8444-444444444444",
+        status: "ended",
+        ended_on: "2026-08-30",
+        family: "finance",
+      }),
+    ];
+    const s = summarizeWorkforcePositions(rows);
+    expect(s.total).toBe(4);
+    expect(s.open).toBe(3);
+    expect(s.people).toBe(3);
+    expect(s.families).toBe(2); // teaching + learning_support (ended finance excluded)
+    expect(s.primaries).toBe(1);
+  });
+
+  it("handles an empty roll", () => {
+    const s = summarizeWorkforcePositions([]);
+    expect(s).toEqual({ total: 0, open: 0, people: 0, families: 0, primaries: 0 });
   });
 });
