@@ -70,6 +70,14 @@ export const PAGE_TIPS: ReadonlyArray<PageTips> = [
     ],
   },
   {
+    patterns: ["/admin/facilities"],
+    title: "Facilities & twin estate",
+    tips: [
+      "Each facility is bound to a CoreGrid twin kind — sensors, inspections and occupancy reports attach to that binding.",
+      "The metric chips show which observation attributes the facility can publish (occupancy, temperature, power, water, maintenance, availability).",
+    ],
+  },
+  {
     patterns: ["/admin"],
     title: "Administration",
     tips: [

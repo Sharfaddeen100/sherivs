@@ -1118,6 +1118,14 @@ export const SCHOLAR_NAV_CONTRIBUTIONS: readonly NavContribution[] = [
         capabilities: ["r001:org_admin.school_profile"],
         orderHint: 5,
       },
+      {
+        key: "r001.org_admin.facilities",
+        label: "Facilities & twin estate",
+        iconKey: "settings",
+        url: "/admin/facilities",
+        capabilities: ["r001:org_admin.facilities"],
+        orderHint: 6,
+      },
     ],
   },
 ];

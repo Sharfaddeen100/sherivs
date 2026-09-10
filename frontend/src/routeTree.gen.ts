@@ -55,6 +55,7 @@ import { Route as AuthenticatedAdminEnterpriseChecklistRouteImport } from './rou
 import { Route as AuthenticatedAdminExaminationsRouteImport } from './routes/_authenticated/admin/examinations'
 import { Route as AuthenticatedAdminExpensesRouteImport } from './routes/_authenticated/admin/expenses'
 import { Route as AuthenticatedAdminExtracurricularRouteImport } from './routes/_authenticated/admin/extracurricular'
+import { Route as AuthenticatedAdminFacilitiesRouteImport } from './routes/_authenticated/admin/facilities'
 import { Route as AuthenticatedAdminFeaturesRouteImport } from './routes/_authenticated/admin/features'
 import { Route as AuthenticatedAdminFeesRouteImport } from './routes/_authenticated/admin/fees'
 import { Route as AuthenticatedAdminFeesDefaultersRouteImport } from './routes/_authenticated/admin/fees-defaulters'
@@ -394,6 +395,12 @@ const AuthenticatedAdminExtracurricularRoute =
   AuthenticatedAdminExtracurricularRouteImport.update({
     id: '/extracurricular',
     path: '/extracurricular',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminFacilitiesRoute =
+  AuthenticatedAdminFacilitiesRouteImport.update({
+    id: '/facilities',
+    path: '/facilities',
     getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
 const AuthenticatedAdminFeaturesRoute =
@@ -958,6 +965,7 @@ export interface FileRoutesByFullPath {
   '/admin/examinations': typeof AuthenticatedAdminExaminationsRoute
   '/admin/expenses': typeof AuthenticatedAdminExpensesRoute
   '/admin/extracurricular': typeof AuthenticatedAdminExtracurricularRoute
+  '/admin/facilities': typeof AuthenticatedAdminFacilitiesRoute
   '/admin/features': typeof AuthenticatedAdminFeaturesRoute
   '/admin/fees': typeof AuthenticatedAdminFeesRoute
   '/admin/fees-defaulters': typeof AuthenticatedAdminFeesDefaultersRoute
@@ -1092,6 +1100,7 @@ export interface FileRoutesByTo {
   '/admin/examinations': typeof AuthenticatedAdminExaminationsRoute
   '/admin/expenses': typeof AuthenticatedAdminExpensesRoute
   '/admin/extracurricular': typeof AuthenticatedAdminExtracurricularRoute
+  '/admin/facilities': typeof AuthenticatedAdminFacilitiesRoute
   '/admin/features': typeof AuthenticatedAdminFeaturesRoute
   '/admin/fees': typeof AuthenticatedAdminFeesRoute
   '/admin/fees-defaulters': typeof AuthenticatedAdminFeesDefaultersRoute
@@ -1228,6 +1237,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/examinations': typeof AuthenticatedAdminExaminationsRoute
   '/_authenticated/admin/expenses': typeof AuthenticatedAdminExpensesRoute
   '/_authenticated/admin/extracurricular': typeof AuthenticatedAdminExtracurricularRoute
+  '/_authenticated/admin/facilities': typeof AuthenticatedAdminFacilitiesRoute
   '/_authenticated/admin/features': typeof AuthenticatedAdminFeaturesRoute
   '/_authenticated/admin/fees': typeof AuthenticatedAdminFeesRoute
   '/_authenticated/admin/fees-defaulters': typeof AuthenticatedAdminFeesDefaultersRoute
@@ -1364,6 +1374,7 @@ export interface FileRouteTypes {
     | '/admin/examinations'
     | '/admin/expenses'
     | '/admin/extracurricular'
+    | '/admin/facilities'
     | '/admin/features'
     | '/admin/fees'
     | '/admin/fees-defaulters'
@@ -1498,6 +1509,7 @@ export interface FileRouteTypes {
     | '/admin/examinations'
     | '/admin/expenses'
     | '/admin/extracurricular'
+    | '/admin/facilities'
     | '/admin/features'
     | '/admin/fees'
     | '/admin/fees-defaulters'
@@ -1633,6 +1645,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/examinations'
     | '/_authenticated/admin/expenses'
     | '/_authenticated/admin/extracurricular'
+    | '/_authenticated/admin/facilities'
     | '/_authenticated/admin/features'
     | '/_authenticated/admin/fees'
     | '/_authenticated/admin/fees-defaulters'
@@ -2063,6 +2076,13 @@ declare module '@tanstack/react-router' {
       path: '/extracurricular'
       fullPath: '/admin/extracurricular'
       preLoaderRoute: typeof AuthenticatedAdminExtracurricularRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/facilities': {
+      id: '/_authenticated/admin/facilities'
+      path: '/facilities'
+      fullPath: '/admin/facilities'
+      preLoaderRoute: typeof AuthenticatedAdminFacilitiesRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
     '/_authenticated/admin/features': {
@@ -2698,6 +2718,7 @@ interface AuthenticatedAdminRouteRouteChildren {
   AuthenticatedAdminExaminationsRoute: typeof AuthenticatedAdminExaminationsRoute
   AuthenticatedAdminExpensesRoute: typeof AuthenticatedAdminExpensesRoute
   AuthenticatedAdminExtracurricularRoute: typeof AuthenticatedAdminExtracurricularRoute
+  AuthenticatedAdminFacilitiesRoute: typeof AuthenticatedAdminFacilitiesRoute
   AuthenticatedAdminFeaturesRoute: typeof AuthenticatedAdminFeaturesRoute
   AuthenticatedAdminFeesRoute: typeof AuthenticatedAdminFeesRoute
   AuthenticatedAdminFeesDefaultersRoute: typeof AuthenticatedAdminFeesDefaultersRoute
@@ -2758,6 +2779,7 @@ const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren
     AuthenticatedAdminExpensesRoute: AuthenticatedAdminExpensesRoute,
     AuthenticatedAdminExtracurricularRoute:
       AuthenticatedAdminExtracurricularRoute,
+    AuthenticatedAdminFacilitiesRoute: AuthenticatedAdminFacilitiesRoute,
     AuthenticatedAdminFeaturesRoute: AuthenticatedAdminFeaturesRoute,
     AuthenticatedAdminFeesRoute: AuthenticatedAdminFeesRoute,
     AuthenticatedAdminFeesDefaultersRoute:

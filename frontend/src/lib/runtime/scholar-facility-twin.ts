@@ -94,3 +94,24 @@ export function auditFacilityTwinBinding(): string[] {
   }
   return issues;
 }
+
+/**
+ * Classify a school facility into a kernel twin kind from its own name and
+ * description (Scholar data). Unknown shapes fall back to `facility` — never
+ * an unsupported kind.
+ */
+export function classifyFacilityTwinKind(name: string, description = ""): TwinKind {
+  const text = `${name} ${description}`.toLowerCase();
+  if (/(lab|science)/.test(text)) return "laboratory";
+  if (/(class|lesson)/.test(text)) return "classroom";
+  if (/(dorm|hostel|boarding|bedroom)/.test(text)) return "room";
+  if (/(library|reading)/.test(text)) return "room";
+  if (/(hall|auditorium|assembly)/.test(text)) return "building";
+  if (/(field|pitch|playground|ground|garden|farm)/.test(text)) return "operational_environment";
+  if (/(water|borehole|tank|power|solar|generator|fence|gate|perimeter|network)/.test(text)) {
+    return "infrastructure";
+  }
+  if (/(bus|vehicle|van|truck)/.test(text)) return "asset";
+  if (/(kitchen|dining|canteen|clinic|sick|office|admin|store)/.test(text)) return "facility";
+  return "facility";
+}
