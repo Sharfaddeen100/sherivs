@@ -103,7 +103,12 @@ export interface PhaseContractSeed {
   status: PhaseContractStatus;
   owner: string;
   /** Owned kernel capability id (must match the capability registry owner). */
-  capability: string;
+  capability?: string;
+  /**
+   * Used only when the phase owns no capability of its own (registry-true for a
+   * pure composer such as phase 38): how the phase relates to others' capability.
+   */
+  ownershipNote?: string;
   consumes?: readonly string[];
   purpose: string;
   /** What this phase is the single owner of (engineering `ownership` section). */
@@ -120,7 +125,11 @@ export interface PhaseContractSeed {
   tests?: readonly string[];
   provides?: readonly PhaseContractRef[];
   consumesContracts?: readonly PhaseContractRef[];
-  canonicalTruth: { owners: readonly string[]; derived: readonly string[] };
+  canonicalTruth: {
+    owners: readonly string[];
+    derived: readonly string[];
+    ownsNoCanonicalTruth?: boolean;
+  };
   asiTier?: AsiTier;
   autonomyLevel?: number;
   requiresApprovalFor?: readonly string[];
@@ -151,12 +160,16 @@ export function definePhaseContractFromSeed(seed: PhaseContractSeed): PhaseEngin
     provides: seed.provides ?? [],
     consumes: seed.consumesContracts ?? [],
   };
-  const capabilityList = [seed.capability, ...(seed.consumes ?? [])].join(", ");
+  const capabilityList = [seed.capability, ...(seed.consumes ?? [])]
+    .filter((entry): entry is string => Boolean(entry))
+    .join(", ");
   const providedIds = contracts.provides.map((contract) => contract.id).join(", ");
   const consumedIds = contracts.consumes.map((contract) => contract.id).join(", ");
 
   const generated: Record<EngineeringSectionKey, SectionInput> = {
-    identity: `Phase ${seed.id} owns capability ${seed.capability} in the kernel capability registry (${seed.name}).`,
+    identity: seed.capability
+      ? `Phase ${seed.id} owns capability ${seed.capability} in the kernel capability registry (${seed.name}).`
+      : `Phase ${seed.id} owns no kernel capability of its own; ${seed.ownershipNote ?? "it composes capabilities owned by other phases and never redefines them"}.`,
     purpose: seed.purpose,
     ownership: seed.ownership,
     boundary: seed.boundaryStatement,
@@ -198,7 +211,10 @@ export function definePhaseContractFromSeed(seed: PhaseContractSeed): PhaseEngin
       boundary: { statement: seed.boundaryStatement, excludes: seed.excludes },
       dependsOn: seed.dependsOn,
       consumers: seed.consumers ?? ["all"],
-      capabilities: { owns: [seed.capability], consumes: seed.consumes ?? [] },
+      capabilities: {
+        owns: seed.capability ? [seed.capability] : [],
+        consumes: seed.consumes ?? [],
+      },
       contracts,
       sections,
       asi: {

@@ -156,8 +156,14 @@ export interface PhaseAsiProfile {
   selfImprovement: SelfImprovementMode;
   /** Canonical truth owned by this phase vs derived intelligence it produces. */
   canonicalTruth: {
+    /**
+     * Canonical truth this phase owns. Empty only when the phase declares
+     * `ownsNoCanonicalTruth: true` — a pure derivation or composition phase.
+     */
     owners: readonly string[];
     derived: readonly string[];
+    /** Explicit declaration for phases that genuinely own no canonical truth. */
+    ownsNoCanonicalTruth?: boolean;
   };
 }
 
@@ -342,8 +348,21 @@ export function validatePhaseContract(
     } else if (asi.tier === "civilization-scale" && asi.selfImprovement !== "governed") {
       issues.push("civilization-scale autonomy requires governed self-improvement");
     }
-    if (!asi.canonicalTruth?.owners?.length) {
-      issues.push("asi.canonicalTruth.owners must name the canonical truth the phase owns");
+    const ownsNoTruth = asi.canonicalTruth?.ownsNoCanonicalTruth === true;
+    if (!asi.canonicalTruth?.owners?.length && !ownsNoTruth) {
+      issues.push(
+        "asi.canonicalTruth.owners must name the canonical truth the phase owns (or declare ownsNoCanonicalTruth)",
+      );
+    }
+    if (asi.canonicalTruth?.owners?.length && ownsNoTruth) {
+      issues.push(
+        "asi.canonicalTruth cannot both own canonical truth and declare ownsNoCanonicalTruth",
+      );
+    }
+    if (!asi.canonicalTruth?.derived?.length) {
+      issues.push(
+        "asi.canonicalTruth.derived must name the derived intelligence the phase produces",
+      );
     }
   }
 

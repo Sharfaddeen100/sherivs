@@ -92,8 +92,8 @@ alongside `npm run typecheck`, `npm run verify:registry` and the build.
 | K-3 | Phases 08–14 contracts (security, trust, communication, academic, scheduling, finance, data) | ✅ landed |
 | K-4 | Phases 15–20 contracts (hardware, twin, automation, analytics, command centre, government) | ✅ landed |
 | K-5 | Phases 21–32 contracts (mobile/web/experience/workforce/intelligence/market/developer/integration/global/enterprise/evolution) | ✅ landed |
-| K-6 | Phases 33–51 contracts (reality kernel → civilization layer) with ADR-backed duplication resolution | next |
-| K-6 | Phases 33–51 contracts (reality kernel → civilization layer) with ADR-backed duplication resolution | planned |
+| K-6a | Phases 33–40 contracts (universal layer) with ADR-backed duplication governance | ✅ landed |
+| K-6b | Phases 41–51 contracts (civilization layer) with ADR-backed duplication resolution | next |
 | K-7 | Scholar vertical bindings refreshed against the completed contract chain | planned |
 
 Adding a phase is a data operation: author `kernel/phase-contracts/phase-NN-*.ts`,

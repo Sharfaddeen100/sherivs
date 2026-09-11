@@ -235,6 +235,23 @@ describe("ASI law in phase contracts", () => {
     const noTruth = clone(FOUNDATION);
     noTruth.asi.canonicalTruth.owners = [];
     expectFailure(noTruth, "canonicalTruth.owners must name the canonical truth");
+
+    const contradictory = clone(FOUNDATION);
+    contradictory.asi.canonicalTruth.ownsNoCanonicalTruth = true;
+    expectFailure(
+      contradictory,
+      "cannot both own canonical truth and declare ownsNoCanonicalTruth",
+    );
+
+    const pureDerivation = clone(FOUNDATION);
+    pureDerivation.asi.canonicalTruth.owners = [];
+    pureDerivation.asi.canonicalTruth.ownsNoCanonicalTruth = true;
+    const pureResult = validatePhaseContract(pureDerivation, validationOptions());
+    expect(pureResult.ok, pureResult.ok ? "" : pureResult.issues.join(" | ")).toBe(true);
+
+    const noDerived = clone(FOUNDATION);
+    noDerived.asi.canonicalTruth.derived = [];
+    expectFailure(noDerived, "derived must name the derived intelligence");
   });
 });
 

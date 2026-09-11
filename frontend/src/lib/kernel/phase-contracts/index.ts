@@ -52,6 +52,14 @@ import { PHASE_29_INTEGRATION } from "./phase-29-integration";
 import { PHASE_30_GLOBALIZATION } from "./phase-30-globalization";
 import { PHASE_31_ENTERPRISE_SCALE } from "./phase-31-enterprise-scale";
 import { PHASE_32_FUTURE_EVOLUTION } from "./phase-32-evolution";
+import { PHASE_33_REALITY_KERNEL } from "./phase-33-reality-kernel";
+import { PHASE_34_COGNITIVE_ENGINE } from "./phase-34-cognitive-engine";
+import { PHASE_35_AGENT_CIVILIZATION } from "./phase-35-agent-civilization";
+import { PHASE_36_MEMORY_KNOWLEDGE } from "./phase-36-memory-knowledge";
+import { PHASE_37_SIMULATION_ENGINE } from "./phase-37-simulation-engine";
+import { PHASE_38_EVOLUTION_ENGINE } from "./phase-38-evolution-engine";
+import { PHASE_39_GOVERNANCE_ALIGNMENT } from "./phase-39-governance-alignment";
+import { PHASE_40_RUNTIME_FABRIC } from "./phase-40-runtime-fabric";
 
 export const PHASE_CONTRACTS: readonly PhaseEngineeringContract[] = [
   PHASE_01_FOUNDATION,
@@ -86,6 +94,14 @@ export const PHASE_CONTRACTS: readonly PhaseEngineeringContract[] = [
   PHASE_30_GLOBALIZATION,
   PHASE_31_ENTERPRISE_SCALE,
   PHASE_32_FUTURE_EVOLUTION,
+  PHASE_33_REALITY_KERNEL,
+  PHASE_34_COGNITIVE_ENGINE,
+  PHASE_35_AGENT_CIVILIZATION,
+  PHASE_36_MEMORY_KNOWLEDGE,
+  PHASE_37_SIMULATION_ENGINE,
+  PHASE_38_EVOLUTION_ENGINE,
+  PHASE_39_GOVERNANCE_ALIGNMENT,
+  PHASE_40_RUNTIME_FABRIC,
 ] as const;
 
 export function phaseContractById(id: string): PhaseEngineeringContract | undefined {
