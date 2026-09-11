@@ -90,8 +90,8 @@ alongside `npm run typecheck`, `npm run verify:registry` and the build.
 | K-1 | Kernel contract layer + Phase 01 contract + suite | ✅ landed |
 | K-2 | Phases 02–07 contracts (identity, tenancy, reality host, runtime, workspace, agents) | ✅ landed |
 | K-3 | Phases 08–14 contracts (security, trust, communication, academic, scheduling, finance, data) | ✅ landed |
-| K-4 | Phases 15–20 contracts (hardware, twin, automation, analytics, command centre, government) | next |
-| K-5 | Phases 21–32 contracts (mobile/web/experience/workforce/intelligence/market/dev/integration/global/enterprise/evolution) | planned |
+| K-4 | Phases 15–20 contracts (hardware, twin, automation, analytics, command centre, government) | ✅ landed |
+| K-5 | Phases 21–32 contracts (mobile/web/experience/workforce/intelligence/market/dev/integration/global/enterprise/evolution) | next |
 | K-6 | Phases 33–51 contracts (reality kernel → civilization layer) with ADR-backed duplication resolution | planned |
 | K-7 | Scholar vertical bindings refreshed against the completed contract chain | planned |
 
