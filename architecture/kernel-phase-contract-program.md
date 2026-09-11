@@ -81,6 +81,7 @@ Scholar-only by accident.
 | Whole-set validation | `validatePhaseContracts()` in `kernel/phase-contracts/index.ts` |
 | Coverage snapshot (what surfaces publish) | `phaseContractCoverageSnapshot()` in the same module, asserted by `tests/unit/kernel-contract-coverage.test.ts` |
 | Phase-name authority (registry ↔ catalog ↔ PROGRESS §11 ↔ contracts) | `tests/unit/kernel-contract-coverage.test.ts` + the §11 alignment test in the contract suite (ADR 202) |
+| Command Centre governance view | `phaseContractGovernance()` (projection of the snapshot) asserted by `tests/unit/command-centre-contract-governance.test.ts` |
 
 Run with `npm run test:unit` (the contract suite is part of the standard chain)
 alongside `npm run typecheck`, `npm run verify:registry` and the build.
@@ -97,6 +98,11 @@ alongside `npm run typecheck`, `npm run verify:registry` and the build.
 | K-6a | Phases 33–40 contracts (universal layer) with ADR-backed duplication governance | ✅ landed |
 | K-6b | Phases 41–51 contracts (civilization layer) with ADR-backed duplication resolution | ✅ landed |
 | K-7 | Contract coverage published on the platform surface + phase-name drift closed (ADR 202) | ✅ landed |
+| K-8 | Contract governance bound into the Command Centre operator surface (Phase 19 view) | ✅ landed |
+
+The contract chain is complete (51/51) and machine-checked. Further waves are
+data operations (add a phase contract) or consumer bindings (a runtime declaring
+what it consumes) — they are not kernel rewrites.
 
 Adding a phase is a data operation: author `kernel/phase-contracts/phase-NN-*.ts`,
 register it in `phase-contracts/index.ts`, run the verification chain. The

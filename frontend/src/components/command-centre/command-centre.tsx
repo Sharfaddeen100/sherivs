@@ -40,6 +40,7 @@ import {
   PHASES_TOTAL,
   type PhaseCatalogEntry,
 } from "@/lib/phase-catalog";
+import { phaseContractGovernance } from "@/lib/kernel/phase-contracts";
 import type { TenantId } from "@/lib/tenant-core";
 
 const DEMO_TENANT = "tenant:coregrid-demo" as TenantId;
@@ -286,6 +287,7 @@ export function CommandCentre() {
                 onReset={resetWorkspace}
               />
             ) : null}
+            <ContractGovernanceCard />
             <PhaseRunway />
           </div>
         </div>
@@ -731,6 +733,18 @@ function SummaryCard(props: { title: string; icon: ReactNode; rows: string[] }) 
   );
 }
 
+/**
+ * Engineering contract governance — kernel-owned facts for the operator surface.
+ *
+ * The Command Centre renders these; it never restates chain totals, and it is
+ * never an authority: governance here is read-only (Phase 19 displays, Phase 08
+ * authorizes).
+ */
+const CONTRACT_GOVERNANCE = phaseContractGovernance();
+const CONTRACT_HEALTH_BY_PHASE = new Map(
+  CONTRACT_GOVERNANCE.rows.map((row) => [row.id, row] as const),
+);
+
 const RUNWAY_COLUMNS: ColumnDef<PhaseCatalogEntry>[] = [
   {
     accessorKey: "phase",
@@ -804,7 +818,106 @@ const RUNWAY_COLUMNS: ColumnDef<PhaseCatalogEntry>[] = [
         </Badge>
       ),
   },
+  {
+    id: "contract",
+    header: "Contract",
+    cell: ({ row }) => {
+      const health = CONTRACT_HEALTH_BY_PHASE.get(row.original.phase);
+      if (!health) {
+        return <span className="text-xs text-destructive">unregistered</span>;
+      }
+      return (
+        <span className="font-mono text-xs">
+          {health.sectionsDeclared}/{health.sectionsTotal}
+        </span>
+      );
+    },
+  },
+  {
+    id: "autonomy",
+    header: "Autonomy",
+    cell: ({ row }) => {
+      const health = CONTRACT_HEALTH_BY_PHASE.get(row.original.phase);
+      if (!health) return <span className="text-xs text-muted-foreground">—</span>;
+      return (
+        <span className="font-mono text-xs text-muted-foreground">
+          {health.asiTier} · L{health.autonomyLevel}
+        </span>
+      );
+    },
+  },
+  {
+    id: "runtime",
+    header: "First runtime",
+    cell: ({ row }) => {
+      const health = CONTRACT_HEALTH_BY_PHASE.get(row.original.phase);
+      return (
+        <span className="font-mono text-xs text-muted-foreground">
+          {health?.firstRuntime ?? "—"}
+        </span>
+      );
+    },
+  },
 ];
+
+function ContractGovernanceCard() {
+  const governance = CONTRACT_GOVERNANCE;
+  const tierSummary = Object.entries(governance.byAsiTier)
+    .filter(([, count]) => count > 0)
+    .map(([tier, count]) => `${tier} ${count}`)
+    .join(" · ");
+  const layerSummary = governance.byLayer
+    .map(({ layer, phases }) => `${layer} ${phases}`)
+    .join(" · ");
+  const facts = [
+    { label: "Contracts", value: String(governance.total) },
+    { label: "Sections per phase", value: String(governance.sectionsPerPhase) },
+    { label: "Connected roots", value: governance.roots.join(", ") || "—" },
+    { label: "Bound runtime(s)", value: governance.firstRuntimes.join(", ") || "—" },
+    { label: "Autonomy tiers", value: tierSummary || "—" },
+    { label: "Reserved domain seats", value: governance.neutralSeatDomains.join(", ") || "—" },
+  ];
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-sm flex items-center gap-2">
+          <ShieldCheck className="size-4 text-muted-foreground" />
+          Engineering contract governance
+          <Badge
+            variant="secondary"
+            className={`border-0 ${
+              governance.compliant
+                ? "bg-emerald-500/10 text-emerald-600"
+                : "bg-amber-500/10 text-amber-600"
+            }`}
+          >
+            {governance.sectionsComplete}/{governance.total} contract-complete
+          </Badge>
+        </CardTitle>
+        <CardDescription className="text-xs">
+          Read from the kernel contract registry ({governance.generatedFrom}) — never restated here.
+          Every phase declares all {governance.sectionsPerPhase} engineering sections, owns its
+          capability, and reserves neutral seats so no phase is Scholar-only. Phase names are locked
+          to the canonical phase registry (ADR 202). This panel is view-only: it displays the chain,
+          it never changes authorization.
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-3">
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {facts.map((fact) => (
+            <div key={fact.label} className="rounded-md border bg-muted/30 p-3">
+              <p className="text-xs text-muted-foreground">{fact.label}</p>
+              <p className="mt-1 font-mono text-xs break-words">{fact.value}</p>
+            </div>
+          ))}
+        </div>
+        <Separator />
+        <p className="text-xs text-muted-foreground">Layers: {layerSummary}</p>
+      </CardContent>
+    </Card>
+  );
+}
 
 function PhaseRunway() {
   const table = useReactTable({
@@ -822,7 +935,9 @@ function PhaseRunway() {
         <CardDescription className="text-xs">
           The complete CoreGrid build sequence — Phases 01–32 have implemented, tested domain
           contracts (with explicit measured test suites); Phases 33–51 are architecture-defined
-          (documents complete, awaiting domain-contract implementation).
+          (documents complete, awaiting domain-contract implementation). Every phase below carries a
+          complete engineering contract ({CONTRACT_GOVERNANCE.sectionsPerPhase}/
+          {CONTRACT_GOVERNANCE.sectionsPerPhase} sections, column “Contract”).
         </CardDescription>
       </CardHeader>
       <CardContent>

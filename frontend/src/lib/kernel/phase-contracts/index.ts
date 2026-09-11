@@ -236,6 +236,109 @@ export function phaseContractCoverageSnapshot(
   };
 }
 
+export interface PhaseContractHealthRow {
+  id: string;
+  name: string;
+  layer: string;
+  stage: string;
+  status: PhaseContractStatus;
+  capability: string | null;
+  sectionsDeclared: number;
+  sectionsTotal: number;
+  /** True only when the phase declares every section the dictionary requires. */
+  contractComplete: boolean;
+  asiTier: AsiTier;
+  autonomyLevel: number;
+  selfImprovement: SelfImprovementMode;
+  /** First vertical runtime bound to this phase (`runtime:scholar`). */
+  firstRuntime: string;
+  /** Reserved neutral domain seats for this phase (never Scholar-only). */
+  neutralSeatDomains: readonly string[];
+  dependencies: number;
+  consumers: number;
+}
+
+export interface PhaseContractGovernance {
+  schemaVersion: number;
+  /** Where these facts come from, so no surface can claim another source. */
+  generatedFrom: "kernel/phase-contracts";
+  total: number;
+  sectionsPerPhase: number;
+  sectionsComplete: number;
+  /** True when the whole chain is section-complete and every row is complete. */
+  compliant: boolean;
+  byLayer: ReadonlyArray<{ layer: string; phases: number }>;
+  byStatus: Readonly<Record<PhaseContractStatus, number>>;
+  byAsiTier: Readonly<Record<AsiTier, number>>;
+  roots: readonly string[];
+  firstRuntimes: readonly string[];
+  neutralSeatDomains: readonly string[];
+  rows: readonly PhaseContractHealthRow[];
+}
+
+/**
+ * Governance view of the contract chain, for operator surfaces (Phase 19).
+ *
+ * A projector over the coverage snapshot — the snapshot stays the single
+ * source of the chain facts; this view only adds the runtime binding facts an
+ * operator needs (who consumes the phase, which seats are still reserved).
+ * Rendering a governance panel must never require re-stating either.
+ */
+export function phaseContractGovernance(
+  contracts: readonly PhaseEngineeringContract[] = PHASE_CONTRACTS,
+): PhaseContractGovernance {
+  const snapshot = phaseContractCoverageSnapshot(contracts);
+  const bindingById = new Map(contracts.map((contract) => [contract.id, contract.runtimeBindings]));
+
+  const rows: PhaseContractHealthRow[] = snapshot.rows.map((row) => {
+    const binding = bindingById.get(row.id);
+    return {
+      id: row.id,
+      name: row.name,
+      layer: row.layer,
+      stage: row.stage,
+      status: row.status,
+      capability: row.capability,
+      sectionsDeclared: row.sectionsDeclared,
+      sectionsTotal: row.sectionsTotal,
+      contractComplete: row.sectionsDeclared === row.sectionsTotal,
+      asiTier: row.asiTier,
+      autonomyLevel: row.autonomyLevel,
+      selfImprovement: row.selfImprovement,
+      firstRuntime: binding?.firstRuntime ?? "(unbound)",
+      neutralSeatDomains: (binding?.neutralSeats ?? []).map((seat) => seat.domain),
+      dependencies: row.dependencies,
+      consumers: row.consumers,
+    };
+  });
+
+  return {
+    schemaVersion: snapshot.schemaVersion,
+    generatedFrom: "kernel/phase-contracts",
+    total: snapshot.total,
+    sectionsPerPhase: snapshot.sectionsPerPhase,
+    sectionsComplete: snapshot.sectionsComplete,
+    compliant:
+      snapshot.total > 0 &&
+      snapshot.sectionsComplete === snapshot.total &&
+      rows.every((row) => row.contractComplete),
+    byLayer: snapshot.byLayer,
+    byStatus: snapshot.byStatus,
+    byAsiTier: snapshot.byAsiTier,
+    roots: snapshot.roots,
+    firstRuntimes: [...new Set(rows.map((row) => row.firstRuntime))].sort(),
+    neutralSeatDomains: [...new Set(rows.flatMap((row) => row.neutralSeatDomains))].sort(),
+    rows,
+  };
+}
+
+export function phaseContractHealthById(
+  id: string,
+  governance: PhaseContractGovernance = phaseContractGovernance(),
+): PhaseContractHealthRow | undefined {
+  return governance.rows.find((row) => row.id === id);
+}
+
 export interface PhaseContractsValidation {
   ok: boolean;
   issues: readonly string[];
