@@ -2999,3 +2999,26 @@ Rationale: PROGRESS §17.1 row (P07–P32 unwired); §25 objective 3 (Scholar ve
 Owner: each owning phase; enforcement authority P08. Consumers: Scholar R-001 vertical surfaces.
 Blast radius: DOMAIN → PLATFORM (integration order).
 Status: PROPOSED (2026-09-03). Ratification required before the S6 route-wiring gate is declared green.
+
+────────────────────────────────────────────────────────────────
+PLATFORM ADR SERIES — DOC-ALIGNMENT DECISIONS (RATIFIED)
+────────────────────────────────────────────────────────────────
+The records below are RATIFIED: each one documents a decision that has already
+been executed and is now machine-enforced by a test in this repository.
+
+202. PLATFORM-011 — PHASE-NAME AUTHORITY AND DRIFT ALIGNMENT
+Decision (RATIFIED 2026-09-07):
+• PROGRESS.md §11 (the machine-readable phase registry) is the single authority for phase names. architecture/registry.json, frontend/src/lib/phase-catalog.ts and every kernel phase contract must carry the §11 name verbatim.
+• The seven drifted names recorded in PROGRESS §17.1 are aligned instead of tolerated:
+  – 25 registry → "Institutional Onboarding & Workforce"
+  – 33 catalog → "Reality Intelligence Kernel (URIK)"
+  – 36 catalog → "Universal Memory & Knowledge Engine"
+  – 41 catalog → "Reality Simulation & Autonomous Sandbox Engine"
+  – 42 catalog → "Zero Trust & Adversarial Defense Engine"
+  – 47 registry → "Autonomous Engineering Self-Improvement Engine"
+  – 51 catalog → "Universal Reality OS Kernel"
+• Renames are cosmetic: no phase id, layer, status, stage, module prefix, capability ownership or contract boundary changed. A future rename is a doc-alignment change with an ADR, never a silent edit.
+Rationale: PROGRESS §17.1 records the drift as a machine-readability debt; the contract layer already validates every contract name against §11, so leaving registry.json and phase-catalog.ts unverified kept two of four copies unpinned. Nothing about a phase's behaviour may be inferred from its display name.
+Owner: Architecture (PROGRESS §11). Consumers: registry.json, phase-catalog.ts, kernel phase contracts, /platform surface.
+Blast radius: DOCUMENTATION + FRONTEND LABELS (no runtime behaviour).
+Status: RATIFIED (2026-09-07) — executed in Wave K-7; enforced by tests/unit/kernel-contract-coverage.test.ts (registry ↔ catalog ↔ §11 ↔ contract four-way lockstep) and the §11 alignment test in tests/unit/kernel-phase-contract.test.ts, both of which now assert zero drift.

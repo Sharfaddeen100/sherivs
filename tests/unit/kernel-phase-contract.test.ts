@@ -434,7 +434,7 @@ describe("registry alignment (REGISTRY.md / PROGRESS.md source of truth)", () =>
     }
   });
 
-  it("documents the known registry-versus-catalog naming drift instead of hiding it", () => {
+  it("keeps registry, catalog and contract names in lockstep (drift closed, ADR 202)", () => {
     const registry = JSON.parse(readFileSync(join(ROOT, "architecture/registry.json"), "utf8")) as {
       phases: Array<{ id: string; name: string }>;
     };
@@ -447,8 +447,9 @@ describe("registry alignment (REGISTRY.md / PROGRESS.md source of truth)", () =>
       const catalogName = match ? match[1] : "(not found)";
       if (catalogName !== phase.name) drifted.push(phase.id);
     }
-    // Known cosmetic drift recorded in the PROGRESS ledger; any NEW drift fails.
-    expect(drifted).toEqual(["25", "33", "36", "41", "42", "47", "51"]);
+    // ADR 202 aligned all seven previously-drifted names to PROGRESS §11 authority;
+    // any new drift — or a regression on an aligned name — fails here.
+    expect(drifted).toEqual([]);
   });
 
   it("matches each owned capability to its registry owner phase", () => {

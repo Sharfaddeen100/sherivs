@@ -79,6 +79,8 @@ Scholar-only by accident.
 | Connected-DAG law | `buildPhaseContractGraph` / `validatePhaseContractGraph` |
 | ASI invariant law | contract suite (cannot omit or weaken invariants) |
 | Whole-set validation | `validatePhaseContracts()` in `kernel/phase-contracts/index.ts` |
+| Coverage snapshot (what surfaces publish) | `phaseContractCoverageSnapshot()` in the same module, asserted by `tests/unit/kernel-contract-coverage.test.ts` |
+| Phase-name authority (registry ↔ catalog ↔ PROGRESS §11 ↔ contracts) | `tests/unit/kernel-contract-coverage.test.ts` + the §11 alignment test in the contract suite (ADR 202) |
 
 Run with `npm run test:unit` (the contract suite is part of the standard chain)
 alongside `npm run typecheck`, `npm run verify:registry` and the build.
@@ -94,7 +96,7 @@ alongside `npm run typecheck`, `npm run verify:registry` and the build.
 | K-5 | Phases 21–32 contracts (mobile/web/experience/workforce/intelligence/market/developer/integration/global/enterprise/evolution) | ✅ landed |
 | K-6a | Phases 33–40 contracts (universal layer) with ADR-backed duplication governance | ✅ landed |
 | K-6b | Phases 41–51 contracts (civilization layer) with ADR-backed duplication resolution | ✅ landed |
-| K-7 | Scholar vertical bindings refreshed against the completed 51-phase contract chain | next |
+| K-7 | Contract coverage published on the platform surface + phase-name drift closed (ADR 202) | ✅ landed |
 
 Adding a phase is a data operation: author `kernel/phase-contracts/phase-NN-*.ts`,
 register it in `phase-contracts/index.ts`, run the verification chain. The

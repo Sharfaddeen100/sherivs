@@ -288,7 +288,7 @@ export const PHASE_CATALOG: readonly PhaseCatalogEntry[] = [
   },
   {
     phase: "33",
-    name: "Reality Intelligence Kernel",
+    name: "Reality Intelligence Kernel (URIK)",
     layer: "Universal",
     status: "architecture",
     modules: [
@@ -327,7 +327,7 @@ export const PHASE_CATALOG: readonly PhaseCatalogEntry[] = [
   },
   {
     phase: "36",
-    name: "Universal Memory & Knowledge Civilization Engine",
+    name: "Universal Memory & Knowledge Engine",
     layer: "Universal",
     status: "architecture",
     modules: [
@@ -392,7 +392,7 @@ export const PHASE_CATALOG: readonly PhaseCatalogEntry[] = [
   },
   {
     phase: "41",
-    name: "Reality Simulation & Autonomous Sandbox Civilization Engine",
+    name: "Reality Simulation & Autonomous Sandbox Engine",
     layer: "Civilization",
     status: "architecture",
     modules: [
@@ -405,7 +405,7 @@ export const PHASE_CATALOG: readonly PhaseCatalogEntry[] = [
   },
   {
     phase: "42",
-    name: "Zero Trust Security & Adversarial Defense Civilization Engine",
+    name: "Zero Trust & Adversarial Defense Engine",
     layer: "Civilization",
     status: "architecture",
     modules: [
@@ -522,7 +522,7 @@ export const PHASE_CATALOG: readonly PhaseCatalogEntry[] = [
   },
   {
     phase: "51",
-    name: "Universal Reality Operating System Kernel",
+    name: "Universal Reality OS Kernel",
     layer: "Civilization",
     status: "architecture",
     modules: [

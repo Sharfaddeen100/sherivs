@@ -11,14 +11,20 @@
  */
 
 import { PHASE_CATALOG } from "../../phase-catalog";
+import { ENGINEERING_SECTION_COUNT, engineeringSectionCoverage } from "../engineering-sections";
 import { KERNEL_CAPABILITIES } from "../kernel-capability-registry";
 import {
+  PHASE_CONTRACT_SCHEMA_VERSION,
   buildPhaseContractGraph,
+  isPhaseContractStatus,
   summarizePhaseContracts,
   validatePhaseContract,
   validatePhaseContractGraph,
+  type AsiTier,
+  type PhaseContractStatus,
   type PhaseContractSummary,
   type PhaseEngineeringContract,
+  type SelfImprovementMode,
 } from "../phase-contract";
 import { PHASE_01_FOUNDATION } from "./phase-01-foundation";
 import { PHASE_02_IDENTITY } from "./phase-02-identity";
@@ -134,6 +140,101 @@ const KNOWN_CAPABILITY_IDS: readonly string[] = KERNEL_CAPABILITIES.map((c) => c
 const CAPABILITY_OWNERS: Readonly<Record<string, string>> = Object.fromEntries(
   KERNEL_CAPABILITIES.map((c) => [c.id, c.ownerPhase]),
 );
+
+export interface PhaseContractCoverageRow {
+  id: string;
+  name: string;
+  layer: string;
+  stage: string;
+  status: PhaseContractStatus;
+  /** Owned kernel capability, or null when the phase is a pure composer. */
+  capability: string | null;
+  sectionsDeclared: number;
+  sectionsTotal: number;
+  asiTier: AsiTier;
+  autonomyLevel: number;
+  selfImprovement: SelfImprovementMode;
+  dependencies: number;
+  consumers: number;
+  neutralSeats: number;
+}
+
+export interface PhaseContractCoverageSnapshot {
+  schemaVersion: number;
+  total: number;
+  sectionsPerPhase: number;
+  sectionsComplete: number;
+  byStatus: Readonly<Record<PhaseContractStatus, number>>;
+  byLayer: ReadonlyArray<{ layer: string; phases: number }>;
+  byAsiTier: Readonly<Record<AsiTier, number>>;
+  roots: readonly string[];
+  rows: readonly PhaseContractCoverageRow[];
+}
+
+/**
+ * Kernel-owned coverage snapshot for surfaces.
+ *
+ * A surface renders THIS — never a hand-maintained summary — so what an
+ * operator sees is exactly what the contract validator enforces.
+ */
+export function phaseContractCoverageSnapshot(
+  contracts: readonly PhaseEngineeringContract[] = PHASE_CONTRACTS,
+): PhaseContractCoverageSnapshot {
+  const rows: PhaseContractCoverageRow[] = contracts.map((contract) => {
+    const coverage = engineeringSectionCoverage(Object.keys(contract.sections ?? {}));
+    return {
+      id: contract.id,
+      name: contract.name,
+      layer: contract.layer,
+      stage: contract.stage,
+      status: contract.status,
+      capability: contract.capabilities.owns[0] ?? null,
+      sectionsDeclared: coverage.declared,
+      sectionsTotal: coverage.total,
+      asiTier: contract.asi.tier,
+      autonomyLevel: contract.asi.autonomy.level,
+      selfImprovement: contract.asi.selfImprovement,
+      dependencies: contract.dependsOn.length,
+      consumers: contract.consumers.length,
+      neutralSeats: contract.runtimeBindings.neutralSeats.length,
+    };
+  });
+
+  const byStatus = {
+    architecture: 0,
+    planned: 0,
+    implementing: 0,
+    implemented: 0,
+    complete: 0,
+  } as Record<PhaseContractStatus, number>;
+  const byAsiTier = {
+    assistive: 0,
+    "supervised-autonomous": 0,
+    "governed-autonomous": 0,
+    "civilization-scale": 0,
+  } as Record<AsiTier, number>;
+  const layerCounts = new Map<string, number>();
+
+  for (const row of rows) {
+    if (isPhaseContractStatus(row.status)) byStatus[row.status] += 1;
+    byAsiTier[row.asiTier] += 1;
+    layerCounts.set(row.layer, (layerCounts.get(row.layer) ?? 0) + 1);
+  }
+
+  return {
+    schemaVersion: PHASE_CONTRACT_SCHEMA_VERSION,
+    total: contracts.length,
+    sectionsPerPhase: ENGINEERING_SECTION_COUNT,
+    sectionsComplete: rows.filter((row) => row.sectionsDeclared === row.sectionsTotal).length,
+    byStatus,
+    byLayer: [...layerCounts.entries()]
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([layer, phases]) => ({ layer, phases })),
+    byAsiTier,
+    roots: buildPhaseContractGraph(contracts).roots,
+    rows,
+  };
+}
 
 export interface PhaseContractsValidation {
   ok: boolean;

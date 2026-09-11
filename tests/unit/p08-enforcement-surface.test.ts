@@ -42,6 +42,7 @@ const ADOPTED = [
   "messages-broadcast.functions.ts",
   "notification-digest.functions.ts",
   "notifications-fanout.functions.ts",
+  "org-profile.functions.ts",
   "provisioning.functions.ts",
   "register-runtime.functions.ts",
   "scholar-institution-config.functions.ts",
@@ -50,6 +51,7 @@ const ADOPTED = [
   "teachers.functions.ts",
   "tenant-registry.functions.ts",
   "timetable.functions.ts",
+  "workforce-positions.functions.ts",
 ] as const;
 
 /**

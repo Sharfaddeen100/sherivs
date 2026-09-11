@@ -4,6 +4,7 @@ import {
   kernelCapabilitiesConsumedByScholar,
   type KernelCapability,
 } from "@/lib/kernel/kernel-capability-registry";
+import { phaseContractCoverageSnapshot } from "@/lib/kernel/phase-contracts";
 
 export const Route = createFileRoute("/platform")({
   component: Platform,
@@ -38,6 +39,7 @@ function groupByPhase(capabilities: readonly KernelCapability[]): Array<{
 function Platform() {
   const phaseGroups = groupByPhase(KERNEL_CAPABILITIES);
   const scholar = kernelCapabilitiesConsumedByScholar();
+  const coverage = phaseContractCoverageSnapshot();
 
   return (
     <div className="min-h-screen bg-[color:var(--background)] text-[color:var(--foreground)]">
@@ -114,6 +116,97 @@ function Platform() {
               </span>
             ))}
           </div>
+        </section>
+
+        <section className="mt-12">
+          <h2 className="font-display text-xl font-semibold">
+            {coverage.total} phase contracts · {coverage.sectionsPerPhase} engineering sections each
+          </h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Every phase declares the same sections — identity, ownership, boundaries, contracts,
+            data model, events, workflows, security, tenancy, AI safety, observability, testing,
+            integration, dependencies, risks, completion and extensions — and the claims below are
+            read from the same contracts the verification chain enforces.
+          </p>
+
+          <div className="mt-4 flex flex-wrap gap-2">
+            {coverage.byLayer.map(({ layer, phases }) => (
+              <span
+                key={layer}
+                className="rounded-full border border-border bg-muted/20 px-3 py-1 text-[11px] font-medium"
+              >
+                {layer} · {phases}
+              </span>
+            ))}
+          </div>
+
+          <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <article className="rounded-lg border border-border p-3">
+              <p className="text-xs text-muted-foreground">Sections complete</p>
+              <p className="font-display text-lg font-semibold">
+                {coverage.sectionsComplete}/{coverage.total}
+              </p>
+            </article>
+            <article className="rounded-lg border border-border p-3">
+              <p className="text-xs text-muted-foreground">Connected roots</p>
+              <p className="font-display text-lg font-semibold">{coverage.roots.join(", ")}</p>
+            </article>
+            <article className="rounded-lg border border-border p-3">
+              <p className="text-xs text-muted-foreground">Supervised autonomy</p>
+              <p className="font-display text-lg font-semibold">
+                {coverage.byAsiTier["supervised-autonomous"]}
+              </p>
+            </article>
+            <article className="rounded-lg border border-border p-3">
+              <p className="text-xs text-muted-foreground">Governed autonomy</p>
+              <p className="font-display text-lg font-semibold">
+                {coverage.byAsiTier["governed-autonomous"] +
+                  coverage.byAsiTier["civilization-scale"]}
+              </p>
+            </article>
+          </div>
+
+          <div className="mt-4 overflow-x-auto">
+            <table className="w-full border-collapse text-left text-xs">
+              <thead>
+                <tr className="text-muted-foreground">
+                  <th className="border-b border-border py-2 pr-3 font-medium">Phase</th>
+                  <th className="border-b border-border py-2 pr-3 font-medium">Owned capability</th>
+                  <th className="border-b border-border py-2 pr-3 font-medium">Sections</th>
+                  <th className="border-b border-border py-2 pr-3 font-medium">Autonomy</th>
+                  <th className="border-b border-border py-2 pr-3 font-medium">Depends on</th>
+                  <th className="border-b border-border py-2 font-medium">Neutral seats</th>
+                </tr>
+              </thead>
+              <tbody>
+                {coverage.rows.map((row) => (
+                  <tr key={row.id}>
+                    <td className="border-b border-border py-1.5 pr-3">
+                      <span className="font-mono text-[10px] text-muted-foreground">{row.id}</span>{" "}
+                      {row.name}
+                    </td>
+                    <td className="border-b border-border py-1.5 pr-3 font-mono text-[10px] text-muted-foreground">
+                      {row.capability ?? "composes others"}
+                    </td>
+                    <td className="border-b border-border py-1.5 pr-3">
+                      {row.sectionsDeclared}/{row.sectionsTotal}
+                    </td>
+                    <td className="border-b border-border py-1.5 pr-3">
+                      {row.asiTier} · L{row.autonomyLevel}
+                    </td>
+                    <td className="border-b border-border py-1.5 pr-3">{row.dependencies}</td>
+                    <td className="border-b border-border py-1.5">{row.neutralSeats}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <p className="mt-3 text-[11px] text-muted-foreground">
+            Contracts are validated on every change: sections, capability ownership, dependency and
+            consumer law, ASI invariants, neutral runtime seats and phase-name alignment with the
+            canonical registry.
+          </p>
         </section>
       </main>
 

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generated": "2026-09-03",
+  "generated": "2026-09-07",
   "authority": ["CONSTITUTION.md", "REGISTRY.md", "DEPENDENCY.md", "BOUNDARIES.md", "DECISIONS.md"],
   "sourceOfTruth": ["REGISTRY.md", "PROGRESS.md", "architecture/phase-*.md", "frontend/src/lib/phase-catalog.ts"],
   "phaseCount": 51,
@@ -30,7 +30,7 @@
     {"id":"22","name":"Mobile Platform","layer":"Global","status":"IMPLEMENTING","stage":"S6","levels":[true,false,false,false,false],"tests":49,"modules":["platform-core","platform-device","platform-offline","platform-observability"],"consumers":["runtime-001"]},
     {"id":"23","name":"Web Platform","layer":"Runtime","status":"IMPLEMENTING","stage":"S6","levels":[true,false,false,false,false],"tests":41,"modules":["web-core","web-storage","web-performance","web-platform"],"consumers":["runtime-001"]},
     {"id":"24","name":"Experience & Design Intelligence","layer":"Intelligence","status":"IMPLEMENTING","stage":"S6","levels":[true,false,false,false,false],"tests":33,"modules":["experience-core","experience-personalization","experience-accessibility","experience-governance"],"consumers":["50"]},
-    {"id":"25","name":"Onboarding & Workforce Identity","layer":"Foundations","status":"IMPLEMENTING","stage":"S6","levels":[true,false,false,true,false],"tests":53,"modules":["institution-core","workforce-core","onboarding-core","attendance-identity","institution-admin"],"consumers":["runtime-001"]},
+    {"id":"25","name":"Institutional Onboarding & Workforce","layer":"Foundations","status":"IMPLEMENTING","stage":"S6","levels":[true,false,false,true,false],"tests":53,"modules":["institution-core","workforce-core","onboarding-core","attendance-identity","institution-admin"],"consumers":["runtime-001"]},
     {"id":"26","name":"AI Intelligence Layer","layer":"Intelligence","status":"IMPLEMENTING","stage":"S8","levels":[true,false,false,false,false],"tests":66,"modules":["ai-core","ai-context","ai-reasoning","ai-governance","ai-services"],"consumers":["07","34","35"]},
     {"id":"27","name":"Marketplace","layer":"Commerce","status":"IMPLEMENTING","stage":"S7","levels":[true,false,false,false,false],"tests":52,"modules":["marketplace-core","marketplace-vendor","marketplace-package","marketplace-entitlement","marketplace-governance"],"consumers":["49","51"]},
     {"id":"28","name":"Developer Platform","layer":"Runtime","status":"IMPLEMENTING","stage":"S7","levels":[true,false,false,false,false],"tests":47,"modules":["dev-core","dev-api","dev-env","dev-build","dev-governance"],"consumers":["27","51"]},
@@ -53,7 +53,7 @@
     {"id":"44","name":"Planetary Distributed Infrastructure Engine","layer":"Civilization","status":"ARCHITECTURE_DEFINED","stage":"S11","levels":[true,false,false,false,false],"tests":null,"modules":[],"consumers":["15","21"]},
     {"id":"45","name":"AI Compute Civilization Engine","layer":"Civilization","status":"ARCHITECTURE_DEFINED","stage":"S11","levels":[true,false,false,false,false],"tests":null,"modules":[],"consumers":["26"]},
     {"id":"46","name":"Universal Digital Twin Civilization Layer","layer":"Civilization","status":"ARCHITECTURE_DEFINED","stage":"S11","levels":[true,false,false,false,false],"tests":null,"modules":[],"consumers":["16"]},
-    {"id":"47","name":"Autonomous Engineering Self-Improvement","layer":"Civilization","status":"ARCHITECTURE_DEFINED","stage":"S9","levels":[true,false,false,false,false],"tests":null,"modules":[],"consumers":["32","38","39"]},
+    {"id":"47","name":"Autonomous Engineering Self-Improvement Engine","layer":"Civilization","status":"ARCHITECTURE_DEFINED","stage":"S9","levels":[true,false,false,false,false],"tests":null,"modules":[],"consumers":["32","38","39"]},
     {"id":"48","name":"Civilization Knowledge Graph","layer":"Civilization","status":"ARCHITECTURE_DEFINED","stage":"S5","levels":[true,false,false,false,false],"tests":null,"modules":[],"consumers":["33","36"]},
     {"id":"49","name":"Autonomous Economy Engine","layer":"Civilization","status":"ARCHITECTURE_DEFINED","stage":"S11","levels":[true,false,false,false,false],"tests":null,"modules":[],"consumers":["13","27"]},
     {"id":"50","name":"Human Civilization Interface Layer","layer":"Civilization","status":"ARCHITECTURE_DEFINED","stage":"S12","levels":[true,false,false,false,false],"tests":null,"modules":[],"consumers":["06","24"]},
@@ -114,8 +114,8 @@
 
   ],
   "runtimes": [
-    {"id":"runtime-001","name":"CoreGrid Scholar","type":"domain-runtime","status":"ACTIVE","phases":["04","10","11","12","13","15","16","17","18","20","25"],"surfaces":["role-dashboards","command-centre-provision","api-routes"],"note":"first production domain runtime; vertical L3/L4 partial, L5 pending"},
-    {"id":"runtime-002-plus","name":"Future runtimes","type":"domain-runtime","status":"RESERVED","phases":[],"surfaces":[],"note":"no runtime may be installed by rewriting the kernel"}
+    {"id":"runtime-001","name":"CoreGrid Scholar","type":"domain-runtime","status":"ACTIVE","phases":["04","10","11","12","13","15","16","17","18","20","25"],"surfaces":["role-dashboards","command-centre-provision","api-routes"],"note":"first production domain runtime; vertical L3/L4 partial, L5 pending. 2026-09-07 K-WAVES: registered as firstRuntime on all 51 kernel phase contracts, so the whole contract chain is validated against a live domain runtime rather than a placeholder"},
+    {"id":"runtime-002-plus","name":"Future runtimes","type":"domain-runtime","status":"RESERVED","phases":[],"surfaces":[],"note":"no runtime may be installed by rewriting the kernel; each new runtime registers over the generic contract (kernel/domain-manifest.ts) and holds a reserved neutral seat (healthcare, government, commerce, logistics, energy, transport) until it is bound"}
 
   ],
   "duplications": [
