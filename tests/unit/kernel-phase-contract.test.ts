@@ -15,7 +15,7 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
@@ -34,6 +34,7 @@ import {
   validatePhaseContractGraph,
   type PhaseEngineeringContract,
 } from "@/lib/kernel/phase-contract";
+import { PHASE_CATALOG } from "@/lib/phase-catalog";
 import {
   PHASE_CONTRACTS,
   phaseContractById,
@@ -390,5 +391,80 @@ describe("authored phase-contract registry", () => {
       }
     }
     expect(missing).toEqual([]);
+  });
+});
+
+describe("registry alignment (REGISTRY.md / PROGRESS.md source of truth)", () => {
+  const catalogIds = PHASE_CATALOG.map((entry) => entry.phase);
+
+  it("authors contracts contiguously from phase 01 with no gaps", () => {
+    const ids = PHASE_CONTRACTS.map((contract) => contract.id);
+    const expected = Array.from({ length: ids.length }, (_, i) => String(i + 1).padStart(2, "0"));
+    expect(ids).toEqual(expected);
+  });
+
+  it("keeps every contract aligned with the PROGRESS §11 phase registry row", () => {
+    const progress = readFileSync(join(ROOT, "PROGRESS.md"), "utf8");
+    const rows = new Map<string, string>();
+    for (const line of progress.split(/\r?\n/)) {
+      const match = line.match(/^\|\s*(\d{2})\s+([^|]+?)\s*\|/);
+      if (match) rows.set(match[1], match[2].trim());
+    }
+    expect(rows.size).toBeGreaterThanOrEqual(51);
+    for (const contract of PHASE_CONTRACTS) {
+      expect(rows.get(contract.id), `PROGRESS row for phase ${contract.id}`).toBe(contract.name);
+    }
+  });
+
+  it("documents the known registry-versus-catalog naming drift instead of hiding it", () => {
+    const registry = JSON.parse(readFileSync(join(ROOT, "architecture/registry.json"), "utf8")) as {
+      phases: Array<{ id: string; name: string }>;
+    };
+    const catalog = readFileSync(join(ROOT, "frontend/src/lib/phase-catalog.ts"), "utf8");
+    const drifted: string[] = [];
+    for (const phase of registry.phases) {
+      const match = catalog.match(
+        new RegExp(`phase: "${phase.id}",[\\s\\S]{0,90}?name: "([^"]+)"`),
+      );
+      const catalogName = match ? match[1] : "(not found)";
+      if (catalogName !== phase.name) drifted.push(phase.id);
+    }
+    // Known cosmetic drift recorded in the PROGRESS ledger; any NEW drift fails.
+    expect(drifted).toEqual(["25", "33", "36", "41", "42", "47", "51"]);
+  });
+
+  it("matches each owned capability to its registry owner phase", () => {
+    for (const contract of PHASE_CONTRACTS) {
+      for (const capabilityId of contract.capabilities.owns) {
+        const capability = KERNEL_CAPABILITIES.find((candidate) => candidate.id === capabilityId);
+        expect(capability, `capability ${capabilityId} must exist`).toBeDefined();
+        expect(capability?.ownerPhase, `owner of ${capabilityId}`).toBe(contract.id);
+      }
+    }
+  });
+
+  it("keeps the kernel capability graph free of unregistered principals", () => {
+    const legal = new Set([...catalogIds, "all", "control-plane"]);
+    const illegal: string[] = [];
+    for (const capability of KERNEL_CAPABILITIES) {
+      if (!catalogIds.includes(capability.ownerPhase)) {
+        illegal.push(`${capability.id} owner ${capability.ownerPhase}`);
+      }
+      for (const consumer of capability.consumers) {
+        if (!legal.has(consumer) && !/^runtime[-:]/.test(consumer)) {
+          illegal.push(`${capability.id} consumer ${consumer}`);
+        }
+      }
+    }
+    expect(illegal).toEqual([]);
+  });
+
+  it("declares dependencies only on phases that come earlier or are registered", () => {
+    const registered = new Set(catalogIds);
+    for (const contract of PHASE_CONTRACTS) {
+      for (const dependency of contract.dependsOn) {
+        expect(registered.has(dependency), `${contract.id} depends on ${dependency}`).toBe(true);
+      }
+    }
   });
 });

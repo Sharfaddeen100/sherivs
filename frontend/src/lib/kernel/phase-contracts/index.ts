@@ -40,6 +40,18 @@ import { PHASE_17_AUTOMATION_ENGINE } from "./phase-17-automation-engine";
 import { PHASE_18_ANALYTICS_INTELLIGENCE } from "./phase-18-analytics-intelligence";
 import { PHASE_19_COMMAND_CENTRE } from "./phase-19-command-centre";
 import { PHASE_20_GOVERNMENT_CLOUD } from "./phase-20-government-cloud";
+import { PHASE_21_CLOUD_FABRIC } from "./phase-21-cloud-fabric";
+import { PHASE_22_MOBILE_PLATFORM } from "./phase-22-mobile-platform";
+import { PHASE_23_WEB_PLATFORM } from "./phase-23-web-platform";
+import { PHASE_24_EXPERIENCE_DESIGN } from "./phase-24-experience-design";
+import { PHASE_25_ONBOARDING_WORKFORCE } from "./phase-25-onboarding-workforce";
+import { PHASE_26_AI_INTELLIGENCE } from "./phase-26-ai-intelligence";
+import { PHASE_27_MARKETPLACE } from "./phase-27-marketplace";
+import { PHASE_28_DEVELOPER_PLATFORM } from "./phase-28-developer-platform";
+import { PHASE_29_INTEGRATION } from "./phase-29-integration";
+import { PHASE_30_GLOBALIZATION } from "./phase-30-globalization";
+import { PHASE_31_ENTERPRISE_SCALE } from "./phase-31-enterprise-scale";
+import { PHASE_32_FUTURE_EVOLUTION } from "./phase-32-evolution";
 
 export const PHASE_CONTRACTS: readonly PhaseEngineeringContract[] = [
   PHASE_01_FOUNDATION,
@@ -62,6 +74,18 @@ export const PHASE_CONTRACTS: readonly PhaseEngineeringContract[] = [
   PHASE_18_ANALYTICS_INTELLIGENCE,
   PHASE_19_COMMAND_CENTRE,
   PHASE_20_GOVERNMENT_CLOUD,
+  PHASE_21_CLOUD_FABRIC,
+  PHASE_22_MOBILE_PLATFORM,
+  PHASE_23_WEB_PLATFORM,
+  PHASE_24_EXPERIENCE_DESIGN,
+  PHASE_25_ONBOARDING_WORKFORCE,
+  PHASE_26_AI_INTELLIGENCE,
+  PHASE_27_MARKETPLACE,
+  PHASE_28_DEVELOPER_PLATFORM,
+  PHASE_29_INTEGRATION,
+  PHASE_30_GLOBALIZATION,
+  PHASE_31_ENTERPRISE_SCALE,
+  PHASE_32_FUTURE_EVOLUTION,
 ] as const;
 
 export function phaseContractById(id: string): PhaseEngineeringContract | undefined {
