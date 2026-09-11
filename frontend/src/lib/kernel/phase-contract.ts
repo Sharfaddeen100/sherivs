@@ -392,25 +392,28 @@ export function buildPhaseContractGraph(
   contracts: readonly PhaseEngineeringContract[],
 ): PhaseContractGraph {
   const nodes = contracts.map((contract) => contract.id);
+  const nodeSet = new Set(nodes);
   const edges: PhaseContractEdge[] = [];
+
+  /**
+   * Only edges between authored contracts are graph edges. References to
+   * not-yet-authored phases are validated per contract against the full
+   * 51-phase registry (`knownPhaseIds`), so waves can land phase by phase
+   * without the graph reporting phantom dangling nodes.
+   */
+  const addEdge = (from: string, to: string, kind: PhaseContractEdge["kind"]): void => {
+    if (!nodeSet.has(from) || !nodeSet.has(to)) return;
+    if (PRINCIPAL_REFS.has(to) || PRINCIPAL_REFS.has(from)) return;
+    if (/^runtime[-:]/.test(to) || /^runtime[-:]/.test(from)) return;
+    edges.push({ from, to, kind });
+  };
+
   for (const contract of contracts) {
     for (const dependency of contract.dependsOn ?? []) {
-      if (
-        isLegalConnectionRef(dependency) &&
-        !PRINCIPAL_REFS.has(dependency) &&
-        !/^runtime[-:]/.test(dependency)
-      ) {
-        edges.push({ from: contract.id, to: dependency, kind: "dependency" });
-      }
+      addEdge(contract.id, dependency, "dependency");
     }
     for (const consumer of contract.consumers ?? []) {
-      if (
-        isLegalConnectionRef(consumer) &&
-        !PRINCIPAL_REFS.has(consumer) &&
-        !/^runtime[-:]/.test(consumer)
-      ) {
-        edges.push({ from: consumer, to: contract.id, kind: "consumer" });
-      }
+      addEdge(consumer, contract.id, "consumer");
     }
   }
   const roots = contracts.filter((contract) => !(contract.dependsOn ?? []).length).map((c) => c.id);

@@ -15,6 +15,9 @@
  */
 
 import { describe, expect, it } from "vitest";
+import { existsSync } from "node:fs";
+import { join } from "node:path";
+import { fileURLToPath } from "node:url";
 import {
   ASI_INVARIANTS,
   ENGINEERING_SECTION_COUNT,
@@ -39,6 +42,7 @@ import {
 import { KERNEL_CAPABILITIES } from "@/lib/kernel/kernel-capability-registry";
 
 const KNOWN_PHASE_IDS = Array.from({ length: 51 }, (_, i) => String(i + 1).padStart(2, "0"));
+const ROOT = fileURLToPath(new URL("../..", import.meta.url));
 const KNOWN_CAPABILITY_IDS = KERNEL_CAPABILITIES.map((capability) => capability.id);
 const CAPABILITY_OWNERS: Readonly<Record<string, string>> = Object.fromEntries(
   KERNEL_CAPABILITIES.map((capability) => [capability.id, capability.ownerPhase]),
@@ -263,11 +267,11 @@ describe("cross-phase connection law (no independent phases)", () => {
     expect(result.ok, result.ok ? "" : result.issues.join(" | ")).toBe(true);
   });
 
-  it("builds a graph where phase 01 is the root", () => {
+  it("builds a connected graph rooted at phase 01 as contracts land wave by wave", () => {
     const graph = buildPhaseContractGraph(PHASE_CONTRACTS);
-    expect(graph.nodes).toEqual(["01"]);
+    expect(graph.nodes).toEqual(PHASE_CONTRACTS.map((contract) => contract.id));
     expect(graph.roots).toEqual(["01"]);
-    expect(graph.edges).toEqual([]);
+    expect(graph.edges).toContainEqual({ from: "02", to: "01", kind: "dependency" });
     expect(validatePhaseContractGraph(graph)).toEqual([]);
   });
 
@@ -354,8 +358,27 @@ describe("authored phase-contract registry", () => {
     expect(result.summary.byStatus.implementing).toBeGreaterThanOrEqual(1);
   });
 
-  it("registers phase 01 as the only authored contract while later waves land", () => {
-    expect(PHASE_CONTRACTS.map((contract) => contract.id)).toEqual(["01"]);
-    expect(phaseContractById("02")).toBeUndefined();
+  it("registers the authored wave in phase order while later waves land", () => {
+    const ids = PHASE_CONTRACTS.map((contract) => contract.id);
+    expect(ids).toEqual([...ids].sort());
+    expect(ids[0]).toBe("01");
+    expect(ids).toContain("02");
+    expect(ids).toContain("03");
+    expect(ids).toContain("04");
+  });
+
+  it("references only artifacts that exist in the repository", () => {
+    const missing: string[] = [];
+    for (const contract of PHASE_CONTRACTS) {
+      for (const [key, section] of Object.entries(contract.sections)) {
+        for (const artifact of section.artifacts) {
+          if (artifact.startsWith("npm ") || artifact.includes(" ")) continue;
+          if (!existsSync(join(ROOT, artifact))) {
+            missing.push(`phase ${contract.id} ${key}: ${artifact}`);
+          }
+        }
+      }
+    }
+    expect(missing).toEqual([]);
   });
 });
