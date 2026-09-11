@@ -41,6 +41,7 @@ import {
   type PhaseCatalogEntry,
 } from "@/lib/phase-catalog";
 import { phaseContractGovernance } from "@/lib/kernel/phase-contracts";
+import { scholarVerticalBindingSummary } from "@/lib/runtime/scholar-vertical-bindings";
 import type { TenantId } from "@/lib/tenant-core";
 
 const DEMO_TENANT = "tenant:coregrid-demo" as TenantId;
@@ -288,6 +289,7 @@ export function CommandCentre() {
               />
             ) : null}
             <ContractGovernanceCard />
+            <ScholarBindingCard />
             <PhaseRunway />
           </div>
         </div>
@@ -745,6 +747,13 @@ const CONTRACT_HEALTH_BY_PHASE = new Map(
   CONTRACT_GOVERNANCE.rows.map((row) => [row.id, row] as const),
 );
 
+/**
+ * Scholar vertical bindings — which vertical of the first domain runtime
+ * realizes which kernel capability. Read from the runtime's binding map, which
+ * is machine-checked against the contract chain (WAVE-K9).
+ */
+const SCHOLAR_BINDINGS = scholarVerticalBindingSummary();
+
 const RUNWAY_COLUMNS: ColumnDef<PhaseCatalogEntry>[] = [
   {
     accessorKey: "phase",
@@ -914,6 +923,54 @@ function ContractGovernanceCard() {
         </div>
         <Separator />
         <p className="text-xs text-muted-foreground">Layers: {layerSummary}</p>
+      </CardContent>
+    </Card>
+  );
+}
+
+function ScholarBindingCard() {
+  const bindings = SCHOLAR_BINDINGS;
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-sm flex items-center gap-2">
+          <Users className="size-4 text-muted-foreground" />
+          Scholar vertical bindings
+          <Badge variant="secondary" className="border-0 bg-emerald-500/10 text-emerald-600">
+            {bindings.boundCapabilities.length}/{bindings.consumedCapabilities.length} kernel
+            capabilities bound
+          </Badge>
+        </CardTitle>
+        <CardDescription className="text-xs">
+          The first domain runtime ({bindings.runtime}, ledger row {bindings.registryRuntimeId})
+          consuming platform capabilities through its own verticals. Consumed capabilities with no
+          vertical:{" "}
+          {bindings.unboundCapabilities.length === 0
+            ? "none"
+            : bindings.unboundCapabilities.join(", ")}
+          .
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-3">
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {bindings.byVertical.map((entry) => (
+            <div key={entry.vertical} className="rounded-md border bg-muted/30 p-3">
+              <p className="text-xs font-semibold">{entry.vertical}</p>
+              <p className="mt-1 text-xs text-muted-foreground">
+                {entry.capabilities.length} kernel{" "}
+                {entry.capabilities.length === 1 ? "capability" : "capabilities"}
+              </p>
+              <p className="mt-1 font-mono text-[10px] break-words text-muted-foreground">
+                {entry.capabilities.join(", ")}
+              </p>
+            </div>
+          ))}
+        </div>
+        <Separator />
+        <p className="text-xs text-muted-foreground">
+          {bindings.rows.length} bindings · {bindings.evidenceCount} evidence paths — every binding
+          cites a live route or runtime module the suite verifies.
+        </p>
       </CardContent>
     </Card>
   );

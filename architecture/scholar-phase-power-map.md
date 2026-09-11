@@ -58,6 +58,26 @@ Legend: LIVE = applied to project nwrflbpbhyiqdptmlccm or wired into the running
 | 50 | Human Civilization Interface Layer | human-interface layer | DOC only — not built| |
 | 51 | Universal Reality OS Kernel | final composition kernel | DOC only — not built| |
 
+## Kernel binding (WAVE-K9, 2026-09-07)
+
+Scholar's consumption of the platform is now declared as **data**, not prose:
+
+- `frontend/src/lib/runtime/scholar-vertical-bindings.ts` maps every kernel
+  capability Scholar consumes to the Scholar vertical that realizes it
+  (admin / teacher / parent / bursar / driver / hq / runtime) with evidence
+  paths (live route or runtime module) per binding.
+- **Coverage law**: 13/13 consumed kernel capabilities are bound — no isolated
+  consumption; the validator fails on invented capabilities, duplicates,
+  missing evidence, evidence outside `frontend/src/`, or an unbound vertical.
+- **Chain law**: every bound capability resolves to an authored phase contract
+  (the completed 51-phase chain), and that contract declares `runtime:scholar`
+  as its `firstRuntime`; `architecture/registry.json` runtime-001 lists exactly
+  the owner phases of the consumed capabilities (22 mobile + 23 web client
+  platforms were consumed but unlisted before K-9).
+- **Enforcement**: `tests/unit/scholar-vertical-bindings.test.ts` (+ the runtime
+  module is now guarded by `tests/unit/kernel-purity.test.ts`).
+- **Visibility**: Command Centre → “Scholar vertical bindings” (read-only).
+
 ## Roadmap (Scholar delivery waves, 2026)
 - DONE R-1..R-7: 45-kind governed catalog + substrate applied live; HR RPCs + manager UI + roll summary; kind→chrome advisory resolution; self-position RPC; primary auto-promotion; P22/23 detection + offline banner; platform/browser target profiles (R-8a); app-frame preview (R-8b).
 - NEXT R-9: Phase 24 workspace-experience/i18n surfaces over position-aware chrome.

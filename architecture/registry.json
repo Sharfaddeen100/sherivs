@@ -114,7 +114,7 @@
 
   ],
   "runtimes": [
-    {"id":"runtime-001","name":"CoreGrid Scholar","type":"domain-runtime","status":"ACTIVE","phases":["04","10","11","12","13","15","16","17","18","20","25"],"surfaces":["role-dashboards","command-centre-provision","api-routes"],"note":"first production domain runtime; vertical L3/L4 partial, L5 pending. 2026-09-07 K-WAVES: registered as firstRuntime on all 51 kernel phase contracts, so the whole contract chain is validated against a live domain runtime rather than a placeholder"},
+    {"id":"runtime-001","name":"CoreGrid Scholar","type":"domain-runtime","status":"ACTIVE","phases":["04","10","11","12","13","15","16","17","18","20","22","23","25"],"surfaces":["role-dashboards","command-centre-provision","api-routes"],"note":"first production domain runtime; vertical L3/L4 partial, L5 pending. 2026-09-07 K-WAVES: registered as firstRuntime on all 51 kernel phase contracts, so the whole contract chain is validated against a live domain runtime rather than a placeholder. 2026-09-07 WAVE-K9: the phase list is now the exact owner set of the kernel capabilities Scholar consumes (mobile 22 + web 23 client platforms were consumed but unlisted) — locked by tests/unit/scholar-vertical-bindings.test.ts against the binding map in frontend/src/lib/runtime/scholar-vertical-bindings.ts"},
     {"id":"runtime-002-plus","name":"Future runtimes","type":"domain-runtime","status":"RESERVED","phases":[],"surfaces":[],"note":"no runtime may be installed by rewriting the kernel; each new runtime registers over the generic contract (kernel/domain-manifest.ts) and holds a reserved neutral seat (healthcare, government, commerce, logistics, energy, transport) until it is bound"}
 
   ],

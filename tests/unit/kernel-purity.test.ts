@@ -127,6 +127,7 @@ describe("P33 universal kernel — dependency boundary (platform CoreGrid first)
     join(ROOT, "frontend/src/lib/runtime/scholar.ts"),
     join(ROOT, "frontend/src/lib/runtime/scholar-events.ts"),
     join(ROOT, "frontend/src/lib/runtime/scholar-reality.ts"),
+    join(ROOT, "frontend/src/lib/runtime/scholar-vertical-bindings.ts"),
   ];
 
   function importSpecifiers(file: string): string[] {

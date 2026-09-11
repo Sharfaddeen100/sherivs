@@ -99,6 +99,7 @@ alongside `npm run typecheck`, `npm run verify:registry` and the build.
 | K-6b | Phases 41–51 contracts (civilization layer) with ADR-backed duplication resolution | ✅ landed |
 | K-7 | Contract coverage published on the platform surface + phase-name drift closed (ADR 202) | ✅ landed |
 | K-8 | Contract governance bound into the Command Centre operator surface (Phase 19 view) | ✅ landed |
+| K-9 | Scholar vertical bindings locked to the contract chain (consumer side) | ✅ landed |
 
 The contract chain is complete (51/51) and machine-checked. Further waves are
 data operations (add a phase contract) or consumer bindings (a runtime declaring
