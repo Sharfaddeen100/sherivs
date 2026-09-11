@@ -60,6 +60,17 @@ import { PHASE_37_SIMULATION_ENGINE } from "./phase-37-simulation-engine";
 import { PHASE_38_EVOLUTION_ENGINE } from "./phase-38-evolution-engine";
 import { PHASE_39_GOVERNANCE_ALIGNMENT } from "./phase-39-governance-alignment";
 import { PHASE_40_RUNTIME_FABRIC } from "./phase-40-runtime-fabric";
+import { PHASE_41_SANDBOX_ENGINE } from "./phase-41-sandbox-engine";
+import { PHASE_42_ADVERSARIAL_DEFENSE } from "./phase-42-adversarial-defense";
+import { PHASE_43_INTERFACE_CONNECTIVITY } from "./phase-43-interface-connectivity";
+import { PHASE_44_PLANETARY_INFRASTRUCTURE } from "./phase-44-planetary-infrastructure";
+import { PHASE_45_AI_COMPUTE } from "./phase-45-ai-compute";
+import { PHASE_46_TWIN_CIVILIZATION } from "./phase-46-twin-civilization";
+import { PHASE_47_SELF_IMPROVEMENT } from "./phase-47-self-improvement";
+import { PHASE_48_KNOWLEDGE_GRAPH } from "./phase-48-knowledge-graph";
+import { PHASE_49_AUTONOMOUS_ECONOMY } from "./phase-49-autonomous-economy";
+import { PHASE_50_HUMAN_INTERFACE } from "./phase-50-human-interface";
+import { PHASE_51_REALITY_OS } from "./phase-51-reality-os";
 
 export const PHASE_CONTRACTS: readonly PhaseEngineeringContract[] = [
   PHASE_01_FOUNDATION,
@@ -102,6 +113,17 @@ export const PHASE_CONTRACTS: readonly PhaseEngineeringContract[] = [
   PHASE_38_EVOLUTION_ENGINE,
   PHASE_39_GOVERNANCE_ALIGNMENT,
   PHASE_40_RUNTIME_FABRIC,
+  PHASE_41_SANDBOX_ENGINE,
+  PHASE_42_ADVERSARIAL_DEFENSE,
+  PHASE_43_INTERFACE_CONNECTIVITY,
+  PHASE_44_PLANETARY_INFRASTRUCTURE,
+  PHASE_45_AI_COMPUTE,
+  PHASE_46_TWIN_CIVILIZATION,
+  PHASE_47_SELF_IMPROVEMENT,
+  PHASE_48_KNOWLEDGE_GRAPH,
+  PHASE_49_AUTONOMOUS_ECONOMY,
+  PHASE_50_HUMAN_INTERFACE,
+  PHASE_51_REALITY_OS,
 ] as const;
 
 export function phaseContractById(id: string): PhaseEngineeringContract | undefined {

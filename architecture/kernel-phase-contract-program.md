@@ -93,8 +93,8 @@ alongside `npm run typecheck`, `npm run verify:registry` and the build.
 | K-4 | Phases 15–20 contracts (hardware, twin, automation, analytics, command centre, government) | ✅ landed |
 | K-5 | Phases 21–32 contracts (mobile/web/experience/workforce/intelligence/market/developer/integration/global/enterprise/evolution) | ✅ landed |
 | K-6a | Phases 33–40 contracts (universal layer) with ADR-backed duplication governance | ✅ landed |
-| K-6b | Phases 41–51 contracts (civilization layer) with ADR-backed duplication resolution | next |
-| K-7 | Scholar vertical bindings refreshed against the completed contract chain | planned |
+| K-6b | Phases 41–51 contracts (civilization layer) with ADR-backed duplication resolution | ✅ landed |
+| K-7 | Scholar vertical bindings refreshed against the completed 51-phase contract chain | next |
 
 Adding a phase is a data operation: author `kernel/phase-contracts/phase-NN-*.ts`,
 register it in `phase-contracts/index.ts`, run the verification chain. The

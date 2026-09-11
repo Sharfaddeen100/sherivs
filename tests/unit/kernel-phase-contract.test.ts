@@ -416,6 +416,7 @@ describe("registry alignment (REGISTRY.md / PROGRESS.md source of truth)", () =>
 
   it("authors contracts contiguously from phase 01 with no gaps", () => {
     const ids = PHASE_CONTRACTS.map((contract) => contract.id);
+    expect(ids.length).toBe(51);
     const expected = Array.from({ length: ids.length }, (_, i) => String(i + 1).padStart(2, "0"));
     expect(ids).toEqual(expected);
   });
