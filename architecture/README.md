@@ -114,6 +114,7 @@ The repository carries the 51-phase execution plan artifacts produced by the pla
 - `engineering-section-completeness-matrix.md` — phase-document section coverage + L1–L5 maturity grid
 - `migration-plan.md` — the transformation path preserving valid infrastructure and upgrading to the universal model
 - `kernel-wiring-plan.md` — the DB-backed S2 wiring sequence (runtime registry, event recording, persistence adapters); NOT EXECUTED until a database-backed runtime is available
+- `kernel-phase-contract-program.md` — the kernel phase-contract program: twenty-section contracts per phase, connected-DAG law, ASI profile, Scholar-first runtime binding with reserved neutral domain seats (wave K-1 landed at Phase 01)
 - `registry.json` — machine-readable architectural registry (51 phases, 50 capabilities, 15 duplication rows, 2 runtimes)
 - `scripts/verification/registry-validate.mjs` — registry invariant validator
 - `scripts/verification/engineering-sections.mjs` — completeness-matrix scanner
