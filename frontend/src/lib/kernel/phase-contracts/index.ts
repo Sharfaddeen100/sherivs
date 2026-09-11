@@ -27,6 +27,13 @@ import { PHASE_04_REALITY_ENGINE } from "./phase-04-reality-engine";
 import { PHASE_05_APPLICATION_RUNTIME } from "./phase-05-application-runtime";
 import { PHASE_06_WORKSPACE_ENGINE } from "./phase-06-workspace-engine";
 import { PHASE_07_AI_AGENT_SYSTEM } from "./phase-07-ai-agent-system";
+import { PHASE_08_SECURITY_ENGINE } from "./phase-08-security-engine";
+import { PHASE_09_TRUST_FABRIC } from "./phase-09-trust-fabric";
+import { PHASE_10_COMMUNICATION } from "./phase-10-communication";
+import { PHASE_11_ACADEMIC_INTELLIGENCE } from "./phase-11-academic-intelligence";
+import { PHASE_12_SCHEDULING_INTELLIGENCE } from "./phase-12-scheduling-intelligence";
+import { PHASE_13_FINANCIAL_SYSTEM } from "./phase-13-financial-system";
+import { PHASE_14_DATA_PLATFORM } from "./phase-14-data-platform";
 
 export const PHASE_CONTRACTS: readonly PhaseEngineeringContract[] = [
   PHASE_01_FOUNDATION,
@@ -36,6 +43,13 @@ export const PHASE_CONTRACTS: readonly PhaseEngineeringContract[] = [
   PHASE_05_APPLICATION_RUNTIME,
   PHASE_06_WORKSPACE_ENGINE,
   PHASE_07_AI_AGENT_SYSTEM,
+  PHASE_08_SECURITY_ENGINE,
+  PHASE_09_TRUST_FABRIC,
+  PHASE_10_COMMUNICATION,
+  PHASE_11_ACADEMIC_INTELLIGENCE,
+  PHASE_12_SCHEDULING_INTELLIGENCE,
+  PHASE_13_FINANCIAL_SYSTEM,
+  PHASE_14_DATA_PLATFORM,
 ] as const;
 
 export function phaseContractById(id: string): PhaseEngineeringContract | undefined {

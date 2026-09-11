@@ -422,13 +422,17 @@ export function buildPhaseContractGraph(
 
 /**
  * Validate that an assembled contract set forms one connected DAG: no phase may
- * be independent, no phase may be dangling, and no dependency cycle is allowed.
+ * be independent, no phase may be dangling, and no DEPENDENCY cycle is allowed.
+ *
+ * Capability consumption is deliberately not part of the cycle law: mutual
+ * consumption is legitimate (phase 08 consumes trust signals while phase 09
+ * depends on authorization), whereas build order must stay acyclic.
  */
 export function validatePhaseContractGraph(graph: PhaseContractGraph): string[] {
   const issues: string[] = [];
   const nodes = new Set(graph.nodes);
-  const adjacency = new Map<string, string[]>();
-  for (const node of graph.nodes) adjacency.set(node, []);
+  const dependencyAdjacency = new Map<string, string[]>();
+  for (const node of graph.nodes) dependencyAdjacency.set(node, []);
 
   for (const edge of graph.edges) {
     if (!nodes.has(edge.from) || !nodes.has(edge.to)) {
@@ -436,17 +440,17 @@ export function validatePhaseContractGraph(graph: PhaseContractGraph): string[] 
       continue;
     }
     if (edge.from === edge.to) issues.push(`phase ${edge.from} references itself (${edge.kind})`);
-    adjacency.get(edge.from)!.push(edge.to);
+    if (edge.kind === "dependency") dependencyAdjacency.get(edge.from)!.push(edge.to);
   }
 
-  /* Cycle detection (DFS with colouring). */
+  /* Cycle detection over dependency edges only (DFS with colouring). */
   const WHITE = 0;
   const GREY = 1;
   const BLACK = 2;
   const colour = new Map<string, number>(graph.nodes.map((node) => [node, WHITE]));
   const visit = (node: string): void => {
     colour.set(node, GREY);
-    for (const next of adjacency.get(node) ?? []) {
+    for (const next of dependencyAdjacency.get(node) ?? []) {
       const state = colour.get(next) ?? WHITE;
       if (state === GREY) issues.push(`dependency cycle detected at ${node} → ${next}`);
       else if (state === WHITE) visit(next);

@@ -286,12 +286,22 @@ describe("cross-phase connection law (no independent phases)", () => {
     const cycle = validatePhaseContractGraph({
       nodes: ["01", "02"],
       edges: [
-        { from: "01", to: "02", kind: "consumer" },
+        { from: "01", to: "02", kind: "dependency" },
         { from: "02", to: "01", kind: "dependency" },
       ],
       roots: [],
     });
     expect(cycle.join(" | ")).toContain("dependency cycle detected");
+
+    const mutualConsumption = validatePhaseContractGraph({
+      nodes: ["08", "09"],
+      edges: [
+        { from: "09", to: "08", kind: "dependency" },
+        { from: "08", to: "09", kind: "consumer" },
+      ],
+      roots: [],
+    });
+    expect(mutualConsumption.join(" | ")).not.toContain("cycle");
 
     const island = validatePhaseContractGraph({
       nodes: ["01", "02"],
