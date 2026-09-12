@@ -47,6 +47,7 @@ const ADOPTED = [
   "register-runtime.functions.ts",
   "scholar-institution-config.functions.ts",
   "scholar-feature-access.functions.ts",
+  "scholar-role-assignments.functions.ts",
   "school-settings.functions.ts",
   "staff-accounts.functions.ts",
   "teachers.functions.ts",

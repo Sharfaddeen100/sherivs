@@ -61,10 +61,16 @@ There is no static application architecture: no `SchoolDashboard.tsx`,
 
 ## 4. Remaining directive scope (next waves)
 
-- R36: render these generated experiences as real surfaces (public site renderer
-  + workspace composition) behind the Phase 08 gate.
-- R32: CoreGrid internal operating workspace (platform org roles → generated
-  engineering/AI/product/customer workspaces).
-- R33/R34/R35: per-feature capability codes + fail-closed gates, data-driven
-  dashboard grids, PWA/native shell adapters.
-- Marketplace/experience memory (directive §22–23) remains unscoped.
+- ✅ R32: CoreGrid internal operating workspace (platform org roles → generated
+  engineering/AI/product/customer/education/executive departments).
+- ✅ R33/R34/R35: per-feature capability codes + fail-closed gates, data-driven
+  dashboard grids, PWA manifest + native shell adapters.
+- ✅ R36: generated experiences rendered on the operator surface (the Command
+  Centre card generates from the selected organization class).
+- ✅ R37: persistence substrate (`cg_role_assignment`, `cg_role_grant`) with
+  scoped RPCs, typed store and gated server functions — AUTHORED, not yet applied.
+- ✅ R38: marketplace listings published from reality + entitlement-gated installs;
+  consent-bound, retention-bounded experience memory (§23).
+- R39: apply the R37 migration and record live proof; R40: render the generated
+  public site + workspace composition + grid UI; R41: marketplace experience UI.
+- Marketplace/experience-memory UI and AI website-generation UX remain unscoped.

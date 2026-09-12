@@ -89,12 +89,17 @@ Dynamic experience (workspaces, landing, chrome)
 | Wave | Scope |
 | --- | --- |
 | ✅ R30 | Educational Reality Role Engine (this document) |
-| ✅ R31 | Experience & website generation engine — catalog + engine core (surfaces land in R36) |
-| R32 | CoreGrid internal operating workspace (platform organization roles → generated workspaces) |
-| R33 | Per-feature capability codes + fail-closed server gates (R-10 roadmap) |
-| R34 | Data-driven dashboard grids from capability-coded contributions (R-11) |
-| R35 | PWA manifest + native shell adapters (R-12) |
-| R36 | Awareness/experience surfaces in the Command Centre + Scholar portal |
+| ✅ R31 | Experience & website generation engine — catalog + engine core |
+| ✅ R32 | CoreGrid internal operating workspace (6 departments generated from COREGRID_INTERNAL roles) |
+| ✅ R33 | Per-feature capability codes (27) + fail-closed feature gate + gated server functions |
+| ✅ R34 | Data-driven dashboard grids (26 contributions bound to feature codes) |
+| ✅ R35 | PWA manifest generation + iOS/Android/desktop shell adapters |
+| ✅ R36 | Generated experiences rendered on the operator surface (organization-class presets) |
+| ✅ R37 | Persistence: `cg_role_assignment` + `cg_role_grant` substrate, RPCs, typed store, gated server functions |
+| ✅ R38 | Marketplace publishing from reality + entitlement-gated installs + consent-bound experience memory |
+| R39 | Apply the R37 migration on the project and record the live proof (script + PROGRESS row) |
+| R40 | Wire the generated surfaces for real: public-site renderer, workspace composition, dashboard grid UI |
+| R41 | Marketplace experience UI (discover/install/entitlement) and CoreGrid internal workspace surface |
 
 Each wave: architecture → data → engine → tests → ledger, with the verification
 chain (vitest, tsc, eslint, registry-validate, build) green before it lands.
