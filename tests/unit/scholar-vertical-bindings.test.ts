@@ -186,11 +186,26 @@ describe("Scholar vertical bindings — validator rejects unsound maps", () => {
   });
 });
 
-describe("Scholar vertical bindings — operator surface", () => {
+/** `frontend/src/routes/_authenticated/admin/classes.tsx` → `/admin/classes`. */
+function routeIdFor(path: string): string {
+  const relative = path
+    .replace("frontend/src/routes/", "")
+    .replace(/\.tsx?$/, "")
+    .replace(/\[\.\]/g, ".");
+  const mapped = relative
+    .split("/")
+    .filter((segment) => !segment.startsWith("_"))
+    .map((segment) => (segment === "index" ? "" : `/${segment}`))
+    .join("");
+  return mapped === "" ? "/" : mapped;
+}
+
+describe("Scholar vertical bindings — evidence is verifiable, not just cited", () => {
   const surface = readFileSync(
     join(ROOT, "frontend/src/components/command-centre/command-centre.tsx"),
     "utf8",
   );
+  const routeTree = readFileSync(join(ROOT, "frontend/src/routeTree.gen.ts"), "utf8");
 
   it("publishes the binding summary on the Command Centre", () => {
     expect(surface).toContain("scholarVerticalBindingSummary");
@@ -198,5 +213,26 @@ describe("Scholar vertical bindings — operator surface", () => {
     expect(surface).toContain("bindings.byVertical");
     expect(surface).toContain("bindings.unboundCapabilities");
     expect(surface).toContain("bindings.registryRuntimeId");
+  });
+
+  it("registers every route evidence path in the generated route tree", () => {
+    const routeEvidence = SCHOLAR_VERTICAL_BINDINGS.flatMap((binding) => binding.evidence).filter(
+      (path) => path.startsWith("frontend/src/routes/"),
+    );
+    expect(routeEvidence.length).toBeGreaterThan(0);
+    for (const path of routeEvidence) {
+      const moduleRef = `./routes/${path.replace("frontend/src/routes/", "").replace(/\.tsx?$/, "")}`;
+      expect(routeTree, `${path} must be registered in routeTree.gen.ts`).toContain(
+        `from '${moduleRef}'`,
+      );
+    }
+  });
+
+  it("maps every route evidence path to a route id the tree actually exposes", () => {
+    for (const path of SCHOLAR_VERTICAL_BINDINGS.flatMap((binding) => binding.evidence)) {
+      if (!path.startsWith("frontend/src/routes/")) continue;
+      const routeId = routeIdFor(path);
+      expect(routeTree, `${path} must expose route id ${routeId}`).toContain(`'${routeId}':`);
+    }
   });
 });

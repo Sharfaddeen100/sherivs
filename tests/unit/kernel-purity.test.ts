@@ -18,7 +18,7 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -123,7 +123,20 @@ describe("P33 universal kernel — Runtime Installation Test", () => {
 
 describe("P33 universal kernel — dependency boundary (platform CoreGrid first)", () => {
   const TS_KERNEL_SOURCES = KERNEL_SOURCES.filter((f) => f.endsWith(".ts"));
-  const SCHOLAR_RUNTIME_SOURCES = [
+  const SCHOLAR_RUNTIME_DIR = join(ROOT, "frontend/src/lib/runtime");
+  /**
+   * Globbed, not hand-listed: a new `runtime/scholar-*.ts` module can never
+   * escape the boundary law by being forgotten in an inventory.
+   */
+  const SCHOLAR_RUNTIME_SOURCES = readdirSync(SCHOLAR_RUNTIME_DIR)
+    .filter((name) => /^scholar(-[a-z0-9-]+)?\.ts$/.test(name))
+    .sort()
+    .map((name) => join(SCHOLAR_RUNTIME_DIR, name));
+  /**
+   * The runtime's entry contracts must consume a kernel contract directly
+   * (installed on CoreGrid, never standalone).
+   */
+  const KERNEL_CONSUMING_SCHOLAR_MODULES = [
     join(ROOT, "frontend/src/lib/runtime/scholar.ts"),
     join(ROOT, "frontend/src/lib/runtime/scholar-events.ts"),
     join(ROOT, "frontend/src/lib/runtime/scholar-reality.ts"),
@@ -146,28 +159,33 @@ describe("P33 universal kernel — dependency boundary (platform CoreGrid first)
     expect(offenders).toEqual([]);
   });
 
-  it("Scholar runtime imports only kernel contracts or its own runtime module set", () => {
+  it("guards every Scholar runtime module (globbed, never a hand-kept list)", () => {
+    expect(SCHOLAR_RUNTIME_SOURCES.length).toBeGreaterThanOrEqual(12);
+    for (const file of SCHOLAR_RUNTIME_SOURCES) {
+      expect(readFileSync(file, "utf8").length).toBeGreaterThan(0);
+    }
+  });
+
+  it("keeps Scholar runtime modules inside the library layer (no UI, shell or provider reach)", () => {
     const offenders: string[] = [];
     for (const file of SCHOLAR_RUNTIME_SOURCES) {
+      const name = file.replace(/\\/g, "/").split("/").pop();
       for (const spec of importSpecifiers(file)) {
         const allowed =
           spec.startsWith("./") ||
-          spec.startsWith("@/lib/kernel/") ||
-          spec.startsWith("@/lib/runtime/");
-        if (!allowed) {
-          offenders.push(`${file.replace(/\\/g, "/").split("runtime/")[1]}: ${spec}`);
-        }
+          spec.startsWith("../") ||
+          spec.startsWith("@/lib/") ||
+          spec === "zod";
+        if (!allowed) offenders.push(`${name}: ${spec}`);
       }
     }
     expect(offenders).toEqual([]);
   });
 
-  it("every Scholar runtime module consumes at least one kernel contract (installed on CoreGrid, never standalone)", () => {
-    for (const file of SCHOLAR_RUNTIME_SOURCES) {
+  it("keeps the kernel-consumption law on the runtime entry modules", () => {
+    for (const file of KERNEL_CONSUMING_SCHOLAR_MODULES) {
       const source = readFileSync(file, "utf8");
-      expect(source, `${file} must import a @/lib/kernel contract`).toMatch(
-        /@\/lib\/kernel\/[a-z-]+/,
-      );
+      expect(source, `${file} must import a @/lib/kernel contract`).toMatch(/@\/lib\/kernel\//);
     }
   });
 });

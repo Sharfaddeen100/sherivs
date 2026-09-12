@@ -100,6 +100,7 @@ alongside `npm run typecheck`, `npm run verify:registry` and the build.
 | K-7 | Contract coverage published on the platform surface + phase-name drift closed (ADR 202) | ✅ landed |
 | K-8 | Contract governance bound into the Command Centre operator surface (Phase 19 view) | ✅ landed |
 | K-9 | Scholar vertical bindings locked to the contract chain (consumer side) | ✅ landed |
+| K-10 | Contract/boundary closure: purity guard globbed over all Scholar runtime modules + binding evidence verified against the route tree | ✅ landed |
 
 The contract chain is complete (51/51) and machine-checked. Further waves are
 data operations (add a phase contract) or consumer bindings (a runtime declaring
