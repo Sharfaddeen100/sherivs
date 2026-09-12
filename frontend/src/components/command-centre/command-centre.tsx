@@ -42,6 +42,11 @@ import {
 } from "@/lib/phase-catalog";
 import { phaseContractGovernance } from "@/lib/kernel/phase-contracts";
 import { scholarVerticalBindingSummary } from "@/lib/runtime/scholar-vertical-bindings";
+import { generateExperience } from "@/lib/scholar/experience/experience-engine";
+import { governExperience } from "@/lib/scholar/experience/experience-governance";
+import { realityForOrgType } from "@/lib/scholar/experience/experience-presets";
+import { featureCodesForReality } from "@/lib/scholar/capability-codes";
+import { contributionIndexForCodes } from "@/lib/scholar/dashboards/grid-engine";
 import type { TenantId } from "@/lib/tenant-core";
 
 const DEMO_TENANT = "tenant:coregrid-demo" as TenantId;
@@ -290,6 +295,7 @@ export function CommandCentre() {
             ) : null}
             <ContractGovernanceCard />
             <ScholarBindingCard />
+            <GeneratedExperienceCard orgType={orgForm.orgType} />
             <PhaseRunway />
           </div>
         </div>
@@ -970,6 +976,83 @@ function ScholarBindingCard() {
         <p className="text-xs text-muted-foreground">
           {bindings.rows.length} bindings · {bindings.evidenceCount} evidence paths — every binding
           cites a live route or runtime module the suite verifies.
+        </p>
+      </CardContent>
+    </Card>
+  );
+}
+
+function GeneratedExperienceCard({ orgType }: { orgType: string }) {
+  const reality = realityForOrgType(orgType);
+  const experience = generateExperience({ reality });
+  const installed = featureCodesForReality(reality);
+  const widgets = contributionIndexForCodes(installed.map((entry) => entry.code));
+  const governance = governExperience({
+    tenantId: "tenant:provisioning-preview",
+    audience: "public_visitor",
+    experience,
+  });
+  const widgetCount = widgets.reduce((total, grid) => total + grid.widgets.length, 0);
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-sm flex items-center gap-2">
+          <Layers className="size-4 text-muted-foreground" />
+          Generated experience preview
+          <Badge variant="secondary" className="border-0">
+            {governance.servedSections.length} sections · {installed.length} feature codes ·{" "}
+            {widgetCount} widgets
+          </Badge>
+        </CardTitle>
+        <CardDescription className="text-xs">
+          Generated from the selected organization class ({orgType}) — nothing here is
+          hand-designed. Sections exist only because that reality has them;{" "}
+          {experience.requiresApproval.length} sections require human approval before publication
+          and AI-authored content is never published automatically. Tenant context, exposure and
+          approval are enforced by the runtime, not by this view.
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-3">
+        <div className="flex flex-wrap gap-1.5">
+          {experience.publicNavigation.map((section) => (
+            <span
+              key={section}
+              className="rounded-full border border-border bg-muted/20 px-2.5 py-1 text-[10px] font-medium"
+            >
+              {section}
+            </span>
+          ))}
+        </div>
+        <Separator />
+        <div className="grid gap-3 sm:grid-cols-2">
+          <div>
+            <p className="text-xs font-semibold">
+              Internal workspaces ({experience.internalApplication.workspaces.length})
+            </p>
+            <p className="mt-1 font-mono text-[10px] break-words text-muted-foreground">
+              {experience.internalApplication.workspaces
+                .map((entry) => entry.workspace)
+                .join(", ") || "—"}
+            </p>
+            <p className="mt-1 text-xs text-muted-foreground">
+              Landing workspace: {experience.internalApplication.primary ?? "—"}
+            </p>
+          </div>
+          <div>
+            <p className="text-xs font-semibold">Dashboards the reality generates</p>
+            <ul className="mt-1 space-y-0.5 text-xs text-muted-foreground">
+              {widgets.map((grid) => (
+                <li key={grid.workspace}>
+                  {grid.label}: {grid.widgets.length} widgets
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+        <Separator />
+        <p className="text-[11px] text-muted-foreground">
+          Installed feature codes: {installed.map((entry) => entry.code).join(", ") || "none"}
         </p>
       </CardContent>
     </Card>

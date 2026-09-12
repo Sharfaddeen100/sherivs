@@ -361,3 +361,10 @@ export function rolesByGroupMember(group: string): EducationRealityRole[] {
 export function staffedRoles(): EducationRealityRole[] {
   return EDUCATION_REALITY_ROLES.filter((role) => role.staffing.kind === "scholar_workforce");
 }
+
+/** Reality roles that ARE a given workforce kind (linkage reverse lookup). */
+export function roleIdsForWorkforceKind(kindCode: string): readonly string[] {
+  return EDUCATION_REALITY_ROLES.filter((role) => role.staffing.kindCode === kindCode).map(
+    (role) => role.id,
+  );
+}

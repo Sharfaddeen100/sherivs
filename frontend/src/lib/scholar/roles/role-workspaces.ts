@@ -86,7 +86,7 @@ export const CATEGORY_WORKSPACES: Record<RoleCategory, readonly RoleWorkspaceKey
   TEACHING: ["teaching", "academic"],
   STUDENT_SUPPORT: ["student_welfare", "learning", "leadership"],
   FINANCE: ["finance", "leadership"],
-  OPERATIONS: ["operations", "facilities"],
+  OPERATIONS: ["operations", "facilities", "human_resources", "admissions"],
   HEALTH: ["health", "student_welfare"],
   SAFETY: ["safety", "operations"],
   TECHNOLOGY: ["technology", "operations"],
