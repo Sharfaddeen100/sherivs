@@ -1054,6 +1054,21 @@ function GeneratedExperienceCard({ orgType }: { orgType: string }) {
         <p className="text-[11px] text-muted-foreground">
           Installed feature codes: {installed.map((entry) => entry.code).join(", ") || "none"}
         </p>
+        <Separator />
+        <div className="flex flex-wrap gap-3 text-xs">
+          <a className="underline" href={`/reality/${encodeURIComponent(orgType)}`}>
+            Open the generated environment
+          </a>
+          <a className="underline" href={`/marketplace?class=${encodeURIComponent(orgType)}`}>
+            Marketplace catalog for this class
+          </a>
+          <a className="underline" href={`/manifest.webmanifest?class=${encodeURIComponent(orgType)}`}>
+            Served manifest
+          </a>
+          <a className="underline" href="/platform/org">
+            CoreGrid organization
+          </a>
+        </div>
       </CardContent>
     </Card>
   );

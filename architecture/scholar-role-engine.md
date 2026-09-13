@@ -97,9 +97,12 @@ Dynamic experience (workspaces, landing, chrome)
 | ✅ R36 | Generated experiences rendered on the operator surface (organization-class presets) |
 | ✅ R37 | Persistence: `cg_role_assignment` + `cg_role_grant` substrate, RPCs, typed store, gated server functions |
 | ✅ R38 | Marketplace publishing from reality + entitlement-gated installs + consent-bound experience memory |
-| R39 | Apply the R37 migration on the project and record the live proof (script + PROGRESS row) |
-| R40 | Wire the generated surfaces for real: public-site renderer, workspace composition, dashboard grid UI |
-| R41 | Marketplace experience UI (discover/install/entitlement) and CoreGrid internal workspace surface |
+| ✅ R39 | Substrate PROVEN: single-migration runner, static+live verifier, digest-bound proof artifact, `verify:role-substrate` |
+| ✅ R40 | Generated surfaces SERVED: `/reality/:class`, `/manifest.webmanifest`, `/runtime`, real generated PWA icons |
+| ✅ R41 | Marketplace discover/install surface (`/marketplace`) + CoreGrid internal workspace surface (`/platform/org`) |
+| R42 | Apply R37 on a project and flip the proof to `mode: "live"` (DB-gated; the only outstanding step of R39) |
+| R43 | Marketplace install WRITE path (installation rows + entitlement resolution from tenant plan) behind the gate |
+| R44 | Runtime surface discoverability: a formal nav contribution decision for `/runtime` (capability vocabulary) |
 
 Each wave: architecture → data → engine → tests → ledger, with the verification
 chain (vitest, tsc, eslint, registry-validate, build) green before it lands.

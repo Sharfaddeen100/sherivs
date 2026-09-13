@@ -15,6 +15,8 @@ import { Route as AdmissionsRouteImport } from './routes/admissions'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as ManifestDotwebmanifestRouteImport } from './routes/manifest[.]webmanifest'
+import { Route as MarketplaceRouteImport } from './routes/marketplace'
 import { Route as PlatformRouteImport } from './routes/platform'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
@@ -28,6 +30,7 @@ import { Route as AuthenticatedHqRouteRouteImport } from './routes/_authenticate
 import { Route as AuthenticatedMessagesRouteImport } from './routes/_authenticated/messages'
 import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authenticated/notifications'
 import { Route as AuthenticatedParentRouteRouteImport } from './routes/_authenticated/parent/route'
+import { Route as AuthenticatedRuntimeRouteImport } from './routes/_authenticated/runtime'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as AuthenticatedStudentRouteRouteImport } from './routes/_authenticated/student/route'
 import { Route as AuthenticatedSuperAdminRouteRouteImport } from './routes/_authenticated/super-admin/route'
@@ -35,6 +38,8 @@ import { Route as AuthenticatedTeacherRouteRouteImport } from './routes/_authent
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as EventsIdRouteImport } from './routes/events.$id'
 import { Route as NewsIdRouteImport } from './routes/news.$id'
+import { Route as PlatformOrgRouteImport } from './routes/platform.org'
+import { Route as RealityClassRouteImport } from './routes/reality.$class'
 import { Route as AuthenticatedAdminAdmissionsRouteImport } from './routes/_authenticated/admin/admissions'
 import { Route as AuthenticatedAdminAiAssistantRouteImport } from './routes/_authenticated/admin/ai-assistant'
 import { Route as AuthenticatedAdminAnalyticsRouteImport } from './routes/_authenticated/admin/analytics'
@@ -173,6 +178,16 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ManifestDotwebmanifestRoute = ManifestDotwebmanifestRouteImport.update({
+  id: '/manifest.webmanifest',
+  path: '/manifest.webmanifest',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MarketplaceRoute = MarketplaceRouteImport.update({
+  id: '/marketplace',
+  path: '/marketplace',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PlatformRoute = PlatformRouteImport.update({
   id: '/platform',
   path: '/platform',
@@ -242,6 +257,11 @@ const AuthenticatedParentRouteRoute =
     path: '/parent',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedRuntimeRoute = AuthenticatedRuntimeRouteImport.update({
+  id: '/runtime',
+  path: '/runtime',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
@@ -278,6 +298,16 @@ const EventsIdRoute = EventsIdRouteImport.update({
 const NewsIdRoute = NewsIdRouteImport.update({
   id: '/news/$id',
   path: '/news/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlatformOrgRoute = PlatformOrgRouteImport.update({
+  id: '/org',
+  path: '/org',
+  getParentRoute: () => PlatformRoute,
+} as any)
+const RealityClassRoute = RealityClassRouteImport.update({
+  id: '/reality/$class',
+  path: '/reality/$class',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedAdminAdmissionsRoute =
@@ -925,7 +955,9 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRouteWithChildren
   '/login': typeof LoginRoute
-  '/platform': typeof PlatformRoute
+  '/manifest.webmanifest': typeof ManifestDotwebmanifestRoute
+  '/marketplace': typeof MarketplaceRoute
+  '/platform': typeof PlatformRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/rules': typeof RulesRoute
@@ -941,10 +973,13 @@ export interface FileRoutesByFullPath {
   '/teacher': typeof AuthenticatedTeacherRouteRouteWithChildren
   '/messages': typeof AuthenticatedMessagesRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
+  '/runtime': typeof AuthenticatedRuntimeRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/events/$id': typeof EventsIdRoute
   '/news/$id': typeof NewsIdRoute
+  '/platform/org': typeof PlatformOrgRoute
+  '/reality/$class': typeof RealityClassRoute
   '/admin/admissions': typeof AuthenticatedAdminAdmissionsRoute
   '/admin/ai-assistant': typeof AuthenticatedAdminAiAssistantRoute
   '/admin/analytics': typeof AuthenticatedAdminAnalyticsRoute
@@ -1060,7 +1095,9 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRouteWithChildren
   '/login': typeof LoginRoute
-  '/platform': typeof PlatformRoute
+  '/manifest.webmanifest': typeof ManifestDotwebmanifestRoute
+  '/marketplace': typeof MarketplaceRoute
+  '/platform': typeof PlatformRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/rules': typeof RulesRoute
@@ -1076,10 +1113,13 @@ export interface FileRoutesByTo {
   '/teacher': typeof AuthenticatedTeacherRouteRouteWithChildren
   '/messages': typeof AuthenticatedMessagesRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
+  '/runtime': typeof AuthenticatedRuntimeRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/events/$id': typeof EventsIdRoute
   '/news/$id': typeof NewsIdRoute
+  '/platform/org': typeof PlatformOrgRoute
+  '/reality/$class': typeof RealityClassRoute
   '/admin/admissions': typeof AuthenticatedAdminAdmissionsRoute
   '/admin/ai-assistant': typeof AuthenticatedAdminAiAssistantRoute
   '/admin/analytics': typeof AuthenticatedAdminAnalyticsRoute
@@ -1197,7 +1237,9 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRouteWithChildren
   '/login': typeof LoginRoute
-  '/platform': typeof PlatformRoute
+  '/manifest.webmanifest': typeof ManifestDotwebmanifestRoute
+  '/marketplace': typeof MarketplaceRoute
+  '/platform': typeof PlatformRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/rules': typeof RulesRoute
@@ -1213,10 +1255,13 @@ export interface FileRoutesById {
   '/_authenticated/teacher': typeof AuthenticatedTeacherRouteRouteWithChildren
   '/_authenticated/messages': typeof AuthenticatedMessagesRoute
   '/_authenticated/notifications': typeof AuthenticatedNotificationsRoute
+  '/_authenticated/runtime': typeof AuthenticatedRuntimeRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/events/$id': typeof EventsIdRoute
   '/news/$id': typeof NewsIdRoute
+  '/platform/org': typeof PlatformOrgRoute
+  '/reality/$class': typeof RealityClassRoute
   '/_authenticated/admin/admissions': typeof AuthenticatedAdminAdmissionsRoute
   '/_authenticated/admin/ai-assistant': typeof AuthenticatedAdminAiAssistantRoute
   '/_authenticated/admin/analytics': typeof AuthenticatedAdminAnalyticsRoute
@@ -1334,6 +1379,8 @@ export interface FileRouteTypes {
     | '/auth'
     | '/blog'
     | '/login'
+    | '/manifest.webmanifest'
+    | '/marketplace'
     | '/platform'
     | '/privacy'
     | '/reset-password'
@@ -1350,10 +1397,13 @@ export interface FileRouteTypes {
     | '/teacher'
     | '/messages'
     | '/notifications'
+    | '/runtime'
     | '/settings'
     | '/blog/$slug'
     | '/events/$id'
     | '/news/$id'
+    | '/platform/org'
+    | '/reality/$class'
     | '/admin/admissions'
     | '/admin/ai-assistant'
     | '/admin/analytics'
@@ -1469,6 +1519,8 @@ export interface FileRouteTypes {
     | '/auth'
     | '/blog'
     | '/login'
+    | '/manifest.webmanifest'
+    | '/marketplace'
     | '/platform'
     | '/privacy'
     | '/reset-password'
@@ -1485,10 +1537,13 @@ export interface FileRouteTypes {
     | '/teacher'
     | '/messages'
     | '/notifications'
+    | '/runtime'
     | '/settings'
     | '/blog/$slug'
     | '/events/$id'
     | '/news/$id'
+    | '/platform/org'
+    | '/reality/$class'
     | '/admin/admissions'
     | '/admin/ai-assistant'
     | '/admin/analytics'
@@ -1605,6 +1660,8 @@ export interface FileRouteTypes {
     | '/auth'
     | '/blog'
     | '/login'
+    | '/manifest.webmanifest'
+    | '/marketplace'
     | '/platform'
     | '/privacy'
     | '/reset-password'
@@ -1621,10 +1678,13 @@ export interface FileRouteTypes {
     | '/_authenticated/teacher'
     | '/_authenticated/messages'
     | '/_authenticated/notifications'
+    | '/_authenticated/runtime'
     | '/_authenticated/settings'
     | '/blog/$slug'
     | '/events/$id'
     | '/news/$id'
+    | '/platform/org'
+    | '/reality/$class'
     | '/_authenticated/admin/admissions'
     | '/_authenticated/admin/ai-assistant'
     | '/_authenticated/admin/analytics'
@@ -1742,7 +1802,9 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   BlogRoute: typeof BlogRouteWithChildren
   LoginRoute: typeof LoginRoute
-  PlatformRoute: typeof PlatformRoute
+  ManifestDotwebmanifestRoute: typeof ManifestDotwebmanifestRoute
+  MarketplaceRoute: typeof MarketplaceRoute
+  PlatformRoute: typeof PlatformRouteWithChildren
   PrivacyRoute: typeof PrivacyRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   RulesRoute: typeof RulesRoute
@@ -1750,6 +1812,7 @@ export interface RootRouteChildren {
   SuperAdminBootstrapRoute: typeof SuperAdminBootstrapRoute
   EventsIdRoute: typeof EventsIdRoute
   NewsIdRoute: typeof NewsIdRoute
+  RealityClassRoute: typeof RealityClassRoute
   ApiPublicAuditPasswordResetRoute: typeof ApiPublicAuditPasswordResetRoute
   ApiPublicWebhooksPaystackRoute: typeof ApiPublicWebhooksPaystackRoute
 }
@@ -1796,6 +1859,20 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/manifest.webmanifest': {
+      id: '/manifest.webmanifest'
+      path: '/manifest.webmanifest'
+      fullPath: '/manifest.webmanifest'
+      preLoaderRoute: typeof ManifestDotwebmanifestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/marketplace': {
+      id: '/marketplace'
+      path: '/marketplace'
+      fullPath: '/marketplace'
+      preLoaderRoute: typeof MarketplaceRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/platform': {
@@ -1889,6 +1966,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedParentRouteRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/runtime': {
+      id: '/_authenticated/runtime'
+      path: '/runtime'
+      fullPath: '/runtime'
+      preLoaderRoute: typeof AuthenticatedRuntimeRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/settings': {
       id: '/_authenticated/settings'
       path: '/settings'
@@ -1936,6 +2020,20 @@ declare module '@tanstack/react-router' {
       path: '/news/$id'
       fullPath: '/news/$id'
       preLoaderRoute: typeof NewsIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/platform/org': {
+      id: '/platform/org'
+      path: '/org'
+      fullPath: '/platform/org'
+      preLoaderRoute: typeof PlatformOrgRouteImport
+      parentRoute: typeof PlatformRoute
+    }
+    '/reality/$class': {
+      id: '/reality/$class'
+      path: '/reality/$class'
+      fullPath: '/reality/$class'
+      preLoaderRoute: typeof RealityClassRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/admin/admissions': {
@@ -3034,6 +3132,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedTeacherRouteRoute: typeof AuthenticatedTeacherRouteRouteWithChildren
   AuthenticatedMessagesRoute: typeof AuthenticatedMessagesRoute
   AuthenticatedNotificationsRoute: typeof AuthenticatedNotificationsRoute
+  AuthenticatedRuntimeRoute: typeof AuthenticatedRuntimeRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
 }
 
@@ -3049,6 +3148,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedTeacherRouteRoute: AuthenticatedTeacherRouteRouteWithChildren,
   AuthenticatedMessagesRoute: AuthenticatedMessagesRoute,
   AuthenticatedNotificationsRoute: AuthenticatedNotificationsRoute,
+  AuthenticatedRuntimeRoute: AuthenticatedRuntimeRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
 }
 
@@ -3065,6 +3165,18 @@ const BlogRouteChildren: BlogRouteChildren = {
 
 const BlogRouteWithChildren = BlogRoute._addFileChildren(BlogRouteChildren)
 
+interface PlatformRouteChildren {
+  PlatformOrgRoute: typeof PlatformOrgRoute
+}
+
+const PlatformRouteChildren: PlatformRouteChildren = {
+  PlatformOrgRoute: PlatformOrgRoute,
+}
+
+const PlatformRouteWithChildren = PlatformRoute._addFileChildren(
+  PlatformRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
@@ -3072,7 +3184,9 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   BlogRoute: BlogRouteWithChildren,
   LoginRoute: LoginRoute,
-  PlatformRoute: PlatformRoute,
+  ManifestDotwebmanifestRoute: ManifestDotwebmanifestRoute,
+  MarketplaceRoute: MarketplaceRoute,
+  PlatformRoute: PlatformRouteWithChildren,
   PrivacyRoute: PrivacyRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   RulesRoute: RulesRoute,
@@ -3080,6 +3194,7 @@ const rootRouteChildren: RootRouteChildren = {
   SuperAdminBootstrapRoute: SuperAdminBootstrapRoute,
   EventsIdRoute: EventsIdRoute,
   NewsIdRoute: NewsIdRoute,
+  RealityClassRoute: RealityClassRoute,
   ApiPublicAuditPasswordResetRoute: ApiPublicAuditPasswordResetRoute,
   ApiPublicWebhooksPaystackRoute: ApiPublicWebhooksPaystackRoute,
 }

@@ -1,0 +1,184 @@
+{
+  "artifact": "role-assignment-substrate",
+  "wave": "R39",
+  "mode": "static",
+  "generatedAt": "2026-09-13T22:18:54.604Z",
+  "migration": "database/supabase/migrations/20260907000800_coregrid_role_assignment_substrate.sql",
+  "migrationDigest": "sha256:06c134d8ca63354f8abed06bc9f3a424a2bfa27118bd0b2745fe2dd55cea7fcd",
+  "serverSurface": "frontend/src/lib/scholar-role-assignments.functions.ts",
+  "tables": [
+    "cg_role_assignment",
+    "cg_role_grant"
+  ],
+  "rpcs": [
+    "list_role_assignments",
+    "assign_role",
+    "end_role_assignment",
+    "list_role_grants",
+    "grant_role_capability",
+    "revoke_role_capability"
+  ],
+  "checks": [
+    {
+      "id": "static:table:cg_role_assignment",
+      "ok": true,
+      "detail": "public.cg_role_assignment is created"
+    },
+    {
+      "id": "static:rls:cg_role_assignment",
+      "ok": true,
+      "detail": "public.cg_role_assignment enables row level security"
+    },
+    {
+      "id": "static:table:cg_role_grant",
+      "ok": true,
+      "detail": "public.cg_role_grant is created"
+    },
+    {
+      "id": "static:rls:cg_role_grant",
+      "ok": true,
+      "detail": "public.cg_role_grant enables row level security"
+    },
+    {
+      "id": "static:deny-by-default",
+      "ok": true,
+      "detail": "no policy is declared — RLS with zero policies denies every client"
+    },
+    {
+      "id": "static:revoked-from-clients",
+      "ok": true,
+      "detail": "anon + authenticated hold no table privilege"
+    },
+    {
+      "id": "static:granted-to-service-role",
+      "ok": true,
+      "detail": "service_role owns substrate access"
+    },
+    {
+      "id": "static:rpc:list_role_assignments",
+      "ok": true,
+      "detail": "public.list_role_assignments() is declared"
+    },
+    {
+      "id": "static:rpc-execute:list_role_assignments",
+      "ok": true,
+      "detail": "public.list_role_assignments() is executable by an authenticated caller"
+    },
+    {
+      "id": "static:server-lockstep:list_role_assignments",
+      "ok": true,
+      "detail": "the server-function surface calls list_role_assignments"
+    },
+    {
+      "id": "static:rpc:assign_role",
+      "ok": true,
+      "detail": "public.assign_role() is declared"
+    },
+    {
+      "id": "static:rpc-execute:assign_role",
+      "ok": true,
+      "detail": "public.assign_role() is executable by an authenticated caller"
+    },
+    {
+      "id": "static:server-lockstep:assign_role",
+      "ok": true,
+      "detail": "the server-function surface calls assign_role"
+    },
+    {
+      "id": "static:rpc:end_role_assignment",
+      "ok": true,
+      "detail": "public.end_role_assignment() is declared"
+    },
+    {
+      "id": "static:rpc-execute:end_role_assignment",
+      "ok": true,
+      "detail": "public.end_role_assignment() is executable by an authenticated caller"
+    },
+    {
+      "id": "static:server-lockstep:end_role_assignment",
+      "ok": true,
+      "detail": "the server-function surface calls end_role_assignment"
+    },
+    {
+      "id": "static:rpc:list_role_grants",
+      "ok": true,
+      "detail": "public.list_role_grants() is declared"
+    },
+    {
+      "id": "static:rpc-execute:list_role_grants",
+      "ok": true,
+      "detail": "public.list_role_grants() is executable by an authenticated caller"
+    },
+    {
+      "id": "static:server-lockstep:list_role_grants",
+      "ok": true,
+      "detail": "the server-function surface calls list_role_grants"
+    },
+    {
+      "id": "static:rpc:grant_role_capability",
+      "ok": true,
+      "detail": "public.grant_role_capability() is declared"
+    },
+    {
+      "id": "static:rpc-execute:grant_role_capability",
+      "ok": true,
+      "detail": "public.grant_role_capability() is executable by an authenticated caller"
+    },
+    {
+      "id": "static:server-lockstep:grant_role_capability",
+      "ok": true,
+      "detail": "the server-function surface calls grant_role_capability"
+    },
+    {
+      "id": "static:rpc:revoke_role_capability",
+      "ok": true,
+      "detail": "public.revoke_role_capability() is declared"
+    },
+    {
+      "id": "static:rpc-execute:revoke_role_capability",
+      "ok": true,
+      "detail": "public.revoke_role_capability() is executable by an authenticated caller"
+    },
+    {
+      "id": "static:server-lockstep:revoke_role_capability",
+      "ok": true,
+      "detail": "the server-function surface calls revoke_role_capability"
+    },
+    {
+      "id": "static:security-definer",
+      "ok": true,
+      "detail": "all 6 substrate functions are SECURITY DEFINER"
+    },
+    {
+      "id": "static:tenant-re-derived-from-actor",
+      "ok": true,
+      "detail": "4 tenant-scoped RPCs re-derive scope from is_school_admin() + get_my_school_id()"
+    },
+    {
+      "id": "static:grantor-captured-from-auth",
+      "ok": true,
+      "detail": "granted_by comes from auth.uid() — no client parameter can assert a grantor"
+    },
+    {
+      "id": "static:self-scope-has-no-client-tenant",
+      "ok": true,
+      "detail": "the self-scoped reader takes no tenant input and reads its tenant server-side"
+    },
+    {
+      "id": "static:history-preserved",
+      "ok": true,
+      "detail": "revocation timestamps instead of deleting grant history"
+    }
+  ],
+  "ok": true,
+  "liveProcedure": [
+    "node scripts/db-apply-one.mjs 20260907000800",
+    "$env:DATABASE_URL=\"postgresql://…\" ; node scripts/verify-role-assignment-substrate.mjs",
+    "commit the regenerated proof artifact and record the mode=live result in PROGRESS §20"
+  ],
+  "limitations": [
+    "Static mode proves the authored source invariants, not the applied database.",
+    "Behavioural RPC tests (a non-admin JWT being rejected) need a Supabase JWT harness; the compensating control is that every tenant-scoped function cross-checks is_school_admin() + get_my_school_id().",
+    "Tenants cannot persist grants until the migration is applied, so granted-only features fail closed (DENY)."
+  ]
+}

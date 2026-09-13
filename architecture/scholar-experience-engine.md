@@ -68,9 +68,20 @@ There is no static application architecture: no `SchoolDashboard.tsx`,
 - ✅ R36: generated experiences rendered on the operator surface (the Command
   Centre card generates from the selected organization class).
 - ✅ R37: persistence substrate (`cg_role_assignment`, `cg_role_grant`) with
-  scoped RPCs, typed store and gated server functions — AUTHORED, not yet applied.
+  scoped RPCs, typed store and gated server functions — AUTHORED.
 - ✅ R38: marketplace listings published from reality + entitlement-gated installs;
   consent-bound, retention-bounded experience memory (§23).
-- R39: apply the R37 migration and record live proof; R40: render the generated
-  public site + workspace composition + grid UI; R41: marketplace experience UI.
-- Marketplace/experience-memory UI and AI website-generation UX remain unscoped.
+- ✅ R39: the substrate is PROVEN — single-migration runner
+  (`scripts/db-apply-one.mjs`), a static+live verifier and a digest-bound proof
+  artifact (`architecture/proofs/role-assignment-substrate.proof.json`, 30/30 in
+  static mode). Applying it on a project and flipping the proof to live is R42.
+- ✅ R40: the generated environment is SERVED — `/reality/:class` (real renderer),
+  `/manifest.webmanifest` (generated + validated, with real generated icons) and
+  `/runtime` (the actor's workspaces, dashboards and platform departments,
+  composed from server-resolved roles).
+- ✅ R41: `/marketplace` (catalog published from reality, discovery through the
+  marketplace's own contract, install decisions rendered from the gate) and
+  `/platform/org` (the CoreGrid internal workspace with its audit on the surface).
+- R42–R44: apply the substrate on a project; add the marketplace install write
+  path; decide the `/runtime` nav contribution. AI website-generation UX remains
+  unscoped.
