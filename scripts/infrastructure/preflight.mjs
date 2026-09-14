@@ -59,12 +59,14 @@ const WAVES = {
   cf6: { label: "CF-6 Vultr edge", required: ["TF_VAR_vultr_api_key"], anyOf: [] },
   cf7: {
     label: "CF-7 Supabase data layer",
-    required: ["TF_VAR_supabase_project_ref", "TF_VAR_supabase_access_token", "SUPABASE_DB_URL"],
-    anyOf: [],
+    required: ["TF_VAR_supabase_project_ref", "TF_VAR_supabase_access_token"],
+    anyOf: [["SUPABASE_DB_URL", "TF_VAR_supabase_db_url"]],
   },
   cf8: {
     label: "CF-8 n8n executor",
-    required: ["N8N_DOMAIN", "N8N_ENCRYPTION_KEY", "N8N_DB_URL", "N8N_REDIS_URL"],
+    // Only owner-supplied values: the executor's database and Redis are
+    // provisioned in-cluster by Terraform, so they are outputs, not credentials.
+    required: ["N8N_DOMAIN", "N8N_ENCRYPTION_KEY"],
     anyOf: [],
   },
   traffic: {

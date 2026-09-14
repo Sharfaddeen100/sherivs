@@ -2,59 +2,24 @@
   "artifact": "infrastructure-preflight",
   "wave": "CF-4/CF-7 readiness",
   "owner": "21",
-  "mode": "static",
-  "generatedAt": "2026-09-14T05:16:18.176Z",
+  "mode": "live",
+  "generatedAt": "2026-09-14T05:46:53.307Z",
   "wavesChecked": [
-    "CF-4 OCI foundation",
-    "CF-5 Hetzner worker pools",
-    "CF-6 Vultr edge",
-    "CF-7 Supabase data layer",
-    "CF-8 n8n executor",
-    "Global traffic layer (Cloudflare)"
+    "CF-7 Supabase data layer"
   ],
   "blockedWaves": [
-    "CF-4 OCI foundation",
-    "CF-5 Hetzner worker pools",
-    "CF-6 Vultr edge",
-    "CF-7 Supabase data layer",
-    "CF-8 n8n executor",
-    "Global traffic layer (Cloudflare)"
+    "CF-7 Supabase data layer"
   ],
   "checks": [
     {
-      "id": "presence:cf4",
-      "ok": false,
-      "detail": "CF-4 OCI foundation: 5 missing → TF_VAR_oci_tenancy_ocid, TF_VAR_oci_user_ocid, TF_VAR_oci_fingerprint, TF_VAR_oci_region, TF_VAR_oci_compartment_ocid"
-    },
-    {
-      "id": "presence:cf4:TF_VAR_oci_private_key|TF_VAR_oci_private_key_path",
-      "ok": false,
-      "detail": "none of TF_VAR_oci_private_key / TF_VAR_oci_private_key_path is present"
-    },
-    {
-      "id": "presence:cf5",
-      "ok": false,
-      "detail": "CF-5 Hetzner worker pools: 2 missing → TF_VAR_hetzner_token, TF_VAR_hetzner_ssh_public_key"
-    },
-    {
-      "id": "presence:cf6",
-      "ok": false,
-      "detail": "CF-6 Vultr edge: 1 missing → TF_VAR_vultr_api_key"
-    },
-    {
       "id": "presence:cf7",
       "ok": false,
-      "detail": "CF-7 Supabase data layer: 3 missing → TF_VAR_supabase_project_ref, TF_VAR_supabase_access_token, SUPABASE_DB_URL"
+      "detail": "CF-7 Supabase data layer: 2 missing → TF_VAR_supabase_project_ref, TF_VAR_supabase_access_token"
     },
     {
-      "id": "presence:cf8",
+      "id": "presence:cf7:SUPABASE_DB_URL|TF_VAR_supabase_db_url",
       "ok": false,
-      "detail": "CF-8 n8n executor: 4 missing → N8N_DOMAIN, N8N_ENCRYPTION_KEY, N8N_DB_URL, N8N_REDIS_URL"
-    },
-    {
-      "id": "presence:traffic",
-      "ok": false,
-      "detail": "Global traffic layer (Cloudflare): 3 missing → TF_VAR_cloudflare_api_token, TF_VAR_cloudflare_zone_id, TF_VAR_cloudflare_account_id"
+      "detail": "none of SUPABASE_DB_URL / TF_VAR_supabase_db_url is present"
     }
   ],
   "ok": false,

@@ -64,6 +64,15 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.TF_STATE_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.TF_STATE_SECRET_ACCESS_KEY }}
 
+      - name: Mount the OCI API key from the secret store
+        if: inputs.provider == 'oci' || inputs.provider == 'environments/production'
+        env:
+          OCI_PRIVATE_KEY_PEM: ${{ secrets.OCI_PRIVATE_KEY_PEM }}
+        run: |
+          install -m 600 /dev/null "$RUNNER_TEMP/oci_private_key.pem"
+          printf '%s' "$OCI_PRIVATE_KEY_PEM" > "$RUNNER_TEMP/oci_private_key.pem"
+          echo "OCI private key materialised for this job only (never echoed, never stored)."
+
       - name: Terraform plan
         run: |
           terraform -chdir=infrastructure/terraform/${{ inputs.provider }} plan \
@@ -72,12 +81,12 @@ jobs:
           TF_VAR_oci_tenancy_ocid: ${{ secrets.TF_VAR_oci_tenancy_ocid }}
           TF_VAR_oci_user_ocid: ${{ secrets.TF_VAR_oci_user_ocid }}
           TF_VAR_oci_fingerprint: ${{ secrets.TF_VAR_oci_fingerprint }}
-          TF_VAR_oci_private_key_path: ${{ secrets.TF_VAR_oci_private_key_path }}
+          TF_VAR_oci_private_key_path: ${{ runner.temp }}/oci_private_key.pem
           TF_VAR_hetzner_token: ${{ secrets.TF_VAR_hetzner_token }}
           TF_VAR_vultr_api_key: ${{ secrets.TF_VAR_vultr_api_key }}
           TF_VAR_cloudflare_api_token: ${{ secrets.TF_VAR_cloudflare_api_token }}
           TF_VAR_supabase_access_token: ${{ secrets.TF_VAR_supabase_access_token }}
-          TF_VAR_supabase_db_url: ${{ secrets.TF_VAR_supabase_db_url }}
+          TF_VAR_supabase_db_url: ${{ secrets.SUPABASE_DB_URL }}
 
       - name: Upload the plan artifact
         uses: actions/upload-artifact@v4
@@ -112,18 +121,26 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.TF_STATE_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.TF_STATE_SECRET_ACCESS_KEY }}
 
+      - name: Mount the OCI API key from the secret store
+        if: inputs.provider == 'oci' || inputs.provider == 'environments/production'
+        env:
+          OCI_PRIVATE_KEY_PEM: ${{ secrets.OCI_PRIVATE_KEY_PEM }}
+        run: |
+          install -m 600 /dev/null "$RUNNER_TEMP/oci_private_key.pem"
+          printf '%s' "$OCI_PRIVATE_KEY_PEM" > "$RUNNER_TEMP/oci_private_key.pem"
+
       - name: Apply the reviewed plan
         run: terraform -chdir=infrastructure/terraform/${{ inputs.provider }} apply -input=false -lock-timeout=5m fabric.tfplan
         env:
           TF_VAR_oci_tenancy_ocid: ${{ secrets.TF_VAR_oci_tenancy_ocid }}
           TF_VAR_oci_user_ocid: ${{ secrets.TF_VAR_oci_user_ocid }}
           TF_VAR_oci_fingerprint: ${{ secrets.TF_VAR_oci_fingerprint }}
-          TF_VAR_oci_private_key_path: ${{ secrets.TF_VAR_oci_private_key_path }}
+          TF_VAR_oci_private_key_path: ${{ runner.temp }}/oci_private_key.pem
           TF_VAR_hetzner_token: ${{ secrets.TF_VAR_hetzner_token }}
           TF_VAR_vultr_api_key: ${{ secrets.TF_VAR_vultr_api_key }}
           TF_VAR_cloudflare_api_token: ${{ secrets.TF_VAR_cloudflare_api_token }}
           TF_VAR_supabase_access_token: ${{ secrets.TF_VAR_supabase_access_token }}
-          TF_VAR_supabase_db_url: ${{ secrets.TF_VAR_supabase_db_url }}
+          TF_VAR_supabase_db_url: ${{ secrets.SUPABASE_DB_URL }}
 
       - name: Post-apply health check
         run: |

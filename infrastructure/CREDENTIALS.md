@@ -3,6 +3,9 @@
 > **This file contains no secrets and must never contain secrets.** It lists what
 > the Cloud Fabric needs, why, the minimum privilege it should carry, where the
 > value is stored, and how to verify it works.
+>
+> **Step-by-step acquisition (click paths, CLI, rotation):**
+> `infrastructure/CREDENTIALS-WALKTHROUGH.md`.
 
 ## How to supply credentials (read this first)
 

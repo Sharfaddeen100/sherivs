@@ -26,7 +26,8 @@ wave. Deployment was the hosted Supabase project plus the web build output.
 ```
 infrastructure/
 ├── CREDENTIALS.md     credential checklist (names only — never values)
-├── .gitignore         state, plans, tfvars, kubeconfig
+├── CREDENTIALS-WALKTHROUGH.md   step-by-step acquisition per provider + rotation
+├── .gitignore         state, plans, tfvars, kubeconfig, generated backend config
 ├── terraform/         providers, modules, production composition (see its README)
 ├── kubernetes/        cluster baseline (namespaces, policy, quotas, RBAC, sandbox)
 ├── monitoring/        observability values (CF-9, not deployed)

@@ -4,9 +4,30 @@
 # the CF-4 bootstrap. State must be remote and versioned: local state is a defect
 # (blueprint §17, law 2).
 
-bucket         = "coregrid-tfstate-<account-or-tenant>"
-key            = "cloud-fabric/production/terraform.tfstate"
-region         = "<state-bucket-region>"
-encrypt        = true
-# Object-lock/versioning is enabled on the bucket itself, so state history is
-# recoverable even after a bad apply.
+# remote state must exist before the first apply: create the bucket yourself
+# (bootstrap deliberately refuses to create it for you).
+#
+# AWS S3 (no extra settings needed):
+#   bucket  = "coregrid-tfstate-<account>"
+#   key     = "cloud-fabric/production/terraform.tfstate"
+#   region  = "eu-west-1"
+#   encrypt = true
+#
+# S3-COMPATIBLE providers (Cloudflare R2, OCI Object Storage, Wasabi) need the
+# endpoint plus the validation skips. Keep the endpoint out of git as well.
+#
+#   bucket                      = "coregrid-tfstate"
+#   key                         = "cloud-fabric/production/terraform.tfstate"
+#   region                      = "auto"
+#   encrypt                     = true
+#   skip_credentials_validation = true
+#   skip_region_validation      = true
+#   skip_requesting_account_id  = true
+#   use_path_style              = true
+#   endpoints                   = { s3 = "https://<ACCOUNT_ID>.r2.cloudflarestorage.com" }
+#     # OCI Object Storage: https://<NAMESPACE>.compat.objectstorage.<REGION>.oraclecloud.com
+#     # Wasabi:             https://s3.<REGION>.wasabisys.com
+#
+# Credentials for the backend come from the environment, never this file:
+#   AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY  (or TF_STATE_* mapped by the pipeline)
+
