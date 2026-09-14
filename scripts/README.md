@@ -15,6 +15,13 @@ Portable verification commands are available through `npm` and are used by CI:
 - `npm run verify:role-substrate` (proves the role assignment/grant substrate:
   source invariants always, applied-database invariants when `DATABASE_URL` is
   set; writes `architecture/proofs/role-assignment-substrate.proof.json`)
+- `npm run verify:infrastructure` (proves the Cloud Fabric's source invariants:
+  provider/module structure, secret hygiene, remote state, pinning, tagging,
+  cluster baseline, sandbox containment, domain neutrality; writes
+  `architecture/proofs/cloud-fabric-foundation.proof.json`)
+- `node scripts/infrastructure/supabase-config-check.mjs --static` (data-layer
+  configuration contract; without `--static` it performs a read-only live check
+  and refuses to treat an unrestorable data layer as ready)
 - `npm run generate:icons` (regenerates the installable PWA icons in
   `public/icons/` from a brand colour — no image dependency)
 - `npm run verify` (typecheck, unit tests, registry, secrets, then production build)

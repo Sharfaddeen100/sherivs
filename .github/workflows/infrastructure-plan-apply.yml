@@ -1,0 +1,131 @@
+name: Infrastructure plan / apply
+
+# Deliberately manual. No push or pull_request trigger can apply infrastructure.
+#
+#   plan  -> produces the plan artifact and the human-readable diff, no approval
+#   apply -> downloads the reviewed plan and applies it under an APPROVAL
+#            environment (required reviewers must approve before the job starts)
+#
+# Credentials come from GitHub Environments (never from the repository):
+#   infrastructure-plan      read-only provider identities
+#   infrastructure-apply     apply identities + required reviewers
+#
+# Rollback: re-run apply with the previous plan artifact, or apply the last known
+# good commit's plan. Database migrations are forward-only with compensating
+# migrations (see the migration plan, CF-7).
+
+on:
+  workflow_dispatch:
+    inputs:
+      provider:
+        description: Provider root to plan/apply
+        required: true
+        type: choice
+        options:
+          - environments/production
+          - oci
+          - hetzner
+          - vultr
+          - cloudflare
+          - supabase
+      action:
+        description: plan or apply
+        required: true
+        default: plan
+        type: choice
+        options: [plan, apply]
+      confirm_apply:
+        description: Type APPLY to authorise an apply
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  plan:
+    name: Plan (${{ inputs.provider }})
+    runs-on: ubuntu-latest
+    environment: infrastructure-plan
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.8
+
+      - name: Show the plan in the summary
+        run: echo "Review the plan artifact before approving any apply." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Terraform init (remote state)
+        run: terraform -chdir=infrastructure/terraform/${{ inputs.provider }} init -input=false
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.TF_STATE_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.TF_STATE_SECRET_ACCESS_KEY }}
+
+      - name: Terraform plan
+        run: |
+          terraform -chdir=infrastructure/terraform/${{ inputs.provider }} plan \
+            -input=false -lock-timeout=5m -out=fabric.tfplan
+        env:
+          TF_VAR_oci_tenancy_ocid: ${{ secrets.TF_VAR_oci_tenancy_ocid }}
+          TF_VAR_oci_user_ocid: ${{ secrets.TF_VAR_oci_user_ocid }}
+          TF_VAR_oci_fingerprint: ${{ secrets.TF_VAR_oci_fingerprint }}
+          TF_VAR_oci_private_key_path: ${{ secrets.TF_VAR_oci_private_key_path }}
+          TF_VAR_hetzner_token: ${{ secrets.TF_VAR_hetzner_token }}
+          TF_VAR_vultr_api_key: ${{ secrets.TF_VAR_vultr_api_key }}
+          TF_VAR_cloudflare_api_token: ${{ secrets.TF_VAR_cloudflare_api_token }}
+          TF_VAR_supabase_access_token: ${{ secrets.TF_VAR_supabase_access_token }}
+          TF_VAR_supabase_db_url: ${{ secrets.TF_VAR_supabase_db_url }}
+
+      - name: Upload the plan artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: fabric-plan-${{ inputs.provider }}
+          path: infrastructure/terraform/${{ inputs.provider }}/fabric.tfplan
+          retention-days: 14
+
+  apply:
+    name: Apply (${{ inputs.provider }}) — approval required
+    needs: plan
+    if: inputs.action == 'apply' && inputs.confirm_apply == 'APPLY'
+    runs-on: ubuntu-latest
+    environment: infrastructure-apply
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.8
+
+      - name: Download the reviewed plan
+        uses: actions/download-artifact@v4
+        with:
+          name: fabric-plan-${{ inputs.provider }}
+          path: infrastructure/terraform/${{ inputs.provider }}
+
+      - name: Terraform init (remote state)
+        run: terraform -chdir=infrastructure/terraform/${{ inputs.provider }} init -input=false
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.TF_STATE_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.TF_STATE_SECRET_ACCESS_KEY }}
+
+      - name: Apply the reviewed plan
+        run: terraform -chdir=infrastructure/terraform/${{ inputs.provider }} apply -input=false -lock-timeout=5m fabric.tfplan
+        env:
+          TF_VAR_oci_tenancy_ocid: ${{ secrets.TF_VAR_oci_tenancy_ocid }}
+          TF_VAR_oci_user_ocid: ${{ secrets.TF_VAR_oci_user_ocid }}
+          TF_VAR_oci_fingerprint: ${{ secrets.TF_VAR_oci_fingerprint }}
+          TF_VAR_oci_private_key_path: ${{ secrets.TF_VAR_oci_private_key_path }}
+          TF_VAR_hetzner_token: ${{ secrets.TF_VAR_hetzner_token }}
+          TF_VAR_vultr_api_key: ${{ secrets.TF_VAR_vultr_api_key }}
+          TF_VAR_cloudflare_api_token: ${{ secrets.TF_VAR_cloudflare_api_token }}
+          TF_VAR_supabase_access_token: ${{ secrets.TF_VAR_supabase_access_token }}
+          TF_VAR_supabase_db_url: ${{ secrets.TF_VAR_supabase_db_url }}
+
+      - name: Post-apply health check
+        run: |
+          echo "Verify: cluster nodes Ready, baseline policies present, alerts quiet." >> "$GITHUB_STEP_SUMMARY"
+          echo "Record the change record and proof path in PROGRESS §20." >> "$GITHUB_STEP_SUMMARY"

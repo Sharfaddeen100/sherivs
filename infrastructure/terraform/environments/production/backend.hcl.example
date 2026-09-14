@@ -1,0 +1,12 @@
+# CoreGrid Cloud Fabric — remote state backend (example, not a secret)
+#
+# Copy to backend.hcl (git-ignored) and fill with the state bucket created during
+# the CF-4 bootstrap. State must be remote and versioned: local state is a defect
+# (blueprint §17, law 2).
+
+bucket         = "coregrid-tfstate-<account-or-tenant>"
+key            = "cloud-fabric/production/terraform.tfstate"
+region         = "<state-bucket-region>"
+encrypt        = true
+# Object-lock/versioning is enabled on the bucket itself, so state history is
+# recoverable even after a bad apply.

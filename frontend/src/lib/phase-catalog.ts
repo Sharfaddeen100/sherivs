@@ -165,7 +165,7 @@ export const PHASE_CATALOG: readonly PhaseCatalogEntry[] = [
     phase: "21",
     name: "Global Cloud Fabric",
     layer: "Global",
-    modules: ["cloud-core", "cloud-byoc", "cloud-governance"],
+    modules: ["cloud-core", "cloud-byoc", "cloud-governance", "cloud-fabric-iac"],
     testCount: 46,
   },
   {

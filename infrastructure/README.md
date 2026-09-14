@@ -1,11 +1,64 @@
 # Infrastructure
 
-Home of deployment, container, and cloud configuration for CoreGrid Scholar.
+Home of the **CoreGrid Cloud Fabric** — the vendor-neutral infrastructure layer
+that powers CoreGrid and every future domain runtime. Scholar is its first
+consumer, never its design input.
 
-**Current state:** No Docker, CI/CD, or cloud configuration exists in the
-repository yet. Deployment is currently the hosted Supabase project plus the
-web app build output (`npm run build` -> `dist/`).
+**Owner:** Phase 21 — Global Cloud Fabric (`architecture/phase-21-global-cloud-fabric.md`).
+**Blueprint:** `architecture/cloud-fabric-implementation-blueprint.md`.
+**Plan:** `architecture/cloud-fabric-migration-plan.md` (waves CF-0…CF-12).
 
-Infrastructure work belongs to `architecture/phase-01-foundation.md` and
-`phase-31-enterprise-scale.md`. Environment requirements are documented in
-`.env.example`.
+## Current state (evidence-based, 2026-09-13)
+
+| Layer | State |
+| --- | --- |
+| IaC (Terraform) | **Authored** — 6 modules, 5 provider roots, 1 production composition |
+| Kubernetes baseline | **Authored** — 8 namespaces, quotas, default-deny policies, PSA, RBAC, sandbox isolation |
+| Monitoring / security / agent runtime / n8n / runtime cutover | **Not deployed** (waves CF-8…CF-12, credential-gated) |
+| Provider credentials | **Not supplied** — see `CREDENTIALS.md`; nothing is applied without them |
+| Toolchain here | Node + git only (no terraform/kubectl/helm/docker), so IaC is proven structurally by `verify:infrastructure` |
+
+No Docker, CI/CD or cloud configuration existed in this repository before this
+wave. Deployment was the hosted Supabase project plus the web build output.
+
+## Layout
+
+```
+infrastructure/
+├── CREDENTIALS.md     credential checklist (names only — never values)
+├── .gitignore         state, plans, tfvars, kubeconfig
+├── terraform/         providers, modules, production composition (see its README)
+├── kubernetes/        cluster baseline (namespaces, policy, quotas, RBAC, sandbox)
+├── monitoring/        observability values (CF-9, not deployed)
+└── workloads/         deployable service manifests (images injected by CI)
+```
+
+## Commands
+
+```bash
+npm run verify:infrastructure     # proves the fabric's source invariants (no credentials)
+node scripts/infrastructure/supabase-config-check.mjs --static   # data-layer contract check
+node scripts/db-apply.mjs         # apply migrations (needs DATABASE_URL)
+node scripts/db-apply-one.mjs <prefix> --dry-run                 # one migration, dry run
+```
+
+## Laws this fabric obeys
+
+1. **Ownership** — no identity, authorization, policy, analytics, workflow or twin
+   engine is built here; those are consumed from their owning phases.
+2. **No credentials in git, ever** — references only; secret variables `sensitive`.
+3. **Remote state only** — local state is a defect.
+4. **Domain-neutral** — no vertical's vocabulary in the fabric (machine-checked).
+5. **Fail closed** — a missing secret, an unreachable provider or an unproven
+   residency rule stops the plan instead of degrading isolation.
+6. **Evidence** — `architecture/proofs/cloud-fabric-foundation.proof.json` binds
+   the proof to a digest of every infrastructure file.
+
+## What happens next
+
+Waves CF-4…CF-12 need credentials supplied out-of-band (never in chat, never in
+git). See `CREDENTIALS.md` for the exact list, minimum privilege, storage location
+and rotation expectations, then follow `architecture/cloud-fabric-migration-plan.md`.
+
+Environment variables in `.env.example` remain the application runtime's contract;
+infrastructure variables are `TF_VAR_*` and never enter the application bundle.

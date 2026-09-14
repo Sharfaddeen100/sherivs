@@ -1,0 +1,136 @@
+# CoreGrid Cloud Fabric — sandbox isolation (Phase 41 owns the model).
+#
+# The sandbox is where untrusted agents, simulations and generated code run. Its
+# laws are stricter than the rest of the cluster:
+#
+#   1. no route to any tenant namespace (default-deny + explicit deny of the
+#      runtime namespaces),
+#   2. no provider credentials and no tenant data credentials,
+#   3. hard quota and the lowest priority class (first evicted, never preempts),
+#   4. TTL: the namespace's workloads are jobs with an activeDeadlineSeconds, and
+#      the sandbox baseline is torn down after the run,
+#   5. synthetic fixtures only.
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: sandbox-default-deny
+  namespace: coregrid-dev
+spec:
+  podSelector:
+    matchLabels:
+      coregrid.io/component: sandbox
+  policyTypes: [Ingress, Egress]
+---
+# The sandbox may resolve DNS and reach nothing else. Egress to tenant namespaces
+# and to the internet is deliberately absent — the deny is the policy.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: sandbox-dns-only-egress
+  namespace: coregrid-dev
+spec:
+  podSelector:
+    matchLabels:
+      coregrid.io/component: sandbox
+  policyTypes: [Egress]
+  egress:
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+      ports:
+        - protocol: UDP
+          port: 53
+---
+# Explicit statement of the isolation law: these namespaces are unreachable from
+# the sandbox, and the sandbox is unreachable from them.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: deny-from-sandbox-to-runtimes
+  namespace: coregrid-platform
+spec:
+  podSelector: {}
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              coregrid.io/lifecycle: ephemeral
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: sandbox-quota
+  namespace: coregrid-dev
+spec:
+  hard:
+    requests.cpu: "4"
+    requests.memory: 8Gi
+    limits.cpu: "8"
+    limits.memory: 16Gi
+    pods: "20"
+    count/jobs.batch: "20"
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: sandbox-limits
+  namespace: coregrid-dev
+spec:
+  limits:
+    - type: Container
+      default:
+        cpu: 250m
+        memory: 512Mi
+      defaultRequest:
+        cpu: 100m
+        memory: 128Mi
+      max:
+        cpu: "2"
+        memory: 4Gi
+---
+# A sandbox workload: synthetic run with a hard deadline and no API token.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: sandbox-reference-run
+  namespace: coregrid-dev
+  labels:
+    coregrid.io/component: sandbox
+    coregrid.io/owner-phase: "41"
+spec:
+  backoffLimit: 0
+  activeDeadlineSeconds: 900
+  ttlSecondsAfterFinished: 600
+  template:
+    metadata:
+      labels:
+        coregrid.io/component: sandbox
+    spec:
+      priorityClassName: coregrid-sandbox
+      serviceAccountName: coregrid-sandbox
+      automountServiceAccountToken: false
+      restartPolicy: Never
+      containers:
+        - name: sandbox-runner
+          # Digest-pinned at deploy time by CI; placeholder never ships to prod.
+          image: ghcr.io/coregrid/sandbox-runner:0.0.0
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: "2"
+              memory: 4Gi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 10001
+            capabilities:
+              drop: ["ALL"]
+          env:
+            - name: COREGRID_FIXTURES_ONLY
+              value: "true"

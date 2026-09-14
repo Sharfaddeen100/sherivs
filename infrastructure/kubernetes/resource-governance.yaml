@@ -1,0 +1,179 @@
+# CoreGrid Cloud Fabric — resource governance.
+#
+# Every namespace has a quota and a limit range: a misbehaving workload degrades
+# itself, never its neighbours. Priority classes encode what may preempt what.
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: coregrid-system-quota
+  namespace: coregrid-system
+spec:
+  hard:
+    requests.cpu: "16"
+    requests.memory: 32Gi
+    limits.cpu: "32"
+    limits.memory: 64Gi
+    persistentvolumeclaims: "10"
+    count/deployments.apps: "40"
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: coregrid-platform-quota
+  namespace: coregrid-platform
+spec:
+  hard:
+    requests.cpu: "64"
+    requests.memory: 128Gi
+    limits.cpu: "128"
+    limits.memory: 256Gi
+    persistentvolumeclaims: "40"
+    count/deployments.apps: "120"
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: coregrid-agents-quota
+  namespace: coregrid-agents
+spec:
+  hard:
+    requests.cpu: "32"
+    requests.memory: 64Gi
+    limits.cpu: "64"
+    limits.memory: 128Gi
+    count/jobs.batch: "200"
+    pods: "200"
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: coregrid-scholar-quota
+  namespace: coregrid-scholar
+spec:
+  hard:
+    requests.cpu: "32"
+    requests.memory: 64Gi
+    limits.cpu: "64"
+    limits.memory: 128Gi
+    persistentvolumeclaims: "20"
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: coregrid-security-quota
+  namespace: coregrid-security
+spec:
+  hard:
+    requests.cpu: "16"
+    requests.memory: 32Gi
+    limits.cpu: "32"
+    limits.memory: 64Gi
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: coregrid-monitoring-quota
+  namespace: coregrid-monitoring
+spec:
+  hard:
+    requests.cpu: "24"
+    requests.memory: 96Gi
+    limits.cpu: "48"
+    limits.memory: 192Gi
+    persistentvolumeclaims: "20"
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: coregrid-dev-quota
+  namespace: coregrid-dev
+spec:
+  hard:
+    requests.cpu: "8"
+    requests.memory: 16Gi
+    limits.cpu: "16"
+    limits.memory: 32Gi
+    count/deployments.apps: "40"
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: coregrid-staging-quota
+  namespace: coregrid-staging
+spec:
+  hard:
+    requests.cpu: "16"
+    requests.memory: 32Gi
+    limits.cpu: "32"
+    limits.memory: 64Gi
+    count/deployments.apps: "80"
+---
+# Limit ranges keep a single pod from claiming a namespace's whole envelope.
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: coregrid-default-limits
+  namespace: coregrid-platform
+spec:
+  limits:
+    - type: Container
+      default:
+        cpu: 500m
+        memory: 512Mi
+      defaultRequest:
+        cpu: 100m
+        memory: 128Mi
+      max:
+        cpu: "8"
+        memory: 16Gi
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: coregrid-default-limits
+  namespace: coregrid-agents
+spec:
+  limits:
+    - type: Container
+      default:
+        cpu: 500m
+        memory: 1Gi
+      defaultRequest:
+        cpu: 100m
+        memory: 256Mi
+      max:
+        cpu: "4"
+        memory: 8Gi
+---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: coregrid-critical
+value: 1000000
+globalDefault: false
+description: "Control plane, security policy and ingress. May preempt everything else."
+---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: coregrid-platform
+value: 100000
+globalDefault: true
+description: "CoreGrid platform services and runtime workloads."
+---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: coregrid-batch
+value: 1000
+globalDefault: false
+description: "Elastic workers, AI batches, analytics and simulation jobs — first to be evicted."
+---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: coregrid-sandbox
+value: 100
+globalDefault: false
+description: "Sandbox workloads: lowest priority, never preempts anything."

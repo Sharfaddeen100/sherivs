@@ -1,0 +1,101 @@
+name: Infrastructure verify
+
+# Runs on every change to infrastructure. Requires NO credentials: it proves the
+# fabric's source invariants and validates Terraform/manifests structurally.
+# Applying is a separate, approval-gated workflow (infrastructure-plan-apply.yml).
+
+on:
+  pull_request:
+    paths:
+      - "infrastructure/**"
+      - "scripts/verify-infrastructure.mjs"
+      - "scripts/infrastructure/**"
+      - "architecture/cloud-fabric-*.md"
+      - "tests/unit/infrastructure-fabric.test.ts"
+  push:
+    branches: [main]
+    paths:
+      - "infrastructure/**"
+      - "scripts/verify-infrastructure.mjs"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fabric-laws:
+    name: Fabric source invariants (no credentials)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Prove the fabric's invariants
+        run: npm run verify:infrastructure
+
+      - name: Prove the data-layer check contract
+        run: node scripts/infrastructure/supabase-config-check.mjs --static
+
+      - name: Fabric unit tests
+        run: npx vitest run tests/unit/infrastructure-fabric.test.ts
+
+      - name: Upload the proof artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: cloud-fabric-foundation-proof
+          path: architecture/proofs/cloud-fabric-foundation.proof.json
+          if-no-files-found: error
+
+  terraform-validate:
+    name: Terraform fmt + validate (per provider root)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        root:
+          - oci
+          - hetzner
+          - vultr
+          - cloudflare
+          - supabase
+          - environments/production
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.8
+
+      - name: Format check
+        run: terraform -chdir=infrastructure/terraform/${{ matrix.root }} fmt -check -recursive
+
+      - name: Init without backend or credentials
+        run: terraform -chdir=infrastructure/terraform/${{ matrix.root }} init -backend=false
+
+      - name: Validate
+        run: terraform -chdir=infrastructure/terraform/${{ matrix.root }} validate
+
+  manifests-validate:
+    name: Kubernetes manifests (no cluster)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install kubeconform
+        run: |
+          curl -sSL https://github.com/yannh/kubeconform/releases/latest/download/kubeconform-linux-amd64.tar.gz \
+            | tar xz -C /usr/local/bin kubeconform
+
+      - name: Validate manifests offline
+        run: |
+          kubeconform -strict -summary -ignore-missing-schemas \
+            infrastructure/kubernetes/

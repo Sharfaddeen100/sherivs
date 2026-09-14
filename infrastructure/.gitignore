@@ -1,0 +1,27 @@
+# CoreGrid Cloud Fabric — infrastructure state and secret hygiene.
+# Nothing in this file may be committed: state, plans, vars and kubeconfig.
+
+# Terraform state and local working files
+.terraform/
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+
+# Variable files: only *.tfvars.example is committed
+*.tfvars
+*.tfvars.json
+!*.tfvars.example
+
+# Saved plans
+*.tfplan
+*.plan.json
+
+# Provider-generated
+kubeconfig
+*.kubeconfig
+.oci/
+.cf-token
+.hetzner-token
+.vultr-token

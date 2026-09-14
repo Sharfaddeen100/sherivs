@@ -1,0 +1,404 @@
+{
+  "artifact": "cloud-fabric-foundation",
+  "wave": "CF-3",
+  "owner": "21",
+  "capability": "cloud-fabric-byoc",
+  "mode": "static",
+  "generatedAt": "2026-09-14T03:56:17.946Z",
+  "infrastructureFiles": 52,
+  "inventoryDigest": "sha256:23686309c11958949b7aa2f47d18b7ca102be86da3d4108f0c2b6790e17b930a",
+  "providers": [
+    "oci",
+    "hetzner",
+    "vultr",
+    "cloudflare",
+    "supabase"
+  ],
+  "modules": [
+    "network",
+    "kubernetes",
+    "node_pool",
+    "object_storage",
+    "secret_refs",
+    "dns_edge"
+  ],
+  "namespaces": [
+    "coregrid-system",
+    "coregrid-security",
+    "coregrid-platform",
+    "coregrid-agents",
+    "coregrid-scholar",
+    "coregrid-monitoring",
+    "coregrid-dev",
+    "coregrid-staging"
+  ],
+  "checks": [
+    {
+      "id": "structure:infrastructure-present",
+      "ok": true,
+      "detail": "52 infrastructure source file(s) under infrastructure/",
+      "category": "A"
+    },
+    {
+      "id": "structure:provider:oci:main.tf",
+      "ok": true,
+      "detail": "infrastructure/terraform/oci/main.tf exists",
+      "category": "A"
+    },
+    {
+      "id": "structure:provider:oci:variables.tf",
+      "ok": true,
+      "detail": "infrastructure/terraform/oci/variables.tf exists",
+      "category": "A"
+    },
+    {
+      "id": "structure:provider:hetzner:main.tf",
+      "ok": true,
+      "detail": "infrastructure/terraform/hetzner/main.tf exists",
+      "category": "A"
+    },
+    {
+      "id": "structure:provider:hetzner:variables.tf",
+      "ok": true,
+      "detail": "infrastructure/terraform/hetzner/variables.tf exists",
+      "category": "A"
+    },
+    {
+      "id": "structure:provider:vultr:main.tf",
+      "ok": true,
+      "detail": "infrastructure/terraform/vultr/main.tf exists",
+      "category": "A"
+    },
+    {
+      "id": "structure:provider:vultr:variables.tf",
+      "ok": true,
+      "detail": "infrastructure/terraform/vultr/variables.tf exists",
+      "category": "A"
+    },
+    {
+      "id": "structure:provider:cloudflare:main.tf",
+      "ok": true,
+      "detail": "infrastructure/terraform/cloudflare/main.tf exists",
+      "category": "A"
+    },
+    {
+      "id": "structure:provider:cloudflare:variables.tf",
+      "ok": true,
+      "detail": "infrastructure/terraform/cloudflare/variables.tf exists",
+      "category": "A"
+    },
+    {
+      "id": "structure:provider:supabase:main.tf",
+      "ok": true,
+      "detail": "infrastructure/terraform/supabase/main.tf exists",
+      "category": "A"
+    },
+    {
+      "id": "structure:provider:supabase:variables.tf",
+      "ok": true,
+      "detail": "infrastructure/terraform/supabase/variables.tf exists",
+      "category": "A"
+    },
+    {
+      "id": "structure:module:network:main.tf",
+      "ok": true,
+      "detail": "infrastructure/terraform/modules/network/main.tf exists",
+      "category": "A"
+    },
+    {
+      "id": "structure:module:network:variables.tf",
+      "ok": true,
+      "detail": "infrastructure/terraform/modules/network/variables.tf exists",
+      "category": "A"
+    },
+    {
+      "id": "structure:module:network:outputs.tf",
+      "ok": true,
+      "detail": "infrastructure/terraform/modules/network/outputs.tf exists",
+      "category": "A"
+    },
+    {
+      "id": "structure:module:kubernetes:main.tf",
+      "ok": true,
+      "detail": "infrastructure/terraform/modules/kubernetes/main.tf exists",
+      "category": "A"
+    },
+    {
+      "id": "structure:module:kubernetes:variables.tf",
+      "ok": true,
+      "detail": "infrastructure/terraform/modules/kubernetes/variables.tf exists",
+      "category": "A"
+    },
+    {
+      "id": "structure:module:kubernetes:outputs.tf",
+      "ok": true,
+      "detail": "infrastructure/terraform/modules/kubernetes/outputs.tf exists",
+      "category": "A"
+    },
+    {
+      "id": "structure:module:node_pool:main.tf",
+      "ok": true,
+      "detail": "infrastructure/terraform/modules/node_pool/main.tf exists",
+      "category": "A"
+    },
+    {
+      "id": "structure:module:node_pool:variables.tf",
+      "ok": true,
+      "detail": "infrastructure/terraform/modules/node_pool/variables.tf exists",
+      "category": "A"
+    },
+    {
+      "id": "structure:module:node_pool:outputs.tf",
+      "ok": true,
+      "detail": "infrastructure/terraform/modules/node_pool/outputs.tf exists",
+      "category": "A"
+    },
+    {
+      "id": "structure:module:object_storage:main.tf",
+      "ok": true,
+      "detail": "infrastructure/terraform/modules/object_storage/main.tf exists",
+      "category": "A"
+    },
+    {
+      "id": "structure:module:object_storage:variables.tf",
+      "ok": true,
+      "detail": "infrastructure/terraform/modules/object_storage/variables.tf exists",
+      "category": "A"
+    },
+    {
+      "id": "structure:module:object_storage:outputs.tf",
+      "ok": true,
+      "detail": "infrastructure/terraform/modules/object_storage/outputs.tf exists",
+      "category": "A"
+    },
+    {
+      "id": "structure:module:secret_refs:main.tf",
+      "ok": true,
+      "detail": "infrastructure/terraform/modules/secret_refs/main.tf exists",
+      "category": "A"
+    },
+    {
+      "id": "structure:module:secret_refs:variables.tf",
+      "ok": true,
+      "detail": "infrastructure/terraform/modules/secret_refs/variables.tf exists",
+      "category": "A"
+    },
+    {
+      "id": "structure:module:secret_refs:outputs.tf",
+      "ok": true,
+      "detail": "infrastructure/terraform/modules/secret_refs/outputs.tf exists",
+      "category": "A"
+    },
+    {
+      "id": "structure:module:dns_edge:main.tf",
+      "ok": true,
+      "detail": "infrastructure/terraform/modules/dns_edge/main.tf exists",
+      "category": "A"
+    },
+    {
+      "id": "structure:module:dns_edge:variables.tf",
+      "ok": true,
+      "detail": "infrastructure/terraform/modules/dns_edge/variables.tf exists",
+      "category": "A"
+    },
+    {
+      "id": "structure:module:dns_edge:outputs.tf",
+      "ok": true,
+      "detail": "infrastructure/terraform/modules/dns_edge/outputs.tf exists",
+      "category": "A"
+    },
+    {
+      "id": "structure:production-composition",
+      "ok": true,
+      "detail": "the production composition root exists (single apply surface)",
+      "category": "A"
+    },
+    {
+      "id": "structure:composition-covers-providers",
+      "ok": true,
+      "detail": "the production composition consumes every provider root",
+      "category": "A"
+    },
+    {
+      "id": "structure:provider-pins",
+      "ok": true,
+      "detail": "versions.tf pins every provider the fabric consumes",
+      "category": "A"
+    },
+    {
+      "id": "secrets:no-credential-literals",
+      "ok": true,
+      "detail": "no credential values in any infrastructure file",
+      "category": "B"
+    },
+    {
+      "id": "secrets:secret-variables-sensitive",
+      "ok": true,
+      "detail": "every secret-grade string variable is marked sensitive",
+      "category": "B"
+    },
+    {
+      "id": "secrets:docs-carry-no-values",
+      "ok": true,
+      "detail": "documentation scanned for embedded values (6 files)",
+      "category": "B"
+    },
+    {
+      "id": "secrets:values-are-references",
+      "ok": true,
+      "detail": "workloads consume secrets through remote references, never inline values",
+      "category": "B"
+    },
+    {
+      "id": "state:remote-backend",
+      "ok": true,
+      "detail": "all 6 roots declare a remote backend",
+      "category": "C"
+    },
+    {
+      "id": "state:gitignored",
+      "ok": true,
+      "detail": "state, plans and variable files are git-ignored (examples excepted)",
+      "category": "C"
+    },
+    {
+      "id": "pinning:no-latest",
+      "ok": true,
+      "detail": "no floating 'latest' references",
+      "category": "D"
+    },
+    {
+      "id": "pinning:providers-tilde",
+      "ok": true,
+      "detail": "every provider uses '~>' pinning (no floating majors)",
+      "category": "D"
+    },
+    {
+      "id": "tags:provider-resources-tagged",
+      "ok": true,
+      "detail": "every tagged resource type carries coregrid:* tags/labels",
+      "category": "E"
+    },
+    {
+      "id": "tags:ownership-recorded",
+      "ok": true,
+      "detail": "owner-phase tagging defined by 5 modules and recorded by 5/5 provider roots",
+      "category": "E"
+    },
+    {
+      "id": "cluster:exact-namespace-set",
+      "ok": true,
+      "detail": "namespaces = coregrid-agents, coregrid-dev, coregrid-monitoring, coregrid-platform, coregrid-scholar, coregrid-security, coregrid-staging, coregrid-system",
+      "category": "F"
+    },
+    {
+      "id": "cluster:pod-security-restricted",
+      "ok": true,
+      "detail": "8/8 namespaces enforce Pod Security 'restricted'",
+      "category": "F"
+    },
+    {
+      "id": "cluster:default-deny-every-namespace",
+      "ok": true,
+      "detail": "8/8 namespaces are default-deny for ingress AND egress",
+      "category": "F"
+    },
+    {
+      "id": "cluster:quota-every-namespace",
+      "ok": true,
+      "detail": "8/8 namespaces declare quota/limits",
+      "category": "F"
+    },
+    {
+      "id": "cluster:no-cluster-admin",
+      "ok": true,
+      "detail": "no RBAC binding grants cluster-admin (namespaces declare it forbidden as intent)",
+      "category": "F"
+    },
+    {
+      "id": "cluster:no-implicit-tokens",
+      "ok": true,
+      "detail": "agents, runtimes and sandbox never auto-mount the API token",
+      "category": "F"
+    },
+    {
+      "id": "sandbox:isolation-policy",
+      "ok": true,
+      "detail": "sandbox is default-deny and explicitly cannot reach runtime namespaces",
+      "category": "G"
+    },
+    {
+      "id": "sandbox:ttl-and-priority",
+      "ok": true,
+      "detail": "sandbox runs are time-boxed, cleaned up, and first to be evicted",
+      "category": "G"
+    },
+    {
+      "id": "sandbox:no-provider-credentials",
+      "ok": true,
+      "detail": "sandbox receives no provider or tenant-data credentials (fixtures only)",
+      "category": "G"
+    },
+    {
+      "id": "neutrality:no-domain-vocabulary",
+      "ok": true,
+      "detail": "no vertical's vocabulary appears in the fabric layer",
+      "category": "H"
+    },
+    {
+      "id": "neutrality:runtime-seats-are-consumers",
+      "ok": true,
+      "detail": "the first domain runtime holds a namespace as a CONSUMER, not as a design input",
+      "category": "H"
+    },
+    {
+      "id": "evidence:architecture/cloud-fabric-implementation-blueprint.md",
+      "ok": true,
+      "detail": "architecture/cloud-fabric-implementation-blueprint.md exists",
+      "category": "I"
+    },
+    {
+      "id": "evidence:architecture/cloud-fabric-migration-plan.md",
+      "ok": true,
+      "detail": "architecture/cloud-fabric-migration-plan.md exists",
+      "category": "I"
+    },
+    {
+      "id": "evidence:infrastructure/CREDENTIALS.md",
+      "ok": true,
+      "detail": "infrastructure/CREDENTIALS.md exists",
+      "category": "I"
+    },
+    {
+      "id": "evidence:infrastructure/README.md",
+      "ok": true,
+      "detail": "infrastructure/README.md exists",
+      "category": "I"
+    },
+    {
+      "id": "evidence:owner-is-phase-21",
+      "ok": true,
+      "detail": "the blueprint names Phase 21 (and its capability) as the owner",
+      "category": "I"
+    },
+    {
+      "id": "evidence:no-new-authority",
+      "ok": true,
+      "detail": "the blueprint is an instantiation map, not a new authority",
+      "category": "I"
+    }
+  ],
+  "ok": true,
+  "nextWaves": [
+    "CF-4 OCI foundation — requires OCI credentials (see infrastructure/CREDENTIALS.md)",
+    "CF-5 Hetzner worker pools — requires a scoped Hetzner token",
+    "CF-6 Vultr edge — requires a Vultr API key",
+    "CF-7 Supabase data-layer configuration check — requires project + access token",
+    "CF-8 n8n executor, CF-9 monitoring, CF-10 security fabric, CF-11 agent runtime, CF-12 runtime cutover"
+  ],
+  "limitations": [
+    "Static mode proves the authored source, not a deployed fabric.",
+    "terraform fmt/validate and kubeconform run in CI; the Terraform CLI is absent in the authoring environment.",
+    "No provider API call is made: this verifier never needs (and never receives) credentials."
+  ]
+}

@@ -14,6 +14,7 @@
     "verify": "npm run typecheck && npm run test:unit && npm run verify:registry && npm run verify:secrets && npm run build",
     "verify:registry": "node scripts/verification/registry-validate.mjs",
     "verify:role-substrate": "node scripts/verify-role-assignment-substrate.mjs",
+    "verify:infrastructure": "node scripts/verify-infrastructure.mjs",
     "generate:icons": "node scripts/generate-pwa-icons.mjs",
     "verify:secrets": "node scripts/verification/secret-scan.mjs",
     "verify:env": "vitest run tests/unit/env.test.ts",

@@ -1,0 +1,95 @@
+# CoreGrid Cloud Fabric — cluster namespaces (exact set, blueprint §4).
+#
+# LAW: this is the complete default namespace set. A new namespace requires a
+# reviewed change and a matching entry in verify:infrastructure.
+# Pod Security Admission: `restricted` everywhere. The sandbox namespace is
+# additionally isolated (network + TTL) in ./sandbox/sandbox-isolation.yaml.
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: coregrid-system
+  labels:
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/warn: restricted
+    coregrid.io/owner-phase: "21"
+    coregrid.io/component: control-plane
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: coregrid-security
+  labels:
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/warn: restricted
+    coregrid.io/owner-phase: "08"
+    coregrid.io/component: security
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: coregrid-platform
+  labels:
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/warn: restricted
+    coregrid.io/owner-phase: "21"
+    coregrid.io/component: platform-services
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: coregrid-agents
+  labels:
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/warn: restricted
+    coregrid.io/owner-phase: "07"
+    coregrid.io/component: agent-runtime
+  annotations:
+    coregrid.io/cluster-admin: "forbidden"
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: coregrid-scholar
+  labels:
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/warn: restricted
+    coregrid.io/owner-phase: "04"
+    coregrid.io/component: domain-runtime
+    coregrid.io/runtime-ref: runtime:scholar
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: coregrid-monitoring
+  labels:
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/warn: restricted
+    coregrid.io/owner-phase: "21"
+    coregrid.io/component: observability
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: coregrid-dev
+  labels:
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/warn: restricted
+    coregrid.io/lifecycle: ephemeral
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: coregrid-staging
+  labels:
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/warn: restricted
+    coregrid.io/lifecycle: pre-production

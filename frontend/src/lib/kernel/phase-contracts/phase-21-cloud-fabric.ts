@@ -37,11 +37,17 @@ export const PHASE_21_CLOUD_FABRIC = definePhaseContractFromSeed({
     "Placement is policy-driven and evidenced: every environment is registered, every placement is explainable, and a failed placement fails closed rather than degrading isolation.",
   dependsOn: ["01", "02", "03", "05", "14"],
   consumers: ["44"],
-  substrates: ["region records", "environment registrations", "placement policy"],
+  substrates: [
+    "region records",
+    "environment registrations",
+    "placement policy",
+    "infrastructure-as-code (cloud-fabric-iac: terraform providers, cluster baseline, production composition)",
+  ],
   tests: [
     "tests/unit/cloud-core.test.ts",
     "tests/unit/cloud-byoc.test.ts",
     "tests/unit/cloud-governance.test.ts",
+    "tests/unit/infrastructure-fabric.test.ts",
   ],
   provides: [
     {
@@ -51,6 +57,17 @@ export const PHASE_21_CLOUD_FABRIC = definePhaseContractFromSeed({
     },
     { id: "cloud:resolve-placement", kind: "query", description: "resolve placement for a tenant" },
     { id: "cloud:fabric-health", kind: "query", description: "read fabric health" },
+    {
+      id: "cloud:provision-fabric",
+      kind: "command",
+      description:
+        "provision the fabric for an environment through IaC (plan reviewed, apply approved)",
+    },
+    {
+      id: "cloud:cluster-baseline",
+      kind: "api",
+      description: "the cluster baseline every workload lands on (namespaces, policy, quotas)",
+    },
   ],
   consumesContracts: [
     { id: "data:catalog-read", kind: "query" },

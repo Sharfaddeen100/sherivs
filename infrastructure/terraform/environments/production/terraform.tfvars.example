@@ -1,0 +1,28 @@
+# Copy to terraform.tfvars (git-ignored) and fill in.
+#
+# NEVER put credential VALUES here. Credentials arrive as TF_VAR_* from the
+# environment secret store. This file carries owner DECISIONS (identifiers) only.
+#
+#   terraform init -backend-config=backend.hcl.example
+#   terraform plan -var-file=terraform.tfvars
+
+lb_hostname       = ""
+origin_hostname   = ""
+operator_cidrs    = []
+
+oci_region                    = ""
+oci_compartment_ocid          = ""
+oci_object_storage_namespace  = ""
+oci_availability_domains      = ["", ""]
+
+cloudflare_account_id = ""
+cloudflare_zone_id    = ""
+
+supabase_project_ref = ""
+
+# Secret PRESENCE flags: set to true only when the corresponding environment
+# variable is actually supplied (the apply is refused otherwise).
+supabase_url_present              = false
+supabase_publishable_key_present  = false
+supabase_service_role_key_present = false
+supabase_db_url_present           = false
