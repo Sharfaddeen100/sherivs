@@ -1,0 +1,1926 @@
+{
+  "artifact": "phase-completion",
+  "wave": "AUDIT-1",
+  "owner": "kernel (Phase 01 governance)",
+  "generatedAt": "2026-09-14T10:49:08.917Z",
+  "authority": [
+    "CONSTITUTION.md",
+    "architecture/registry.json",
+    "architecture/phase-*.md",
+    "frontend/src/lib/kernel/phase-contracts/**"
+  ],
+  "levelDefinitions": {
+    "L1 conceptual": "phase document exists with >= 8 distinct engineering sections AND a kernel phase contract exists",
+    "L2 data model": "phase document carries data-model vocabulary AND (a migration references the capability OR the contract declares substrates)",
+    "L3 backend": "every declared module resolves to real source AND every contract-cited test file exists with >= 1 real test",
+    "L4 frontend/workspace integration": "at least one route or component references the phase's modules or capability",
+    "L5 operational maturity": "an operational artifact (proof, verifier, CI job, runbook or infrastructure file) names the phase or capability"
+  },
+  "summary": {
+    "phasesAudited": 51,
+    "complete": 7,
+    "implementing": 25,
+    "architectureDefined": 19,
+    "withModules": 32,
+    "withResolvedModules": 31,
+    "totalTestsCited": 1875,
+    "registryBeyondAudit": [
+      "02",
+      "03",
+      "04",
+      "05",
+      "06",
+      "07",
+      "08",
+      "09",
+      "10",
+      "11",
+      "12",
+      "13",
+      "14",
+      "15",
+      "16",
+      "17",
+      "18",
+      "19",
+      "20",
+      "21",
+      "22",
+      "23",
+      "24",
+      "25",
+      "26",
+      "27",
+      "28",
+      "29",
+      "30",
+      "31",
+      "32",
+      "33",
+      "34",
+      "35",
+      "36",
+      "37",
+      "39",
+      "40",
+      "41",
+      "42",
+      "43",
+      "44",
+      "45",
+      "46",
+      "47",
+      "48",
+      "49",
+      "50",
+      "51"
+    ],
+    "unconfirmedClaims": [
+      {
+        "id": "01",
+        "levels": [
+          "L3 backend"
+        ]
+      },
+      {
+        "id": "02",
+        "levels": [
+          "L3 backend"
+        ]
+      },
+      {
+        "id": "19",
+        "levels": [
+          "L4 frontend/workspace integration"
+        ]
+      },
+      {
+        "id": "25",
+        "levels": [
+          "L4 frontend/workspace integration"
+        ]
+      },
+      {
+        "id": "49",
+        "levels": [
+          "L1 conceptual"
+        ]
+      }
+    ],
+    "missingLevelFrequency": {
+      "L4 frontend/workspace integration": 43,
+      "L3 backend": 20,
+      "L2 data model": 13,
+      "L5 operational maturity": 2,
+      "L1 conceptual": 1
+    }
+  },
+  "phases": [
+    {
+      "id": "01",
+      "name": "Foundation",
+      "capability": null,
+      "sections": "20/20",
+      "modules": [],
+      "modulesResolve": false,
+      "citedTestFiles": 0,
+      "testsCounted": 0,
+      "evidence": {
+        "L1 conceptual": true,
+        "L2 data model": false,
+        "L3 backend": false,
+        "L4 frontend/workspace integration": false,
+        "L5 operational maturity": false
+      },
+      "registryLevels": [
+        true,
+        false,
+        true,
+        false,
+        false
+      ],
+      "registryStatus": "IMPLEMENTING",
+      "derivedStatus": "ARCHITECTURE_DEFINED",
+      "complete": false,
+      "missingLevels": [
+        "L2 data model",
+        "L3 backend",
+        "L4 frontend/workspace integration",
+        "L5 operational maturity"
+      ],
+      "unconfirmedLevels": [
+        "L3 backend"
+      ]
+    },
+    {
+      "id": "02",
+      "name": "Identity",
+      "capability": null,
+      "sections": "18/20",
+      "modules": [
+        "identity",
+        "identity-credentials",
+        "identity-lifecycle",
+        "identity-relationships",
+        "roles"
+      ],
+      "modulesResolve": true,
+      "citedTestFiles": 0,
+      "testsCounted": 0,
+      "evidence": {
+        "L1 conceptual": true,
+        "L2 data model": true,
+        "L3 backend": false,
+        "L4 frontend/workspace integration": true,
+        "L5 operational maturity": true
+      },
+      "registryLevels": [
+        true,
+        false,
+        true,
+        false,
+        false
+      ],
+      "registryStatus": "IMPLEMENTED",
+      "derivedStatus": "IMPLEMENTING",
+      "complete": false,
+      "missingLevels": [
+        "L3 backend"
+      ],
+      "unconfirmedLevels": [
+        "L3 backend"
+      ]
+    },
+    {
+      "id": "03",
+      "name": "Multi-Tenancy",
+      "capability": "tenancy-isolation-rls",
+      "sections": "17/20",
+      "modules": [
+        "tenant",
+        "tenant-core",
+        "tenant-isolation",
+        "tenant-lifecycle",
+        "tenant-quota",
+        "tenant-topology"
+      ],
+      "modulesResolve": true,
+      "citedTestFiles": 2,
+      "testsCounted": 56,
+      "evidence": {
+        "L1 conceptual": true,
+        "L2 data model": true,
+        "L3 backend": true,
+        "L4 frontend/workspace integration": true,
+        "L5 operational maturity": true
+      },
+      "registryLevels": [
+        true,
+        false,
+        true,
+        false,
+        false
+      ],
+      "registryStatus": "IMPLEMENTED",
+      "derivedStatus": "COMPLETE",
+      "complete": true,
+      "missingLevels": [],
+      "unconfirmedLevels": []
+    },
+    {
+      "id": "04",
+      "name": "Education Reality Engine",
+      "capability": "education-reality-ontology",
+      "sections": "16/20",
+      "modules": [
+        "education-core",
+        "education-curriculum",
+        "education-institution",
+        "education-assessment",
+        "education-facilities",
+        "education-governance",
+        "runtime/scholar",
+        "runtime/scholar-events"
+      ],
+      "modulesResolve": true,
+      "citedTestFiles": 2,
+      "testsCounted": 81,
+      "evidence": {
+        "L1 conceptual": true,
+        "L2 data model": true,
+        "L3 backend": true,
+        "L4 frontend/workspace integration": true,
+        "L5 operational maturity": true
+      },
+      "registryLevels": [
+        true,
+        false,
+        true,
+        false,
+        false
+      ],
+      "registryStatus": "IMPLEMENTED",
+      "derivedStatus": "COMPLETE",
+      "complete": true,
+      "missingLevels": [],
+      "unconfirmedLevels": []
+    },
+    {
+      "id": "05",
+      "name": "Core Application Runtime",
+      "capability": "runtime-primitives",
+      "sections": "19/20",
+      "modules": [
+        "runtime-core",
+        "runtime-command-query",
+        "runtime-events",
+        "runtime-jobs",
+        "runtime-capabilities",
+        "runtime-observability",
+        "runtime-webhooks",
+        "runtime-integrations",
+        "runtime-resilience",
+        "runtime-feature-flags",
+        "runtime-approval",
+        "runtime-bulk"
+      ],
+      "modulesResolve": true,
+      "citedTestFiles": 4,
+      "testsCounted": 100,
+      "evidence": {
+        "L1 conceptual": true,
+        "L2 data model": true,
+        "L3 backend": true,
+        "L4 frontend/workspace integration": false,
+        "L5 operational maturity": true
+      },
+      "registryLevels": [
+        true,
+        false,
+        true,
+        false,
+        false
+      ],
+      "registryStatus": "IMPLEMENTING",
+      "derivedStatus": "IMPLEMENTING",
+      "complete": false,
+      "missingLevels": [
+        "L4 frontend/workspace integration"
+      ],
+      "unconfirmedLevels": []
+    },
+    {
+      "id": "06",
+      "name": "Workspace Engine",
+      "capability": "workspace-composition",
+      "sections": "18/20",
+      "modules": [
+        "workspace-core",
+        "workspace-composition",
+        "workspace-membership",
+        "workspace-governance"
+      ],
+      "modulesResolve": true,
+      "citedTestFiles": 3,
+      "testsCounted": 28,
+      "evidence": {
+        "L1 conceptual": true,
+        "L2 data model": true,
+        "L3 backend": true,
+        "L4 frontend/workspace integration": false,
+        "L5 operational maturity": true
+      },
+      "registryLevels": [
+        true,
+        false,
+        true,
+        false,
+        false
+      ],
+      "registryStatus": "IMPLEMENTING",
+      "derivedStatus": "IMPLEMENTING",
+      "complete": false,
+      "missingLevels": [
+        "L4 frontend/workspace integration"
+      ],
+      "unconfirmedLevels": []
+    },
+    {
+      "id": "07",
+      "name": "AI Agent System",
+      "capability": "agent-runtime",
+      "sections": "19/20",
+      "modules": [
+        "agent-core",
+        "agent-memory",
+        "agent-tasks",
+        "agent-plans"
+      ],
+      "modulesResolve": true,
+      "citedTestFiles": 4,
+      "testsCounted": 62,
+      "evidence": {
+        "L1 conceptual": true,
+        "L2 data model": true,
+        "L3 backend": true,
+        "L4 frontend/workspace integration": false,
+        "L5 operational maturity": true
+      },
+      "registryLevels": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "registryStatus": "IMPLEMENTING",
+      "derivedStatus": "IMPLEMENTING",
+      "complete": false,
+      "missingLevels": [
+        "L4 frontend/workspace integration"
+      ],
+      "unconfirmedLevels": []
+    },
+    {
+      "id": "08",
+      "name": "Security Engine",
+      "capability": "security-enforcement",
+      "sections": "18/20",
+      "modules": [
+        "security-core",
+        "security-risk",
+        "security-policy",
+        "security-session",
+        "security-events",
+        "security-agent-controls",
+        "security-role-gate"
+      ],
+      "modulesResolve": true,
+      "citedTestFiles": 5,
+      "testsCounted": 70,
+      "evidence": {
+        "L1 conceptual": true,
+        "L2 data model": true,
+        "L3 backend": true,
+        "L4 frontend/workspace integration": true,
+        "L5 operational maturity": true
+      },
+      "registryLevels": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "registryStatus": "IMPLEMENTING",
+      "derivedStatus": "COMPLETE",
+      "complete": true,
+      "missingLevels": [],
+      "unconfirmedLevels": []
+    },
+    {
+      "id": "09",
+      "name": "Security Trust Fabric",
+      "capability": "trust-fabric",
+      "sections": "15/20",
+      "modules": [
+        "trust-core",
+        "trust-assertions",
+        "trust-entities",
+        "trust-governance"
+      ],
+      "modulesResolve": true,
+      "citedTestFiles": 4,
+      "testsCounted": 82,
+      "evidence": {
+        "L1 conceptual": true,
+        "L2 data model": true,
+        "L3 backend": true,
+        "L4 frontend/workspace integration": false,
+        "L5 operational maturity": true
+      },
+      "registryLevels": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "registryStatus": "IMPLEMENTING",
+      "derivedStatus": "IMPLEMENTING",
+      "complete": false,
+      "missingLevels": [
+        "L4 frontend/workspace integration"
+      ],
+      "unconfirmedLevels": []
+    },
+    {
+      "id": "10",
+      "name": "Communication Platform",
+      "capability": "communication-messaging",
+      "sections": "18/20",
+      "modules": [
+        "communication-core",
+        "communication-conversation",
+        "communication-channels",
+        "communication-templates"
+      ],
+      "modulesResolve": true,
+      "citedTestFiles": 4,
+      "testsCounted": 59,
+      "evidence": {
+        "L1 conceptual": true,
+        "L2 data model": true,
+        "L3 backend": true,
+        "L4 frontend/workspace integration": false,
+        "L5 operational maturity": true
+      },
+      "registryLevels": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "registryStatus": "IMPLEMENTING",
+      "derivedStatus": "IMPLEMENTING",
+      "complete": false,
+      "missingLevels": [
+        "L4 frontend/workspace integration"
+      ],
+      "unconfirmedLevels": []
+    },
+    {
+      "id": "11",
+      "name": "Academic Intelligence",
+      "capability": "academic-intelligence",
+      "sections": "17/20",
+      "modules": [
+        "academic-core",
+        "academic-mastery",
+        "academic-pathways",
+        "academic-risk"
+      ],
+      "modulesResolve": true,
+      "citedTestFiles": 4,
+      "testsCounted": 49,
+      "evidence": {
+        "L1 conceptual": true,
+        "L2 data model": true,
+        "L3 backend": true,
+        "L4 frontend/workspace integration": false,
+        "L5 operational maturity": true
+      },
+      "registryLevels": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "registryStatus": "IMPLEMENTING",
+      "derivedStatus": "IMPLEMENTING",
+      "complete": false,
+      "missingLevels": [
+        "L4 frontend/workspace integration"
+      ],
+      "unconfirmedLevels": []
+    },
+    {
+      "id": "12",
+      "name": "Scheduling Intelligence",
+      "capability": "scheduling",
+      "sections": "16/20",
+      "modules": [
+        "scheduling-core",
+        "scheduling-constraints",
+        "scheduling-availability",
+        "scheduling-validator"
+      ],
+      "modulesResolve": true,
+      "citedTestFiles": 4,
+      "testsCounted": 47,
+      "evidence": {
+        "L1 conceptual": true,
+        "L2 data model": true,
+        "L3 backend": true,
+        "L4 frontend/workspace integration": true,
+        "L5 operational maturity": true
+      },
+      "registryLevels": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "registryStatus": "IMPLEMENTING",
+      "derivedStatus": "COMPLETE",
+      "complete": true,
+      "missingLevels": [],
+      "unconfirmedLevels": []
+    },
+    {
+      "id": "13",
+      "name": "Financial System",
+      "capability": "financial-ledger",
+      "sections": "14/20",
+      "modules": [
+        "financial-core",
+        "financial-payments",
+        "financial-settlements",
+        "financial-controls"
+      ],
+      "modulesResolve": true,
+      "citedTestFiles": 4,
+      "testsCounted": 55,
+      "evidence": {
+        "L1 conceptual": true,
+        "L2 data model": true,
+        "L3 backend": true,
+        "L4 frontend/workspace integration": false,
+        "L5 operational maturity": true
+      },
+      "registryLevels": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "registryStatus": "IMPLEMENTING",
+      "derivedStatus": "IMPLEMENTING",
+      "complete": false,
+      "missingLevels": [
+        "L4 frontend/workspace integration"
+      ],
+      "unconfirmedLevels": []
+    },
+    {
+      "id": "14",
+      "name": "Data Platform",
+      "capability": "data-platform",
+      "sections": "18/20",
+      "modules": [
+        "data-core",
+        "data-catalog",
+        "data-quality",
+        "data-governance"
+      ],
+      "modulesResolve": true,
+      "citedTestFiles": 4,
+      "testsCounted": 43,
+      "evidence": {
+        "L1 conceptual": true,
+        "L2 data model": true,
+        "L3 backend": true,
+        "L4 frontend/workspace integration": false,
+        "L5 operational maturity": true
+      },
+      "registryLevels": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "registryStatus": "IMPLEMENTING",
+      "derivedStatus": "IMPLEMENTING",
+      "complete": false,
+      "missingLevels": [
+        "L4 frontend/workspace integration"
+      ],
+      "unconfirmedLevels": []
+    },
+    {
+      "id": "15",
+      "name": "Hardware Integration",
+      "capability": "hardware-device-telemetry",
+      "sections": "17/20",
+      "modules": [
+        "hardware-core",
+        "hardware-telemetry",
+        "hardware-commands",
+        "hardware-lifecycle"
+      ],
+      "modulesResolve": true,
+      "citedTestFiles": 4,
+      "testsCounted": 89,
+      "evidence": {
+        "L1 conceptual": true,
+        "L2 data model": true,
+        "L3 backend": true,
+        "L4 frontend/workspace integration": false,
+        "L5 operational maturity": true
+      },
+      "registryLevels": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "registryStatus": "IMPLEMENTING",
+      "derivedStatus": "IMPLEMENTING",
+      "complete": false,
+      "missingLevels": [
+        "L4 frontend/workspace integration"
+      ],
+      "unconfirmedLevels": []
+    },
+    {
+      "id": "16",
+      "name": "Digital Twin",
+      "capability": "live-digital-twin",
+      "sections": "16/20",
+      "modules": [
+        "twin-core",
+        "twin-graph",
+        "twin-state",
+        "twin-governance"
+      ],
+      "modulesResolve": true,
+      "citedTestFiles": 4,
+      "testsCounted": 74,
+      "evidence": {
+        "L1 conceptual": true,
+        "L2 data model": true,
+        "L3 backend": true,
+        "L4 frontend/workspace integration": false,
+        "L5 operational maturity": true
+      },
+      "registryLevels": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "registryStatus": "IMPLEMENTING",
+      "derivedStatus": "IMPLEMENTING",
+      "complete": false,
+      "missingLevels": [
+        "L4 frontend/workspace integration"
+      ],
+      "unconfirmedLevels": []
+    },
+    {
+      "id": "17",
+      "name": "Automation Engine",
+      "capability": "automation-workflow-runtime",
+      "sections": "15/20",
+      "modules": [
+        "automation-core",
+        "automation-workflow",
+        "automation-actions",
+        "automation-governance"
+      ],
+      "modulesResolve": true,
+      "citedTestFiles": 4,
+      "testsCounted": 87,
+      "evidence": {
+        "L1 conceptual": true,
+        "L2 data model": true,
+        "L3 backend": true,
+        "L4 frontend/workspace integration": false,
+        "L5 operational maturity": true
+      },
+      "registryLevels": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "registryStatus": "IMPLEMENTING",
+      "derivedStatus": "IMPLEMENTING",
+      "complete": false,
+      "missingLevels": [
+        "L4 frontend/workspace integration"
+      ],
+      "unconfirmedLevels": []
+    },
+    {
+      "id": "18",
+      "name": "Analytics Intelligence",
+      "capability": "analytics-decision-intelligence",
+      "sections": "20/20",
+      "modules": [
+        "analytics-core",
+        "analytics-models",
+        "analytics-decisions",
+        "analytics-governance"
+      ],
+      "modulesResolve": true,
+      "citedTestFiles": 4,
+      "testsCounted": 62,
+      "evidence": {
+        "L1 conceptual": true,
+        "L2 data model": true,
+        "L3 backend": true,
+        "L4 frontend/workspace integration": false,
+        "L5 operational maturity": true
+      },
+      "registryLevels": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "registryStatus": "IMPLEMENTING",
+      "derivedStatus": "IMPLEMENTING",
+      "complete": false,
+      "missingLevels": [
+        "L4 frontend/workspace integration"
+      ],
+      "unconfirmedLevels": []
+    },
+    {
+      "id": "19",
+      "name": "Command Centre",
+      "capability": "command-centre-surface",
+      "sections": "16/20",
+      "modules": [
+        "command-core",
+        "command-alerts",
+        "command-incidents",
+        "command-governance"
+      ],
+      "modulesResolve": true,
+      "citedTestFiles": 4,
+      "testsCounted": 47,
+      "evidence": {
+        "L1 conceptual": true,
+        "L2 data model": true,
+        "L3 backend": true,
+        "L4 frontend/workspace integration": false,
+        "L5 operational maturity": true
+      },
+      "registryLevels": [
+        true,
+        false,
+        false,
+        true,
+        false
+      ],
+      "registryStatus": "IMPLEMENTING",
+      "derivedStatus": "IMPLEMENTING",
+      "complete": false,
+      "missingLevels": [
+        "L4 frontend/workspace integration"
+      ],
+      "unconfirmedLevels": [
+        "L4 frontend/workspace integration"
+      ]
+    },
+    {
+      "id": "20",
+      "name": "Government Education Cloud",
+      "capability": "government-sovereign-deployments",
+      "sections": "16/20",
+      "modules": [
+        "government-core",
+        "government-policy",
+        "government-data",
+        "government-governance"
+      ],
+      "modulesResolve": true,
+      "citedTestFiles": 4,
+      "testsCounted": 59,
+      "evidence": {
+        "L1 conceptual": true,
+        "L2 data model": true,
+        "L3 backend": true,
+        "L4 frontend/workspace integration": false,
+        "L5 operational maturity": true
+      },
+      "registryLevels": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "registryStatus": "IMPLEMENTING",
+      "derivedStatus": "IMPLEMENTING",
+      "complete": false,
+      "missingLevels": [
+        "L4 frontend/workspace integration"
+      ],
+      "unconfirmedLevels": []
+    },
+    {
+      "id": "21",
+      "name": "Global Cloud Fabric",
+      "capability": "cloud-fabric-byoc",
+      "sections": "16/20",
+      "modules": [
+        "cloud-core",
+        "cloud-byoc",
+        "cloud-governance",
+        "cloud-fabric-iac"
+      ],
+      "modulesResolve": false,
+      "citedTestFiles": 4,
+      "testsCounted": 69,
+      "evidence": {
+        "L1 conceptual": true,
+        "L2 data model": true,
+        "L3 backend": true,
+        "L4 frontend/workspace integration": false,
+        "L5 operational maturity": true
+      },
+      "registryLevels": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "registryStatus": "IMPLEMENTING",
+      "derivedStatus": "IMPLEMENTING",
+      "complete": false,
+      "missingLevels": [
+        "L4 frontend/workspace integration"
+      ],
+      "unconfirmedLevels": []
+    },
+    {
+      "id": "22",
+      "name": "Mobile Platform",
+      "capability": "mobile-client-platform",
+      "sections": "17/20",
+      "modules": [
+        "platform-core",
+        "platform-device",
+        "platform-offline",
+        "platform-observability"
+      ],
+      "modulesResolve": true,
+      "citedTestFiles": 1,
+      "testsCounted": 5,
+      "evidence": {
+        "L1 conceptual": true,
+        "L2 data model": true,
+        "L3 backend": true,
+        "L4 frontend/workspace integration": false,
+        "L5 operational maturity": true
+      },
+      "registryLevels": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "registryStatus": "IMPLEMENTING",
+      "derivedStatus": "IMPLEMENTING",
+      "complete": false,
+      "missingLevels": [
+        "L4 frontend/workspace integration"
+      ],
+      "unconfirmedLevels": []
+    },
+    {
+      "id": "23",
+      "name": "Web Platform",
+      "capability": "web-client-platform",
+      "sections": "18/20",
+      "modules": [
+        "web-core",
+        "web-storage",
+        "web-performance",
+        "web-platform"
+      ],
+      "modulesResolve": true,
+      "citedTestFiles": 2,
+      "testsCounted": 41,
+      "evidence": {
+        "L1 conceptual": true,
+        "L2 data model": true,
+        "L3 backend": true,
+        "L4 frontend/workspace integration": false,
+        "L5 operational maturity": true
+      },
+      "registryLevels": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "registryStatus": "IMPLEMENTING",
+      "derivedStatus": "IMPLEMENTING",
+      "complete": false,
+      "missingLevels": [
+        "L4 frontend/workspace integration"
+      ],
+      "unconfirmedLevels": []
+    },
+    {
+      "id": "24",
+      "name": "Experience & Design Intelligence",
+      "capability": "experience-design",
+      "sections": "16/20",
+      "modules": [
+        "experience-core",
+        "experience-personalization",
+        "experience-accessibility",
+        "experience-governance"
+      ],
+      "modulesResolve": true,
+      "citedTestFiles": 2,
+      "testsCounted": 42,
+      "evidence": {
+        "L1 conceptual": true,
+        "L2 data model": true,
+        "L3 backend": true,
+        "L4 frontend/workspace integration": true,
+        "L5 operational maturity": true
+      },
+      "registryLevels": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "registryStatus": "IMPLEMENTING",
+      "derivedStatus": "COMPLETE",
+      "complete": true,
+      "missingLevels": [],
+      "unconfirmedLevels": []
+    },
+    {
+      "id": "25",
+      "name": "Institutional Onboarding & Workforce",
+      "capability": "onboarding-workforce-identity",
+      "sections": "15/20",
+      "modules": [
+        "institution-core",
+        "workforce-core",
+        "onboarding-core",
+        "attendance-identity",
+        "institution-admin"
+      ],
+      "modulesResolve": true,
+      "citedTestFiles": 6,
+      "testsCounted": 128,
+      "evidence": {
+        "L1 conceptual": true,
+        "L2 data model": true,
+        "L3 backend": true,
+        "L4 frontend/workspace integration": false,
+        "L5 operational maturity": true
+      },
+      "registryLevels": [
+        true,
+        false,
+        false,
+        true,
+        false
+      ],
+      "registryStatus": "IMPLEMENTING",
+      "derivedStatus": "IMPLEMENTING",
+      "complete": false,
+      "missingLevels": [
+        "L4 frontend/workspace integration"
+      ],
+      "unconfirmedLevels": [
+        "L4 frontend/workspace integration"
+      ]
+    },
+    {
+      "id": "26",
+      "name": "AI Intelligence Layer",
+      "capability": "ai-intelligence-gateway",
+      "sections": "18/20",
+      "modules": [
+        "ai-core",
+        "ai-context",
+        "ai-reasoning",
+        "ai-governance",
+        "ai-services"
+      ],
+      "modulesResolve": true,
+      "citedTestFiles": 2,
+      "testsCounted": 71,
+      "evidence": {
+        "L1 conceptual": true,
+        "L2 data model": true,
+        "L3 backend": true,
+        "L4 frontend/workspace integration": false,
+        "L5 operational maturity": true
+      },
+      "registryLevels": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "registryStatus": "IMPLEMENTING",
+      "derivedStatus": "IMPLEMENTING",
+      "complete": false,
+      "missingLevels": [
+        "L4 frontend/workspace integration"
+      ],
+      "unconfirmedLevels": []
+    },
+    {
+      "id": "27",
+      "name": "Marketplace",
+      "capability": "marketplace",
+      "sections": "16/20",
+      "modules": [
+        "marketplace-core",
+        "marketplace-vendor",
+        "marketplace-package",
+        "marketplace-entitlement",
+        "marketplace-governance"
+      ],
+      "modulesResolve": true,
+      "citedTestFiles": 1,
+      "testsCounted": 52,
+      "evidence": {
+        "L1 conceptual": true,
+        "L2 data model": true,
+        "L3 backend": true,
+        "L4 frontend/workspace integration": true,
+        "L5 operational maturity": true
+      },
+      "registryLevels": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "registryStatus": "IMPLEMENTING",
+      "derivedStatus": "COMPLETE",
+      "complete": true,
+      "missingLevels": [],
+      "unconfirmedLevels": []
+    },
+    {
+      "id": "28",
+      "name": "Developer Platform",
+      "capability": "developer-platform",
+      "sections": "17/20",
+      "modules": [
+        "dev-core",
+        "dev-api",
+        "dev-env",
+        "dev-build",
+        "dev-governance"
+      ],
+      "modulesResolve": true,
+      "citedTestFiles": 1,
+      "testsCounted": 47,
+      "evidence": {
+        "L1 conceptual": true,
+        "L2 data model": true,
+        "L3 backend": true,
+        "L4 frontend/workspace integration": false,
+        "L5 operational maturity": true
+      },
+      "registryLevels": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "registryStatus": "IMPLEMENTING",
+      "derivedStatus": "IMPLEMENTING",
+      "complete": false,
+      "missingLevels": [
+        "L4 frontend/workspace integration"
+      ],
+      "unconfirmedLevels": []
+    },
+    {
+      "id": "29",
+      "name": "CoreGrid Integration",
+      "capability": "integration-adapters",
+      "sections": "18/20",
+      "modules": [
+        "integration-core",
+        "integration-transform",
+        "integration-connect",
+        "integration-ops",
+        "integration-governance"
+      ],
+      "modulesResolve": true,
+      "citedTestFiles": 1,
+      "testsCounted": 52,
+      "evidence": {
+        "L1 conceptual": true,
+        "L2 data model": true,
+        "L3 backend": true,
+        "L4 frontend/workspace integration": false,
+        "L5 operational maturity": true
+      },
+      "registryLevels": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "registryStatus": "IMPLEMENTING",
+      "derivedStatus": "IMPLEMENTING",
+      "complete": false,
+      "missingLevels": [
+        "L4 frontend/workspace integration"
+      ],
+      "unconfirmedLevels": []
+    },
+    {
+      "id": "30",
+      "name": "Globalization",
+      "capability": "globalization",
+      "sections": "16/20",
+      "modules": [
+        "globalization-core",
+        "localization-content",
+        "regional-context",
+        "global-formats",
+        "global-governance"
+      ],
+      "modulesResolve": true,
+      "citedTestFiles": 2,
+      "testsCounted": 95,
+      "evidence": {
+        "L1 conceptual": true,
+        "L2 data model": true,
+        "L3 backend": true,
+        "L4 frontend/workspace integration": false,
+        "L5 operational maturity": true
+      },
+      "registryLevels": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "registryStatus": "IMPLEMENTING",
+      "derivedStatus": "IMPLEMENTING",
+      "complete": false,
+      "missingLevels": [
+        "L4 frontend/workspace integration"
+      ],
+      "unconfirmedLevels": []
+    },
+    {
+      "id": "31",
+      "name": "Enterprise Scale",
+      "capability": "enterprise-scale",
+      "sections": "19/20",
+      "modules": [
+        "enterprise-core",
+        "enterprise-capacity",
+        "enterprise-reliability",
+        "enterprise-operations",
+        "enterprise-governance"
+      ],
+      "modulesResolve": true,
+      "citedTestFiles": 1,
+      "testsCounted": 58,
+      "evidence": {
+        "L1 conceptual": true,
+        "L2 data model": true,
+        "L3 backend": true,
+        "L4 frontend/workspace integration": false,
+        "L5 operational maturity": true
+      },
+      "registryLevels": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "registryStatus": "IMPLEMENTING",
+      "derivedStatus": "IMPLEMENTING",
+      "complete": false,
+      "missingLevels": [
+        "L4 frontend/workspace integration"
+      ],
+      "unconfirmedLevels": []
+    },
+    {
+      "id": "32",
+      "name": "Future Evolution",
+      "capability": "evolution-lifecycle",
+      "sections": "18/20",
+      "modules": [
+        "evolution-core",
+        "evolution-experiments",
+        "evolution-migration",
+        "evolution-intelligence",
+        "evolution-governance"
+      ],
+      "modulesResolve": true,
+      "citedTestFiles": 1,
+      "testsCounted": 49,
+      "evidence": {
+        "L1 conceptual": true,
+        "L2 data model": true,
+        "L3 backend": true,
+        "L4 frontend/workspace integration": false,
+        "L5 operational maturity": true
+      },
+      "registryLevels": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "registryStatus": "IMPLEMENTING",
+      "derivedStatus": "IMPLEMENTING",
+      "complete": false,
+      "missingLevels": [
+        "L4 frontend/workspace integration"
+      ],
+      "unconfirmedLevels": []
+    },
+    {
+      "id": "33",
+      "name": "Reality Intelligence Kernel (URIK)",
+      "capability": "universal-reality-ontology",
+      "sections": "18/20",
+      "modules": [
+        "kernel/reality",
+        "kernel/domain-manifest",
+        "kernel/outbox",
+        "kernel/runtime-registry"
+      ],
+      "modulesResolve": true,
+      "citedTestFiles": 2,
+      "testsCounted": 16,
+      "evidence": {
+        "L1 conceptual": true,
+        "L2 data model": true,
+        "L3 backend": true,
+        "L4 frontend/workspace integration": true,
+        "L5 operational maturity": true
+      },
+      "registryLevels": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "registryStatus": "ARCHITECTURE_DEFINED",
+      "derivedStatus": "COMPLETE",
+      "complete": true,
+      "missingLevels": [],
+      "unconfirmedLevels": []
+    },
+    {
+      "id": "34",
+      "name": "Universal Cognitive Intelligence Engine",
+      "capability": "cognitive-architecture",
+      "sections": "19/20",
+      "modules": [],
+      "modulesResolve": false,
+      "citedTestFiles": 0,
+      "testsCounted": 0,
+      "evidence": {
+        "L1 conceptual": true,
+        "L2 data model": false,
+        "L3 backend": false,
+        "L4 frontend/workspace integration": false,
+        "L5 operational maturity": true
+      },
+      "registryLevels": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "registryStatus": "ARCHITECTURE_DEFINED",
+      "derivedStatus": "ARCHITECTURE_DEFINED",
+      "complete": false,
+      "missingLevels": [
+        "L2 data model",
+        "L3 backend",
+        "L4 frontend/workspace integration"
+      ],
+      "unconfirmedLevels": []
+    },
+    {
+      "id": "35",
+      "name": "Autonomous Agent Civilization OS",
+      "capability": "multi-agent-society-governance",
+      "sections": "16/20",
+      "modules": [],
+      "modulesResolve": false,
+      "citedTestFiles": 0,
+      "testsCounted": 0,
+      "evidence": {
+        "L1 conceptual": true,
+        "L2 data model": false,
+        "L3 backend": false,
+        "L4 frontend/workspace integration": false,
+        "L5 operational maturity": true
+      },
+      "registryLevels": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "registryStatus": "ARCHITECTURE_DEFINED",
+      "derivedStatus": "ARCHITECTURE_DEFINED",
+      "complete": false,
+      "missingLevels": [
+        "L2 data model",
+        "L3 backend",
+        "L4 frontend/workspace integration"
+      ],
+      "unconfirmedLevels": []
+    },
+    {
+      "id": "36",
+      "name": "Universal Memory & Knowledge Engine",
+      "capability": "memory-knowledge-civilization",
+      "sections": "18/20",
+      "modules": [],
+      "modulesResolve": false,
+      "citedTestFiles": 0,
+      "testsCounted": 0,
+      "evidence": {
+        "L1 conceptual": true,
+        "L2 data model": true,
+        "L3 backend": false,
+        "L4 frontend/workspace integration": false,
+        "L5 operational maturity": true
+      },
+      "registryLevels": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "registryStatus": "ARCHITECTURE_DEFINED",
+      "derivedStatus": "ARCHITECTURE_DEFINED",
+      "complete": false,
+      "missingLevels": [
+        "L3 backend",
+        "L4 frontend/workspace integration"
+      ],
+      "unconfirmedLevels": []
+    },
+    {
+      "id": "37",
+      "name": "Simulation & Future Intelligence Engine",
+      "capability": "simulation-engine",
+      "sections": "14/20",
+      "modules": [],
+      "modulesResolve": false,
+      "citedTestFiles": 0,
+      "testsCounted": 0,
+      "evidence": {
+        "L1 conceptual": true,
+        "L2 data model": false,
+        "L3 backend": false,
+        "L4 frontend/workspace integration": false,
+        "L5 operational maturity": true
+      },
+      "registryLevels": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "registryStatus": "ARCHITECTURE_DEFINED",
+      "derivedStatus": "ARCHITECTURE_DEFINED",
+      "complete": false,
+      "missingLevels": [
+        "L2 data model",
+        "L3 backend",
+        "L4 frontend/workspace integration"
+      ],
+      "unconfirmedLevels": []
+    },
+    {
+      "id": "38",
+      "name": "Evolution Engine",
+      "capability": null,
+      "sections": "13/20",
+      "modules": [],
+      "modulesResolve": false,
+      "citedTestFiles": 0,
+      "testsCounted": 0,
+      "evidence": {
+        "L1 conceptual": true,
+        "L2 data model": false,
+        "L3 backend": false,
+        "L4 frontend/workspace integration": false,
+        "L5 operational maturity": false
+      },
+      "registryLevels": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "registryStatus": "ARCHITECTURE_DEFINED",
+      "derivedStatus": "ARCHITECTURE_DEFINED",
+      "complete": false,
+      "missingLevels": [
+        "L2 data model",
+        "L3 backend",
+        "L4 frontend/workspace integration",
+        "L5 operational maturity"
+      ],
+      "unconfirmedLevels": []
+    },
+    {
+      "id": "39",
+      "name": "Governance & Alignment Engine",
+      "capability": "governance-alignment",
+      "sections": "13/20",
+      "modules": [],
+      "modulesResolve": false,
+      "citedTestFiles": 0,
+      "testsCounted": 0,
+      "evidence": {
+        "L1 conceptual": true,
+        "L2 data model": false,
+        "L3 backend": false,
+        "L4 frontend/workspace integration": false,
+        "L5 operational maturity": true
+      },
+      "registryLevels": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "registryStatus": "ARCHITECTURE_DEFINED",
+      "derivedStatus": "ARCHITECTURE_DEFINED",
+      "complete": false,
+      "missingLevels": [
+        "L2 data model",
+        "L3 backend",
+        "L4 frontend/workspace integration"
+      ],
+      "unconfirmedLevels": []
+    },
+    {
+      "id": "40",
+      "name": "Universal Runtime Fabric",
+      "capability": "universal-runtime-fabric",
+      "sections": "18/20",
+      "modules": [],
+      "modulesResolve": false,
+      "citedTestFiles": 0,
+      "testsCounted": 0,
+      "evidence": {
+        "L1 conceptual": true,
+        "L2 data model": false,
+        "L3 backend": false,
+        "L4 frontend/workspace integration": false,
+        "L5 operational maturity": true
+      },
+      "registryLevels": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "registryStatus": "ARCHITECTURE_DEFINED",
+      "derivedStatus": "ARCHITECTURE_DEFINED",
+      "complete": false,
+      "missingLevels": [
+        "L2 data model",
+        "L3 backend",
+        "L4 frontend/workspace integration"
+      ],
+      "unconfirmedLevels": []
+    },
+    {
+      "id": "41",
+      "name": "Reality Simulation & Autonomous Sandbox Engine",
+      "capability": "sandbox-runtime",
+      "sections": "17/20",
+      "modules": [],
+      "modulesResolve": false,
+      "citedTestFiles": 0,
+      "testsCounted": 0,
+      "evidence": {
+        "L1 conceptual": true,
+        "L2 data model": false,
+        "L3 backend": false,
+        "L4 frontend/workspace integration": false,
+        "L5 operational maturity": true
+      },
+      "registryLevels": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "registryStatus": "ARCHITECTURE_DEFINED",
+      "derivedStatus": "ARCHITECTURE_DEFINED",
+      "complete": false,
+      "missingLevels": [
+        "L2 data model",
+        "L3 backend",
+        "L4 frontend/workspace integration"
+      ],
+      "unconfirmedLevels": []
+    },
+    {
+      "id": "42",
+      "name": "Zero Trust & Adversarial Defense Engine",
+      "capability": "zero-trust-adversarial-defense",
+      "sections": "18/20",
+      "modules": [],
+      "modulesResolve": false,
+      "citedTestFiles": 0,
+      "testsCounted": 0,
+      "evidence": {
+        "L1 conceptual": true,
+        "L2 data model": false,
+        "L3 backend": false,
+        "L4 frontend/workspace integration": false,
+        "L5 operational maturity": true
+      },
+      "registryLevels": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "registryStatus": "ARCHITECTURE_DEFINED",
+      "derivedStatus": "ARCHITECTURE_DEFINED",
+      "complete": false,
+      "missingLevels": [
+        "L2 data model",
+        "L3 backend",
+        "L4 frontend/workspace integration"
+      ],
+      "unconfirmedLevels": []
+    },
+    {
+      "id": "43",
+      "name": "Universal Interface & Connectivity Intelligence",
+      "capability": "universal-interface-connectivity",
+      "sections": "12/20",
+      "modules": [],
+      "modulesResolve": false,
+      "citedTestFiles": 0,
+      "testsCounted": 0,
+      "evidence": {
+        "L1 conceptual": true,
+        "L2 data model": false,
+        "L3 backend": false,
+        "L4 frontend/workspace integration": false,
+        "L5 operational maturity": true
+      },
+      "registryLevels": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "registryStatus": "ARCHITECTURE_DEFINED",
+      "derivedStatus": "ARCHITECTURE_DEFINED",
+      "complete": false,
+      "missingLevels": [
+        "L2 data model",
+        "L3 backend",
+        "L4 frontend/workspace integration"
+      ],
+      "unconfirmedLevels": []
+    },
+    {
+      "id": "44",
+      "name": "Planetary Distributed Infrastructure Engine",
+      "capability": "planetary-infrastructure",
+      "sections": "18/20",
+      "modules": [],
+      "modulesResolve": false,
+      "citedTestFiles": 0,
+      "testsCounted": 0,
+      "evidence": {
+        "L1 conceptual": true,
+        "L2 data model": true,
+        "L3 backend": false,
+        "L4 frontend/workspace integration": false,
+        "L5 operational maturity": true
+      },
+      "registryLevels": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "registryStatus": "ARCHITECTURE_DEFINED",
+      "derivedStatus": "ARCHITECTURE_DEFINED",
+      "complete": false,
+      "missingLevels": [
+        "L3 backend",
+        "L4 frontend/workspace integration"
+      ],
+      "unconfirmedLevels": []
+    },
+    {
+      "id": "45",
+      "name": "AI Compute Civilization Engine",
+      "capability": "ai-compute",
+      "sections": "12/20",
+      "modules": [],
+      "modulesResolve": false,
+      "citedTestFiles": 0,
+      "testsCounted": 0,
+      "evidence": {
+        "L1 conceptual": true,
+        "L2 data model": true,
+        "L3 backend": false,
+        "L4 frontend/workspace integration": false,
+        "L5 operational maturity": true
+      },
+      "registryLevels": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "registryStatus": "ARCHITECTURE_DEFINED",
+      "derivedStatus": "ARCHITECTURE_DEFINED",
+      "complete": false,
+      "missingLevels": [
+        "L3 backend",
+        "L4 frontend/workspace integration"
+      ],
+      "unconfirmedLevels": []
+    },
+    {
+      "id": "46",
+      "name": "Universal Digital Twin Civilization Layer",
+      "capability": "twin-civilization-federation",
+      "sections": "10/20",
+      "modules": [],
+      "modulesResolve": false,
+      "citedTestFiles": 0,
+      "testsCounted": 0,
+      "evidence": {
+        "L1 conceptual": true,
+        "L2 data model": false,
+        "L3 backend": false,
+        "L4 frontend/workspace integration": false,
+        "L5 operational maturity": true
+      },
+      "registryLevels": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "registryStatus": "ARCHITECTURE_DEFINED",
+      "derivedStatus": "ARCHITECTURE_DEFINED",
+      "complete": false,
+      "missingLevels": [
+        "L2 data model",
+        "L3 backend",
+        "L4 frontend/workspace integration"
+      ],
+      "unconfirmedLevels": []
+    },
+    {
+      "id": "47",
+      "name": "Autonomous Engineering Self-Improvement Engine",
+      "capability": "autonomous-engineering-self-improvement",
+      "sections": "14/20",
+      "modules": [],
+      "modulesResolve": false,
+      "citedTestFiles": 0,
+      "testsCounted": 0,
+      "evidence": {
+        "L1 conceptual": true,
+        "L2 data model": true,
+        "L3 backend": false,
+        "L4 frontend/workspace integration": false,
+        "L5 operational maturity": true
+      },
+      "registryLevels": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "registryStatus": "ARCHITECTURE_DEFINED",
+      "derivedStatus": "ARCHITECTURE_DEFINED",
+      "complete": false,
+      "missingLevels": [
+        "L3 backend",
+        "L4 frontend/workspace integration"
+      ],
+      "unconfirmedLevels": []
+    },
+    {
+      "id": "48",
+      "name": "Civilization Knowledge Graph",
+      "capability": "civilization-knowledge-graph",
+      "sections": "8/20",
+      "modules": [],
+      "modulesResolve": false,
+      "citedTestFiles": 0,
+      "testsCounted": 0,
+      "evidence": {
+        "L1 conceptual": true,
+        "L2 data model": false,
+        "L3 backend": false,
+        "L4 frontend/workspace integration": false,
+        "L5 operational maturity": true
+      },
+      "registryLevels": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "registryStatus": "ARCHITECTURE_DEFINED",
+      "derivedStatus": "ARCHITECTURE_DEFINED",
+      "complete": false,
+      "missingLevels": [
+        "L2 data model",
+        "L3 backend",
+        "L4 frontend/workspace integration"
+      ],
+      "unconfirmedLevels": []
+    },
+    {
+      "id": "49",
+      "name": "Autonomous Economy Engine",
+      "capability": "autonomous-economy",
+      "sections": "7/20",
+      "modules": [],
+      "modulesResolve": false,
+      "citedTestFiles": 0,
+      "testsCounted": 0,
+      "evidence": {
+        "L1 conceptual": false,
+        "L2 data model": true,
+        "L3 backend": false,
+        "L4 frontend/workspace integration": false,
+        "L5 operational maturity": true
+      },
+      "registryLevels": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "registryStatus": "ARCHITECTURE_DEFINED",
+      "derivedStatus": "ARCHITECTURE_DEFINED",
+      "complete": false,
+      "missingLevels": [
+        "L1 conceptual",
+        "L3 backend",
+        "L4 frontend/workspace integration"
+      ],
+      "unconfirmedLevels": [
+        "L1 conceptual"
+      ]
+    },
+    {
+      "id": "50",
+      "name": "Human Civilization Interface Layer",
+      "capability": "human-civilization-interface",
+      "sections": "8/20",
+      "modules": [],
+      "modulesResolve": false,
+      "citedTestFiles": 0,
+      "testsCounted": 0,
+      "evidence": {
+        "L1 conceptual": true,
+        "L2 data model": false,
+        "L3 backend": false,
+        "L4 frontend/workspace integration": false,
+        "L5 operational maturity": true
+      },
+      "registryLevels": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "registryStatus": "ARCHITECTURE_DEFINED",
+      "derivedStatus": "ARCHITECTURE_DEFINED",
+      "complete": false,
+      "missingLevels": [
+        "L2 data model",
+        "L3 backend",
+        "L4 frontend/workspace integration"
+      ],
+      "unconfirmedLevels": []
+    },
+    {
+      "id": "51",
+      "name": "Universal Reality OS Kernel",
+      "capability": "reality-os-kernel-composition",
+      "sections": "11/20",
+      "modules": [],
+      "modulesResolve": false,
+      "citedTestFiles": 0,
+      "testsCounted": 0,
+      "evidence": {
+        "L1 conceptual": true,
+        "L2 data model": true,
+        "L3 backend": false,
+        "L4 frontend/workspace integration": false,
+        "L5 operational maturity": true
+      },
+      "registryLevels": [
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "registryStatus": "ARCHITECTURE_DEFINED",
+      "derivedStatus": "ARCHITECTURE_DEFINED",
+      "complete": false,
+      "missingLevels": [
+        "L3 backend",
+        "L4 frontend/workspace integration"
+      ],
+      "unconfirmedLevels": []
+    }
+  ],
+  "inconsistencies": [],
+  "ok": true,
+  "limitations": [
+    "Evidence-derived: this audit measures artefacts, not correctness of behaviour.",
+    "L4/L5 locate references by capability token; a phase whose surfaces are named differently may be understated and must be reviewed by hand.",
+    "DB-backed L2 registries are verified by scripts/verify-l2-registries.mjs, which requires live Supabase credentials.",
+    "Incompleteness is reported, never failed: unfinished work is honest. Only overstated claims or missing cited artifacts fail the gate."
+  ]
+}
