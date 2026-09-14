@@ -2,8 +2,10 @@
  * CoreGrid — KERNEL capability registry (domain-neutral, Phase 33 substrate).
  *
  * Typed consumption of the platform capability graph (architecture/registry.json).
- * The kernel owns WHAT the platform can do; domain runtimes (Scholar R-001) declare
- * which kernel capabilities they consume — they never redefine the graph.
+ * The kernel owns WHAT the platform can do; a domain runtime declares which kernel
+ * capabilities it consumes — it never redefines the graph, and the kernel never
+ * carries a domain-named helper or a hardcoded set of one domain's phases
+ * (Constitution §111 runtime-neutrality law).
  */
 
 export interface KernelCapability {
@@ -261,12 +263,17 @@ export function kernelCapabilitiesForPhase(phaseId: string): KernelCapability[] 
   return KERNEL_CAPABILITIES.filter((capability) => capability.ownerPhase === phaseId);
 }
 
-/** Scholar R-001 consumed capability surface (registry runtimes + owner phases). */
-const SCHOLAR_PHASES = new Set(["04", "10", "11", "12", "13", "15", "16", "17", "18", "20", "25"]);
-
-export function kernelCapabilitiesConsumedByScholar(): KernelCapability[] {
-  return KERNEL_CAPABILITIES.filter(
-    (capability) =>
-      capability.consumers.includes("runtime-001") || SCHOLAR_PHASES.has(capability.ownerPhase),
-  );
+/**
+ * Capabilities whose registered consumer list names `consumerRef` — for example
+ * a runtime registry id such as "runtime-001".
+ *
+ * NEUTRALITY LAW (Constitution §111; Phase 01 foundation §93 boundary rules):
+ * the kernel answers this query generically and knows no runtime by name. Which
+ * capabilities a *particular* runtime consumes is declared by that runtime, in
+ * its own layer (`frontend/src/lib/runtime/*`). This keeps the Runtime
+ * Independence Test true: removing or replacing an installed runtime removes a
+ * declaration file, never kernel behaviour.
+ */
+export function kernelCapabilitiesByConsumer(consumerRef: string): KernelCapability[] {
+  return KERNEL_CAPABILITIES.filter((capability) => capability.consumers.includes(consumerRef));
 }

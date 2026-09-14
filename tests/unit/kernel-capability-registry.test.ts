@@ -4,10 +4,10 @@
 import { describe, expect, it } from "vitest";
 import {
   KERNEL_CAPABILITIES,
-  kernelCapabilitiesConsumedByScholar,
   kernelCapabilitiesForPhase,
   kernelCapabilityById,
 } from "../../frontend/src/lib/kernel/kernel-capability-registry";
+import { scholarConsumedKernelCapabilities } from "../../frontend/src/lib/runtime/scholar-consumption";
 
 describe("kernel capability registry", () => {
   it("covers the full platform capability graph with unique ids", () => {
@@ -33,7 +33,7 @@ describe("kernel capability registry", () => {
   });
 
   it("declares the capabilities Scholar R-001 consumes", () => {
-    const scholar = kernelCapabilitiesConsumedByScholar();
+    const scholar = scholarConsumedKernelCapabilities();
     const ids = new Set(scholar.map((capability) => capability.id));
     expect(scholar.length).toBeGreaterThanOrEqual(10);
     // Direct runtime consumers are explicit in the graph.

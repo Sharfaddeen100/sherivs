@@ -1,10 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   KERNEL_CAPABILITIES,
-  kernelCapabilitiesConsumedByScholar,
   type KernelCapability,
 } from "@/lib/kernel/kernel-capability-registry";
 import { phaseContractCoverageSnapshot } from "@/lib/kernel/phase-contracts";
+import { scholarConsumedKernelCapabilities } from "@/lib/runtime/scholar-consumption";
 
 export const Route = createFileRoute("/platform")({
   component: Platform,
@@ -38,7 +38,7 @@ function groupByPhase(capabilities: readonly KernelCapability[]): Array<{
 
 function Platform() {
   const phaseGroups = groupByPhase(KERNEL_CAPABILITIES);
-  const scholar = kernelCapabilitiesConsumedByScholar();
+  const scholar = scholarConsumedKernelCapabilities();
   const coverage = phaseContractCoverageSnapshot();
 
   return (

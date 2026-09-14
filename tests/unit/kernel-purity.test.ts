@@ -107,6 +107,91 @@ describe("P33 universal kernel — Scholar Independence Test", () => {
   });
 });
 
+describe("P33 universal kernel — runtime neutrality (Constitution §111)", () => {
+  /**
+   * The runtime-consumption extraction (2026-09-13) removed a runtime-named
+   * helper and a hardcoded runtime phase set from the kernel. This law keeps the
+   * regression class closed: the kernel answers generically, the consuming
+   * runtime declares its own consumption, and the dependency arrow only ever
+   * points runtime → kernel.
+   *
+   * The broad vocabulary law above is deliberately NOT applied to these files:
+   * they legitimately carry platform vocabulary mirrored from the registry (for
+   * example the `academic-intelligence` capability id owned by Phase 11). The law
+   * here targets the defect class precisely instead of forcing a false positive.
+   */
+  const NEUTRAL_QUERY_MODULES = [
+    join(ROOT, "frontend/src/lib/kernel/kernel-capability-registry.ts"),
+    join(ROOT, "frontend/src/lib/kernel/phase-contract.ts"),
+  ];
+  const RUNTIME_MARKERS = [/runtime:scholar/i, /SCHOLAR_/, /\bScholar\b/];
+
+  it("names no installed runtime in a kernel module", () => {
+    const offenders: string[] = [];
+    for (const file of NEUTRAL_QUERY_MODULES) {
+      const source = readFileSync(file, "utf8");
+      for (const marker of RUNTIME_MARKERS) {
+        if (marker.test(source)) {
+          offenders.push(`${file.replace(/\\/g, "/").split("kernel/")[1]}: ${marker}`);
+        }
+      }
+    }
+    expect(offenders).toEqual([]);
+  });
+
+  it("records consumption by opaque reference, never by domain name", () => {
+    // The kernel MAY record that some consumer uses a capability — but only as an
+    // opaque reference (a registry id), never as a runtime's name. This is what
+    // keeps the capability graph neutral while still being informative.
+    const registry = readFileSync(
+      join(ROOT, "frontend/src/lib/kernel/kernel-capability-registry.ts"),
+      "utf8",
+    );
+    const refs = [...registry.matchAll(/consumers:\s*\[([^\]]*)\]/g)]
+      .flatMap((match) => [...match[1].matchAll(/"([^"]+)"/g)].map((entry) => entry[1]))
+      .filter(Boolean);
+    expect(refs.length).toBeGreaterThan(0);
+    const opaque = /^(all|control-plane|coregrid|runtime-\d+|phase-\d+|\d{2})$/;
+    const named = refs.filter((ref) => !opaque.test(ref));
+    expect(named, `consumer refs must be opaque ids, found: ${named.join(", ")}`).toEqual([]);
+  });
+
+  it("exposes a generic consumer query instead of a runtime-named helper", () => {
+    const registry = readFileSync(
+      join(ROOT, "frontend/src/lib/kernel/kernel-capability-registry.ts"),
+      "utf8",
+    );
+    expect(registry).toContain("export function kernelCapabilitiesByConsumer(");
+    expect(registry).not.toMatch(/kernelCapabilitiesConsumedBy\w+\(/);
+  });
+
+  it("keeps runtime consumption in the runtime layer, declared and neutral", () => {
+    const consumption = readFileSync(
+      join(ROOT, "frontend/src/lib/runtime/scholar-consumption.ts"),
+      "utf8",
+    );
+    expect(consumption).toContain("export function scholarConsumedKernelCapabilities(");
+    expect(consumption).toContain("kernelCapabilitiesByConsumer(");
+    // Declaration only: it must not own capability or grant authority.
+    expect(consumption).toMatch(/owns no capability|grants no authority/i);
+  });
+
+  it("keeps the dependency arrow one-way: no kernel module imports a runtime module", () => {
+    const kernelDir = join(ROOT, "frontend/src/lib/kernel");
+    const offenders: string[] = [];
+    for (const full of readdirSync(kernelDir)) {
+      if (!/\.tsx?$/.test(full)) continue;
+      const source = readFileSync(join(kernelDir, full), "utf8");
+      for (const spec of [...source.matchAll(/from\s+["']([^"']+)["']/g)].map((m) => m[1])) {
+        if (spec.includes("/runtime/") || spec.startsWith("@/lib/runtime")) {
+          offenders.push(`${full} → ${spec}`);
+        }
+      }
+    }
+    expect(offenders).toEqual([]);
+  });
+});
+
 describe("P33 universal kernel — Runtime Installation Test", () => {
   it("never references legacy domain tables", () => {
     const sql = readFileSync(KERNEL_SOURCES[0], "utf8");

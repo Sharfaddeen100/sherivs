@@ -343,10 +343,14 @@ describe("runtime neutrality (Scholar first, neutral domains reserved)", () => {
     }
   });
 
-  it("rejects a contract built Scholar-only or with malformed seats", () => {
-    const scholarOnly = clone(FOUNDATION);
-    scholarOnly.runtimeBindings.neutralSeats = [];
-    expectFailure(scholarOnly, "neutralSeats must reserve at least one non-Scholar domain seat");
+  it("rejects a contract with no reserved seat for another domain runtime", () => {
+    const firstRuntimeOnly = clone(FOUNDATION);
+    firstRuntimeOnly.runtimeBindings.neutralSeats = [];
+    // Message is runtime-neutral by law: the seat requirement never names a runtime.
+    expectFailure(
+      firstRuntimeOnly,
+      "neutralSeats must reserve at least one seat for a domain runtime other than the first",
+    );
 
     const duplicate = clone(FOUNDATION);
     duplicate.runtimeBindings.neutralSeats = [

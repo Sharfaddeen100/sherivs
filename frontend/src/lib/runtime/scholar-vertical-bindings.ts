@@ -16,18 +16,20 @@
  * - Domain → kernel only. The kernel never imports this module.
  */
 
-import {
-  KERNEL_CAPABILITIES,
-  kernelCapabilitiesConsumedByScholar,
-  kernelCapabilityById,
-} from "@/lib/kernel/kernel-capability-registry";
+import { KERNEL_CAPABILITIES, kernelCapabilityById } from "@/lib/kernel/kernel-capability-registry";
 import { phaseContractById } from "@/lib/kernel/phase-contracts";
+import {
+  SCHOLAR_REGISTRY_RUNTIME_ID,
+  SCHOLAR_RUNTIME_ID,
+  scholarConsumedKernelCapabilities,
+} from "./scholar-consumption";
 
-/** Contract-chain runtime id (manifest-style, per kernel/domain-manifest.ts). */
-export const SCHOLAR_RUNTIME_ID = "runtime:scholar";
-
-/** Ledger row id for the same runtime in architecture/registry.json. */
-export const SCHOLAR_REGISTRY_RUNTIME_ID = "runtime-001";
+/**
+ * Runtime ids and the consumption declaration live in `./scholar-consumption`
+ * (runtime layer, alongside this module). Re-exported so this module's public
+ * import path is unchanged for every existing consumer.
+ */
+export { SCHOLAR_REGISTRY_RUNTIME_ID, SCHOLAR_RUNTIME_ID };
 
 export const SCHOLAR_VERTICALS = [
   "admin",
@@ -280,7 +282,7 @@ export function scholarVerticalBindingSummary(
   bindings: readonly ScholarVerticalBinding[] = SCHOLAR_VERTICAL_BINDINGS,
 ): ScholarVerticalBindingSummary {
   const rows = scholarVerticalBindingRows(bindings);
-  const consumed = kernelCapabilitiesConsumedByScholar().map((capability) => capability.id);
+  const consumed = scholarConsumedKernelCapabilities().map((capability) => capability.id);
   const bound = [...new Set(rows.map((row) => row.capability))];
   return {
     runtime: SCHOLAR_RUNTIME_ID,
@@ -316,9 +318,7 @@ export function validateScholarVerticalBindings(
 ): ScholarBindingValidation {
   const issues: string[] = [];
   const registered = new Set(KERNEL_CAPABILITIES.map((capability) => capability.id));
-  const consumed = new Set(
-    kernelCapabilitiesConsumedByScholar().map((capability) => capability.id),
-  );
+  const consumed = new Set(scholarConsumedKernelCapabilities().map((capability) => capability.id));
   const verticals = new Set<string>(SCHOLAR_VERTICALS);
   const seen = new Set<string>();
   const boundCapabilities = new Set<string>();

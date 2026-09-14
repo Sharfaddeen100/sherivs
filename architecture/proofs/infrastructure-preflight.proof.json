@@ -2,8 +2,8 @@
   "artifact": "infrastructure-preflight",
   "wave": "CF-4/CF-7 readiness",
   "owner": "21",
-  "mode": "live",
-  "generatedAt": "2026-09-14T05:46:53.307Z",
+  "mode": "static",
+  "generatedAt": "2026-09-14T11:59:11.859Z",
   "wavesChecked": [
     "CF-7 Supabase data layer"
   ],

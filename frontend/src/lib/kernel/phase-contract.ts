@@ -4,9 +4,8 @@
  * A phase contract is the machine-checkable form of a phase document: it
  * declares all twenty engineering sections, the capability the phase owns in
  * the kernel capability registry, the phases it depends on and serves, its
- * tenant/security/AI-safety obligations, and how the first vertical runtime
- * (CoreGrid Scholar) consumes it while every other domain consumes the same
- * neutral contract.
+ * tenant/security/AI-safety obligations, and how the first installed runtime
+ * consumes it while every other domain consumes the same neutral contract.
  *
  * Two governance laws are encoded here:
  *
@@ -96,8 +95,8 @@ export type NeutralSeatStatus = (typeof NEUTRAL_SEAT_STATUSES)[number];
 
 /**
  * A reserved seat for a future domain runtime on this phase's capability.
- * Scholar is the first runtime; every seat must be declared so no phase is
- * built Scholar-only.
+ * One runtime may be installed first, but every seat must be declared so no
+ * phase is ever built for a single runtime only.
  */
 export interface NeutralDomainSeat {
   domain: string;
@@ -106,9 +105,9 @@ export interface NeutralDomainSeat {
 }
 
 export interface PhaseRuntimeBinding {
-  /** First vertical runtime that consumes the phase (always Scholar here). */
+  /** First installed runtime consuming the phase — data, never kernel logic. */
   firstRuntime: string;
-  /** Neutral seats reserved for non-Scholar domains. */
+  /** Neutral seats reserved for domain runtimes other than the first. */
   neutralSeats: readonly NeutralDomainSeat[];
 }
 
@@ -366,11 +365,13 @@ export function validatePhaseContract(
     }
   }
 
-  /* Runtime binding law: Scholar first, neutral seats reserved. */
+  /* Runtime binding law: one first runtime, neutral seats always reserved. */
   const bindings = contract.runtimeBindings;
   if (!bindings?.firstRuntime?.trim()) issues.push("runtimeBindings.firstRuntime is required");
   if (!bindings?.neutralSeats?.length) {
-    issues.push("runtimeBindings.neutralSeats must reserve at least one non-Scholar domain seat");
+    issues.push(
+      "runtimeBindings.neutralSeats must reserve at least one seat for a domain runtime other than the first",
+    );
   }
   const seenSeats = new Set<string>();
   for (const seat of bindings?.neutralSeats ?? []) {
