@@ -19,6 +19,47 @@
 
 ---
 
+## The first move (owner decision, 2026-09-13)
+
+**Execute CF-7 (Supabase data layer) in parallel with CF-4 (OCI backbone).**
+Hetzner (CF-5) and Vultr (CF-6) follow, because they attach to the cluster CF-4
+creates; Cloudflare traffic wiring lands with CF-6.
+
+Rationale, in priority order:
+
+1. **CF-7 protects what is already live.** The application runs on Supabase today.
+   Proving backups, PITR and a *restore drill* is immediate risk reduction and
+   needs no cluster — only the project ref, a management token and the database URL.
+2. **CF-7 also closes the R42 debt.** `SUPABASE_DB_URL` is exactly what
+   `scripts/db-apply-one.mjs 20260907000800` needs to apply the role-assignment
+   substrate and flip `architecture/proofs/role-assignment-substrate.proof.json`
+   from `mode: "static"` to `mode: "live"`. One wave, two proofs.
+3. **CF-4 is the backbone and has the longest lead time** (compartment, VCN, HA
+   cluster, pools, buckets). Starting it in the same window removes the wait.
+4. **Ordering is a dependency fact, not a cost preference:** control plane first,
+   then worker capacity, then edge.
+
+**Entry gates are verified, not assumed.** Before either wave:
+
+```bash
+npm run preflight:infrastructure            # live, read-only: authn + scope per provider
+npm run preflight:infrastructure -- --static  # contract + presence only (no secrets)
+node scripts/infrastructure/preflight.mjs --wave=cf7
+```
+
+The doctor writes `architecture/proofs/infrastructure-preflight.proof.json` and
+names every missing secret. Then:
+
+```bash
+TF_STATE_BUCKET=... TF_STATE_REGION=... node scripts/infrastructure/bootstrap.mjs --root=oci --write
+terraform -chdir=infrastructure/terraform/oci init -backend-config=backend.hcl
+terraform -chdir=infrastructure/terraform/oci plan -var-file=terraform.tfvars -out=fabric.tfplan
+# ⛔ review the plan, approve the environment, then:
+terraform -chdir=infrastructure/terraform/oci apply fabric.tfplan
+```
+
+---
+
 ## Wave map
 
 | # | Directive phase | Wave | Status |

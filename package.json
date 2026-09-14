@@ -16,6 +16,8 @@
     "verify:role-substrate": "node scripts/verify-role-assignment-substrate.mjs",
     "verify:infrastructure": "node scripts/verify-infrastructure.mjs",
     "generate:icons": "node scripts/generate-pwa-icons.mjs",
+    "preflight:infrastructure": "node scripts/infrastructure/preflight.mjs",
+    "bootstrap:infrastructure": "node scripts/infrastructure/bootstrap.mjs",
     "verify:secrets": "node scripts/verification/secret-scan.mjs",
     "verify:env": "vitest run tests/unit/env.test.ts",
     "test:e2e": "playwright test",

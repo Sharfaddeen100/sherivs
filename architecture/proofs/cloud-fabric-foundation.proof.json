@@ -4,9 +4,9 @@
   "owner": "21",
   "capability": "cloud-fabric-byoc",
   "mode": "static",
-  "generatedAt": "2026-09-14T03:56:17.946Z",
-  "infrastructureFiles": 52,
-  "inventoryDigest": "sha256:23686309c11958949b7aa2f47d18b7ca102be86da3d4108f0c2b6790e17b930a",
+  "generatedAt": "2026-09-14T05:16:18.011Z",
+  "infrastructureFiles": 53,
+  "inventoryDigest": "sha256:ed2cb14758ed192a4938f7f451fc275b91f2a12ce49c4dd9efcd5fce37f32752",
   "providers": [
     "oci",
     "hetzner",
@@ -36,7 +36,7 @@
     {
       "id": "structure:infrastructure-present",
       "ok": true,
-      "detail": "52 infrastructure source file(s) under infrastructure/",
+      "detail": "53 infrastructure source file(s) under infrastructure/",
       "category": "A"
     },
     {
@@ -283,6 +283,36 @@
       "id": "tags:ownership-recorded",
       "ok": true,
       "detail": "owner-phase tagging defined by 5 modules and recorded by 5/5 provider roots",
+      "category": "E"
+    },
+    {
+      "id": "residency:inventory-present",
+      "ok": true,
+      "detail": "8 region record(s) declared as data",
+      "category": "E"
+    },
+    {
+      "id": "residency:record-completeness",
+      "ok": true,
+      "detail": "every region record states jurisdiction, sovereignty and a tenant-data permission flag",
+      "category": "E"
+    },
+    {
+      "id": "residency:fail-closed-policy",
+      "ok": true,
+      "detail": "placement policy separates tenant-data regions from stateless regions (no data on workers/edge)",
+      "category": "E"
+    },
+    {
+      "id": "residency:workers-and-edge-excluded",
+      "ok": true,
+      "detail": "worker and edge regions are explicitly NOT permitted to hold tenant data",
+      "category": "E"
+    },
+    {
+      "id": "residency:no-undeclared-region",
+      "ok": true,
+      "detail": "every region referenced in the fabric is declared in the inventory",
       "category": "E"
     },
     {

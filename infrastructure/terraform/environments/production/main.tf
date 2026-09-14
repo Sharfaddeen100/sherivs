@@ -43,15 +43,22 @@ locals {
   environment = "production"
   name_prefix = "coregrid"
 
-  required_secrets = {
-    SUPABASE_URL              = var.supabase_url_present
-    SUPABASE_PUBLISHABLE_KEY  = var.supabase_publishable_key_present
-    SUPABASE_SERVICE_ROLE_KEY = var.supabase_service_role_key_present
-    SUPABASE_DB_URL           = var.supabase_db_url_present
-  }
+  # Secret NAMES the fabric requires (values never appear in this repository).
+  required_secret_names = [
+    "SUPABASE_URL",
+    "SUPABASE_PUBLISHABLE_KEY",
+    "SUPABASE_SERVICE_ROLE_KEY",
+    "SUPABASE_DB_URL",
+  ]
 
-  # A production apply is refused when any required secret is absent. Fail closed.
-  missing_secrets = [for name, present in local.required_secrets : name if !present]
+  # Presence booleans injected by the environment: this root never sees a value,
+  # only whether the name resolved. Absence fails the apply (fail closed).
+  resolved_presence = {
+    for name in local.required_secret_names : name => lookup(var.secret_presence, name, false)
+  }
+  unresolved_secrets = [
+    for name in local.required_secret_names : name if !local.resolved_presence[name]
+  ]
 
   common_tags = {
     "coregrid:environment" = local.environment
@@ -62,15 +69,16 @@ locals {
 
 resource "terraform_data" "environment_preconditions" {
   input = {
-    environment     = local.environment
-    missing_secrets = local.missing_secrets
-    operators       = var.operator_cidrs
+    environment        = local.environment
+    required_secret_names = local.required_secret_names
+    unresolved_count   = length(local.unresolved_secrets)
+    operators          = var.operator_cidrs
   }
 
   lifecycle {
     precondition {
-      condition     = length(local.missing_secrets) == 0
-      error_message = "Production apply refused: missing secrets ${join(", ", local.missing_secrets)}. Supply them via the environment secret store (infrastructure/CREDENTIALS.md) — never in this repository."
+      condition     = length(local.unresolved_secrets) == 0
+      error_message = "Production apply refused: ${length(local.unresolved_secrets)} required secret name(s) did not resolve. Supply them via the environment secret store (infrastructure/CREDENTIALS.md) — never in this repository."
     }
     precondition {
       condition     = length(var.operator_cidrs) > 0
@@ -112,7 +120,7 @@ module "oci" {
   oci_object_storage_namespace = var.oci_object_storage_namespace
   oci_kms_key_id         = var.oci_kms_key_id
   kubernetes_version     = var.kubernetes_version
-  secret_presence        = local.required_secrets
+  secret_presence        = var.secret_presence
   extra_tags             = local.common_tags
 
   depends_on = [terraform_data.environment_preconditions]

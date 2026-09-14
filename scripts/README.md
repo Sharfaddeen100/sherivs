@@ -22,6 +22,13 @@ Portable verification commands are available through `npm` and are used by CI:
 - `node scripts/infrastructure/supabase-config-check.mjs --static` (data-layer
   configuration contract; without `--static` it performs a read-only live check
   and refuses to treat an unrestorable data layer as ready)
+- `npm run preflight:infrastructure` (read-only credential/scope doctor per
+  provider: presence of each required secret NAME, token acceptance, target
+  reachability; writes `architecture/proofs/infrastructure-preflight.proof.json`
+  and names every blocked wave — it never logs or stores a value)
+- `npm run bootstrap:infrastructure` (prepares a provider root for apply: backend
+  config from identifiers, ignore-hygiene check, secret presence per provider and
+  the exact reproducible command sequence; dry run unless `--write`)
 - `npm run generate:icons` (regenerates the installable PWA icons in
   `public/icons/` from a brand colour — no image dependency)
 - `npm run verify` (typecheck, unit tests, registry, secrets, then production build)

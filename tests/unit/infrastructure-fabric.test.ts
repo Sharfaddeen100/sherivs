@@ -86,13 +86,16 @@ describe("CF-3 — the fabric verifier proves what it claims", () => {
   });
 
   it("binds the proof to a digest of every infrastructure file", () => {
-    expect(proof.artifact).toBe("cloud-fabric-foundation");
-    expect(proof.wave).toBe("CF-3");
-    expect(proof.owner).toBe("21");
-    expect(proof.capability).toBe("cloud-fabric-byoc");
-    expect(proof.mode).toBe("static");
-    expect(proof.infrastructureFiles).toBe(infraFiles.length);
-    expect(proof.inventoryDigest).toBe(recomputedDigest);
+    // Read fresh: the verifier runs in the test above and rewrites the proof,
+    // so the digest must be compared against what is on disk NOW.
+    const current = JSON.parse(readFileSync(join(ROOT, PROOF_REF), "utf8")) as FabricProof;
+    expect(current.artifact).toBe("cloud-fabric-foundation");
+    expect(current.wave).toBe("CF-3");
+    expect(current.owner).toBe("21");
+    expect(current.capability).toBe("cloud-fabric-byoc");
+    expect(current.mode).toBe("static");
+    expect(current.infrastructureFiles).toBe(infraFiles.length);
+    expect(current.inventoryDigest).toBe(recomputedDigest);
   });
 
   it("passes every recorded invariant across all nine law categories", () => {

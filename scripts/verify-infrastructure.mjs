@@ -320,6 +320,61 @@ check(
   "E",
 );
 
+/* ── E2. Region & residency inventory (Phase 21 substrates) ──────────────── */
+
+const regionsText = read("infrastructure/terraform/regions.tf");
+const regionIds = [...regionsText.matchAll(/"(oci|hetzner|vultr):[a-z0-9-]+"\s*=\s*\{/g)].map((m) =>
+  m[0].replace(/\s*=\s*\{$/, "").replace(/"/g, ""),
+);
+check(
+  "residency:inventory-present",
+  regionIds.length >= 6,
+  `${regionIds.length} region record(s) declared as data`,
+  "E",
+);
+check(
+  "residency:record-completeness",
+  ["jurisdiction", "sovereign", "permitted_for_tenancy_data", "geographical_area"].every((field) =>
+    regionsText.includes(field),
+  ),
+  "every region record states jurisdiction, sovereignty and a tenant-data permission flag",
+  "E",
+);
+check(
+  "residency:fail-closed-policy",
+  regionsText.includes("tenant_data_regions") && regionsText.includes("stateless_regions"),
+  "placement policy separates tenant-data regions from stateless regions (no data on workers/edge)",
+  "E",
+);
+check(
+  "residency:workers-and-edge-excluded",
+  /permitted_for_tenancy_data\s*=\s*false\s*#[^\n]*/.test(regionsText) ||
+    (regionsText.match(/permitted_for_tenancy_data\s*=\s*false/g) ?? []).length >= 5,
+  "worker and edge regions are explicitly NOT permitted to hold tenant data",
+  "E",
+);
+
+// Every region referenced by a variable must appear in the inventory.
+const declaredRegions = new Set(regionIds.map((id) => id.split(":")[1]));
+const referencedRegions = new Set([
+  ...infraFiles
+    .filter((ref) => ref.endsWith(".tf") || ref.endsWith(".tfvars.example"))
+    .flatMap((ref) => [...infraText.get(ref).matchAll(/"([a-z]{2,4}-?[a-z0-9-]*|[a-z]{3})"/g)])
+    .map((m) => m[1])
+    .filter((value) => ["fsn1", "nbg1", "jnb", "ams", "sgp", "eu-frankfurt-1", "uk-london-1", "af-johannesburg-1"].includes(value)),
+]);
+const undeclared = [...referencedRegions].filter((value) => !declaredRegions.has(value));
+check(
+  "residency:no-undeclared-region",
+  undeclared.length === 0,
+  undeclared.length === 0
+    ? "every region referenced in the fabric is declared in the inventory"
+    : `undeclared region(s): ${undeclared.join(", ")}`,
+  "E",
+);
+
+
+
 /* ── F. Cluster laws ─────────────────────────────────────────────────────── */
 
 const namespaceText = read("infrastructure/kubernetes/namespaces.yaml");

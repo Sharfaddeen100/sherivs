@@ -36,9 +36,12 @@ infrastructure/
 ## Commands
 
 ```bash
-npm run verify:infrastructure     # proves the fabric's source invariants (no credentials)
+npm run verify:infrastructure        # proves the fabric's source invariants (no credentials)
+npm run preflight:infrastructure     # read-only credential/scope doctor; names the blocked waves
+npm run preflight:infrastructure -- --static   # contract + presence only, no secrets needed
+npm run bootstrap:infrastructure     # prepares backend.hcl + prints the exact apply sequence (dry run)
 node scripts/infrastructure/supabase-config-check.mjs --static   # data-layer contract check
-node scripts/db-apply.mjs         # apply migrations (needs DATABASE_URL)
+node scripts/db-apply.mjs            # apply migrations (needs DATABASE_URL)
 node scripts/db-apply-one.mjs <prefix> --dry-run                 # one migration, dry run
 ```
 

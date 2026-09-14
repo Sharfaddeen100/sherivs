@@ -94,7 +94,7 @@ variable "kubernetes_version" {
 }
 
 variable "vcn_cidr" {
-  description = "Fabric VCN CIDR."
+  description = "Fabric VCN CIDR (also the control-plane CIDR allowed to reach workers)."
   type        = string
   default     = "10.20.0.0/16"
 }
@@ -206,27 +206,9 @@ variable "supabase_db_url" {
   sensitive   = true
 }
 
-# ── Secret PRESENCE flags (booleans only — never values) ────────────────────
-variable "supabase_url_present" {
-  description = "Whether SUPABASE_URL is present in the environment."
-  type        = bool
-  default     = false
-}
-
-variable "supabase_publishable_key_present" {
-  description = "Whether SUPABASE_PUBLISHABLE_KEY is present."
-  type        = bool
-  default     = false
-}
-
-variable "supabase_service_role_key_present" {
-  description = "Whether SUPABASE_SERVICE_ROLE_KEY is present."
-  type        = bool
-  default     = false
-}
-
-variable "supabase_db_url_present" {
-  description = "Whether SUPABASE_DB_URL is present."
-  type        = bool
-  default     = false
+# ── Secret PRESENCE map (booleans only — never values) ──────────────────────
+variable "secret_presence" {
+  description = "Map of required secret NAME => whether it resolved in the environment. Injected by the pipeline; this repository never carries values."
+  type        = map(bool)
+  default     = {}
 }

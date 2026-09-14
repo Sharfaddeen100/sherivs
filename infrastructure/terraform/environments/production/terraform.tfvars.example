@@ -20,9 +20,12 @@ cloudflare_zone_id    = ""
 
 supabase_project_ref = ""
 
-# Secret PRESENCE flags: set to true only when the corresponding environment
-# variable is actually supplied (the apply is refused otherwise).
-supabase_url_present              = false
-supabase_publishable_key_present  = false
-supabase_service_role_key_present = false
-supabase_db_url_present           = false
+# Secret PRESENCE map: set each name to true only when the corresponding
+# environment variable is actually supplied (the apply is refused otherwise).
+# Booleans only — never a value.
+secret_presence = {
+  SUPABASE_URL              = false
+  SUPABASE_PUBLISHABLE_KEY  = false
+  SUPABASE_SERVICE_ROLE_KEY = false
+  SUPABASE_DB_URL           = false
+}
