@@ -79,7 +79,10 @@ this inventory:
 
 | Phase | Record | Acceptance probe result |
 | --- | --- | --- |
-| 01 Foundation | `architecture/archaeology/phase-01-foundation.audit.md` | 43 areas — **ENFORCED 40 · DECLARED 2 · MISSING 1**; ownership confirmed (no duplication), work items P01-1…P01-4, BR-01, unknowns U-01…U-04 |
+| 01 Foundation | `architecture/archaeology/phase-01-foundation.audit.md` | 44 areas — **ENFORCED 41 · UNWIRED 3 · DECLARED 0 · MISSING 0**; ownership confirmed (no duplication), work items P01-1…P01-4, BR-01, unknowns U-01…U-04 |
+| 02 Identity | `architecture/archaeology/phase-02-identity.audit.md` | 12 areas — **ENFORCED 10 · DECLARED 1 · UNWIRED 1 · MISSING 0**; paste degraded (repo doc authoritative); one level from COMPLETE, missing only the workspace projection; P02-1…P02-3 |
+| 03 Multi-Tenancy | `architecture/archaeology/phase-03-multi-tenancy.audit.md` | 19 areas — **ENFORCED 15 · DECLARED 2 · UNWIRED 2 · MISSING 0**; paste complete; async tenant boundaries and deprovisioning are the real gaps; P03-1…P03-5 |
+| All probes | `tests/unit/phase-acceptance-probes.test.ts` | every `architecture/phase-acceptance/phase-*.json` is discovered and re-derived automatically — adding a probe adds coverage with no test change |
 
 ## 4. Archaeology work packages (next, in order)
 

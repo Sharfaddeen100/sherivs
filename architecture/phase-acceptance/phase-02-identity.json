@@ -1,0 +1,163 @@
+{
+  "$comment": "Phase 02 §A–M acceptance criteria, the 15 architectural invariants and the L12 acceptance list resolved against repository artefacts. Verified four ways: pasted document, architecture/phase-02-identity.md (2,477 lines), frontend/src/lib/kernel/phase-contracts/phase-02-identity.ts, architecture/registry.json.",
+  "phase": "02",
+  "phaseName": "Identity",
+  "source": "architecture/phase-02-identity.md",
+  "contract": "frontend/src/lib/kernel/phase-contracts/phase-02-identity.ts",
+  "documentIntegrity": {
+    "status": "PASS WITH FINDING",
+    "finding": "The pasted Phase 02 document is structurally degraded: A5/A6, C5/C6, E3, the F2 operation input/output tables, H2–H17 field lists, I8, J16, K2/K7/K8, M2, the Definition-of-Done table and the invariant bodies arrived empty. The repository document is authoritative and complete; the paste cannot be used verbatim as the acceptance source.",
+    "verifiedAgainst": "architecture/phase-02-identity.md"
+  },
+  "ownership": {
+    "note": "Phase 02 owns identity representation, authentication, credential lifecycle, relationships and verification. It never owns tenant isolation (03), security enforcement (08/09), domain data (04+) or AI reasoning (07/26).",
+    "canonicalOwners": {
+      "universal-identity": "02",
+      "tenancy": "03",
+      "authorization-enforcement": "08",
+      "trust-evaluation": "09",
+      "sessions": "08",
+      "agent-runtime": "07",
+      "device-identity": "15/22",
+      "federation": "02 (unbuilt)",
+      "foundation-standards-config-secrets-ci": "01"
+    }
+  },
+  "areas": [
+    {
+      "id": "identity-registry",
+      "area": "Identity Registry (C2) and identity entity",
+      "requirement": "A canonical repository of identity records with kinds for every actor type and a deterministic lookup.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/identity-registry.ts" },
+        { "kind": "test", "path": "tests/unit/identity-registry.test.ts" },
+        { "kind": "migration", "path": "database/supabase/migrations/20260904020000_coregrid_l2_identity_tenancy.sql", "contains": "cg_identity ENABLE ROW LEVEL SECURITY" }
+      ]
+    },
+    {
+      "id": "identity-lifecycle",
+      "area": "Identity lifecycle engine (C1)",
+      "requirement": "Creation, verification, activation, suspension, recovery, deletion and archival are policy-controlled transitions.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/identity-lifecycle.ts" },
+        { "kind": "test", "path": "tests/unit/identity.test.ts" }
+      ]
+    },
+    {
+      "id": "credentials",
+      "area": "Credential management (C3)",
+      "requirement": "Credential metadata (never plaintext secrets) with rotation, revocation and recovery.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/identity-credentials.ts" },
+        { "kind": "test", "path": "tests/unit/identity.test.ts", "contains": "credential" }
+      ]
+    },
+    {
+      "id": "authentication",
+      "area": "Authentication engine (C4) and authentication contract (F3)",
+      "requirement": "Login verification with rate limiting, lockout and password reset semantics.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/auth-helpers.ts" },
+        { "kind": "test", "path": "tests/unit/auth-helpers.test.ts" }
+      ]
+    },
+    {
+      "id": "sessions",
+      "area": "Session management (C8) and session contract (F4)",
+      "requirement": "Sessions support expiration, revocation, device tracking and audit.",
+      "ownerPhase": "08",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/security-session.ts", "contains": "session" },
+        { "kind": "test", "path": "tests/unit/security-session.test.ts" }
+      ]
+    },
+    {
+      "id": "authorization-foundation",
+      "area": "Authorization foundation (C5) consumed, never re-created (Invariant 02/D2)",
+      "requirement": "Identity supplies the actor; authorization decisions are made by the security engine, never by a role check alone.",
+      "ownerPhase": "08",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/security-role-gate.ts", "contains": "RoleGateKind" },
+        { "kind": "test", "path": "tests/unit/p08-enforcement-surface.test.ts", "contains": "ADOPTED" }
+      ],
+      "boundary": [
+        { "kind": "test", "path": "tests/unit/p08-enforcement-surface.test.ts", "contains": "ADOPTED" }
+      ]
+    },
+    {
+      "id": "relationships-rebac",
+      "area": "Relationship management (C6) and relationship contract (F7)",
+      "requirement": "Relationships (guardian_of, teaches, manages, assigned_to) are first-class authorization inputs.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/identity-relationships.ts", "contains": "relationship" },
+        { "kind": "test", "path": "tests/unit/identity-actor.test.ts" }
+      ]
+    },
+    {
+      "id": "agent-identity",
+      "area": "Agent identity contract (F9) — agents are accountable principals",
+      "requirement": "Every agent has identity, owner, permissions, tools, memory scope, risk class and approval rules; no agent exceeds them.",
+      "ownerPhase": "07",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/agent-core.ts" },
+        { "kind": "test", "path": "tests/unit/security-agent-controls.test.ts" }
+      ]
+    },
+    {
+      "id": "device-identity",
+      "area": "Device identity contract (F11)",
+      "requirement": "Physical devices have identity, tenant, operator, lifecycle and trust state; a device is not commanded merely because it is reachable.",
+      "ownerPhase": "15/22",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/platform-device.ts" },
+        { "kind": "test", "path": "tests/unit/platform-device.test.ts" }
+      ]
+    },
+    {
+      "id": "identity-invariants",
+      "area": "The 15 architectural invariants",
+      "requirement": "Attributable identity for every actor; no authorization on a username or role alone; agents governed; identity owns no domain data; tenant isolation belongs to 03; security operations to 08/09; identity replaceable; credentials never ordinary metadata; privileged operations attributable; contracts versioned; lifecycle policy-controlled; no silent agent escalation; trust contextual; institutional sovereignty; global evolution without a rewrite.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/kernel-phase-contract.test.ts", "contains": "invariant" },
+        { "kind": "contract", "path": "frontend/src/lib/kernel/phase-contracts/phase-02-identity.ts", "contains": "universal-identity" },
+        { "kind": "module", "path": "frontend/src/lib/security-risk.ts", "contains": "risk" },
+        { "kind": "test", "path": "tests/unit/security-risk.test.ts" }
+      ]
+    },
+    {
+      "id": "workspace-projection",
+      "area": "Workspace projection (identity visible in a surface)",
+      "requirement": "The identity capability is projected in at least one workspace from real state (L4), not only in the backend.",
+      "required": false,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/identity-registry.functions.ts", "contains": "registerIdentity" },
+        { "kind": "test", "path": "tests/unit/p08-enforcement-surface.test.ts", "contains": "identity-registry.functions.ts" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/routes/*.tsx", "contains": "registerIdentity" },
+        { "kind": "module", "path": "frontend/src/components/*.tsx", "contains": "identity-registry" }
+      ],
+      "boundaryNote": "Hand-verified 2026-09-14: no route or component imports any identity module or calls registerIdentity, so identity is backend-only. This is the single level (L4) keeping phase 02 from COMPLETE."
+    },
+    {
+      "id": "identity-events",
+      "area": "Identity event contract (F13)",
+      "requirement": "IdentityCreated, IdentityVerified, CredentialChanged, PermissionChanged, RelationshipCreated, IdentitySuspended and IdentityDeleted are emitted and versioned.",
+      "required": false,
+      "evidence": [
+        { "kind": "doc", "path": "frontend/src/lib/kernel/phase-contracts/phase-02-identity.ts", "contains": "universal-identity" }
+      ],
+      "boundaryNote": "The event contract is DECLARED by the phase contract but nothing implements it: no IdentityCreated/CredentialChanged event is emitted anywhere, and no boundary probe is declared because there is no implementation to invoke. Registered as owned debt (02)."
+    }
+  ]
+}

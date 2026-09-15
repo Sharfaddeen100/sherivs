@@ -1,0 +1,249 @@
+{
+  "$comment": "Phase 03 §A–Z acceptance criteria, the 20 architectural invariants, the W acceptance list and the X Definition of Done resolved against repository artefacts. Verified four ways: pasted document, architecture/phase-03-multi-tenancy.md, frontend/src/lib/kernel/phase-contracts/phase-03-multi-tenancy.ts, architecture/registry.json.",
+  "phase": "03",
+  "phaseName": "Multi-Tenancy",
+  "source": "architecture/phase-03-multi-tenancy.md",
+  "contract": "frontend/src/lib/kernel/phase-contracts/phase-03-multi-tenancy.ts",
+  "documentIntegrity": {
+    "status": "PASS",
+    "finding": "The pasted Phase 03 document is complete and internally consistent (A–Z, 20 invariants, DoD, acceptance). No empty sections were found.",
+    "verifiedAgainst": "architecture/phase-03-multi-tenancy.md"
+  },
+  "ownership": {
+    "note": "Phase 03 owns tenancy boundaries: registry, lifecycle, context, isolation, routing, topology, configuration, quotas, entitlements, ownership metadata, migration/provisioning coordination, residency. It never owns identity (02), security enforcement (08/09), domain reality (04), financial truth (13) or data infrastructure (14).",
+    "canonicalOwners": {
+      "tenancy": "03",
+      "identity": "02",
+      "authorization-enforcement": "08",
+      "trust": "09",
+      "data-infrastructure": "14",
+      "cloud-residency": "21",
+      "financial-truth": "13",
+      "agent-runtime": "07",
+      "feature-flags": "05",
+      "observability": "31/05"
+    }
+  },
+  "areas": [
+    {
+      "id": "tenant-registry",
+      "area": "Tenant Registry (C1) and Tenant Entity (H1/H2)",
+      "requirement": "A canonical tenant registry with the eight lifecycle states, tenant types, immutable ids and hierarchy.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/tenant-registry.ts" },
+        { "kind": "test", "path": "tests/unit/tenant-registry.test.ts" },
+        { "kind": "migration", "path": "database/supabase/migrations/20260904020000_coregrid_l2_identity_tenancy.sql", "contains": "TERMINATED" }
+      ]
+    },
+    {
+      "id": "tenant-lifecycle",
+      "area": "Tenant lifecycle engine (C2) — provisioning through termination",
+      "requirement": "Creation, provisioning, activation, suspension, migration, archival and termination are validated, authorized, recorded and observable transitions.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/tenant-lifecycle.ts" },
+        { "kind": "test", "path": "tests/unit/tenant.test.ts" }
+      ]
+    },
+    {
+      "id": "tenant-context",
+      "area": "Tenant context and resolution (C3/F1/F2)",
+      "requirement": "Every request resolves to a tenant_id or is explicitly platform_scope/public_scope/cross_tenant_scope.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/tenant-core.ts", "contains": "TenantId" },
+        { "kind": "test", "path": "tests/unit/tenant.test.ts" },
+        { "kind": "module", "path": "frontend/src/lib/tenant-registry.functions.ts" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/*.functions.ts", "contains": "tenantId" }
+      ]
+    },
+    {
+      "id": "tenant-isolation",
+      "area": "Tenant isolation (C4/J1) — the security boundary",
+      "requirement": "No tenant may reach another tenant's resources merely because both exist on the platform.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/tenant-isolation.ts" },
+        { "kind": "test", "path": "tests/unit/tenant.test.ts" },
+        { "kind": "script", "path": "scripts/verify-tenant-isolation.mjs" }
+      ]
+    },
+    {
+      "id": "rls",
+      "area": "Row Level Security (H18/J20)",
+      "requirement": "Tenant-owned tables enforce tenant-aware RLS so application defects cannot cross tenants.",
+      "required": true,
+      "evidence": [
+        { "kind": "migration", "path": "database/supabase/migrations/20260904020000_coregrid_l2_identity_tenancy.sql", "contains": "cg_tenant    ENABLE ROW LEVEL SECURITY" },
+        { "kind": "script", "path": "scripts/verify-tenant-isolation.mjs" }
+      ]
+    },
+    {
+      "id": "tenant-quotas",
+      "area": "Tenant quotas (C8/P1–P5) — soft, hard, burst and fairness",
+      "requirement": "Storage, compute, API, AI inference, agent execution and messaging limits with soft warnings, hard blocks, burst capacity and inter-tenant fairness.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/tenant-quota.ts", "contains": "assertQuotaFairness" },
+        { "kind": "test", "path": "tests/unit/tenant.test.ts" },
+        { "kind": "module", "path": "frontend/src/lib/tenant-core.ts", "contains": "QUOTA_RESOURCES" }
+      ]
+    },
+    {
+      "id": "tenant-entitlements",
+      "area": "Tenant entitlements (C9/O1–O4)",
+      "requirement": "Tenant + Capability + Policy + Contract = Entitlement Decision, with expiry and auditable revocation.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/tenant-quota.ts", "contains": "evaluateEntitlement" },
+        { "kind": "test", "path": "tests/unit/tenant.test.ts" }
+      ]
+    },
+    {
+      "id": "tenant-feature-flags",
+      "area": "Tenant feature flags (C10)",
+      "requirement": "Feature activation is tenant-scoped and cannot bypass mandatory platform security controls.",
+      "ownerPhase": "05",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/runtime-feature-flags.ts" },
+        { "kind": "test", "path": "tests/unit/runtime-extended.test.ts", "contains": "feature flag" }
+      ]
+    },
+    {
+      "id": "provisioning",
+      "area": "Tenant provisioning (C13/F13/K1) — idempotent",
+      "requirement": "Provisioning is approval-gated and idempotent: repeated requests must not create duplicate environments.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/provisioning.functions.ts" },
+        { "kind": "test", "path": "tests/unit/p08-enforcement-surface.test.ts", "contains": "provisioning.functions.ts" },
+        { "kind": "test", "path": "tests/unit/onboarding-flow.test.ts" }
+      ]
+    },
+    {
+      "id": "cross-tenant",
+      "area": "Cross-tenant contract (F7/J5/S1–S4) — explicit, authorized, audited",
+      "requirement": "Cross-tenant access must be explicit, authorized, scoped, auditable and policy-controlled; it is never ordinary tenant data.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/runtime-core.ts", "contains": "crossTenant" },
+        { "kind": "test", "path": "tests/unit/runtime.test.ts", "contains": "cross" },
+        { "kind": "test", "path": "tests/unit/command-core.test.ts" }
+      ]
+    },
+    {
+      "id": "tenant-events",
+      "area": "Tenant event contract (F8)",
+      "requirement": "TenantCreated, TenantProvisioned, TenantActivated, TenantSuspended, TenantMigrated, TenantArchived and TenantTerminated are typed and versioned.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/tenant-core.ts", "contains": "TenantCreated" },
+        { "kind": "module", "path": "frontend/src/lib/tenant-lifecycle.ts", "contains": "Tenant" },
+        { "kind": "test", "path": "tests/unit/tenant.test.ts" }
+      ]
+    },
+    {
+      "id": "tenant-topology",
+      "area": "Tenant topology and hierarchy (C6/H8/R1)",
+      "requirement": "Parent/child/peer/regional/federated relationships are modelled, and hierarchy never implies unrestricted descendant access.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/tenant-topology.ts" },
+        { "kind": "test", "path": "tests/unit/tenant.test.ts" }
+      ]
+    },
+    {
+      "id": "tenant-residency",
+      "area": "Tenant residency and regional placement (H7/H13/M4/R4)",
+      "requirement": "Tenant placement supports jurisdiction, latency, compliance and capacity constraints without making geography synonymous with tenant identity.",
+      "required": true,
+      "evidence": [
+        { "kind": "migration", "path": "database/supabase/migrations/20260904020000_coregrid_l2_identity_tenancy.sql", "contains": "region" },
+        { "kind": "config", "path": "infrastructure/terraform/regions.tf", "contains": "residency" }
+      ]
+    },
+    {
+      "id": "noisy-neighbour",
+      "area": "Noisy-neighbour protection and fairness (P5/K12/K13)",
+      "requirement": "One tenant must not consume unlimited shared resources at the expense of others; tenant isolation must survive load.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/tenant-quota.ts", "contains": "maxShareFraction" },
+        { "kind": "test", "path": "tests/unit/tenant.test.ts" },
+        { "kind": "test", "path": "tests/unit/enterprise-scale.test.ts" }
+      ]
+    },
+    {
+      "id": "tenant-invariants",
+      "area": "The 20 architectural invariants",
+      "requirement": "Determinable tenant boundary per resource; context never trusted from a client; identity and tenancy separate; no re-created authentication; isolation across sync and async; boundaries survive APIs, events, queues, caches, workflows and agents; cross-tenant explicit and auditable; canonical stable ids with mutable names; deletion covers derived copies; migration reversible until commit; configuration cannot bypass platform controls; hierarchy grants nothing implicitly; agents inherit boundaries; boundaries testable; noisy neighbours contained; tenant configuration cannot modify global security; shared and dedicated infrastructure; global sovereignty compatibility.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/tenant.test.ts" },
+        { "kind": "test", "path": "tests/unit/tenant-registry.test.ts" },
+        { "kind": "contract", "path": "frontend/src/lib/kernel/phase-contracts/phase-03-multi-tenancy.ts", "contains": "tenancy" },
+        { "kind": "test", "path": "tests/unit/kernel-phase-contract.test.ts", "contains": "invariant" }
+      ]
+    },
+    {
+      "id": "async-boundaries",
+      "area": "Queue, cache and event tenant boundaries (Invariants 05/06, J6–J8)",
+      "requirement": "Tenant boundaries must survive queues, caches and events — including agent execution and workflow retries.",
+      "required": false,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/kernel/outbox.ts", "contains": "event" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/kernel/outbox.ts", "contains": "tenantId" }
+      ],
+      "boundaryNote": "Hand-verified 2026-09-14: the event outbox carries no tenantId and no queue or cache module exists, so no asynchronous path preserves a tenant boundary. Registered as owned debt (03)."
+    },
+    {
+      "id": "tenant-deprovisioning",
+      "area": "Deprovisioning, offboarding and deletion evidence (C14/U1–U7/H24)",
+      "requirement": "Termination is multi-step, revokes credentials and integrations, and covers derived copies (backups, caches, queues, indexes, object storage, logs, analytics) with verifiable evidence.",
+      "required": false,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/tenant-lifecycle.ts", "contains": "termin" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/*.ts", "contains": "deprovision" }
+      ],
+      "boundaryNote": "The lifecycle module models termination as a state; no deprovisioning engine, credential-revocation path or deletion evidence exists. Registered as owned debt (03)."
+    },
+    {
+      "id": "tenant-observability",
+      "area": "Tenant observability, metrics and SLOs (K7–K10/V1–V3)",
+      "requirement": "Every operational signal is attributable to tenant_id, region, service, environment and request_id, with per-tenant dashboards and self-service views.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/platform-observability.ts" },
+        { "kind": "module", "path": "frontend/src/lib/runtime-observability.ts", "contains": "tenantId" },
+        { "kind": "test", "path": "tests/unit/foundation-observability.test.ts" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/server.ts", "contains": "createLogger" }
+      ],
+      "boundaryNote": "The observability primitive carries tenantId and is tested, but no runtime path emits it, so tenant-attributable signals do not exist in production yet (same unwired finding as phase 01)."
+    },
+    {
+      "id": "workspace-projection",
+      "area": "Workspace projection (tenant visible in a surface)",
+      "requirement": "The tenancy capability is projected in at least one workspace from real state (L4).",
+      "required": false,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/tenant-registry.functions.ts" },
+        { "kind": "test", "path": "tests/unit/p08-enforcement-surface.test.ts", "contains": "tenant-registry.functions.ts" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/routes/*.tsx", "contains": "tenant-registry" },
+        { "kind": "module", "path": "frontend/src/components/*.tsx", "contains": "tenant-registry" }
+      ],
+      "boundaryNote": "Hand-verified 2026-09-14: no route or component imports a tenant module, so tenancy is backend-only even though the provisioning flow exists as a server function. This is the L4 gap for phase 03."
+    }
+  ]
+}

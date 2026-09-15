@@ -1,0 +1,444 @@
+{
+  "artifact": "phase-acceptance",
+  "phase": "03",
+  "phaseName": "Multi-Tenancy",
+  "source": "architecture/phase-03-multi-tenancy.md",
+  "generatedAt": "2026-09-15T19:27:10.402Z",
+  "classificationDefinitions": {
+    "ENFORCED": "an executable artefact proves it (test, verifier script, migration, policy or machine-checked contract match) and, where a boundary is declared, a real call site invokes it",
+    "DECLARED": "a module, document or contract mentions it, but nothing executable proves it",
+    "IMPLEMENTED_UNWIRED": "implementation and tests exist, but the declared boundary patterns match nothing — the capability protects nothing yet",
+    "MISSING": "no artefact found"
+  },
+  "summary": {
+    "areas": 19,
+    "enforced": 15,
+    "declared": 2,
+    "implementedUnwired": 2,
+    "implementedUnwiredAreas": [
+      "tenant-observability",
+      "workspace-projection"
+    ],
+    "missing": 0,
+    "missingRequired": [],
+    "unresolvedEvidencePaths": []
+  },
+  "ownership": {
+    "note": "Phase 03 owns tenancy boundaries: registry, lifecycle, context, isolation, routing, topology, configuration, quotas, entitlements, ownership metadata, migration/provisioning coordination, residency. It never owns identity (02), security enforcement (08/09), domain reality (04), financial truth (13) or data infrastructure (14).",
+    "canonicalOwners": {
+      "tenancy": "03",
+      "identity": "02",
+      "authorization-enforcement": "08",
+      "trust": "09",
+      "data-infrastructure": "14",
+      "cloud-residency": "21",
+      "financial-truth": "13",
+      "agent-runtime": "07",
+      "feature-flags": "05",
+      "observability": "31/05"
+    }
+  },
+  "areas": [
+    {
+      "id": "tenant-registry",
+      "area": "Tenant Registry (C1) and Tenant Entity (H1/H2)",
+      "requirement": "A canonical tenant registry with the eight lifecycle states, tenant types, immutable ids and hierarchy.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/tenant-registry.ts",
+        "tests/unit/tenant-registry.test.ts",
+        "database/supabase/migrations/20260904020000_coregrid_l2_identity_tenancy.sql"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/tenant-registry.ts",
+        "tests/unit/tenant-registry.test.ts",
+        "database/supabase/migrations/20260904020000_coregrid_l2_identity_tenancy.sql"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "tenant-lifecycle",
+      "area": "Tenant lifecycle engine (C2) — provisioning through termination",
+      "requirement": "Creation, provisioning, activation, suspension, migration, archival and termination are validated, authorized, recorded and observable transitions.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/tenant-lifecycle.ts",
+        "tests/unit/tenant.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/tenant-lifecycle.ts",
+        "tests/unit/tenant.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "tenant-context",
+      "area": "Tenant context and resolution (C3/F1/F2)",
+      "requirement": "Every request resolves to a tenant_id or is explicitly platform_scope/public_scope/cross_tenant_scope.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/tenant-core.ts",
+        "tests/unit/tenant.test.ts",
+        "frontend/src/lib/tenant-registry.functions.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/tenant-core.ts",
+        "tests/unit/tenant.test.ts",
+        "frontend/src/lib/tenant-registry.functions.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "frontend/src/lib/*.functions.ts"
+      ],
+      "boundaryEvidence": [
+        "frontend/src/lib/*.functions.ts"
+      ]
+    },
+    {
+      "id": "tenant-isolation",
+      "area": "Tenant isolation (C4/J1) — the security boundary",
+      "requirement": "No tenant may reach another tenant's resources merely because both exist on the platform.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/tenant-isolation.ts",
+        "tests/unit/tenant.test.ts",
+        "scripts/verify-tenant-isolation.mjs"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/tenant-isolation.ts",
+        "tests/unit/tenant.test.ts",
+        "scripts/verify-tenant-isolation.mjs"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "rls",
+      "area": "Row Level Security (H18/J20)",
+      "requirement": "Tenant-owned tables enforce tenant-aware RLS so application defects cannot cross tenants.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "database/supabase/migrations/20260904020000_coregrid_l2_identity_tenancy.sql",
+        "scripts/verify-tenant-isolation.mjs"
+      ],
+      "matchedEvidence": [
+        "database/supabase/migrations/20260904020000_coregrid_l2_identity_tenancy.sql",
+        "scripts/verify-tenant-isolation.mjs"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "tenant-quotas",
+      "area": "Tenant quotas (C8/P1–P5) — soft, hard, burst and fairness",
+      "requirement": "Storage, compute, API, AI inference, agent execution and messaging limits with soft warnings, hard blocks, burst capacity and inter-tenant fairness.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/tenant-quota.ts",
+        "tests/unit/tenant.test.ts",
+        "frontend/src/lib/tenant-core.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/tenant-quota.ts",
+        "tests/unit/tenant.test.ts",
+        "frontend/src/lib/tenant-core.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "tenant-entitlements",
+      "area": "Tenant entitlements (C9/O1–O4)",
+      "requirement": "Tenant + Capability + Policy + Contract = Entitlement Decision, with expiry and auditable revocation.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/tenant-quota.ts",
+        "tests/unit/tenant.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/tenant-quota.ts",
+        "tests/unit/tenant.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "tenant-feature-flags",
+      "area": "Tenant feature flags (C10)",
+      "requirement": "Feature activation is tenant-scoped and cannot bypass mandatory platform security controls.",
+      "required": true,
+      "ownerPhase": "05",
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/runtime-feature-flags.ts",
+        "tests/unit/runtime-extended.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/runtime-feature-flags.ts",
+        "tests/unit/runtime-extended.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "provisioning",
+      "area": "Tenant provisioning (C13/F13/K1) — idempotent",
+      "requirement": "Provisioning is approval-gated and idempotent: repeated requests must not create duplicate environments.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/provisioning.functions.ts",
+        "tests/unit/p08-enforcement-surface.test.ts",
+        "tests/unit/onboarding-flow.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/provisioning.functions.ts",
+        "tests/unit/p08-enforcement-surface.test.ts",
+        "tests/unit/onboarding-flow.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "cross-tenant",
+      "area": "Cross-tenant contract (F7/J5/S1–S4) — explicit, authorized, audited",
+      "requirement": "Cross-tenant access must be explicit, authorized, scoped, auditable and policy-controlled; it is never ordinary tenant data.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/runtime-core.ts",
+        "tests/unit/runtime.test.ts",
+        "tests/unit/command-core.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/runtime-core.ts",
+        "tests/unit/runtime.test.ts",
+        "tests/unit/command-core.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "tenant-events",
+      "area": "Tenant event contract (F8)",
+      "requirement": "TenantCreated, TenantProvisioned, TenantActivated, TenantSuspended, TenantMigrated, TenantArchived and TenantTerminated are typed and versioned.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/tenant-core.ts",
+        "frontend/src/lib/tenant-lifecycle.ts",
+        "tests/unit/tenant.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/tenant-core.ts",
+        "frontend/src/lib/tenant-lifecycle.ts",
+        "tests/unit/tenant.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "tenant-topology",
+      "area": "Tenant topology and hierarchy (C6/H8/R1)",
+      "requirement": "Parent/child/peer/regional/federated relationships are modelled, and hierarchy never implies unrestricted descendant access.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/tenant-topology.ts",
+        "tests/unit/tenant.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/tenant-topology.ts",
+        "tests/unit/tenant.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "tenant-residency",
+      "area": "Tenant residency and regional placement (H7/H13/M4/R4)",
+      "requirement": "Tenant placement supports jurisdiction, latency, compliance and capacity constraints without making geography synonymous with tenant identity.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "database/supabase/migrations/20260904020000_coregrid_l2_identity_tenancy.sql",
+        "infrastructure/terraform/regions.tf"
+      ],
+      "matchedEvidence": [
+        "database/supabase/migrations/20260904020000_coregrid_l2_identity_tenancy.sql",
+        "infrastructure/terraform/regions.tf"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "noisy-neighbour",
+      "area": "Noisy-neighbour protection and fairness (P5/K12/K13)",
+      "requirement": "One tenant must not consume unlimited shared resources at the expense of others; tenant isolation must survive load.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/tenant-quota.ts",
+        "tests/unit/tenant.test.ts",
+        "tests/unit/enterprise-scale.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/tenant-quota.ts",
+        "tests/unit/tenant.test.ts",
+        "tests/unit/enterprise-scale.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "tenant-invariants",
+      "area": "The 20 architectural invariants",
+      "requirement": "Determinable tenant boundary per resource; context never trusted from a client; identity and tenancy separate; no re-created authentication; isolation across sync and async; boundaries survive APIs, events, queues, caches, workflows and agents; cross-tenant explicit and auditable; canonical stable ids with mutable names; deletion covers derived copies; migration reversible until commit; configuration cannot bypass platform controls; hierarchy grants nothing implicitly; agents inherit boundaries; boundaries testable; noisy neighbours contained; tenant configuration cannot modify global security; shared and dedicated infrastructure; global sovereignty compatibility.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/tenant.test.ts",
+        "tests/unit/tenant-registry.test.ts",
+        "frontend/src/lib/kernel/phase-contracts/phase-03-multi-tenancy.ts",
+        "tests/unit/kernel-phase-contract.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/tenant.test.ts",
+        "tests/unit/tenant-registry.test.ts",
+        "frontend/src/lib/kernel/phase-contracts/phase-03-multi-tenancy.ts",
+        "tests/unit/kernel-phase-contract.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "async-boundaries",
+      "area": "Queue, cache and event tenant boundaries (Invariants 05/06, J6–J8)",
+      "requirement": "Tenant boundaries must survive queues, caches and events — including agent execution and workflow retries.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "frontend/src/lib/kernel/outbox.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/kernel/outbox.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "frontend/src/lib/kernel/outbox.ts"
+      ],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "tenant-deprovisioning",
+      "area": "Deprovisioning, offboarding and deletion evidence (C14/U1–U7/H24)",
+      "requirement": "Termination is multi-step, revokes credentials and integrations, and covers derived copies (backups, caches, queues, indexes, object storage, logs, analytics) with verifiable evidence.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "frontend/src/lib/tenant-lifecycle.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/tenant-lifecycle.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "frontend/src/lib/*.ts"
+      ],
+      "boundaryEvidence": [
+        "frontend/src/lib/*.ts"
+      ]
+    },
+    {
+      "id": "tenant-observability",
+      "area": "Tenant observability, metrics and SLOs (K7–K10/V1–V3)",
+      "requirement": "Every operational signal is attributable to tenant_id, region, service, environment and request_id, with per-tenant dashboards and self-service views.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "IMPLEMENTED_UNWIRED",
+      "declaredEvidence": [
+        "frontend/src/lib/platform-observability.ts",
+        "frontend/src/lib/runtime-observability.ts",
+        "tests/unit/foundation-observability.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/platform-observability.ts",
+        "frontend/src/lib/runtime-observability.ts",
+        "tests/unit/foundation-observability.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "frontend/src/server.ts"
+      ],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "workspace-projection",
+      "area": "Workspace projection (tenant visible in a surface)",
+      "requirement": "The tenancy capability is projected in at least one workspace from real state (L4).",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "IMPLEMENTED_UNWIRED",
+      "declaredEvidence": [
+        "frontend/src/lib/tenant-registry.functions.ts",
+        "tests/unit/p08-enforcement-surface.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/tenant-registry.functions.ts",
+        "tests/unit/p08-enforcement-surface.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "frontend/src/routes/*.tsx",
+        "frontend/src/components/*.tsx"
+      ],
+      "boundaryEvidence": []
+    }
+  ],
+  "ok": true,
+  "limitations": [
+    "Classification measures the presence of executable evidence, not the correctness or completeness of that evidence.",
+    "A DECLARED area is unfinished work, never a false claim — it is reported as such.",
+    "An IMPLEMENTED_UNWIRED area has a tested implementation that no boundary calls; it is reported, never counted as enforcement.",
+    "Evidence patterns are declared per phase in architecture/phase-acceptance/phase-<id>-*.json and must be reviewed when a phase is re-audited."
+  ]
+}
