@@ -2,7 +2,7 @@
   "artifact": "phase-completion",
   "wave": "AUDIT-1",
   "owner": "kernel (Phase 01 governance)",
-  "generatedAt": "2026-09-15T11:30:55.694Z",
+  "generatedAt": "2026-09-15T18:30:29.969Z",
   "authority": [
     "CONSTITUTION.md",
     "architecture/registry.json",
@@ -18,8 +18,8 @@
   },
   "summary": {
     "phasesAudited": 51,
-    "complete": 8,
-    "implementing": 25,
+    "complete": 5,
+    "implementing": 28,
     "architectureDefined": 18,
     "withModules": 32,
     "withResolvedModules": 31,
@@ -97,7 +97,7 @@
       }
     ],
     "missingLevelFrequency": {
-      "L4 frontend/workspace integration": 43,
+      "L4 frontend/workspace integration": 46,
       "L3 backend": 18,
       "L2 data model": 13,
       "L5 operational maturity": 1,
@@ -234,7 +234,7 @@
         "L1 conceptual": true,
         "L2 data model": true,
         "L3 backend": true,
-        "L4 frontend/workspace integration": true,
+        "L4 frontend/workspace integration": false,
         "L5 operational maturity": true
       },
       "registryLevels": [
@@ -245,9 +245,11 @@
         false
       ],
       "registryStatus": "IMPLEMENTED",
-      "derivedStatus": "COMPLETE",
-      "complete": true,
-      "missingLevels": [],
+      "derivedStatus": "IMPLEMENTING",
+      "complete": false,
+      "missingLevels": [
+        "L4 frontend/workspace integration"
+      ],
       "unconfirmedLevels": []
     },
     {
@@ -981,7 +983,7 @@
         "L1 conceptual": true,
         "L2 data model": true,
         "L3 backend": true,
-        "L4 frontend/workspace integration": true,
+        "L4 frontend/workspace integration": false,
         "L5 operational maturity": true
       },
       "registryLevels": [
@@ -992,9 +994,11 @@
         false
       ],
       "registryStatus": "IMPLEMENTING",
-      "derivedStatus": "COMPLETE",
-      "complete": true,
-      "missingLevels": [],
+      "derivedStatus": "IMPLEMENTING",
+      "complete": false,
+      "missingLevels": [
+        "L4 frontend/workspace integration"
+      ],
       "unconfirmedLevels": []
     },
     {
@@ -1320,7 +1324,7 @@
         "L1 conceptual": true,
         "L2 data model": true,
         "L3 backend": true,
-        "L4 frontend/workspace integration": true,
+        "L4 frontend/workspace integration": false,
         "L5 operational maturity": true
       },
       "registryLevels": [
@@ -1331,9 +1335,11 @@
         false
       ],
       "registryStatus": "ARCHITECTURE_DEFINED",
-      "derivedStatus": "COMPLETE",
-      "complete": true,
-      "missingLevels": [],
+      "derivedStatus": "IMPLEMENTING",
+      "complete": false,
+      "missingLevels": [
+        "L4 frontend/workspace integration"
+      ],
       "unconfirmedLevels": []
     },
     {
@@ -1951,7 +1957,7 @@
   "ok": true,
   "limitations": [
     "Evidence-derived: this audit measures artefacts, not correctness of behaviour.",
-    "L4/L5 locate references by capability token; a phase whose surfaces are named differently may be understated and must be reviewed by hand.",
+    "L4 requires a DISTINCTIVE reference: the capability id inside a surface, or a route/component importing the phase's module directly. A bare module word is not credited (\"identity\" used to match marketing prose and inflated three phases), and an INDIRECT projection (surface → server function → module) is not credited either, so L4 may UNDERSTATE a phase — the safe direction; close by hand review with recorded evidence.",
     "DB-backed L2 registries are verified by scripts/verify-l2-registries.mjs, which requires live Supabase credentials.",
     "Incompleteness is reported, never failed: unfinished work is honest. Only overstated claims or missing cited artifacts fail the gate."
   ]

@@ -59,9 +59,14 @@ Two drift findings, both recorded rather than smoothed over:
   EXECUTABLE artefacts, which confirms phase 01's L3 claim from its real
   enforcement (verify chain, secret scan, registry validator, CI workflow, 15
   integrity tests). Unconfirmed claims fall 5 → 4 (**02 L3, 19 L4, 25 L4, 49 L1**);
-  architecture-only phases are unaffected (0 executable artefacts). Current
-  evidence-derived totals: **COMPLETE 7 · IMPLEMENTING 26 ·
-  ARCHITECTURE_DEFINED 18**.
+  architecture-only phases are unaffected (0 executable artefacts).
+- **Corrected again the same day:** the L4 rule was matching a bare module word, so
+  "identity" inside marketing prose on `/platform` awarded phase 02 a level it had
+  not earned — it briefly read COMPLETE. L4 now requires a distinctive reference
+  (the capability id, or a route/component importing the phase's module). No surface
+  imports any identity module, so **the honest totals are COMPLETE 5 · IMPLEMENTING
+  28 · ARCHITECTURE_DEFINED 18** with unconfirmed claims **19, 25, 49**. L4 now
+  understates at worst, never overstates.
 
 ## 3. Per-phase archaeology intake (new — beginning with Phase 01)
 

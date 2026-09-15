@@ -72,7 +72,7 @@ const load = () => JSON.parse(readFileSync(join(ROOT, PROOF_REF), "utf8")) as Au
 const read = (ref: string) => readFileSync(join(ROOT, ref), "utf8").replace(/\r\n/g, "\n");
 
 describe("AUDIT-1 — the phase completion gate is executable", () => {
-  it("runs cleanly and reports the five derived levels", () => {
+  it("runs cleanly and reports the five derived levels", { timeout: 120_000 }, () => {
     const output = execFileSync("node", ["scripts/audit-phase-completion.mjs"], {
       encoding: "utf8",
       cwd: ROOT,

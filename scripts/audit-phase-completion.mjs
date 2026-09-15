@@ -252,8 +252,21 @@ for (const phase of registry.phases) {
     (modulesResolve || executableEvidence.length > 0) &&
     (testsCounted > 0 || (phase.tests ?? 0) > 0);
 
-  // L4 — frontend / workspace projection (import paths or capability id only)
-  const l4 = tokens.some((token) => surfaceCorpus.includes(token));
+  // L4 — frontend / workspace projection. A capability id (distinctive, hyphenated)
+  // or a real import of the phase's module counts. A bare module word does NOT:
+  // "identity" used to match marketing prose on /platform, which awarded a level for
+  // a keyword coincidence instead of a projection.
+  const capabilityId = contract ? stringField(contract.text, "capability") : null;
+  const surfaceModuleImports = (Array.isArray(phase.modules) ? phase.modules : [])
+    .map((name) => String(name).toLowerCase())
+    .filter((name) => name.length > 0);
+  const l4 =
+    (capabilityId ? surfaceCorpus.includes(capabilityId.toLowerCase()) : false) ||
+    surfaceModuleImports.some((name) =>
+      [`@/lib/${name}"`, `@/lib/${name}/`, `./${name}"`, `/lib/${name}"`, `"/${name}"`].some(
+        (specifier) => surfaceCorpus.includes(specifier),
+      ),
+    );
 
   // L5 — operational maturity (proof, verifier, CI job, runbook or infra naming it)
   const l5 =
@@ -384,7 +397,7 @@ const proof = {
   ok: inconsistencies.length === 0,
   limitations: [
     "Evidence-derived: this audit measures artefacts, not correctness of behaviour.",
-    "L4/L5 locate references by capability token; a phase whose surfaces are named differently may be understated and must be reviewed by hand.",
+    "L4 requires a DISTINCTIVE reference: the capability id inside a surface, or a route/component importing the phase's module directly. A bare module word is not credited (\"identity\" used to match marketing prose and inflated three phases), and an INDIRECT projection (surface → server function → module) is not credited either, so L4 may UNDERSTATE a phase — the safe direction; close by hand review with recorded evidence.",
     "DB-backed L2 registries are verified by scripts/verify-l2-registries.mjs, which requires live Supabase credentials.",
     "Incompleteness is reported, never failed: unfinished work is honest. Only overstated claims or missing cited artifacts fail the gate.",
   ],
