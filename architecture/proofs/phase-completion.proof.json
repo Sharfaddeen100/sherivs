@@ -2,7 +2,7 @@
   "artifact": "phase-completion",
   "wave": "AUDIT-1",
   "owner": "kernel (Phase 01 governance)",
-  "generatedAt": "2026-09-15T02:14:47.319Z",
+  "generatedAt": "2026-09-15T11:30:55.694Z",
   "authority": [
     "CONSTITUTION.md",
     "architecture/registry.json",
@@ -18,12 +18,12 @@
   },
   "summary": {
     "phasesAudited": 51,
-    "complete": 7,
-    "implementing": 26,
+    "complete": 8,
+    "implementing": 25,
     "architectureDefined": 18,
     "withModules": 32,
     "withResolvedModules": 31,
-    "totalTestsCited": 1883,
+    "totalTestsCited": 1959,
     "registryBeyondAudit": [
       "01",
       "02",
@@ -78,12 +78,6 @@
     ],
     "unconfirmedClaims": [
       {
-        "id": "02",
-        "levels": [
-          "L3 backend"
-        ]
-      },
-      {
         "id": "19",
         "levels": [
           "L4 frontend/workspace integration"
@@ -104,7 +98,7 @@
     ],
     "missingLevelFrequency": {
       "L4 frontend/workspace integration": 43,
-      "L3 backend": 19,
+      "L3 backend": 18,
       "L2 data model": 13,
       "L5 operational maturity": 1,
       "L1 conceptual": 1
@@ -118,9 +112,9 @@
       "sections": "20/20",
       "modules": [],
       "modulesResolve": false,
-      "citedTestFiles": 0,
-      "testsCounted": 0,
-      "executableEvidence": 8,
+      "citedTestFiles": 4,
+      "testsCounted": 38,
+      "executableEvidence": 12,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": false,
@@ -157,13 +151,13 @@
         "roles"
       ],
       "modulesResolve": true,
-      "citedTestFiles": 0,
-      "testsCounted": 0,
+      "citedTestFiles": 2,
+      "testsCounted": 38,
       "executableEvidence": 6,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": true,
-        "L3 backend": false,
+        "L3 backend": true,
         "L4 frontend/workspace integration": true,
         "L5 operational maturity": true
       },
@@ -175,14 +169,10 @@
         false
       ],
       "registryStatus": "IMPLEMENTED",
-      "derivedStatus": "IMPLEMENTING",
-      "complete": false,
-      "missingLevels": [
-        "L3 backend"
-      ],
-      "unconfirmedLevels": [
-        "L3 backend"
-      ]
+      "derivedStatus": "COMPLETE",
+      "complete": true,
+      "missingLevels": [],
+      "unconfirmedLevels": []
     },
     {
       "id": "03",

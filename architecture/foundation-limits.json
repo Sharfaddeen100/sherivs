@@ -1,0 +1,40 @@
+{
+  "$comment": "Phase 01 §59 (rate limiting) and §60 (resource budgets) — canonical map of the requirement to its real implementation, owner phase and proof. Phase 01 owns the CONVENTION and this map; it owns no limiter and no budget engine, because implementations already exist with canonical owners. Every row is re-derived against source by tests/unit/foundation-limits-map.test.ts, so the map cannot drift or overclaim in either direction.",
+  "phase": "01",
+  "source": "architecture/phase-01-foundation.md",
+  "generatedAt": "2026-09-14",
+  "duplicationLaw": "Phase 01 must not implement a second limiter or budget engine. Where the document demands a capability that exists elsewhere, Phase 01 records the owner and the evidence.",
+  "rateLimitScopes": [
+    { "scope": "ip", "status": "missing", "ownerPhase": "05", "reason": "no address-scoped window exists in the runtime limiter" },
+    { "scope": "user", "status": "enforced", "ownerPhase": "05", "implementation": { "file": "frontend/src/lib/runtime-resilience.ts", "symbol": "RateLimitScope" }, "evidence": "tests/unit/runtime-extended.test.ts" },
+    { "scope": "organization", "status": "missing", "ownerPhase": "03", "reason": "organization scope is not a runtime limiter scope; tenant scope is" },
+    { "scope": "tenant", "status": "enforced", "ownerPhase": "05", "implementation": { "file": "frontend/src/lib/runtime-resilience.ts", "symbol": "RateLimitScope" }, "evidence": "tests/unit/runtime-extended.test.ts" },
+    { "scope": "api", "status": "enforced", "ownerPhase": "05", "implementation": { "file": "frontend/src/lib/runtime-resilience.ts", "symbol": "RateLimitScope" }, "evidence": "tests/unit/runtime-extended.test.ts" },
+    { "scope": "agent", "status": "enforced", "ownerPhase": "05", "implementation": { "file": "frontend/src/lib/runtime-resilience.ts", "symbol": "RateLimitScope" }, "evidence": "tests/unit/runtime-extended.test.ts" },
+    { "scope": "tool", "status": "missing", "ownerPhase": "07", "reason": "tool-level limits belong to the governed tool registry, which is not wired" },
+    { "scope": "workflow", "status": "missing", "ownerPhase": "17", "reason": "workflow-level limits are not implemented" },
+    { "scope": "device", "status": "missing", "ownerPhase": "15", "reason": "device-level limits are not implemented" },
+    { "scope": "model", "status": "missing", "ownerPhase": "26", "reason": "model scope exists for AI quotas (AiQuotaScope) but not as a request-rate window" },
+    { "scope": "service", "status": "enforced", "ownerPhase": "05", "implementation": { "file": "frontend/src/lib/runtime-resilience.ts", "symbol": "RateLimitScope" }, "evidence": "tests/unit/runtime-extended.test.ts", "extension": true },
+    { "scope": "integration", "status": "enforced", "ownerPhase": "05", "implementation": { "file": "frontend/src/lib/runtime-resilience.ts", "symbol": "RateLimitScope" }, "evidence": "tests/unit/runtime-extended.test.ts", "extension": true }
+  ],
+  "budgetKinds": [
+    { "kind": "tokens", "status": "enforced", "ownerPhase": "26", "implementation": { "file": "frontend/src/lib/ai-governance.ts", "symbol": "consumeAiBudget" }, "evidence": "tests/unit/ai.test.ts" },
+    { "kind": "requests", "status": "enforced", "ownerPhase": "26", "implementation": { "file": "frontend/src/lib/ai-governance.ts", "symbol": "AI_QUOTA_SCOPES" }, "evidence": "tests/unit/ai.test.ts" },
+    { "kind": "compute", "status": "enforced", "ownerPhase": "03", "implementation": { "file": "frontend/src/lib/tenant-core.ts", "symbol": "QUOTA_RESOURCES" }, "evidence": "tests/unit/tenant.test.ts" },
+    { "kind": "storage", "status": "enforced", "ownerPhase": "03", "implementation": { "file": "frontend/src/lib/tenant-core.ts", "symbol": "QUOTA_RESOURCES" }, "evidence": "tests/unit/tenant.test.ts" },
+    { "kind": "execution_time", "status": "enforced", "ownerPhase": "05", "implementation": { "file": "frontend/src/lib/runtime-resilience.ts", "symbol": "resolveTimeout" }, "evidence": "tests/unit/runtime-extended.test.ts" },
+    { "kind": "external_calls", "status": "enforced", "ownerPhase": "05", "implementation": { "file": "frontend/src/lib/runtime-resilience.ts", "symbol": "createRateLimiter" }, "evidence": "tests/unit/runtime-extended.test.ts" },
+    { "kind": "financial_exposure", "status": "enforced", "ownerPhase": "26", "implementation": { "file": "frontend/src/lib/ai-governance.ts", "symbol": "monthlyCostMinorUnits" }, "evidence": "tests/unit/ai.test.ts" }
+  ],
+  "boundaryWiring": {
+    "status": "unwired",
+    "statement": "The limiter and the budget model are libraries: no server function and no route invokes them, so nothing is rate-limited or budget-stopped at a request boundary yet.",
+    "probe": {
+      "files": ["frontend/src/lib/*.functions.ts", "frontend/src/routes"],
+      "forbidden": ["createRateLimiter", "consumeAiBudget", "RateLimiter"],
+      "expectedMatches": 0
+    },
+    "closesWhen": "The runtime limiter and the AI budget are invoked at the server-function boundary (Phase 05/26 wiring), and shared-resource fairness is enforced for tenants (Phase 03 quota consumption at the API edge)."
+  }
+}

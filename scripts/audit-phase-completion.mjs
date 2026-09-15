@@ -207,7 +207,16 @@ for (const phase of registry.phases) {
   const contract = contracts.get(id);
   const modules = Array.isArray(phase.modules) ? phase.modules : [];
   const tokens = tokensFor(phase, contract);
-  const citedTests = contract ? arrayField(contract.text, "tests") : [];
+  const citedTests = contract
+    ? [
+        ...new Set([
+          ...arrayField(contract.text, "tests"),
+          // Contracts also cite their suites inside section artifacts/evidence;
+          // ignoring those understated every phase that documents tests that way.
+          ...[...contract.text.matchAll(/"([^"\n]+\.test\.tsx?)"/g)].map((match) => match[1]),
+        ]),
+      ].filter((ref) => ref.startsWith("tests/"))
+    : [];
   const substrates = contract ? arrayField(contract.text, "substrates") : [];
 
   // L1 — conceptual completeness

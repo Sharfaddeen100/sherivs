@@ -26,14 +26,22 @@ unaffected (0 executable artefacts).
 
 ## 2. Acceptance result — §100 plus the Definition-of-Done gates
 
-`node scripts/audit-phase-acceptance.mjs --phase=01` → **43 areas: ENFORCED 40 ·
-DECLARED 2 · MISSING 1** (all `required` areas evidenced, so the probe passes).
+`node scripts/audit-phase-acceptance.mjs --phase=01` → **44 areas: ENFORCED 41 ·
+UNWIRED 3 · DECLARED 0 · MISSING 0** (all `required` areas evidenced, so the probe passes).
+
+The probe learned a fourth class during this wave: **IMPLEMENTED_UNWIRED** — the
+implementation and its tests exist, but the declared boundary patterns match
+nothing, so nothing is actually protected. That class was added precisely because
+the first pass reported "rate limiting + budgets: no artefact found", which was a
+**measurement error**: both exist across canonical owners, as libraries that no
+boundary invokes.
 
 | Classification | Meaning | Areas |
 | --- | --- | --- |
-| **ENFORCED (40)** | an executable artefact proves it | identity, organizations, tenants, memberships, roles, policies, RBAC, ABAC, PBAC, ReBAC, RLS, data classification, privacy, audit, AI governance+gateway, agent identity, twin identity, API validation, testing, migration discipline, environment separation, secret management, reliability+idempotency, event architecture, module boundaries, documentation+ADRs, phase contract + DoD frame, default deny, human approval, no universal admin API, zero-trust boundary, workspace projection, Command Centre control plane, scale+async, minimisation+consent+purpose, contract versioning, AI DoD, agent DoD, twin DoD, security DoD |
-| **DECLARED (2)** | module exists, no executable proof | **observability** (`platform-observability.ts`, `runtime-observability.ts`); **error architecture** (`error-capture.ts`, `platform-error-reporting.ts`) |
-| **MISSING (1, not required by §100)** | no artefact found | **rate limiting + resource budgets (§59–§60)** |
+| **ENFORCED (41)** | an executable artefact proves it, and any declared boundary really invokes it | the 40 listed previously plus **error architecture** (now proven: `server.ts` uses the out-of-band capture, `components/error-boundary.tsx` reports through the bridge), plus the secret-scan CI boundary |
+| **IMPLEMENTED_UNWIRED (3)** | implementation + tests exist, no boundary calls it | **observability** (logger/metrics/health proven but no runtime path emits them), **rate limiting** (windowed limiter, 6 scopes, nothing calls it), **resource budgets** (AI budget + tenant quotas + autoscaling limits, nothing consumes them) |
+| **DECLARED (0)** | — | none |
+| **MISSING (0)** | — | none (the earlier "rate limits/budgets missing" reading was wrong — see the limits map) |
 
 This is materially stronger than the registry suggested: the Phase 01 foundation
 is **enforced**, not merely documented — identity, tenancy, the four authorization
@@ -93,14 +101,56 @@ Nothing above was implemented in this pass: the constitution forbids implementin
 before archaeology completes, and each item is registered with the evidence that
 would close it.
 
-## 6. Acceptance for this intake
+## 5b. Closure wave (2026-09-14) — Phase 01 remaining work resolved
 
-Phase 01 is **audited**: four-way verification complete, 43 acceptance areas
-classified with evidence, ownership confirmed, and every gap registered as a
-bounded work item or unknown. Its registry level vector is unchanged (`L1+L3`,
-status `IMPLEMENTING`), and the derived evidence vector is now `L1 ✓ · L2 ✗ ·
-L3 ✓ · L4 ✗ · L5 ✓`: the foundation **is** enforced, and the verify chain **is**
-its operational evidence — the two open levels are L2 (definitional, BR-01) and
-L4 (the foundation projects no capability of its own), so the five-level gate
-correctly refuses COMPLETE while accepting every level it can evidence.
+| Item | Resolution | Evidence |
+| --- | --- | --- |
+| **P01-1** observability was DECLARED | **CLOSED as UNWIRED, not as enforced.** `tests/unit/foundation-observability.test.ts` (10 tests) now proves the real primitive: correlation on every log line, credential/PII redaction on the live log path, long-value truncation, metric percentile convention (floor((n−1)·pct)) and deterministic health aggregation (unhealthy > degraded > healthy). The primitive is **not wired into any runtime path** — nothing in `server.ts` or any route emits structured logs — so the area is classified IMPLEMENTED_UNWIRED. | `tests/unit/foundation-observability.test.ts`; probe row `observability` |
+| **P01-2** error architecture was DECLARED | **CLOSED as ENFORCED.** `tests/unit/foundation-error-architecture.test.ts` (7 tests) proves the bounded out-of-band capture (capture once, 5 s TTL, unhandled rejections included) and the report bridge (safe no-op with no browser and with no collector; classified, route-tagged forwarding). Real boundaries exist: `frontend/src/server.ts` and `frontend/src/components/error-boundary.tsx`. | `tests/unit/foundation-error-architecture.test.ts`; probe row `error-handling` |
+| **P01-3** rate limits + budgets "missing" | **CLOSED by canonicalisation, and my first reading was wrong.** Both exist with canonical owners: the windowed limiter (`runtime-resilience.ts`, Phase 05, 6 scopes, tested) and budgets (`ai-governance.ts` tokens/cost/quota, `tenant-core.ts` compute/storage, `enterprise-operations.ts` autoscaling limits). Phase 01 published `architecture/foundation-limits.json` + `foundation-limits-map.md` (the §59/§60 map) instead of building a second engine — duplication law. `tests/unit/foundation-limits-map.test.ts` (5 tests) fails on overclaiming **and** underclaiming. | `architecture/foundation-limits.json`; `tests/unit/foundation-limits-map.test.ts` |
+| **P01-4** registry hid the foundation's artefacts | **CLOSED.** Registry phase 01 now records `tests: 37` and a note naming the four suites and the acceptance result; the Phase 01 contract cites the new suites in its observability/testing sections, and the completion audit now counts test paths a contract cites anywhere (not only in a `tests` array). | `architecture/registry.json`; `phase-01-foundation.ts` |
+| **U-01** is audit wired? | **ANSWERED — no.** Zero of the 28 server-function families import the audit module or emit an audit event; the *role gate* is wired (22/28 families, machine-checked by `p08-enforcement-surface.test.ts`), the *audit trail* is not. Recorded as debt owned by 08/09/14. | `git grep` over `*.functions.ts`; PROGRESS §17.2 |
+| **U-02** where are rate limits enforced? | **ANSWERED — nowhere at a boundary.** The limiter and the budgets are libraries: 0 call sites across 28 server-function families and every route. Registered as `boundaryWiring.status: "unwired"` with `closesWhen`, re-probed by the map test. | `architecture/foundation-limits.json` |
+| **U-03** live RLS proof | **UNCHANGED — still DB-gated** (`scripts/verify-tenant-isolation.mjs` needs credentials; ties to CF-7). | — |
+| **U-04** observability runtime behaviour | **CLOSED by P01-1** — the behaviour is now proven, and the *absence of wiring* is the honest finding. | as above |
+
+**Two measurement defects this wave exposed (both were mine, both fixed):**
+
+1. The audit read a contract's cited tests only from a `tests` array, so every phase
+   that documents suites inside section `artifacts`/`evidence` was understated — it
+   reported phase 01 as "0 tests counted" and phase 02's L3 as unconfirmable. With
+   the wider extraction, **phase 02 (Identity) now derives COMPLETE on all five
+   levels** and the unconfirmed-claim list falls 5 → 3 (19, 25, 49).
+2. The probe's first `rate limiting + budgets` pattern looked in one file and
+   reported MISSING for a capability that exists in four. MISMATCH(**measurement
+   error**), corrected by the canonicalisation map plus a boundary probe that fails
+   if wiring ever appears without the map being updated.
+
+**Defects found in passing (registered, not fixed — they belong to Phase 22):**
+`platform-observability.ts` `isMinorUpdate()` compares `update.version` to itself
+(always true); `checkVersionCompatibility()` ignores `minDataVersion`; and
+`evaluateOTAUpdateState()` ignores its `error` argument. These are mobile-platform
+defects, recorded here because the archaeology encountered them, and they must be
+fixed by their owner rather than silently asserted as correct in a test.
+
+
+
+## 6. Acceptance for this intake (after the closure wave)
+
+Phase 01 is **audited and its remaining work closed**: four-way verification
+complete, **44 acceptance areas** classified with evidence — **ENFORCED 41,
+IMPLEMENTED_UNWIRED 3, DECLARED 0, MISSING 0** — ownership confirmed, and every gap
+registered as a bounded work item, debt row or unknown.
+
+Derived level vector `L1 ✓ · L2 ✗ · L3 ✓ · L4 ✗ · L5 ✓` (status `IMPLEMENTING`).
+The two open levels are:
+- **L2** — definitional: a conventions phase owns no persistent state (BR-01,
+  refinement still to be ratified);
+- **L4** — the foundation projects no capability surface of its own; its four
+  verification contracts are consumed by every phase and executed by CI (L5).
+
+This is deliberately *not* flipped to COMPLETE. The honest position is that the
+foundation's **criteria are met** and its **level model does not describe a
+conventions phase**; forcing the flip by relaxing the gate would cost the gate its
+meaning, which is exactly what the constitution forbids.
 

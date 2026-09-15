@@ -147,15 +147,33 @@ export const PHASE_01_FOUNDATION: PhaseEngineeringContract = {
     observability: {
       status: "complete",
       summary:
-        "Foundation observability is the verification ledger: registry validation, secret scan, typecheck, unit suite and build results recorded per change.",
-      artifacts: ["PROGRESS.md", "package.json"],
+        "Foundation observability is the verification ledger: registry validation, secret scan, typecheck, unit suite and build results recorded per change. The structured logger, metrics and health primitives exist and are now proven by executable tests; no request path wires them yet, which is recorded as UNWIRED rather than counted as enforcement.",
+      artifacts: [
+        "PROGRESS.md",
+        "package.json",
+        "tests/unit/foundation-observability.test.ts",
+        "frontend/src/lib/runtime-observability.ts",
+      ],
+      evidence: [
+        "foundation-observability.test.ts — correlation, redaction, metrics percentiles, health aggregation",
+      ],
     },
     testing: {
       status: "complete",
       summary:
         "The foundation ships the verification chain itself — strict typecheck, unit suite, registry invariants, credential scan and production build — as the gate every phase reuses.",
-      artifacts: ["tests/unit/foundation.test.ts", "npm run verify"],
-      evidence: ["foundation.test.ts — 15 tests; registry validator PASS"],
+      artifacts: [
+        "tests/unit/foundation.test.ts",
+        "tests/unit/foundation-observability.test.ts",
+        "tests/unit/foundation-error-architecture.test.ts",
+        "tests/unit/foundation-limits-map.test.ts",
+        "npm run verify",
+      ],
+      evidence: [
+        "foundation.test.ts — 15 integrity tests; registry validator PASS",
+        "foundation-error-architecture.test.ts — bounded capture + safe report bridge",
+        "foundation-limits-map.test.ts — §59/§60 map re-derived against source",
+      ],
     },
     integration: {
       status: "complete",

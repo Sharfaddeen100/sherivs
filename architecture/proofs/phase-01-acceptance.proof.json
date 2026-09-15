@@ -3,17 +3,24 @@
   "phase": "01",
   "phaseName": "Foundation",
   "source": "architecture/phase-01-foundation.md",
-  "generatedAt": "2026-09-15T02:11:41.110Z",
+  "generatedAt": "2026-09-15T10:48:37.825Z",
   "classificationDefinitions": {
-    "ENFORCED": "an executable artefact proves it (test, verifier script, migration, policy or machine-checked contract match)",
+    "ENFORCED": "an executable artefact proves it (test, verifier script, migration, policy or machine-checked contract match) and, where a boundary is declared, a real call site invokes it",
     "DECLARED": "a module, document or contract mentions it, but nothing executable proves it",
+    "IMPLEMENTED_UNWIRED": "implementation and tests exist, but the declared boundary patterns match nothing — the capability protects nothing yet",
     "MISSING": "no artefact found"
   },
   "summary": {
-    "areas": 43,
-    "enforced": 40,
-    "declared": 2,
-    "missing": 1,
+    "areas": 44,
+    "enforced": 41,
+    "declared": 0,
+    "implementedUnwired": 3,
+    "implementedUnwiredAreas": [
+      "observability",
+      "rate-limiting",
+      "resource-budgets"
+    ],
+    "missing": 0,
     "missingRequired": [],
     "unresolvedEvidencePaths": []
   },
@@ -53,7 +60,9 @@
         "tests/unit/identity-registry.test.ts",
         "frontend/src/lib/identity.ts"
       ],
-      "unresolvedEvidence": []
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
     },
     {
       "id": "organizations",
@@ -70,7 +79,9 @@
         "frontend/src/lib/tenant-topology.ts",
         "tests/unit/institution.test.ts"
       ],
-      "unresolvedEvidence": []
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
     },
     {
       "id": "tenants",
@@ -89,7 +100,9 @@
         "tests/unit/tenant.test.ts",
         "scripts/verify-tenant-isolation.mjs"
       ],
-      "unresolvedEvidence": []
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
     },
     {
       "id": "memberships",
@@ -106,7 +119,9 @@
         "frontend/src/lib/identity-relationships.ts",
         "tests/unit/identity-actor.test.ts"
       ],
-      "unresolvedEvidence": []
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
     },
     {
       "id": "roles",
@@ -123,7 +138,9 @@
         "frontend/src/lib/roles.ts",
         "tests/unit/roles.test.ts"
       ],
-      "unresolvedEvidence": []
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
     },
     {
       "id": "policies",
@@ -140,7 +157,9 @@
         "frontend/src/lib/security-policy.ts",
         "tests/unit/security-policy.test.ts"
       ],
-      "unresolvedEvidence": []
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
     },
     {
       "id": "rbac",
@@ -157,7 +176,9 @@
         "frontend/src/lib/security-role-gate.ts",
         "tests/unit/security-role-gate.test.ts"
       ],
-      "unresolvedEvidence": []
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
     },
     {
       "id": "abac",
@@ -174,7 +195,9 @@
         "frontend/src/lib/security-risk.ts",
         "tests/unit/security-risk.test.ts"
       ],
-      "unresolvedEvidence": []
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
     },
     {
       "id": "pbac",
@@ -191,7 +214,9 @@
         "frontend/src/lib/security-core.ts",
         "tests/unit/security-core.test.ts"
       ],
-      "unresolvedEvidence": []
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
     },
     {
       "id": "rebac",
@@ -208,7 +233,9 @@
         "frontend/src/lib/identity-relationships.ts",
         "tests/unit/identity-actor.test.ts"
       ],
-      "unresolvedEvidence": []
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
     },
     {
       "id": "rls",
@@ -225,7 +252,9 @@
         "database/supabase/migrations/",
         "scripts/verify-tenant-isolation.mjs"
       ],
-      "unresolvedEvidence": []
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
     },
     {
       "id": "data-classification",
@@ -242,7 +271,9 @@
         "frontend/src/lib/data-governance.ts",
         "tests/unit/data-governance.test.ts"
       ],
-      "unresolvedEvidence": []
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
     },
     {
       "id": "privacy",
@@ -259,7 +290,9 @@
         "frontend/src/lib/scholar/privacy.ts",
         "tests/unit/scholar-policies-privacy.test.ts"
       ],
-      "unresolvedEvidence": []
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
     },
     {
       "id": "audit",
@@ -276,7 +309,9 @@
         "frontend/src/lib/audit.ts",
         "tests/unit/security-events.test.ts"
       ],
-      "unresolvedEvidence": []
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
     },
     {
       "id": "observability",
@@ -284,16 +319,23 @@
       "requirement": "Logs, metrics, traces, audit and health exist per subsystem, correlated by request/trace id.",
       "required": true,
       "ownerPhase": "31/21",
-      "classification": "DECLARED",
+      "classification": "IMPLEMENTED_UNWIRED",
       "declaredEvidence": [
         "frontend/src/lib/platform-observability.ts",
+        "tests/unit/foundation-observability.test.ts",
         "frontend/src/lib/runtime-observability.ts"
       ],
       "matchedEvidence": [
         "frontend/src/lib/platform-observability.ts",
+        "tests/unit/foundation-observability.test.ts",
         "frontend/src/lib/runtime-observability.ts"
       ],
-      "unresolvedEvidence": []
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "frontend/src/server.ts",
+        "frontend/src/routes/*.tsx"
+      ],
+      "boundaryEvidence": []
     },
     {
       "id": "ai-governance",
@@ -312,7 +354,9 @@
         "frontend/src/lib/ai-governance.ts",
         "tests/unit/ai.test.ts"
       ],
-      "unresolvedEvidence": []
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
     },
     {
       "id": "agent-identity",
@@ -331,7 +375,9 @@
         "frontend/src/lib/security-agent-controls.ts",
         "tests/unit/security-agent-controls.test.ts"
       ],
-      "unresolvedEvidence": []
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
     },
     {
       "id": "twin-identity",
@@ -348,7 +394,9 @@
         "frontend/src/lib/twin-core.ts",
         "tests/unit/twin-governance.test.ts"
       ],
-      "unresolvedEvidence": []
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
     },
     {
       "id": "api-validation",
@@ -365,7 +413,9 @@
         "tests/unit/p08-enforcement-surface.test.ts",
         "tests/unit/kernel-contract-coverage.test.ts"
       ],
-      "unresolvedEvidence": []
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
     },
     {
       "id": "testing",
@@ -381,7 +431,9 @@
       "matchedEvidence": [
         "tests/unit/foundation.test.ts"
       ],
-      "unresolvedEvidence": []
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
     },
     {
       "id": "migration-discipline",
@@ -398,7 +450,9 @@
         "tests/unit/db-tooling-coherence.test.ts",
         "scripts/db-apply.mjs"
       ],
-      "unresolvedEvidence": []
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
     },
     {
       "id": "environment-separation",
@@ -417,7 +471,9 @@
         "scripts/verify-env.ts",
         ".env.example"
       ],
-      "unresolvedEvidence": []
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
     },
     {
       "id": "secret-management",
@@ -435,7 +491,13 @@
         "scripts/verification/secret-scan.mjs",
         "tests/unit/foundation.test.ts"
       ],
-      "unresolvedEvidence": []
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        ".github/workflows/verify.yml"
+      ],
+      "boundaryEvidence": [
+        ".github/workflows/verify.yml"
+      ]
     },
     {
       "id": "error-handling",
@@ -443,16 +505,26 @@
       "requirement": "Errors are structured, typed, safe and traceable, and never leak secrets, SQL internals or private data.",
       "required": true,
       "ownerPhase": "01",
-      "classification": "DECLARED",
+      "classification": "ENFORCED",
       "declaredEvidence": [
         "frontend/src/lib/error-capture.ts",
+        "tests/unit/foundation-error-architecture.test.ts",
         "frontend/src/lib/platform-error-reporting.ts"
       ],
       "matchedEvidence": [
         "frontend/src/lib/error-capture.ts",
+        "tests/unit/foundation-error-architecture.test.ts",
         "frontend/src/lib/platform-error-reporting.ts"
       ],
-      "unresolvedEvidence": []
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "frontend/src/server.ts",
+        "frontend/src/components/error-boundary.tsx"
+      ],
+      "boundaryEvidence": [
+        "frontend/src/server.ts",
+        "frontend/src/components/error-boundary.tsx"
+      ]
     },
     {
       "id": "reliability-idempotency",
@@ -469,7 +541,9 @@
         "tests/unit/kernel-outbox.test.ts",
         "tests/unit/financial-payments.test.ts"
       ],
-      "unresolvedEvidence": []
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
     },
     {
       "id": "event-architecture",
@@ -486,7 +560,9 @@
         "frontend/src/lib/kernel/outbox.ts",
         "tests/unit/runtime-scholar-events.test.ts"
       ],
-      "unresolvedEvidence": []
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
     },
     {
       "id": "module-boundaries",
@@ -503,7 +579,9 @@
         "tests/unit/kernel-purity.test.ts",
         "tests/unit/kernel-contract-coverage.test.ts"
       ],
-      "unresolvedEvidence": []
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
     },
     {
       "id": "documentation-adrs",
@@ -522,7 +600,9 @@
         "tests/unit/foundation.test.ts",
         "DECISIONS.md"
       ],
-      "unresolvedEvidence": []
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
     },
     {
       "id": "phase-implementation-contract",
@@ -539,7 +619,9 @@
         "tests/unit/kernel-phase-contract.test.ts",
         "frontend/src/lib/kernel/phase-contracts/phase-01-foundation.ts"
       ],
-      "unresolvedEvidence": []
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
     },
     {
       "id": "default-deny",
@@ -556,7 +638,9 @@
         "tests/unit/capability-gate.test.ts",
         "tests/unit/scholar-feature-gate.test.ts"
       ],
-      "unresolvedEvidence": []
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
     },
     {
       "id": "human-approval",
@@ -573,7 +657,9 @@
         "tests/unit/automation-governance.test.ts",
         "tests/unit/command-governance.test.ts"
       ],
-      "unresolvedEvidence": []
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
     },
     {
       "id": "no-universal-admin-api",
@@ -588,7 +674,9 @@
       "matchedEvidence": [
         "tests/unit/p08-enforcement-surface.test.ts"
       ],
-      "unresolvedEvidence": []
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
     },
     {
       "id": "zero-trust-boundary",
@@ -605,7 +693,9 @@
         "tests/unit/auth-helpers.test.ts",
         "tests/unit/security-session.test.ts"
       ],
-      "unresolvedEvidence": []
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
     },
     {
       "id": "workspace-isolation",
@@ -622,7 +712,9 @@
         "tests/unit/workspace-experience.test.ts",
         "tests/unit/workspace-navigation.test.ts"
       ],
-      "unresolvedEvidence": []
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
     },
     {
       "id": "command-centre-control-plane",
@@ -639,7 +731,9 @@
         "tests/unit/command-centre-contract-governance.test.ts",
         "tests/unit/command-core.test.ts"
       ],
-      "unresolvedEvidence": []
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
     },
     {
       "id": "scale-async-foundation",
@@ -656,7 +750,9 @@
         "tests/unit/enterprise-scale.test.ts",
         "tests/unit/platform-offline.test.ts"
       ],
-      "unresolvedEvidence": []
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
     },
     {
       "id": "data-minimization-consent",
@@ -673,7 +769,9 @@
         "tests/unit/data-quality.test.ts",
         "tests/unit/scholar-policies-privacy.test.ts"
       ],
-      "unresolvedEvidence": []
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
     },
     {
       "id": "versioning-contracts",
@@ -690,7 +788,9 @@
         "frontend/src/lib/kernel/phase-contract.ts",
         "tests/unit/kernel-domain-manifest.test.ts"
       ],
-      "unresolvedEvidence": []
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
     },
     {
       "id": "ai-dod",
@@ -707,7 +807,9 @@
         "tests/unit/scholar-ai-contracts.test.ts",
         "tests/unit/ai.test.ts"
       ],
-      "unresolvedEvidence": []
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
     },
     {
       "id": "agent-dod",
@@ -724,7 +826,9 @@
         "tests/unit/agent-plans.test.ts",
         "tests/unit/agent-memory.test.ts"
       ],
-      "unresolvedEvidence": []
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
     },
     {
       "id": "twin-dod",
@@ -741,7 +845,9 @@
         "tests/unit/twin-state.test.ts",
         "tests/unit/twin-graph.test.ts"
       ],
-      "unresolvedEvidence": []
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
     },
     {
       "id": "security-dod",
@@ -758,27 +864,62 @@
         "tests/unit/trust-governance.test.ts",
         "tests/unit/security-events.test.ts"
       ],
-      "unresolvedEvidence": []
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
     },
     {
-      "id": "rate-limiting-budgets",
-      "area": "Rate limiting and resource budgets (§59-§60)",
-      "requirement": "Limits exist per actor, tenant, API, agent, tool and model, with budgets for tokens, compute and external calls.",
+      "id": "rate-limiting",
+      "area": "Rate limiting across the §59 levels",
+      "requirement": "Limits exist per IP, user, organization, tenant, API, agent, tool, workflow, device and model.",
       "required": false,
-      "ownerPhase": "26/31",
-      "classification": "MISSING",
+      "ownerPhase": "05 (runtime limiter) / 03 / 07 / 17 / 15 / 26",
+      "classification": "IMPLEMENTED_UNWIRED",
       "declaredEvidence": [
-        "frontend/src/lib/ai-core.ts",
-        "tests/unit/automation-governance.test.ts"
+        "frontend/src/lib/runtime-resilience.ts",
+        "tests/unit/runtime-extended.test.ts",
+        "architecture/foundation-limits.json"
       ],
-      "matchedEvidence": [],
-      "unresolvedEvidence": []
+      "matchedEvidence": [
+        "frontend/src/lib/runtime-resilience.ts",
+        "tests/unit/runtime-extended.test.ts",
+        "architecture/foundation-limits.json"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "frontend/src/lib/*.functions.ts"
+      ],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "resource-budgets",
+      "area": "Resource budgets",
+      "requirement": "AI and automation support token, request, compute, storage, execution-time, external-call and financial-exposure budgets.",
+      "required": false,
+      "ownerPhase": "26 / 31 / 03 / 05",
+      "classification": "IMPLEMENTED_UNWIRED",
+      "declaredEvidence": [
+        "frontend/src/lib/ai-governance.ts",
+        "tests/unit/ai.test.ts",
+        "architecture/foundation-limits.json"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/ai-governance.ts",
+        "tests/unit/ai.test.ts",
+        "architecture/foundation-limits.json"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "frontend/src/lib/*.functions.ts"
+      ],
+      "boundaryEvidence": []
     }
   ],
   "ok": true,
   "limitations": [
     "Classification measures the presence of executable evidence, not the correctness or completeness of that evidence.",
     "A DECLARED area is unfinished work, never a false claim — it is reported as such.",
+    "An IMPLEMENTED_UNWIRED area has a tested implementation that no boundary calls; it is reported, never counted as enforcement.",
     "Evidence patterns are declared per phase in architecture/phase-acceptance/phase-<id>-*.json and must be reviewed when a phase is re-audited."
   ]
 }

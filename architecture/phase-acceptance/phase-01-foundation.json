@@ -187,8 +187,14 @@
       "required": true,
       "evidence": [
         { "kind": "module", "path": "frontend/src/lib/platform-observability.ts" },
-        { "kind": "module", "path": "frontend/src/lib/runtime-observability.ts" }
-      ]
+        { "kind": "test", "path": "tests/unit/foundation-observability.test.ts" },
+        { "kind": "module", "path": "frontend/src/lib/runtime-observability.ts", "contains": "redactSensitiveFields" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/server.ts", "contains": "createLogger" },
+        { "kind": "module", "path": "frontend/src/routes/*.tsx", "contains": "createLogger" }
+      ],
+      "boundaryNote": "No runtime path wires the structured logger yet — nothing in server.ts or any route emits correlated logs, so the observability requirement is implemented and tested but UNWIRED (recorded honestly rather than counted as enforcement)."
     },
     {
       "id": "ai-governance",
@@ -280,6 +286,9 @@
         { "kind": "script", "path": "scripts/verification/secret-scan.mjs" },
         { "kind": "test", "path": "tests/unit/foundation.test.ts", "contains": "secret" },
         { "kind": "config", "path": ".gitignore", "contains": "\\.env" }
+      ],
+      "boundary": [
+        { "kind": "config", "path": ".github/workflows/verify.yml", "contains": "npm run verify" }
       ]
     },
     {
@@ -290,7 +299,12 @@
       "required": true,
       "evidence": [
         { "kind": "module", "path": "frontend/src/lib/error-capture.ts" },
+        { "kind": "test", "path": "tests/unit/foundation-error-architecture.test.ts" },
         { "kind": "module", "path": "frontend/src/lib/platform-error-reporting.ts" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/server.ts", "contains": "error-capture" },
+        { "kind": "module", "path": "frontend/src/components/error-boundary.tsx", "contains": "reportPlatformError" }
       ]
     },
     {
@@ -492,15 +506,36 @@
       ]
     },
     {
-      "id": "rate-limiting-budgets",
-      "area": "Rate limiting and resource budgets (§59-§60)",
-      "requirement": "Limits exist per actor, tenant, API, agent, tool and model, with budgets for tokens, compute and external calls.",
-      "ownerPhase": "26/31",
+      "id": "rate-limiting",
+      "area": "Rate limiting across the §59 levels",
+      "requirement": "Limits exist per IP, user, organization, tenant, API, agent, tool, workflow, device and model.",
+      "ownerPhase": "05 (runtime limiter) / 03 / 07 / 17 / 15 / 26",
       "required": false,
       "evidence": [
-        { "kind": "module", "path": "frontend/src/lib/ai-core.ts", "contains": "budget" },
-        { "kind": "test", "path": "tests/unit/automation-governance.test.ts", "contains": "budget" }
-      ]
+        { "kind": "module", "path": "frontend/src/lib/runtime-resilience.ts", "contains": "createRateLimiter" },
+        { "kind": "test", "path": "tests/unit/runtime-extended.test.ts", "contains": "rate limiter" },
+        { "kind": "config", "path": "architecture/foundation-limits.json", "contains": "rateLimitScopes" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/*.functions.ts", "contains": "createRateLimiter" }
+      ],
+      "boundaryNote": "The windowed limiter is a library: no server function invokes it, so no request is rate-limited today (U-02)."
+    },
+    {
+      "id": "resource-budgets",
+      "area": "Resource budgets",
+      "requirement": "AI and automation support token, request, compute, storage, execution-time, external-call and financial-exposure budgets.",
+      "ownerPhase": "26 / 31 / 03 / 05",
+      "required": false,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/ai-governance.ts", "contains": "consumeAiBudget" },
+        { "kind": "test", "path": "tests/unit/ai.test.ts", "contains": "budget" },
+        { "kind": "config", "path": "architecture/foundation-limits.json", "contains": "budgetKinds" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/*.functions.ts", "contains": "consumeAiBudget" }
+      ],
+      "boundaryNote": "The AI budget model is a library: no server function consumes a budget, so no run is budget-stopped today."
     }
   ]
 }

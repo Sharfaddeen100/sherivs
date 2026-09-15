@@ -22,7 +22,7 @@ const ROOT = fileURLToPath(new URL("../..", import.meta.url));
 const DATA_REF = "architecture/phase-acceptance/phase-01-foundation.json";
 const PROOF_REF = "architecture/proofs/phase-01-acceptance.proof.json";
 const EXECUTABLE_KINDS = ["test", "script", "migration", "policy", "config", "contract"];
-const CLASSIFICATIONS = ["ENFORCED", "DECLARED", "MISSING"];
+const CLASSIFICATIONS = ["ENFORCED", "DECLARED", "IMPLEMENTED_UNWIRED", "MISSING"];
 
 interface EvidenceEntry {
   kind: string;
@@ -35,6 +35,7 @@ interface AreaData {
   requirement: string;
   required?: boolean;
   evidence: EvidenceEntry[];
+  boundary?: EvidenceEntry[];
 }
 interface AreaRow {
   id: string;
@@ -44,6 +45,8 @@ interface AreaRow {
   declaredEvidence: string[];
   matchedEvidence: string[];
   unresolvedEvidence: string[];
+  declaredBoundary: string[];
+  boundaryEvidence: string[];
 }
 interface AcceptanceProof {
   artifact: string;
@@ -54,6 +57,8 @@ interface AcceptanceProof {
     areas: number;
     enforced: number;
     declared: number;
+    implementedUnwired: number;
+    implementedUnwiredAreas: string[];
     missing: number;
     missingRequired: string[];
     unresolvedEvidencePaths: string[];
@@ -94,9 +99,10 @@ describe("AUDIT-P01 — the phase acceptance probe is executable", () => {
       expect(proof.classificationDefinitions[classification], classification).toBeTruthy();
     }
     expect(proof.summary.areas).toBe(proof.areas.length);
-    expect(proof.summary.enforced + proof.summary.declared + proof.summary.missing).toBe(
+    expect(proof.summary.enforced + proof.summary.declared + proof.summary.implementedUnwired + proof.summary.missing).toBe(
       proof.areas.length,
     );
+    expect(proof.summary.implementedUnwired).toBe(proof.summary.implementedUnwiredAreas.length);
   });
 
   it("every acceptance area declares evidence and every matched path exists", () => {
@@ -143,6 +149,29 @@ describe("AUDIT-P01 — the phase acceptance probe is executable", () => {
       );
       if (executable.length === 0) {
         expect(["DECLARED", "MISSING"], `${row.id} cannot be ENFORCED`).toContain(row.classification);
+      }
+    }
+  });
+
+  it("never calls an unwired capability enforced, and proves the boundary was probed", () => {
+    const data = loadData();
+    const proof = loadProof();
+    const byId = new Map(data.areas.map((area) => [area.id, area]));
+    const unwired = proof.areas.filter((row) => row.classification === "IMPLEMENTED_UNWIRED");
+    expect(unwired.length).toBe(proof.summary.implementedUnwired);
+    for (const row of unwired) {
+      const area = byId.get(row.id);
+      // Unwired means: implementation exists, boundary patterns were declared and matched nothing.
+      expect((area?.boundary ?? []).length, `${row.id} must declare a boundary probe`).toBeGreaterThan(0);
+      expect(row.declaredBoundary.length).toBe((area?.boundary ?? []).length);
+      expect(row.boundaryEvidence, `${row.id} has a matched boundary — it is not unwired`).toEqual([]);
+      expect(row.matchedEvidence.length, `${row.id} must still show its implementation`).toBeGreaterThan(0);
+    }
+    // And the converse: an area classified ENFORCED with a declared boundary must show the match.
+    for (const row of proof.areas) {
+      const area = byId.get(row.id);
+      if (row.classification === "ENFORCED" && (area?.boundary ?? []).length > 0) {
+        expect(row.boundaryEvidence.length, `${row.id} claims ENFORCED without a boundary match`).toBeGreaterThan(0);
       }
     }
   });
@@ -206,9 +235,30 @@ describe("AUDIT-P01 — the phase acceptance probe is executable", () => {
 
   it("reports incompleteness honestly instead of claiming completeness", () => {
     const proof = loadProof();
-    expect(proof.limitations.join(" ")).toMatch(/DECLARED area is unfinished work/i);
-    expect(proof.limitations.join(" ")).toMatch(/not the correctness/i);
-    // Phase 01 has real remaining work; the probe must say so.
-    expect(proof.summary.declared + proof.summary.missing).toBeGreaterThan(0);
+    const limitations = proof.limitations.join(" ");
+    expect(limitations).toMatch(/DECLARED area is unfinished work/i);
+    expect(limitations).toMatch(/not the correctness/i);
+    expect(limitations).toMatch(/IMPLEMENTED_UNWIRED area has a tested implementation/i);
+
+    // Every kind of incompleteness must be reported consistently with its own list,
+    // and the console report must name the unwired areas rather than hide them.
+    expect(proof.summary.implementedUnwired).toBe(proof.summary.implementedUnwiredAreas.length);
+    expect(proof.summary.missing).toBe(
+      proof.areas.filter((row) => row.classification === "MISSING").length,
+    );
+    const output = execFileSync("node", ["scripts/audit-phase-acceptance.mjs", "--phase=01"], {
+      encoding: "utf8",
+      cwd: ROOT,
+    });
+    if (proof.summary.implementedUnwired > 0) {
+      expect(output).toContain("Implemented and tested, but no boundary invokes it yet");
+      for (const id of proof.summary.implementedUnwiredAreas) expect(output).toContain(id);
+    }
+    const remaining = proof.summary.declared + proof.summary.missing + proof.summary.implementedUnwired;
+    if (remaining === 0) {
+      expect(proof.summary.enforced).toBe(proof.summary.areas);
+    } else {
+      expect(output).toMatch(/DECLARED|UNWIRED|No evidence found/);
+    }
   });
 });
