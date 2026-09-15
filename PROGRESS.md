@@ -501,6 +501,9 @@ Proposed ADR index (recorded in DECISIONS.md):
 | phase-catalog.ts header comment previously stale (now fixed 2026-09-02) | Frontend | Doc drift | Keep comment synced with data |
 | Change-log ordering corruption in the legacy ledger | Engineering | History readability | Normalized §22; raw history preserved in git |
 | Heterogeneous phase-doc heading dialects (01–07 vs 08–32 vs 33–51) | Architecture | Machine matrix precision | Reconciliation or annotation per doc in §10 |
+| P01-3 rate limiting + resource budgets (§59–§60) have no artefact at all (probe: MISSING) | Engineering (P26/P31 owners) | No enforced limits at any boundary; AI/tool/message abuse surface | Registered 2026-09-14 by AUDIT-P01; close with a rate-limit/budget contract + tests at the API, agent and model boundaries |
+| P01-1/P01-2 observability + error handling are module-only (probe: DECLARED) | Engineering (P31/P01 owners) | Behaviour unproven by any executable test | Registered 2026-09-14 by AUDIT-P01; close with executable tests over `platform-observability`/`runtime-observability` and `error-capture`/`platform-error-reporting` |
+| Registry rows carry `modules: []` for convention phases (e.g. 01), hiding their executable artefacts | Architecture | Registry understates enforcement; produced a false “unconfirmed L3” reading | Registered 2026-09-14; the audit now counts contract-cited executable artefacts as L3 evidence, and registry rows should record `scripts/**` + workflow artefacts |
 | Working-copy line endings vs canonical LF policy | Engineering (local environment) | Tooling false-reds | This workspace was extracted from an archive (not `git checkout`), so untouched files sit on disk with CRLF while `.gitattributes` declares LF canonical. `npm run lint` (`eslint .`) therefore reports ~56k prettier CRLF errors from files no wave touched (`.claude/**`, `vite.config.ts`, governance docs). Committed blobs stay LF (git normalizes on add: `warning: CRLF will be replaced by LF`). Governance rule: verify lint per changed file, or on a normalized checkout; never cite the whole-repo CRLF noise as wave debt | Open (environment) — resolve by re-cloning or `git add --renormalize .` when the workspace is next rebuilt |
 | Phase-name drift: `architecture/registry.json` vs `frontend/src/lib/phase-catalog.ts` vs PROGRESS §11 for phases 25, 33, 36, 41, 42, 47, 51 | Architecture | Machine-readability of the registry | **CLOSED 2026-09-07 (ADR 202 / PLATFORM-011)**: all seven names aligned to PROGRESS §11 authority (25 + 47 in registry.json; 33/36/41/42/51 in phase-catalog.ts); renames cosmetic only. Enforced by `tests/unit/kernel-contract-coverage.test.ts` (registry ↔ catalog ↔ §11 ↔ contract four-way lockstep) + `tests/unit/kernel-phase-contract.test.ts` — both assert zero drift, so a new drift or a regression fails CI |
 
@@ -805,6 +808,17 @@ Normalized schema: Date · Author · Scope · Change · Validation · Status. En
 | Change | Foundation-integrity test suite; registry + secrets verification contracts wired into npm run verify; committed GitHub PAT in .mcp.json surfaced by secret-scan and removed from HEAD |
 | Validation | foundation suite 8/8; verify:registry PASSED; verify:secrets PASSED |
 | Status | IMPLEMENTING — L1 ✓, L2 ◐, L3 ◐, L4 ✗, L5 ✗; gate partial; loop advances to Phase 02 |
+
+### 22.4 Current entry — AUDIT-P01 (Phase 01 archaeology intake)
+
+| Field | Value |
+| --- | --- |
+| Date | 2026-09-14 |
+| Author | Cline (autonomous loop, §103) |
+| Scope | Phase 01 Foundation — archaeology intake (reconnaissance only, no capability implemented) |
+| Change | Four-way verification (pasted document ↔ `architecture/phase-01-foundation.md` ↔ kernel contract ↔ registry ↔ code): the pasted text matches the repo document (2,508 lines, §1–§101) and the contract owns `foundation-standards-config-secrets-ci`. New machine probe `scripts/audit-phase-acceptance.mjs` (`npm run audit:phase -- --phase=01`) resolves the document's acceptance criteria against real artefacts and classifies each ENFORCED / DECLARED / MISSING, driven by per-phase data (`architecture/phase-acceptance/phase-01-foundation.json`) so later phases need no code. Result: **43 areas — ENFORCED 40 · DECLARED 2 (observability, error handling) · MISSING 1 (§59–§60 rate limits/budgets)**; every REQUIRED area is evidenced, so the probe passes. Audit L3 rule refined to count contract-cited **executable** artefacts (scripts/tests/migrations/infrastructure/CI), which resolves phase 01's registry L3 claim from UNKNOWN to CONFIRMED without inflating architecture-only phases. Findings recorded in `architecture/archaeology/phase-01-foundation.audit.md` (ownership table: no duplication with 02/03/07/08/09/14/16/17/19/26/31/36/40/46) plus work items P01-1…P01-4, BR-01 and unknowns U-01…U-04 in §17. |
+| Validation | `npm run audit:phase -- --phase=01` PASS (proof `architecture/proofs/phase-01-acceptance.proof.json`); `npm run audit:phases` re-run clean (unconfirmed claims 5 → 4; phase 01 now confirmed); `tests/unit/phase-acceptance-audit.test.ts` 8/8 (its independent re-derivation caught two real defects during authoring — a dropped RLS acceptance area and an over-strict evidence assertion, both fixed) |
+| Status | AUDITED — Phase 01 remains IMPLEMENTING (`L1 ✓, L2 ✗, L3 ✓, L4 ✗, L5 ✓`); its foundation is enforced and the verify chain is its operational evidence, so only the definitional L2 and the (non-applicable) L4 projection keep it from COMPLETE |
 
 ---
 

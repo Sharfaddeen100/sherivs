@@ -38,5 +38,15 @@ Architecture analysis:
 - `node scripts/verification/engineering-sections.mjs` (phase-document completeness matrix)
 - `node scripts/verification/registry-validate.mjs` (same as `npm run verify:registry`)
 - `node scripts/verification/secret-scan.mjs` (same as `npm run verify:secrets`)
+- `npm run audit:phases` (evidence-derived five-level completion gate across all 51
+  phases: writes `architecture/proofs/phase-completion.proof.json` and
+  `architecture/phase-completion-status.md`; provable defects fail, incompleteness
+  is reported honestly)
+- `npm run audit:phase -- --phase=01` (per-phase acceptance probe used during the
+  phase archaeology intake: resolves the phase document's acceptance criteria
+  against real artefacts and classifies each as ENFORCED / DECLARED / MISSING; a
+  REQUIRED area with no evidence fails. Each phase supplies its own data file at
+  `architecture/phase-acceptance/phase-<id>-*.json`, so new phases need no code;
+  writes `architecture/proofs/phase-<id>-acceptance.proof.json`)
 
 Database query scripts moved to `database/queries/`.

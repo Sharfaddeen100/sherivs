@@ -1,0 +1,784 @@
+{
+  "artifact": "phase-acceptance",
+  "phase": "01",
+  "phaseName": "Foundation",
+  "source": "architecture/phase-01-foundation.md",
+  "generatedAt": "2026-09-15T02:11:41.110Z",
+  "classificationDefinitions": {
+    "ENFORCED": "an executable artefact proves it (test, verifier script, migration, policy or machine-checked contract match)",
+    "DECLARED": "a module, document or contract mentions it, but nothing executable proves it",
+    "MISSING": "no artefact found"
+  },
+  "summary": {
+    "areas": 43,
+    "enforced": 40,
+    "declared": 2,
+    "missing": 1,
+    "missingRequired": [],
+    "unresolvedEvidencePaths": []
+  },
+  "ownership": {
+    "note": "Phase 01 owns conventions, verification, config/secret discipline and CI. It never owns a domain ontology. Concerns listed here with another owner are CONSUMED by Phase 01's verification, never re-implemented.",
+    "canonicalOwners": {
+      "identity": "02",
+      "tenancy": "03",
+      "authorization-enforcement": "08",
+      "trust": "09",
+      "agent-runtime": "07",
+      "digital-twin": "16",
+      "data-platform": "14",
+      "memory": "36",
+      "ai-gateway": "26",
+      "automation": "17",
+      "observability": "31/21",
+      "cloud-fabric": "21",
+      "foundation-standards-config-secrets-ci": "01"
+    }
+  },
+  "areas": [
+    {
+      "id": "identity",
+      "area": "Identity foundation",
+      "requirement": "Identities are first-class: human, organization, service, agent, device and twin never conflated.",
+      "required": true,
+      "ownerPhase": "02",
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/identity.test.ts",
+        "tests/unit/identity-registry.test.ts",
+        "frontend/src/lib/identity.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/identity.test.ts",
+        "tests/unit/identity-registry.test.ts",
+        "frontend/src/lib/identity.ts"
+      ],
+      "unresolvedEvidence": []
+    },
+    {
+      "id": "organizations",
+      "area": "Organizations and hierarchy",
+      "requirement": "Hierarchical organizations: CoreGrid corporate, school organizations, campuses — with membership that never leaks across organizations.",
+      "required": true,
+      "ownerPhase": "02/03",
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/tenant-topology.ts",
+        "tests/unit/institution.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/tenant-topology.ts",
+        "tests/unit/institution.test.ts"
+      ],
+      "unresolvedEvidence": []
+    },
+    {
+      "id": "tenants",
+      "area": "Tenant isolation",
+      "requirement": "Deterministic tenant boundary for every created institution; A cannot reach B by any path.",
+      "required": true,
+      "ownerPhase": "03",
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/tenant-isolation.ts",
+        "tests/unit/tenant.test.ts",
+        "scripts/verify-tenant-isolation.mjs"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/tenant-isolation.ts",
+        "tests/unit/tenant.test.ts",
+        "scripts/verify-tenant-isolation.mjs"
+      ],
+      "unresolvedEvidence": []
+    },
+    {
+      "id": "memberships",
+      "area": "Memberships and relationships",
+      "requirement": "Membership binds a person to an organization; relationships (guardian_of, teaches, manages) are authorization inputs.",
+      "required": true,
+      "ownerPhase": "02",
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/identity-relationships.ts",
+        "tests/unit/identity-actor.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/identity-relationships.ts",
+        "tests/unit/identity-actor.test.ts"
+      ],
+      "unresolvedEvidence": []
+    },
+    {
+      "id": "roles",
+      "area": "Roles",
+      "requirement": "Roles answer 'what can this role generally do?' and are never the sole mechanism for sensitive resources.",
+      "required": true,
+      "ownerPhase": "02/25",
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/roles.ts",
+        "tests/unit/roles.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/roles.ts",
+        "tests/unit/roles.test.ts"
+      ],
+      "unresolvedEvidence": []
+    },
+    {
+      "id": "policies",
+      "area": "Policy plane",
+      "requirement": "Policy is evaluated and enforced server-side; policies are data with an owner, not code branches.",
+      "required": true,
+      "ownerPhase": "08",
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/security-policy.ts",
+        "tests/unit/security-policy.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/security-policy.ts",
+        "tests/unit/security-policy.test.ts"
+      ],
+      "unresolvedEvidence": []
+    },
+    {
+      "id": "rbac",
+      "area": "RBAC",
+      "requirement": "Role-based access with a canonical server-side gate every privileged function passes through.",
+      "required": true,
+      "ownerPhase": "08",
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/security-role-gate.ts",
+        "tests/unit/security-role-gate.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/security-role-gate.ts",
+        "tests/unit/security-role-gate.test.ts"
+      ],
+      "unresolvedEvidence": []
+    },
+    {
+      "id": "abac",
+      "area": "ABAC",
+      "requirement": "Attribute evaluation (risk, posture, context) participates in the authorization decision.",
+      "required": true,
+      "ownerPhase": "08/42",
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/security-risk.ts",
+        "tests/unit/security-risk.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/security-risk.ts",
+        "tests/unit/security-risk.test.ts"
+      ],
+      "unresolvedEvidence": []
+    },
+    {
+      "id": "pbac",
+      "area": "PBAC",
+      "requirement": "Explicit policy rules can allow a capability only under stated conditions, and deny otherwise.",
+      "required": true,
+      "ownerPhase": "08",
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/security-core.ts",
+        "tests/unit/security-core.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/security-core.ts",
+        "tests/unit/security-core.test.ts"
+      ],
+      "unresolvedEvidence": []
+    },
+    {
+      "id": "rebac",
+      "area": "ReBAC",
+      "requirement": "Relationships (student→class, parent→student, engineer→incident) are evaluated as authorization inputs.",
+      "required": true,
+      "ownerPhase": "02/03",
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/identity-relationships.ts",
+        "tests/unit/identity-actor.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/identity-relationships.ts",
+        "tests/unit/identity-actor.test.ts"
+      ],
+      "unresolvedEvidence": []
+    },
+    {
+      "id": "rls",
+      "area": "Row Level Security",
+      "requirement": "Database-level isolation that holds even when application code is wrong; RLS is enabled on tenant-sensitive tables.",
+      "required": true,
+      "ownerPhase": "03",
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "database/supabase/migrations/",
+        "scripts/verify-tenant-isolation.mjs"
+      ],
+      "matchedEvidence": [
+        "database/supabase/migrations/",
+        "scripts/verify-tenant-isolation.mjs"
+      ],
+      "unresolvedEvidence": []
+    },
+    {
+      "id": "data-classification",
+      "area": "Data classification",
+      "requirement": "Meaningful data carries a classification (PUBLIC → HIGHLY_RESTRICTED) that participates in access decisions.",
+      "required": true,
+      "ownerPhase": "14",
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/data-governance.ts",
+        "tests/unit/data-governance.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/data-governance.ts",
+        "tests/unit/data-governance.test.ts"
+      ],
+      "unresolvedEvidence": []
+    },
+    {
+      "id": "privacy",
+      "area": "Privacy and purpose limitation",
+      "requirement": "Need-to-know, purpose limitation and minimum necessary access; technical reach is not authorization.",
+      "required": true,
+      "ownerPhase": "04 (preferences) / 14",
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/scholar/privacy.ts",
+        "tests/unit/scholar-policies-privacy.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/scholar/privacy.ts",
+        "tests/unit/scholar-policies-privacy.test.ts"
+      ],
+      "unresolvedEvidence": []
+    },
+    {
+      "id": "audit",
+      "area": "Audit trail",
+      "requirement": "Every sensitive operation produces a tamper-resistant audit event with actor, tenant, action, decision, policy and purpose.",
+      "required": true,
+      "ownerPhase": "08/09",
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/audit.ts",
+        "tests/unit/security-events.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/audit.ts",
+        "tests/unit/security-events.test.ts"
+      ],
+      "unresolvedEvidence": []
+    },
+    {
+      "id": "observability",
+      "area": "Observability",
+      "requirement": "Logs, metrics, traces, audit and health exist per subsystem, correlated by request/trace id.",
+      "required": true,
+      "ownerPhase": "31/21",
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "frontend/src/lib/platform-observability.ts",
+        "frontend/src/lib/runtime-observability.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/platform-observability.ts",
+        "frontend/src/lib/runtime-observability.ts"
+      ],
+      "unresolvedEvidence": []
+    },
+    {
+      "id": "ai-governance",
+      "area": "AI governance and gateway",
+      "requirement": "All AI runs through one gateway; provider-agnostic; authorization-aware retrieval; budgets, rate limits and audit.",
+      "required": true,
+      "ownerPhase": "26",
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/ai-gateway.server.ts",
+        "frontend/src/lib/ai-governance.ts",
+        "tests/unit/ai.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/ai-gateway.server.ts",
+        "frontend/src/lib/ai-governance.ts",
+        "tests/unit/ai.test.ts"
+      ],
+      "unresolvedEvidence": []
+    },
+    {
+      "id": "agent-identity",
+      "area": "Agent identity and least privilege",
+      "requirement": "Every agent has identity, purpose, permissions, tools, memory scope, risk level, approval rules and audit; no unrestricted agents.",
+      "required": true,
+      "ownerPhase": "07",
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/agent-core.ts",
+        "frontend/src/lib/security-agent-controls.ts",
+        "tests/unit/security-agent-controls.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/agent-core.ts",
+        "frontend/src/lib/security-agent-controls.ts",
+        "tests/unit/security-agent-controls.test.ts"
+      ],
+      "unresolvedEvidence": []
+    },
+    {
+      "id": "twin-identity",
+      "area": "Digital twin identity",
+      "requirement": "Twins have canonical identity, owner, tenant, provenance, freshness, confidence, lifecycle and policy; they are policy-controlled projections.",
+      "required": true,
+      "ownerPhase": "16",
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/twin-core.ts",
+        "tests/unit/twin-governance.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/twin-core.ts",
+        "tests/unit/twin-governance.test.ts"
+      ],
+      "unresolvedEvidence": []
+    },
+    {
+      "id": "api-validation",
+      "area": "API boundary validation",
+      "requirement": "Every server boundary validates input, resolves tenant server-side, returns structured errors and never trusts client-supplied role/tenant claims.",
+      "required": true,
+      "ownerPhase": "01 (rule) / consuming phases",
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/p08-enforcement-surface.test.ts",
+        "tests/unit/kernel-contract-coverage.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/p08-enforcement-surface.test.ts",
+        "tests/unit/kernel-contract-coverage.test.ts"
+      ],
+      "unresolvedEvidence": []
+    },
+    {
+      "id": "testing",
+      "area": "Testing constitution",
+      "requirement": "Unit, integration, authorization, RLS, API, security and failure tests exist, and a single chain proves them.",
+      "required": true,
+      "ownerPhase": "01",
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/foundation.test.ts",
+        "package.json"
+      ],
+      "matchedEvidence": [
+        "tests/unit/foundation.test.ts"
+      ],
+      "unresolvedEvidence": []
+    },
+    {
+      "id": "migration-discipline",
+      "area": "Migration discipline",
+      "requirement": "Schema changes are migration-based, ordered, documented and applied by tooling — never by hand.",
+      "required": true,
+      "ownerPhase": "01/14",
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/db-tooling-coherence.test.ts",
+        "scripts/db-apply.mjs"
+      ],
+      "matchedEvidence": [
+        "tests/unit/db-tooling-coherence.test.ts",
+        "scripts/db-apply.mjs"
+      ],
+      "unresolvedEvidence": []
+    },
+    {
+      "id": "environment-separation",
+      "area": "Environment separation",
+      "requirement": "local / dev / test / staging / production are distinct; production credentials are never casually reused.",
+      "required": true,
+      "ownerPhase": "01",
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/env.test.ts",
+        "scripts/verify-env.ts",
+        ".env.example"
+      ],
+      "matchedEvidence": [
+        "tests/unit/env.test.ts",
+        "scripts/verify-env.ts",
+        ".env.example"
+      ],
+      "unresolvedEvidence": []
+    },
+    {
+      "id": "secret-management",
+      "area": "Secret management",
+      "requirement": "No secret in git, frontend, logs, prompts or client storage; scanning is automated.",
+      "required": true,
+      "ownerPhase": "01",
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "scripts/verification/secret-scan.mjs",
+        "tests/unit/foundation.test.ts",
+        ".gitignore"
+      ],
+      "matchedEvidence": [
+        "scripts/verification/secret-scan.mjs",
+        "tests/unit/foundation.test.ts"
+      ],
+      "unresolvedEvidence": []
+    },
+    {
+      "id": "error-handling",
+      "area": "Error architecture",
+      "requirement": "Errors are structured, typed, safe and traceable, and never leak secrets, SQL internals or private data.",
+      "required": true,
+      "ownerPhase": "01",
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "frontend/src/lib/error-capture.ts",
+        "frontend/src/lib/platform-error-reporting.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/error-capture.ts",
+        "frontend/src/lib/platform-error-reporting.ts"
+      ],
+      "unresolvedEvidence": []
+    },
+    {
+      "id": "reliability-idempotency",
+      "area": "Reliability and idempotency",
+      "requirement": "Failure is assumed; operations with external side effects are idempotent and replay-safe.",
+      "required": true,
+      "ownerPhase": "01/13",
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/kernel-outbox.test.ts",
+        "tests/unit/financial-payments.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/kernel-outbox.test.ts",
+        "tests/unit/financial-payments.test.ts"
+      ],
+      "unresolvedEvidence": []
+    },
+    {
+      "id": "event-architecture",
+      "area": "Event architecture",
+      "requirement": "Domain events are typed, versioned and published through one coherent fabric rather than ad-hoc calls.",
+      "required": true,
+      "ownerPhase": "14/40",
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/kernel/outbox.ts",
+        "tests/unit/runtime-scholar-events.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/kernel/outbox.ts",
+        "tests/unit/runtime-scholar-events.test.ts"
+      ],
+      "unresolvedEvidence": []
+    },
+    {
+      "id": "module-boundaries",
+      "area": "Module boundaries and no hidden coupling",
+      "requirement": "Modules expose contracts, not internals; the kernel stays domain-neutral; cross-domain coupling is explicit.",
+      "required": true,
+      "ownerPhase": "01/33",
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/kernel-purity.test.ts",
+        "tests/unit/kernel-contract-coverage.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/kernel-purity.test.ts",
+        "tests/unit/kernel-contract-coverage.test.ts"
+      ],
+      "unresolvedEvidence": []
+    },
+    {
+      "id": "documentation-adrs",
+      "area": "Documentation and ADRs",
+      "requirement": "Foundational decisions are documented and machine-checked; documentation must reflect implementation reality.",
+      "required": true,
+      "ownerPhase": "01",
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "scripts/verification/engineering-sections.mjs",
+        "tests/unit/foundation.test.ts",
+        "DECISIONS.md"
+      ],
+      "matchedEvidence": [
+        "scripts/verification/engineering-sections.mjs",
+        "tests/unit/foundation.test.ts",
+        "DECISIONS.md"
+      ],
+      "unresolvedEvidence": []
+    },
+    {
+      "id": "phase-implementation-contract",
+      "area": "Phase implementation contract (§93) and Definition of Done (§94)",
+      "requirement": "Every phase declares the twenty engineering sections, boundaries, capability ownership, ASI profile and DoD obligations, machine-checked.",
+      "required": true,
+      "ownerPhase": "01/33",
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/kernel-phase-contract.test.ts",
+        "frontend/src/lib/kernel/phase-contracts/phase-01-foundation.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/kernel-phase-contract.test.ts",
+        "frontend/src/lib/kernel/phase-contracts/phase-01-foundation.ts"
+      ],
+      "unresolvedEvidence": []
+    },
+    {
+      "id": "default-deny",
+      "area": "Default deny (§83, Principle 5)",
+      "requirement": "Uncertain identity, tenant, policy or approval resolution DENIES; fail closed for sensitive operations.",
+      "required": true,
+      "ownerPhase": "08/33",
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/capability-gate.test.ts",
+        "tests/unit/scholar-feature-gate.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/capability-gate.test.ts",
+        "tests/unit/scholar-feature-gate.test.ts"
+      ],
+      "unresolvedEvidence": []
+    },
+    {
+      "id": "human-approval",
+      "area": "Human approval for designated high-risk actions (§33, Principle 17)",
+      "requirement": "Agents may recommend, prepare and simulate, but never bypass a required human approval.",
+      "required": true,
+      "ownerPhase": "07/17",
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/automation-governance.test.ts",
+        "tests/unit/command-governance.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/automation-governance.test.ts",
+        "tests/unit/command-governance.test.ts"
+      ],
+      "unresolvedEvidence": []
+    },
+    {
+      "id": "no-universal-admin-api",
+      "area": "No universal admin API and blast-radius containment (§80-§81)",
+      "requirement": "No single unrestricted endpoint; capabilities are domain-specific and policy-aware; every server-function family is classified.",
+      "required": true,
+      "ownerPhase": "08",
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/p08-enforcement-surface.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/p08-enforcement-surface.test.ts"
+      ],
+      "unresolvedEvidence": []
+    },
+    {
+      "id": "zero-trust-boundary",
+      "area": "Zero trust at the API boundary (§82)",
+      "requirement": "Every sensitive request is authenticated and authorized in its current context; network position grants nothing.",
+      "required": true,
+      "ownerPhase": "08/42",
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/auth-helpers.test.ts",
+        "tests/unit/security-session.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/auth-helpers.test.ts",
+        "tests/unit/security-session.test.ts"
+      ],
+      "unresolvedEvidence": []
+    },
+    {
+      "id": "workspace-isolation",
+      "area": "Dynamic workspace as an authorization projection (§13, §78)",
+      "requirement": "A workspace is composed from identity, membership, roles, policies, relationships and scope — never hardcoded per role.",
+      "required": true,
+      "ownerPhase": "06/24",
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/workspace-experience.test.ts",
+        "tests/unit/workspace-navigation.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/workspace-experience.test.ts",
+        "tests/unit/workspace-navigation.test.ts"
+      ],
+      "unresolvedEvidence": []
+    },
+    {
+      "id": "command-centre-control-plane",
+      "area": "Command Centre as control plane (§8, §79)",
+      "requirement": "The Command Centre exposes genuine backend state for provisioning, governance and operations — never fabricated metrics.",
+      "required": true,
+      "ownerPhase": "19",
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/command-centre-contract-governance.test.ts",
+        "tests/unit/command-core.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/command-centre-contract-governance.test.ts",
+        "tests/unit/command-core.test.ts"
+      ],
+      "unresolvedEvidence": []
+    },
+    {
+      "id": "scale-async-foundation",
+      "area": "Scale and asynchronous foundation (§57-§58)",
+      "requirement": "No global in-memory coordination; long operations become jobs; the scaling model does not change the security model.",
+      "required": true,
+      "ownerPhase": "31",
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/platform-offline.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/platform-offline.test.ts"
+      ],
+      "unresolvedEvidence": []
+    },
+    {
+      "id": "data-minimization-consent",
+      "area": "Data minimisation, consent and purpose (§75-§77)",
+      "requirement": "Data exists only for a defined capability; purpose participates in sensitive-data authorization; analytics prefer aggregation.",
+      "required": true,
+      "ownerPhase": "14",
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/data-quality.test.ts",
+        "tests/unit/scholar-policies-privacy.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/data-quality.test.ts",
+        "tests/unit/scholar-policies-privacy.test.ts"
+      ],
+      "unresolvedEvidence": []
+    },
+    {
+      "id": "versioning-contracts",
+      "area": "Contract and schema versioning (§89)",
+      "requirement": "Public/internal contracts, events, agent tools and policy schemas are versioned when compatibility requires it.",
+      "required": true,
+      "ownerPhase": "01/29",
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/kernel/phase-contract.ts",
+        "tests/unit/kernel-domain-manifest.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/kernel/phase-contract.ts",
+        "tests/unit/kernel-domain-manifest.test.ts"
+      ],
+      "unresolvedEvidence": []
+    },
+    {
+      "id": "ai-dod",
+      "area": "AI Definition of Done (§96)",
+      "requirement": "AI features ship with gateway, model config, input filtering, output validation, authorization-aware retrieval, cost controls and evaluation.",
+      "required": true,
+      "ownerPhase": "26",
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/scholar-ai-contracts.test.ts",
+        "tests/unit/ai.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/scholar-ai-contracts.test.ts",
+        "tests/unit/ai.test.ts"
+      ],
+      "unresolvedEvidence": []
+    },
+    {
+      "id": "agent-dod",
+      "area": "Agent Definition of Done (§97)",
+      "requirement": "Agents ship with identity, purpose, permissions, tools, memory scope, policy, risk class, approval rules, audit, evaluation and a kill switch.",
+      "required": true,
+      "ownerPhase": "07",
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/agent-plans.test.ts",
+        "tests/unit/agent-memory.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/agent-plans.test.ts",
+        "tests/unit/agent-memory.test.ts"
+      ],
+      "unresolvedEvidence": []
+    },
+    {
+      "id": "twin-dod",
+      "area": "Digital twin Definition of Done (§98)",
+      "requirement": "Twins ship with canonical identity, provenance, freshness, confidence, classification, policy, authorized projections, lifecycle and failure behaviour.",
+      "required": true,
+      "ownerPhase": "16",
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/twin-state.test.ts",
+        "tests/unit/twin-graph.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/twin-state.test.ts",
+        "tests/unit/twin-graph.test.ts"
+      ],
+      "unresolvedEvidence": []
+    },
+    {
+      "id": "security-dod",
+      "area": "Security Definition of Done (§95)",
+      "requirement": "Sensitive features additionally require classification, privacy review, audit logging and negative authorization tests.",
+      "required": true,
+      "ownerPhase": "08/09",
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/trust-governance.test.ts",
+        "tests/unit/security-events.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/trust-governance.test.ts",
+        "tests/unit/security-events.test.ts"
+      ],
+      "unresolvedEvidence": []
+    },
+    {
+      "id": "rate-limiting-budgets",
+      "area": "Rate limiting and resource budgets (§59-§60)",
+      "requirement": "Limits exist per actor, tenant, API, agent, tool and model, with budgets for tokens, compute and external calls.",
+      "required": false,
+      "ownerPhase": "26/31",
+      "classification": "MISSING",
+      "declaredEvidence": [
+        "frontend/src/lib/ai-core.ts",
+        "tests/unit/automation-governance.test.ts"
+      ],
+      "matchedEvidence": [],
+      "unresolvedEvidence": []
+    }
+  ],
+  "ok": true,
+  "limitations": [
+    "Classification measures the presence of executable evidence, not the correctness or completeness of that evidence.",
+    "A DECLARED area is unfinished work, never a false claim — it is reported as such.",
+    "Evidence patterns are declared per phase in architecture/phase-acceptance/phase-<id>-*.json and must be reviewed when a phase is re-audited."
+  ]
+}

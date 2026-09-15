@@ -2,7 +2,7 @@
   "artifact": "phase-completion",
   "wave": "AUDIT-1",
   "owner": "kernel (Phase 01 governance)",
-  "generatedAt": "2026-09-14T11:59:07.553Z",
+  "generatedAt": "2026-09-15T02:14:47.319Z",
   "authority": [
     "CONSTITUTION.md",
     "architecture/registry.json",
@@ -19,12 +19,13 @@
   "summary": {
     "phasesAudited": 51,
     "complete": 7,
-    "implementing": 25,
-    "architectureDefined": 19,
+    "implementing": 26,
+    "architectureDefined": 18,
     "withModules": 32,
     "withResolvedModules": 31,
     "totalTestsCited": 1883,
     "registryBeyondAudit": [
+      "01",
       "02",
       "03",
       "04",
@@ -77,12 +78,6 @@
     ],
     "unconfirmedClaims": [
       {
-        "id": "01",
-        "levels": [
-          "L3 backend"
-        ]
-      },
-      {
         "id": "02",
         "levels": [
           "L3 backend"
@@ -109,9 +104,9 @@
     ],
     "missingLevelFrequency": {
       "L4 frontend/workspace integration": 43,
-      "L3 backend": 20,
+      "L3 backend": 19,
       "L2 data model": 13,
-      "L5 operational maturity": 2,
+      "L5 operational maturity": 1,
       "L1 conceptual": 1
     }
   },
@@ -125,12 +120,13 @@
       "modulesResolve": false,
       "citedTestFiles": 0,
       "testsCounted": 0,
+      "executableEvidence": 8,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": false,
-        "L3 backend": false,
+        "L3 backend": true,
         "L4 frontend/workspace integration": false,
-        "L5 operational maturity": false
+        "L5 operational maturity": true
       },
       "registryLevels": [
         true,
@@ -140,17 +136,13 @@
         false
       ],
       "registryStatus": "IMPLEMENTING",
-      "derivedStatus": "ARCHITECTURE_DEFINED",
+      "derivedStatus": "IMPLEMENTING",
       "complete": false,
       "missingLevels": [
         "L2 data model",
-        "L3 backend",
-        "L4 frontend/workspace integration",
-        "L5 operational maturity"
+        "L4 frontend/workspace integration"
       ],
-      "unconfirmedLevels": [
-        "L3 backend"
-      ]
+      "unconfirmedLevels": []
     },
     {
       "id": "02",
@@ -167,6 +159,7 @@
       "modulesResolve": true,
       "citedTestFiles": 0,
       "testsCounted": 0,
+      "executableEvidence": 6,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": true,
@@ -207,6 +200,7 @@
       "modulesResolve": true,
       "citedTestFiles": 2,
       "testsCounted": 56,
+      "executableEvidence": 2,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": true,
@@ -245,6 +239,7 @@
       "modulesResolve": true,
       "citedTestFiles": 2,
       "testsCounted": 81,
+      "executableEvidence": 2,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": true,
@@ -287,6 +282,7 @@
       "modulesResolve": true,
       "citedTestFiles": 4,
       "testsCounted": 100,
+      "executableEvidence": 4,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": true,
@@ -323,6 +319,7 @@
       "modulesResolve": true,
       "citedTestFiles": 3,
       "testsCounted": 28,
+      "executableEvidence": 3,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": true,
@@ -359,6 +356,7 @@
       "modulesResolve": true,
       "citedTestFiles": 4,
       "testsCounted": 62,
+      "executableEvidence": 4,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": true,
@@ -398,6 +396,7 @@
       "modulesResolve": true,
       "citedTestFiles": 5,
       "testsCounted": 70,
+      "executableEvidence": 5,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": true,
@@ -432,6 +431,7 @@
       "modulesResolve": true,
       "citedTestFiles": 4,
       "testsCounted": 82,
+      "executableEvidence": 4,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": true,
@@ -468,6 +468,7 @@
       "modulesResolve": true,
       "citedTestFiles": 4,
       "testsCounted": 59,
+      "executableEvidence": 4,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": true,
@@ -504,6 +505,7 @@
       "modulesResolve": true,
       "citedTestFiles": 4,
       "testsCounted": 49,
+      "executableEvidence": 4,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": true,
@@ -540,6 +542,7 @@
       "modulesResolve": true,
       "citedTestFiles": 4,
       "testsCounted": 47,
+      "executableEvidence": 4,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": true,
@@ -574,6 +577,7 @@
       "modulesResolve": true,
       "citedTestFiles": 4,
       "testsCounted": 55,
+      "executableEvidence": 4,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": true,
@@ -610,6 +614,7 @@
       "modulesResolve": true,
       "citedTestFiles": 4,
       "testsCounted": 43,
+      "executableEvidence": 4,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": true,
@@ -646,6 +651,7 @@
       "modulesResolve": true,
       "citedTestFiles": 4,
       "testsCounted": 89,
+      "executableEvidence": 4,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": true,
@@ -682,6 +688,7 @@
       "modulesResolve": true,
       "citedTestFiles": 4,
       "testsCounted": 74,
+      "executableEvidence": 4,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": true,
@@ -718,6 +725,7 @@
       "modulesResolve": true,
       "citedTestFiles": 4,
       "testsCounted": 87,
+      "executableEvidence": 4,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": true,
@@ -754,6 +762,7 @@
       "modulesResolve": true,
       "citedTestFiles": 4,
       "testsCounted": 62,
+      "executableEvidence": 4,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": true,
@@ -790,6 +799,7 @@
       "modulesResolve": true,
       "citedTestFiles": 4,
       "testsCounted": 47,
+      "executableEvidence": 4,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": true,
@@ -828,6 +838,7 @@
       "modulesResolve": true,
       "citedTestFiles": 4,
       "testsCounted": 59,
+      "executableEvidence": 4,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": true,
@@ -864,6 +875,7 @@
       "modulesResolve": false,
       "citedTestFiles": 4,
       "testsCounted": 69,
+      "executableEvidence": 4,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": true,
@@ -900,6 +912,7 @@
       "modulesResolve": true,
       "citedTestFiles": 1,
       "testsCounted": 5,
+      "executableEvidence": 1,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": true,
@@ -936,6 +949,7 @@
       "modulesResolve": true,
       "citedTestFiles": 2,
       "testsCounted": 41,
+      "executableEvidence": 2,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": true,
@@ -972,6 +986,7 @@
       "modulesResolve": true,
       "citedTestFiles": 2,
       "testsCounted": 42,
+      "executableEvidence": 2,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": true,
@@ -1007,6 +1022,7 @@
       "modulesResolve": true,
       "citedTestFiles": 6,
       "testsCounted": 128,
+      "executableEvidence": 6,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": true,
@@ -1046,6 +1062,7 @@
       "modulesResolve": true,
       "citedTestFiles": 2,
       "testsCounted": 71,
+      "executableEvidence": 2,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": true,
@@ -1083,6 +1100,7 @@
       "modulesResolve": true,
       "citedTestFiles": 1,
       "testsCounted": 52,
+      "executableEvidence": 1,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": true,
@@ -1118,6 +1136,7 @@
       "modulesResolve": true,
       "citedTestFiles": 1,
       "testsCounted": 47,
+      "executableEvidence": 1,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": true,
@@ -1155,6 +1174,7 @@
       "modulesResolve": true,
       "citedTestFiles": 1,
       "testsCounted": 52,
+      "executableEvidence": 1,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": true,
@@ -1192,6 +1212,7 @@
       "modulesResolve": true,
       "citedTestFiles": 2,
       "testsCounted": 95,
+      "executableEvidence": 2,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": true,
@@ -1229,6 +1250,7 @@
       "modulesResolve": true,
       "citedTestFiles": 1,
       "testsCounted": 58,
+      "executableEvidence": 1,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": true,
@@ -1266,6 +1288,7 @@
       "modulesResolve": true,
       "citedTestFiles": 1,
       "testsCounted": 49,
+      "executableEvidence": 1,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": true,
@@ -1302,6 +1325,7 @@
       "modulesResolve": true,
       "citedTestFiles": 2,
       "testsCounted": 24,
+      "executableEvidence": 2,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": true,
@@ -1331,6 +1355,7 @@
       "modulesResolve": false,
       "citedTestFiles": 0,
       "testsCounted": 0,
+      "executableEvidence": 0,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": false,
@@ -1364,6 +1389,7 @@
       "modulesResolve": false,
       "citedTestFiles": 0,
       "testsCounted": 0,
+      "executableEvidence": 0,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": false,
@@ -1397,6 +1423,7 @@
       "modulesResolve": false,
       "citedTestFiles": 0,
       "testsCounted": 0,
+      "executableEvidence": 0,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": true,
@@ -1429,6 +1456,7 @@
       "modulesResolve": false,
       "citedTestFiles": 0,
       "testsCounted": 0,
+      "executableEvidence": 0,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": false,
@@ -1462,6 +1490,7 @@
       "modulesResolve": false,
       "citedTestFiles": 0,
       "testsCounted": 0,
+      "executableEvidence": 0,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": false,
@@ -1496,6 +1525,7 @@
       "modulesResolve": false,
       "citedTestFiles": 0,
       "testsCounted": 0,
+      "executableEvidence": 0,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": false,
@@ -1529,6 +1559,7 @@
       "modulesResolve": false,
       "citedTestFiles": 0,
       "testsCounted": 0,
+      "executableEvidence": 0,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": false,
@@ -1562,6 +1593,7 @@
       "modulesResolve": false,
       "citedTestFiles": 0,
       "testsCounted": 0,
+      "executableEvidence": 0,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": false,
@@ -1595,6 +1627,7 @@
       "modulesResolve": false,
       "citedTestFiles": 0,
       "testsCounted": 0,
+      "executableEvidence": 0,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": false,
@@ -1628,6 +1661,7 @@
       "modulesResolve": false,
       "citedTestFiles": 0,
       "testsCounted": 0,
+      "executableEvidence": 0,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": false,
@@ -1661,6 +1695,7 @@
       "modulesResolve": false,
       "citedTestFiles": 0,
       "testsCounted": 0,
+      "executableEvidence": 0,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": true,
@@ -1693,6 +1728,7 @@
       "modulesResolve": false,
       "citedTestFiles": 0,
       "testsCounted": 0,
+      "executableEvidence": 0,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": true,
@@ -1725,6 +1761,7 @@
       "modulesResolve": false,
       "citedTestFiles": 0,
       "testsCounted": 0,
+      "executableEvidence": 0,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": false,
@@ -1758,6 +1795,7 @@
       "modulesResolve": false,
       "citedTestFiles": 0,
       "testsCounted": 0,
+      "executableEvidence": 0,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": true,
@@ -1790,6 +1828,7 @@
       "modulesResolve": false,
       "citedTestFiles": 0,
       "testsCounted": 0,
+      "executableEvidence": 0,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": false,
@@ -1823,6 +1862,7 @@
       "modulesResolve": false,
       "citedTestFiles": 0,
       "testsCounted": 0,
+      "executableEvidence": 0,
       "evidence": {
         "L1 conceptual": false,
         "L2 data model": true,
@@ -1858,6 +1898,7 @@
       "modulesResolve": false,
       "citedTestFiles": 0,
       "testsCounted": 0,
+      "executableEvidence": 0,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": false,
@@ -1891,6 +1932,7 @@
       "modulesResolve": false,
       "citedTestFiles": 0,
       "testsCounted": 0,
+      "executableEvidence": 0,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": true,

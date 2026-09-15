@@ -33,7 +33,7 @@ reconciles it against `architecture/registry.json`:
 | --- | --- |
 | L1 conceptual | phase document with ≥ 8 engineering sections **and** a kernel phase contract |
 | L2 data model | data-model vocabulary in the document **and** (a migration references the capability **or** the contract declares substrates) |
-| L3 backend | every declared module resolves to real source **and** contract-cited tests exist with real test counts |
+| L3 backend | every declared module resolves to real source **and** contract-cited tests exist with real test counts, **or** the contract cites ≥ 1 existing EXECUTABLE artefact (scripts/tests/migrations/frontend source/infrastructure/CI) — documentation citations alone never satisfy this level |
 | L4 frontend/workspace | a route or component references the phase's modules/capability |
 | L5 operational | a proof, verifier, CI job, runbook or infrastructure file names it |
 
@@ -55,8 +55,28 @@ Two drift findings, both recorded rather than smoothed over:
 - **Five registry claims could not be evidenced** by this audit (01 and 02 L3,
   19 and 25 L4, 49 L1) — UNKNOWN class, to be confirmed by hand (phase 49's
   document lacks the engineering sections the L1 rule requires).
+- **Update 2026-09-14 (AUDIT-P01):** the L3 rule now also accepts contract-cited
+  EXECUTABLE artefacts, which confirms phase 01's L3 claim from its real
+  enforcement (verify chain, secret scan, registry validator, CI workflow, 15
+  integrity tests). Unconfirmed claims fall 5 → 4 (**02 L3, 19 L4, 25 L4, 49 L1**);
+  architecture-only phases are unaffected (0 executable artefacts). Current
+  evidence-derived totals: **COMPLETE 7 · IMPLEMENTING 26 ·
+  ARCHITECTURE_DEFINED 18**.
 
-## 3. Archaeology work packages (next, in order)
+## 3. Per-phase archaeology intake (new — beginning with Phase 01)
+
+Each pasted phase document is verified four ways (document ↔ kernel contract ↔
+`registry.json` ↔ code) and its acceptance criteria are resolved against real
+artefacts by `npm run audit:phase -- --phase=<id>` (data file per phase under
+`architecture/phase-acceptance/`, classification ENFORCED / DECLARED / MISSING,
+proof per phase under `architecture/proofs/`). The narrative record lives beside
+this inventory:
+
+| Phase | Record | Acceptance probe result |
+| --- | --- | --- |
+| 01 Foundation | `architecture/archaeology/phase-01-foundation.audit.md` | 43 areas — **ENFORCED 40 · DECLARED 2 · MISSING 1**; ownership confirmed (no duplication), work items P01-1…P01-4, BR-01, unknowns U-01…U-04 |
+
+## 4. Archaeology work packages (next, in order)
 
 | Package | Purpose | Evidence required |
 | --- | --- | --- |
@@ -68,7 +88,7 @@ These three were deliberately NOT guessed at here: each requires exhaustive
 per-file inspection, and inventing them would produce exactly the architectural
 theatre the constitution forbids.
 
-## 4. What this wave did NOT do
+## 5. What this wave did NOT do
 
 - No feature implementation (Law 11: no implementation before archaeology).
 - No registry edit to "fix" stale levels: the auditor reports drift; correcting

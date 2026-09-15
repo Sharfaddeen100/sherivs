@@ -16,6 +16,7 @@
     "verify:role-substrate": "node scripts/verify-role-assignment-substrate.mjs",
     "verify:infrastructure": "node scripts/verify-infrastructure.mjs",
     "audit:phases": "node scripts/audit-phase-completion.mjs",
+    "audit:phase": "node scripts/audit-phase-acceptance.mjs",
     "generate:icons": "node scripts/generate-pwa-icons.mjs",
     "preflight:infrastructure": "node scripts/infrastructure/preflight.mjs",
     "bootstrap:infrastructure": "node scripts/infrastructure/bootstrap.mjs",

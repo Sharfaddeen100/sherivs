@@ -91,6 +91,19 @@ const REQUIRED_SECTIONS = [
 ];
 const DATA_MODEL_MARKERS = ["data model", "schema", "entity", "entities", "column", "table"];
 
+/**
+ * Prefixes that count as EXECUTABLE evidence for L3. A contract that only cites
+ * architecture documents and phase prose does not satisfy the backend level.
+ */
+const EXECUTABLE_PREFIXES = [
+  "scripts/",
+  "tests/",
+  "database/supabase/migrations/",
+  "frontend/src/",
+  "infrastructure/",
+  ".github/",
+];
+
 function read(ref) {
   return readFileSync(join(ROOT, ref), "utf8").replace(/\r\n/g, "\n");
 }
@@ -205,14 +218,30 @@ for (const phase of registry.phases) {
   const dataInDatabase = tokens.some((token) => migrationCorpus.includes(token));
   const l2 = hasDataVocabulary && (dataInDatabase || substrates.length > 0);
 
-  // L3 — backend implementation: real modules, or contract-cited tests, plus tests
+  // L3 — backend implementation: real modules, or cited EXECUTABLE artefacts,
+  // plus real tests. Documentation citations alone never satisfy this level.
   const modulesResolve = modules.length > 0 && modules.every((name) => resolveModule(name));
   const testsPresent = citedTests.length > 0 && citedTests.every((ref) => existsSync(join(ROOT, ref)));
   const testsCounted = citedTests.reduce(
     (total, ref) => total + (existsSync(join(ROOT, ref)) ? countTests(join(ROOT, ref)) : 0),
     0,
   );
-  const l3 = (modulesResolve || testsPresent) && (testsCounted > 0 || (phase.tests ?? 0) > 0);
+  const executableEvidence = contract
+    ? [
+        ...new Set(
+          [...contract.text.matchAll(/"([^"\n]+)"/g)]
+            .map((match) => match[1].replace(/\/$/, ""))
+            .filter(
+              (value) =>
+                value.includes("/") &&
+                EXECUTABLE_PREFIXES.some((prefix) => value.startsWith(prefix)),
+            ),
+        ),
+      ].filter((value) => existsSync(join(ROOT, value)))
+    : [];
+  const l3 =
+    (modulesResolve || executableEvidence.length > 0) &&
+    (testsCounted > 0 || (phase.tests ?? 0) > 0);
 
   // L4 — frontend / workspace projection (import paths or capability id only)
   const l4 = tokens.some((token) => surfaceCorpus.includes(token));
@@ -262,6 +291,7 @@ for (const phase of registry.phases) {
     modulesResolve,
     citedTests: citedTests.length,
     testsCounted,
+    executableEvidence: executableEvidence.length,
     evidence,
     claimed,
     beyondRegistry: claimed.some((value, index) => evidence[index] && !value),
@@ -332,6 +362,7 @@ const proof = {
     modulesResolve: row.modulesResolve,
     citedTestFiles: row.citedTests,
     testsCounted: row.testsCounted,
+    executableEvidence: row.executableEvidence,
     evidence: Object.fromEntries(LEVEL_NAMES.map((name, index) => [name, row.evidence[index]])),
     registryLevels: row.claimed,
     registryStatus: row.registryStatus,
