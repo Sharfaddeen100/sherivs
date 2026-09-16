@@ -1,0 +1,386 @@
+{
+  "artifact": "phase-acceptance",
+  "phase": "04",
+  "phaseName": "Education Reality Engine",
+  "source": "architecture/phase-04-education-reality-engine.md",
+  "generatedAt": "2026-09-16T14:59:17.135Z",
+  "classificationDefinitions": {
+    "ENFORCED": "an executable artefact proves it (test, verifier script, migration, policy or machine-checked contract match) and, where a boundary is declared, a real call site invokes it",
+    "DECLARED": "a module, document or contract mentions it, but nothing executable proves it",
+    "IMPLEMENTED_UNWIRED": "implementation and tests exist, but the declared boundary patterns match nothing — the capability protects nothing yet",
+    "MISSING": "no artefact found"
+  },
+  "summary": {
+    "areas": 16,
+    "enforced": 16,
+    "declared": 0,
+    "implementedUnwired": 0,
+    "implementedUnwiredAreas": [],
+    "missing": 0,
+    "missingRequired": [],
+    "unresolvedEvidencePaths": []
+  },
+  "ownership": {
+    "note": "Phase 04 owns the educational reality model of an institution. It never owns identity (02), tenancy (03), devices (15), twins (16), automation (17), analytics (18), experience (24) or AI reasoning (26).",
+    "canonicalOwners": {
+      "reality-engine": "04",
+      "kernel-reality-substrate": "33",
+      "identity": "02",
+      "tenancy": "03",
+      "scheduling": "12",
+      "financial": "13",
+      "workforce": "25",
+      "hardware": "15",
+      "digital-twin": "16",
+      "automation": "17",
+      "analytics": "18",
+      "experience": "24",
+      "ai-reasoning": "26"
+    }
+  },
+  "areas": [
+    {
+      "id": "reality-model",
+      "area": "Educational reality model (§4–§29, §199)",
+      "requirement": "Levels, programmes, curricula and versions, subjects, cohorts, classes and streams are modelled as typed reality objects, not hard-coded school structures.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/education-core.ts",
+        "frontend/src/lib/education-curriculum.ts",
+        "tests/unit/education.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/education-core.ts",
+        "frontend/src/lib/education-curriculum.ts",
+        "tests/unit/education.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "institution-and-operating-model",
+      "area": "Institution self-description and operating model (§26, §155)",
+      "requirement": "An institution defines its own operating reality; the platform interprets that reality instead of dictating a structure.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/education-institution.ts",
+        "frontend/src/lib/scholar-institution-config.functions.ts",
+        "tests/unit/scholar-config-lifecycle.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/education-institution.ts",
+        "frontend/src/lib/scholar-institution-config.functions.ts",
+        "tests/unit/scholar-config-lifecycle.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "kernel-substrate",
+      "area": "Persisted on the kernel reality substrate (§199)",
+      "requirement": "Reality objects are stored as cg_entity/cg_relationship/cg_observation/cg_event with tenant boundaries, not in a private store.",
+      "required": true,
+      "ownerPhase": "33",
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "database/supabase/migrations/20260903000000_coregrid_universal_kernel_substrate.sql",
+        "frontend/src/lib/runtime/scholar-reality.ts",
+        "tests/unit/runtime-scholar-reality.test.ts"
+      ],
+      "matchedEvidence": [
+        "database/supabase/migrations/20260903000000_coregrid_universal_kernel_substrate.sql",
+        "frontend/src/lib/runtime/scholar-reality.ts",
+        "tests/unit/runtime-scholar-reality.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "command-model",
+      "area": "Command model (§200)",
+      "requirement": "Every reality mutation is a server-side, validated, authorised, versioned command that fails closed.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/scholar-institution-config.functions.ts",
+        "tests/unit/p08-enforcement-surface.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/scholar-institution-config.functions.ts",
+        "tests/unit/p08-enforcement-surface.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "tests/unit/p08-enforcement-surface.test.ts"
+      ],
+      "boundaryEvidence": [
+        "tests/unit/p08-enforcement-surface.test.ts"
+      ]
+    },
+    {
+      "id": "assessment-and-progression",
+      "area": "Assessment, grading and progression (§41, §43, §48)",
+      "requirement": "Grading, assignment lifecycle and student progression are modelled with their own rules and evidence.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/education-assessment.ts",
+        "tests/unit/scholar-assessment-grading.test.ts",
+        "tests/unit/scholar-assignment.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/education-assessment.ts",
+        "tests/unit/scholar-assessment-grading.test.ts",
+        "tests/unit/scholar-assignment.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "facilities-and-resources",
+      "area": "Facilities, resources and physical-to-digital mapping (§60–§76)",
+      "requirement": "Buildings, facility capability, inventory and facility scheduling are represented and conflict-checked.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/education-facilities.ts",
+        "tests/unit/scholar-physical-space.test.ts",
+        "tests/unit/scholar-facility-twin.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/education-facilities.ts",
+        "tests/unit/scholar-physical-space.test.ts",
+        "tests/unit/scholar-facility-twin.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "language-and-multilingual",
+      "area": "Language and multilingual education (§17–§18)",
+      "requirement": "Language of instruction, multilingual delivery and localisation are modelled rather than assumed to be English-only.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/locale.test.ts",
+        "tests/unit/scholar-curriculum-modes.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/locale.test.ts",
+        "tests/unit/scholar-curriculum-modes.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "offline-first",
+      "area": "Offline-first, low-bandwidth and power-aware operation (§86–§90)",
+      "requirement": "The institution keeps operating without connectivity, on low bandwidth and with unreliable power.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/platform-offline.ts",
+        "tests/unit/platform-offline.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/platform-offline.ts",
+        "tests/unit/platform-offline.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "competency-and-mastery",
+      "area": "Competency, mastery and portfolios (§102–§105)",
+      "requirement": "Learning is represented as competency and mastery evidence, with student and teacher portfolios.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/academic-mastery.test.ts",
+        "tests/unit/scholar-participation.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/academic-mastery.test.ts",
+        "tests/unit/scholar-participation.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "ai-boundary",
+      "area": "AI is not the system of record; agent boundary (§117, §146, §201)",
+      "requirement": "AI interprets reality and proposes; only authorised commands make reality. Model output never overwrites canonical truth.",
+      "required": true,
+      "ownerPhase": "26",
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/ai-governance.ts",
+        "tests/unit/scholar-ai-contracts.test.ts",
+        "tests/unit/kernel-phase-contract.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/ai-governance.ts",
+        "tests/unit/scholar-ai-contracts.test.ts",
+        "tests/unit/kernel-phase-contract.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "security-privacy-child-protection",
+      "area": "Tenant isolation, authorization, privacy and child data protection (§134–§141)",
+      "requirement": "Reality is tenant-scoped, authorised server-side, and child data is protected with retention and audit obligations.",
+      "required": true,
+      "ownerPhase": "03/08",
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/scholar-policies-privacy.test.ts",
+        "tests/unit/scholar-welfare-safeguarding.test.ts",
+        "frontend/src/lib/tenant-isolation.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/scholar-policies-privacy.test.ts",
+        "tests/unit/scholar-welfare-safeguarding.test.ts",
+        "frontend/src/lib/tenant-isolation.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "events",
+      "area": "Event contracts and idempotency (§132–§133, §202)",
+      "requirement": "Reality changes emit versioned, tenant-tagged, idempotent domain events through the kernel outbox.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/runtime/scholar-events.ts",
+        "tests/unit/runtime-scholar-events.test.ts",
+        "frontend/src/lib/kernel/outbox.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/runtime/scholar-events.ts",
+        "tests/unit/runtime-scholar-events.test.ts",
+        "frontend/src/lib/kernel/outbox.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "reality-validators",
+      "area": "Configuration validation, safe defaults and reality validator (§156–§163)",
+      "requirement": "An institution's configuration is validated and safe defaults applied; a reality validator detects impossible structures.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/education-governance.ts",
+        "tests/unit/scholar-config-validator.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/education-governance.ts",
+        "tests/unit/scholar-config-validator.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "evolution",
+      "area": "Schema, curriculum and structure evolution (§177–§180)",
+      "requirement": "Reality models evolve without rewriting institutions: versioned curricula, migrations and blueprints.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/scholar-blueprint.test.ts",
+        "tests/unit/scholar-curriculum-core.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/scholar-blueprint.test.ts",
+        "tests/unit/scholar-curriculum-core.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "document-completeness",
+      "area": "Engineering-section completeness of the phase document",
+      "requirement": "The document states the mandatory engineering sections (data model, command, agent, observability, dependency, failure) instead of leaving them implicit.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "architecture/phase-04-education-reality-engine.md",
+        "architecture/phase-04-education-reality-engine.md",
+        "scripts/verification/engineering-sections.mjs",
+        "tests/unit/kernel-contract-coverage.test.ts"
+      ],
+      "matchedEvidence": [
+        "architecture/phase-04-education-reality-engine.md",
+        "architecture/phase-04-education-reality-engine.md",
+        "scripts/verification/engineering-sections.mjs",
+        "tests/unit/kernel-contract-coverage.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "tests/unit/kernel-contract-coverage.test.ts"
+      ],
+      "boundaryEvidence": [
+        "tests/unit/kernel-contract-coverage.test.ts"
+      ]
+    },
+    {
+      "id": "workspace-projection",
+      "area": "Educational reality projected in a workspace (L4)",
+      "requirement": "The institution's operating reality is readable in a surface from real state, and the surface reports honestly when there is none.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/education-reality-view.ts",
+        "tests/unit/education-reality-view.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/education-reality-view.ts",
+        "tests/unit/education-reality-view.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "frontend/src/routes/_authenticated/admin/education-reality.tsx"
+      ],
+      "boundaryEvidence": [
+        "frontend/src/routes/_authenticated/admin/education-reality.tsx"
+      ]
+    }
+  ],
+  "ok": true,
+  "limitations": [
+    "Classification measures the presence of executable evidence, not the correctness or completeness of that evidence.",
+    "A DECLARED area is unfinished work, never a false claim — it is reported as such.",
+    "An IMPLEMENTED_UNWIRED area has a tested implementation that no boundary calls; it is reported, never counted as enforcement.",
+    "Evidence patterns are declared per phase in architecture/phase-acceptance/phase-<id>-*.json and must be reviewed when a phase is re-audited."
+  ]
+}

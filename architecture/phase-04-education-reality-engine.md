@@ -2148,3 +2148,134 @@ The digital twin should understand the physical environment.
 The intelligence layers should understand the educational environment.
 And the system should operate without requiring a developer to write a new portal for that institution.
 That is the standard for CoreGrid Scholar Educational Runtime.
+
+
+───────────────────
+
+ARCHITECTURAL COMPLETENESS ADDENDUM (sections 199–204)
+
+This addendum closes the engineering-completeness gap of this document: the
+mandatory engineering sections for data model, command model, agent boundary,
+observability, dependency map and failure behaviour were implicit in §1–§198 rather
+than stated. Nothing here redefines the scope of the phase; each section states how
+the reality engine already behaves and what must remain true as it grows. It is
+machine-counted by `npm run audit:phases` (sections 16/20 → 20/20).
+
+───────────────────
+
+199. DATA MODEL
+
+The educational reality model is persisted on the CoreGrid kernel substrate, never
+on a private one:
+
+- kernel tables — `cg_entity` (typed reality objects), `cg_relationship` (edges),
+  `cg_observation` (observed state), `cg_event` (versioned outbox) —
+  migration `20260903000000_coregrid_universal_kernel_substrate.sql`;
+- tenant and identity substrate — `cg_tenant`, `cg_identity` with RLS enabled,
+  migration `20260904020000_coregrid_l2_identity_tenancy.sql`;
+- the institution's operating reality — entity type
+  `scholar.institution.operating_model` with `entity_id`, `tenant_id`, `version`,
+  `reason`, `published_at` and the serialized `spec_json`, read back through
+  `getCurrentInstitutionOperatingModelDetail` for the actor's own tenant.
+
+Typed identifiers are branded (`EducationalLevelId`, `ProgrammeId`, `CurriculumId`,
+`CurriculumVersionId`, `SubjectId`, `CourseId`, `TopicId`, `UnitId`, `CompetencyId`,
+`ClassId`, `CohortId`, `StreamId`, `AcademicPeriodId`, `ShiftId`), so a cohort id can
+never be passed where a subject id is expected. Reality objects always carry a tenant
+boundary; a reality object without one is invalid by construction.
+
+───────────────────
+
+200. COMMAND MODEL
+
+Every mutation of educational reality is a command executed server-side:
+
+- commands are server functions (`publishInstitutionOperatingModel`,
+  `getCurrentInstitutionOperatingModel`, `getCurrentInstitutionOperatingModelDetail`,
+  `listInstitutionOperatingModelVersions`), validated with Zod at the boundary;
+- the acting tenant is resolved from the authenticated actor's own scope through the
+  canonical Phase 08 gate — a client-supplied tenant id is never trusted;
+- writes use the service role only after the gate has resolved the boundary, because
+  the `cg_*` tables are deny-by-default under RLS;
+- commands are versioned: publishing produces a new operating-model version with its
+  reason and timestamp, and the previous version remains readable, which is what makes
+  configuration rollback (§129) possible;
+- commands that cannot be authorised fail closed and produce no partial reality.
+
+───────────────────
+
+201. AGENT BOUNDARY
+
+AI may interpret educational reality; it may not author it.
+
+- Agents read reality through the same authorization-aware contracts humans use; they
+  receive no privileged path to `cg_*`;
+- an agent may propose a configuration, a validation finding or a simulation result
+  (§156, §157), but a proposal becomes reality only through a human- or
+  policy-authorised command (§115 workflow ownership, §117 AI safety boundary);
+- the system of record is never the model (§146): model output is intelligence, and
+  canonical truth is the database record;
+- agent identities, tool permissions and approval requirements are owned by Phase 07
+  and Phase 26, not by this runtime.
+
+───────────────────
+
+202. OBSERVABILITY
+
+The runtime must be observable by default (§142–§145, §165):
+
+- reality changes are emitted as domain events — for example
+  `scholar.institution.operating_model.published` — recorded through the kernel
+  `eventDraft` contract with `tenant_id`, `correlation_id`, `idempotency_key`,
+  `payload_version` and delivery state, so a change can be reconstructed and replayed;
+- the workspace projection reads real state and reports its own status honestly
+  (`published`, `not_published`, `invalid_spec`), which is the operator's first-line
+  health signal for the reality model;
+- tenant-attributable operational signals must carry `tenant_id` and a request/trace
+  id. The platform primitive for this exists and is tested, but **no runtime path
+  emits it yet** — recorded as open debt under Phase 03 K8 / Phase 01 P01-1 rather
+  than claimed as done;
+- no secret, credential or unnecessary personal data is ever logged (§141).
+
+───────────────────
+
+203. DEPENDENCY MAP
+
+Upstream (this phase consumes):
+
+- Phase 01 — verification chain, configuration and secret discipline;
+- Phase 02 — identity for every actor reads through to authorise;
+- Phase 03 — the tenant boundary every reality object is scoped by;
+- Phase 33 — the kernel reality substrate, domain-manifest and event contracts.
+
+Downstream (declared consumers):
+
+- Phase 11 (academic intelligence), Phase 12 (scheduling), Phase 13 (financial) and
+  Phase 25 (workforce/experience) consume the reality model.
+
+Explicit boundaries: hardware and devices belong to Phase 15; digital twins to
+Phase 16; automation to Phase 17; analytics to Phase 18; experience surfaces to
+Phase 24; AI reasoning to Phase 26. This runtime defines the reality those systems
+operate on, and never assumes their responsibilities (§147–§152).
+
+───────────────────
+
+204. FAILURE BEHAVIOUR
+
+Every failure mode has a defined, non-fabricating behaviour:
+
+- no operating model published → the projection reports `not_published` and shows
+  nothing structural; it never renders a default school;
+- specification unreadable or malformed → `invalid_spec`, version and reason still
+  shown, no structure inferred;
+- unrecognised specification shape → recognised keys are counted, unknown keys are
+  reported as zero — numbers are never invented;
+- write failure → the command fails loudly, the previous version remains active and
+  no partial version is published;
+- authorization failure → fail closed, no reality is read or written;
+- connectivity loss → offline-first operation (§86) with local queues (§87) and
+  deferred synchronisation; degraded mode (§145) preserves read access to last-known
+  reality while marking it as stale rather than presenting it as current;
+- divergence between published reality and observed reality is surfaced as an
+  observation (§72 reality graph), never silently merged.
+

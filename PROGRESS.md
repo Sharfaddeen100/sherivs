@@ -826,6 +826,17 @@ Normalized schema: Date · Author · Scope · Change · Validation · Status. En
 | Validation | `npm run audit:phase -- --phase=01` PASS (proof `architecture/proofs/phase-01-acceptance.proof.json`); `npm run audit:phases` re-run clean (unconfirmed claims 5 → 4; phase 01 now confirmed); `tests/unit/phase-acceptance-audit.test.ts` 8/8 (its independent re-derivation caught two real defects during authoring — a dropped RLS acceptance area and an over-strict evidence assertion, both fixed) |
 | Status | AUDITED + CLOSED — Phase 01 remains IMPLEMENTING (`L1 ✓, L2 ✗, L3 ✓, L4 ✗, L5 ✓`); its foundation is enforced and the verify chain is its operational evidence, so only the definitional L2 and the (non-applicable) L4 projection keep it from COMPLETE |
 
+### 22.9 Current entry — phase 04 completes its architecture and reaches COMPLETE
+
+| Field | Value |
+| --- | --- |
+| Date | 2026-09-14 |
+| Author | Cline (autonomous loop, §103) |
+| Scope | Phase 04 Education Reality Engine — document completion, L4 projection, registry accuracy |
+| Change | **The architecture document was incomplete and was completed**, as instructed: it stated 16 of the 20 mandatory engineering sections, leaving **data model, command model, agent boundary, observability, dependency map and failure behaviour** implicit. Addendum sections **199–204** were authored in the document's own numbered style, describing behaviour that already exists (kernel substrate tables, the gated command model, AI-never-authors-reality, event/outbox observability, the dependency map, and non-fabricating failure behaviour) rather than inventing new scope → **20/20**, machine-counted by `npm run audit:phases`. **L4** was then closed with real code: `education-reality-view.ts` (pure, tested derivation from the published operating model) projected by `/admin/education-reality`, which answers the document's own §1 questions and reports `published` / `not_published` / `invalid_spec` — it never renders a default school. **Registry accuracy:** row 04 claimed `tests: null` and understated levels; it now records 81 tests and its real module list. |
+| Validation | **`audit:phases`: COMPLETE 7 · IMPLEMENTING 26 · ARCHITECTURE_DEFINED 18** — phase 04 derives all five levels with `sections 20/20`; acceptance probe **16 areas: ENFORCED 16 · DECLARED 0 · UNWIRED 0 · MISSING 0**; guards (probe guard, completion audit, education-reality-view, education) **66/66**; typecheck 0 errors; production build PASS with regenerated route tree; `verify:registry` PASS |
+| Status | Phases **01, 02, 03 and 04 are COMPLETE**. Open items stay registered: P04 unknowns (live `cg_*` substrate validation is DB-gated — CF-7; tenant-attributable signals still unwired) plus the previously logged P01/P02/P03 items. |
+
 ### 22.8 Current entry — phase 01 closes to COMPLETE (foundation projection + BR-01 exemption)
 
 | Field | Value |

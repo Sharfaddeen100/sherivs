@@ -56,6 +56,7 @@ import { Route as AuthenticatedAdminCmsRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedAdminDashboardRouteImport } from './routes/_authenticated/admin/dashboard'
 import { Route as AuthenticatedAdminDigitalTwinRouteImport } from './routes/_authenticated/admin/digital-twin'
 import { Route as AuthenticatedAdminDisciplineRouteImport } from './routes/_authenticated/admin/discipline'
+import { Route as AuthenticatedAdminEducationRealityRouteImport } from './routes/_authenticated/admin/education-reality'
 import { Route as AuthenticatedAdminEnterpriseChecklistRouteImport } from './routes/_authenticated/admin/enterprise-checklist'
 import { Route as AuthenticatedAdminExaminationsRouteImport } from './routes/_authenticated/admin/examinations'
 import { Route as AuthenticatedAdminExpensesRouteImport } from './routes/_authenticated/admin/expenses'
@@ -403,6 +404,12 @@ const AuthenticatedAdminDisciplineRoute =
   AuthenticatedAdminDisciplineRouteImport.update({
     id: '/discipline',
     path: '/discipline',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminEducationRealityRoute =
+  AuthenticatedAdminEducationRealityRouteImport.update({
+    id: '/education-reality',
+    path: '/education-reality',
     getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
 const AuthenticatedAdminEnterpriseChecklistRoute =
@@ -1010,6 +1017,7 @@ export interface FileRoutesByFullPath {
   '/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
   '/admin/digital-twin': typeof AuthenticatedAdminDigitalTwinRoute
   '/admin/discipline': typeof AuthenticatedAdminDisciplineRoute
+  '/admin/education-reality': typeof AuthenticatedAdminEducationRealityRoute
   '/admin/enterprise-checklist': typeof AuthenticatedAdminEnterpriseChecklistRoute
   '/admin/examinations': typeof AuthenticatedAdminExaminationsRoute
   '/admin/expenses': typeof AuthenticatedAdminExpensesRoute
@@ -1152,6 +1160,7 @@ export interface FileRoutesByTo {
   '/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
   '/admin/digital-twin': typeof AuthenticatedAdminDigitalTwinRoute
   '/admin/discipline': typeof AuthenticatedAdminDisciplineRoute
+  '/admin/education-reality': typeof AuthenticatedAdminEducationRealityRoute
   '/admin/enterprise-checklist': typeof AuthenticatedAdminEnterpriseChecklistRoute
   '/admin/examinations': typeof AuthenticatedAdminExaminationsRoute
   '/admin/expenses': typeof AuthenticatedAdminExpensesRoute
@@ -1296,6 +1305,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
   '/_authenticated/admin/digital-twin': typeof AuthenticatedAdminDigitalTwinRoute
   '/_authenticated/admin/discipline': typeof AuthenticatedAdminDisciplineRoute
+  '/_authenticated/admin/education-reality': typeof AuthenticatedAdminEducationRealityRoute
   '/_authenticated/admin/enterprise-checklist': typeof AuthenticatedAdminEnterpriseChecklistRoute
   '/_authenticated/admin/examinations': typeof AuthenticatedAdminExaminationsRoute
   '/_authenticated/admin/expenses': typeof AuthenticatedAdminExpensesRoute
@@ -1440,6 +1450,7 @@ export interface FileRouteTypes {
     | '/admin/dashboard'
     | '/admin/digital-twin'
     | '/admin/discipline'
+    | '/admin/education-reality'
     | '/admin/enterprise-checklist'
     | '/admin/examinations'
     | '/admin/expenses'
@@ -1582,6 +1593,7 @@ export interface FileRouteTypes {
     | '/admin/dashboard'
     | '/admin/digital-twin'
     | '/admin/discipline'
+    | '/admin/education-reality'
     | '/admin/enterprise-checklist'
     | '/admin/examinations'
     | '/admin/expenses'
@@ -1725,6 +1737,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/dashboard'
     | '/_authenticated/admin/digital-twin'
     | '/_authenticated/admin/discipline'
+    | '/_authenticated/admin/education-reality'
     | '/_authenticated/admin/enterprise-checklist'
     | '/_authenticated/admin/examinations'
     | '/_authenticated/admin/expenses'
@@ -2172,6 +2185,13 @@ declare module '@tanstack/react-router' {
       path: '/discipline'
       fullPath: '/admin/discipline'
       preLoaderRoute: typeof AuthenticatedAdminDisciplineRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/education-reality': {
+      id: '/_authenticated/admin/education-reality'
+      path: '/education-reality'
+      fullPath: '/admin/education-reality'
+      preLoaderRoute: typeof AuthenticatedAdminEducationRealityRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
     '/_authenticated/admin/enterprise-checklist': {
@@ -2852,6 +2872,7 @@ interface AuthenticatedAdminRouteRouteChildren {
   AuthenticatedAdminDashboardRoute: typeof AuthenticatedAdminDashboardRoute
   AuthenticatedAdminDigitalTwinRoute: typeof AuthenticatedAdminDigitalTwinRoute
   AuthenticatedAdminDisciplineRoute: typeof AuthenticatedAdminDisciplineRoute
+  AuthenticatedAdminEducationRealityRoute: typeof AuthenticatedAdminEducationRealityRoute
   AuthenticatedAdminEnterpriseChecklistRoute: typeof AuthenticatedAdminEnterpriseChecklistRoute
   AuthenticatedAdminExaminationsRoute: typeof AuthenticatedAdminExaminationsRoute
   AuthenticatedAdminExpensesRoute: typeof AuthenticatedAdminExpensesRoute
@@ -2913,6 +2934,8 @@ const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren
     AuthenticatedAdminDashboardRoute: AuthenticatedAdminDashboardRoute,
     AuthenticatedAdminDigitalTwinRoute: AuthenticatedAdminDigitalTwinRoute,
     AuthenticatedAdminDisciplineRoute: AuthenticatedAdminDisciplineRoute,
+    AuthenticatedAdminEducationRealityRoute:
+      AuthenticatedAdminEducationRealityRoute,
     AuthenticatedAdminEnterpriseChecklistRoute:
       AuthenticatedAdminEnterpriseChecklistRoute,
     AuthenticatedAdminExaminationsRoute: AuthenticatedAdminExaminationsRoute,
