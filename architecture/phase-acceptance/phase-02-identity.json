@@ -138,16 +138,15 @@
       "id": "workspace-projection",
       "area": "Workspace projection (identity visible in a surface)",
       "requirement": "The identity capability is projected in at least one workspace from real state (L4), not only in the backend.",
-      "required": false,
+      "required": true,
       "evidence": [
-        { "kind": "module", "path": "frontend/src/lib/identity-registry.functions.ts", "contains": "registerIdentity" },
+        { "kind": "module", "path": "frontend/src/lib/identity-registry.functions.ts", "contains": "listIdentities" },
         { "kind": "test", "path": "tests/unit/p08-enforcement-surface.test.ts", "contains": "identity-registry.functions.ts" }
       ],
       "boundary": [
-        { "kind": "module", "path": "frontend/src/routes/*.tsx", "contains": "registerIdentity" },
-        { "kind": "module", "path": "frontend/src/components/*.tsx", "contains": "identity-registry" }
+        { "kind": "module", "path": "frontend/src/routes/_authenticated/admin/identities.tsx", "contains": "identity-registry" }
       ],
-      "boundaryNote": "Hand-verified 2026-09-14: no route or component imports any identity module or calls registerIdentity, so identity is backend-only. This is the single level (L4) keeping phase 02 from COMPLETE."
+      "boundaryNote": "Closed 2026-09-14 (P02-2): `/admin/identities` renders the identities inside the actor's own tenant boundary from real state (`listIdentities`) and can register one, so the identity capability is now projected in a workspace instead of existing only as backend code."
     },
     {
       "id": "identity-events",

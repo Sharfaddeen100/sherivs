@@ -234,16 +234,15 @@
       "id": "workspace-projection",
       "area": "Workspace projection (tenant visible in a surface)",
       "requirement": "The tenancy capability is projected in at least one workspace from real state (L4).",
-      "required": false,
+      "required": true,
       "evidence": [
-        { "kind": "module", "path": "frontend/src/lib/tenant-registry.functions.ts" },
+        { "kind": "module", "path": "frontend/src/lib/tenant-registry.functions.ts", "contains": "listTenants" },
         { "kind": "test", "path": "tests/unit/p08-enforcement-surface.test.ts", "contains": "tenant-registry.functions.ts" }
       ],
       "boundary": [
-        { "kind": "module", "path": "frontend/src/routes/*.tsx", "contains": "tenant-registry" },
-        { "kind": "module", "path": "frontend/src/components/*.tsx", "contains": "tenant-registry" }
+        { "kind": "module", "path": "frontend/src/routes/_authenticated/admin/tenants.tsx", "contains": "tenant-registry" }
       ],
-      "boundaryNote": "Hand-verified 2026-09-14: no route or component imports a tenant module, so tenancy is backend-only even though the provisioning flow exists as a server function. This is the L4 gap for phase 03."
+      "boundaryNote": "Closed 2026-09-14 (P03-4): `/admin/tenants` lists every tenant from real `cg_tenant` state behind the super-admin gate and can register one (idempotent on slug), so tenancy is projected in a workspace instead of existing only as backend code."
     }
   ]
 }

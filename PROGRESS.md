@@ -826,6 +826,17 @@ Normalized schema: Date · Author · Scope · Change · Validation · Status. En
 | Validation | `npm run audit:phase -- --phase=01` PASS (proof `architecture/proofs/phase-01-acceptance.proof.json`); `npm run audit:phases` re-run clean (unconfirmed claims 5 → 4; phase 01 now confirmed); `tests/unit/phase-acceptance-audit.test.ts` 8/8 (its independent re-derivation caught two real defects during authoring — a dropped RLS acceptance area and an over-strict evidence assertion, both fixed) |
 | Status | AUDITED + CLOSED — Phase 01 remains IMPLEMENTING (`L1 ✓, L2 ✗, L3 ✓, L4 ✗, L5 ✓`); its foundation is enforced and the verify chain is its operational evidence, so only the definitional L2 and the (non-applicable) L4 projection keep it from COMPLETE |
 
+### 22.7 Current entry — phases 02 and 03 reach COMPLETE by closing their L4 gaps
+
+| Field | Value |
+| --- | --- |
+| Date | 2026-09-14 |
+| Author | Cline (autonomous loop, §103) |
+| Scope | Phase 02 Identity and Phase 03 Multi-Tenancy — closing work (P02-2, P02-4, P03-4) |
+| Change | Both foundational phases had exactly one level missing: **L4 workspace projection**. Identity and tenancy were implemented, tested, migrated and gate-protected — and invisible in the product (`registerIdentity` had zero callers; no route imported a tenant module). Closed with real code, not re-labelling: **`listIdentities`** (tenant boundary resolved from the actor's own session, query filtered by that resolved id) + **`/admin/identities`** (register + list, role-guarded, real state); **`listTenants`** (canonical super-admin gate, fail closed — never a tenant enumeration vector) + **`/admin/tenants`** (real `cg_tenant` state, hierarchy shown as a parent reference only so topology never implies inherited access, and the existing slug-idempotent `registerTenant` for provisioning). Registry rows 02 and 03 now include the `identity-registry` and `tenant-registry` modules they had omitted. |
+| Validation | **`audit:phases`: COMPLETE 5 · IMPLEMENTING 28 · ARCHITECTURE_DEFINED 18** — phases **02 (Identity)** and **03 (Multi-Tenancy)** now derive `L1 ✓ L2 ✓ L3 ✓ L4 ✓ L5 ✓` from artefacts; acceptance probes re-run: phase 02 **11 ENFORCED · 1 DECLARED · 0 UNWIRED**, phase 03 **16 ENFORCED · 2 DECLARED · 1 UNWIRED**; typecheck 0 errors; production build PASS (route tree regenerated); probe guard + completion audit + P08 enforcement surface 14/14; `verify:registry` PASS |
+| Status | Phase 02 and phase 03 are **COMPLETE**. Remaining acceptance areas are recorded as open or reserved, not closed by assertion: P02-1 identity events (the only DECLARED area in 02), P02-3 federation (reserved — needs providers), P03-1 async tenant boundaries, P03-2 deprovisioning, P03-3 tenant observability wiring, P03-5 tenant migration (reserved — needs infrastructure). Phase 01 remains IMPLEMENTING (definitional L2 + non-applicable L4). |
+
 ### 22.6 Current entry — AUDIT-P02/P03 (Identity and Multi-Tenancy intake, probes for all)
 
 | Field | Value |

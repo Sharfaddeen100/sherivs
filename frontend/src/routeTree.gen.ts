@@ -71,6 +71,7 @@ import { Route as AuthenticatedAdminHealthRouteImport } from './routes/_authenti
 import { Route as AuthenticatedAdminHealthCertificateRouteImport } from './routes/_authenticated/admin/health-certificate'
 import { Route as AuthenticatedAdminHostelRouteImport } from './routes/_authenticated/admin/hostel'
 import { Route as AuthenticatedAdminHrRouteImport } from './routes/_authenticated/admin/hr'
+import { Route as AuthenticatedAdminIdentitiesRouteImport } from './routes/_authenticated/admin/identities'
 import { Route as AuthenticatedAdminIntelligenceRouteImport } from './routes/_authenticated/admin/intelligence'
 import { Route as AuthenticatedAdminIntelligenceAiRouteImport } from './routes/_authenticated/admin/intelligence-ai'
 import { Route as AuthenticatedAdminIntelligenceOperationsRouteImport } from './routes/_authenticated/admin/intelligence-operations'
@@ -93,6 +94,7 @@ import { Route as AuthenticatedAdminStudentsRouteImport } from './routes/_authen
 import { Route as AuthenticatedAdminSupportRouteImport } from './routes/_authenticated/admin/support'
 import { Route as AuthenticatedAdminTeacherIntelligenceRouteImport } from './routes/_authenticated/admin/teacher-intelligence'
 import { Route as AuthenticatedAdminTeachersRouteImport } from './routes/_authenticated/admin/teachers'
+import { Route as AuthenticatedAdminTenantsRouteImport } from './routes/_authenticated/admin/tenants'
 import { Route as AuthenticatedAdminTimetableRouteImport } from './routes/_authenticated/admin/timetable'
 import { Route as AuthenticatedAdminVisitorsRouteImport } from './routes/_authenticated/admin/visitors'
 import { Route as AuthenticatedBursarDashboardRouteImport } from './routes/_authenticated/bursar/dashboard'
@@ -491,6 +493,12 @@ const AuthenticatedAdminHrRoute = AuthenticatedAdminHrRouteImport.update({
   path: '/hr',
   getParentRoute: () => AuthenticatedAdminRouteRoute,
 } as any)
+const AuthenticatedAdminIdentitiesRoute =
+  AuthenticatedAdminIdentitiesRouteImport.update({
+    id: '/identities',
+    path: '/identities',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
 const AuthenticatedAdminIntelligenceRoute =
   AuthenticatedAdminIntelligenceRouteImport.update({
     id: '/intelligence',
@@ -620,6 +628,12 @@ const AuthenticatedAdminTeachersRoute =
   AuthenticatedAdminTeachersRouteImport.update({
     id: '/teachers',
     path: '/teachers',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminTenantsRoute =
+  AuthenticatedAdminTenantsRouteImport.update({
+    id: '/tenants',
+    path: '/tenants',
     getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
 const AuthenticatedAdminTimetableRoute =
@@ -1011,6 +1025,7 @@ export interface FileRoutesByFullPath {
   '/admin/health-certificate': typeof AuthenticatedAdminHealthCertificateRoute
   '/admin/hostel': typeof AuthenticatedAdminHostelRoute
   '/admin/hr': typeof AuthenticatedAdminHrRoute
+  '/admin/identities': typeof AuthenticatedAdminIdentitiesRoute
   '/admin/intelligence': typeof AuthenticatedAdminIntelligenceRoute
   '/admin/intelligence-ai': typeof AuthenticatedAdminIntelligenceAiRoute
   '/admin/intelligence-operations': typeof AuthenticatedAdminIntelligenceOperationsRoute
@@ -1033,6 +1048,7 @@ export interface FileRoutesByFullPath {
   '/admin/support': typeof AuthenticatedAdminSupportRoute
   '/admin/teacher-intelligence': typeof AuthenticatedAdminTeacherIntelligenceRoute
   '/admin/teachers': typeof AuthenticatedAdminTeachersRoute
+  '/admin/tenants': typeof AuthenticatedAdminTenantsRoute
   '/admin/timetable': typeof AuthenticatedAdminTimetableRoute
   '/admin/visitors': typeof AuthenticatedAdminVisitorsRoute
   '/bursar/dashboard': typeof AuthenticatedBursarDashboardRoute
@@ -1151,6 +1167,7 @@ export interface FileRoutesByTo {
   '/admin/health-certificate': typeof AuthenticatedAdminHealthCertificateRoute
   '/admin/hostel': typeof AuthenticatedAdminHostelRoute
   '/admin/hr': typeof AuthenticatedAdminHrRoute
+  '/admin/identities': typeof AuthenticatedAdminIdentitiesRoute
   '/admin/intelligence': typeof AuthenticatedAdminIntelligenceRoute
   '/admin/intelligence-ai': typeof AuthenticatedAdminIntelligenceAiRoute
   '/admin/intelligence-operations': typeof AuthenticatedAdminIntelligenceOperationsRoute
@@ -1173,6 +1190,7 @@ export interface FileRoutesByTo {
   '/admin/support': typeof AuthenticatedAdminSupportRoute
   '/admin/teacher-intelligence': typeof AuthenticatedAdminTeacherIntelligenceRoute
   '/admin/teachers': typeof AuthenticatedAdminTeachersRoute
+  '/admin/tenants': typeof AuthenticatedAdminTenantsRoute
   '/admin/timetable': typeof AuthenticatedAdminTimetableRoute
   '/admin/visitors': typeof AuthenticatedAdminVisitorsRoute
   '/bursar/dashboard': typeof AuthenticatedBursarDashboardRoute
@@ -1293,6 +1311,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/health-certificate': typeof AuthenticatedAdminHealthCertificateRoute
   '/_authenticated/admin/hostel': typeof AuthenticatedAdminHostelRoute
   '/_authenticated/admin/hr': typeof AuthenticatedAdminHrRoute
+  '/_authenticated/admin/identities': typeof AuthenticatedAdminIdentitiesRoute
   '/_authenticated/admin/intelligence': typeof AuthenticatedAdminIntelligenceRoute
   '/_authenticated/admin/intelligence-ai': typeof AuthenticatedAdminIntelligenceAiRoute
   '/_authenticated/admin/intelligence-operations': typeof AuthenticatedAdminIntelligenceOperationsRoute
@@ -1315,6 +1334,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/support': typeof AuthenticatedAdminSupportRoute
   '/_authenticated/admin/teacher-intelligence': typeof AuthenticatedAdminTeacherIntelligenceRoute
   '/_authenticated/admin/teachers': typeof AuthenticatedAdminTeachersRoute
+  '/_authenticated/admin/tenants': typeof AuthenticatedAdminTenantsRoute
   '/_authenticated/admin/timetable': typeof AuthenticatedAdminTimetableRoute
   '/_authenticated/admin/visitors': typeof AuthenticatedAdminVisitorsRoute
   '/_authenticated/bursar/dashboard': typeof AuthenticatedBursarDashboardRoute
@@ -1435,6 +1455,7 @@ export interface FileRouteTypes {
     | '/admin/health-certificate'
     | '/admin/hostel'
     | '/admin/hr'
+    | '/admin/identities'
     | '/admin/intelligence'
     | '/admin/intelligence-ai'
     | '/admin/intelligence-operations'
@@ -1457,6 +1478,7 @@ export interface FileRouteTypes {
     | '/admin/support'
     | '/admin/teacher-intelligence'
     | '/admin/teachers'
+    | '/admin/tenants'
     | '/admin/timetable'
     | '/admin/visitors'
     | '/bursar/dashboard'
@@ -1575,6 +1597,7 @@ export interface FileRouteTypes {
     | '/admin/health-certificate'
     | '/admin/hostel'
     | '/admin/hr'
+    | '/admin/identities'
     | '/admin/intelligence'
     | '/admin/intelligence-ai'
     | '/admin/intelligence-operations'
@@ -1597,6 +1620,7 @@ export interface FileRouteTypes {
     | '/admin/support'
     | '/admin/teacher-intelligence'
     | '/admin/teachers'
+    | '/admin/tenants'
     | '/admin/timetable'
     | '/admin/visitors'
     | '/bursar/dashboard'
@@ -1716,6 +1740,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/health-certificate'
     | '/_authenticated/admin/hostel'
     | '/_authenticated/admin/hr'
+    | '/_authenticated/admin/identities'
     | '/_authenticated/admin/intelligence'
     | '/_authenticated/admin/intelligence-ai'
     | '/_authenticated/admin/intelligence-operations'
@@ -1738,6 +1763,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/support'
     | '/_authenticated/admin/teacher-intelligence'
     | '/_authenticated/admin/teachers'
+    | '/_authenticated/admin/tenants'
     | '/_authenticated/admin/timetable'
     | '/_authenticated/admin/visitors'
     | '/_authenticated/bursar/dashboard'
@@ -2253,6 +2279,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminHrRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
+    '/_authenticated/admin/identities': {
+      id: '/_authenticated/admin/identities'
+      path: '/identities'
+      fullPath: '/admin/identities'
+      preLoaderRoute: typeof AuthenticatedAdminIdentitiesRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
     '/_authenticated/admin/intelligence': {
       id: '/_authenticated/admin/intelligence'
       path: '/intelligence'
@@ -2405,6 +2438,13 @@ declare module '@tanstack/react-router' {
       path: '/teachers'
       fullPath: '/admin/teachers'
       preLoaderRoute: typeof AuthenticatedAdminTeachersRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/tenants': {
+      id: '/_authenticated/admin/tenants'
+      path: '/tenants'
+      fullPath: '/admin/tenants'
+      preLoaderRoute: typeof AuthenticatedAdminTenantsRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
     '/_authenticated/admin/timetable': {
@@ -2827,6 +2867,7 @@ interface AuthenticatedAdminRouteRouteChildren {
   AuthenticatedAdminHealthCertificateRoute: typeof AuthenticatedAdminHealthCertificateRoute
   AuthenticatedAdminHostelRoute: typeof AuthenticatedAdminHostelRoute
   AuthenticatedAdminHrRoute: typeof AuthenticatedAdminHrRoute
+  AuthenticatedAdminIdentitiesRoute: typeof AuthenticatedAdminIdentitiesRoute
   AuthenticatedAdminIntelligenceRoute: typeof AuthenticatedAdminIntelligenceRoute
   AuthenticatedAdminIntelligenceAiRoute: typeof AuthenticatedAdminIntelligenceAiRoute
   AuthenticatedAdminIntelligenceOperationsRoute: typeof AuthenticatedAdminIntelligenceOperationsRoute
@@ -2849,6 +2890,7 @@ interface AuthenticatedAdminRouteRouteChildren {
   AuthenticatedAdminSupportRoute: typeof AuthenticatedAdminSupportRoute
   AuthenticatedAdminTeacherIntelligenceRoute: typeof AuthenticatedAdminTeacherIntelligenceRoute
   AuthenticatedAdminTeachersRoute: typeof AuthenticatedAdminTeachersRoute
+  AuthenticatedAdminTenantsRoute: typeof AuthenticatedAdminTenantsRoute
   AuthenticatedAdminTimetableRoute: typeof AuthenticatedAdminTimetableRoute
   AuthenticatedAdminVisitorsRoute: typeof AuthenticatedAdminVisitorsRoute
 }
@@ -2892,6 +2934,7 @@ const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren
       AuthenticatedAdminHealthCertificateRoute,
     AuthenticatedAdminHostelRoute: AuthenticatedAdminHostelRoute,
     AuthenticatedAdminHrRoute: AuthenticatedAdminHrRoute,
+    AuthenticatedAdminIdentitiesRoute: AuthenticatedAdminIdentitiesRoute,
     AuthenticatedAdminIntelligenceRoute: AuthenticatedAdminIntelligenceRoute,
     AuthenticatedAdminIntelligenceAiRoute:
       AuthenticatedAdminIntelligenceAiRoute,
@@ -2922,6 +2965,7 @@ const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren
     AuthenticatedAdminTeacherIntelligenceRoute:
       AuthenticatedAdminTeacherIntelligenceRoute,
     AuthenticatedAdminTeachersRoute: AuthenticatedAdminTeachersRoute,
+    AuthenticatedAdminTenantsRoute: AuthenticatedAdminTenantsRoute,
     AuthenticatedAdminTimetableRoute: AuthenticatedAdminTimetableRoute,
     AuthenticatedAdminVisitorsRoute: AuthenticatedAdminVisitorsRoute,
   }

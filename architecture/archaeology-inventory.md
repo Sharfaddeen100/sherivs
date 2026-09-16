@@ -64,9 +64,17 @@ Two drift findings, both recorded rather than smoothed over:
   "identity" inside marketing prose on `/platform` awarded phase 02 a level it had
   not earned — it briefly read COMPLETE. L4 now requires a distinctive reference
   (the capability id, or a route/component importing the phase's module). No surface
-  imports any identity module, so **the honest totals are COMPLETE 5 · IMPLEMENTING
+  imports any identity module, so **the honest totals were COMPLETE 5 · IMPLEMENTING
   28 · ARCHITECTURE_DEFINED 18** with unconfirmed claims **19, 25, 49**. L4 now
   understates at worst, never overstates.
+- **Update 2026-09-14 (phase 02/03 closure):** the L4 gap was then closed with real
+  projections — `/admin/identities` (list + register inside the actor's own tenant
+  boundary) and `/admin/tenants` (real `cg_tenant` state behind the super-admin
+  gate). Phases **02 Identity** and **03 Multi-Tenancy** now derive
+  `L1 ✓ L2 ✓ L3 ✓ L4 ✓ L5 ✓` and are **COMPLETE**; totals stay
+  **COMPLETE 5 · IMPLEMENTING 28 · ARCHITECTURE_DEFINED 18** because three earlier
+  COMPLETE claims (04, 24, 33) were false positives under the loose rule and are
+  now correctly listed as needing L4.
 
 ## 3. Per-phase archaeology intake (new — beginning with Phase 01)
 
@@ -80,8 +88,8 @@ this inventory:
 | Phase | Record | Acceptance probe result |
 | --- | --- | --- |
 | 01 Foundation | `architecture/archaeology/phase-01-foundation.audit.md` | 44 areas — **ENFORCED 41 · UNWIRED 3 · DECLARED 0 · MISSING 0**; ownership confirmed (no duplication), work items P01-1…P01-4, BR-01, unknowns U-01…U-04 |
-| 02 Identity | `architecture/archaeology/phase-02-identity.audit.md` | 12 areas — **ENFORCED 10 · DECLARED 1 · UNWIRED 1 · MISSING 0**; paste degraded (repo doc authoritative); one level from COMPLETE, missing only the workspace projection; P02-1…P02-3 |
-| 03 Multi-Tenancy | `architecture/archaeology/phase-03-multi-tenancy.audit.md` | 19 areas — **ENFORCED 15 · DECLARED 2 · UNWIRED 2 · MISSING 0**; paste complete; async tenant boundaries and deprovisioning are the real gaps; P03-1…P03-5 |
+| 02 Identity | `architecture/archaeology/phase-02-identity.audit.md` | 12 areas — **ENFORCED 11 · DECLARED 1 · MISSING 0**; **COMPLETE** (L4 closed by `/admin/identities`); paste degraded (repo doc authoritative); P02-1 events open, P02-3 federation reserved |
+| 03 Multi-Tenancy | `architecture/archaeology/phase-03-multi-tenancy.audit.md` | 19 areas — **ENFORCED 16 · DECLARED 2 · UNWIRED 1 · MISSING 0**; **COMPLETE** (L4 closed by `/admin/tenants`); async boundaries, deprovisioning, observability wiring open; tenant migration reserved |
 | All probes | `tests/unit/phase-acceptance-probes.test.ts` | every `architecture/phase-acceptance/phase-*.json` is discovered and re-derived automatically — adding a probe adds coverage with no test change |
 
 ## 4. Archaeology work packages (next, in order)

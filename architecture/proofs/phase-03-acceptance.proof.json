@@ -3,7 +3,7 @@
   "phase": "03",
   "phaseName": "Multi-Tenancy",
   "source": "architecture/phase-03-multi-tenancy.md",
-  "generatedAt": "2026-09-15T19:27:10.402Z",
+  "generatedAt": "2026-09-15T21:49:33.753Z",
   "classificationDefinitions": {
     "ENFORCED": "an executable artefact proves it (test, verifier script, migration, policy or machine-checked contract match) and, where a boundary is declared, a real call site invokes it",
     "DECLARED": "a module, document or contract mentions it, but nothing executable proves it",
@@ -12,12 +12,11 @@
   },
   "summary": {
     "areas": 19,
-    "enforced": 15,
+    "enforced": 16,
     "declared": 2,
-    "implementedUnwired": 2,
+    "implementedUnwired": 1,
     "implementedUnwiredAreas": [
-      "tenant-observability",
-      "workspace-projection"
+      "tenant-observability"
     ],
     "missing": 0,
     "missingRequired": [],
@@ -415,9 +414,9 @@
       "id": "workspace-projection",
       "area": "Workspace projection (tenant visible in a surface)",
       "requirement": "The tenancy capability is projected in at least one workspace from real state (L4).",
-      "required": false,
+      "required": true,
       "ownerPhase": null,
-      "classification": "IMPLEMENTED_UNWIRED",
+      "classification": "ENFORCED",
       "declaredEvidence": [
         "frontend/src/lib/tenant-registry.functions.ts",
         "tests/unit/p08-enforcement-surface.test.ts"
@@ -428,10 +427,11 @@
       ],
       "unresolvedEvidence": [],
       "declaredBoundary": [
-        "frontend/src/routes/*.tsx",
-        "frontend/src/components/*.tsx"
+        "frontend/src/routes/_authenticated/admin/tenants.tsx"
       ],
-      "boundaryEvidence": []
+      "boundaryEvidence": [
+        "frontend/src/routes/_authenticated/admin/tenants.tsx"
+      ]
     }
   ],
   "ok": true,

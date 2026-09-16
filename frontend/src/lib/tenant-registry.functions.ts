@@ -102,3 +102,61 @@ export const registerTenant = createServerFn({ method: "POST" })
       duplicated: false,
     };
   });
+
+/* ─────────────────────────────────────────────────────────────
+ * Reads — the workspace projection's data path (P03-4)
+ * ────────────────────────────────────────────────────────────*/
+
+export type TenantSummary = {
+  id: string;
+  tenant_type: string;
+  name: string;
+  slug: string;
+  status: TenantStatus;
+  parent_tenant_id: string | null;
+  region: string | null;
+  environment: TenantEnvironment;
+  created_at: string;
+};
+
+export type ListTenantsResult = {
+  ok: true;
+  tenants: TenantSummary[];
+};
+
+const listTenantsSchema = z.object({
+  limit: z.number().int().min(1).max(200).optional(),
+  status: z.enum(TENANT_STATUSES as unknown as [string, ...string[]]).optional(),
+});
+
+/**
+ * List tenants for the platform control plane.
+ *
+ * Platform-scoped by construction: the canonical super-admin gate runs first
+ * (fail closed), so this read is never a tenant-visible enumeration vector
+ * (P03 J4). Hierarchy is returned as `parent_tenant_id` so the projection can
+ * show topology without implying inherited access (Invariant 14).
+ */
+export const listTenants = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .validator((input: unknown) => listTenantsSchema.parse(input ?? {}))
+  .handler(async ({ data, context }): Promise<ListTenantsResult> => {
+    await requirePlatformSuperAdmin(context.supabase);
+
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const admin = asKernelAdmin(supabaseAdmin);
+
+    let query = admin
+      .from("cg_tenant")
+      .select(
+        "id, tenant_type, name, slug, status, parent_tenant_id, region, environment, created_at",
+      )
+      .order("created_at", { ascending: false })
+      .limit(data.limit ?? 100);
+    if (data.status) query = query.eq("status", data.status);
+
+    const { data: rows, error } = await query;
+    if (error) throw new Error(error.message);
+
+    return { ok: true, tenants: (rows ?? []) as TenantSummary[] };
+  });

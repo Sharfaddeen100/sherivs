@@ -2,7 +2,7 @@
 
 # CoreGrid — Phase Completion Status (evidence-derived)
 
-Generated: 2026-09-15T18:30:29.969Z
+Generated: 2026-09-15T21:50:55.498Z
 
 Phases audited: 51 · COMPLETE: 5 · IMPLEMENTING: 28 · ARCHITECTURE_DEFINED: 18
 
@@ -11,8 +11,8 @@ Levels: L1 conceptual · L2 data model · L3 backend · L4 frontend/workspace ·
 | Phase | Name | Capability | Sections | Modules | Tests | L1 | L2 | L3 | L4 | L5 | Derived | Registry |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 01 | Foundation | — | 20/20 | 0 | 38 | yes | — | yes | — | yes | IMPLEMENTING | IMPLEMENTING |
-| 02 | Identity | — | 18/20 | 5 | 38 | yes | yes | yes | yes | yes | COMPLETE | IMPLEMENTED |
-| 03 | Multi-Tenancy | tenancy-isolation-rls | 17/20 | 6 | 56 | yes | yes | yes | yes | yes | COMPLETE | IMPLEMENTED |
+| 02 | Identity | — | 18/20 | 6 | 38 | yes | yes | yes | yes | yes | COMPLETE | IMPLEMENTED |
+| 03 | Multi-Tenancy | tenancy-isolation-rls | 17/20 | 7 | 56 | yes | yes | yes | yes | yes | COMPLETE | IMPLEMENTED |
 | 04 | Education Reality Engine | education-reality-ontology | 16/20 | 8 | 81 | yes | yes | yes | — | yes | IMPLEMENTING | IMPLEMENTED |
 | 05 | Core Application Runtime | runtime-primitives | 19/20 | 12 | 100 | yes | yes | yes | — | yes | IMPLEMENTING | IMPLEMENTING |
 | 06 | Workspace Engine | workspace-composition | 18/20 | 4 | 28 | yes | yes | yes | — | yes | IMPLEMENTING | IMPLEMENTING |

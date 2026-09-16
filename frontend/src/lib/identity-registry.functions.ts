@@ -77,3 +77,65 @@ export const registerIdentity = createServerFn({ method: "POST" })
       tenant_id: row.tenant_id ?? schoolId,
     };
   });
+
+/* ─────────────────────────────────────────────────────────────
+ * Reads — the workspace projection's data path (P02-2)
+ * ────────────────────────────────────────────────────────────*/
+
+export type IdentitySummary = {
+  id: string;
+  kind: IdentityKind;
+  display_name: string;
+  state: IdentityState;
+  verified: boolean;
+  tenant_id: string | null;
+  created_at: string;
+};
+
+export type ListIdentitiesResult = {
+  ok: true;
+  /** The tenant boundary the read was scoped to (never client-supplied). */
+  tenant_id: string;
+  identities: IdentitySummary[];
+};
+
+const listIdentitiesSchema = z.object({
+  limit: z.number().int().min(1).max(200).optional(),
+  kind: z.enum(IDENTITY_KINDS as unknown as [string, ...string[]]).optional(),
+});
+
+/**
+ * List the identities inside the actor's own tenant boundary.
+ *
+ * The boundary is resolved from the authenticated actor's school scope, exactly
+ * like the write path: a client cannot widen it (Constitution §26/§38). RLS is
+ * deny-by-default on `cg_identity`, so the read runs through the service role
+ * *after* the gate has resolved the tenant, and the query itself is filtered by
+ * that resolved tenant id.
+ */
+export const listIdentities = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .validator((input: unknown) => listIdentitiesSchema.parse(input ?? {}))
+  .handler(async ({ data, context }): Promise<ListIdentitiesResult> => {
+    const schoolId = await requireSchoolAdminScope(context.supabase);
+
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const admin = asKernelAdmin(supabaseAdmin);
+
+    let query = admin
+      .from("cg_identity")
+      .select("id, kind, display_name, state, verified, tenant_id, created_at")
+      .eq("tenant_id", schoolId)
+      .order("created_at", { ascending: false })
+      .limit(data.limit ?? 50);
+    if (data.kind) query = query.eq("kind", data.kind);
+
+    const { data: rows, error } = await query;
+    if (error) throw new Error(error.message);
+
+    return {
+      ok: true,
+      tenant_id: schoolId,
+      identities: (rows ?? []) as IdentitySummary[],
+    };
+  });

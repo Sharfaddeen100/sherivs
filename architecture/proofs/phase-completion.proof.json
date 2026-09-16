@@ -2,7 +2,7 @@
   "artifact": "phase-completion",
   "wave": "AUDIT-1",
   "owner": "kernel (Phase 01 governance)",
-  "generatedAt": "2026-09-15T18:30:29.969Z",
+  "generatedAt": "2026-09-15T21:50:55.498Z",
   "authority": [
     "CONSTITUTION.md",
     "architecture/registry.json",
@@ -145,6 +145,7 @@
       "sections": "18/20",
       "modules": [
         "identity",
+        "identity-registry",
         "identity-credentials",
         "identity-lifecycle",
         "identity-relationships",
@@ -182,6 +183,7 @@
       "modules": [
         "tenant",
         "tenant-core",
+        "tenant-registry",
         "tenant-isolation",
         "tenant-lifecycle",
         "tenant-quota",

@@ -33,9 +33,14 @@ UNWIRED 2 · MISSING 0**, `ok: true`.
 | --- | --- | --- |
 | L1 conceptual | ✅ | 26-section document + contract + 20 invariants |
 | L2 data model | ✅ | `cg_tenant` (H2 enum verbatim, hierarchy FK, region, RLS) live-validated 8/8 |
-| L3 backend | ✅ | tenant suites + the isolation verifier + gated provisioning |
-| L4 frontend/workspace | ⛔ | **hand-verified:** zero surface imports of any tenant module |
+| L3 backend | ✅ | tenant suites + the isolation verifier + gated provisioning (idempotent on slug) |
+| L4 frontend/workspace | ✅ | **CLOSED 2026-09-14 (P03-4):** `/admin/tenants` lists real `cg_tenant` state through `listTenants` behind the super-admin gate and registers tenants through the idempotent `registerTenant` |
 | L5 operational | ✅ | migrations, verifiers and CI name tenancy |
+
+**Phase 03 derived COMPLETE on 2026-09-14** (`audit:phases`): `L1 ✓ · L2 ✓ · L3 ✓ ·
+L4 ✓ · L5 ✓`, acceptance probe **16 ENFORCED · 2 DECLARED · 1 UNWIRED**. The surface
+shows hierarchy as a parent reference only, so it demonstrates topology without
+implying inherited access (Invariant 14).
 
 ## 4. Ownership findings — the boundaries hold
 
@@ -49,12 +54,12 @@ enforceable half of the noisy-neighbour objective.
 
 ## 5. Work items
 
-| ID | Item | Kind |
-| --- | --- | --- |
-| P03-1 | Tenant context does not survive asynchrony: the outbox has no `tenantId`, and no queue or cache module exists (invariants 05/06 hard requirement) | missing capability |
-| P03-2 | Deprovisioning/offboarding (C14, U1–U7) has no engine: no credential revocation, integration removal or deletion evidence | missing capability |
-| P03-3 | Tenant observability is unwired: no runtime path emits tenant-attributable signals, so K8/V1 are unfulfilled in production | wiring |
-| P03-4 | Tenancy has no workspace projection (the System-Truth "Command Centre provisions schools" flow is a server function with no surface) | L4 projection |
-| P03-5 | Tenant migration (C12/F14/K3/K4/M12) has no engine; only database migration discipline exists, which is a different concern | missing capability |
-| U-02 | Live RLS isolation proof for `cg_tenant` remains DB-gated (CF-7) | unknown (DB-gated) |
-| U-03 | Whether 10,000+ logical tenants hold without redesign (B4/L12) is unproven; only architectural claims exist | unknown (needs load evidence) |
+| ID | Item | Kind | Status |
+| --- | --- | --- | --- |
+| P03-1 | Tenant context does not survive asynchrony: the outbox has no `tenantId`, and no queue or cache module exists (invariants 05/06 hard requirement) | missing capability | **OPEN** (DECLARED) |
+| P03-2 | Deprovisioning/offboarding (C14, U1–U7) has no engine: no credential revocation, integration removal or deletion evidence | missing capability | **OPEN** (DECLARED) |
+| P03-3 | Tenant observability is unwired: no runtime path emits tenant-attributable signals, so K8/V1 are unfulfilled in production | wiring | **OPEN** (UNWIRED) |
+| P03-4 | Tenancy had **no workspace projection** | L4 projection | **CLOSED** — `/admin/tenants` |
+| P03-5 | Tenant migration (C12/F14/K3/K4/M12) has no engine; only database migration discipline exists, which is a different concern | missing capability | **RESERVED** — needs real infrastructure to move between (CF waves) |
+| U-02 | Live RLS isolation proof for `cg_tenant` remains DB-gated (CF-7) | unknown (DB-gated) | open |
+| U-03 | Whether 10,000+ logical tenants hold without redesign (B4/L12) is unproven; only architectural claims exist | unknown (needs load evidence) | open |

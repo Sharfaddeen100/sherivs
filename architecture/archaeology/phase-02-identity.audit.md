@@ -33,13 +33,14 @@ UNWIRED 1 · MISSING 0**, `ok: true`.
 | --- | --- | --- |
 | L1 conceptual | ✅ | document + 20-section contract |
 | L2 data model | ✅ | `cg_identity` migration, live-validated 8/8 per registry notes |
-| L3 backend | ✅ | 7 identity-family suites + server function with the canonical gate |
-| L4 frontend/workspace | ⛔ | **hand-verified:** no surface references the identity capability or any identity module |
+| L3 backend | ✅ | 7 identity-family suites + server functions with the canonical gate |
+| L4 frontend/workspace | ✅ | **CLOSED 2026-09-14 (P02-2):** `/admin/identities` reads real state through `listIdentities` (tenant boundary resolved from the actor's own session) and registers through `registerIdentity` |
 | L5 operational | ✅ | verifiers, CI and migrations name it |
 
-**Phase 02 is one level from COMPLETE and the missing level is not a mystery: the
-identity capability has no workspace at all.** The `registerIdentity` server
-function has zero callers, so nothing in the product can create an identity yet.
+**Phase 02 derived COMPLETE on 2026-09-14** (`audit:phases`): `L1 ✓ · L2 ✓ · L3 ✓ ·
+L4 ✓ · L5 ✓`, with the acceptance probe at **11 ENFORCED · 1 DECLARED · 0 UNWIRED**.
+The flip is earned by code: the surface calls the gated server functions, and the
+read path is filtered by the tenant id the gate resolved — never a client value.
 
 ## 4. Ownership findings
 
@@ -51,9 +52,10 @@ surface guard (22 families adopted).
 
 ## 5. Work items
 
-| ID | Item | Kind |
-| --- | --- | --- |
-| P02-1 | Identity event contract (F13) is declared and unimplemented — emit and version the seven lifecycle events | missing capability |
-| P02-2 | Identity has **no workspace projection** (`registerIdentity` has no caller) — the single level keeping phase 02 from COMPLETE | L4 projection |
-| P02-3 | Federation (F12: OAuth/OIDC/SAML/SCIM) has **no module at all**; the paste's own F12 detail arrived empty | missing capability |
-| U-01 | Whether the live `cg_identity` RLS policies behave as the migration claims still requires a database (CF-7) | unknown (DB-gated) |
+| ID | Item | Kind | Status |
+| --- | --- | --- | --- |
+| P02-1 | Identity event contract (F13) is declared and unimplemented — emit and version the seven lifecycle events | missing capability | **OPEN** (the only area still DECLARED) |
+| P02-2 | Identity had **no workspace projection** | L4 projection | **CLOSED** — `/admin/identities` |
+| P02-3 | Federation (F12: OAuth/OIDC/SAML/SCIM) has **no module at all**; the paste's own F12 detail arrived empty | missing capability | **RESERVED** — needs identity providers and credentials; not fakeable, registered not dropped |
+| P02-4 | Registry row omitted the `identity-registry` module | registry accuracy | **CLOSED** |
+| U-01 | Whether the live `cg_identity` RLS policies behave as the migration claims still requires a database (CF-7) | unknown (DB-gated) | open |
