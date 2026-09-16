@@ -49,6 +49,20 @@ const PROOF_REF = "architecture/proofs/phase-completion.proof.json";
 const STATUS_REF = "architecture/phase-completion-status.md";
 
 const registry = JSON.parse(read("architecture/registry.json"));
+
+/**
+ * Declared level exemptions (see architecture/phase-completion-exemptions.json).
+ * A missing file means no exemptions; a malformed one fails the gate, because an
+ * unreadable exemption record must never silently widen the gate.
+ */
+const EXEMPTIONS_REF = "architecture/phase-completion-exemptions.json";
+const exemptionsFile = join(ROOT, EXEMPTIONS_REF);
+let exemptions = [];
+if (existsSync(exemptionsFile)) {
+  const parsed = JSON.parse(readFileSync(exemptionsFile, "utf8"));
+  exemptions = Array.isArray(parsed.exemptions) ? parsed.exemptions : [];
+}
+const exemptionsFor = (phaseId) => exemptions.filter((entry) => entry.phase === phaseId);
 const phaseDocs = readdirSync(join(ROOT, "architecture")).filter((f) => /^phase-\d\d-.*\.md$/.test(f));
 const contractFiles = listFiles(join(ROOT, "frontend/src/lib/kernel/phase-contracts"));
 const migrations = readdirSync(join(ROOT, "database/supabase/migrations")).filter((f) =>
@@ -295,7 +309,36 @@ for (const phase of registry.phases) {
     }
   }
 
-  const complete = evidence.every(Boolean);
+  /**
+   * Declared level exemptions (BR-01): a level that is not APPLICABLE by
+   * construction. An exemption may never be applied to a level that HAS evidence —
+   * that would be hiding work — and it never substitutes for the other levels.
+   */
+  const exemptedLevels = [];
+  for (const exemption of exemptionsFor(id)) {
+    const index = LEVEL_NAMES.indexOf(exemption.level);
+    if (index === -1) {
+      inconsistencies.push(`phase ${id}: exemption names an unknown level "${exemption.level}"`);
+      continue;
+    }
+    if (evidence[index]) {
+      inconsistencies.push(
+        `phase ${id}: exemption for ${exemption.level} is invalid because that level already has evidence — delete the exemption rather than hide the level`,
+      );
+      continue;
+    }
+    if (!exemption.reason || !exemption.owner || !exemption.closesWhen || !exemption.ratified) {
+      inconsistencies.push(`phase ${id}: exemption for ${exemption.level} is not fully justified (reason/owner/closesWhen/ratified required)`);
+      continue;
+    }
+    exemptedLevels.push(exemption.level);
+  }
+
+  const satisfied = evidence.map(
+    (value, index) => value || exemptedLevels.includes(LEVEL_NAMES[index]),
+  );
+  const evidencedCount = evidence.filter(Boolean).length;
+  const complete = satisfied.every(Boolean) && evidencedCount >= 3;
   const derivedStatus = complete
     ? "COMPLETE"
     : evidence[2] || evidence[3]
@@ -315,13 +358,14 @@ for (const phase of registry.phases) {
     testsCounted,
     executableEvidence: executableEvidence.length,
     evidence,
+    exemptedLevels,
     claimed,
     beyondRegistry: claimed.some((value, index) => evidence[index] && !value),
     unconfirmed,
     registryStatus: phase.status,
     derivedStatus,
     complete,
-    missingLevels: LEVEL_NAMES.filter((_, index) => !evidence[index]),
+    missingLevels: LEVEL_NAMES.filter((_, index) => !satisfied[index]),
   });
 }
 
@@ -371,6 +415,10 @@ const proof = {
     totalTestsCited: rows.reduce((total, row) => total + row.testsCounted, 0),
     registryBeyondAudit: beyondRegistry.map((row) => row.id),
     unconfirmedClaims: unconfirmed.map((row) => ({ id: row.id, levels: row.unconfirmed })),
+    exemptionsApplied: rows.flatMap((row) =>
+      row.exemptedLevels.map((level) => ({ phase: row.id, level })),
+    ),
+    exemptionSource: EXEMPTIONS_REF,
     missingLevelFrequency: Object.fromEntries(
       [...gapFrequency.entries()].sort((left, right) => right[1] - left[1]),
     ),
@@ -391,6 +439,7 @@ const proof = {
     derivedStatus: row.derivedStatus,
     complete: row.complete,
     missingLevels: row.missingLevels,
+    exemptedLevels: row.exemptedLevels,
     unconfirmedLevels: row.unconfirmed,
   })),
   inconsistencies,
@@ -424,7 +473,9 @@ const statusLines = [
   ...rows.map(
     (row) =>
       `| ${row.id} | ${row.name} | ${row.capability ?? "—"} | ${row.sectionsPresent}/${row.sectionsRequired} | ${row.modules.length} | ${row.testsCounted} | ${row.evidence
-        .map((value) => (value ? "yes" : "—"))
+        .map((value, index) =>
+          value ? "yes" : row.exemptedLevels.includes(LEVEL_NAMES[index]) ? "exempt" : "—",
+        )
         .join(" | ")} | ${row.derivedStatus} | ${row.registryStatus} |`,
   ),
   "",

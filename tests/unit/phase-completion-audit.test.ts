@@ -39,6 +39,7 @@ interface PhaseRow {
   citedTestFiles: number;
   testsCounted: number;
   evidence: Record<string, boolean>;
+  exemptedLevels: string[];
   registryLevels: boolean[];
   registryStatus: string;
   derivedStatus: string;
@@ -60,6 +61,8 @@ interface AuditProof {
     totalTestsCited: number;
     registryBeyondAudit: string[];
     unconfirmedClaims: { id: string; levels: string[] }[];
+    exemptionsApplied?: { phase: string; level: string }[];
+    exemptionSource?: string;
     missingLevelFrequency: Record<string, number>;
   };
   phases: PhaseRow[];
@@ -99,9 +102,16 @@ describe("AUDIT-1 — the phase completion gate is executable", () => {
       for (const level of LEVELS) {
         expect(typeof row.evidence[level]).toBe("boolean");
       }
-      // A phase cannot be marked COMPLETE while a level is unevidenced.
+      // A phase cannot be marked COMPLETE while a level is unevidenced and
+      // unexempted; and completion always requires at least three evidenced levels.
       if (row.complete) {
-        expect(LEVELS.every((level) => row.evidence[level])).toBe(true);
+        expect(LEVELS.filter((level) => row.evidence[level]).length).toBeGreaterThanOrEqual(3);
+        for (const level of LEVELS) {
+          expect(
+            row.evidence[level] || (row.exemptedLevels ?? []).includes(level),
+            `${row.id}: ${level} must be evidenced or explicitly exempted`,
+          ).toBe(true);
+        }
         expect(row.missingLevels).toEqual([]);
       } else {
         expect(row.missingLevels.length).toBeGreaterThan(0);
@@ -152,5 +162,48 @@ describe("AUDIT-1 — the phase completion gate is executable", () => {
       for (const level of claim.levels) expect(LEVELS).toContain(level);
     }
     expect(proof.summary.missingLevelFrequency).toBeTruthy();
+  });
+
+  it("only honours fully justified exemptions, and never to hide evidence (BR-01)", () => {
+    const proof = load();
+    const source = JSON.parse(read("architecture/phase-completion-exemptions.json")) as {
+      exemptions: {
+        phase: string;
+        level: string;
+        reason?: string;
+        owner?: string;
+        closesWhen?: string;
+        ratified?: boolean;
+      }[];
+    };
+
+    // Every declared exemption is justified and ratified in the source file.
+    expect(source.exemptions.length).toBeGreaterThan(0);
+    for (const exemption of source.exemptions) {
+      expect(exemption.reason, `${exemption.phase}/${exemption.level} reason`).toBeTruthy();
+      expect(exemption.owner, `${exemption.phase}/${exemption.level} owner`).toBeTruthy();
+      expect(exemption.closesWhen, `${exemption.phase}/${exemption.level} closesWhen`).toBeTruthy();
+      expect(exemption.ratified).toBe(true);
+      expect(LEVELS).toContain(exemption.level);
+    }
+
+    // Applied exemptions appear in the proof, and the exempted level has NO evidence:
+    // an exemption on an evidenced level would be hiding work, and the audit fails it.
+    const applied = proof.summary.exemptionsApplied ?? [];
+    expect(applied.length).toBe(source.exemptions.length);
+    for (const row of proof.phases) {
+      for (const level of row.exemptedLevels ?? []) {
+        expect(row.evidence[level], `${row.id}/${level} has evidence — delete the exemption`).toBe(false);
+      }
+      // A COMPLETE phase needs every level evidenced or explicitly exempted, and
+      // must still evidence at least three levels of its own.
+      if (row.complete) {
+        const evidenced = LEVELS.filter((level) => row.evidence[level]).length;
+        expect(evidenced).toBeGreaterThanOrEqual(3);
+        for (const level of LEVELS) {
+          expect(row.evidence[level] || (row.exemptedLevels ?? []).includes(level)).toBe(true);
+        }
+      }
+    }
   });
 });

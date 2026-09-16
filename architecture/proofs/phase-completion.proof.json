@@ -2,7 +2,7 @@
   "artifact": "phase-completion",
   "wave": "AUDIT-1",
   "owner": "kernel (Phase 01 governance)",
-  "generatedAt": "2026-09-15T21:50:55.498Z",
+  "generatedAt": "2026-09-16T07:54:12.405Z",
   "authority": [
     "CONSTITUTION.md",
     "architecture/registry.json",
@@ -18,11 +18,11 @@
   },
   "summary": {
     "phasesAudited": 51,
-    "complete": 5,
-    "implementing": 28,
+    "complete": 6,
+    "implementing": 27,
     "architectureDefined": 18,
-    "withModules": 32,
-    "withResolvedModules": 31,
+    "withModules": 33,
+    "withResolvedModules": 32,
     "totalTestsCited": 1959,
     "registryBeyondAudit": [
       "01",
@@ -96,10 +96,17 @@
         ]
       }
     ],
+    "exemptionsApplied": [
+      {
+        "phase": "01",
+        "level": "L2 data model"
+      }
+    ],
+    "exemptionSource": "architecture/phase-completion-exemptions.json",
     "missingLevelFrequency": {
-      "L4 frontend/workspace integration": 46,
+      "L4 frontend/workspace integration": 45,
       "L3 backend": 18,
-      "L2 data model": 13,
+      "L2 data model": 12,
       "L5 operational maturity": 1,
       "L1 conceptual": 1
     }
@@ -110,8 +117,10 @@
       "name": "Foundation",
       "capability": null,
       "sections": "20/20",
-      "modules": [],
-      "modulesResolve": false,
+      "modules": [
+        "foundation-standards"
+      ],
+      "modulesResolve": true,
       "citedTestFiles": 4,
       "testsCounted": 38,
       "executableEvidence": 12,
@@ -119,7 +128,7 @@
         "L1 conceptual": true,
         "L2 data model": false,
         "L3 backend": true,
-        "L4 frontend/workspace integration": false,
+        "L4 frontend/workspace integration": true,
         "L5 operational maturity": true
       },
       "registryLevels": [
@@ -130,11 +139,11 @@
         false
       ],
       "registryStatus": "IMPLEMENTING",
-      "derivedStatus": "IMPLEMENTING",
-      "complete": false,
-      "missingLevels": [
-        "L2 data model",
-        "L4 frontend/workspace integration"
+      "derivedStatus": "COMPLETE",
+      "complete": true,
+      "missingLevels": [],
+      "exemptedLevels": [
+        "L2 data model"
       ],
       "unconfirmedLevels": []
     },
@@ -173,6 +182,7 @@
       "derivedStatus": "COMPLETE",
       "complete": true,
       "missingLevels": [],
+      "exemptedLevels": [],
       "unconfirmedLevels": []
     },
     {
@@ -211,6 +221,7 @@
       "derivedStatus": "COMPLETE",
       "complete": true,
       "missingLevels": [],
+      "exemptedLevels": [],
       "unconfirmedLevels": []
     },
     {
@@ -252,6 +263,7 @@
       "missingLevels": [
         "L4 frontend/workspace integration"
       ],
+      "exemptedLevels": [],
       "unconfirmedLevels": []
     },
     {
@@ -297,6 +309,7 @@
       "missingLevels": [
         "L4 frontend/workspace integration"
       ],
+      "exemptedLevels": [],
       "unconfirmedLevels": []
     },
     {
@@ -334,6 +347,7 @@
       "missingLevels": [
         "L4 frontend/workspace integration"
       ],
+      "exemptedLevels": [],
       "unconfirmedLevels": []
     },
     {
@@ -371,6 +385,7 @@
       "missingLevels": [
         "L4 frontend/workspace integration"
       ],
+      "exemptedLevels": [],
       "unconfirmedLevels": []
     },
     {
@@ -409,6 +424,7 @@
       "derivedStatus": "COMPLETE",
       "complete": true,
       "missingLevels": [],
+      "exemptedLevels": [],
       "unconfirmedLevels": []
     },
     {
@@ -446,6 +462,7 @@
       "missingLevels": [
         "L4 frontend/workspace integration"
       ],
+      "exemptedLevels": [],
       "unconfirmedLevels": []
     },
     {
@@ -483,6 +500,7 @@
       "missingLevels": [
         "L4 frontend/workspace integration"
       ],
+      "exemptedLevels": [],
       "unconfirmedLevels": []
     },
     {
@@ -520,6 +538,7 @@
       "missingLevels": [
         "L4 frontend/workspace integration"
       ],
+      "exemptedLevels": [],
       "unconfirmedLevels": []
     },
     {
@@ -555,6 +574,7 @@
       "derivedStatus": "COMPLETE",
       "complete": true,
       "missingLevels": [],
+      "exemptedLevels": [],
       "unconfirmedLevels": []
     },
     {
@@ -592,6 +612,7 @@
       "missingLevels": [
         "L4 frontend/workspace integration"
       ],
+      "exemptedLevels": [],
       "unconfirmedLevels": []
     },
     {
@@ -629,6 +650,7 @@
       "missingLevels": [
         "L4 frontend/workspace integration"
       ],
+      "exemptedLevels": [],
       "unconfirmedLevels": []
     },
     {
@@ -666,6 +688,7 @@
       "missingLevels": [
         "L4 frontend/workspace integration"
       ],
+      "exemptedLevels": [],
       "unconfirmedLevels": []
     },
     {
@@ -703,6 +726,7 @@
       "missingLevels": [
         "L4 frontend/workspace integration"
       ],
+      "exemptedLevels": [],
       "unconfirmedLevels": []
     },
     {
@@ -740,6 +764,7 @@
       "missingLevels": [
         "L4 frontend/workspace integration"
       ],
+      "exemptedLevels": [],
       "unconfirmedLevels": []
     },
     {
@@ -777,6 +802,7 @@
       "missingLevels": [
         "L4 frontend/workspace integration"
       ],
+      "exemptedLevels": [],
       "unconfirmedLevels": []
     },
     {
@@ -814,6 +840,7 @@
       "missingLevels": [
         "L4 frontend/workspace integration"
       ],
+      "exemptedLevels": [],
       "unconfirmedLevels": [
         "L4 frontend/workspace integration"
       ]
@@ -853,6 +880,7 @@
       "missingLevels": [
         "L4 frontend/workspace integration"
       ],
+      "exemptedLevels": [],
       "unconfirmedLevels": []
     },
     {
@@ -890,6 +918,7 @@
       "missingLevels": [
         "L4 frontend/workspace integration"
       ],
+      "exemptedLevels": [],
       "unconfirmedLevels": []
     },
     {
@@ -927,6 +956,7 @@
       "missingLevels": [
         "L4 frontend/workspace integration"
       ],
+      "exemptedLevels": [],
       "unconfirmedLevels": []
     },
     {
@@ -964,6 +994,7 @@
       "missingLevels": [
         "L4 frontend/workspace integration"
       ],
+      "exemptedLevels": [],
       "unconfirmedLevels": []
     },
     {
@@ -1001,6 +1032,7 @@
       "missingLevels": [
         "L4 frontend/workspace integration"
       ],
+      "exemptedLevels": [],
       "unconfirmedLevels": []
     },
     {
@@ -1039,6 +1071,7 @@
       "missingLevels": [
         "L4 frontend/workspace integration"
       ],
+      "exemptedLevels": [],
       "unconfirmedLevels": [
         "L4 frontend/workspace integration"
       ]
@@ -1079,6 +1112,7 @@
       "missingLevels": [
         "L4 frontend/workspace integration"
       ],
+      "exemptedLevels": [],
       "unconfirmedLevels": []
     },
     {
@@ -1115,6 +1149,7 @@
       "derivedStatus": "COMPLETE",
       "complete": true,
       "missingLevels": [],
+      "exemptedLevels": [],
       "unconfirmedLevels": []
     },
     {
@@ -1153,6 +1188,7 @@
       "missingLevels": [
         "L4 frontend/workspace integration"
       ],
+      "exemptedLevels": [],
       "unconfirmedLevels": []
     },
     {
@@ -1191,6 +1227,7 @@
       "missingLevels": [
         "L4 frontend/workspace integration"
       ],
+      "exemptedLevels": [],
       "unconfirmedLevels": []
     },
     {
@@ -1229,6 +1266,7 @@
       "missingLevels": [
         "L4 frontend/workspace integration"
       ],
+      "exemptedLevels": [],
       "unconfirmedLevels": []
     },
     {
@@ -1267,6 +1305,7 @@
       "missingLevels": [
         "L4 frontend/workspace integration"
       ],
+      "exemptedLevels": [],
       "unconfirmedLevels": []
     },
     {
@@ -1305,6 +1344,7 @@
       "missingLevels": [
         "L4 frontend/workspace integration"
       ],
+      "exemptedLevels": [],
       "unconfirmedLevels": []
     },
     {
@@ -1342,6 +1382,7 @@
       "missingLevels": [
         "L4 frontend/workspace integration"
       ],
+      "exemptedLevels": [],
       "unconfirmedLevels": []
     },
     {
@@ -1376,6 +1417,7 @@
         "L3 backend",
         "L4 frontend/workspace integration"
       ],
+      "exemptedLevels": [],
       "unconfirmedLevels": []
     },
     {
@@ -1410,6 +1452,7 @@
         "L3 backend",
         "L4 frontend/workspace integration"
       ],
+      "exemptedLevels": [],
       "unconfirmedLevels": []
     },
     {
@@ -1443,6 +1486,7 @@
         "L3 backend",
         "L4 frontend/workspace integration"
       ],
+      "exemptedLevels": [],
       "unconfirmedLevels": []
     },
     {
@@ -1477,6 +1521,7 @@
         "L3 backend",
         "L4 frontend/workspace integration"
       ],
+      "exemptedLevels": [],
       "unconfirmedLevels": []
     },
     {
@@ -1512,6 +1557,7 @@
         "L4 frontend/workspace integration",
         "L5 operational maturity"
       ],
+      "exemptedLevels": [],
       "unconfirmedLevels": []
     },
     {
@@ -1546,6 +1592,7 @@
         "L3 backend",
         "L4 frontend/workspace integration"
       ],
+      "exemptedLevels": [],
       "unconfirmedLevels": []
     },
     {
@@ -1580,6 +1627,7 @@
         "L3 backend",
         "L4 frontend/workspace integration"
       ],
+      "exemptedLevels": [],
       "unconfirmedLevels": []
     },
     {
@@ -1614,6 +1662,7 @@
         "L3 backend",
         "L4 frontend/workspace integration"
       ],
+      "exemptedLevels": [],
       "unconfirmedLevels": []
     },
     {
@@ -1648,6 +1697,7 @@
         "L3 backend",
         "L4 frontend/workspace integration"
       ],
+      "exemptedLevels": [],
       "unconfirmedLevels": []
     },
     {
@@ -1682,6 +1732,7 @@
         "L3 backend",
         "L4 frontend/workspace integration"
       ],
+      "exemptedLevels": [],
       "unconfirmedLevels": []
     },
     {
@@ -1715,6 +1766,7 @@
         "L3 backend",
         "L4 frontend/workspace integration"
       ],
+      "exemptedLevels": [],
       "unconfirmedLevels": []
     },
     {
@@ -1748,6 +1800,7 @@
         "L3 backend",
         "L4 frontend/workspace integration"
       ],
+      "exemptedLevels": [],
       "unconfirmedLevels": []
     },
     {
@@ -1782,6 +1835,7 @@
         "L3 backend",
         "L4 frontend/workspace integration"
       ],
+      "exemptedLevels": [],
       "unconfirmedLevels": []
     },
     {
@@ -1815,6 +1869,7 @@
         "L3 backend",
         "L4 frontend/workspace integration"
       ],
+      "exemptedLevels": [],
       "unconfirmedLevels": []
     },
     {
@@ -1849,6 +1904,7 @@
         "L3 backend",
         "L4 frontend/workspace integration"
       ],
+      "exemptedLevels": [],
       "unconfirmedLevels": []
     },
     {
@@ -1883,6 +1939,7 @@
         "L3 backend",
         "L4 frontend/workspace integration"
       ],
+      "exemptedLevels": [],
       "unconfirmedLevels": [
         "L1 conceptual"
       ]
@@ -1919,6 +1976,7 @@
         "L3 backend",
         "L4 frontend/workspace integration"
       ],
+      "exemptedLevels": [],
       "unconfirmedLevels": []
     },
     {
@@ -1952,6 +2010,7 @@
         "L3 backend",
         "L4 frontend/workspace integration"
       ],
+      "exemptedLevels": [],
       "unconfirmedLevels": []
     }
   ],

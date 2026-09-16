@@ -76,18 +76,20 @@ Two drift findings, both recorded rather than smoothed over:
   COMPLETE claims (04, 24, 33) were false positives under the loose rule and are
   now correctly listed as needing L4.
 
-## 3. Per-phase archaeology intake (new — beginning with Phase 01)
+## 3. Per-phase archaeology intake (phases 01–03 audited and COMPLETE)
 
-Each pasted phase document is verified four ways (document ↔ kernel contract ↔
+Every phase document is verified four ways (document ↔ kernel contract ↔
 `registry.json` ↔ code) and its acceptance criteria are resolved against real
 artefacts by `npm run audit:phase -- --phase=<id>` (data file per phase under
-`architecture/phase-acceptance/`, classification ENFORCED / DECLARED / MISSING,
-proof per phase under `architecture/proofs/`). The narrative record lives beside
-this inventory:
+`architecture/phase-acceptance/`, classification ENFORCED / DECLARED /
+IMPLEMENTED_UNWIRED / MISSING, proof per phase under `architecture/proofs/`). The
+narrative record lives beside this inventory. **Phases 01, 02 and 03 all derive
+COMPLETE** (`audit:phases`: COMPLETE 6 · IMPLEMENTING 27 ·
+ARCHITECTURE_DEFINED 18), each with the reason recorded:
 
 | Phase | Record | Acceptance probe result |
 | --- | --- | --- |
-| 01 Foundation | `architecture/archaeology/phase-01-foundation.audit.md` | 44 areas — **ENFORCED 41 · UNWIRED 3 · DECLARED 0 · MISSING 0**; ownership confirmed (no duplication), work items P01-1…P01-4, BR-01, unknowns U-01…U-04 |
+| 01 Foundation | `architecture/archaeology/phase-01-foundation.audit.md` | 45 areas — **ENFORCED 42 · UNWIRED 3 · DECLARED 0 · MISSING 0**; **COMPLETE** (L4 closed by the `foundation-standards` module projected on `/platform`; L2 exempt under BR-01, justified and revocable); work items P01-1…P01-4 closed, BR-01 closed, U-01…U-04 answered |
 | 02 Identity | `architecture/archaeology/phase-02-identity.audit.md` | 12 areas — **ENFORCED 11 · DECLARED 1 · MISSING 0**; **COMPLETE** (L4 closed by `/admin/identities`); paste degraded (repo doc authoritative); P02-1 events open, P02-3 federation reserved |
 | 03 Multi-Tenancy | `architecture/archaeology/phase-03-multi-tenancy.audit.md` | 19 areas — **ENFORCED 16 · DECLARED 2 · UNWIRED 1 · MISSING 0**; **COMPLETE** (L4 closed by `/admin/tenants`); async boundaries, deprovisioning, observability wiring open; tenant migration reserved |
 | All probes | `tests/unit/phase-acceptance-probes.test.ts` | every `architecture/phase-acceptance/phase-*.json` is discovered and re-derived automatically — adding a probe adds coverage with no test change |

@@ -4,6 +4,7 @@ import {
   type KernelCapability,
 } from "@/lib/kernel/kernel-capability-registry";
 import { phaseContractCoverageSnapshot } from "@/lib/kernel/phase-contracts";
+import { foundationStandardsSnapshot } from "@/lib/foundation-standards";
 import { scholarConsumedKernelCapabilities } from "@/lib/runtime/scholar-consumption";
 
 export const Route = createFileRoute("/platform")({
@@ -38,6 +39,7 @@ function groupByPhase(capabilities: readonly KernelCapability[]): Array<{
 
 function Platform() {
   const phaseGroups = groupByPhase(KERNEL_CAPABILITIES);
+  const foundation = foundationStandardsSnapshot();
   const scholar = scholarConsumedKernelCapabilities();
   const coverage = phaseContractCoverageSnapshot();
 
@@ -67,6 +69,25 @@ function Platform() {
             a ministry, a company — CoreGrid adapts: identity and tenancy first, then the workspace
             and domain surfaces the organization actually uses. Nothing is forced on anyone.
           </p>
+        </section>
+
+        <section className="mb-10">
+          <h2 className="font-display text-xl font-semibold">
+            The foundation standards behind every capability
+          </h2>
+          <p className="mt-1 max-w-3xl text-sm text-muted-foreground">
+            Capability <code className="font-mono text-xs">{foundation.capabilityId}</code> is owned
+            by Phase 01 and is the one every other phase consumes. It provides the verification
+            contracts the platform enforces on itself:
+          </p>
+          <ul className="mt-4 grid gap-2 sm:grid-cols-2">
+            {foundation.standards.map((standard) => (
+              <li key={standard.id} className="rounded-lg border border-border p-3">
+                <p className="font-mono text-xs font-semibold">{standard.id}</p>
+                <p className="mt-1 text-xs text-muted-foreground">{standard.description}</p>
+              </li>
+            ))}
+          </ul>
         </section>
 
         <section className="mb-10">

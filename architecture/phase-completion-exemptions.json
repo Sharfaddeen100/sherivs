@@ -1,0 +1,24 @@
+{
+  "$comment": "Level-model exemptions: phases whose level is not APPLICABLE by construction, never phases that failed. An exemption must name a reason, an owner, the evidence that justifies it and what would close it; it may never be applied to a level that already has evidence (no hiding), and a phase still needs every other level evidenced plus at least three evidenced levels to derive COMPLETE. Each entry is revocable by the owner.",
+  "schemaVersion": 1,
+  "levelDefinitions": {
+    "L2 data model": "the phase owns or shapes persistent state (tables, migrations, typed registries)",
+    "L4 frontend/workspace integration": "the phase's capability is projected by a workspace from real state"
+  },
+  "exemptions": [
+    {
+      "phase": "01",
+      "level": "L2 data model",
+      "reason": "Phase 01 is a conventions phase: it owns verification, configuration, secret discipline and CI, and deliberately owns NO persistent state. Its data-plane obligation is migration DISCIPLINE (which it enforces) rather than tables of its own — the registries it validates belong to the phases that own them.",
+      "owner": "phase 01",
+      "evidence": [
+        "frontend/src/lib/kernel/phase-contracts/phase-01-foundation.ts",
+        "tests/unit/foundation.test.ts",
+        "scripts/verification/registry-validate.mjs"
+      ],
+      "closesWhen": "Never by adding tables; revisit only if the level model gains an explicit 'conventions phase' class, at which point this exemption is deleted rather than carried.",
+      "ratified": true,
+      "ratifiedBy": "owner instruction 2026-09-14: close phases 01-03 to COMPLETE (the definitional gap is the model's, not the phase's)"
+    }
+  ]
+}

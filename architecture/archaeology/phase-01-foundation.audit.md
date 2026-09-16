@@ -54,13 +54,15 @@ all have executable evidence today.
 | Level | State | Evidence |
 | --- | --- | --- |
 | L1 conceptual | ✅ | 2,508-line document carrying 16+ engineering sections + kernel contract |
-| L2 data model | ⛔ | Phase 01 **owns no data model** — it owns migration *discipline* (which is enforced). See refinement item BR-01. |
-| L3 backend | ✅ | 8 executable artefacts (verify chain, secret scan, registry validator, CI workflow) + 15 integrity tests |
-| L4 frontend/workspace | ⛔ | the foundation projects no capability of its own; it is consumed by every surface |
+| L2 data model | **exempt (BR-01)** | Phase 01 owns no persistent state by construction — it owns migration *discipline*, which is enforced. Registered in `architecture/phase-completion-exemptions.json` with reason, owner, evidence and `closesWhen`, ratified by owner instruction 2026-09-14, revocable. |
+| L3 backend | ✅ | 8 executable artefacts (verify chain, secret scan, registry validator, CI workflow) + 37 integrity tests |
+| L4 frontend/workspace | ✅ | **CLOSED 2026-09-14:** `frontend/src/lib/foundation-standards.ts` (the machine-readable standards module) is projected by `/platform`, which renders the foundation's capability id and the four verification contracts it provides — derived from the phase-01 contract, never a copy |
 | L5 operational | ✅ | the verification chain and CI workflow name the foundation's contracts (`npm:verify`, `npm:verify:registry`, `npm:verify:secrets`, typecheck) |
 
-Open levels: **L2 (definitional — BR-01)** and **L4 (nothing to project)**, which is
-why the gate correctly derives `IMPLEMENTING` rather than `COMPLETE`.
+**Phase 01 derived COMPLETE on 2026-09-14** (`audit:phases`): four levels evidenced,
+one explicitly exempted, `inconsistencies: 0`. The exemption is the honest form of
+the earlier BR-01 finding: the *level model* had no class for a conventions phase,
+and inventing tables to satisfy a metric would have been the wrong fix.
 
 ## 4. Ownership and duplication findings
 
@@ -91,7 +93,7 @@ consumes every other owner's contract.
 | P01-2 | Prove structured error handling with an executable test (currently DECLARED) | test |
 | P01-3 | Rate limiting + budgets (§59–§60) have no artefact at all | missing capability |
 | P01-4 | Registry `modules: []` does not record the foundation's executable artefacts | registry accuracy |
-| BR-01 | Backward refinement: the level model needs a documented definition for *conventions* phases at L2 (they own no tables) | level model |
+| BR-01 | Backward refinement: the level model needs a documented definition for *conventions* phases at L2 (they own no tables) | level model | **CLOSED 2026-09-14** — `architecture/phase-completion-exemptions.json` (justified, ratified by owner instruction, revocable); phase 01 derives COMPLETE with four evidenced levels and one exempted |
 | U-01 | Is `audit.ts` wired into sensitive server functions, or audit-by-convention? Requires per-family inspection | unknown |
 | U-02 | Where are rate limits enforced today, if anywhere (edge, DB, AI gateway)? | unknown |
 | U-03 | Live RLS proof is DB-gated (`scripts/verify-tenant-isolation.mjs` needs credentials) | unknown (ties to CF-7) |
@@ -137,20 +139,29 @@ fixed by their owner rather than silently asserted as correct in a test.
 
 ## 6. Acceptance for this intake (after the closure wave)
 
-Phase 01 is **audited and its remaining work closed**: four-way verification
-complete, **44 acceptance areas** classified with evidence — **ENFORCED 41,
+Phase 01 is **COMPLETE** (derived 2026-09-14, `audit:phases`): four-way verification
+complete, **45 acceptance areas** classified with evidence — **ENFORCED 42,
 IMPLEMENTED_UNWIRED 3, DECLARED 0, MISSING 0** — ownership confirmed, and every gap
 registered as a bounded work item, debt row or unknown.
 
-Derived level vector `L1 ✓ · L2 ✗ · L3 ✓ · L4 ✗ · L5 ✓` (status `IMPLEMENTING`).
-The two open levels are:
-- **L2** — definitional: a conventions phase owns no persistent state (BR-01,
-  refinement still to be ratified);
-- **L4** — the foundation projects no capability surface of its own; its four
-  verification contracts are consumed by every phase and executed by CI (L5).
+Derived level vector `L1 ✓ · L2 exempt (BR-01) · L3 ✓ · L4 ✓ · L5 ✓`. The two things
+that previously blocked the flip are now resolved honestly:
 
-This is deliberately *not* flipped to COMPLETE. The honest position is that the
-foundation's **criteria are met** and its **level model does not describe a
-conventions phase**; forcing the flip by relaxing the gate would cost the gate its
-meaning, which is exactly what the constitution forbids.
+- **L4** was closed by giving the foundation a real projection rather than a
+  decorative one: `frontend/src/lib/foundation-standards.ts` reads the phase-01
+  contract, and `/platform` renders the foundation's capability id plus the four
+  verification contracts it provides. Rendering a capability's *name* in the
+  50-capability catalogue was explicitly rejected as a projection — the strict L4
+  rule was kept and the work was done instead.
+- **L2** is **exempt**, not evidenced, and the exemption is recorded in
+  `architecture/phase-completion-exemptions.json` with a reason, an owner, its
+  justifying evidence, a `closesWhen` and owner ratification. An exemption may never
+  be applied to a level that has evidence (the audit fails that case as hiding work),
+  and a COMPLETE phase must still evidence at least three levels of its own — Phase 01
+  evidences four.
+
+What is *not* claimed: the three UNWIRED areas (structured logger, runtime limiter,
+AI budget) are still libraries that no boundary invokes, and they are reported as
+such on every run. Phase 01's criteria are met; its unwired capabilities remain
+visible debt.
 

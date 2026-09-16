@@ -506,6 +506,21 @@
       ]
     },
     {
+      "id": "workspace-projection",
+      "area": "Foundation standards projected in a surface (L4)",
+      "requirement": "The foundation's own capability and verification contracts are readable in a surface from real contract data, so the foundation is not enforcement-only.",
+      "ownerPhase": "01",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/foundation-standards.ts", "contains": "FOUNDATION_CAPABILITY_ID" },
+        { "kind": "test", "path": "tests/unit/foundation-standards.test.ts" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/routes/platform.tsx", "contains": "foundation-standards" }
+      ],
+      "boundaryNote": "Closed 2026-09-14: `/platform` renders the foundation's capability id and the four verification contracts it provides, derived from the phase-01 engineering contract (never a copy). Rendering a capability's name in the 50-capability catalogue was deliberately NOT accepted as a projection — this section projects the capability's own contract."
+    },
+    {
       "id": "rate-limiting",
       "area": "Rate limiting across the §59 levels",
       "requirement": "Limits exist per IP, user, organization, tenant, API, agent, tool, workflow, device and model.",
