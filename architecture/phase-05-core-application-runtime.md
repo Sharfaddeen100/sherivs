@@ -2072,3 +2072,45 @@ Phase 05 can execute an analytics query, but Phase 18 owns what the analytics mo
 Phase 05 can execute an agent command, but Phase 07/24 own the agent/intelligence architecture.
 Phase 05 can invoke authorization, but Phase 08/09 own security authority.
 That keeps the CoreGrid architecture modular instead of gradually turning the application runtime into another giant "God subsystem."
+
+
+───────────────────
+
+HD. RUNTIME KNOWLEDGE
+
+The runtime knows its own execution fabric, and only that. Knowledge here means the
+runtime's self-description — the contracts it can execute and the states each of
+them can be in — never an interpretation of domain meaning, which remains with the
+owning phases.
+
+What the runtime knows about itself:
+
+- capabilities — capability registration, status (`active`, `degraded`, `disabled`,
+  `deprecated`, `incubating`) and health;
+- jobs — background work, its statuses (`queued`, `running`, `succeeded`, …) and
+  bounded retry decisions;
+- application events — event types, versions and compatibility rules, so a consumer
+  only accepts versions it declares;
+- approvals — approval-gated operations and their statuses (`pending`, `approved`,
+  `rejected`, `cancelled`, `expired`);
+- command/query — command validation (including the idempotency requirement for
+  retryable commands and agent-issued commands) and paged queries with a declared
+  maximum page size;
+- resilience — circuit state (`closed`, `open`, `half_open`), rate-limit windows per
+  scope and per-operation timeout policy.
+
+Two rules keep this knowledge safe to expose:
+
+1. **It is exercised, not asserted.** `frontend/src/lib/runtime-self-report.ts`
+   drives the shipped state machines with real inputs (a tenant window that must deny
+   beyond its limit and reset afterwards; a circuit that must open on threshold,
+   block, then permit a probe; a timeout override that must not disturb other
+   operations; an undeclared event version that must be rejected; a retryable command
+   without its idempotency key that must be refused). If behaviour changes, the
+   self-check fails and says which check failed.
+2. **Knowledge never becomes truth about the domain.** The runtime may know that a
+   command executed; only the owning phase knows what that command means (§HC). This
+   is why the runtime reports states and outcomes, never business conclusions.
+
+The knowledge surface is the super-admin workspace `/super-admin/runtime-contracts`,
+which renders the subsystems and the self-check result, including failures.

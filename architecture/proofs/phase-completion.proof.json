@@ -2,7 +2,7 @@
   "artifact": "phase-completion",
   "wave": "AUDIT-1",
   "owner": "kernel (Phase 01 governance)",
-  "generatedAt": "2026-09-16T15:03:49.284Z",
+  "generatedAt": "2026-09-16T17:42:43.849Z",
   "authority": [
     "CONSTITUTION.md",
     "architecture/registry.json",
@@ -18,8 +18,8 @@
   },
   "summary": {
     "phasesAudited": 51,
-    "complete": 7,
-    "implementing": 26,
+    "complete": 8,
+    "implementing": 25,
     "architectureDefined": 18,
     "withModules": 33,
     "withResolvedModules": 32,
@@ -104,7 +104,7 @@
     ],
     "exemptionSource": "architecture/phase-completion-exemptions.json",
     "missingLevelFrequency": {
-      "L4 frontend/workspace integration": 44,
+      "L4 frontend/workspace integration": 43,
       "L3 backend": 18,
       "L2 data model": 12,
       "L5 operational maturity": 1,
@@ -269,7 +269,7 @@
       "id": "05",
       "name": "Core Application Runtime",
       "capability": "runtime-primitives",
-      "sections": "19/20",
+      "sections": "20/20",
       "modules": [
         "runtime-core",
         "runtime-command-query",
@@ -277,6 +277,7 @@
         "runtime-jobs",
         "runtime-capabilities",
         "runtime-observability",
+        "runtime-self-report",
         "runtime-webhooks",
         "runtime-integrations",
         "runtime-resilience",
@@ -292,7 +293,7 @@
         "L1 conceptual": true,
         "L2 data model": true,
         "L3 backend": true,
-        "L4 frontend/workspace integration": false,
+        "L4 frontend/workspace integration": true,
         "L5 operational maturity": true
       },
       "registryLevels": [
@@ -303,11 +304,9 @@
         false
       ],
       "registryStatus": "IMPLEMENTING",
-      "derivedStatus": "IMPLEMENTING",
-      "complete": false,
-      "missingLevels": [
-        "L4 frontend/workspace integration"
-      ],
+      "derivedStatus": "COMPLETE",
+      "complete": true,
+      "missingLevels": [],
       "exemptedLevels": [],
       "unconfirmedLevels": []
     },

@@ -83,9 +83,9 @@ Every phase document is verified four ways (document ↔ kernel contract ↔
 artefacts by `npm run audit:phase -- --phase=<id>` (data file per phase under
 `architecture/phase-acceptance/`, classification ENFORCED / DECLARED /
 IMPLEMENTED_UNWIRED / MISSING, proof per phase under `architecture/proofs/`). The
-narrative record lives beside this inventory. **Phases 01, 02, 03 and 04 all
-derive COMPLETE** (`audit:phases`: COMPLETE 7 · IMPLEMENTING 26 ·
-ARCHITECTURE_DEFINED 18), each with the reason recorded:
+narrative record lives beside this inventory. **Phases 01–05 all derive COMPLETE**
+(`audit:phases`: COMPLETE 8 · IMPLEMENTING 25 · ARCHITECTURE_DEFINED 18), each with
+the reason recorded:
 
 | Phase | Record | Acceptance probe result |
 | --- | --- | --- |
@@ -93,6 +93,7 @@ ARCHITECTURE_DEFINED 18), each with the reason recorded:
 | 02 Identity | `architecture/archaeology/phase-02-identity.audit.md` | 12 areas — **ENFORCED 11 · DECLARED 1 · MISSING 0**; **COMPLETE** (L4 closed by `/admin/identities`); paste degraded (repo doc authoritative); P02-1 events open, P02-3 federation reserved |
 | 03 Multi-Tenancy | `architecture/archaeology/phase-03-multi-tenancy.audit.md` | 19 areas — **ENFORCED 16 · DECLARED 2 · UNWIRED 1 · MISSING 0**; **COMPLETE** (L4 closed by `/admin/tenants`); async boundaries, deprovisioning, observability wiring open; tenant migration reserved |
 | 04 Education Reality Engine | `architecture/archaeology/phase-04-reality-engine.audit.md` | 16 areas — **ENFORCED 16 · DECLARED 0 · UNWIRED 0 · MISSING 0**; **COMPLETE** (document completed 16/20 → **20/20** by addendum §199–204; L4 closed by `/admin/education-reality`; registry row corrected to 81 tests); P04-1…P04-3 closed |
+| 05 Core Application Runtime | `architecture/archaeology/phase-05-application-runtime.audit.md` | 13 areas — **ENFORCED 12 · UNWIRED 1 · DECLARED 0 · MISSING 0**; **COMPLETE** (document completed 19/20 → **20/20** by addendum HD; L4 closed by `/super-admin/runtime-contracts` with a self-check that exercises the shipped state machines; registry row corrected to 100 tests) |
 | All probes | `tests/unit/phase-acceptance-probes.test.ts` | every `architecture/phase-acceptance/phase-*.json` is discovered and re-derived automatically — adding a probe adds coverage with no test change |
 
 ## 4. Archaeology work packages (next, in order)

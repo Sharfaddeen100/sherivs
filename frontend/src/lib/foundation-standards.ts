@@ -11,7 +11,8 @@
  * `phase-contracts/phase-01-foundation.ts`, which is the contract the phases
  * already agree on.
  */
-import { phaseContractById, type PhaseContractRef } from "@/lib/kernel/phase-contracts";
+import { phaseContractById } from "@/lib/kernel/phase-contracts";
+import type { PhaseContractRef } from "@/lib/kernel/phase-contract";
 
 /** The capability Phase 01 owns. Consumers reference this, never a copy. */
 export const FOUNDATION_CAPABILITY_ID = "foundation-standards-config-secrets-ci";

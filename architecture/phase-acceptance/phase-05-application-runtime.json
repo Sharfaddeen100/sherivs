@@ -1,0 +1,173 @@
+{
+  "$comment": "Phase 05 (Core Application Runtime) resolved against repository artefacts: architecture/phase-05-core-application-runtime.md (now with addendum HD), frontend/src/lib/kernel/phase-contracts/phase-05-application-runtime.ts, registry row 05, and the twelve runtime-* modules.",
+  "phase": "05",
+  "phaseName": "Core Application Runtime",
+  "source": "architecture/phase-05-core-application-runtime.md",
+  "contract": "frontend/src/lib/kernel/phase-contracts/phase-05-application-runtime.ts",
+  "documentIntegrity": {
+    "status": "CLOSED — COMPLETED",
+    "finding": "The document stated 19 of the 20 mandatory engineering sections; the knowledge/self-description section was absent. Addendum section HD (Runtime Knowledge) was authored in the document's own lettered style, stating what the runtime knows about itself, that it is exercised rather than asserted, and that runtime knowledge never becomes domain truth.",
+    "verifiedAgainst": "architecture/phase-05-core-application-runtime.md"
+  },
+  "ownership": {
+    "note": "Phase 05 owns the execution fabric only (document 'HC. FINAL SCOPE LOCK'): it executes capabilities, it never owns their meaning. Identity 02, tenancy 03, security 08/09, agents 07/24 and every domain phase keep their authority.",
+    "canonicalOwners": {
+      "execution-fabric": "05",
+      "identity": "02",
+      "tenancy": "03",
+      "authorization": "08/09",
+      "agent-runtime": "07",
+      "scheduling": "12",
+      "analytics": "18",
+      "experience": "24",
+      "ai-reasoning": "26"
+    }
+  },
+  "areas": [
+    {
+      "id": "request-context",
+      "area": "Request handling and context establishment",
+      "requirement": "Every request establishes an authorised context (actor, tenant, correlation) before any use case executes.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/runtime-core.ts", "contains": "CorrelationId" },
+        { "kind": "test", "path": "tests/unit/runtime.test.ts" }
+      ]
+    },
+    {
+      "id": "command-query",
+      "area": "Command and query fabric",
+      "requirement": "Commands are validated (including the idempotency requirement) and queries are paged with a declared maximum.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/runtime-command-query.ts", "contains": "MAX_PAGE_SIZE" },
+        { "kind": "test", "path": "tests/unit/runtime.test.ts" }
+      ]
+    },
+    {
+      "id": "jobs",
+      "area": "Background jobs and retries",
+      "requirement": "Long-running work becomes a job with bounded, observable retries instead of an unbounded request.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/runtime-jobs.ts", "contains": "JOB_STATUSES" },
+        { "kind": "test", "path": "tests/unit/runtime.test.ts" }
+      ]
+    },
+    {
+      "id": "events",
+      "area": "Application event emission and compatibility",
+      "requirement": "Events are typed, versioned and only consumed by consumers that declare the version.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/runtime-events.ts", "contains": "isEventCompatible" },
+        { "kind": "test", "path": "tests/unit/runtime-extended.test.ts" }
+      ]
+    },
+    {
+      "id": "resilience",
+      "area": "Circuit breaking, rate limiting and timeouts",
+      "requirement": "Failure is contained: circuits open and recover, windows deny and reset, timeouts are per-operation.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/runtime-resilience.ts", "contains": "createCircuitBreaker" },
+        { "kind": "test", "path": "tests/unit/runtime-extended.test.ts", "contains": "circuit" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/runtime-self-report.ts", "contains": "circuit-breaker" }
+      ]
+    },
+    {
+      "id": "webhooks",
+      "area": "Webhook signature, retry and delivery tracking",
+      "requirement": "Inbound and outbound webhooks are signature-validated, retried with bounds and delivery-tracked.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/runtime-webhooks.ts", "contains": "validateWebhookSignature" },
+        { "kind": "test", "path": "tests/unit/runtime-extended.test.ts", "contains": "webhook" }
+      ]
+    },
+    {
+      "id": "integrations",
+      "area": "External integration adapters",
+      "requirement": "Every external system is reached through a registered adapter with a declared status, never by direct vendor calls.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/runtime-integrations.ts", "contains": "createIntegrationRegistry" },
+        { "kind": "test", "path": "tests/unit/runtime-extended.test.ts", "contains": "integration" }
+      ]
+    },
+    {
+      "id": "feature-flags",
+      "area": "Feature flags and rollout control",
+      "requirement": "Capabilities can be enabled per context, including tenant overrides and a kill switch, without redeploying.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/runtime-feature-flags.ts", "contains": "createFeatureFlagService" },
+        { "kind": "test", "path": "tests/unit/runtime-extended.test.ts", "contains": "feature flag" }
+      ]
+    },
+    {
+      "id": "approvals",
+      "area": "Approval-gated operations",
+      "requirement": "Operations that require human approval hold an approval lifecycle and an operation tracker rather than executing silently.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/runtime-approval.ts", "contains": "ApprovalStatus" },
+        { "kind": "test", "path": "tests/unit/runtime-extended.test.ts", "contains": "approval" }
+      ]
+    },
+    {
+      "id": "bulk-operations",
+      "area": "Bulk operations and transfers",
+      "requirement": "Batch work respects declared limits, reports partial failure and tracks transfers instead of failing opaquely.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/runtime-bulk.ts", "contains": "createBulkOperationService" },
+        { "kind": "test", "path": "tests/unit/runtime-extended.test.ts", "contains": "bulk" }
+      ]
+    },
+    {
+      "id": "observability",
+      "area": "Runtime observability",
+      "requirement": "Structured, correlated logs, metrics and health are available to every execution path.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/runtime-observability.ts", "contains": "createLogger" },
+        { "kind": "test", "path": "tests/unit/foundation-observability.test.ts" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/server.ts", "contains": "createLogger" }
+      ],
+      "boundaryNote": "The observability primitive is proven by tests but no runtime path emits it yet (shared finding P01-1/P03-3). Reported, not glossed."
+    },
+    {
+      "id": "runtime-knowledge",
+      "area": "Runtime self-knowledge (addendum HD)",
+      "requirement": "The runtime can describe and exercise its own execution fabric — capabilities, jobs, events, approvals, command/query and resilience — without claiming domain truth.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/runtime-self-report.ts", "contains": "runtimeSelfReport" },
+        { "kind": "test", "path": "tests/unit/runtime-self-report.test.ts" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/routes/_authenticated/super-admin/runtime-contracts.tsx", "contains": "runtime-self-report" }
+      ],
+      "boundaryNote": "Closed 2026-09-14: `/super-admin/runtime-contracts` renders the subsystems and a self-check that EXERCISES the shipped state machines (window denial/reset, circuit open/block/probe, timeout override, undeclared event version, missing idempotency key) and names failures."
+    },
+    {
+      "id": "document-completeness",
+      "area": "Engineering-section completeness of the phase document",
+      "requirement": "The document states the mandatory engineering sections, including what the runtime knows about itself.",
+      "required": true,
+      "evidence": [
+        { "kind": "doc", "path": "architecture/phase-05-core-application-runtime.md", "contains": "HD. RUNTIME KNOWLEDGE" },
+        { "kind": "script", "path": "scripts/verification/engineering-sections.mjs" },
+        { "kind": "test", "path": "tests/unit/kernel-contract-coverage.test.ts", "contains": "engineering-sections" }
+      ],
+      "boundary": [
+        { "kind": "test", "path": "tests/unit/kernel-contract-coverage.test.ts", "contains": "engineering-sections" }
+      ]
+    }
+  ]
+}

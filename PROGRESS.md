@@ -826,6 +826,17 @@ Normalized schema: Date · Author · Scope · Change · Validation · Status. En
 | Validation | `npm run audit:phase -- --phase=01` PASS (proof `architecture/proofs/phase-01-acceptance.proof.json`); `npm run audit:phases` re-run clean (unconfirmed claims 5 → 4; phase 01 now confirmed); `tests/unit/phase-acceptance-audit.test.ts` 8/8 (its independent re-derivation caught two real defects during authoring — a dropped RLS acceptance area and an over-strict evidence assertion, both fixed) |
 | Status | AUDITED + CLOSED — Phase 01 remains IMPLEMENTING (`L1 ✓, L2 ✗, L3 ✓, L4 ✗, L5 ✓`); its foundation is enforced and the verify chain is its operational evidence, so only the definitional L2 and the (non-applicable) L4 projection keep it from COMPLETE |
 
+### 22.10 Current entry — phase 05 completes its architecture and reaches COMPLETE
+
+| Field | Value |
+| --- | --- |
+| Date | 2026-09-14 |
+| Author | Cline (autonomous loop, §103) |
+| Scope | Phase 05 Core Application Runtime — document completion, L4 projection, registry accuracy |
+| Change | Same treatment as phase 04, and the same two findings. **Document:** 19/20 mandatory engineering sections — the knowledge/self-description section was missing. Addendum **HD. RUNTIME KNOWLEDGE** was authored in the document's own lettered style, stating what the runtime knows about itself, that this knowledge is *exercised rather than asserted*, and that runtime knowledge never becomes domain truth → **20/20**. **L4 (the only missing level):** `runtime-self-report.ts` + `/super-admin/runtime-contracts` render the execution subsystems and a self-check that calls the SHIPPED state machines with real inputs — a tenant window that must deny beyond its limit and reset, a circuit that must open, refuse, then permit one probe, a timeout override that must not disturb other operations, an undeclared event version that must be rejected, and a retryable command without its idempotency key that must be refused. A failure is displayed as a failure and `failingChecks` names it, so the page cannot claim a health the runtime does not have. **Registry accuracy:** row 05 claimed `tests: null` and levels `[L1 ✓, L2 ✗, L3 ✗, L4 ✗, L5 ✗]` while the audit derives **L1 ✓ L2 ✓ L3 ✓ L5 ✓** with **100 tests**; the row now records both. |
+| Validation | **`audit:phases`: COMPLETE 8 · IMPLEMENTING 25 · ARCHITECTURE_DEFINED 18**, `inconsistencies: 0` — phase 05 derives all five levels with `sections 20/20`; acceptance probe **13 areas: ENFORCED 12 · UNWIRED 1 · DECLARED 0 · MISSING 0**; self-report suite 5/5; typecheck 0 errors; production build PASS (route tree regenerated); probe guard + completion audit green |
+| Status | Phases **01–05 are COMPLETE**. Open and reported, not hidden: phase 05's observability is UNWIRED (primitive proven, no runtime path emits it — shared with P01-1/P03-3), plus the earlier P01–P04 items. |
+
 ### 22.9 Current entry — phase 04 completes its architecture and reaches COMPLETE
 
 | Field | Value |

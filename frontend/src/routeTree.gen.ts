@@ -132,6 +132,7 @@ import { Route as AuthenticatedSuperAdminBillingRouteImport } from './routes/_au
 import { Route as AuthenticatedSuperAdminDashboardRouteImport } from './routes/_authenticated/super-admin/dashboard'
 import { Route as AuthenticatedSuperAdminLogsRouteImport } from './routes/_authenticated/super-admin/logs'
 import { Route as AuthenticatedSuperAdminPlatformConfigRouteImport } from './routes/_authenticated/super-admin/platform-config'
+import { Route as AuthenticatedSuperAdminRuntimeContractsRouteImport } from './routes/_authenticated/super-admin/runtime-contracts'
 import { Route as AuthenticatedSuperAdminSchoolsRouteImport } from './routes/_authenticated/super-admin/schools'
 import { Route as AuthenticatedSuperAdminSettingsRouteImport } from './routes/_authenticated/super-admin/settings'
 import { Route as AuthenticatedSuperAdminSupportRouteImport } from './routes/_authenticated/super-admin/support'
@@ -855,6 +856,12 @@ const AuthenticatedSuperAdminPlatformConfigRoute =
     path: '/platform-config',
     getParentRoute: () => AuthenticatedSuperAdminRouteRoute,
   } as any)
+const AuthenticatedSuperAdminRuntimeContractsRoute =
+  AuthenticatedSuperAdminRuntimeContractsRouteImport.update({
+    id: '/runtime-contracts',
+    path: '/runtime-contracts',
+    getParentRoute: () => AuthenticatedSuperAdminRouteRoute,
+  } as any)
 const AuthenticatedSuperAdminSchoolsRoute =
   AuthenticatedSuperAdminSchoolsRouteImport.update({
     id: '/schools',
@@ -1093,6 +1100,7 @@ export interface FileRoutesByFullPath {
   '/super-admin/dashboard': typeof AuthenticatedSuperAdminDashboardRoute
   '/super-admin/logs': typeof AuthenticatedSuperAdminLogsRoute
   '/super-admin/platform-config': typeof AuthenticatedSuperAdminPlatformConfigRoute
+  '/super-admin/runtime-contracts': typeof AuthenticatedSuperAdminRuntimeContractsRoute
   '/super-admin/schools': typeof AuthenticatedSuperAdminSchoolsRoute
   '/super-admin/settings': typeof AuthenticatedSuperAdminSettingsRoute
   '/super-admin/support': typeof AuthenticatedSuperAdminSupportRoute
@@ -1236,6 +1244,7 @@ export interface FileRoutesByTo {
   '/super-admin/dashboard': typeof AuthenticatedSuperAdminDashboardRoute
   '/super-admin/logs': typeof AuthenticatedSuperAdminLogsRoute
   '/super-admin/platform-config': typeof AuthenticatedSuperAdminPlatformConfigRoute
+  '/super-admin/runtime-contracts': typeof AuthenticatedSuperAdminRuntimeContractsRoute
   '/super-admin/schools': typeof AuthenticatedSuperAdminSchoolsRoute
   '/super-admin/settings': typeof AuthenticatedSuperAdminSettingsRoute
   '/super-admin/support': typeof AuthenticatedSuperAdminSupportRoute
@@ -1381,6 +1390,7 @@ export interface FileRoutesById {
   '/_authenticated/super-admin/dashboard': typeof AuthenticatedSuperAdminDashboardRoute
   '/_authenticated/super-admin/logs': typeof AuthenticatedSuperAdminLogsRoute
   '/_authenticated/super-admin/platform-config': typeof AuthenticatedSuperAdminPlatformConfigRoute
+  '/_authenticated/super-admin/runtime-contracts': typeof AuthenticatedSuperAdminRuntimeContractsRoute
   '/_authenticated/super-admin/schools': typeof AuthenticatedSuperAdminSchoolsRoute
   '/_authenticated/super-admin/settings': typeof AuthenticatedSuperAdminSettingsRoute
   '/_authenticated/super-admin/support': typeof AuthenticatedSuperAdminSupportRoute
@@ -1526,6 +1536,7 @@ export interface FileRouteTypes {
     | '/super-admin/dashboard'
     | '/super-admin/logs'
     | '/super-admin/platform-config'
+    | '/super-admin/runtime-contracts'
     | '/super-admin/schools'
     | '/super-admin/settings'
     | '/super-admin/support'
@@ -1669,6 +1680,7 @@ export interface FileRouteTypes {
     | '/super-admin/dashboard'
     | '/super-admin/logs'
     | '/super-admin/platform-config'
+    | '/super-admin/runtime-contracts'
     | '/super-admin/schools'
     | '/super-admin/settings'
     | '/super-admin/support'
@@ -1813,6 +1825,7 @@ export interface FileRouteTypes {
     | '/_authenticated/super-admin/dashboard'
     | '/_authenticated/super-admin/logs'
     | '/_authenticated/super-admin/platform-config'
+    | '/_authenticated/super-admin/runtime-contracts'
     | '/_authenticated/super-admin/schools'
     | '/_authenticated/super-admin/settings'
     | '/_authenticated/super-admin/support'
@@ -2719,6 +2732,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSuperAdminPlatformConfigRouteImport
       parentRoute: typeof AuthenticatedSuperAdminRouteRoute
     }
+    '/_authenticated/super-admin/runtime-contracts': {
+      id: '/_authenticated/super-admin/runtime-contracts'
+      path: '/runtime-contracts'
+      fullPath: '/super-admin/runtime-contracts'
+      preLoaderRoute: typeof AuthenticatedSuperAdminRuntimeContractsRouteImport
+      parentRoute: typeof AuthenticatedSuperAdminRouteRoute
+    }
     '/_authenticated/super-admin/schools': {
       id: '/_authenticated/super-admin/schools'
       path: '/schools'
@@ -3122,6 +3142,7 @@ interface AuthenticatedSuperAdminRouteRouteChildren {
   AuthenticatedSuperAdminDashboardRoute: typeof AuthenticatedSuperAdminDashboardRoute
   AuthenticatedSuperAdminLogsRoute: typeof AuthenticatedSuperAdminLogsRoute
   AuthenticatedSuperAdminPlatformConfigRoute: typeof AuthenticatedSuperAdminPlatformConfigRoute
+  AuthenticatedSuperAdminRuntimeContractsRoute: typeof AuthenticatedSuperAdminRuntimeContractsRoute
   AuthenticatedSuperAdminSchoolsRoute: typeof AuthenticatedSuperAdminSchoolsRoute
   AuthenticatedSuperAdminSettingsRoute: typeof AuthenticatedSuperAdminSettingsRoute
   AuthenticatedSuperAdminSupportRoute: typeof AuthenticatedSuperAdminSupportRoute
@@ -3136,6 +3157,8 @@ const AuthenticatedSuperAdminRouteRouteChildren: AuthenticatedSuperAdminRouteRou
     AuthenticatedSuperAdminLogsRoute: AuthenticatedSuperAdminLogsRoute,
     AuthenticatedSuperAdminPlatformConfigRoute:
       AuthenticatedSuperAdminPlatformConfigRoute,
+    AuthenticatedSuperAdminRuntimeContractsRoute:
+      AuthenticatedSuperAdminRuntimeContractsRoute,
     AuthenticatedSuperAdminSchoolsRoute: AuthenticatedSuperAdminSchoolsRoute,
     AuthenticatedSuperAdminSettingsRoute: AuthenticatedSuperAdminSettingsRoute,
     AuthenticatedSuperAdminSupportRoute: AuthenticatedSuperAdminSupportRoute,
