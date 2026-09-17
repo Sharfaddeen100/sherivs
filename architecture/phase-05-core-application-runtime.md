@@ -1,12 +1,12 @@
 
 Phase 05 — Core Application Runtime
-CoreGrid Scholar Application Runtime Fabric
+CoreGrid Application Runtime Fabric (runtime-neutral)
 
 ───
 
 A. IDENTITY
 A1. Subsystem Name
-CoreGrid Scholar Core Application Runtime
+CoreGrid Core Application Runtime
 Short name:
 CAR — Core Application Runtime
 
@@ -27,7 +27,7 @@ A3. Architectural Position
 B. PURPOSE
 B1. Primary Purpose
 
-Provide the controlled runtime through which CoreGrid Scholar's domain capabilities are exposed, coordinated, executed, observed, and integrated.
+Provide the controlled runtime through which the platform's domain capabilities are exposed, coordinated, executed, observed, and integrated.
 
 ───
 
@@ -2058,7 +2058,7 @@ HB. DEFINITION OF DONE
 
 HC. FINAL SCOPE LOCK
 Phase 05 owns exactly one architectural responsibility:
-Provide the controlled execution fabric through which CoreGrid Scholar application capabilities receive requests, establish context, execute authorized use cases, coordinate transactions, process events and jobs, integrate with external systems, expose operational telemetry, and recover safely from failure.
+Provide the controlled execution fabric through which application capabilities receive requests, establish context, execute authorized use cases, coordinate transactions, process events and jobs, integrate with external systems, expose operational telemetry, and recover safely from failure.
 The boundary is:
 
  

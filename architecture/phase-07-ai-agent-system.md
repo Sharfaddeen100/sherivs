@@ -1,12 +1,12 @@
 
 Phase 07 — AI Agent System
-CoreGrid Scholar AI Agent System
+CoreGrid AI Agent System (runtime-neutral)
 
 ───
 
 A. IDENTITY
 A1. Subsystem Name
-CoreGrid Scholar AI Agent System
+CoreGrid AI Agent System (runtime-neutral)
 Short name:
 Agent System
 
@@ -14,7 +14,7 @@ Agent System
 
 A2. Architectural Classification
 
-The AI Agent System is the autonomous-agent infrastructure of CoreGrid Scholar.
+The AI Agent System is the autonomous-agent infrastructure of the CoreGrid platform; CoreGrid Scholar (runtime-001) is its first consumer, and every later runtime consumes the same contracts through a neutral seat.
 It provides the runtime and governance framework required to create, register, execute, coordinate, supervise, evaluate, observe, and safely terminate AI agents.
 
 ───
@@ -59,7 +59,7 @@ A4. Architectural Position
 
 B. PURPOSE
 B1. Primary Purpose
-Provide CoreGrid Scholar with a controlled, 
+Provide the platform with a controlled, 
 
 observable, secure, scalable infrastructure for autonomous and semi-autonomous AI agents.
 
@@ -2331,7 +2331,7 @@ KF. DEFINITION OF DONE
 
 KG. FINAL SCOPE LOCK
 Phase 07 owns one primary architectural responsibility:
-The controlled operating environment in which CoreGrid Scholar AI agents are defined, authorized, executed, coordinated, evaluated, observed, governed, and safely terminated.
+The controlled operating environment in which CoreGrid AI agents are defined, authorized, executed, coordinated, evaluated, observed, governed, and safely terminated.
 The architecture is:
 
 

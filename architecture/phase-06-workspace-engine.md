@@ -13,7 +13,7 @@ universities, colleges, organizations, companies, government agencies,
 community institutions, teams and individuals — and every present and future
 domain runtime. A workspace's shape is always DERIVED from identity + role +
 context + permissions + policies + organization (P02/P03/P08 semantics) — never
-from a hard-coded portal label. Scholar-specific wording later in this document
+from a hard-coded portal label. Any wording elsewhere in this document that names the first runtime is historical and non-normative; the engine itself is runtime-neutral
 appears only as a worked example of one consuming runtime.
 
 ───
