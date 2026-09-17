@@ -4,7 +4,6 @@ import { useServerFn } from "@tanstack/react-start";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { PortalPage } from "@/components/portal-shell";
-import { RoleGuard } from "@/components/role-guard";
 import {
   listIdentities,
   registerIdentity,
@@ -22,11 +21,10 @@ import { IDENTITY_KINDS, IDENTITY_STATES } from "@/lib/identity-registry";
  */
 export const Route = createFileRoute("/_authenticated/admin/identities")({
   ssr: false,
-  component: () => (
-    <RoleGuard allow={["admin", "principal"]}>
-      <IdentitiesPage />
-    </RoleGuard>
-  ),
+  // Access is enforced by the /admin layout guard, and for any data by the
+  // canonical server-side gate. No role list is declared here: a hand-written list
+  // of staff roles goes stale as the institution's catalog grows.
+  component: IdentitiesPage,
 });
 
 const KIND_LABEL: Record<string, string> = {

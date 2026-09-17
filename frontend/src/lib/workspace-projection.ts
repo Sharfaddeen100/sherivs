@@ -1,37 +1,43 @@
 /**
- * CoreGrid — Phase 06 Workspace Engine: composition projection.
+ * CoreGrid — Phase 06 Workspace Engine: composition projection (DOMAIN-NEUTRAL).
  *
- * The workspace is a projection of authority (Phase 01 §13; Phase 06 "the engine
- * composes, it never owns"). This module computes that projection with the REAL
- * engine: a role's capability set comes from the catalog, and the navigation the
- * user actually receives is resolved by `resolveWorkspaceNav`, which withholds any
- * item whose required capabilities are missing.
+ * The workspace is a projection of authority (Phase 01 §13). This module computes
+ * that projection from *inputs* — a key, a label, the viewer's capability set and
+ * the navigation contributions that exist — and knows nothing about any runtime.
  *
- * It is pure and deterministic, so a workspace can be inspected without signing in
- * as every role — and an empty workspace is reported as empty rather than filled
- * with a default.
+ * RUNTIME NEUTRALITY: no runtime, vertical or domain may be referenced here. The
+ * Scholar runtime (runtime-001) — and every future runtime — supplies its own
+ * contributions and capability sets through an adapter in the runtime layer
+ * (`frontend/src/lib/runtime/scholar-workspace-projection.ts`). That is what keeps
+ * a new vertical from having to touch, or destabilise, the engine.
  */
 import {
   flattenQuickNav,
   hasNavDestinations,
   resolveWorkspaceHome,
   resolveWorkspaceNav,
+  type NavContribution,
   type WorkspaceNavSection,
 } from "@/lib/workspace-engine/navigation";
-import {
-  SCHOLAR_NAV_CONTRIBUTIONS,
-  scholarCapabilitiesForRole,
-  scholarWorkspaceLabelForRole,
-} from "@/lib/workspace-engine/nav-catalog";
-import type { AppRole } from "@/lib/roles";
 
-export interface WorkspaceProjection {
-  role: AppRole;
+/** One composition request: what exists, and what the viewer may reach. */
+export interface WorkspaceCompositionInput {
+  /** Stable identifier of the composition (runtime-qualified, e.g. `r001:teacher`). */
+  key: string;
+  /** Human label supplied by the owning runtime. */
   label: string;
-  /** Capabilities the role holds, as resolved from the catalog. */
+  /** Capabilities the viewer holds — the only authority the engine consults. */
+  capabilities: ReadonlySet<string>;
+  /** Navigation contributions published by the runtime(s) installed here. */
+  contributions: readonly NavContribution[];
+}
+
+export interface WorkspaceComposition {
+  key: string;
+  label: string;
   capabilityCount: number;
-  /** Navigation the engine actually grants this role. */
-  sections: WorkspaceNavSection[];
+  /** Navigation the engine actually grants this viewer. */
+  sections: readonly WorkspaceNavSection[];
   sectionCount: number;
   itemCount: number;
   quickNavKeys: string[];
@@ -40,15 +46,14 @@ export interface WorkspaceProjection {
   empty: boolean;
 }
 
-export function projectWorkspace(role: AppRole): WorkspaceProjection {
-  const capabilities = scholarCapabilitiesForRole(role);
-  const sections = resolveWorkspaceNav(SCHOLAR_NAV_CONTRIBUTIONS, capabilities);
+export function composeWorkspace(input: WorkspaceCompositionInput): WorkspaceComposition {
+  const sections = resolveWorkspaceNav(input.contributions, input.capabilities);
   const items = sections.flatMap((section) => section.items);
 
   return {
-    role,
-    label: scholarWorkspaceLabelForRole(role),
-    capabilityCount: capabilities.size,
+    key: input.key,
+    label: input.label,
+    capabilityCount: input.capabilities.size,
     sections,
     sectionCount: sections.length,
     itemCount: items.length,
@@ -58,19 +63,23 @@ export function projectWorkspace(role: AppRole): WorkspaceProjection {
   };
 }
 
-/** Compose every requested role, deterministically and in the order given. */
-export function projectWorkspaces(roles: readonly AppRole[]): readonly WorkspaceProjection[] {
-  return roles.map(projectWorkspace);
+/** Compose every request, deterministically and in the order given. */
+export function composeWorkspaces(
+  inputs: readonly WorkspaceCompositionInput[],
+): readonly WorkspaceComposition[] {
+  return inputs.map(composeWorkspace);
 }
 
 /**
- * Every item the projection grants each role, keyed by role — the auditable form of
- * "who sees what", derived from authorization rather than from the UI.
+ * The auditable "who sees what" matrix, derived from authorization rather than
+ * from the UI: composition key → the navigation item keys it receives.
  */
-export function projectionMatrix(roles: readonly AppRole[]): Record<string, string[]> {
+export function compositionMatrix(
+  inputs: readonly WorkspaceCompositionInput[],
+): Record<string, string[]> {
   const matrix: Record<string, string[]> = {};
-  for (const projection of projectWorkspaces(roles)) {
-    matrix[projection.role] = projection.sections.flatMap((section) =>
+  for (const composition of composeWorkspaces(inputs)) {
+    matrix[composition.key] = composition.sections.flatMap((section) =>
       section.items.map((item) => item.key),
     );
   }

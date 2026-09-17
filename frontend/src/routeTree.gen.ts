@@ -95,7 +95,6 @@ import { Route as AuthenticatedAdminStudentsRouteImport } from './routes/_authen
 import { Route as AuthenticatedAdminSupportRouteImport } from './routes/_authenticated/admin/support'
 import { Route as AuthenticatedAdminTeacherIntelligenceRouteImport } from './routes/_authenticated/admin/teacher-intelligence'
 import { Route as AuthenticatedAdminTeachersRouteImport } from './routes/_authenticated/admin/teachers'
-import { Route as AuthenticatedAdminTenantsRouteImport } from './routes/_authenticated/admin/tenants'
 import { Route as AuthenticatedAdminTimetableRouteImport } from './routes/_authenticated/admin/timetable'
 import { Route as AuthenticatedAdminVisitorsRouteImport } from './routes/_authenticated/admin/visitors'
 import { Route as AuthenticatedBursarDashboardRouteImport } from './routes/_authenticated/bursar/dashboard'
@@ -128,6 +127,7 @@ import { Route as AuthenticatedStudentGradesRouteImport } from './routes/_authen
 import { Route as AuthenticatedStudentNewsRouteImport } from './routes/_authenticated/student/news'
 import { Route as AuthenticatedStudentReportCardRouteImport } from './routes/_authenticated/student/report-card'
 import { Route as AuthenticatedStudentTimetableRouteImport } from './routes/_authenticated/student/timetable'
+import { Route as AuthenticatedSuperAdminAgentGovernanceRouteImport } from './routes/_authenticated/super-admin/agent-governance'
 import { Route as AuthenticatedSuperAdminBillingRouteImport } from './routes/_authenticated/super-admin/billing'
 import { Route as AuthenticatedSuperAdminDashboardRouteImport } from './routes/_authenticated/super-admin/dashboard'
 import { Route as AuthenticatedSuperAdminLogsRouteImport } from './routes/_authenticated/super-admin/logs'
@@ -136,6 +136,7 @@ import { Route as AuthenticatedSuperAdminRuntimeContractsRouteImport } from './r
 import { Route as AuthenticatedSuperAdminSchoolsRouteImport } from './routes/_authenticated/super-admin/schools'
 import { Route as AuthenticatedSuperAdminSettingsRouteImport } from './routes/_authenticated/super-admin/settings'
 import { Route as AuthenticatedSuperAdminSupportRouteImport } from './routes/_authenticated/super-admin/support'
+import { Route as AuthenticatedSuperAdminTenantsRouteImport } from './routes/_authenticated/super-admin/tenants'
 import { Route as AuthenticatedSuperAdminTiersRouteImport } from './routes/_authenticated/super-admin/tiers'
 import { Route as AuthenticatedSuperAdminWorkspaceProjectionRouteImport } from './routes/_authenticated/super-admin/workspace-projection'
 import { Route as AuthenticatedTeacherAiAssistantRouteImport } from './routes/_authenticated/teacher/ai-assistant'
@@ -639,12 +640,6 @@ const AuthenticatedAdminTeachersRoute =
     path: '/teachers',
     getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
-const AuthenticatedAdminTenantsRoute =
-  AuthenticatedAdminTenantsRouteImport.update({
-    id: '/tenants',
-    path: '/tenants',
-    getParentRoute: () => AuthenticatedAdminRouteRoute,
-  } as any)
 const AuthenticatedAdminTimetableRoute =
   AuthenticatedAdminTimetableRouteImport.update({
     id: '/timetable',
@@ -833,6 +828,12 @@ const AuthenticatedStudentTimetableRoute =
     path: '/timetable',
     getParentRoute: () => AuthenticatedStudentRouteRoute,
   } as any)
+const AuthenticatedSuperAdminAgentGovernanceRoute =
+  AuthenticatedSuperAdminAgentGovernanceRouteImport.update({
+    id: '/agent-governance',
+    path: '/agent-governance',
+    getParentRoute: () => AuthenticatedSuperAdminRouteRoute,
+  } as any)
 const AuthenticatedSuperAdminBillingRoute =
   AuthenticatedSuperAdminBillingRouteImport.update({
     id: '/billing',
@@ -879,6 +880,12 @@ const AuthenticatedSuperAdminSupportRoute =
   AuthenticatedSuperAdminSupportRouteImport.update({
     id: '/support',
     path: '/support',
+    getParentRoute: () => AuthenticatedSuperAdminRouteRoute,
+  } as any)
+const AuthenticatedSuperAdminTenantsRoute =
+  AuthenticatedSuperAdminTenantsRouteImport.update({
+    id: '/tenants',
+    path: '/tenants',
     getParentRoute: () => AuthenticatedSuperAdminRouteRoute,
   } as any)
 const AuthenticatedSuperAdminTiersRoute =
@@ -1070,7 +1077,6 @@ export interface FileRoutesByFullPath {
   '/admin/support': typeof AuthenticatedAdminSupportRoute
   '/admin/teacher-intelligence': typeof AuthenticatedAdminTeacherIntelligenceRoute
   '/admin/teachers': typeof AuthenticatedAdminTeachersRoute
-  '/admin/tenants': typeof AuthenticatedAdminTenantsRoute
   '/admin/timetable': typeof AuthenticatedAdminTimetableRoute
   '/admin/visitors': typeof AuthenticatedAdminVisitorsRoute
   '/bursar/dashboard': typeof AuthenticatedBursarDashboardRoute
@@ -1103,6 +1109,7 @@ export interface FileRoutesByFullPath {
   '/student/news': typeof AuthenticatedStudentNewsRoute
   '/student/report-card': typeof AuthenticatedStudentReportCardRoute
   '/student/timetable': typeof AuthenticatedStudentTimetableRoute
+  '/super-admin/agent-governance': typeof AuthenticatedSuperAdminAgentGovernanceRoute
   '/super-admin/billing': typeof AuthenticatedSuperAdminBillingRoute
   '/super-admin/dashboard': typeof AuthenticatedSuperAdminDashboardRoute
   '/super-admin/logs': typeof AuthenticatedSuperAdminLogsRoute
@@ -1111,6 +1118,7 @@ export interface FileRoutesByFullPath {
   '/super-admin/schools': typeof AuthenticatedSuperAdminSchoolsRoute
   '/super-admin/settings': typeof AuthenticatedSuperAdminSettingsRoute
   '/super-admin/support': typeof AuthenticatedSuperAdminSupportRoute
+  '/super-admin/tenants': typeof AuthenticatedSuperAdminTenantsRoute
   '/super-admin/tiers': typeof AuthenticatedSuperAdminTiersRoute
   '/super-admin/workspace-projection': typeof AuthenticatedSuperAdminWorkspaceProjectionRoute
   '/teacher/ai-assistant': typeof AuthenticatedTeacherAiAssistantRoute
@@ -1215,7 +1223,6 @@ export interface FileRoutesByTo {
   '/admin/support': typeof AuthenticatedAdminSupportRoute
   '/admin/teacher-intelligence': typeof AuthenticatedAdminTeacherIntelligenceRoute
   '/admin/teachers': typeof AuthenticatedAdminTeachersRoute
-  '/admin/tenants': typeof AuthenticatedAdminTenantsRoute
   '/admin/timetable': typeof AuthenticatedAdminTimetableRoute
   '/admin/visitors': typeof AuthenticatedAdminVisitorsRoute
   '/bursar/dashboard': typeof AuthenticatedBursarDashboardRoute
@@ -1248,6 +1255,7 @@ export interface FileRoutesByTo {
   '/student/news': typeof AuthenticatedStudentNewsRoute
   '/student/report-card': typeof AuthenticatedStudentReportCardRoute
   '/student/timetable': typeof AuthenticatedStudentTimetableRoute
+  '/super-admin/agent-governance': typeof AuthenticatedSuperAdminAgentGovernanceRoute
   '/super-admin/billing': typeof AuthenticatedSuperAdminBillingRoute
   '/super-admin/dashboard': typeof AuthenticatedSuperAdminDashboardRoute
   '/super-admin/logs': typeof AuthenticatedSuperAdminLogsRoute
@@ -1256,6 +1264,7 @@ export interface FileRoutesByTo {
   '/super-admin/schools': typeof AuthenticatedSuperAdminSchoolsRoute
   '/super-admin/settings': typeof AuthenticatedSuperAdminSettingsRoute
   '/super-admin/support': typeof AuthenticatedSuperAdminSupportRoute
+  '/super-admin/tenants': typeof AuthenticatedSuperAdminTenantsRoute
   '/super-admin/tiers': typeof AuthenticatedSuperAdminTiersRoute
   '/super-admin/workspace-projection': typeof AuthenticatedSuperAdminWorkspaceProjectionRoute
   '/teacher/ai-assistant': typeof AuthenticatedTeacherAiAssistantRoute
@@ -1362,7 +1371,6 @@ export interface FileRoutesById {
   '/_authenticated/admin/support': typeof AuthenticatedAdminSupportRoute
   '/_authenticated/admin/teacher-intelligence': typeof AuthenticatedAdminTeacherIntelligenceRoute
   '/_authenticated/admin/teachers': typeof AuthenticatedAdminTeachersRoute
-  '/_authenticated/admin/tenants': typeof AuthenticatedAdminTenantsRoute
   '/_authenticated/admin/timetable': typeof AuthenticatedAdminTimetableRoute
   '/_authenticated/admin/visitors': typeof AuthenticatedAdminVisitorsRoute
   '/_authenticated/bursar/dashboard': typeof AuthenticatedBursarDashboardRoute
@@ -1395,6 +1403,7 @@ export interface FileRoutesById {
   '/_authenticated/student/news': typeof AuthenticatedStudentNewsRoute
   '/_authenticated/student/report-card': typeof AuthenticatedStudentReportCardRoute
   '/_authenticated/student/timetable': typeof AuthenticatedStudentTimetableRoute
+  '/_authenticated/super-admin/agent-governance': typeof AuthenticatedSuperAdminAgentGovernanceRoute
   '/_authenticated/super-admin/billing': typeof AuthenticatedSuperAdminBillingRoute
   '/_authenticated/super-admin/dashboard': typeof AuthenticatedSuperAdminDashboardRoute
   '/_authenticated/super-admin/logs': typeof AuthenticatedSuperAdminLogsRoute
@@ -1403,6 +1412,7 @@ export interface FileRoutesById {
   '/_authenticated/super-admin/schools': typeof AuthenticatedSuperAdminSchoolsRoute
   '/_authenticated/super-admin/settings': typeof AuthenticatedSuperAdminSettingsRoute
   '/_authenticated/super-admin/support': typeof AuthenticatedSuperAdminSupportRoute
+  '/_authenticated/super-admin/tenants': typeof AuthenticatedSuperAdminTenantsRoute
   '/_authenticated/super-admin/tiers': typeof AuthenticatedSuperAdminTiersRoute
   '/_authenticated/super-admin/workspace-projection': typeof AuthenticatedSuperAdminWorkspaceProjectionRoute
   '/_authenticated/teacher/ai-assistant': typeof AuthenticatedTeacherAiAssistantRoute
@@ -1509,7 +1519,6 @@ export interface FileRouteTypes {
     | '/admin/support'
     | '/admin/teacher-intelligence'
     | '/admin/teachers'
-    | '/admin/tenants'
     | '/admin/timetable'
     | '/admin/visitors'
     | '/bursar/dashboard'
@@ -1542,6 +1551,7 @@ export interface FileRouteTypes {
     | '/student/news'
     | '/student/report-card'
     | '/student/timetable'
+    | '/super-admin/agent-governance'
     | '/super-admin/billing'
     | '/super-admin/dashboard'
     | '/super-admin/logs'
@@ -1550,6 +1560,7 @@ export interface FileRouteTypes {
     | '/super-admin/schools'
     | '/super-admin/settings'
     | '/super-admin/support'
+    | '/super-admin/tenants'
     | '/super-admin/tiers'
     | '/super-admin/workspace-projection'
     | '/teacher/ai-assistant'
@@ -1654,7 +1665,6 @@ export interface FileRouteTypes {
     | '/admin/support'
     | '/admin/teacher-intelligence'
     | '/admin/teachers'
-    | '/admin/tenants'
     | '/admin/timetable'
     | '/admin/visitors'
     | '/bursar/dashboard'
@@ -1687,6 +1697,7 @@ export interface FileRouteTypes {
     | '/student/news'
     | '/student/report-card'
     | '/student/timetable'
+    | '/super-admin/agent-governance'
     | '/super-admin/billing'
     | '/super-admin/dashboard'
     | '/super-admin/logs'
@@ -1695,6 +1706,7 @@ export interface FileRouteTypes {
     | '/super-admin/schools'
     | '/super-admin/settings'
     | '/super-admin/support'
+    | '/super-admin/tenants'
     | '/super-admin/tiers'
     | '/super-admin/workspace-projection'
     | '/teacher/ai-assistant'
@@ -1800,7 +1812,6 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/support'
     | '/_authenticated/admin/teacher-intelligence'
     | '/_authenticated/admin/teachers'
-    | '/_authenticated/admin/tenants'
     | '/_authenticated/admin/timetable'
     | '/_authenticated/admin/visitors'
     | '/_authenticated/bursar/dashboard'
@@ -1833,6 +1844,7 @@ export interface FileRouteTypes {
     | '/_authenticated/student/news'
     | '/_authenticated/student/report-card'
     | '/_authenticated/student/timetable'
+    | '/_authenticated/super-admin/agent-governance'
     | '/_authenticated/super-admin/billing'
     | '/_authenticated/super-admin/dashboard'
     | '/_authenticated/super-admin/logs'
@@ -1841,6 +1853,7 @@ export interface FileRouteTypes {
     | '/_authenticated/super-admin/schools'
     | '/_authenticated/super-admin/settings'
     | '/_authenticated/super-admin/support'
+    | '/_authenticated/super-admin/tenants'
     | '/_authenticated/super-admin/tiers'
     | '/_authenticated/super-admin/workspace-projection'
     | '/_authenticated/teacher/ai-assistant'
@@ -2486,13 +2499,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminTeachersRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
-    '/_authenticated/admin/tenants': {
-      id: '/_authenticated/admin/tenants'
-      path: '/tenants'
-      fullPath: '/admin/tenants'
-      preLoaderRoute: typeof AuthenticatedAdminTenantsRouteImport
-      parentRoute: typeof AuthenticatedAdminRouteRoute
-    }
     '/_authenticated/admin/timetable': {
       id: '/_authenticated/admin/timetable'
       path: '/timetable'
@@ -2717,6 +2723,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedStudentTimetableRouteImport
       parentRoute: typeof AuthenticatedStudentRouteRoute
     }
+    '/_authenticated/super-admin/agent-governance': {
+      id: '/_authenticated/super-admin/agent-governance'
+      path: '/agent-governance'
+      fullPath: '/super-admin/agent-governance'
+      preLoaderRoute: typeof AuthenticatedSuperAdminAgentGovernanceRouteImport
+      parentRoute: typeof AuthenticatedSuperAdminRouteRoute
+    }
     '/_authenticated/super-admin/billing': {
       id: '/_authenticated/super-admin/billing'
       path: '/billing'
@@ -2771,6 +2784,13 @@ declare module '@tanstack/react-router' {
       path: '/support'
       fullPath: '/super-admin/support'
       preLoaderRoute: typeof AuthenticatedSuperAdminSupportRouteImport
+      parentRoute: typeof AuthenticatedSuperAdminRouteRoute
+    }
+    '/_authenticated/super-admin/tenants': {
+      id: '/_authenticated/super-admin/tenants'
+      path: '/tenants'
+      fullPath: '/super-admin/tenants'
+      preLoaderRoute: typeof AuthenticatedSuperAdminTenantsRouteImport
       parentRoute: typeof AuthenticatedSuperAdminRouteRoute
     }
     '/_authenticated/super-admin/tiers': {
@@ -2951,7 +2971,6 @@ interface AuthenticatedAdminRouteRouteChildren {
   AuthenticatedAdminSupportRoute: typeof AuthenticatedAdminSupportRoute
   AuthenticatedAdminTeacherIntelligenceRoute: typeof AuthenticatedAdminTeacherIntelligenceRoute
   AuthenticatedAdminTeachersRoute: typeof AuthenticatedAdminTeachersRoute
-  AuthenticatedAdminTenantsRoute: typeof AuthenticatedAdminTenantsRoute
   AuthenticatedAdminTimetableRoute: typeof AuthenticatedAdminTimetableRoute
   AuthenticatedAdminVisitorsRoute: typeof AuthenticatedAdminVisitorsRoute
 }
@@ -3028,7 +3047,6 @@ const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren
     AuthenticatedAdminTeacherIntelligenceRoute:
       AuthenticatedAdminTeacherIntelligenceRoute,
     AuthenticatedAdminTeachersRoute: AuthenticatedAdminTeachersRoute,
-    AuthenticatedAdminTenantsRoute: AuthenticatedAdminTenantsRoute,
     AuthenticatedAdminTimetableRoute: AuthenticatedAdminTimetableRoute,
     AuthenticatedAdminVisitorsRoute: AuthenticatedAdminVisitorsRoute,
   }
@@ -3158,6 +3176,7 @@ const AuthenticatedStudentRouteRouteWithChildren =
   )
 
 interface AuthenticatedSuperAdminRouteRouteChildren {
+  AuthenticatedSuperAdminAgentGovernanceRoute: typeof AuthenticatedSuperAdminAgentGovernanceRoute
   AuthenticatedSuperAdminBillingRoute: typeof AuthenticatedSuperAdminBillingRoute
   AuthenticatedSuperAdminDashboardRoute: typeof AuthenticatedSuperAdminDashboardRoute
   AuthenticatedSuperAdminLogsRoute: typeof AuthenticatedSuperAdminLogsRoute
@@ -3166,12 +3185,15 @@ interface AuthenticatedSuperAdminRouteRouteChildren {
   AuthenticatedSuperAdminSchoolsRoute: typeof AuthenticatedSuperAdminSchoolsRoute
   AuthenticatedSuperAdminSettingsRoute: typeof AuthenticatedSuperAdminSettingsRoute
   AuthenticatedSuperAdminSupportRoute: typeof AuthenticatedSuperAdminSupportRoute
+  AuthenticatedSuperAdminTenantsRoute: typeof AuthenticatedSuperAdminTenantsRoute
   AuthenticatedSuperAdminTiersRoute: typeof AuthenticatedSuperAdminTiersRoute
   AuthenticatedSuperAdminWorkspaceProjectionRoute: typeof AuthenticatedSuperAdminWorkspaceProjectionRoute
 }
 
 const AuthenticatedSuperAdminRouteRouteChildren: AuthenticatedSuperAdminRouteRouteChildren =
   {
+    AuthenticatedSuperAdminAgentGovernanceRoute:
+      AuthenticatedSuperAdminAgentGovernanceRoute,
     AuthenticatedSuperAdminBillingRoute: AuthenticatedSuperAdminBillingRoute,
     AuthenticatedSuperAdminDashboardRoute:
       AuthenticatedSuperAdminDashboardRoute,
@@ -3183,6 +3205,7 @@ const AuthenticatedSuperAdminRouteRouteChildren: AuthenticatedSuperAdminRouteRou
     AuthenticatedSuperAdminSchoolsRoute: AuthenticatedSuperAdminSchoolsRoute,
     AuthenticatedSuperAdminSettingsRoute: AuthenticatedSuperAdminSettingsRoute,
     AuthenticatedSuperAdminSupportRoute: AuthenticatedSuperAdminSupportRoute,
+    AuthenticatedSuperAdminTenantsRoute: AuthenticatedSuperAdminTenantsRoute,
     AuthenticatedSuperAdminTiersRoute: AuthenticatedSuperAdminTiersRoute,
     AuthenticatedSuperAdminWorkspaceProjectionRoute:
       AuthenticatedSuperAdminWorkspaceProjectionRoute,

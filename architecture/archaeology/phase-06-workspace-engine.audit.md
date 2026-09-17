@@ -33,6 +33,39 @@ UNWIRED 0 · MISSING 0**, `ok: true`.
 | Projection | `/super-admin/workspace-projection` (L4) |
 | Documentation | 20/20, machine-counted |
 
+## 7. Neutrality and role-list correction (2026-09-14)
+
+Three defects found in this wave's own work and fixed, then locked by
+`tests/unit/platform-neutrality.test.ts`:
+
+1. **A neutral module imported a runtime.** `workspace-projection.ts` (Phase 06's
+   engine) imported the Scholar catalog (`scholarCapabilitiesForRole`,
+   `scholarWorkspaceLabelForRole`) — a vertical leak into a platform module. It is now
+   an **input-driven neutral engine** (`composeWorkspace({ key, label, capabilities,
+   contributions })`) with no runtime import at all, and the Scholar binding lives in
+   the runtime layer (`frontend/src/lib/runtime/scholar-workspace-projection.ts`). A
+   second vertical can now be added without touching the engine.
+2. **A surface declared a hand-written role list.** The projection page carried
+   `ROLES = ["super_admin","hq","admin","teacher","student","parent"]` — six roles on a
+   platform where the Scholar registry holds **hundreds** and grows. It now derives
+   *every* workspace kind from the catalog's label map and counts the **full reality
+   role registry** (`EDUCATION_REALITY_ROLES`), with unassigned roles and the role
+   workspace engine's audit findings surfaced instead of hidden.
+3. **Page-level role guards were used as gates.** `identities`, `education-reality`
+   and `tenants` declared `RoleGuard allow={[...]}` lists — stale by construction and
+   not a security boundary (authorization is server-side + RLS). The guards are gone:
+   the portal layouts guard access, and the canonical Phase 08 gate guards the data.
+   `tenants` additionally **moved out of the Scholar portal into the platform control
+   plane** (`/super-admin/tenants`), because tenancy is platform infrastructure, not a
+   school-admin capability — and it had been gated on `hq`, which is not the platform
+   super-admin role.
+
+**The lock:** the guard test asserts (a) nine neutral platform modules import no
+vertical, (b) five platform surfaces declare no role list, (c) the projection surface
+derives its content from the adapter rather than naming roles, and (d) the adapter
+enumerates kinds with `Object.keys(SCHOLAR_WORKSPACE_LABELS)` — so a new kind or role
+appears automatically and a hand-written list cannot re-enter.
+
 ## 3. Five-level vector
 
 | Level | State | Evidence |

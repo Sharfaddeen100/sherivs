@@ -1,0 +1,183 @@
+{
+  "$comment": "Phase 07 (AI Agent System) resolved against repository artefacts: architecture/phase-07-ai-agent-system.md (now with addendum KH), frontend/src/lib/kernel/phase-contracts/phase-07-ai-agent-system.ts, registry row 07, and the agent modules.",
+  "phase": "07",
+  "phaseName": "AI Agent System",
+  "source": "architecture/phase-07-ai-agent-system.md",
+  "contract": "frontend/src/lib/kernel/phase-contracts/phase-07-ai-agent-system.ts",
+  "documentIntegrity": {
+    "status": "CLOSED — COMPLETED",
+    "finding": "The document stated 19 of the 20 mandatory engineering sections; the knowledge section was absent. Addendum KH (Agent Knowledge) was authored in the document's own lettered style: what an agent knows (its identity and limits, its plan and progress, its task state, its memory, its observations, its context package) and the four rules that govern it — knowledge is granted never assumed, only system input is instruction, knowledge is bounded, and knowledge never becomes domain truth.",
+    "verifiedAgainst": "architecture/phase-07-ai-agent-system.md"
+  },
+  "ownership": {
+    "note": "The phase's own governing rule: agents are execution entities; domain phases remain owners of domain truth. Authority is granted by Phase 02/08, reasoning and models by Phase 26, tenancy by Phase 03.",
+    "canonicalOwners": {
+      "agent-runtime": "07",
+      "identity": "02",
+      "tenancy": "03",
+      "authorization": "08/09",
+      "ai-gateway-and-models": "26",
+      "execution-fabric": "05",
+      "approvals": "05/17"
+    }
+  },
+  "areas": [
+    {
+      "id": "agent-identity",
+      "area": "Agent identity, versions and definitions",
+      "requirement": "Every agent has a stable identity, an owner, a purpose and versions; agents are principals and are governed.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/agent-core.ts", "contains": "AgentId" },
+        { "kind": "test", "path": "tests/unit/agent-core.test.ts" }
+      ]
+    },
+    {
+      "id": "agent-execution",
+      "area": "Agent execution and sessions",
+      "requirement": "An agent's work is an execution with a session, correlation and observable outcome rather than an opaque call.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/agent-core.ts", "contains": "AgentExecutionId" },
+        { "kind": "test", "path": "tests/unit/agent-core.test.ts" }
+      ]
+    },
+    {
+      "id": "agent-memory",
+      "area": "Agent memory: category and classification gating",
+      "requirement": "Memory reads are gated by category and by a data-classification ceiling; a memory record without a policy boundary is unsafe.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/agent-memory.ts", "contains": "readMemory" },
+        { "kind": "test", "path": "tests/unit/agent-memory.test.ts" }
+      ]
+    },
+    {
+      "id": "memory-trust",
+      "area": "Instruction trust and prompt-injection boundary",
+      "requirement": "Only system-trusted input is instruction; external content and tool output are data, never instructions.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/agent-memory.ts", "contains": "isTrustedInstruction" },
+        { "kind": "test", "path": "tests/unit/agent-memory.test.ts", "contains": "trust" }
+      ]
+    },
+    {
+      "id": "context-packages",
+      "area": "Context packages assembled from authorized sources",
+      "requirement": "The context an agent receives is assembled with its provenance and classification, not scraped from whatever is reachable.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/agent-memory.ts", "contains": "buildContextPackage" },
+        { "kind": "test", "path": "tests/unit/agent-memory.test.ts" }
+      ]
+    },
+    {
+      "id": "agent-tasks",
+      "area": "Agent task lifecycle and transitions",
+      "requirement": "Tasks move only along declared transitions; an undeclared transition is refused.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/agent-tasks.ts", "contains": "TASK_TRANSITIONS" },
+        { "kind": "test", "path": "tests/unit/agent-tasks.test.ts" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/agent-governance-report.ts", "contains": "task-transition" }
+      ]
+    },
+    {
+      "id": "checkpoints-and-cancellation",
+      "area": "Task checkpoints, resume and cancellation",
+      "requirement": "A long agent task can be checkpointed, resumed from a checkpoint and cancelled safely.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/agent-tasks.ts", "contains": "canResumeFromCheckpoint" },
+        { "kind": "test", "path": "tests/unit/agent-tasks.test.ts", "contains": "checkpoint" }
+      ]
+    },
+    {
+      "id": "plan-validation",
+      "area": "Plan validation against allowed and delegable tools",
+      "requirement": "A plan step may only call or delegate tools the agent is allowed to use; anything else fails validation.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/agent-plans.ts", "contains": "validateAgentPlan" },
+        { "kind": "test", "path": "tests/unit/agent-plans.test.ts" }
+      ]
+    },
+    {
+      "id": "loop-safety-and-budgets",
+      "area": "Runaway-reasoning protection and plan budgets",
+      "requirement": "Repeated calls, repeated plans, repeated failures and total steps are bounded; a plan carries an explicit budget.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/agent-plans.ts", "contains": "checkLoopSafety" },
+        { "kind": "test", "path": "tests/unit/agent-plans.test.ts", "contains": "budget" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/agent-governance-report.ts", "contains": "loop-safety" }
+      ]
+    },
+    {
+      "id": "agent-controls",
+      "area": "Agent controls, least privilege and human approval",
+      "requirement": "Agents operate under explicit controls: least privilege, no self-escalation and human approval for designated high-risk actions.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/security-agent-controls.ts" },
+        { "kind": "test", "path": "tests/unit/security-agent-controls.test.ts" }
+      ]
+    },
+    {
+      "id": "tenant-scoped-agents",
+      "area": "Tenant-scoped agents and memory isolation",
+      "requirement": "Agent memory, tools and executions stay inside a tenant boundary; cross-tenant operation requires explicit authorization.",
+      "ownerPhase": "03/08",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/tenant-isolation.ts" },
+        { "kind": "test", "path": "tests/unit/security-agent-controls.test.ts", "contains": "tenant" }
+      ]
+    },
+    {
+      "id": "domain-boundaries",
+      "area": "Boundary to the intelligence layer and domain truth",
+      "requirement": "The agent system executes and proposes; models and providers belong to Phase 26 and domain meaning to the domain phases.",
+      "ownerPhase": "26",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/ai-governance.ts", "contains": "consumeAiBudget" },
+        { "kind": "test", "path": "tests/unit/scholar-ai-contracts.test.ts" },
+        { "kind": "test", "path": "tests/unit/kernel-phase-contract.test.ts", "contains": "invariant" }
+      ]
+    },
+    {
+      "id": "governance-projection",
+      "area": "Agent governance projected in a surface (L4)",
+      "requirement": "What the agent system enforces is inspectable, and its state machines are exercised rather than described.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/agent-governance-report.ts", "contains": "agentGovernanceReport" },
+        { "kind": "test", "path": "tests/unit/agent-governance-report.test.ts" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/routes/_authenticated/super-admin/agent-governance.tsx", "contains": "agent-governance-report" }
+      ],
+      "boundaryNote": "Closed 2026-09-14: `/super-admin/agent-governance` states each enforced rule with the module and suite behind it and shows the self-check result — a declared task transition permitted, an undeclared one refused, and reasoning stopped at the step ceiling."
+    },
+    {
+      "id": "agent-knowledge",
+      "area": "Agent knowledge section (addendum KH)",
+      "requirement": "The document states what an agent knows and the rules that govern that knowledge.",
+      "required": true,
+      "evidence": [
+        { "kind": "doc", "path": "architecture/phase-07-ai-agent-system.md", "contains": "KH. AGENT KNOWLEDGE" },
+        { "kind": "script", "path": "scripts/verification/engineering-sections.mjs" },
+        { "kind": "test", "path": "tests/unit/kernel-contract-coverage.test.ts", "contains": "engineering-sections" }
+      ],
+      "boundary": [
+        { "kind": "test", "path": "tests/unit/kernel-contract-coverage.test.ts", "contains": "engineering-sections" }
+      ]
+    }
+  ]
+}

@@ -240,9 +240,9 @@
         { "kind": "test", "path": "tests/unit/p08-enforcement-surface.test.ts", "contains": "tenant-registry.functions.ts" }
       ],
       "boundary": [
-        { "kind": "module", "path": "frontend/src/routes/_authenticated/admin/tenants.tsx", "contains": "tenant-registry" }
+        { "kind": "module", "path": "frontend/src/routes/_authenticated/super-admin/tenants.tsx", "contains": "tenant-registry" }
       ],
-      "boundaryNote": "Closed 2026-09-14 (P03-4): `/admin/tenants` lists every tenant from real `cg_tenant` state behind the super-admin gate and can register one (idempotent on slug), so tenancy is projected in a workspace instead of existing only as backend code."
+      "boundaryNote": "Closed 2026-09-14 (P03-4), and moved out of the Scholar portal after the neutrality correction: `/super-admin/tenants` is the platform control plane, lists every tenant from real `cg_tenant` state through `listTenants` behind the super-admin gate, and registers tenants through the idempotent `registerTenant`. It declares no role list of its own."
     }
   ]
 }

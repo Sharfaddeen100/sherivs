@@ -1,0 +1,330 @@
+{
+  "artifact": "phase-acceptance",
+  "phase": "07",
+  "phaseName": "AI Agent System",
+  "source": "architecture/phase-07-ai-agent-system.md",
+  "generatedAt": "2026-09-17T10:01:47.014Z",
+  "classificationDefinitions": {
+    "ENFORCED": "an executable artefact proves it (test, verifier script, migration, policy or machine-checked contract match) and, where a boundary is declared, a real call site invokes it",
+    "DECLARED": "a module, document or contract mentions it, but nothing executable proves it",
+    "IMPLEMENTED_UNWIRED": "implementation and tests exist, but the declared boundary patterns match nothing — the capability protects nothing yet",
+    "MISSING": "no artefact found"
+  },
+  "summary": {
+    "areas": 14,
+    "enforced": 14,
+    "declared": 0,
+    "implementedUnwired": 0,
+    "implementedUnwiredAreas": [],
+    "missing": 0,
+    "missingRequired": [],
+    "unresolvedEvidencePaths": []
+  },
+  "ownership": {
+    "note": "The phase's own governing rule: agents are execution entities; domain phases remain owners of domain truth. Authority is granted by Phase 02/08, reasoning and models by Phase 26, tenancy by Phase 03.",
+    "canonicalOwners": {
+      "agent-runtime": "07",
+      "identity": "02",
+      "tenancy": "03",
+      "authorization": "08/09",
+      "ai-gateway-and-models": "26",
+      "execution-fabric": "05",
+      "approvals": "05/17"
+    }
+  },
+  "areas": [
+    {
+      "id": "agent-identity",
+      "area": "Agent identity, versions and definitions",
+      "requirement": "Every agent has a stable identity, an owner, a purpose and versions; agents are principals and are governed.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/agent-core.ts",
+        "tests/unit/agent-core.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/agent-core.ts",
+        "tests/unit/agent-core.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "agent-execution",
+      "area": "Agent execution and sessions",
+      "requirement": "An agent's work is an execution with a session, correlation and observable outcome rather than an opaque call.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/agent-core.ts",
+        "tests/unit/agent-core.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/agent-core.ts",
+        "tests/unit/agent-core.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "agent-memory",
+      "area": "Agent memory: category and classification gating",
+      "requirement": "Memory reads are gated by category and by a data-classification ceiling; a memory record without a policy boundary is unsafe.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/agent-memory.ts",
+        "tests/unit/agent-memory.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/agent-memory.ts",
+        "tests/unit/agent-memory.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "memory-trust",
+      "area": "Instruction trust and prompt-injection boundary",
+      "requirement": "Only system-trusted input is instruction; external content and tool output are data, never instructions.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/agent-memory.ts",
+        "tests/unit/agent-memory.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/agent-memory.ts",
+        "tests/unit/agent-memory.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "context-packages",
+      "area": "Context packages assembled from authorized sources",
+      "requirement": "The context an agent receives is assembled with its provenance and classification, not scraped from whatever is reachable.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/agent-memory.ts",
+        "tests/unit/agent-memory.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/agent-memory.ts",
+        "tests/unit/agent-memory.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "agent-tasks",
+      "area": "Agent task lifecycle and transitions",
+      "requirement": "Tasks move only along declared transitions; an undeclared transition is refused.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/agent-tasks.ts",
+        "tests/unit/agent-tasks.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/agent-tasks.ts",
+        "tests/unit/agent-tasks.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "frontend/src/lib/agent-governance-report.ts"
+      ],
+      "boundaryEvidence": [
+        "frontend/src/lib/agent-governance-report.ts"
+      ]
+    },
+    {
+      "id": "checkpoints-and-cancellation",
+      "area": "Task checkpoints, resume and cancellation",
+      "requirement": "A long agent task can be checkpointed, resumed from a checkpoint and cancelled safely.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/agent-tasks.ts",
+        "tests/unit/agent-tasks.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/agent-tasks.ts",
+        "tests/unit/agent-tasks.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "plan-validation",
+      "area": "Plan validation against allowed and delegable tools",
+      "requirement": "A plan step may only call or delegate tools the agent is allowed to use; anything else fails validation.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/agent-plans.ts",
+        "tests/unit/agent-plans.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/agent-plans.ts",
+        "tests/unit/agent-plans.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "loop-safety-and-budgets",
+      "area": "Runaway-reasoning protection and plan budgets",
+      "requirement": "Repeated calls, repeated plans, repeated failures and total steps are bounded; a plan carries an explicit budget.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/agent-plans.ts",
+        "tests/unit/agent-plans.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/agent-plans.ts",
+        "tests/unit/agent-plans.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "frontend/src/lib/agent-governance-report.ts"
+      ],
+      "boundaryEvidence": [
+        "frontend/src/lib/agent-governance-report.ts"
+      ]
+    },
+    {
+      "id": "agent-controls",
+      "area": "Agent controls, least privilege and human approval",
+      "requirement": "Agents operate under explicit controls: least privilege, no self-escalation and human approval for designated high-risk actions.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/security-agent-controls.ts",
+        "tests/unit/security-agent-controls.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/security-agent-controls.ts",
+        "tests/unit/security-agent-controls.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "tenant-scoped-agents",
+      "area": "Tenant-scoped agents and memory isolation",
+      "requirement": "Agent memory, tools and executions stay inside a tenant boundary; cross-tenant operation requires explicit authorization.",
+      "required": true,
+      "ownerPhase": "03/08",
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/tenant-isolation.ts",
+        "tests/unit/security-agent-controls.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/tenant-isolation.ts",
+        "tests/unit/security-agent-controls.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "domain-boundaries",
+      "area": "Boundary to the intelligence layer and domain truth",
+      "requirement": "The agent system executes and proposes; models and providers belong to Phase 26 and domain meaning to the domain phases.",
+      "required": true,
+      "ownerPhase": "26",
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/ai-governance.ts",
+        "tests/unit/scholar-ai-contracts.test.ts",
+        "tests/unit/kernel-phase-contract.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/ai-governance.ts",
+        "tests/unit/scholar-ai-contracts.test.ts",
+        "tests/unit/kernel-phase-contract.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "governance-projection",
+      "area": "Agent governance projected in a surface (L4)",
+      "requirement": "What the agent system enforces is inspectable, and its state machines are exercised rather than described.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/agent-governance-report.ts",
+        "tests/unit/agent-governance-report.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/agent-governance-report.ts",
+        "tests/unit/agent-governance-report.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "frontend/src/routes/_authenticated/super-admin/agent-governance.tsx"
+      ],
+      "boundaryEvidence": [
+        "frontend/src/routes/_authenticated/super-admin/agent-governance.tsx"
+      ]
+    },
+    {
+      "id": "agent-knowledge",
+      "area": "Agent knowledge section (addendum KH)",
+      "requirement": "The document states what an agent knows and the rules that govern that knowledge.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "architecture/phase-07-ai-agent-system.md",
+        "scripts/verification/engineering-sections.mjs",
+        "tests/unit/kernel-contract-coverage.test.ts"
+      ],
+      "matchedEvidence": [
+        "architecture/phase-07-ai-agent-system.md",
+        "scripts/verification/engineering-sections.mjs",
+        "tests/unit/kernel-contract-coverage.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "tests/unit/kernel-contract-coverage.test.ts"
+      ],
+      "boundaryEvidence": [
+        "tests/unit/kernel-contract-coverage.test.ts"
+      ]
+    }
+  ],
+  "ok": true,
+  "limitations": [
+    "Classification measures the presence of executable evidence, not the correctness or completeness of that evidence.",
+    "A DECLARED area is unfinished work, never a false claim — it is reported as such.",
+    "An IMPLEMENTED_UNWIRED area has a tested implementation that no boundary calls; it is reported, never counted as enforcement.",
+    "Evidence patterns are declared per phase in architecture/phase-acceptance/phase-<id>-*.json and must be reviewed when a phase is re-audited."
+  ]
+}

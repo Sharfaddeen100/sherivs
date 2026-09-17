@@ -4,7 +4,6 @@ import { useServerFn } from "@tanstack/react-start";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { PortalPage } from "@/components/portal-shell";
-import { RoleGuard } from "@/components/role-guard";
 import {
   listTenants,
   registerTenant,
@@ -20,13 +19,12 @@ import { TENANT_STATUSES, TENANT_ENVIRONMENTS } from "@/lib/tenant-registry";
  * Hierarchy is shown as a parent reference only — the surface never implies that
  * a parent tenant can reach a child tenant's resources (Invariant 14).
  */
-export const Route = createFileRoute("/_authenticated/admin/tenants")({
-  ssr: false,
-  component: () => (
-    <RoleGuard allow={["hq"]}>
-      <TenantsPage />
-    </RoleGuard>
-  ),
+export const Route = createFileRoute("/_authenticated/super-admin/tenants")({
+  // Platform control plane. Access is enforced by the super-admin layout guard and,
+  // server-side, by `requirePlatformSuperAdmin` inside every function this page
+  // calls (fail closed) — no role list is declared here.
+  component: TenantsPage,
+  head: () => ({ meta: [{ title: "Tenants — CoreGrid" }] }),
 });
 
 function TenantsPage() {

@@ -198,17 +198,19 @@
     },
     {
       "id": "workspace-projection",
-      "area": "Workspace composition projected in a surface (L4)",
-      "requirement": "The composition a role receives is inspectable from real engine output, not from a screenshot or a claim.",
+      "area": "Workspace composition projected in a surface, catalog-driven (L4)",
+      "requirement": "The composition a viewer receives is inspectable from real engine output, and the full role catalog is accounted for without any hand-written role list.",
       "required": true,
       "evidence": [
-        { "kind": "module", "path": "frontend/src/lib/workspace-projection.ts", "contains": "projectWorkspace" },
-        { "kind": "test", "path": "tests/unit/workspace-projection.test.ts" }
+        { "kind": "module", "path": "frontend/src/lib/workspace-projection.ts", "contains": "composeWorkspace" },
+        { "kind": "module", "path": "frontend/src/lib/runtime/scholar-workspace-projection.ts", "contains": "scholarRoleWorkspaceCoverage" },
+        { "kind": "test", "path": "tests/unit/workspace-projection.test.ts" },
+        { "kind": "test", "path": "tests/unit/platform-neutrality.test.ts" }
       ],
       "boundary": [
-        { "kind": "module", "path": "frontend/src/routes/_authenticated/super-admin/workspace-projection.tsx", "contains": "workspace-projection" }
+        { "kind": "module", "path": "frontend/src/routes/_authenticated/super-admin/workspace-projection.tsx", "contains": "scholar-workspace-projection" }
       ],
-      "boundaryNote": "Closed 2026-09-14: `/super-admin/workspace-projection` resolves each role through the real engine (`resolveWorkspaceNav` over that role's catalog capabilities) and renders sections, items, home, quick nav and the roles that resolve to an empty workspace."
+      "boundaryNote": "Closed 2026-09-14 and re-closed after the neutrality correction: the neutral engine (`composeWorkspace`, input-driven, zero runtime imports) is bound by a runtime-layer adapter that derives every workspace kind from the catalog and counts the FULL reality-role registry. `/super-admin/workspace-projection` renders coverage, audit findings and a labelled sample — it declares no role list."
     },
     {
       "id": "document-completeness",

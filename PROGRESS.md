@@ -826,6 +826,17 @@ Normalized schema: Date · Author · Scope · Change · Validation · Status. En
 | Validation | `npm run audit:phase -- --phase=01` PASS (proof `architecture/proofs/phase-01-acceptance.proof.json`); `npm run audit:phases` re-run clean (unconfirmed claims 5 → 4; phase 01 now confirmed); `tests/unit/phase-acceptance-audit.test.ts` 8/8 (its independent re-derivation caught two real defects during authoring — a dropped RLS acceptance area and an over-strict evidence assertion, both fixed) |
 | Status | AUDITED + CLOSED — Phase 01 remains IMPLEMENTING (`L1 ✓, L2 ✗, L3 ✓, L4 ✗, L5 ✓`); its foundation is enforced and the verify chain is its operational evidence, so only the definitional L2 and the (non-applicable) L4 projection keep it from COMPLETE |
 
+### 22.12 Current entry — neutrality and role-catalog correction (phases 02–07)
+
+| Field | Value |
+| --- | --- |
+| Date | 2026-09-14 |
+| Author | Cline (autonomous loop, §103) |
+| Scope | Domain neutrality (05/06/07), role-catalog correctness (02/03/06), and the lock that stops a future phase undoing an earlier one |
+| Change | Three defects in this session's own work, found by owner review and fixed: **(1) a neutral module imported a runtime** — Phase 06's `workspace-projection.ts` imported the Scholar catalog; it is now an input-driven neutral engine (`composeWorkspace({key,label,capabilities,contributions})`, zero runtime imports) with the Scholar binding moved to the runtime layer (`runtime/scholar-workspace-projection.ts`). **(2) A surface declared a hand-written role list** — `ROLES = ["super_admin","hq","admin","teacher","student","parent"]` on a platform whose Scholar registry holds **hundreds** of roles and grows; the projection now derives every workspace kind from the catalog label map and counts the **full reality-role registry** (`EDUCATION_REALITY_ROLES`), surfacing unassigned roles and the role workspace engine's audit findings. **(3) Page-level role guards were used as gates** — removed from `identities`, `education-reality` and `tenants` (stale by construction; authorization is server-side + RLS), and `tenants` **moved out of the Scholar portal into the platform control plane** (`/super-admin/tenants`) since tenancy is platform infrastructure — it had also been gated on `hq`, which is not the platform super-admin role. |
+| Validation | **`audit:phases`: COMPLETE 10 · IMPLEMENTING 23 · ARCHITECTURE_DEFINED 18** — phases **01–07 all COMPLETE**; probes re-run after the correction: 01 `42/0/3/0`, 02 `11/1/0/0`, 03 `16/2/1/0`, 04 `16/0/0/0`, 05 `12/0/1/0`, 06 `16/2/0/0`, 07 `14/0/0/0`; typecheck 0 errors; production build PASS with regenerated route tree; **new lock `tests/unit/platform-neutrality.test.ts`** (9 neutral modules must import no vertical; 5 platform surfaces must declare no role list; the projection must be catalog-derived) plus the rewritten projection suite → 25/25 |
+| Status | **Phases 01–07 are COMPLETE and the correction is locked.** The neutrality guard now fails on exactly the three defects above, so a later phase cannot reintroduce them, and the phase-06 record documents the correction rather than hiding it. |
+
 ### 22.11 Current entry — phase 06 Workspace Engine completes and reaches COMPLETE
 
 | Field | Value |

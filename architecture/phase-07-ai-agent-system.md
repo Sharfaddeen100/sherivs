@@ -2350,3 +2350,51 @@ For example:
 This keeps Phase 07 reusable across the entire CoreGrid ecosystem instead of turning it into one giant "AI intelligence" phase.
 The most important architectural principle is:
 Agents are execution entities; domain phases remain owners of domain truth.
+
+
+───────────────────
+
+KH. AGENT KNOWLEDGE
+
+This addendum closes the one mandatory engineering section the document left
+implicit: what an agent knows, where that knowledge may come from, and what it may
+never become. It states existing behaviour rather than new scope.
+
+What an agent knows:
+
+- **its own identity and limits** — agent id, owner, purpose, permissions, allowed
+  tools, risk level and approval requirements (Phase 07 identity; authority granted
+  by Phase 02/08, never self-granted);
+- **its plan and its progress** — the steps it intends to take, each step's action
+  type and tool id, and the budget it is operating under;
+- **its task state** — where the task is in its declared lifecycle and which
+  transitions are still legal;
+- **its memory** — entries it is permitted to read and write, each with provenance;
+- **its observations** — tool output and external content, which is *data*, not
+  instruction;
+- **the context package** it was given — assembled from authorized sources, with the
+  data classification ceiling it may reach.
+
+Four rules govern agent knowledge, and each is enforced in code:
+
+1. **Knowledge is granted, never assumed.** A memory read is gated by category and
+   by a data-classification ceiling; an agent that lacks the category is refused, and
+   one reaching above its ceiling is refused (`agent-memory.ts`, proved by
+   `agent-memory.test.ts`).
+2. **Only system-trusted input is instruction.** System-level input is trusted;
+   external content and tool output are data. Prompt-injection protection is a
+   property of this rule, not an add-on (`isTrustedInstruction`, same suite).
+3. **Knowledge is bounded.** A plan may only use tools the agent is allowed to call
+   or delegate; runaway reasoning is stopped by repeated-call, repeated-plan,
+   repeated-failure and total-step ceilings (`agent-plans.ts`, proved by
+   `agent-plans.test.ts`).
+4. **Knowledge never becomes domain truth.** The agent may propose; domain phases own
+   meaning (§KG). An agent's conclusion is intelligence, and the canonical record
+   remains the owning phase's data.
+
+The agent's knowledge surface is inspectable: `frontend/src/lib/agent-governance-report.ts`
+states each enforced rule with the module and suite behind it, and exercises the two
+state machines that can be driven deterministically — a declared task transition is
+permitted while an undeclared one is refused, and reasoning stops at the declared step
+ceiling. The super-admin surface `/super-admin/agent-governance` renders that report,
+including failures.

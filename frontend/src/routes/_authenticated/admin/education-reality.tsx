@@ -3,7 +3,6 @@ import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
 
 import { PortalPage } from "@/components/portal-shell";
-import { RoleGuard } from "@/components/role-guard";
 import { getCurrentInstitutionOperatingModelDetail } from "@/lib/scholar-institution-config.functions";
 import { educationRealityView } from "@/lib/education-reality-view";
 
@@ -17,11 +16,10 @@ import { educationRealityView } from "@/lib/education-reality-view";
  */
 export const Route = createFileRoute("/_authenticated/admin/education-reality")({
   ssr: false,
-  component: () => (
-    <RoleGuard allow={["admin", "principal"]}>
-      <EducationRealityPage />
-    </RoleGuard>
-  ),
+  // Access is enforced by the /admin layout guard and, for the data itself, by the
+  // canonical server-side gate in `getCurrentInstitutionOperatingModelDetail`
+  // (the actor's own tenant). No role list is declared here: role catalogs are data.
+  component: EducationRealityPage,
 });
 
 function EducationRealityPage() {
