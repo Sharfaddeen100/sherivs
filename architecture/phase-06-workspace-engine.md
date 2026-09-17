@@ -2211,3 +2211,68 @@ Phase 08/09 determine whether the user or agent is authorized.
 Phase 18 may later analyze enrollment patterns.
 Phase 19 may eventually expose relevant institutional capabilities through the command centre.
 So the Workspace Engine remains a composition and interaction layer, rather than quietly absorbing everybody else's responsibilities.
+
+
+───────────────────
+
+IE. WORKSPACE MEMORY AND KNOWLEDGE
+
+This addendum closes the two engineering sections the document left implicit —
+what a workspace remembers, and what it knows — without widening the phase's scope.
+
+Memory (what the engine remembers, always workspace- and actor-scoped):
+
+- session state (CA) — the current workspace, the active context and the interaction
+  state of the session itself;
+- context history (BX/BY) — the workspace contexts the actor switched between, so
+  switching back is cheap and predictable;
+- preferences (BA/BB) — personal and workspace-level preferences, owned at the level
+  they were set and never promoted implicitly;
+- saved and shared views (BC/BE) — filters, sorts, groupings and column choices, with
+  ownership and sharing recorded, not inferred;
+- recent activity and task state (BV/BW) — what the actor recently did and what
+  remains open, surfaced without re-deriving it from domain data;
+- workspace snapshots and versions (CC/CD) — the composition as it was, so a change
+  can be reviewed or rolled back.
+
+Rules that make memory safe:
+
+1. **Memory is authorization-bound.** Recalling a saved view, a recent item or a
+   widget state never grants visibility into data the actor could not open now; a
+   recalled reference that is no longer authorized resolves to nothing.
+2. **Memory is not a source of truth.** Every remembered value is a pointer into the
+   owning phase's data; the engine stores the pointer and the presentation state,
+   never the business record.
+3. **Memory is bounded and tenant-scoped.** Retention follows the configuration in
+   the document's data-model sections, and no remembered entry may cross a tenant
+   boundary.
+
+Knowledge (what the workspace knows, and from where):
+
+- the navigation catalog and its contributions (V–Z) — which sections and items exist
+  and which capabilities each requires;
+- the module registry and dependencies (AB/AD) — what is installed, enabled or
+  deprecated for this workspace;
+- the page, dashboard, card and widget contracts (AE–AS) — what can be composed, and
+  under which version;
+- the component registry and versioning (GN/GO) and design-system rules (EK/GM) —
+  which components may be used and how they are versioned;
+- layouts, accessibility, i18n, theming and branding constraints (AT–AX, ED–EI) —
+  the presentation rules a composition must satisfy;
+- the capability contract (GV) and workspace status/dependency health (HJ/HL) — what
+  the workspace is entitled to and what it currently depends on.
+
+Two rules keep knowledge honest:
+
+1. **The engine knows composition, not meaning.** It knows that a page exists and
+   which capability gates it; it does not know what enrollment means — that belongs
+   to Phase 04, authorization to 08/09, and reasoning to 26.
+2. **Knowledge is projected from its owners, never copied.** The catalog, registry,
+   contracts and health signals are consumed from the phases that own them; a copy
+   would drift, and a drifting workspace is an unauthorized workspace.
+
+The composition is inspectable: `frontend/src/lib/workspace-projection.ts` resolves
+a role's capabilities through the catalog and composes that role's navigation with
+the real engine (`resolveWorkspaceNav`), and the super-admin surface
+`/super-admin/workspace-projection` renders the result per role — including the roles
+that resolve to an empty workspace.

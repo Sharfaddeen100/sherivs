@@ -1,0 +1,228 @@
+{
+  "$comment": "Phase 06 (Workspace Engine) resolved against repository artefacts: architecture/phase-06-workspace-engine.md (now with addendum IE), frontend/src/lib/kernel/phase-contracts/phase-06-workspace-engine.ts, registry row 06, and the workspace modules.",
+  "phase": "06",
+  "phaseName": "Workspace Engine",
+  "source": "architecture/phase-06-workspace-engine.md",
+  "contract": "frontend/src/lib/kernel/phase-contracts/phase-06-workspace-engine.ts",
+  "documentIntegrity": {
+    "status": "CLOSED — COMPLETED",
+    "finding": "The document stated 18 of the 20 mandatory engineering sections; the memory and knowledge sections were absent. Addendum section IE (Workspace Memory and Knowledge) was authored in the document's own lettered style, stating what a workspace remembers (session state, context history, preferences, saved/shared views, recent activity, snapshots) and what it knows (navigation catalog, module registry, composition contracts, component registry, capability contract, status/dependency health) — with the rules that keep memory authorization-bound and knowledge projected rather than copied.",
+    "verifiedAgainst": "architecture/phase-06-workspace-engine.md"
+  },
+  "ownership": {
+    "note": "Phase 06 composes and presents; it never owns identity (02), tenancy (03), educational reality (04), execution (05), authorization (08/09) or reasoning (26).",
+    "canonicalOwners": {
+      "workspace-composition": "06",
+      "identity": "02",
+      "tenancy": "03",
+      "reality": "04",
+      "execution": "05",
+      "authorization": "08/09",
+      "agents": "07/26",
+      "experience": "24",
+      "analytics": "18"
+    }
+  },
+  "areas": [
+    {
+      "id": "workspace-model",
+      "area": "Workspace concept, types, hierarchy and identity (F–I)",
+      "requirement": "A workspace is a typed, tenant-scoped composition with a stable identity and an optional hierarchy — never a page.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/workspace-core.ts", "contains": "WorkspaceId" },
+        { "kind": "test", "path": "tests/unit/workspace.test.ts" }
+      ]
+    },
+    {
+      "id": "workspace-lifecycle",
+      "area": "Workspace lifecycle: creation, activation, suspension, archiving, deletion (J–O)",
+      "requirement": "A workspace has a managed lifecycle with defined states rather than an implicit existence.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/workspace-core.ts", "contains": "Workspace" },
+        { "kind": "test", "path": "tests/unit/workspace.test.ts" }
+      ]
+    },
+    {
+      "id": "membership",
+      "area": "Membership, membership states and workspace roles (P/Q/S/U)",
+      "requirement": "Access to a workspace is expressed as membership with a role and a state, ranked and validated.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/workspace-membership.ts", "contains": "MEMBERSHIP_STATES" },
+        { "kind": "test", "path": "tests/unit/workspace.test.ts", "contains": "member" }
+      ]
+    },
+    {
+      "id": "navigation",
+      "area": "Navigation model, hierarchy and routing (V–Z)",
+      "requirement": "Navigation is composed from contributions and withheld unless the viewer's capabilities allow it.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/workspace-engine/navigation.ts", "contains": "resolveWorkspaceNav" },
+        { "kind": "test", "path": "tests/unit/workspace-navigation.test.ts" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/workspace-projection.ts", "contains": "resolveWorkspaceNav" }
+      ]
+    },
+    {
+      "id": "modules",
+      "area": "Workspace modules, registry and dependencies (AA–AD)",
+      "requirement": "Modules are registered per workspace with an explicit enabled/disabled/deprecated status.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/workspace-composition.ts", "contains": "enableModule" },
+        { "kind": "test", "path": "tests/unit/workspace.test.ts", "contains": "module" }
+      ]
+    },
+    {
+      "id": "composition-surfaces",
+      "area": "Pages, dashboards, cards and widget contracts (AE–AS)",
+      "requirement": "Surfaces are composed from versioned contracts, so a widget type has a lifecycle and a version rather than ad-hoc markup.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/workspace-composition.ts", "contains": "NAVIGATION_ITEM_TYPES" },
+        { "kind": "module", "path": "frontend/src/lib/workspace-engine/views.ts" },
+        { "kind": "test", "path": "tests/unit/workspace-views.test.ts" }
+      ]
+    },
+    {
+      "id": "views-and-filters",
+      "area": "Preferences, saved/shared views, filters, sorting, grouping (AZ–BJ)",
+      "requirement": "A view (filters, sort, grouping, ownership, sharing) is a first-class object, not a UI session detail.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/workspace-engine/views.ts" },
+        { "kind": "test", "path": "tests/unit/workspace-views.test.ts", "contains": "view" }
+      ]
+    },
+    {
+      "id": "context-and-snapshots",
+      "area": "Workspace context, session state, snapshots and versioning (BX–CE)",
+      "requirement": "Workspace configuration is versioned and snapshot-able so a change can be reviewed and rolled back.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/workspace-governance.ts", "contains": "createConfigurationSnapshot" },
+        { "kind": "test", "path": "tests/unit/workspace.test.ts", "contains": "snapshot" }
+      ]
+    },
+    {
+      "id": "templates",
+      "area": "Template ownership, versioning, inheritance and overrides (CG–CK)",
+      "requirement": "Templates inherit with explicit, validated override rules instead of silent divergence.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/workspace-governance.ts", "contains": "WorkspaceCatalogItem" },
+        { "kind": "test", "path": "tests/unit/workspace.test.ts" }
+      ]
+    },
+    {
+      "id": "governance",
+      "area": "Workspace policy, governance, administration and audit boundary (CM–CQ)",
+      "requirement": "Workspace configuration is policy-validated, administrable and auditable; the engine does not own the audit trail.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/workspace-governance.ts", "contains": "validateWorkspacePolicy" },
+        { "kind": "test", "path": "tests/unit/workspace.test.ts", "contains": "policy" }
+      ]
+    },
+    {
+      "id": "security",
+      "area": "RBAC, ReBAC, classification, widget security and sandboxing (DN–DZ)",
+      "requirement": "Visibility and action availability follow authorization from Phase 08/09; sensitive widgets are classified and sandboxed.",
+      "ownerPhase": "08/09",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/security-role-gate.test.ts" },
+        { "kind": "test", "path": "tests/unit/p08-enforcement-surface.test.ts", "contains": "ADOPTED" },
+        { "kind": "module", "path": "frontend/src/lib/workspace-governance.ts" }
+      ]
+    },
+    {
+      "id": "accessibility-i18n-theming",
+      "area": "Accessibility, internationalisation, theming and branding (ED–EI)",
+      "requirement": "Composition respects accessibility, locale and branding rules rather than assuming one language or one theme.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/locale.test.ts" },
+        { "kind": "test", "path": "tests/unit/workspace-experience.test.ts" }
+      ]
+    },
+    {
+      "id": "role-optimized-ux",
+      "area": "Role-optimised experience, empty workspace and help (HO–HS)",
+      "requirement": "Each role receives the workspace its authority implies; an unauthorized workspace resolves to empty rather than to a default page.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/workspace-engine/nav-catalog.ts", "contains": "scholarWorkspaceHome" },
+        { "kind": "test", "path": "tests/unit/workspace-experience.test.ts" }
+      ]
+    },
+    {
+      "id": "residency-and-currency",
+      "area": "Data residency, region-aware workspaces and currency display (HV–HZ)",
+      "requirement": "Regional placement and currency presentation follow the tenant's configuration rather than a global default.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/regional-context.ts" },
+        { "kind": "test", "path": "tests/unit/locale.test.ts" }
+      ]
+    },
+    {
+      "id": "workspace-events",
+      "area": "Workspace events and their ownership (DG/DH)",
+      "requirement": "Workspace lifecycle changes are expressed as typed events owned by the engine.",
+      "required": false,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/workspace-core.ts", "contains": "WorkspaceCreated" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/*.functions.ts", "contains": "WorkspaceCreated" }
+      ],
+      "boundaryNote": "The event vocabulary exists in the workspace contract, but nothing emits it: no server function records a workspace lifecycle event. Declared, not enforced — registered as owned debt (06)."
+    },
+    {
+      "id": "provisioning-export-clone",
+      "area": "Workspace provisioning, export, cloning, reset and snapshot restore (GZ–HG)",
+      "requirement": "Workspaces can be provisioned idempotently, exported, cloned, reset and restored from a snapshot.",
+      "required": false,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/workspace-governance.ts", "contains": "createConfigurationSnapshot" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/*.ts", "contains": "exportWorkspace" }
+      ],
+      "boundaryNote": "Only snapshotting/versioning exists; there is no workspace export, clone, reset or restore path, and no idempotent provisioning contract. Reserved: needs a persistence substrate for workspaces, which phase 06 deliberately does not own. Registered as owned debt (06)."
+    },
+    {
+      "id": "workspace-projection",
+      "area": "Workspace composition projected in a surface (L4)",
+      "requirement": "The composition a role receives is inspectable from real engine output, not from a screenshot or a claim.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/workspace-projection.ts", "contains": "projectWorkspace" },
+        { "kind": "test", "path": "tests/unit/workspace-projection.test.ts" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/routes/_authenticated/super-admin/workspace-projection.tsx", "contains": "workspace-projection" }
+      ],
+      "boundaryNote": "Closed 2026-09-14: `/super-admin/workspace-projection` resolves each role through the real engine (`resolveWorkspaceNav` over that role's catalog capabilities) and renders sections, items, home, quick nav and the roles that resolve to an empty workspace."
+    },
+    {
+      "id": "document-completeness",
+      "area": "Engineering-section completeness of the phase document",
+      "requirement": "The document states the mandatory engineering sections, including what a workspace remembers and knows.",
+      "required": true,
+      "evidence": [
+        { "kind": "doc", "path": "architecture/phase-06-workspace-engine.md", "contains": "IE. WORKSPACE MEMORY AND KNOWLEDGE" },
+        { "kind": "script", "path": "scripts/verification/engineering-sections.mjs" },
+        { "kind": "test", "path": "tests/unit/kernel-contract-coverage.test.ts", "contains": "engineering-sections" }
+      ],
+      "boundary": [
+        { "kind": "test", "path": "tests/unit/kernel-contract-coverage.test.ts", "contains": "engineering-sections" }
+      ]
+    }
+  ]
+}

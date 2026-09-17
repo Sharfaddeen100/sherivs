@@ -1,0 +1,406 @@
+{
+  "artifact": "phase-acceptance",
+  "phase": "06",
+  "phaseName": "Workspace Engine",
+  "source": "architecture/phase-06-workspace-engine.md",
+  "generatedAt": "2026-09-16T22:08:09.950Z",
+  "classificationDefinitions": {
+    "ENFORCED": "an executable artefact proves it (test, verifier script, migration, policy or machine-checked contract match) and, where a boundary is declared, a real call site invokes it",
+    "DECLARED": "a module, document or contract mentions it, but nothing executable proves it",
+    "IMPLEMENTED_UNWIRED": "implementation and tests exist, but the declared boundary patterns match nothing — the capability protects nothing yet",
+    "MISSING": "no artefact found"
+  },
+  "summary": {
+    "areas": 18,
+    "enforced": 16,
+    "declared": 2,
+    "implementedUnwired": 0,
+    "implementedUnwiredAreas": [],
+    "missing": 0,
+    "missingRequired": [],
+    "unresolvedEvidencePaths": []
+  },
+  "ownership": {
+    "note": "Phase 06 composes and presents; it never owns identity (02), tenancy (03), educational reality (04), execution (05), authorization (08/09) or reasoning (26).",
+    "canonicalOwners": {
+      "workspace-composition": "06",
+      "identity": "02",
+      "tenancy": "03",
+      "reality": "04",
+      "execution": "05",
+      "authorization": "08/09",
+      "agents": "07/26",
+      "experience": "24",
+      "analytics": "18"
+    }
+  },
+  "areas": [
+    {
+      "id": "workspace-model",
+      "area": "Workspace concept, types, hierarchy and identity (F–I)",
+      "requirement": "A workspace is a typed, tenant-scoped composition with a stable identity and an optional hierarchy — never a page.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/workspace-core.ts",
+        "tests/unit/workspace.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/workspace-core.ts",
+        "tests/unit/workspace.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "workspace-lifecycle",
+      "area": "Workspace lifecycle: creation, activation, suspension, archiving, deletion (J–O)",
+      "requirement": "A workspace has a managed lifecycle with defined states rather than an implicit existence.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/workspace-core.ts",
+        "tests/unit/workspace.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/workspace-core.ts",
+        "tests/unit/workspace.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "membership",
+      "area": "Membership, membership states and workspace roles (P/Q/S/U)",
+      "requirement": "Access to a workspace is expressed as membership with a role and a state, ranked and validated.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/workspace-membership.ts",
+        "tests/unit/workspace.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/workspace-membership.ts",
+        "tests/unit/workspace.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "navigation",
+      "area": "Navigation model, hierarchy and routing (V–Z)",
+      "requirement": "Navigation is composed from contributions and withheld unless the viewer's capabilities allow it.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/workspace-engine/navigation.ts",
+        "tests/unit/workspace-navigation.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/workspace-engine/navigation.ts",
+        "tests/unit/workspace-navigation.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "frontend/src/lib/workspace-projection.ts"
+      ],
+      "boundaryEvidence": [
+        "frontend/src/lib/workspace-projection.ts"
+      ]
+    },
+    {
+      "id": "modules",
+      "area": "Workspace modules, registry and dependencies (AA–AD)",
+      "requirement": "Modules are registered per workspace with an explicit enabled/disabled/deprecated status.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/workspace-composition.ts",
+        "tests/unit/workspace.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/workspace-composition.ts",
+        "tests/unit/workspace.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "composition-surfaces",
+      "area": "Pages, dashboards, cards and widget contracts (AE–AS)",
+      "requirement": "Surfaces are composed from versioned contracts, so a widget type has a lifecycle and a version rather than ad-hoc markup.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/workspace-composition.ts",
+        "frontend/src/lib/workspace-engine/views.ts",
+        "tests/unit/workspace-views.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/workspace-composition.ts",
+        "frontend/src/lib/workspace-engine/views.ts",
+        "tests/unit/workspace-views.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "views-and-filters",
+      "area": "Preferences, saved/shared views, filters, sorting, grouping (AZ–BJ)",
+      "requirement": "A view (filters, sort, grouping, ownership, sharing) is a first-class object, not a UI session detail.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/workspace-engine/views.ts",
+        "tests/unit/workspace-views.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/workspace-engine/views.ts",
+        "tests/unit/workspace-views.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "context-and-snapshots",
+      "area": "Workspace context, session state, snapshots and versioning (BX–CE)",
+      "requirement": "Workspace configuration is versioned and snapshot-able so a change can be reviewed and rolled back.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/workspace-governance.ts",
+        "tests/unit/workspace.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/workspace-governance.ts",
+        "tests/unit/workspace.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "templates",
+      "area": "Template ownership, versioning, inheritance and overrides (CG–CK)",
+      "requirement": "Templates inherit with explicit, validated override rules instead of silent divergence.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/workspace-governance.ts",
+        "tests/unit/workspace.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/workspace-governance.ts",
+        "tests/unit/workspace.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "governance",
+      "area": "Workspace policy, governance, administration and audit boundary (CM–CQ)",
+      "requirement": "Workspace configuration is policy-validated, administrable and auditable; the engine does not own the audit trail.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/workspace-governance.ts",
+        "tests/unit/workspace.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/workspace-governance.ts",
+        "tests/unit/workspace.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "security",
+      "area": "RBAC, ReBAC, classification, widget security and sandboxing (DN–DZ)",
+      "requirement": "Visibility and action availability follow authorization from Phase 08/09; sensitive widgets are classified and sandboxed.",
+      "required": true,
+      "ownerPhase": "08/09",
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/security-role-gate.test.ts",
+        "tests/unit/p08-enforcement-surface.test.ts",
+        "frontend/src/lib/workspace-governance.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/security-role-gate.test.ts",
+        "tests/unit/p08-enforcement-surface.test.ts",
+        "frontend/src/lib/workspace-governance.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "accessibility-i18n-theming",
+      "area": "Accessibility, internationalisation, theming and branding (ED–EI)",
+      "requirement": "Composition respects accessibility, locale and branding rules rather than assuming one language or one theme.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/locale.test.ts",
+        "tests/unit/workspace-experience.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/locale.test.ts",
+        "tests/unit/workspace-experience.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "role-optimized-ux",
+      "area": "Role-optimised experience, empty workspace and help (HO–HS)",
+      "requirement": "Each role receives the workspace its authority implies; an unauthorized workspace resolves to empty rather than to a default page.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/workspace-engine/nav-catalog.ts",
+        "tests/unit/workspace-experience.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/workspace-engine/nav-catalog.ts",
+        "tests/unit/workspace-experience.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "residency-and-currency",
+      "area": "Data residency, region-aware workspaces and currency display (HV–HZ)",
+      "requirement": "Regional placement and currency presentation follow the tenant's configuration rather than a global default.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/regional-context.ts",
+        "tests/unit/locale.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/regional-context.ts",
+        "tests/unit/locale.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "workspace-events",
+      "area": "Workspace events and their ownership (DG/DH)",
+      "requirement": "Workspace lifecycle changes are expressed as typed events owned by the engine.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "frontend/src/lib/workspace-core.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/workspace-core.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "frontend/src/lib/*.functions.ts"
+      ],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "provisioning-export-clone",
+      "area": "Workspace provisioning, export, cloning, reset and snapshot restore (GZ–HG)",
+      "requirement": "Workspaces can be provisioned idempotently, exported, cloned, reset and restored from a snapshot.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "frontend/src/lib/workspace-governance.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/workspace-governance.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "frontend/src/lib/*.ts"
+      ],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "workspace-projection",
+      "area": "Workspace composition projected in a surface (L4)",
+      "requirement": "The composition a role receives is inspectable from real engine output, not from a screenshot or a claim.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/workspace-projection.ts",
+        "tests/unit/workspace-projection.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/workspace-projection.ts",
+        "tests/unit/workspace-projection.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "frontend/src/routes/_authenticated/super-admin/workspace-projection.tsx"
+      ],
+      "boundaryEvidence": [
+        "frontend/src/routes/_authenticated/super-admin/workspace-projection.tsx"
+      ]
+    },
+    {
+      "id": "document-completeness",
+      "area": "Engineering-section completeness of the phase document",
+      "requirement": "The document states the mandatory engineering sections, including what a workspace remembers and knows.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "architecture/phase-06-workspace-engine.md",
+        "scripts/verification/engineering-sections.mjs",
+        "tests/unit/kernel-contract-coverage.test.ts"
+      ],
+      "matchedEvidence": [
+        "architecture/phase-06-workspace-engine.md",
+        "scripts/verification/engineering-sections.mjs",
+        "tests/unit/kernel-contract-coverage.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "tests/unit/kernel-contract-coverage.test.ts"
+      ],
+      "boundaryEvidence": [
+        "tests/unit/kernel-contract-coverage.test.ts"
+      ]
+    }
+  ],
+  "ok": true,
+  "limitations": [
+    "Classification measures the presence of executable evidence, not the correctness or completeness of that evidence.",
+    "A DECLARED area is unfinished work, never a false claim — it is reported as such.",
+    "An IMPLEMENTED_UNWIRED area has a tested implementation that no boundary calls; it is reported, never counted as enforcement.",
+    "Evidence patterns are declared per phase in architecture/phase-acceptance/phase-<id>-*.json and must be reviewed when a phase is re-audited."
+  ]
+}
