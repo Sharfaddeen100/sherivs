@@ -250,11 +250,13 @@ export function decideAccountAdministration(
  * ────────────────────────────────────────────────────────────*/
 
 /**
- * Scholar runtime staff roles. This is the Scholar-domain vocabulary of the
- * legacy `public.users.role` column — never imported by the kernel. The gate
- * resolves the actor's role through the existing `public.get_my_role()` RPC
- * (no new database surface) and keeps role-set membership declarative here so
- * every family authorizes through one module.
+ * Staff roles as the identity system records them. This is a runtime's own
+ * vocabulary (the legacy `public.users.role` column), resolved through the
+ * existing `public.get_my_role()` RPC — the kernel imports no runtime's role
+ * table and keeps role-set membership declarative here so every server-function
+ * family authorizes through one module. Scholar (runtime-001) is the first
+ * consumer of this gate; a second runtime supplies its own kind map through an
+ * adapter in the runtime layer, never by editing this kernel module.
  */
 export type SchoolStaffRole = "admin" | "principal" | "teacher" | "bursar";
 

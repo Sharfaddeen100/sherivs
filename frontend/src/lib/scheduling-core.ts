@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Scheduling & Timetable Intelligence core domain model
+ * CoreGrid — Scheduling & Timetable Intelligence core domain model
  * (Phase 12).
  *
  * Implements `architecture/phase-12-scheduling-intelligence.md`:

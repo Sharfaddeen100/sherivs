@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Hardware Telemetry domain model
+ * CoreGrid — Hardware Telemetry domain model
  * (Phase 15, Sections Z, AA, AB, AC, AD, AE, AF).
  *
  * Implements `architecture/phase-15-hardware-integration.md`:

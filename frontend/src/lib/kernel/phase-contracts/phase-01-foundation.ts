@@ -7,8 +7,8 @@
  * must never cross, and the ASI profile agents operate under while touching
  * the foundation.
  *
- * RUNTIME NEUTRALITY: CoreGrid Scholar (runtime-001) is the first vertical
- * runtime consuming this contract; every other domain (health, government,
+ * RUNTIME NEUTRALITY: CoreGrid Scholar (runtime-001) is the first runtime
+ * consuming this contract; every other domain (health, government,
  * commerce, …) consumes the same contract through a reserved neutral seat. No
  * section below names Scholar-specific ontology — the Scholar binding lives
  * only in `runtimeBindings`.

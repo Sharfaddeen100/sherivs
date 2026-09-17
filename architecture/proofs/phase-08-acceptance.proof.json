@@ -1,0 +1,1003 @@
+{
+  "artifact": "phase-acceptance",
+  "phase": "08",
+  "phaseName": "Security Engine",
+  "source": "architecture/phase-08-security-engine.md",
+  "generatedAt": "2026-09-17T14:21:58.684Z",
+  "classificationDefinitions": {
+    "ENFORCED": "an executable artefact proves it (test, verifier script, migration, policy or machine-checked contract match) and, where a boundary is declared, a real call site invokes it",
+    "DECLARED": "a module, document or contract mentions it, but nothing executable proves it",
+    "IMPLEMENTED_UNWIRED": "implementation and tests exist, but the declared boundary patterns match nothing — the capability protects nothing yet",
+    "MISSING": "no artefact found"
+  },
+  "summary": {
+    "areas": 45,
+    "enforced": 22,
+    "declared": 14,
+    "implementedUnwired": 9,
+    "implementedUnwiredAreas": [
+      "risk-evaluation",
+      "session-security",
+      "agent-security",
+      "tool-security",
+      "security-events",
+      "alerts-and-severity",
+      "incidents",
+      "evidence-records",
+      "observability"
+    ],
+    "missing": 0,
+    "missingRequired": [],
+    "unresolvedEvidencePaths": []
+  },
+  "ownership": {
+    "note": "Phase 08 owns authorization evaluation, policy sets, role gates, session and agent controls, and the security audit trail (contract 'ownership'). Identity is Phase 02's, tenancy Phase 03's, the agent runtime Phase 07's, execution primitives Phase 05's, the operational alert and incident surfaces Phase 19's, the trust fabric Phase 09's, the AI gateway Phase 26's, data classification Phase 14's. The engine owns decisions, never domain rules or surface visibility, and it never trusts a client-supplied role or tenant.",
+    "canonicalOwners": {
+      "authorization": "08",
+      "identity-sessions-credentials": "02",
+      "tenancy-rls": "03",
+      "execution-primitives": "05",
+      "agent-runtime": "07",
+      "alert-incident-surfaces": "19",
+      "trust-fabric": "09",
+      "data-classification": "14",
+      "ai-gateway": "26",
+      "infrastructure": "21"
+    }
+  },
+  "areas": [
+    {
+      "id": "decision-contract",
+      "area": "Security decision contract and attribution",
+      "requirement": "Every decision carries request, actor, actor type, tenant, resource, action, context, policy version, risk score, decision, reason, timestamp, expiry and correlation id.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/security-core.ts",
+        "tests/unit/security-core.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/security-core.ts",
+        "tests/unit/security-core.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "decision-states",
+      "area": "Nine decision states and the non-granting rule",
+      "requirement": "ALLOW, DENY, CHALLENGE, STEP_UP, REVIEW, QUARANTINE, RATE_LIMIT, BLOCK and DEFER exist, and eight of the nine may never be read as permission.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/security-core.ts",
+        "tests/unit/security-core.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/security-core.ts",
+        "tests/unit/security-core.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "security-gateway",
+      "area": "Security Gateway — the first enforcement boundary",
+      "requirement": "The gateway validates identity, tenant context, request integrity, session state and rate limit before authorization, and may allow, deny, challenge, throttle or quarantine.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/security-core.ts",
+        "tests/unit/security-core.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/security-core.ts",
+        "tests/unit/security-core.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "fail-closed",
+      "area": "Fail closed — no failure becomes a grant",
+      "requirement": "A missing or invalid identity, tenant, integrity, session or rate-limit signal denies; an unrecognised authorization decision denies; a security failure never silently becomes an ALLOW.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/security-core.ts",
+        "tests/unit/security-core.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/security-core.ts",
+        "tests/unit/security-core.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "frontend/src/lib/security-role-gate.ts"
+      ],
+      "boundaryEvidence": [
+        "frontend/src/lib/security-role-gate.ts"
+      ]
+    },
+    {
+      "id": "role-gate-enforcement",
+      "area": "Canonical role gate adopted by server-function families",
+      "requirement": "Role-scoped server-function families route their authorization through one canonical gate instead of duplicating inline role reads.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/security-role-gate.ts",
+        "tests/unit/security-role-gate.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/security-role-gate.ts",
+        "tests/unit/security-role-gate.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "frontend/src/lib/*.functions.ts"
+      ],
+      "boundaryEvidence": [
+        "frontend/src/lib/*.functions.ts"
+      ]
+    },
+    {
+      "id": "enforcement-surface-inventory",
+      "area": "Machine-checked enforcement inventory (invariant AT.1)",
+      "requirement": "Security cannot be bypassed by application code: a new role-scoped family that skips the gate fails the suite.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/p08-enforcement-surface.test.ts",
+        "frontend/src/lib/kernel/phase-contracts/phase-08-security-engine.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/p08-enforcement-surface.test.ts",
+        "frontend/src/lib/kernel/phase-contracts/phase-08-security-engine.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "tests/unit/p08-enforcement-surface.test.ts"
+      ],
+      "boundaryEvidence": [
+        "tests/unit/p08-enforcement-surface.test.ts"
+      ]
+    },
+    {
+      "id": "authorization-models",
+      "area": "RBAC, ABAC, ReBAC and PBAC combination",
+      "requirement": "Role, attribute, relationship and policy rules combine under precedence rules, contextual constraints and tenant constraints.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "frontend/src/lib/security-role-gate.ts",
+        "frontend/src/lib/security-policy.ts",
+        "architecture/phase-08-security-engine.md"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/security-role-gate.ts",
+        "frontend/src/lib/security-policy.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "policy-lifecycle",
+      "area": "Policy lifecycle — versioned, testable, attributable",
+      "requirement": "Policies move through draft, validate, test, approve, publish, activate, monitor, supersede and archive, and a published policy version is not silently rewritten.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/security-policy.ts",
+        "tests/unit/security-policy.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/security-policy.ts",
+        "tests/unit/security-policy.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "policy-rollback",
+      "area": "Controlled policy rollback",
+      "requirement": "A published policy can be rolled back deliberately, preserving the version that was replaced.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/security-policy.ts",
+        "tests/unit/security-policy.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/security-policy.ts",
+        "tests/unit/security-policy.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "risk-evaluation",
+      "area": "Risk evaluation and risk actions",
+      "requirement": "Risk signals combine into a score and a level, and the level maps to an action (allow, additional verification, reduced privileges, rate limit, temporary block, quarantine, human review).",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "IMPLEMENTED_UNWIRED",
+      "declaredEvidence": [
+        "frontend/src/lib/security-risk.ts",
+        "tests/unit/security-risk.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/security-risk.ts",
+        "tests/unit/security-risk.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "frontend/src/lib/*.functions.ts"
+      ],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "risk-signal-vocabulary",
+      "area": "Risk signal vocabulary and sensitivity",
+      "requirement": "The engine recognises the documented signal classes — unusual location, device, time, behaviour, privilege escalation, repeated failures, abnormal volume, suspicious API patterns, impossible travel, anomalous agent behaviour and suspicious tool usage.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/security-risk.ts",
+        "tests/unit/security-risk.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/security-risk.ts",
+        "tests/unit/security-risk.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "session-security",
+      "area": "Session security controls and revocation",
+      "requirement": "Sessions expire, idle out, rotate refresh tokens, revoke, count concurrent sessions, detect suspicious sessions and trigger step-up authentication.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "IMPLEMENTED_UNWIRED",
+      "declaredEvidence": [
+        "frontend/src/lib/security-session.ts",
+        "frontend/src/lib/security-session.ts",
+        "tests/unit/security-session.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/security-session.ts",
+        "frontend/src/lib/security-session.ts",
+        "tests/unit/security-session.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "frontend/src/lib/*.functions.ts"
+      ],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "credential-secrets",
+      "area": "Credential and secret protection",
+      "requirement": "Credentials are never hard-coded, committed, logged, returned unnecessarily or embedded in prompts, and sensitive credentials rotate.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "scripts/verification/secret-scan.mjs",
+        "package.json",
+        "architecture/phase-08-security-engine.md"
+      ],
+      "matchedEvidence": [
+        "scripts/verification/secret-scan.mjs",
+        "architecture/phase-08-security-engine.md"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        ".github/workflows/verify.yml"
+      ],
+      "boundaryEvidence": [
+        ".github/workflows/verify.yml"
+      ]
+    },
+    {
+      "id": "credential-not-in-agent-memory",
+      "area": "Credentials never enter agent memory without explicit policy (invariant AT.8)",
+      "requirement": "An agent's memory and prompts cannot carry credentials unless a policy explicitly authorises it.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "frontend/src/lib/agent-memory.ts",
+        "architecture/phase-08-security-engine.md"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/agent-memory.ts",
+        "architecture/phase-08-security-engine.md"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "agent-security",
+      "area": "Agent security controls",
+      "requirement": "Every agent has identity, permissions, scope, tenant, tool and resource permissions, action limits, an execution budget and a security policy; high-risk actions need additional controls.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "IMPLEMENTED_UNWIRED",
+      "declaredEvidence": [
+        "frontend/src/lib/security-agent-controls.ts",
+        "tests/unit/security-agent-controls.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/security-agent-controls.ts",
+        "tests/unit/security-agent-controls.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "frontend/src/lib/*.functions.ts"
+      ],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "tool-security",
+      "area": "Tool authorization and dangerous-tool controls",
+      "requirement": "Every tool invocation is evaluated in context, and tools capable of shell execution, database writes, infrastructure changes, deployment, financial transactions, external messaging or bulk export face stricter controls.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "IMPLEMENTED_UNWIRED",
+      "declaredEvidence": [
+        "frontend/src/lib/security-agent-controls.ts",
+        "tests/unit/security-agent-controls.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/security-agent-controls.ts",
+        "tests/unit/security-agent-controls.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "frontend/src/lib/*.functions.ts"
+      ],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "security-events",
+      "area": "Security event emission and integrity",
+      "requirement": "Security events carry actor, tenant, resource, action, severity, evidence, correlation, trace and policy version, and are tamper-resistant.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "IMPLEMENTED_UNWIRED",
+      "declaredEvidence": [
+        "frontend/src/lib/security-events.ts",
+        "tests/unit/security-events.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/security-events.ts",
+        "tests/unit/security-events.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "frontend/src/lib/*.functions.ts"
+      ],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "event-vocabulary",
+      "area": "Security event vocabulary",
+      "requirement": "The engine recognises login failures, permission failures, suspicious sessions, policy violations, privilege changes, credential events, agent anomalies, tool violations, data-export events and security incidents.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/security-events.ts",
+        "tests/unit/security-events.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/security-events.ts",
+        "tests/unit/security-events.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "alerts-and-severity",
+      "area": "Alert severity, alert records and acknowledgement",
+      "requirement": "Alerts carry event, severity, confidence, evidence, affected actor, tenant, resource, recommended response and status, and can be acknowledged and transitioned.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "IMPLEMENTED_UNWIRED",
+      "declaredEvidence": [
+        "frontend/src/lib/security-events.ts",
+        "tests/unit/security-events.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/security-events.ts",
+        "tests/unit/security-events.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "frontend/src/lib/*.functions.ts"
+      ],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "incidents",
+      "area": "Security incident lifecycle and ownership",
+      "requirement": "Incidents move through detected, triaged, investigating, contained, remediating, recovered, closed and reviewed, and each carries owner, severity, evidence, timeline, actions, resolution and postmortem.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "IMPLEMENTED_UNWIRED",
+      "declaredEvidence": [
+        "frontend/src/lib/security-events.ts",
+        "tests/unit/security-events.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/security-events.ts",
+        "tests/unit/security-events.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "frontend/src/lib/*.functions.ts"
+      ],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "evidence-records",
+      "area": "Security evidence records and integrity",
+      "requirement": "Evidence references events, decisions, policy versions, actor context, system state and investigation actions, and is timestamped, traceable, tamper-resistant and access-controlled.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "IMPLEMENTED_UNWIRED",
+      "declaredEvidence": [
+        "frontend/src/lib/security-events.ts",
+        "tests/unit/security-events.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/security-events.ts",
+        "tests/unit/security-events.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "frontend/src/lib/*.functions.ts"
+      ],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "api-surface",
+      "area": "Security APIs — authorize, require-role, audit query",
+      "requirement": "An authorization API, a role-gate API and an audit query exist and are documented.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/kernel/phase-contracts/phase-08-security-engine.ts",
+        "tests/unit/security-role-gate.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/kernel/phase-contracts/phase-08-security-engine.ts",
+        "tests/unit/security-role-gate.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "frontend/src/lib/*.functions.ts"
+      ],
+      "boundaryEvidence": [
+        "frontend/src/lib/*.functions.ts"
+      ]
+    },
+    {
+      "id": "api-hardening",
+      "area": "API security controls at every boundary",
+      "requirement": "Authentication, authorization, request and schema validation, rate limiting, payload limits, idempotency, abuse detection and audit logging are applied at the API boundary.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/runtime-command-query.ts",
+        "tests/unit/runtime.test.ts",
+        "architecture/phase-08-security-engine.md"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/runtime-command-query.ts",
+        "tests/unit/runtime.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "frontend/src/lib/*.functions.ts"
+      ],
+      "boundaryEvidence": [
+        "frontend/src/lib/*.functions.ts"
+      ]
+    },
+    {
+      "id": "tenant-isolation-db",
+      "area": "Database security — RLS and cross-tenant fail-closed",
+      "requirement": "Security exists at the application and database layers; RLS, least privilege, service-role isolation, restricted admin access, query auditing and backup protection are in place, and cross-tenant access fails closed.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "scripts/verify-tenant-isolation.mjs",
+        "database/queries/rls-isolation-check.sql",
+        "frontend/src/lib/tenant-isolation.ts"
+      ],
+      "matchedEvidence": [
+        "scripts/verify-tenant-isolation.mjs",
+        "database/queries/rls-isolation-check.sql",
+        "frontend/src/lib/tenant-isolation.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "database/supabase/migrations/*"
+      ],
+      "boundaryEvidence": [
+        "database/supabase/migrations/*"
+      ]
+    },
+    {
+      "id": "data-classification",
+      "area": "Data classification and export protection",
+      "requirement": "Data carries a classification, and controls follow it: access control, encryption, masking, tokenization, redaction, retention, deletion and export restriction; unusual downloads, exports, cross-tenant queries and bulk retrieval are monitored.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "frontend/src/lib/data-core.ts",
+        "frontend/src/lib/security-events.ts",
+        "architecture/phase-08-security-engine.md"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/data-core.ts",
+        "frontend/src/lib/security-events.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "threat-detection",
+      "area": "Threat detection strategy",
+      "requirement": "Deterministic rules, statistical detection, behavioural baselines and threat intelligence detect brute force, credential abuse, privilege escalation, token abuse, API abuse, data exfiltration, malicious automation, suspicious agent activity, cross-tenant attempts and abnormal access patterns — and AI detection is never the only control for critical actions.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "frontend/src/lib/security-risk.ts",
+        "architecture/phase-08-security-engine.md"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/security-risk.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "anomaly-detection",
+      "area": "Anomaly detection and false-positive handling",
+      "requirement": "Deviations from expected behaviour are identified (request frequency, access patterns, tool usage, resource access, geography, device, agent execution), and alerts support confidence, evidence, suppression, investigation and feedback.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "frontend/src/lib/security-risk.ts",
+        "architecture/phase-08-security-engine.md"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/security-risk.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "rate-limiting-and-resilience",
+      "area": "Rate limiting, throttling and the security circuit breaker",
+      "requirement": "Rate limits apply to users, agents, APIs, tenants, devices, IPs, tools and workflows using token-bucket, sliding-window, concurrency, burst and adaptive strategies, and the gateway throttles instead of failing open.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/runtime-resilience.ts",
+        "frontend/src/lib/runtime-resilience.ts",
+        "tests/unit/runtime-self-report.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/runtime-resilience.ts",
+        "frontend/src/lib/runtime-resilience.ts",
+        "tests/unit/runtime-self-report.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "frontend/src/lib/security-core.ts"
+      ],
+      "boundaryEvidence": [
+        "frontend/src/lib/security-core.ts"
+      ]
+    },
+    {
+      "id": "human-escalation",
+      "area": "Human escalation for high-impact actions",
+      "requirement": "Permanent account termination, destructive data operations, broad tenant blocking, production policy changes, critical credential revocation and emergency infrastructure actions require human approval.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/runtime-approval.ts",
+        "tests/unit/runtime-extended.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/runtime-approval.ts",
+        "tests/unit/runtime-extended.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "frontend/src/lib/kernel/phase-contracts/phase-08-security-engine.ts"
+      ],
+      "boundaryEvidence": [
+        "frontend/src/lib/kernel/phase-contracts/phase-08-security-engine.ts"
+      ]
+    },
+    {
+      "id": "observability",
+      "area": "Security observability and distributed tracing of decisions",
+      "requirement": "Authorization latency, denial rate, policy evaluation latency, event throughput, alert and incident volume, false-positive rate, detection and response latency and failed controls are monitored, and every decision is traceable.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "IMPLEMENTED_UNWIRED",
+      "declaredEvidence": [
+        "frontend/src/lib/runtime-observability.ts",
+        "tests/unit/foundation-observability.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/runtime-observability.ts",
+        "tests/unit/foundation-observability.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "frontend/src/lib/*.functions.ts"
+      ],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "testing-standard",
+      "area": "Security test suites (unit, integration, authorization, failure)",
+      "requirement": "The engine's behaviour is proven by executable tests rather than prose, and the tests cover authorization, failure and abuse paths.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/security-core.test.ts",
+        "tests/unit/security-policy.test.ts",
+        "tests/unit/security-role-gate.test.ts",
+        "tests/unit/p08-enforcement-surface.test.ts",
+        "frontend/src/lib/kernel/phase-contracts/phase-08-security-engine.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/security-core.test.ts",
+        "tests/unit/security-policy.test.ts",
+        "tests/unit/security-role-gate.test.ts",
+        "tests/unit/p08-enforcement-surface.test.ts",
+        "frontend/src/lib/kernel/phase-contracts/phase-08-security-engine.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "tests/unit/security-role-gate.test.ts"
+      ],
+      "boundaryEvidence": [
+        "tests/unit/security-role-gate.test.ts"
+      ]
+    },
+    {
+      "id": "document-completeness",
+      "area": "Engineering-section completeness of the phase document",
+      "requirement": "The document states the mandatory engineering sections, including the command, data and query models and the runtime consumer boundary.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "architecture/phase-08-security-engine.md",
+        "scripts/verification/engineering-sections.mjs",
+        "tests/unit/kernel-contract-coverage.test.ts"
+      ],
+      "matchedEvidence": [
+        "architecture/phase-08-security-engine.md",
+        "scripts/verification/engineering-sections.mjs",
+        "tests/unit/kernel-contract-coverage.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "tests/unit/kernel-contract-coverage.test.ts"
+      ],
+      "boundaryEvidence": [
+        "tests/unit/kernel-contract-coverage.test.ts"
+      ]
+    },
+    {
+      "id": "architecture-invariants",
+      "area": "The twelve architectural invariants (Section AT)",
+      "requirement": "Security cannot be bypassed by application code or agents; tenant boundaries cannot be disabled; decisions are attributable; critical actions need explicit authorization; policies cannot change silently; events cannot be silently deleted; credentials cannot enter agent memory without policy; failures never become grants; emergency access is audited; controls stay observable; the security architecture stays independent of business-domain logic.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/p08-enforcement-surface.test.ts",
+        "tests/unit/platform-neutrality.test.ts",
+        "frontend/src/lib/kernel/phase-contracts/phase-08-security-engine.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/p08-enforcement-surface.test.ts",
+        "tests/unit/platform-neutrality.test.ts",
+        "frontend/src/lib/kernel/phase-contracts/phase-08-security-engine.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "frontend/src/lib/kernel/phase-contracts/phase-08-security-engine.ts"
+      ],
+      "boundaryEvidence": [
+        "frontend/src/lib/kernel/phase-contracts/phase-08-security-engine.ts"
+      ]
+    },
+    {
+      "id": "runtime-neutrality",
+      "area": "Runtime consumer boundary — the kernel is the platform (Section AY)",
+      "requirement": "The engine belongs to CoreGrid: no kernel or capability module may import a runtime, introduce itself as a runtime's subsystem, or hard-code a limited role list, and a later phase cannot re-frame the kernel.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/platform-neutrality.test.ts",
+        "scripts/neutralise-scholar-framing.mjs",
+        "architecture/phase-08-security-engine.md"
+      ],
+      "matchedEvidence": [
+        "tests/unit/platform-neutrality.test.ts",
+        "scripts/neutralise-scholar-framing.mjs",
+        "architecture/phase-08-security-engine.md"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "tests/unit/platform-neutrality.test.ts"
+      ],
+      "boundaryEvidence": [
+        "tests/unit/platform-neutrality.test.ts"
+      ]
+    },
+    {
+      "id": "deployment",
+      "area": "Independent deployment, containerization and environment separation",
+      "requirement": "Components deploy independently where useful, containerized and described as infrastructure-as-code, with development, staging and production separated.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "scripts/verify-infrastructure.mjs",
+        "package.json",
+        "architecture/phase-08-security-engine.md"
+      ],
+      "matchedEvidence": [
+        "scripts/verify-infrastructure.mjs",
+        "architecture/phase-08-security-engine.md"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "scripts/infrastructure/preflight.mjs"
+      ],
+      "boundaryEvidence": [
+        "scripts/infrastructure/preflight.mjs"
+      ]
+    },
+    {
+      "id": "data-model-persistence",
+      "area": "Security data model — what is persisted today (addendum AX)",
+      "requirement": "Tenant isolation, unique identifiers, immutable event ids, timestamp integrity, policy-version references, actor references and correlation references are enforced by the data model.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "architecture/phase-08-security-engine.md",
+        "frontend/src/lib/security-events.ts",
+        "frontend/src/lib/tenant-isolation.ts"
+      ],
+      "matchedEvidence": [
+        "architecture/phase-08-security-engine.md",
+        "frontend/src/lib/security-events.ts",
+        "frontend/src/lib/tenant-isolation.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "disaster-recovery",
+      "area": "Disaster recovery for security systems",
+      "requirement": "Encrypted backups, tested restoration, incident recovery procedures, policy backups, evidence preservation, credential recovery and emergency access procedures exist and have been exercised.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "architecture/phase-08-security-engine.md"
+      ],
+      "matchedEvidence": [
+        "architecture/phase-08-security-engine.md"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "operational-procedures",
+      "area": "Documented security operating procedures",
+      "requirement": "Incident response, emergency access, credential rotation, policy rollback, service recovery, threat investigation, false-positive review and control review are documented.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "architecture/phase-08-security-engine.md"
+      ],
+      "matchedEvidence": [
+        "architecture/phase-08-security-engine.md"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "compliance-evidence",
+      "area": "Compliance support — technical evidence, not legal interpretation",
+      "requirement": "The engine supplies technical evidence for access control, auditability, data protection, incident response, retention, security monitoring and tenant isolation, without defining legal compliance.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "frontend/src/lib/data-governance.ts",
+        "architecture/phase-08-security-engine.md"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/data-governance.ts",
+        "architecture/phase-08-security-engine.md"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "security-agents",
+      "area": "Security agents (monitor, threat analysis, investigation, response, policy analysis, audit)",
+      "requirement": "The six security agent roles exist and operate under least privilege.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "architecture/phase-08-security-engine.md"
+      ],
+      "matchedEvidence": [
+        "architecture/phase-08-security-engine.md"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "mcp-interfaces",
+      "area": "Security MCP capabilities",
+      "requirement": "security.authorize, security.evaluate_risk, security.inspect_policy, security.inspect_incident, security.inspect_alert, security.inspect_security_event, security.revoke_session and security.block_actor are exposed through a security-controlled MCP surface.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "architecture/phase-08-security-engine.md"
+      ],
+      "matchedEvidence": [
+        "architecture/phase-08-security-engine.md"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "performance",
+      "area": "Security enforcement performance targets",
+      "requirement": "Enforcement minimizes latency, with caching where safe, efficient policy evaluation, local enforcement and asynchronous telemetry — and security correctness takes precedence over latency.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "architecture/phase-08-security-engine.md"
+      ],
+      "matchedEvidence": [
+        "architecture/phase-08-security-engine.md"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "webhooks",
+      "area": "Security webhooks — signature, replay, retry, rotation",
+      "requirement": "Security webhooks notify authorised systems about critical alerts, incidents, credential events, policy changes and emergency blocks, with signature verification, replay protection, delivery tracking, retry control and secret rotation.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "frontend/src/lib/runtime-webhooks.ts",
+        "architecture/phase-08-security-engine.md"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/runtime-webhooks.ts",
+        "architecture/phase-08-security-engine.md"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "phase-boundary-09",
+      "area": "Phase boundary with Phase 09 (Security & Trust Fabric), Section AU",
+      "requirement": "Phase 08 provides executable security controls; Phase 09 defines the wider trust architecture and consumes Phase 08 capabilities rather than duplicating them.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "architecture/phase-08-security-engine.md",
+        "architecture/phase-09-security-trust-fabric.md"
+      ],
+      "matchedEvidence": [
+        "architecture/phase-08-security-engine.md",
+        "architecture/phase-09-security-trust-fabric.md"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "acceptance-criteria",
+      "area": "Acceptance criteria and definition of done (Sections AQ-AR)",
+      "requirement": "Phase 08 is accepted only when policies evaluate, authorization and tenant boundaries are enforced, agent and tool actions are controlled, security events and alerts can be generated, incidents can be created and tracked, evidence is preserved, failures fail safely, APIs are documented, controls are observable, testing passes, and rollback and recovery procedures exist.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "scripts/audit-phase-acceptance.mjs",
+        "architecture/phase-08-security-engine.md"
+      ],
+      "matchedEvidence": [
+        "scripts/audit-phase-acceptance.mjs",
+        "architecture/phase-08-security-engine.md"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "architecture/phase-acceptance/phase-08-security-engine.json"
+      ],
+      "boundaryEvidence": [
+        "architecture/phase-acceptance/phase-08-security-engine.json"
+      ]
+    }
+  ],
+  "ok": true,
+  "limitations": [
+    "Classification measures the presence of executable evidence, not the correctness or completeness of that evidence.",
+    "A DECLARED area is unfinished work, never a false claim — it is reported as such.",
+    "An IMPLEMENTED_UNWIRED area has a tested implementation that no boundary calls; it is reported, never counted as enforcement.",
+    "Evidence patterns are declared per phase in architecture/phase-acceptance/phase-<id>-*.json and must be reviewed when a phase is re-audited."
+  ]
+}

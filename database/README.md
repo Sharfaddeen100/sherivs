@@ -1,6 +1,6 @@
 # Database
 
-All database concerns for CoreGrid Scholar.
+All database concerns for the CoreGrid platform.
 
 ```
 database/

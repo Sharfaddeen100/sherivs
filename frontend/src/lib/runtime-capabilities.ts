@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Core Application Runtime capability registry.
+ * CoreGrid — Core Application Runtime capability registry.
  *
  * Implements `architecture/phase-05-core-application-runtime.md`:
  * - Application capability registry: identifies capabilities (Section FZ).

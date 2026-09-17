@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Communication Platform conversation domain
+ * CoreGrid — Communication Platform conversation domain
  * (Phase 10, F.3, BX, BY).
  *
  * Implements `architecture/phase-10-communication-platform.md`:

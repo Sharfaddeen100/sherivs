@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Payment, Billing & Financial Operating System financial
+ * CoreGrid — Payment, Billing & Financial Operating System financial
  * controls (Phase 13, Sections FC, FD, FE, and the financial invariants).
  *
  * Implements `architecture/phase-13-financial-system.md`:

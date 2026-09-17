@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Security & Trust Fabric assertions, evidence,
+ * CoreGrid — Security & Trust Fabric assertions, evidence,
  * provenance, and revocation (Phase 09, Sections F.1, L, M, N, AA, AB).
  *
  * Implements `architecture/phase-09-security-trust-fabric.md`:

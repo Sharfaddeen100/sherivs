@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Digital Twin Governance, Events, Simulation and
+ * CoreGrid — Digital Twin Governance, Events, Simulation and
  * Health domain model
  * (Phase 16, Sections BI, BJ, BK, BL, BM, BN, BQ, BR, BS, BT, BU, BV, BW,
  * BX, BY, BZ, CA, CB, CC, CD, CE, CF, CG, CH, CI, CJ, CK, CL, CM, CN, CO,

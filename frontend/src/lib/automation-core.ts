@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Controlled Automation Engine core domain model
+ * CoreGrid — Controlled Automation Engine core domain model
  * (Phase 17, Sections A, B, C, E, F, G, H, I, J, K, L, M, N, O, P, Q, R,
  * S, T, U, V, W, X, Y).
  *

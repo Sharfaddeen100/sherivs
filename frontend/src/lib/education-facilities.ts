@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Education Reality Engine facilities engine.
+ * CoreGrid — Education Reality Engine facilities engine.
  *
  * Implements `architecture/phase-04-education-reality-engine.md`:
  * - Facilities: classrooms, laboratories, workshops, libraries, offices, halls,

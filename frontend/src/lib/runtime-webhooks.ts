@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Core Application Runtime webhook handling.
+ * CoreGrid — Core Application Runtime webhook handling.
  *
  * Implements `architecture/phase-05-core-application-runtime.md`:
  * - Webhook runtime (Section BH): outbound webhooks, inbound webhook processing,

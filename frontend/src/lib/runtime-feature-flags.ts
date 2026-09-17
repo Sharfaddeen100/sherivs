@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Core Application Runtime feature flags.
+ * CoreGrid — Core Application Runtime feature flags.
  *
  * Implements `architecture/phase-05-core-application-runtime.md`:
  * - Feature flags (Section AN): gradual rollout, tenant-specific rollout,

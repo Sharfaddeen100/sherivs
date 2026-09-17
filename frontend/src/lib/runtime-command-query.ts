@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Core Application Runtime command/query architecture.
+ * CoreGrid — Core Application Runtime command/query architecture.
  *
  * Implements `architecture/phase-05-core-application-runtime.md`:
  * - Command: an intention to change application state (Section L1).

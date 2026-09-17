@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Security Engine policy lifecycle (Phase 08, Section J).
+ * CoreGrid — Security Engine policy lifecycle (Phase 08, Section J).
  *
  * Implements `architecture/phase-08-security-engine.md`:
  * - Policy requirements (J.2): versioned, immutable after publication,

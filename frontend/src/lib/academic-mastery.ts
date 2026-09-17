@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Academic Learning Intelligence Mastery Engine
+ * CoreGrid — Academic Learning Intelligence Mastery Engine
  * (Phase 11, Sections W, X, Y).
  *
  * Implements `architecture/phase-11-academic-intelligence.md`:

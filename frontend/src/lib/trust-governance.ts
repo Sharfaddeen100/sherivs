@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Security & Trust Fabric governance: key trust,
+ * CoreGrid — Security & Trust Fabric governance: key trust,
  * certificate trust, federation, delegation, anchors, policies, and
  * zero-trust evaluation (Phase 09, Sections P, Q, AC, AD, AG, AH, AI, AE,
  * AK, AL).

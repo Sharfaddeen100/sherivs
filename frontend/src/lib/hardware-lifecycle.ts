@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Hardware Lifecycle, Firmware, Configuration and
+ * CoreGrid — Hardware Lifecycle, Firmware, Configuration and
  * Security domain model
  * (Phase 15, Sections AR, AS, AT, AU, AV, AW, AX, AY, AZ, BA, BB, BC, BD,
  * BE, BF, BG, BH, BI, BJ, BK, BL, BM, BN, BO, BP, BQ, BR, BS, BT, BU, BV).

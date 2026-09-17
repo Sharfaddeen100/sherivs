@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Data Platform quality framework, quarantine, replay,
+ * CoreGrid — Data Platform quality framework, quarantine, replay,
  * and deduplication (Phase 14, Sections AC, AD, AE, AF, AG, AH, AI).
  *
  * Implements `architecture/phase-14-data-platform.md`:

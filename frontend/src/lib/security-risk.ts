@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Security Engine risk evaluation (Phase 08, Section K).
+ * CoreGrid — Security Engine risk evaluation (Phase 08, Section K).
  *
  * Implements `architecture/phase-08-security-engine.md`:
  * - Risk signals (K.2): unusual location/device/time/behavior, privilege

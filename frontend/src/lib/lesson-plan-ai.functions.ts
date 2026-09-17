@@ -1,6 +1,6 @@
 /**
  * AI-assisted lesson plan draft generator.
- * Uses the CoreGrid Scholar AI Gateway. Returns a structured draft the
+ * Uses the CoreGrid AI Gateway. Returns a structured draft the
  * teacher can edit before saving / submitting. Never persists anything itself.
  */
 import { createServerFn } from "@tanstack/react-start";

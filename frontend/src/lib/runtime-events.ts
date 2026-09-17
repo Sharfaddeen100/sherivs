@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Core Application Runtime event engine.
+ * CoreGrid — Core Application Runtime event engine.
  *
  * Implements `architecture/phase-05-core-application-runtime.md`:
  * - Events: applications communicate that something happened (Section Q1).

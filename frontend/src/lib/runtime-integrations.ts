@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Core Application Runtime integration adapters.
+ * CoreGrid — Core Application Runtime integration adapters.
  *
  * Implements `architecture/phase-05-core-application-runtime.md`:
  * - Integration runtime (Section BJ): integrations use adapters.

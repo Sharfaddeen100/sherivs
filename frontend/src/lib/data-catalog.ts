@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Data Platform catalog, discovery, source registry,
+ * CoreGrid — Data Platform catalog, discovery, source registry,
  * and data contracts (Phase 14, Sections S, Y, Z, AA, AN, AO).
  *
  * Implements `architecture/phase-14-data-platform.md`:

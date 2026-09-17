@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Communication Platform core (Phase 10).
+ * CoreGrid — Communication Platform core (Phase 10).
  *
  * Implements `architecture/phase-10-communication-platform.md`:
  * - Message contract (F.1): message ID, tenant ID, sender, recipients,

@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — AI Agent System task model.
+ * CoreGrid — AI Agent System task model.
  *
  * Implements `architecture/phase-07-ai-agent-system.md`:
  * - A task represents work assigned to an agent (Section AB).

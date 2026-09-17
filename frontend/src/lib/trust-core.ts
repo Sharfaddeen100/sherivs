@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Security & Trust Fabric core (Phase 09).
+ * CoreGrid — Security & Trust Fabric core (Phase 09).
  *
  * Implements `architecture/phase-09-security-trust-fabric.md`:
  * - Trust model (A.7): trust is a continuously changing state, never a

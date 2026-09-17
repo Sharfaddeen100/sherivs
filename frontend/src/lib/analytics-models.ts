@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Analytics & Decision Intelligence model domain
+ * CoreGrid — Analytics & Decision Intelligence model domain
  * (Phase 18, Sections AH, AI, AJ, AK, AL, AM, AN, AO, AP, AQ, AR, AS, AT,
  * AU, AV, AW, AX, AY, AZ, BA, FU, FV, FW).
  *

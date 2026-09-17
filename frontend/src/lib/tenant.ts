@@ -9,8 +9,8 @@
  * resolve to `null` — meaning the visitor landed on the platform marketing/
  * super-admin site, not a tenant site.
  *
- * NOTE (CoreGrid Scholar migration): these platform domains are runtime
- * configuration. Update PLATFORM_HOSTS to the CoreGrid Scholar domains
+ * NOTE (runtime migration): these platform domains are runtime
+ * configuration. Update PLATFORM_HOSTS to the runtime's domains
  * (e.g. coregridscholar.com) when the platform DNS is cut over.
  */
 const PLATFORM_HOSTS = [

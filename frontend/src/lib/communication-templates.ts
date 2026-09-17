@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Communication Platform templates, preferences,
+ * CoreGrid — Communication Platform templates, preferences,
  * subscriptions, digests, and scheduling (Phase 10, AG, AH, AI, AJ, AD, AE,
  * AF, BP, BQ).
  *

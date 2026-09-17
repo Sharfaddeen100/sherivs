@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Controlled Automation Engine workflow domain model
+ * CoreGrid — Controlled Automation Engine workflow domain model
  * (Phase 17, Sections AC, AD, AE, AF, AG, AH, AI, AJ, AK, AL, AM, AN, AO,
  * AP, AQ, AR, AS, AT, DE, DF, DG, DH, DI, DJ, DK, DL, DM, DN, FI, FG, FH).
  *

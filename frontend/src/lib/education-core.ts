@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Education Reality Engine core domain model.
+ * CoreGrid — Education Reality Engine core domain model.
  *
  * Implements `architecture/phase-04-education-reality-engine.md`:
  * - Configuration-driven, policy-driven, context-driven, relationship-driven, AI-native (Section 2).

@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Security Engine events, alerts, incidents, evidence
+ * CoreGrid — Security Engine events, alerts, incidents, evidence
  * (Phase 08, Sections S, W, X, Y).
  *
  * Implements `architecture/phase-08-security-engine.md`:

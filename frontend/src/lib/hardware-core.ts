@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Hardware Integration Platform core domain model
+ * CoreGrid — Hardware Integration Platform core domain model
  * (Phase 15, Sections G, H, I, J, K, L, M, N, O).
  *
  * Implements `architecture/phase-15-hardware-integration.md`:

@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Digital Twin & Reality Representation Platform core
+ * CoreGrid — Digital Twin & Reality Representation Platform core
  * domain model
  * (Phase 16, Sections F, G, H, I, J, K, L, AS, AT, AU, AV, AW, AX, AY, AZ,
  * BA, BB, BC, BD, BE, BF, BG, BH).

@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Digital Twin Graph & Spatial domain model
+ * CoreGrid — Digital Twin Graph & Spatial domain model
  * (Phase 16, Sections M, N, O, P, Q, R, S, CQ).
  *
  * Implements `architecture/phase-16-digital-twin.md`:

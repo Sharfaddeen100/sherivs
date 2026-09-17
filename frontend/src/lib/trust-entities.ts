@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Security & Trust Fabric entity trust records and
+ * CoreGrid — Security & Trust Fabric entity trust records and
  * software provenance (Phase 09, Sections S, T, U, V, W, X, Y).
  *
  * Implements `architecture/phase-09-security-trust-fabric.md`:

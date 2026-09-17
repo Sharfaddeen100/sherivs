@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar environment validation.
+ * CoreGrid environment validation.
  * Pure helpers - no process.env reads, so unit-testable.
  */
 

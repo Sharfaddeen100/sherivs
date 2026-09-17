@@ -3,7 +3,7 @@
   "phase": "02",
   "phaseName": "Identity",
   "source": "architecture/phase-02-identity.md",
-  "generatedAt": "2026-09-17T10:05:18.493Z",
+  "generatedAt": "2026-09-17T14:21:58.519Z",
   "classificationDefinitions": {
     "ENFORCED": "an executable artefact proves it (test, verifier script, migration, policy or machine-checked contract match) and, where a boundary is declared, a real call site invokes it",
     "DECLARED": "a module, document or contract mentions it, but nothing executable proves it",

@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Education Reality Engine institutional structure.
+ * CoreGrid — Education Reality Engine institutional structure.
  *
  * Implements `architecture/phase-04-education-reality-engine.md`:
  * - Cohort model: intake, cohort, class, stream, group, house, tutorial group,

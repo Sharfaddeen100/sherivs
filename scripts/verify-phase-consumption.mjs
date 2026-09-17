@@ -2,7 +2,7 @@
 /**
  * CoreGrid — Scholar phase-consumption audit (Phases 01–51).
  *
- * For every phase: does CoreGrid Scholar consume it? Is it already built?
+ * For every phase: does runtime-001 (Scholar) consume it? Is it already built?
  * Outputs: CONSUMED/BUILT, CONSUMED/GAP (next to build, domain-neutral in the
  * kernel — Scholar is only a consumer), or NOT-CONSUMED (skip).
  *

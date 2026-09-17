@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Education Reality Engine curriculum engine.
+ * CoreGrid — Education Reality Engine curriculum engine.
  *
  * Implements `architecture/phase-04-education-reality-engine.md`:
  * - Curriculum engine models curriculum, versions, frameworks, subjects, courses,

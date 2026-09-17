@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Security Engine core (Phase 08).
+ * CoreGrid — Security Engine core (Phase 08).
  *
  * Implements `architecture/phase-08-security-engine.md`:
  * - Security Decision Contract (Section F.1): every decision carries request,

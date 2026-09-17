@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Institutional Command Centre governance domain model
+ * CoreGrid — Institutional Command Centre governance domain model
  * (Phase 19, Sections DA, DB, DC, DD, DE, DF, DG, DH, DI, DJ, DK, DL, DM,
  * DN, DO, DP, DQ, DR, DS, DT, DU, DV, DW, DX, DY, ED, EE, EF, EG, EH, EI,
  * EJ, EK, EL, EM, EN, EO, EP, EQ, ER, FD, FE, FH, FI, FJ, FK, FM, FN).

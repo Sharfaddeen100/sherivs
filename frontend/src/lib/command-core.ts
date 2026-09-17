@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Institutional Command Centre core domain model
+ * CoreGrid — Institutional Command Centre core domain model
  * (Phase 19, Sections A, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X).
  *
  * Implements `architecture/phase-19-command-centre.md`:

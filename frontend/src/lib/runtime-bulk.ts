@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Core Application Runtime bulk operations.
+ * CoreGrid — Core Application Runtime bulk operations.
  *
  * Implements `architecture/phase-05-core-application-runtime.md`:
  * - Bulk operations (Section CV): maximum batch size, partial failure behavior,

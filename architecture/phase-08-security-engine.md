@@ -1,894 +1,10 @@
-Phase 08 — Security Engine
-
-A. Identity
-
-A.1 Subsystem Identity
-
-The Security Engine is CoreGrid Scholar's operational security-control subsystem.
-
-It provides the runtime mechanisms required to detect, evaluate, enforce, record, and respond to security-relevant actions across the platform.
-
-A.2 Canonical Name
-
-Security Engine
-
-A.3 Phase
-
-Phase 08
-
-A.4 Architectural Role
-
-Core platform security-control runtime.
-
-A.5 Primary Responsibility
-
-The Security Engine converts CoreGrid's security policies into executable runtime controls.
-
-A.6 Security Engine Principle
-
-Security must be enforced by the platform rather than depending exclusively on application developers, AI agents, or user behavior.
-
-A.7 Security Model
-
-The engine follows defense-in-depth.
-
-Security decisions may be enforced at:
-
-• API boundaries
-• service boundaries
-• database boundaries
-• agent boundaries
-• tool boundaries
-• workflow boundaries
-• infrastructure boundaries
-• tenant boundaries
-• device boundaries
-• session boundaries
-• data boundaries
-
-───
-
-B. Purpose
-
-B.1 Primary Purpose
-
-Protect CoreGrid Scholar from unauthorized, unsafe, malicious, accidental, or policy-violating activity.
-
-B.2 Secondary Purposes
-
-The engine provides:
-
-• authorization enforcement
-• security policy evaluation
-• access-risk evaluation
-• session security
-• credential protection
-• threat detection
-• anomaly detection
-• security event processing
-• security incident creation
-• security response orchestration
-• security audit evidence
-• security control enforcement
-• agent security controls
-• tool security controls
-• service security controls
-• data-access security controls
-
-B.3 Security Objective
-
-Every sensitive operation should be:
-
-1. identifiable
-2. authenticated
-3. authorized
-4. policy-evaluated
-5. risk-evaluated
-6. bounded
-7. observable
-8. auditable
-9. reversible where possible
-
-B.4 Non-Goals
-
-The Security Engine does not own:
-
-• the complete identity system
-• tenant lifecycle
-• the complete trust fabric
-• organizational governance
-• compliance governance
-• legal policy
-• business continuity
-• financial authorization policy
-• application business logic
-• academic authorization logic
-• marketplace business logic
-
-Those responsibilities belong to their respective architectural phases.
-
-───
-
-C. Ownership
-
-C.1 Security Engine Owns
-
-The Security Engine owns:
-
-• security policy execution
-• security decision enforcement
-• authorization evaluation runtime
-• risk-based access decisions
-• security event processing
-• security alert generation
-• security incident state
-• session-security enforcement
-• credential-security controls
-• security rate limiting
-• suspicious-activity detection
-• security control telemetry
-• security enforcement APIs
-• security middleware
-• security decision explanations
-• security evidence generation
-
-C.2 Security Engine Does Not Own
-
-It does not own:
-
-• user identity records
-• tenant records
-• institutional records
-• application domain entities
-• educational records
-• financial ledgers
-• marketplace inventory
-• general analytics
-• general workflow orchestration
-
-───
-
-D. Boundaries
-
-D.1 Identity Boundary
-
-Phase 02 owns identity.
-
-Security Engine consumes identity assertions.
-
-D.2 Multi-Tenancy Boundary
-
-Phase 03 owns tenant architecture.
-
-Security Engine enforces tenant security boundaries.
-
-D.3 Application Runtime Boundary
-
-Phase 05 owns application runtime.
-
-Security Engine provides security middleware and enforcement services to it.
-
-D.4 Workspace Boundary
-
-Phase 06 owns workspace behavior.
-
-Security Engine protects workspace operations.
-
-D.5 Agent Boundary
-
-Phase 07 owns the agent operating system.
-
-Security Engine controls:
-
-• agent permissions
-• tool authorization
-• sensitive actions
-• agent security events
-• agent risk limits
-
-D.6 Trust Fabric Boundary
-
-Phase 09 owns the broader security and trust architecture.
-
-Phase 08 provides the operational enforcement mechanisms consumed by Phase 09.
-
-───
-
-E. Dependencies
-
-E.1 Required Dependencies
-
-Security Engine depends on:
-
-• Phase 01 Foundation
-• Phase 02 Identity
-• Phase 03 Multi-Tenancy
-• Phase 05 Core Application Runtime
-• Phase 07 AI Agent System
-
-E.2 Optional Dependencies
-
-It may consume:
-
-• infrastructure telemetry
-• device signals
-• network signals
-• threat-intelligence signals
-• behavioral signals
-
-E.3 Dependency Principle
-
-Security Engine must never create circular architectural dependencies.
-
-───
-
-F. Contracts
-
-F.1 Security Decision Contract
-
-Every security decision should contain:
-
-• request ID
-• actor ID
-• actor type
-• tenant ID
-• resource
-• action
-• context
-• policy version
-• risk score
-• decision
-• reason
-• timestamp
-• expiration
-• correlation ID
-
-F.2 Decision States
-
-Supported decisions:
-
-• ALLOW
-• DENY
-• CHALLENGE
-• STEP_UP
-• REVIEW
-• QUARANTINE
-• RATE_LIMIT
-• BLOCK
-• DEFER
-
-F.3 Security Event Contract
-
-Security events contain:
-
-• event ID
-• event type
-• actor
-• tenant
-• resource
-• action
-• timestamp
-• source
-• severity
-• evidence
-• correlation ID
-• trace ID
-• policy version
-
-───
-
-G. Internal Architecture
-
-G.1 Major Components
-
-Security Engine contains:
-
-1. Security Gateway
-2. Policy Evaluation Engine
-3. Authorization Engine
-4. Risk Evaluation Engine
-5. Session Security Engine
-6. Credential Security Engine
-7. Threat Detection Engine
-8. Anomaly Detection Engine
-9. Security Event Processor
-10. Alert Engine
-11. Incident Engine
-12. Security Evidence Engine
-13. Security Audit Adapter
-14. Agent Security Controller
-15. Tool Security Controller
-16. Security Rate Limiter
-17. Security Circuit Breaker
-18. Security Policy Cache
-19. Security Decision Cache
-20. Security Telemetry Engine
-
-───
-
-H. Security Gateway
-
-H.1 Responsibility
-
-The Security Gateway provides the first security enforcement boundary.
-
-H.2 Responsibilities
-
-It validates:
-
-• request identity
-• tenant context
-• session state
-• authorization context
-• request integrity
-• rate limits
-• security policies
-
-H.3 Gateway Decisions
-
-The gateway can:
-
-• allow
-• deny
-• challenge
-• throttle
-• quarantine
-
-───
-
-I. Authorization Engine
-
-I.1 Purpose
-
-Evaluate whether an actor may perform an operation.
-
-I.2 Authorization Inputs
-
-Inputs include:
-
-• actor
-• role
-• attributes
-• relationships
-• resource
-• resource owner
-• tenant
-• action
-• environment
-• time
-• device
-• risk
-• policy
-
-I.3 Authorization Models
-
-Supports:
-
-• RBAC
-• ABAC
-• ReBAC
-• PBAC
-
-I.4 Authorization Combination
-
-Policies may be evaluated using:
-
-• allow rules
-• deny rules
-• precedence rules
-• contextual constraints
-• risk constraints
-• tenant constraints
-
-I.5 Default Security Rule
-
-Fail closed.
-
-───
-
-J. Policy Evaluation Engine
-
-J.1 Responsibilities
-
-Evaluates machine-readable security policies.
-
-J.2 Policy Requirements
-
-Policies must be:
-
-• versioned
-• immutable after publication
-• testable
-• auditable
-• attributable
-• environment-aware
-• tenant-aware
-
-J.3 Policy Lifecycle
-
-1. draft
-2. validate
-3. test
-4. approve
-5. publish
-6. activate
-7. monitor
-8. supersede
-9. archive
-
-J.4 Policy Rollback
-
-Policies must support controlled rollback.
-
-───
-
-K. Risk Evaluation Engine
-
-K.1 Purpose
-
-Determine whether an action presents elevated security risk.
-
-K.2 Risk Signals
-
-Signals may include:
-
-• unusual location
-• unusual device
-• unusual time
-• unusual behavior
-• privilege escalation
-• repeated failures
-• abnormal request volume
-• suspicious API patterns
-• impossible travel
-• anomalous agent behavior
-• suspicious tool usage
-
-K.3 Risk Levels
-
-• LOW
-• GUARDED
-• ELEVATED
-• HIGH
-• CRITICAL
-
-K.4 Risk Actions
-
-Risk may trigger:
-
-• allow
-• additional verification
-• reduced privileges
-• rate limiting
-• temporary block
-• quarantine
-• human review
-
-───
-
-L. Session Security
-
-L.1 Responsibilities
-
-Protect active sessions.
-
-L.2 Controls
-
-Include:
-
-• session expiration
-• idle timeout
-• refresh-token rotation
-• session revocation
-• concurrent-session controls
-• suspicious-session detection
-• device binding where appropriate
-• step-up authentication triggers
-
-L.3 Session Revocation
-
-Revocation must propagate quickly across security enforcement points.
-
-───
-
-M. Credential Security
-
-M.1 Credentials
-
-Protect:
-
-• API keys
-• service credentials
-• OAuth tokens
-• refresh tokens
-• agent credentials
-• webhook secrets
-• encryption keys
-• database credentials
-
-M.2 Requirements
-
-Credentials must never be:
-
-• hard-coded
-• committed to source control
-• logged
-• returned unnecessarily by APIs
-• embedded in prompts
-
-M.3 Rotation
-
-Sensitive credentials require controlled rotation.
-
-───
-
-N. Agent Security
-
-N.1 Purpose
-
-Prevent AI agents from becoming uncontrolled security principals.
-
-N.2 Agent Controls
-
-Every agent must have:
-
-• identity
-• permissions
-• scope
-• tenant context
-• tool permissions
-• resource permissions
-• action limits
-• execution budget
-• security policy
-
-N.3 High-Risk Agent Actions
-
-Require additional controls for:
-
-• financial operations
-• credential access
-• production deployment
-• database modification
-• permission modification
-• bulk data export
-• destructive operations
-• external communications
-• infrastructure changes
-
-N.4 Agent Fail-Safe
-
-An agent must never bypass the Security Engine because it is an AI system.
-
-───
-
-O. Tool Security
-
-O.1 Tool Authorization
-
-Every tool invocation must be evaluated.
-
-O.2 Tool Context
-
-Security evaluation considers:
-
-• agent
-• user
-• tenant
-• tool
-• parameters
-• target resource
-• requested action
-• risk
-• policy
-
-O.3 Dangerous Tools
-
-Tools capable of:
-
-• shell execution
-• database writes
-• infrastructure changes
-• deployment
-• financial transactions
-• external messaging
-• bulk export
-
-require stricter controls.
-
-───
-
-P. Data Security
-
-P.1 Data Classification
-
-Support classifications such as:
-
-• PUBLIC
-• INTERNAL
-• CONFIDENTIAL
-• RESTRICTED
-• HIGHLY_RESTRICTED
-
-P.2 Data Controls
-
-Controls include:
-
-• access control
-• encryption
-• masking
-• tokenization
-• redaction
-• retention
-• deletion
-• export restrictions
-
-P.3 Data Exfiltration Protection
-
-Monitor unusual:
-
-• downloads
-• exports
-• API reads
-• cross-tenant queries
-• bulk retrieval
-• agent retrieval behavior
-
-───
-
-Q. Database Security
-
-Q.1 Database Enforcement
-
-Security must exist at application and database layers.
-
-Q.2 Controls
-
-Include:
-
-• RLS
-• least privilege
-• service-role isolation
-• restricted administrative access
-• query auditing
-• migration controls
-• backup protection
-
-Q.3 Tenant Safety
-
-Cross-tenant access must fail closed.
-
-───
-
-R. API Security
-
-R.1 API Controls
-
-Implement:
-
-• authentication
-• authorization
-• request validation
-• schema validation
-• rate limiting
-• replay protection where required
-• abuse detection
-• payload limits
-• idempotency
-• audit logging
-
-R.2 API Versioning
-
-Security contracts must remain compatible across supported API versions.
-
-───
-
-S. Event Security
-
-S.1 Security Events
-
-Track:
-
-• login failures
-• permission failures
-• suspicious sessions
-• policy violations
-• privilege changes
-• credential events
-• agent anomalies
-• tool violations
-• data-export events
-• security incidents
-
-S.2 Event Integrity
-
-Security events must be tamper-resistant.
-
-───
-
-T. Threat Detection
-
-T.1 Detection Categories
-
-Detect:
-
-• brute force
-• credential abuse
-• privilege escalation
-• token abuse
-• API abuse
-• data exfiltration
-• malicious automation
-• suspicious agent activity
-• cross-tenant attempts
-• abnormal access patterns
-
-T.2 Detection Strategy
-
-Use:
-
-• deterministic rules
-• statistical detection
-• behavioral baselines
-• threat intelligence
-• AI-assisted detection
-
-AI detection must not be the only security control for critical actions.
-
-───
-
-U. Anomaly Detection
-
-U.1 Purpose
-
-Identify deviations from expected behavior.
-
-U.2 Behavioral Signals
-
-Examples:
-
-• request frequency
-• access patterns
-• tool usage
-• resource access
-• geographic patterns
-• device patterns
-• agent execution patterns
-
-U.3 False Positive Handling
-
-Security alerts must support:
-
-• confidence
-• evidence
-• suppression
-• investigation
-• feedback
-• model evaluation
-
-───
-
-V. Rate Limiting
-
-V.1 Scope
-
-Rate limits may apply to:
-
-• users
-• agents
-• APIs
-• tenants
-• devices
-• IP addresses
-• tools
-• workflows
-
-V.2 Strategies
-
-Support:
-
-• token bucket
-• sliding window
-• concurrency limits
-• burst limits
-• adaptive limits
-
-───
-
-W. Security Alerts
-
-W.1 Alert Severity
-
-• INFO
-• LOW
-• MEDIUM
-• HIGH
-• CRITICAL
-
-W.2 Alert Requirements
-
-Each alert contains:
-
-• event
-• severity
-• confidence
-• evidence
-• affected actor
-• affected tenant
-• affected resource
-• recommended response
-• status
-
-───
-
-X. Security Incident Engine
-
-X.1 Incident Lifecycle
-
-1. detected
-2. triaged
-3. investigating
-4. contained
-5. remediating
-6. recovered
-7. closed
-8. reviewed
-
-X.2 Incident Ownership
-
-Each incident must have:
-
-• owner
-• severity
-• evidence
-• timeline
-• actions
-• resolution
-• postmortem
-
-───
-
-Y. Security Evidence
-
-Y.1 Evidence Types
-
-Store references to:
-
-• security events
-• authorization decisions
-• policy versions
-• actor context
-• system state
-• investigation actions
-
-Y.2 Evidence Integrity
-
-Evidence must be:
-
-• timestamped
-• traceable
-• tamper-resistant
-• access-controlled
-
-───
-
-Z. APIs
-
-Z.1 Authorization API
-
-text
-POST /security/authorize
-
-
-Phase 08 — Security Engine
-markdown
 # Phase 08 — Security Engine
 
 ## A. Identity
 
 ### A.1 Subsystem Identity
 
-The Security Engine is CoreGrid Scholar's operational security-control subsystem.
+The Security Engine is CoreGrid's operational security-control subsystem.
 
 It provides the runtime mechanisms required to detect, evaluate, enforce, record, and respond to security-relevant actions across the platform.
 
@@ -936,7 +52,7 @@ Security decisions may be enforced at:
 
 ## B.1 Primary Purpose
 
-Protect CoreGrid Scholar from unauthorized, unsafe, malicious, accidental, or policy-violating activity.
+Protect CoreGrid and every tenant, runtime and capability on it from unauthorized, unsafe, malicious, accidental, or policy-violating activity.
 
 ## B.2 Secondary Purposes
 
@@ -1551,5 +667,222 @@ Phase 09 must consume Phase 08 capabilities rather than duplicate them.
 ───
 
 AV. Final Architectural Principle
-CoreGrid Scholar must never treat security as a feature added after the platform is built.
+CoreGrid must never treat security as a feature added after the platform is built.
 Security Engine is an active runtime control plane that continuously evaluates and enforces whether actions are permitted, safe, attributable, and appropriately bounded.
+
+───
+
+AW. COMMAND MODEL
+
+AW.1 What a Command Is
+
+Every security-relevant operation is a COMMAND: an attempt by a principal
+(human, agent, service, device) to read or change a protected resource. The
+engine does not publish one command per resource. It publishes one evaluation
+path that any command handler must call before it acts, so commands cannot
+diverge from each other.
+
+AW.2 The Command Path
+
+command arrives
+  → Security Gateway (Section H) validates identity, tenant context, request
+    integrity, session state and rate limit — and fails closed on any missing
+    or invalid signal
+  → an authorization decision is supplied by the owner of the rules:
+    identity and attributes (Phase 02), tenant membership (Phase 03), role
+    gates (this phase), domain policy (the owning phase)
+  → risk is evaluated (Section K) wherever signals exist
+  → ONE decision is produced from the nine states of Section F.2
+  → the command proceeds, is challenged, or is denied
+  → the decision stays attributable: request, actor, actor type, tenant,
+    resource, action, context, policy version, risk score, reason, timestamp,
+    TTL, correlation id (Section F.1)
+
+AW.3 Command Classes and Their Decisions
+
+| Command class | Meaning | Decision states it may yield |
+| --- | --- | --- |
+| ALLOW | proceed now | ALLOW |
+| REDACT | proceed; the resource layer masks fields | ALLOW (never a silent DENY) |
+| REQUIRE_APPROVAL | hold for a human decision | CHALLENGE |
+| ESCALATE | quarantine for investigation | QUARANTINE |
+| DENY | refuse | DENY |
+| THROTTLE | slow the caller, do not refuse | RATE_LIMIT |
+| STEP_UP | the actor may continue after stronger proof | STEP_UP |
+| BLOCK | refuse and stop the principal | BLOCK |
+| DEFER | no decision yet; do not act | DEFER |
+
+AW.4 Non-Granting Rule (machine form)
+
+`frontend/src/lib/security-core.ts` exports `NON_GRANTING_DECISION_STATES` and
+`isGrantingDecision`. Eight of the nine states must never be read as permission;
+only ALLOW grants. A handler that treats CHALLENGE, STEP_UP, REVIEW, QUARANTINE,
+RATE_LIMIT, BLOCK or DEFER as success has bypassed the engine — that is the
+invariant the unit suite pins.
+
+AW.5 Command Attribution and Expiry
+
+An unattributable command is an unauditable command, and an unauditable command
+is not permitted. `createSecurityDecision` refuses to build a decision without
+request, actor, actor type, tenant, resource, action, context, policy version,
+risk score, correlation and a positive TTL; `isSecurityDecisionExpired` exists so
+that a stale ALLOW can never be replayed indefinitely.
+
+AW.6 Where Commands Are Enforced Today
+
+- `frontend/src/lib/security-core.ts` — decision contract, gateway, fail-closed rule.
+- `frontend/src/lib/security-role-gate.ts` — the canonical role-command gate.
+- `frontend/src/lib/*.functions.ts` — the command handlers themselves. Each phase
+  owns its commands; this engine owns only the decision they must obtain first.
+- `tests/unit/p08-enforcement-surface.test.ts` — machine-checked inventory: every
+  role-scoped server-function family must route its decision through the gate, so
+  a new family that skips it fails the suite. 22 families are ADOPTED as of the
+  gate's last revision.
+
+AW.7 Command Debt (reported, not hidden)
+
+Risk evaluation, security-event emission, alerting, incident state and evidence
+records are implemented and unit-tested in this phase but no boundary command
+invokes them yet (probe classification IMPLEMENTED_UNWIRED). Until a command path
+calls them, they are library capability, not enforcement — and this document
+says so.
+
+───
+
+AX. DATA MODEL
+
+AX.1 Entities of the Engine (Section AD) and Where They Live Today
+
+The engine's entities fall into three honest categories: persisted platform
+tables, module-owned records built and validated in-process, and entities that
+exist only as intent in a document. Naming the category is part of the contract,
+because a reader must be able to tell which of them can actually be queried.
+
+| Entity (Section AD) | Representation today | Owner |
+| --- | --- | --- |
+| SecurityPolicy, PolicyVersion | module records with a versioned lifecycle (draft → … → archived) and controlled rollback in `security-policy.ts`; no table yet — policy sets are configuration, not tenant data | 08 |
+| AuthorizationDecision | produced by `createSecurityDecision`; the enforcement surface proves the decision happened | 08 |
+| RiskAssessment | `evaluateRisk` produces a score and a level from caller-supplied signals; no signal store yet | 08 |
+| SecurityEvent | `createSecurityEvent` with immutable event ids and `assertSecurityEventImmutable`; the durable ledger is the kernel event substrate (Phase 33 `cg_event`/`cg_observation`) | 08 / 33 |
+| SecurityAlert | `createSecurityAlert` + `transitionSecurityAlert` (status machine); the operational alert surface belongs to the command centre (Phase 19 `command-alerts.ts`) | 08 / 19 |
+| SecurityIncident | `createSecurityIncident` + `INCIDENT_STATES` lifecycle; the operational incident surface belongs to the command centre (Phase 19 `command-incidents.ts`) | 08 / 19 |
+| SecurityEvidence | `createSecurityEvidenceRecord` (timestamped, traceable); durable evidence storage is the audit ledger (Phase 01 conventions, Phase 33 substrate) | 08 |
+| SecuritySession | `evaluateSessionSecurity`, `evaluateConcurrentSessions`, `revokeSession`; session records are identity's (Phase 02) | 02 |
+| CredentialRecord | owned by identity (Phase 02) and by secret management (Phase 01 conventions, `scripts/verification/secret-scan.mjs`) | 01/02 |
+| SecurityBlock | the `BLOCK` decision state exists; a block registry is not implemented | 08 (debt) |
+| RateLimitState | the limiter lives in the runtime fabric (Phase 05 `runtime-resilience.ts`); this engine consumes the verdict (`withinRateLimit`) | 05 |
+| AgentSecurityProfile | `evaluateAgentSecurity`, `HIGH_RISK_AGENT_ACTION_TYPES`, `canActAsUser`; agent registries are Phase 07's | 07/08 |
+| ToolSecurityProfile | `evaluateToolSecurity`, `DANGEROUS_TOOL_CATEGORIES`; tool definitions are Phase 07's | 07/08 |
+
+AX.2 Required Constraints (Section AD.1) and Their Machine Form
+
+- Tenant isolation — RLS is this engine's database layer
+  (`database/supabase/migrations/*rls*`, `database/queries/rls-isolation-check.sql`,
+  `scripts/verify-tenant-isolation.mjs`); cross-tenant access fails closed.
+- Unique identifiers — event, decision, alert, incident and evidence ids are
+  generated once and carried through the record.
+- Immutable event ids and timestamp integrity — `assertSecurityEventImmutable`
+  turns a rewritten event into a detectable defect rather than a quiet edit.
+- Policy-version references — a decision records the policy version that produced
+  it, so a policy change is never retroactively blamed on earlier decisions.
+- Actor and correlation references — `actorId`, `actorType` and `correlationId`
+  are mandatory on decisions and events; that is what makes an investigation
+  possible after the fact.
+
+AX.3 Canonical Truth vs Intelligence
+
+Policy sets, decision records and the security audit trail are canonical (this
+phase's contract `canonicalTruth.owners`). Risk scores and anomaly signals are
+DERIVED (`canonicalTruth.derived`): they may recommend a decision, they may never
+rewrite a record, and a failure may never silently become a grant (AT.9).
+
+AX.4 Classification Vocabulary
+
+The platform's data-classification vocabulary is defined once, by the data
+governance capability (Phase 14 `data-core.ts`): PUBLIC, INTERNAL, CONFIDENTIAL,
+SENSITIVE, HIGHLY_SENSITIVE, REGULATED. Section P of this document proposed a
+different five-word set (RESTRICTED / HIGHLY_RESTRICTED). The platform vocabulary
+wins: two classifications for one dataset is a governance defect. This engine
+consumes the platform classification instead of defining its own.
+
+AX.5 Not Persisted Yet (reported debt)
+
+A block registry, a durable risk-signal store, and security-specific tables for
+policies and decisions do not exist as tables. Until they do, this engine's
+guarantees rest on modules that fail closed, RLS, the kernel event substrate and
+the audit trail — which is weaker than a persisted decision ledger, and is
+recorded here as unfinished work rather than implied completeness.
+
+───
+
+AY. RUNTIME CONSUMER BOUNDARY
+
+AY.1 The Kernel Is the Platform
+
+CoreGrid owns this engine. A runtime is an application installed ON the kernel.
+CoreGrid Scholar is runtime-001: the first consumer, never the owner. This
+document's scope statements therefore describe CoreGrid, and runtime-specific
+vocabulary reaches the engine through an adapter in the runtime layer
+(`frontend/src/lib/runtime/scholar-*`), never by editing a kernel module.
+
+AY.2 What a Runtime Supplies
+
+- its role vocabulary and role-kind map (Scholar: the staff kinds bound to the
+  identity catalog and consumed through `security-role-gate.ts`);
+- its policy packs — which actions require which decision class;
+- its risk-signal producers (device, location, behaviour) where it has them.
+
+AY.3 What No Runtime May Do
+
+- change a decision rule inside the engine;
+- treat CHALLENGE, STEP_UP, REVIEW, QUARANTINE, RATE_LIMIT, BLOCK or DEFER as
+  success;
+- bypass the gateway by calling a protected resource directly;
+- fork the decision contract, so that two runtimes mean two different ALLOWs.
+
+AY.4 Machine Enforcement
+
+`tests/unit/platform-neutrality.test.ts` enforces this boundary structurally: no
+kernel or capability module may import a runtime, no kernel module may introduce
+itself as a runtime's subsystem, and no platform surface may hard-code a limited
+role list. `scripts/neutralise-scholar-framing.mjs --check` reports any framing
+regression and exits non-zero, so a later phase cannot quietly undo the boundary.
+
+───
+
+AZ. QUERY MODEL
+
+AZ.1 The Read Side of the Engine
+
+A decision nobody can read is a decision nobody can review. The read side of the
+Security Engine answers three questions and refuses the fourth:
+
+| Query | Question it answers | Owner |
+| --- | --- | --- |
+| decision query | "why was this action allowed or denied?" | 08 — `security:audit-query`, declared in this phase's contract |
+| event query | "what happened to this actor, tenant or resource?" | 08 / 33 — the kernel event ledger |
+| alert and incident query | "what is open, who owns it, what changed?" | 19 — command-centre surfaces over this phase's state machines |
+| resource query | "show me the record" | the owning phase, never this engine |
+
+AZ.2 Query Rules
+
+- Every query is tenant-scoped before it is anything else; a cross-tenant read
+  fails closed (Section Q.3).
+- Queries are paged with a declared maximum. An unpaged "read everything" is an
+  export rather than a query, and exports are monitored (Section P.3, the
+  `data_export_event` security event type).
+- Redaction follows the decision: a REDACT decision means the resource layer masks
+  fields, and the query must not hand back what the decision withheld.
+- A query result is an observation, never an edit — reading a record may not
+  rewrite it (Section AX.3: canonical truth versus derived intelligence).
+- A query over a derived signal (risk score, anomaly) must carry the derivation,
+  so an investigator can see which signals produced the number they are reading.
+
+AZ.3 Query Debt (reported, not hidden)
+
+No security query surface is implemented or wired today: the contract declares
+`security:audit-query`, decision and event records exist in-process, and the
+kernel event ledger is the durable read path — but no route, server function or
+surface issues a security query yet. This is the same debt class as AW.7, and it
+is recorded here rather than implied.
+

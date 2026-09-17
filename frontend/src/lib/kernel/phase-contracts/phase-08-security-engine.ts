@@ -45,6 +45,8 @@ export const PHASE_08_SECURITY_ENGINE = definePhaseContractFromSeed({
     "tests/unit/security-risk.test.ts",
     "tests/unit/security-session.test.ts",
     "tests/unit/security-agent-controls.test.ts",
+    "tests/unit/security-events.test.ts",
+    "tests/unit/security-role-gate.test.ts",
   ],
   provides: [
     { id: "security:authorize", kind: "api", description: "evaluate one decision" },

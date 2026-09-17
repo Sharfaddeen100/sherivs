@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Core Application Runtime jobs and background work.
+ * CoreGrid — Core Application Runtime jobs and background work.
  *
  * Implements `architecture/phase-05-core-application-runtime.md`:
  * - Job scheduler: background operation executor (Section A8).

@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Institutional Command Centre incident and decision
+ * CoreGrid — Institutional Command Centre incident and decision
  * domain model
  * (Phase 19, Sections AL, AM, AN, AO, AP, AQ, AR, AS, AT, AU, AV, AW, AX,
  * AY, AZ, BA, BB, BC, BD, BE, BF, BG, CF, CG, CH, CI, CJ, CK, CL, CM, CN,

@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Payment, Billing & Financial Operating System core
+ * CoreGrid — Payment, Billing & Financial Operating System core
  * domain model (Phase 13, Sections F, N, O, P, Q, R, S, T, U, V).
  *
  * Implements `architecture/phase-13-financial-system.md`:

@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Communication Platform channel routing, delivery
+ * CoreGrid — Communication Platform channel routing, delivery
  * reliability, and mass-communication protection (Phase 10).
  *
  * Implements `architecture/phase-10-communication-platform.md`:

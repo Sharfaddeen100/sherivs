@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Core Application Runtime core context.
+ * CoreGrid — Core Application Runtime core context.
  *
  * Implements `architecture/phase-05-core-application-runtime.md`:
  * - Request context: every application request has a structured context (Section I).

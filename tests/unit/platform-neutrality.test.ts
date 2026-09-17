@@ -19,7 +19,7 @@
  * what makes the rule survive future phases.
  */
 import { describe, expect, it } from "vitest";
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -107,5 +107,66 @@ describe("No hand-written role lists in platform surfaces", () => {
     expect(adapter).toContain("Object.keys(");
     expect(adapter).toContain("SCHOLAR_WORKSPACE_LABELS");
     expect(adapter).not.toMatch(/SCHOLAR_WORKSPACE_KINDS\s*=\s*\[/);
+  });
+});
+
+/* ─────────────────────────────────────────────────────────────
+ * LAW 3: only a runtime layer may name a runtime.
+ *
+ * CoreGrid is the platform; a runtime is an application installed on the kernel.
+ * Scholar is runtime-001 — the first consumer of these contracts, never their
+ * owner (owner decision, 2026-09-16). Seventy-three kernel and capability modules
+ * had introduced themselves as "CoreGrid Scholar — …", which quietly taught every
+ * later phase that the platform *is* one application. The frames were neutralised
+ * by `scripts/neutralise-scholar-framing.mjs` (comments only, provably inert) and
+ * this block keeps them neutral: a later phase cannot re-frame the kernel.
+ * ────────────────────────────────────────────────────────────*/
+
+/** Paths that belong to a runtime layer: there, a runtime's own name is correct. */
+const RUNTIME_LAYER = [
+  /^frontend\/src\/lib\/scholar\//,
+  /^frontend\/src\/lib\/scholar-[^/]+\.tsx?$/,
+  /^frontend\/src\/lib\/runtime\/scholar[^/]*\.tsx?$/,
+  /^frontend\/src\/routes\/_authenticated\/scholar\//,
+  // A script whose whole purpose is to verify runtime-001's own configuration.
+  /^scripts\/[^/]*scholar[^/]*$/,
+];
+
+/** A comment line claiming to belong to a runtime's subsystem. */
+const SELF_IDENTIFICATION = /^\s*(?:\/\*|\*|\/\/)\s*CoreGrid Scholar\b/m;
+
+function walkSources(ref: string, out: string[] = []): string[] {
+  for (const entry of readdirSync(join(ROOT, ref), { withFileTypes: true })) {
+    const child = `${ref}/${entry.name}`;
+    if (entry.isDirectory()) walkSources(child, out);
+    else if (/\.tsx?$/.test(entry.name)) out.push(child);
+  }
+  return out;
+}
+
+describe("Only a runtime layer may name a runtime", () => {
+  const sources = [...walkSources("frontend/src"), ...walkSources("scripts")].filter(
+    (ref) => !RUNTIME_LAYER.some((pattern) => pattern.test(ref)),
+  );
+
+  it("no kernel or capability file introduces itself as a runtime's subsystem", () => {
+    const offenders = sources.filter((ref) => SELF_IDENTIFICATION.test(read(ref)));
+    expect(offenders).toEqual([]);
+  });
+
+  it("no kernel module names a runtime at all — the runtime consumes the kernel", () => {
+    const kernelModules = sources.filter((ref) => /^frontend\/src\/lib\/[^/]+\.ts$/.test(ref));
+    const offenders = kernelModules.filter((ref) => read(ref).includes("CoreGrid Scholar"));
+    expect(offenders).toEqual([]);
+  });
+
+  it("keeps the remediation script report-only for anything that is not a comment", () => {
+    const script = read("scripts/neutralise-scholar-framing.mjs");
+
+    // The script may rewrite comment lines; every other occurrence is a human
+    // decision, because a string may be a real product name.
+    expect(script).toContain("COMMENT_SELF_IDENTIFICATION");
+    expect(script).toContain("needsHuman");
+    expect(script).toContain("RUNTIME_LAYER");
   });
 });

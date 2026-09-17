@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — AI Agent System planning engine interface.
+ * CoreGrid — AI Agent System planning engine interface.
  *
  * Implements `architecture/phase-07-ai-agent-system.md`:
  * - Agents may produce plans before execution; a plan contains steps (Section AJ).

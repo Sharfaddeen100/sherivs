@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Security Engine agent & tool security controls
+ * CoreGrid — Security Engine agent & tool security controls
  * (Phase 08, Sections N, O).
  *
  * Implements `architecture/phase-08-security-engine.md`:

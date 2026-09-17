@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Academic Learning Intelligence prerequisite engine,
+ * CoreGrid — Academic Learning Intelligence prerequisite engine,
  * learning-gap engine, and intervention lifecycle (Phase 11, Sections AD,
  * AE, AF, AG, AH, AB).
  *

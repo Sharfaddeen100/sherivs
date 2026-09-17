@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Academic Learning Intelligence core domain model
+ * CoreGrid — Academic Learning Intelligence core domain model
  * (Phase 11).
  *
  * Implements `architecture/phase-11-academic-intelligence.md`:

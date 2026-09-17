@@ -1,0 +1,600 @@
+{
+  "$comment": "Phase 08 (Security Engine) resolved against repository artefacts: architecture/phase-08-security-engine.md (sections A..AZ, including addenda AW command model, AX data model, AY runtime consumer boundary, AZ query model), frontend/src/lib/kernel/phase-contracts/phase-08-security-engine.ts, registry row 08, the seven security-* modules, and the p08 enforcement-surface guard. Classified by scripts/audit-phase-acceptance.mjs --phase=08. DECLARED and IMPLEMENTED_UNWIRED areas are unfinished work, reported rather than glossed: the engine's role gate is genuinely invoked at 22 server-function families, while risk, alerting, incidents, evidence and security-event emission exist as tested libraries that no boundary calls yet.",
+  "phase": "08",
+  "phaseName": "Security Engine",
+  "source": "architecture/phase-08-security-engine.md",
+  "contract": "frontend/src/lib/kernel/phase-contracts/phase-08-security-engine.ts",
+  "documentIntegrity": {
+    "status": "CLOSED — COMPLETED",
+    "finding": "Three defects were corrected. (1) The document opened with a truncated duplicate of the specification (sections A..Z.1, cut off mid-section) above the complete markdown copy — 884 pasted lines removed, leaving 888 lines of content. (2) It named one runtime as the owner of the engine ('CoreGrid Scholar's operational security-control subsystem'), inverting the platform/runtime relationship; per the owner decision of 2026-09-16 CoreGrid owns the engine and a runtime consumes it. (3) It stated 18 of the 20 mandatory engineering sections: the command model, data model and query model were absent, and no section stated the runtime consumer boundary. Addenda AW, AX, AY and AZ were authored in the document's own lettered style, stating existing behaviour rather than new scope.",
+    "verifiedAgainst": "architecture/phase-08-security-engine.md",
+    "sectionsVerified": "20/20 via scripts/verification/engineering-sections.mjs and tests/unit/kernel-contract-coverage.test.ts"
+  },
+  "ownership": {
+    "note": "Phase 08 owns authorization evaluation, policy sets, role gates, session and agent controls, and the security audit trail (contract 'ownership'). Identity is Phase 02's, tenancy Phase 03's, the agent runtime Phase 07's, execution primitives Phase 05's, the operational alert and incident surfaces Phase 19's, the trust fabric Phase 09's, the AI gateway Phase 26's, data classification Phase 14's. The engine owns decisions, never domain rules or surface visibility, and it never trusts a client-supplied role or tenant.",
+    "canonicalOwners": {
+      "authorization": "08",
+      "identity-sessions-credentials": "02",
+      "tenancy-rls": "03",
+      "execution-primitives": "05",
+      "agent-runtime": "07",
+      "alert-incident-surfaces": "19",
+      "trust-fabric": "09",
+      "data-classification": "14",
+      "ai-gateway": "26",
+      "infrastructure": "21"
+    }
+  },
+  "areas": [
+    {
+      "id": "decision-contract",
+      "area": "Security decision contract and attribution",
+      "requirement": "Every decision carries request, actor, actor type, tenant, resource, action, context, policy version, risk score, decision, reason, timestamp, expiry and correlation id.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/security-core.ts", "contains": "SecurityDecisionContext" },
+        { "kind": "test", "path": "tests/unit/security-core.test.ts" }
+      ]
+    },
+    {
+      "id": "decision-states",
+      "area": "Nine decision states and the non-granting rule",
+      "requirement": "ALLOW, DENY, CHALLENGE, STEP_UP, REVIEW, QUARANTINE, RATE_LIMIT, BLOCK and DEFER exist, and eight of the nine may never be read as permission.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/security-core.ts", "contains": "NON_GRANTING_DECISION_STATES" },
+        { "kind": "test", "path": "tests/unit/security-core.test.ts" }
+      ]
+    },
+    {
+      "id": "security-gateway",
+      "area": "Security Gateway — the first enforcement boundary",
+      "requirement": "The gateway validates identity, tenant context, request integrity, session state and rate limit before authorization, and may allow, deny, challenge, throttle or quarantine.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/security-core.ts", "contains": "evaluateSecurityGateway" },
+        { "kind": "test", "path": "tests/unit/security-core.test.ts" }
+      ]
+    },
+    {
+      "id": "fail-closed",
+      "area": "Fail closed — no failure becomes a grant",
+      "requirement": "A missing or invalid identity, tenant, integrity, session or rate-limit signal denies; an unrecognised authorization decision denies; a security failure never silently becomes an ALLOW.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/security-core.ts", "contains": "Unrecognized authorization decision" },
+        { "kind": "test", "path": "tests/unit/security-core.test.ts" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/security-role-gate.ts", "contains": "evaluateSecurityGateway" }
+      ],
+      "boundaryNote": "The gateway is reached from a real boundary: the canonical role gate calls it, and 22 server-function families call the gate."
+    },
+    {
+      "id": "role-gate-enforcement",
+      "area": "Canonical role gate adopted by server-function families",
+      "requirement": "Role-scoped server-function families route their authorization through one canonical gate instead of duplicating inline role reads.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/security-role-gate.ts", "contains": "evaluateRoleGate" },
+        { "kind": "test", "path": "tests/unit/security-role-gate.test.ts" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/*.functions.ts", "contains": "security-role-gate" }
+      ],
+      "boundaryNote": "22 families adopt the gate; families outside the rule are documented exemptions with reasons (self-scoped, public, driver and payment paths)."
+    },
+    {
+      "id": "enforcement-surface-inventory",
+      "area": "Machine-checked enforcement inventory (invariant AT.1)",
+      "requirement": "Security cannot be bypassed by application code: a new role-scoped family that skips the gate fails the suite.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/p08-enforcement-surface.test.ts" },
+        { "kind": "contract", "path": "frontend/src/lib/kernel/phase-contracts/phase-08-security-engine.ts" }
+      ],
+      "boundary": [
+        { "kind": "test", "path": "tests/unit/p08-enforcement-surface.test.ts", "contains": "ADOPTED" }
+      ],
+      "boundaryNote": "The guard reads the live inventory of frontend/src/lib/*.functions.ts, so the claim cannot rot: adding a role-scoped family without the gate fails CI."
+    },
+    {
+      "id": "authorization-models",
+      "area": "RBAC, ABAC, ReBAC and PBAC combination",
+      "requirement": "Role, attribute, relationship and policy rules combine under precedence rules, contextual constraints and tenant constraints.",
+      "required": false,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/security-role-gate.ts", "contains": "RoleGateKind" },
+        { "kind": "module", "path": "frontend/src/lib/security-policy.ts", "contains": "isPolicyTransitionAllowed" },
+        { "kind": "doc", "path": "architecture/phase-08-security-engine.md", "contains": "I.3 Authorization Models" }
+      ],
+      "boundaryNote": "Honest split: RBAC is enforced today (the gate, adopted by 22 families); context/attribute checks exist at the boundary (identity + tenant resolution); relationship (ReBAC) and policy (PBAC) rules are contract vocabulary with no relationship-rule engine yet. Classified DECLARED — reported, not glossed."
+    },
+    {
+      "id": "policy-lifecycle",
+      "area": "Policy lifecycle — versioned, testable, attributable",
+      "requirement": "Policies move through draft, validate, test, approve, publish, activate, monitor, supersede and archive, and a published policy version is not silently rewritten.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/security-policy.ts", "contains": "transitionSecurityPolicy" },
+        { "kind": "test", "path": "tests/unit/security-policy.test.ts" }
+      ]
+    },
+    {
+      "id": "policy-rollback",
+      "area": "Controlled policy rollback",
+      "requirement": "A published policy can be rolled back deliberately, preserving the version that was replaced.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/security-policy.ts", "contains": "rollbackSecurityPolicy" },
+        { "kind": "test", "path": "tests/unit/security-policy.test.ts" }
+      ]
+    },
+    {
+      "id": "risk-evaluation",
+      "area": "Risk evaluation and risk actions",
+      "requirement": "Risk signals combine into a score and a level, and the level maps to an action (allow, additional verification, reduced privileges, rate limit, temporary block, quarantine, human review).",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/security-risk.ts", "contains": "evaluateRisk" },
+        { "kind": "test", "path": "tests/unit/security-risk.test.ts" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/*.functions.ts", "contains": "evaluateRisk\\(" }
+      ],
+      "boundaryNote": "IMPLEMENTED_UNWIRED by construction: the risk engine is exercised by its suite, but no server function or surface supplies signals or consumes a score yet. Until one does, this is a tested library, not enforcement."
+    },
+    {
+      "id": "risk-signal-vocabulary",
+      "area": "Risk signal vocabulary and sensitivity",
+      "requirement": "The engine recognises the documented signal classes — unusual location, device, time, behaviour, privilege escalation, repeated failures, abnormal volume, suspicious API patterns, impossible travel, anomalous agent behaviour and suspicious tool usage.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/security-risk.ts", "contains": "impossible_travel" },
+        { "kind": "test", "path": "tests/unit/security-risk.test.ts" }
+      ]
+    },
+    {
+      "id": "session-security",
+      "area": "Session security controls and revocation",
+      "requirement": "Sessions expire, idle out, rotate refresh tokens, revoke, count concurrent sessions, detect suspicious sessions and trigger step-up authentication.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/security-session.ts", "contains": "evaluateSessionSecurity" },
+        { "kind": "module", "path": "frontend/src/lib/security-session.ts", "contains": "requiresStepUp" },
+        { "kind": "test", "path": "tests/unit/security-session.test.ts" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/*.functions.ts", "contains": "evaluateSessionSecurity\\(" }
+      ],
+      "boundaryNote": "IMPLEMENTED_UNWIRED: session evaluation is unit-proven but no boundary evaluates a session with it; real sessions are still governed by the identity provider's own lifetime (Phase 02). Reported as unfinished work."
+    },
+    {
+      "id": "credential-secrets",
+      "area": "Credential and secret protection",
+      "requirement": "Credentials are never hard-coded, committed, logged, returned unnecessarily or embedded in prompts, and sensitive credentials rotate.",
+      "required": true,
+      "evidence": [
+        { "kind": "script", "path": "scripts/verification/secret-scan.mjs" },
+        { "kind": "config", "path": "package.json", "contains": "verify:secrets" },
+        { "kind": "doc", "path": "architecture/phase-08-security-engine.md", "contains": "AM. Secrets Management" }
+      ],
+      "boundary": [
+        { "kind": "config", "path": ".github/workflows/verify.yml", "contains": "npm run verify" }
+      ],
+      "boundaryNote": "Owner is Phase 01 (foundation secrets and CI); this engine consumes the guarantee. The boundary is real: CI runs `npm run verify`, whose chain includes `verify:secrets` (scripts/verification/secret-scan.mjs), so a committed secret fails the build. Rotation is procedural today — no automated rotation job exists (reported debt)."
+    },
+    {
+      "id": "credential-not-in-agent-memory",
+      "area": "Credentials never enter agent memory without explicit policy (invariant AT.8)",
+      "requirement": "An agent's memory and prompts cannot carry credentials unless a policy explicitly authorises it.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/agent-memory.ts", "contains": "MemoryProvenance" },
+        { "kind": "doc", "path": "architecture/phase-08-security-engine.md", "contains": "AT. Architectural Invariants" }
+      ],
+      "boundaryNote": "DECLARED, and deliberately so: agent memory (Phase 07) records provenance for every entry, but nothing rejects a credential-shaped value, and the AI gateway (Phase 26) is where that must be enforced. The law is stated in both phases; only the provenance half is implemented."
+    },
+    {
+      "id": "agent-security",
+      "area": "Agent security controls",
+      "requirement": "Every agent has identity, permissions, scope, tenant, tool and resource permissions, action limits, an execution budget and a security policy; high-risk actions need additional controls.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/security-agent-controls.ts", "contains": "evaluateAgentSecurity" },
+        { "kind": "test", "path": "tests/unit/security-agent-controls.test.ts" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/*.functions.ts", "contains": "evaluateAgentSecurity\\(" }
+      ],
+      "boundaryNote": "IMPLEMENTED_UNWIRED: the controls are unit-proven and the platform's rule is that an agent must never bypass the Security Engine because it is an AI system, but no agent execution path calls them yet."
+    },
+    {
+      "id": "tool-security",
+      "area": "Tool authorization and dangerous-tool controls",
+      "requirement": "Every tool invocation is evaluated in context, and tools capable of shell execution, database writes, infrastructure changes, deployment, financial transactions, external messaging or bulk export face stricter controls.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/security-agent-controls.ts", "contains": "DANGEROUS_TOOL_CATEGORIES" },
+        { "kind": "test", "path": "tests/unit/security-agent-controls.test.ts" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/*.functions.ts", "contains": "evaluateToolSecurity\\(" }
+      ],
+      "boundaryNote": "IMPLEMENTED_UNWIRED: Phase 07 validates an agent plan's tool allow-list at plan time (agent-plans.ts), but per-invocation tool authorization is not evaluated at any boundary."
+    },
+    {
+      "id": "security-events",
+      "area": "Security event emission and integrity",
+      "requirement": "Security events carry actor, tenant, resource, action, severity, evidence, correlation, trace and policy version, and are tamper-resistant.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/security-events.ts", "contains": "assertSecurityEventImmutable" },
+        { "kind": "test", "path": "tests/unit/security-events.test.ts" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/*.functions.ts", "contains": "createSecurityEvent\\(" }
+      ],
+      "boundaryNote": "IMPLEMENTED_UNWIRED: the event contract and its immutability guard are unit-proven, but no boundary emits a security event — the same debt class as Phase 02's identity events (P02-1). The durable ledger that would store them is the kernel event substrate (Phase 33)."
+    },
+    {
+      "id": "event-vocabulary",
+      "area": "Security event vocabulary",
+      "requirement": "The engine recognises login failures, permission failures, suspicious sessions, policy violations, privilege changes, credential events, agent anomalies, tool violations, data-export events and security incidents.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/security-events.ts", "contains": "data_export_event" },
+        { "kind": "test", "path": "tests/unit/security-events.test.ts" }
+      ]
+    },
+    {
+      "id": "alerts-and-severity",
+      "area": "Alert severity, alert records and acknowledgement",
+      "requirement": "Alerts carry event, severity, confidence, evidence, affected actor, tenant, resource, recommended response and status, and can be acknowledged and transitioned.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/security-events.ts", "contains": "createSecurityAlert" },
+        { "kind": "test", "path": "tests/unit/security-events.test.ts" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/*.functions.ts", "contains": "createSecurityAlert\\(" }
+      ],
+      "boundaryNote": "IMPLEMENTED_UNWIRED for this phase's path, with the platform picture stated: this phase owns the security alert record and severity vocabulary, and Phase 19's command centre owns the operational alert surface (open, acknowledge, escalate, resolve, suppress — implemented and tested there). Phase 19 does not consume these records, so no boundary calls createSecurityAlert yet."
+    },
+    {
+      "id": "incidents",
+      "area": "Security incident lifecycle and ownership",
+      "requirement": "Incidents move through detected, triaged, investigating, contained, remediating, recovered, closed and reviewed, and each carries owner, severity, evidence, timeline, actions, resolution and postmortem.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/security-events.ts", "contains": "INCIDENT_STATES" },
+        { "kind": "test", "path": "tests/unit/security-events.test.ts" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/*.functions.ts", "contains": "createSecurityIncident\\(" }
+      ],
+      "boundaryNote": "IMPLEMENTED_UNWIRED for this phase's path, with the platform picture stated: this phase owns the security incident state machine, and Phase 19's command centre owns the operational incident surface (kinds, states, transitions, UI — implemented and tested there). Phase 19 does not consume these records, so 'incidents can be created and tracked' is true of the platform and not yet true of this engine's own path."
+    },
+    {
+      "id": "evidence-records",
+      "area": "Security evidence records and integrity",
+      "requirement": "Evidence references events, decisions, policy versions, actor context, system state and investigation actions, and is timestamped, traceable, tamper-resistant and access-controlled.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/security-events.ts", "contains": "createSecurityEvidenceRecord" },
+        { "kind": "test", "path": "tests/unit/security-events.test.ts" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/*.functions.ts", "contains": "createSecurityEvidenceRecord\\(" }
+      ],
+      "boundaryNote": "IMPLEMENTED_UNWIRED: evidence records are built and unit-proven, but no investigation surface produces or stores one; durable evidence remains the kernel audit ledger (Phase 33) rather than a security-specific store."
+    },
+    {
+      "id": "api-surface",
+      "area": "Security APIs — authorize, require-role, audit query",
+      "requirement": "An authorization API, a role-gate API and an audit query exist and are documented.",
+      "required": true,
+      "evidence": [
+        { "kind": "contract", "path": "frontend/src/lib/kernel/phase-contracts/phase-08-security-engine.ts", "contains": "security:authorize" },
+        { "kind": "test", "path": "tests/unit/security-role-gate.test.ts" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/*.functions.ts", "contains": "requireStaffContext" }
+      ],
+      "boundaryNote": "The transport is server functions, not REST paths: the security API exists and is invoked at 22 families. The document's Z section lists REST-style paths (POST /security/authorize); no route implements those literal paths, so the documented transport differs from the built one."
+    },
+    {
+      "id": "api-hardening",
+      "area": "API security controls at every boundary",
+      "requirement": "Authentication, authorization, request and schema validation, rate limiting, payload limits, idempotency, abuse detection and audit logging are applied at the API boundary.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/runtime-command-query.ts", "contains": "MAX_PAGE_SIZE" },
+        { "kind": "test", "path": "tests/unit/runtime.test.ts" },
+        { "kind": "doc", "path": "architecture/phase-08-security-engine.md", "contains": "R. API Security" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/*.functions.ts", "contains": "requireSupabaseAuth" }
+      ],
+      "boundaryNote": "Enforced in part, and the split is reported: every family authenticates (requireSupabaseAuth), validates with Zod and authorizes through the gate; idempotency and abuse detection exist as runtime primitives (Phase 05) but are not applied sweepingly, and replay protection is per-family rather than platform-wide (Phase 27's sweep)."
+    },
+    {
+      "id": "tenant-isolation-db",
+      "area": "Database security — RLS and cross-tenant fail-closed",
+      "requirement": "Security exists at the application and database layers; RLS, least privilege, service-role isolation, restricted admin access, query auditing and backup protection are in place, and cross-tenant access fails closed.",
+      "required": true,
+      "evidence": [
+        { "kind": "script", "path": "scripts/verify-tenant-isolation.mjs" },
+        { "kind": "migration", "path": "database/queries/rls-isolation-check.sql" },
+        { "kind": "module", "path": "frontend/src/lib/tenant-isolation.ts", "contains": "assertResourceInTenant" }
+      ],
+      "boundary": [
+        { "kind": "migration", "path": "database/supabase/migrations/*", "contains": "ROW LEVEL SECURITY" }
+      ],
+      "boundaryNote": "Owner is Phase 03 (tenancy) with Phase 01 conventions; this engine relies on it (invariant AT.3 — tenant boundaries cannot be disabled by ordinary application logic). Backup protection is infrastructure (Phase 21) and is not yet exercised."
+    },
+    {
+      "id": "data-classification",
+      "area": "Data classification and export protection",
+      "requirement": "Data carries a classification, and controls follow it: access control, encryption, masking, tokenization, redaction, retention, deletion and export restriction; unusual downloads, exports, cross-tenant queries and bulk retrieval are monitored.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/data-core.ts", "contains": "DataClassification" },
+        { "kind": "module", "path": "frontend/src/lib/security-events.ts", "contains": "data_export_event" },
+        { "kind": "doc", "path": "architecture/phase-08-security-engine.md", "contains": "P. Data Security" }
+      ],
+      "boundaryNote": "DECLARED, with a corrected vocabulary: the platform classification set is Phase 14's (PUBLIC, INTERNAL, CONFIDENTIAL, SENSITIVE, HIGHLY_SENSITIVE, REGULATED), not the five-word set this document proposed — addendum AX.4 records the correction. Export detection exists as an event type, but nothing detects an export yet."
+    },
+    {
+      "id": "threat-detection",
+      "area": "Threat detection strategy",
+      "requirement": "Deterministic rules, statistical detection, behavioural baselines and threat intelligence detect brute force, credential abuse, privilege escalation, token abuse, API abuse, data exfiltration, malicious automation, suspicious agent activity, cross-tenant attempts and abnormal access patterns — and AI detection is never the only control for critical actions.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/security-risk.ts", "contains": "RISK_SIGNAL_TYPES" },
+        { "kind": "doc", "path": "architecture/phase-08-security-engine.md", "contains": "T. Threat Detection" }
+      ],
+      "boundaryNote": "DECLARED, not claimed: the signal vocabulary and the scoring rule exist, but no detector produces signals from real telemetry, so nothing detects a brute-force or a cross-tenant attempt today. Deterministic detection is the missing half, and AI-assisted detection does not exist at all (the document forbids it as the sole control)."
+    },
+    {
+      "id": "anomaly-detection",
+      "area": "Anomaly detection and false-positive handling",
+      "requirement": "Deviations from expected behaviour are identified (request frequency, access patterns, tool usage, resource access, geography, device, agent execution), and alerts support confidence, evidence, suppression, investigation and feedback.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/security-risk.ts", "contains": "unusual_behavior" },
+        { "kind": "doc", "path": "architecture/phase-08-security-engine.md", "contains": "U. Anomaly Detection" }
+      ],
+      "boundaryNote": "DECLARED: the signal classes a detector would emit are named, and alert records carry confidence and evidence, but no baseline model, no suppression workflow and no feedback loop exist yet."
+    },
+    {
+      "id": "rate-limiting-and-resilience",
+      "area": "Rate limiting, throttling and the security circuit breaker",
+      "requirement": "Rate limits apply to users, agents, APIs, tenants, devices, IPs, tools and workflows using token-bucket, sliding-window, concurrency, burst and adaptive strategies, and the gateway throttles instead of failing open.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/runtime-resilience.ts", "contains": "RateLimitScope" },
+        { "kind": "module", "path": "frontend/src/lib/runtime-resilience.ts", "contains": "CircuitState" },
+        { "kind": "test", "path": "tests/unit/runtime-self-report.test.ts" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/security-core.ts", "contains": "withinRateLimit" }
+      ],
+      "boundaryNote": "Owner is Phase 05 (runtime primitives); this engine consumes the verdict. The gateway maps an exceeded limit to THROTTLE rather than ALLOW, and the security circuit breaker is Phase 05's circuit breaker — one implementation serving both, which is deliberate rather than missing."
+    },
+    {
+      "id": "human-escalation",
+      "area": "Human escalation for high-impact actions",
+      "requirement": "Permanent account termination, destructive data operations, broad tenant blocking, production policy changes, critical credential revocation and emergency infrastructure actions require human approval.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/runtime-approval.ts", "contains": "ApprovalStatus" },
+        { "kind": "test", "path": "tests/unit/runtime-extended.test.ts" }
+      ],
+      "boundary": [
+        { "kind": "contract", "path": "frontend/src/lib/kernel/phase-contracts/phase-08-security-engine.ts", "contains": "requiresApprovalFor" }
+      ],
+      "boundaryNote": "Enforced by contract and by the approval lifecycle (a Phase 05 primitive, consumed by automation governance in Phase 17): the phase contract names the four actions that require approval — policy relaxation, role definition change, agent control change, audit-trail purge — and an approval-gated operation cannot execute silently."
+    },
+    {
+      "id": "observability",
+      "area": "Security observability and distributed tracing of decisions",
+      "requirement": "Authorization latency, denial rate, policy evaluation latency, event throughput, alert and incident volume, false-positive rate, detection and response latency and failed controls are monitored, and every decision is traceable.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/runtime-observability.ts", "contains": "createLogger" },
+        { "kind": "test", "path": "tests/unit/foundation-observability.test.ts" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/*.functions.ts", "contains": "createLogger\\(" }
+      ],
+      "boundaryNote": "IMPLEMENTED_UNWIRED — the same shared finding as P01-1/P03-3/P05-4: the observability primitive is proven by its suite but no runtime path emits it, so no security metric is collected today. Decisions do carry a correlation id (decision-contract area), which is the prerequisite for tracing once emission is wired."
+    },
+    {
+      "id": "testing-standard",
+      "area": "Security test suites (unit, integration, authorization, failure)",
+      "requirement": "The engine's behaviour is proven by executable tests rather than prose, and the tests cover authorization, failure and abuse paths.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/security-core.test.ts" },
+        { "kind": "test", "path": "tests/unit/security-policy.test.ts" },
+        { "kind": "test", "path": "tests/unit/security-role-gate.test.ts" },
+        { "kind": "test", "path": "tests/unit/p08-enforcement-surface.test.ts" },
+        { "kind": "contract", "path": "frontend/src/lib/kernel/phase-contracts/phase-08-security-engine.ts" }
+      ],
+      "boundary": [
+        { "kind": "test", "path": "tests/unit/security-role-gate.test.ts" }
+      ],
+      "boundaryNote": "Seven security suites, 108 tests, cited by the phase contract (up from five suites / 70 tests before this pass: the event and role-gate suites were implemented but uncited, which understated the phase). Penetration, fuzzing and injection testing (AI.4 of the document) are not performed — reported debt."
+    },
+    {
+      "id": "document-completeness",
+      "area": "Engineering-section completeness of the phase document",
+      "requirement": "The document states the mandatory engineering sections, including the command, data and query models and the runtime consumer boundary.",
+      "required": true,
+      "evidence": [
+        { "kind": "doc", "path": "architecture/phase-08-security-engine.md", "contains": "AX. DATA MODEL" },
+        { "kind": "script", "path": "scripts/verification/engineering-sections.mjs" },
+        { "kind": "test", "path": "tests/unit/kernel-contract-coverage.test.ts" }
+      ],
+      "boundary": [
+        { "kind": "test", "path": "tests/unit/kernel-contract-coverage.test.ts" }
+      ],
+      "boundaryNote": "20/20 mandatory sections verified by the completion audit (18/20 before this pass). The truncated duplicate at the document head was removed, so a reader no longer meets a specification that stops mid-section."
+    },
+    {
+      "id": "architecture-invariants",
+      "area": "The twelve architectural invariants (Section AT)",
+      "requirement": "Security cannot be bypassed by application code or agents; tenant boundaries cannot be disabled; decisions are attributable; critical actions need explicit authorization; policies cannot change silently; events cannot be silently deleted; credentials cannot enter agent memory without policy; failures never become grants; emergency access is audited; controls stay observable; the security architecture stays independent of business-domain logic.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/p08-enforcement-surface.test.ts" },
+        { "kind": "test", "path": "tests/unit/platform-neutrality.test.ts" },
+        { "kind": "contract", "path": "frontend/src/lib/kernel/phase-contracts/phase-08-security-engine.ts" }
+      ],
+      "boundary": [
+        { "kind": "contract", "path": "frontend/src/lib/kernel/phase-contracts/phase-08-security-engine.ts", "contains": "never trusts client-supplied roles" }
+      ],
+      "boundaryNote": "Invariants 1, 2, 3, 4, 5, 9 and 12 are machine-enforced today (gate adoption guard, fail-closed tests, RLS verification, attribution in the decision contract, explicit authorization for critical actions, domain-independence guard). Invariants 6, 7, 8, 10 and 11 are stated and partially enforced: silent policy change is impossible in the module but the policy set is not yet persisted, event deletion is guarded by immutability in-process only, credential-in-agent-memory and emergency-access auditing are not implemented, and observability is unwired."
+    },
+    {
+      "id": "runtime-neutrality",
+      "area": "Runtime consumer boundary — the kernel is the platform (Section AY)",
+      "requirement": "The engine belongs to CoreGrid: no kernel or capability module may import a runtime, introduce itself as a runtime's subsystem, or hard-code a limited role list, and a later phase cannot re-frame the kernel.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/platform-neutrality.test.ts" },
+        { "kind": "script", "path": "scripts/neutralise-scholar-framing.mjs" },
+        { "kind": "doc", "path": "architecture/phase-08-security-engine.md", "contains": "AY. RUNTIME CONSUMER BOUNDARY" }
+      ],
+      "boundary": [
+        { "kind": "test", "path": "tests/unit/platform-neutrality.test.ts", "contains": "Only a runtime layer may name a runtime" }
+      ],
+      "boundaryNote": "Remediated and locked in this pass: 73 kernel and capability modules (including all seven security-* modules of this phase) had introduced themselves as 'CoreGrid Scholar — ...'. The frames were neutralised by a comment-only script (provably inert), and the guard now fails if any kernel file re-frames itself, names a runtime in a kernel module, or declares a hand-written role list. The runtime's own layer (lib/scholar/**, lib/runtime/scholar-*, routes/_authenticated/scholar/**) is where a runtime's name belongs."
+    },
+    {
+      "id": "deployment",
+      "area": "Independent deployment, containerization and environment separation",
+      "requirement": "Components deploy independently where useful, containerized and described as infrastructure-as-code, with development, staging and production separated.",
+      "required": true,
+      "evidence": [
+        { "kind": "script", "path": "scripts/verify-infrastructure.mjs" },
+        { "kind": "config", "path": "package.json", "contains": "preflight:infrastructure" },
+        { "kind": "doc", "path": "architecture/phase-08-security-engine.md", "contains": "AL. Deployment" }
+      ],
+      "boundary": [
+        { "kind": "script", "path": "scripts/infrastructure/preflight.mjs" }
+      ],
+      "boundaryNote": "Owner is Phase 21 (infrastructure): kubernetes, terraform, monitoring and workloads trees exist, `npm run verify:infrastructure` and the preflight script check them, and CI runs the verify chain. No environment has been applied yet — execution awaits owner credentials (CF-04..CF-07) — so the definitions are verified while the deployment itself is not. The engine is not separately deployed as the document imagines; it ships inside the application server functions, which is a simplification recorded here rather than hidden."
+    },
+    {
+      "id": "data-model-persistence",
+      "area": "Security data model — what is persisted today (addendum AX)",
+      "requirement": "Tenant isolation, unique identifiers, immutable event ids, timestamp integrity, policy-version references, actor references and correlation references are enforced by the data model.",
+      "required": true,
+      "evidence": [
+        { "kind": "doc", "path": "architecture/phase-08-security-engine.md", "contains": "AX.1 Entities of the Engine" },
+        { "kind": "module", "path": "frontend/src/lib/security-events.ts", "contains": "Immutable" },
+        { "kind": "module", "path": "frontend/src/lib/tenant-isolation.ts", "contains": "assertTenantUsable" }
+      ],
+      "boundaryNote": "DECLARED, and the honest limit is stated in the document: no security-specific tables exist (no SecurityBlock registry, no durable risk-signal store, no persisted policy or decision ledger). Policy sets, decisions, alerts, incidents and evidence are module records; the durable ledger is RLS + the kernel event/audit substrate (Phase 33). Constraints that cannot be enforced without a table are not claimed."
+    },
+    {
+      "id": "disaster-recovery",
+      "area": "Disaster recovery for security systems",
+      "requirement": "Encrypted backups, tested restoration, incident recovery procedures, policy backups, evidence preservation, credential recovery and emergency access procedures exist and have been exercised.",
+      "required": true,
+      "evidence": [
+        { "kind": "doc", "path": "architecture/phase-08-security-engine.md", "contains": "AN. Disaster Recovery" }
+      ],
+      "boundaryNote": "DECLARED — nothing is exercised: there are no security backups (the policy set is not persisted), no restore test, no evidence-preservation procedure and no emergency-access drill. The infrastructure plan covers database backups (Phase 21) but awaits credentials and has never been restored. This is the largest gap in the phase's operational maturity."
+    },
+    {
+      "id": "operational-procedures",
+      "area": "Documented security operating procedures",
+      "requirement": "Incident response, emergency access, credential rotation, policy rollback, service recovery, threat investigation, false-positive review and control review are documented.",
+      "required": true,
+      "evidence": [
+        { "kind": "doc", "path": "architecture/phase-08-security-engine.md", "contains": "AO. Operational Procedures" }
+      ],
+      "boundaryNote": "DECLARED: the sections exist in this document and PROGRESS.md carries the running operational record, but no runbook library exists and none of the procedures has been rehearsed."
+    },
+    {
+      "id": "compliance-evidence",
+      "area": "Compliance support — technical evidence, not legal interpretation",
+      "requirement": "The engine supplies technical evidence for access control, auditability, data protection, incident response, retention, security monitoring and tenant isolation, without defining legal compliance.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/data-governance.ts", "contains": "LINEAGE_NODE_TYPES" },
+        { "kind": "doc", "path": "architecture/phase-08-security-engine.md", "contains": "AP. Compliance Support" }
+      ],
+      "boundaryNote": "DECLARED; data governance itself is Phase 14's. Evidence exists for access control (gate adoption), auditability (immutability plus correlation ids) and tenant isolation (RLS verification), but no compliance report is generated and retention is not enforced anywhere."
+    },
+    {
+      "id": "security-agents",
+      "area": "Security agents (monitor, threat analysis, investigation, response, policy analysis, audit)",
+      "requirement": "The six security agent roles exist and operate under least privilege.",
+      "required": false,
+      "evidence": [
+        { "kind": "doc", "path": "architecture/phase-08-security-engine.md", "contains": "AE. Agent Responsibilities" }
+      ],
+      "boundaryNote": "DECLARED and not implemented: the six agent roles are named in the document only. Phase 07 provides the agent runtime and governance they would run under; no security agent is defined, seated or scheduled. Optional area, reported rather than implied."
+    },
+    {
+      "id": "mcp-interfaces",
+      "area": "Security MCP capabilities",
+      "requirement": "security.authorize, security.evaluate_risk, security.inspect_policy, security.inspect_incident, security.inspect_alert, security.inspect_security_event, security.revoke_session and security.block_actor are exposed through a security-controlled MCP surface.",
+      "required": false,
+      "evidence": [
+        { "kind": "doc", "path": "architecture/phase-08-security-engine.md", "contains": "AC. MCP Interfaces" }
+      ],
+      "boundaryNote": "DECLARED and not implemented: no security MCP capability is exposed. The repository's .mcp.json configures development tooling, not a security interface. Optional area, reported rather than implied."
+    },
+    {
+      "id": "performance",
+      "area": "Security enforcement performance targets",
+      "requirement": "Enforcement minimizes latency, with caching where safe, efficient policy evaluation, local enforcement and asynchronous telemetry — and security correctness takes precedence over latency.",
+      "required": false,
+      "evidence": [
+        { "kind": "doc", "path": "architecture/phase-08-security-engine.md", "contains": "AJ. Performance" }
+      ],
+      "boundaryNote": "DECLARED: no authorization latency is measured (no policy cache, no decision cache, no benchmark), so the document's per-deployment-class targets are aspirational. The correctness-first ordering it states is respected in practice: the gate fails closed rather than fast."
+    },
+    {
+      "id": "webhooks",
+      "area": "Security webhooks — signature, replay, retry, rotation",
+      "requirement": "Security webhooks notify authorised systems about critical alerts, incidents, credential events, policy changes and emergency blocks, with signature verification, replay protection, delivery tracking, retry control and secret rotation.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/runtime-webhooks.ts", "contains": "WebhookDelivery" },
+        { "kind": "doc", "path": "architecture/phase-08-security-engine.md", "contains": "AB. Webhooks" }
+      ],
+      "boundaryNote": "DECLARED; delivery tracking, retry and dead-lettering belong to Phase 05 and are tested there. What is missing is the security wiring: no security event publishes to a webhook, and signature verification and replay protection are not proven against a real provider."
+    },
+    {
+      "id": "phase-boundary-09",
+      "area": "Phase boundary with Phase 09 (Security & Trust Fabric), Section AU",
+      "requirement": "Phase 08 provides executable security controls; Phase 09 defines the wider trust architecture and consumes Phase 08 capabilities rather than duplicating them.",
+      "required": true,
+      "evidence": [
+        { "kind": "doc", "path": "architecture/phase-08-security-engine.md", "contains": "AU. Phase Boundary With Phase 09" },
+        { "kind": "doc", "path": "architecture/phase-09-security-trust-fabric.md", "contains": "Phase 09" }
+      ],
+      "boundaryNote": "DECLARED: the boundary is stated in both documents and in the registry (row 09 exists and claims no overlap with this phase's decision, policy, session or agent controls), but no trust-fabric code exists yet, so the boundary is a written ownership statement rather than a proven interface."
+    },
+    {
+      "id": "acceptance-criteria",
+      "area": "Acceptance criteria and definition of done (Sections AQ-AR)",
+      "requirement": "Phase 08 is accepted only when policies evaluate, authorization and tenant boundaries are enforced, agent and tool actions are controlled, security events and alerts can be generated, incidents can be created and tracked, evidence is preserved, failures fail safely, APIs are documented, controls are observable, testing passes, and rollback and recovery procedures exist.",
+      "required": true,
+      "evidence": [
+        { "kind": "script", "path": "scripts/audit-phase-acceptance.mjs" },
+        { "kind": "doc", "path": "architecture/phase-08-security-engine.md", "contains": "AQ. Acceptance Criteria" }
+      ],
+      "boundary": [
+        { "kind": "config", "path": "architecture/phase-acceptance/phase-08-security-engine.json" }
+      ],
+      "boundaryNote": "This record is the acceptance measurement and is machine-checked by the probe. The criteria backed by an executable artefact are counted as ENFORCED; the ones that are not — suspicious-behaviour alerting, incident tracking through this phase's own path, evidence preservation and tested recovery — are recorded above as IMPLEMENTED_UNWIRED or DECLARED rather than asserted."
+    }
+  ]
+}

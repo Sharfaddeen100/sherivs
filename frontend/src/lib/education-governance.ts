@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Education Reality Engine governance engine.
+ * CoreGrid — Education Reality Engine governance engine.
  *
  * Implements `architecture/phase-04-education-reality-engine.md`:
  * - School blueprint: the institution's complete operating model as a versioned

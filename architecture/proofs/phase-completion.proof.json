@@ -2,7 +2,7 @@
   "artifact": "phase-completion",
   "wave": "AUDIT-1",
   "owner": "kernel (Phase 01 governance)",
-  "generatedAt": "2026-09-17T11:18:44.756Z",
+  "generatedAt": "2026-09-17T14:26:37.625Z",
   "authority": [
     "CONSTITUTION.md",
     "architecture/registry.json",
@@ -23,7 +23,7 @@
     "architectureDefined": 18,
     "withModules": 33,
     "withResolvedModules": 32,
-    "totalTestsCited": 1959,
+    "totalTestsCited": 1997,
     "registryBeyondAudit": [
       "01",
       "02",
@@ -32,7 +32,6 @@
       "05",
       "06",
       "07",
-      "08",
       "09",
       "10",
       "11",
@@ -388,7 +387,7 @@
       "id": "08",
       "name": "Security Engine",
       "capability": "security-enforcement",
-      "sections": "18/20",
+      "sections": "20/20",
       "modules": [
         "security-core",
         "security-risk",
@@ -399,9 +398,9 @@
         "security-role-gate"
       ],
       "modulesResolve": true,
-      "citedTestFiles": 5,
-      "testsCounted": 70,
-      "executableEvidence": 5,
+      "citedTestFiles": 7,
+      "testsCounted": 108,
+      "executableEvidence": 7,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": true,
@@ -411,12 +410,12 @@
       },
       "registryLevels": [
         true,
-        false,
-        false,
-        false,
-        false
+        true,
+        true,
+        true,
+        true
       ],
-      "registryStatus": "IMPLEMENTING",
+      "registryStatus": "COMPLETE",
       "derivedStatus": "COMPLETE",
       "complete": true,
       "missingLevels": [],

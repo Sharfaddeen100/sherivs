@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Scheduling & Timetable Intelligence Availability Engine
+ * CoreGrid — Scheduling & Timetable Intelligence Availability Engine
  * (Phase 12, Sections L, M).
  *
  * Implements `architecture/phase-12-scheduling-intelligence.md`:

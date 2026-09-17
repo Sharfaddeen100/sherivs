@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Digital Twin State, Observation and Synchronization
+ * CoreGrid — Digital Twin State, Observation and Synchronization
  * domain model
  * (Phase 16, Sections T, U, V, W, X, Y, Z, AA, AB, AC, AD, AE, AF, AG, AH,
  * AI, AJ, AK, AL, AM, AN, AO, AP, AQ, AR).
