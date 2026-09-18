@@ -1,0 +1,481 @@
+{
+  "$comment": "Phase 10 (Communication Platform) resolved against repository artefacts: architecture/phase-10-communication-platform.md (sections A..EK plus addenda EL dependency register, EM steward mandate data model, EN organization subscription, EO the communication steward, EP autonomous call rules, EQ the human role the steward replaces, ER steward acceptance criteria), frontend/src/lib/kernel/phase-contracts/phase-10-communication.ts, registry row 10, the seven communication-* modules, and scripts/audit-phase-acceptance.mjs --phase=10. Classified by scripts/audit-phase-acceptance.mjs. DECLARED and IMPLEMENTED_UNWIRED areas are unfinished work and are reported rather than glossed: the steward's mandate machine, the provider registry and the report are executable and tested, while persistence, telephony binding, delivery, recording storage and metering have no artefact at all and are declared as such.",
+  "phase": "10",
+  "phaseName": "Communication Platform",
+  "source": "architecture/phase-10-communication-platform.md",
+  "contract": "frontend/src/lib/kernel/phase-contracts/phase-10-communication.ts",
+  "documentIntegrity": {
+    "status": "CLOSED — COMPLETED",
+    "finding": "Two defects were corrected. (1) The document named one runtime as the owner of the platform ('CoreGrid Scholar's unified institutional communication infrastructure'), inverting the platform/runtime relationship; per the owner decision of 2026-09-16 CoreGrid owns the platform and a runtime consumes it, and CoreGrid Scholar is runtime-001, the first consumer. (2) It stated 18 of the 20 mandatory engineering sections: the dependency register and the data model were absent, and the steward that the owner requested had no section at all. Addenda EL..ER were authored in the document's own lettered style, stating behaviour that the modules implement rather than new scope.",
+    "verifiedAgainst": "architecture/phase-10-communication-platform.md",
+    "sectionsVerified": "20/20 via scripts/audit-phase-completion.mjs (phase 10 row: 20/20)"
+  },
+  "ownership": {
+    "note": "Phase 10 owns delivery: conversations, channels, templates, delivery state, provider routing, and the Communication Steward's mandate machine. Identity is Phase 02's, tenancy Phase 03's, execution primitives Phase 05's, the workspace shell Phase 06's, the agent runtime Phase 07's, authorization Phase 08's, provenance and retention Phase 09's, and every domain meaning belongs to the phase that owns it. The steward owns decisions, never domain rules, and it never trusts a client-supplied tenant, role or contact identity.",
+    "canonicalOwners": {
+      "delivery-and-delivery-state": "10",
+      "conversation-and-participant-state": "10",
+      "templates": "10",
+      "provider-adapters": "10",
+      "steward-mandate-and-decisions": "10",
+      "identity-and-contact-resolution": "02",
+      "tenancy-rls": "03",
+      "execution-primitives": "05",
+      "workspace-shell": "06",
+      "agent-runtime": "07",
+      "authorization": "08",
+      "trust-provenance-retention": "09"
+    }
+  },
+  "areas": [
+    {
+      "id": "organization-subscription",
+      "area": "Organization subscription to platform communication",
+      "requirement": "An organization with a tenant and a name is provisioned with a communication subscription and a steward; provisioning without either is refused; seat entitlement follows the plan.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/communication-steward.ts", "contains": "provisionOrganizationSubscription" },
+        { "kind": "test", "path": "tests/unit/communication-steward.test.ts", "contains": "refuses to provision without a tenant or an organization" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/communication-steward-report.ts", "contains": "provisionOrganizationSubscription" }
+      ]
+    },
+    {
+      "id": "inert-mandate",
+      "area": "A new organization's steward starts inert",
+      "requirement": "Provisioning creates the mandate in OBSERVE with no channels, audiences, jurisdictions, languages or knowledge topics, and every action is refused until the organization opens authority.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/communication-steward.ts", "contains": "autonomy: \"OBSERVE\"" },
+        { "kind": "test", "path": "tests/unit/communication-steward.test.ts", "contains": "starts a new organization's steward in OBSERVE with nothing opened" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/communication-steward-report.ts", "contains": "new-mandate-is-inert" }
+      ]
+    },
+    {
+      "id": "autonomy-ladder",
+      "area": "The autonomy ladder decides act, ask or step aside",
+      "requirement": "OBSERVE never acts, DRAFT drafts and reports presence only, APPROVAL_REQUIRED queues every person-facing action for a human, and AUTONOMOUS acts alone within the mandate; answering or placing a call requires AUTONOMOUS.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/communication-steward.ts", "contains": "ACTION_MINIMUM_AUTONOMY" },
+        { "kind": "module", "path": "frontend/src/lib/communication-steward.ts", "contains": "rule_pre_approval_required" },
+        { "kind": "test", "path": "tests/unit/communication-steward.test.ts", "contains": "lets AUTONOMOUS act, APPROVAL_REQUIRED ask, and DRAFT only draft" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/communication-steward-report.ts", "contains": "autonomy-ladder-is-monotone" }
+      ]
+    },
+    {
+      "id": "mass-approval",
+      "area": "Mass communication is witnessed by a human",
+      "requirement": "Mass communication requires human approval at every autonomy level, and the decision asks for a recipient estimate and a preview.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/communication-steward.ts", "contains": "rule_mass_approval" },
+        { "kind": "test", "path": "tests/unit/communication-steward.test.ts", "contains": "requires human approval for a mass send at every autonomy level" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/communication-steward-report.ts", "contains": "mass-and-sensitive-are-witnessed" }
+      ]
+    },
+    {
+      "id": "sensitive-classification",
+      "area": "Sensitive classifications need an accountable human",
+      "requirement": "CONFIDENTIAL and RESTRICTED communication requires human approval at every autonomy level.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/communication-steward.ts", "contains": "rule_sensitive_classification" },
+        { "kind": "test", "path": "tests/unit/communication-steward.test.ts", "contains": "requires approval for a confidential or restricted message" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "forbidden-classification",
+      "area": "A steward may never hold highly restricted material",
+      "requirement": "HIGHLY_RESTRICTED is refused outright, before any other question is asked.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/communication-steward.ts", "contains": "STEWARD_FORBIDDEN_CLASSIFICATIONS" },
+        { "kind": "test", "path": "tests/unit/communication-steward.test.ts", "contains": "refuses a classification the platform forbids a steward to hold" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "channel-authorisation",
+      "area": "The mandate opens the channels",
+      "requirement": "An action on a channel the mandate never opened is refused, and the refusal names the rule.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/communication-steward.ts", "contains": "rule_channel_not_authorised" },
+        { "kind": "test", "path": "tests/unit/communication-steward.test.ts", "contains": "refuses a channel or an audience the mandate never opened" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "audience-authorisation",
+      "area": "The mandate opens the audiences",
+      "requirement": "An action addressed to an audience outside the mandate is refused.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/communication-steward.ts", "contains": "rule_audience_not_authorised" },
+        { "kind": "test", "path": "tests/unit/communication-steward.test.ts", "contains": "rule_audience_not_authorised" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "external-recipients",
+      "area": "Reach outside the organization is explicit",
+      "requirement": "Communication with an external recipient is refused unless the mandate permits it.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/communication-steward.ts", "contains": "externalRecipientsAllowed" },
+        { "kind": "test", "path": "tests/unit/communication-steward.test.ts", "contains": "refuses to reach outside the organization when the mandate says inside only" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "jurisdiction-authorisation",
+      "area": "Jurisdiction is never inferred",
+      "requirement": "A contact whose jurisdiction is unknown is refused, and one outside the mandate is refused with the jurisdiction named.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/communication-steward.ts", "contains": "rule_jurisdiction_unknown" },
+        { "kind": "test", "path": "tests/unit/communication-steward.test.ts", "contains": "refuses an unknown jurisdiction and one outside the mandate" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/communication-steward-report.ts", "contains": "jurisdiction-is-never-inferred" }
+      ]
+    },
+    {
+      "id": "language-mandate",
+      "area": "A language the steward does not hold is handed to a human",
+      "requirement": "An action in a language outside the mandate escalates to a human instead of proceeding.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/communication-steward.ts", "contains": "rule_language_not_mandated" },
+        { "kind": "test", "path": "tests/unit/communication-steward.test.ts", "contains": "hands a language it cannot speak to a human rather than guessing" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "do-not-contact",
+      "area": "A person's instruction is absolute",
+      "requirement": "A do-not-contact entry refuses the action, and the decision carries the duty to honour the opt-out; marketing and voice scopes are narrower than an absolute instruction.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/communication-steward.ts", "contains": "isDoNotContact" },
+        { "kind": "test", "path": "tests/unit/communication-steward.test.ts", "contains": "honours do-not-contact absolutely, and the narrower scopes precisely" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/communication-steward-report.ts", "contains": "consent-and-do-not-contact" }
+      ]
+    },
+    {
+      "id": "marketing-consent",
+      "area": "Marketing needs a recorded, attributable opt-in",
+      "requirement": "Marketing is refused without a recorded opt-in for that channel; an opt-in without a source, without a subject, or for an emergency purpose is refused at creation.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/communication-steward.ts", "contains": "createConsentRecord" },
+        { "kind": "test", "path": "tests/unit/communication-steward.test.ts", "contains": "refuses an opt-in with no subject, no source, or an emergency purpose" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "emergency-authority",
+      "area": "Emergency communication needs explicit authority",
+      "requirement": "Emergency communication is refused unless the mandate grants it, and an authorised emergency is not silenced by quiet hours.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/communication-steward.ts", "contains": "emergencyAllowed" },
+        { "kind": "test", "path": "tests/unit/communication-steward.test.ts", "contains": "lets an authorised emergency through even inside quiet hours" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "knowledge-scope",
+      "area": "Outside its knowledge pack the steward escalates",
+      "requirement": "A topic the pack does not cover, or the mandate has not opened, escalates to a human instead of being answered.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/communication-steward.ts", "contains": "knowledgeCoverage" },
+        { "kind": "test", "path": "tests/unit/communication-steward.test.ts", "contains": "separates what it knows, what it must learn, and what it must refuse" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/communication-steward-report.ts", "contains": "knowledge-bounds-the-answer" }
+      ]
+    },
+    {
+      "id": "prohibited-topics",
+      "area": "A prohibited topic is refused, never negotiated",
+      "requirement": "A topic the organization prohibited is refused before any other question is weighed.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/communication-steward.ts", "contains": "rule_topic_prohibited" },
+        { "kind": "test", "path": "tests/unit/communication-steward.test.ts", "contains": "refuses a topic the organization prohibited, before anything else is weighed" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "hard-limits",
+      "area": "Volume and spend ceilings are hard",
+      "requirement": "A reached limit stops the steward and names the limit, and an approaching limit warns the owner before it bites. Money is held in minor units with a currency.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/communication-steward.ts", "contains": "limitStatus" },
+        { "kind": "test", "path": "tests/unit/communication-steward.test.ts", "contains": "stops when a hard limit is reached, and names the limit" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/communication-steward-report.ts", "contains": "limits-and-recording-are-hard" }
+      ]
+    },
+    {
+      "id": "quiet-hours",
+      "area": "Quiet hours bind external channels, in the mandate's timezone",
+      "requirement": "An external message inside the quiet window is refused, an in-app message is not, an authorised emergency is not silenced, and an unreadable clock fails closed.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/communication-steward.ts", "contains": "isWithinQuietHours" },
+        { "kind": "test", "path": "tests/unit/communication-steward.test.ts", "contains": "reads wrap-around quiet hours inclusively at the start and exclusively at the end" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/communication-steward-report.ts", "contains": "quiet-hours-bind-external-channels-only" }
+      ]
+    },
+    {
+      "id": "disclosure-duty",
+      "area": "A person speaking to a machine is told so",
+      "requirement": "A permitted conversation obliges disclosure of the assistant where the mandate requires it or the words are machine-generated, and the duty travels with the permission.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/communication-steward.ts", "contains": "disclosureObligation" },
+        { "kind": "test", "path": "tests/unit/communication-steward.test.ts", "contains": "requires disclosure when the mandate demands it or the words are machine-made" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "recording-permission",
+      "area": "Recording needs permission and carries notice",
+      "requirement": "Recording a call is refused unless the mandate allows it, and a permitted recording carries an obligation to announce it.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/communication-steward.ts", "contains": "rule_recording_not_permitted" },
+        { "kind": "test", "path": "tests/unit/communication-steward.test.ts", "contains": "announce_recording" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "audit-obligation",
+      "area": "No decision is returned without its audit duty",
+      "requirement": "Every decision — allowed refused, gated or escalated — carries an audit obligation and a reason long enough to be actionable.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/communication-steward.ts", "contains": "audit_record" },
+        { "kind": "test", "path": "tests/unit/communication-steward.test.ts", "contains": "never returns a decision without the audit duty attached" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/routes/_authenticated/super-admin/communication-steward.tsx", "contains": "communicationStewardReport" }
+      ]
+    },
+    {
+      "id": "call-state-machine",
+      "area": "A call follows declared states and never resumes once finished",
+      "requirement": "A call session starts in REQUESTED, moves only along declared transitions, refuses shortcuts to an outcome, and treats COMPLETED and ABANDONED as terminal; only COMPLETED counts as resolved.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/communication-steward.ts", "contains": "isCallTransitionAllowed" },
+        { "kind": "test", "path": "tests/unit/communication-steward.test.ts", "contains": "allows the real path and refuses shortcuts to an outcome" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "escalation-safety-valve",
+      "area": "Escalation is always available and never a failure",
+      "requirement": "An unacknowledged emergency escalates within ten minutes, an urgent message within the hour, three attempts or a day of silence escalate, and escalation is permitted even when the mandate is revoked or at OBSERVE.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/communication-steward.ts", "contains": "evaluateEscalation" },
+        { "kind": "test", "path": "tests/unit/communication-steward.test.ts", "contains": "lets a steward escalate even when its mandate is revoked and empty" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/communication-steward-report.ts", "contains": "revocation-freezes-but-never-traps" }
+      ]
+    },
+    {
+      "id": "mandate-lifecycle",
+      "area": "A mandate is live only between creation and expiry or revocation",
+      "requirement": "A revoked or expired mandate refuses every action, and revocation is a timestamp rather than a deletion.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/communication-steward.ts", "contains": "mandateIsActive" },
+        { "kind": "test", "path": "tests/unit/communication-steward.test.ts", "contains": "treats a revoked or expired mandate as not live, whatever it authorises" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "presence-privacy",
+      "area": "Presence is privacy-controlled and platform-internal",
+      "requirement": "Presence states are online, offline and recently active; a signal is shareable only when the subject permits it, and presence never implies reachability by telephone.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/communication-steward.ts", "contains": "PRESENCE_STATES" },
+        { "kind": "test", "path": "tests/unit/communication-steward.test.ts", "contains": "applies quiet hours only to channels that reach a person outside the platform" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "provider-catalogue",
+      "area": "The provider catalogue describes the real market",
+      "requirement": "The registry names the carriers, WhatsApp, email, push, meeting, social and presence adapters the platform is designed to route through, with an operator-facing explanation, a channel list and a region list for each, and no duplicate ids.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/communication-providers.ts", "contains": "PROVIDER_CATALOGUE" },
+        { "kind": "test", "path": "tests/unit/communication-providers.test.ts", "contains": "catalogues the providers the platform is designed to route through" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/communication-steward-report.ts", "contains": "PROVIDER_CATALOGUE" }
+      ]
+    },
+    {
+      "id": "credential-hygiene",
+      "area": "A provider credential is a reference, never a secret",
+      "requirement": "An adapter must name its credential by scheme (secret://, vault://, kms://, env://, internal://); an empty reference, a schemeless string and material that looks like a real key are all refused, and every catalogued adapter passes.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/communication-providers.ts", "contains": "assertCredentialReference" },
+        { "kind": "test", "path": "tests/unit/communication-providers.test.ts", "contains": "refuses material that looks like a real provider key" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "capability-matrix",
+      "area": "Capability is derived from the registry, not hard-coded",
+      "requirement": "Every declared channel appears exactly once in the capability matrix, and each channel's provider list is derived from the adapters that claim it.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/communication-providers.ts", "contains": "providerCapabilityMatrix" },
+        { "kind": "test", "path": "tests/unit/communication-providers.test.ts", "contains": "derives each channel's providers from the catalogue itself" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "routing-refusal",
+      "area": "Routing refuses rather than guessing",
+      "requirement": "A delivery resolves to an ACTIVE adapter for the channel and region, or is refused with the reasons and the candidates it rejected; a region a provider does not serve is never selected; a degraded provider is used only when the caller allows it; and a capability requirement that excludes every adapter is reported as such.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/communication-providers.ts", "contains": "selectProvider" },
+        { "kind": "test", "path": "tests/unit/communication-providers.test.ts", "contains": "tells the truth when adapters exist but none satisfies the requirement" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/communication-steward-report.ts", "contains": "no-external-provider-is-live-yet" }
+      ]
+    },
+    {
+      "id": "failover-ladder",
+      "area": "Failover walks down tiers and respects regions",
+      "requirement": "The ladder orders primary, then regional where the region is served, then secondary; it carries only adapters that handle the channel, excludes providers that do not serve the region, and reports the health it was given.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/communication-providers.ts", "contains": "failoverChain" },
+        { "kind": "test", "path": "tests/unit/communication-providers.test.ts", "contains": "puts the primary first and never steps back up a tier" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/communication-steward-report.ts", "contains": "failover-ladder-is-declared" }
+      ]
+    },
+    {
+      "id": "provider-lifecycle",
+      "area": "A provider lifecycle is a machine, not a label",
+      "requirement": "DISCOVERED, CONFIGURED, VALIDATED, ACTIVE, DEGRADED, SUSPENDED and RETIRED exist; validation cannot be skipped, RETIRED is terminal, only ACTIVE is usable without an explicit request, and every external adapter is DISCOVERED because no credential is provisioned.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/communication-providers.ts", "contains": "isProviderTransitionAllowed" },
+        { "kind": "test", "path": "tests/unit/communication-providers.test.ts", "contains": "refuses to skip validation or resurrect a retired provider" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/communication-steward-report.ts", "contains": "no-external-provider-is-live-yet" }
+      ]
+    },
+    {
+      "id": "mandate-persistence",
+      "area": "Mandates, consent, do-not-contact and call sessions are durable",
+      "requirement": "The steward mandate data model (section EM) arrives as a migration with its RLS policies, so a decision can be proved after the fact. Today the shapes exist as typed values only, and nothing persists them.",
+      "required": true,
+      "evidence": [
+        { "kind": "document", "path": "architecture/phase-10-communication-platform.md", "contains": "Steward Mandate Data Model" },
+        { "kind": "module", "path": "frontend/src/lib/communication-steward.ts", "contains": "StewardMandate" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "live-provider-delivery",
+      "area": "An external message can actually be delivered",
+      "requirement": "At least one external adapter holds a provisioned credential and reaches ACTIVE, so SMS, voice, WhatsApp, email or push can leave the platform. Today every external adapter is DISCOVERED and routing refuses every real channel.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/communication-providers.ts", "contains": "PROVIDER_CATALOGUE" },
+        { "kind": "module", "path": "frontend/src/lib/communication-providers.ts", "contains": "health: \"DISCOVERED\"" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "telephony-binding",
+      "area": "A provider call is actually performed",
+      "requirement": "An adapter implementation performs a provider request and an inbound webhook surface receives delivery receipts and inbound messages, so failover, retry and receipts are observed rather than declared.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/communication-providers.ts", "contains": "ProviderAdapter" },
+        { "kind": "document", "path": "architecture/phase-10-communication-platform.md", "contains": "Provider Adapter Layer" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "steward-generation",
+      "area": "The steward composes answers from the organization's material",
+      "requirement": "A generation path and a knowledge-pack store exist, so the steward can answer inside its pack instead of only deciding whether an action is permitted. Today the decisions are deterministic policy with no model and no pack store behind them.",
+      "required": false,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/communication-steward.ts", "contains": "StewardKnowledgePack" },
+        { "kind": "document", "path": "architecture/phase-10-communication-platform.md", "contains": "knowledge pack" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "recording-and-transcript-store",
+      "area": "A permitted recording has storage, retention and access rules",
+      "requirement": "Recordings and transcripts have storage, a retention window, an access policy and a deletion path, so recording can be switched on lawfully.",
+      "required": false,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/communication-steward.ts", "contains": "recordingAllowed" },
+        { "kind": "document", "path": "architecture/phase-10-communication-platform.md", "contains": "recording" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "subscription-metering",
+      "area": "Seats and plans are enforced and billed",
+      "requirement": "Steward usage is metered, plan tiers are enforced and invoices are produced. Today a subscription carries a billing reference and nothing measures anything.",
+      "required": false,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/communication-steward.ts", "contains": "billingRef" },
+        { "kind": "document", "path": "architecture/phase-10-communication-platform.md", "contains": "Declared limitation" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "handover-automation",
+      "area": "Replacing a human role is decided with the people affected",
+      "requirement": "An organization can hand its support-and-communications role to its steward through a recorded handover. The mechanism and the record exist; the staffing decision is the organization's, and nothing performs it automatically.",
+      "required": false,
+      "evidence": [
+        { "kind": "document", "path": "architecture/phase-10-communication-platform.md", "contains": "The Human Role the Steward Replaces" },
+        { "kind": "module", "path": "frontend/src/lib/communication-steward-report.ts", "contains": "human-role-replacement-is-an-organizational-decision" }
+      ],
+      "boundary": []
+    }
+  ]
+}

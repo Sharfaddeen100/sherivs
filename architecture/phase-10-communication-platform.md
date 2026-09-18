@@ -1,9 +1,11 @@
 Phase 10 — Communication Platform
 A. Identity
 A.1 Subsystem Identity
-The Communication Platform is CoreGrid Scholar's unified institutional communication infrastructure.
+The Communication Platform is CoreGrid's unified institutional communication infrastructure.
 It provides the capabilities required for people, institutions, services, applications, agents, and approved external systems to communicate through controlled, observable, reliable, multi-channel communication mechanisms.
-The platform provides a common communication substrate across CoreGrid Scholar.
+The platform provides a common communication substrate across CoreGrid. A runtime is a
+consumer of that substrate, never its boundary: CoreGrid Scholar is runtime-001, the first
+consumer.
 It abstracts communication channels away from individual business domains.
 
 ───
@@ -67,7 +69,7 @@ The platform supports:
 
 B. Purpose
 B.1 Primary Purpose
-Provide CoreGrid Scholar with a unified communication layer capable of delivering institutional communications reliably across multiple channels.
+Provide CoreGrid with a unified communication layer capable of delivering institutional communications reliably across multiple channels.
 
 ───
 
@@ -2073,4 +2075,561 @@ Phase 10 is accepted when:
 16. tenant boundaries are enforced.
 17. authorization integrates with Phase 08.
 18. trust information can be consumed from Phase 09.
-19. approved agents can use c
+19. approved agents can use communication tools.
+20. AI-assisted communication is controlled.
+21. mass communication is protected.
+22. emergency communication is controlled.
+23. communication events are emitted.
+24. webhooks are verified.
+25. communication audit records exist.
+26. provider failover works.
+27. disaster recovery is tested.
+28. accessibility requirements are met.
+29. performance requirements are validated.
+30. operational monitoring exists.
+
+───
+
+EH. Definition of Done
+Phase 10 is complete only when:
+• communication domain model exists
+• communication APIs exist
+• event contracts exist
+• provider abstraction exists
+• delivery engine exists
+• notification system exists
+• conversation system exists
+• announcement system exists
+• templates exist
+• preferences exist
+• subscriptions exist
+• scheduling exists
+• delivery tracking exists
+• retry system exists
+• dead-letter handling exists
+• webhook processing exists
+• attachment handling exists
+• moderation exists
+• accessibility exists
+• localization exists
+• tenant isolation exists
+• security integration exists
+• trust integration exists
+• agent integration exists
+• observability exists
+• disaster recovery exists
+• testing exists
+• documentation exists
+
+───
+
+EI. Future Evolution
+Future capabilities may include:
+• richer real-time communication
+• institution-to-institution messaging
+• advanced voice communication
+• secure video communication integrations
+• AI communication assistants
+• intelligent communication routing
+• multilingual real-time translation
+• communication risk detection
+• advanced notification personalization
+• communication federation
+• decentralized communication identity
+• advanced anti-abuse systems
+Future evolution must preserve:
+• channel abstraction
+• provider independence
+• message identity
+• delivery semantics
+• tenant isolation
+• security boundaries
+• auditability
+• privacy
+• backward compatibility
+
+───
+
+EJ. Architectural Invariants
+The following rules are mandatory:
+1. Communication is a platform capability.
+2. Business domains own communication meaning, not delivery infrastructure.
+3. Phase 10 owns communication delivery.
+4. Phase 08 owns runtime security enforcement.
+5. Phase 09 owns trust.
+6. Phase 07 owns agent execution.
+7. Phase 11 owns academic meaning.
+8. Phase 12 owns institutional scheduling intelligence.
+9. Phase 13 owns financial operations.
+10. Phase 17 owns cross-system automation.
+11. Phase 18 owns cross-platform analytics.
+12. Provider-specific logic must remain behind adapters.
+13. Provider replacement must not require rewriting business domains.
+14. Communication must remain tenant-aware.
+15. High-impact communication requires explicit authorization.
+16. AI-generated messages must not automatically acquire unrestricted sending authority.
+17. Mass communication must be protected against accidental or malicious execution.
+18. Delivery state must be observable.
+19. Retries must be idempotent.
+20. Unknown delivery state must not be treated as successful delivery.
+21. Critical communications require controlled escalation.
+22. Communication retention must be explicit.
+23. Sensitive communication must receive appropriate protection.
+24. External communication must be explicitly identifiable.
+25. Cross-tenant communication must be explicitly authorized.
+26. Communication contracts must be versioned.
+27. Events must remain backward-compatible.
+28. Auditability must be preserved.
+29. Durable message state remains authoritative over real-time transport.
+30. Communication infrastructure must remain replaceable and provider-independent.
+
+───
+
+EK. Final Architectural Principle
+CoreGrid should never allow every subsystem to invent its own communication infrastructure.
+A student system, academic system, financial system, scheduling system, automation system, agent system, government system, and institutional command centre should all be able to request communication through the same controlled platform.
+The Communication Platform therefore acts as CoreGrid's institutional communication nervous system. A runtime consumes it rather than owning it: CoreGrid Scholar is runtime-001, the first consumer of this contract.
+It carries the messages.
+It does not decide the meaning of the institution's business events.
+It does not own identity.
+It does not own security policy.
+It does not own agents.
+It does not own academic intelligence.
+It does not own financial operations.
+It does not own automation.
+It provides the reliable, secure, observable communication infrastructure through which those systems can communicate.
+The result is a communication layer that is:
+• modular
+• multi-tenant
+• secure
+• provider-independent
+• observable
+• auditable
+• accessible
+• localized
+• resilient
+• AI-compatible
+• automation-compatible
+• institution-ready
+• globally extensible
+• backward-compatible
+
+───
+
+EL. Dependency Register
+
+EL.1 Purpose
+Every dependency this phase has, and every dependency other phases have on it, is stated
+here as a testable claim rather than left as an implication. A dependency that cannot be
+named is a dependency the platform has not understood.
+
+EL.2 Inbound dependencies — what this phase requires before it can behave as designed
+• Dependency on Phase 01 (Foundation): the kernel primitives — contracts, events, outbox,
+  error taxonomy. If a kernel primitive changes, this phase changes; the reverse is not
+  true.
+• Dependency on Phase 02 (Identity): every contact is an opaque reference owned by
+  identity. Communication never resolves a person by itself.
+• Dependency on Phase 03 (Multi-Tenancy): every subscription, mandate, message and call
+  session carries a tenant, and isolation is enforced by row-level security rather than by
+  convention.
+• Dependency on Phase 06 (Workspace): the inbox, notification centre and conversation
+  surfaces are hosted inside the workspace shell.
+• Dependency on Phase 07 (Agent System): the steward is an agent principal. Execution,
+  memory and tool rules come from Phase 07 and are never re-implemented here.
+• Dependency on Phase 08 (Security Engine): the authorization decision to send, moderate,
+  export or record is Phase 08's, not this phase's.
+• Dependency on Phase 09 (Trust Fabric): provenance, retention and trust assertions over
+  communication artefacts belong to Phase 09.
+• Dependency on the domain phases (11 and later): communication carries domain meaning and
+  never defines it.
+
+EL.3 Outbound dependencies — what depends on this phase
+• Academic, financial, scheduling, transport, health, government and agent capabilities
+  depend on this phase for delivery. They publish intent; this phase owns delivery state.
+• A consumer of a communication module acquires a dependency on the message contract
+  version, never on a provider.
+
+EL.4 External provider dependencies
+Anything that leaves the platform depends on an external provider: telephony and SMS
+carriers, WhatsApp Business, email relays and senders, push services, meeting providers and
+social platforms.
+Each dependency is isolated behind one adapter shape, so the dependency is on a capability
+(voice, SMS, email, push) rather than on a company. A provider that changes its terms,
+degrades, or disappears becomes a routing decision rather than a rewrite (EJ.12, EJ.13,
+EJ.30).
+
+EL.5 Dependency rules
+1. A domain may depend on the communication contract; it may never call a provider.
+2. A provider adapter may depend on nothing inside a domain.
+3. A dependency that is not stated in this register is not authorised.
+4. If a phase that depends on this phase requires this phase to depend on it, that is a
+   cycle and must be refused at review.
+
+───
+
+EM. Steward Mandate Data Model
+
+EM.1 Purpose
+This is the data model the Communication Steward needs in order to be durable. The shapes
+below are implemented today as typed values with enforced invariants; the tables are not yet
+created, and that gap is declared in the steward report rather than implied away. A model
+that is written down is a model that can be migrated deliberately.
+
+EM.2 Entities
+• organization_communication_subscription — one row per organization subscribed to
+  platform communication.
+• steward_mandate — one row per steward a subscription carries: the authority it holds.
+• steward_quiet_hours — the mandated quiet window, in the mandate's timezone.
+• communication_consent_record — a recorded, attributable opt-in.
+• communication_do_not_contact — a person's instruction not to be contacted.
+• steward_knowledge_pack — what the steward may know, with its provenance.
+• steward_knowledge_pack_topic — the topics a pack covers, and those it refuses.
+• call_session — one inbound or outbound conversation, with its state history.
+• steward_decision_record — the audit record of every decision: what was asked, what was
+  decided, which rule decided it, and which obligations were attached.
+
+EM.3 Columns of the principal tables
+organization_communication_subscription: id (primary key), tenant_id (foreign key),
+organization_name, plan (enum: essential | professional | institution | enterprise),
+status (enum: pending | active | suspended), channels (text[]), steward_enabled (boolean),
+steward_seats (integer), policy_pack_ref, billing_ref, provisioned_at, created_at,
+updated_at.
+
+steward_mandate: id (primary key), tenant_id (foreign key), subscription_id (foreign key),
+organization_name, steward_id, autonomy (enum: OBSERVE | DRAFT | APPROVAL_REQUIRED |
+AUTONOMOUS), channels (text[]), audiences (text[]), jurisdictions (text[]),
+languages (text[]), prohibited_topics (text[]), knowledge_topics (text[]),
+requires_disclosure (boolean), recording_allowed (boolean), emergency_allowed (boolean),
+external_recipients_allowed (boolean), escalation_target, created_at, expires_at (nullable),
+revoked_at (nullable).
+
+steward_mandate_limit: mandate_id (foreign key), currency, max_outbound_calls_per_hour,
+max_outbound_calls_per_day, max_messages_per_day, max_mass_recipients,
+max_call_minutes_per_day, max_monthly_spend_minor_units.
+
+communication_consent_record: id, tenant_id, subject_ref, channel, purpose (enum),
+granted_at, expires_at (nullable), revoked_at (nullable), source (not null).
+
+communication_do_not_contact: id, tenant_id, contact_ref, scope (enum: all | marketing |
+voice), recorded_at, source (not null).
+
+call_session: id, tenant_id, steward_id, direction (enum: inbound | outbound), channel
+(enum: voice | whatsapp_voice), contact_ref, state (enum over the nine declared call
+states), started_at, ended_at (nullable), disposition (nullable), escalated_to (nullable).
+
+steward_decision_record: id, tenant_id, mandate_id, action, channel, audience, purpose,
+classification, decision (enum: ALLOW | DENY | REQUIRE_APPROVAL | ESCALATE), reason,
+failed_rules (text[]), obligations (text[]), decided_at, actor_ref.
+
+EM.4 Keys, constraints and enums
+• Primary keys are opaque identifiers; no natural key is ever a primary key.
+• tenant_id is NOT NULL on every table, so a row without a tenant cannot exist.
+• autonomy, plan, status, purpose, classification, direction, scope, call state and decision
+  are enumerated types: a typo cannot widen authority or invent a state.
+• Money is held in minor units with an explicit currency column; no floating point.
+• A mandate may not be deleted while a decision record references it. Revocation is a
+  timestamp, not a deletion, so the authority that was in force remains legible.
+• consent.source and do_not_contact.source are NOT NULL: an unattributable instruction is
+  not an instruction.
+
+
+EM.5 Indexes
+• (tenant_id, decided_at desc) on steward decision records and on call sessions, for the
+  operational views a control plane actually reads.
+• (tenant_id, subject_ref, channel, purpose) on consent records, because that is the exact
+  question the decision engine asks before any marketing send.
+• (tenant_id, contact_ref) on do-not-contact entries, because that question is asked on
+  every send to a known contact.
+• A partial index that excludes revoked mandates is deliberately not used: a revoked
+  mandate must remain readable for audit.
+
+EM.6 Row-level security
+• Every table in this model is tenant-scoped under row-level security. Application code is
+  never the only security layer (Constitution §17, Phase 03).
+• The control plane reads across tenants through a service role; it never trusts a tenant
+  identifier supplied by a client.
+• A steward's decision records are readable by the organization that owns them and by the
+  control plane, and by nothing else.
+• Consent and do-not-contact rows are readable outside their tenant only in aggregate,
+  never as individual rows.
+
+EM.7 Migration and evolution
+• These tables arrive as a forward migration with their policies in the same change. A
+  table without its policy is not merged.
+• Columns are added nullable or with a default; a widening of authority (a new autonomy
+  level, a new action kind, a new channel) is a versioned contract change, never a data
+  edit.
+• Existing rows are never rewritten to grant authority. New authority arrives as a new
+  mandate version, so the history of what was permitted stays readable.
+• The model is additive: a provider, a channel or a language is data, and adding one must
+  not require a schema change to an existing tenant's mandate.
+
+EM.8 Declared gaps in this model
+1. No migration exists yet: the model is documented and implemented as typed values, and
+   nothing persists it. Until the migration lands, a mandate lives only as long as the
+   process that built it.
+2. No retention or deletion policy is attached to decision records, call sessions,
+   consent records or knowledge packs.
+3. No recording or transcript storage is modelled, because recording is not yet permitted
+   to be switched on.
+4. Billing is a reference, not a meter: plan tiers are descriptive until metering exists.
+These gaps are reported by the steward report and by the phase acceptance record rather
+than hidden behind a table name.
+
+───
+
+EN. Organization Subscription to Platform Communication
+
+EN.1 Principle
+Communication is a platform capability, and every organization that plugs into CoreGrid
+subscribes to it rather than assembling its own. A tenant that joins the platform receives
+the communication infrastructure, the provider routing, the policy surface and an autonomous
+Communication Steward — configured to that organization's authority, not to the platform's
+convenience.
+
+EN.2 What a subscription carries
+• The channel set the organization is authorised to use, per jurisdiction.
+• A Communication Steward, with the seats the plan entitles the organization to.
+• The organization's own policy pack reference and escalation queue.
+• The communication surfaces: inbox, notification centre, conversation view, announcement
+  composer.
+• Access to the provider routing described in Sections S, T and EB — including regional
+  carriers, so an organization is not forced onto one company's coverage.
+• The audit record of everything its steward decided, and the reasons.
+
+EN.3 Provisioning semantics
+1. Provisioning creates the subscription in state pending, with the requested channels
+   recorded on the subscription.
+2. Provisioning creates the steward's mandate in OBSERVE with no channels, no audiences, no
+   jurisdictions, no languages and no knowledge topics. A new organization is trusted with
+   nothing until it writes down what its steward may do.
+3. The organization then opens authority deliberately: autonomy, channels, audiences,
+   jurisdictions, languages, knowledge topics, prohibited topics, quiet hours, limits,
+   disclosure and recording duties, and the escalation target.
+4. Only when a mandate is live does the steward act; and every act is bounded by the mandate
+   that authorises it.
+
+EN.4 Plan tiers and seats
+Communication plans: essential, professional, institution, enterprise. Seat entitlement
+scales with the plan, and every plan carries at least one steward. A plan changes seats and
+support; it never changes an organization's authority — authority is granted by the mandate
+and only by the mandate.
+
+EN.5 Isolation
+A subscription is tenant-scoped. There is no shared inbox, no shared contact list and no
+implicit cross-tenant reach. Cross-tenant communication is an explicit authorisation
+(Section DO), never a side effect of sharing a provider.
+
+
+EN.6 Declared limitation
+Plan tiers and seat counts are descriptive today: there is no metering and no invoice.
+Billing is a reference string, and the steward report states this in the open rather than
+letting a plan name imply enforcement that does not exist.
+
+───
+
+EO. The Communication Steward
+
+EO.1 What it is
+Every subscribing organization receives a Communication Steward: an autonomous
+communication agent that answers inbound voice and WhatsApp conversations, places outbound
+calls, sends messages and status updates, publishes to institutional social channels,
+schedules meetings, maintains presence, and escalates to a human when its mandate, its
+knowledge or its limits say it must.
+
+EO.2 Why it exists
+The role it performs is the support-and-communications role: answering the same questions all
+day, chasing acknowledgements, sending the same notices, keeping status current, and knowing
+when to fetch a person. That work is real, repetitive, and done badly at scale when it
+depends on who happens to be on duty. The platform makes it explicit, bounded, auditable and
+continuous, under a mandate rather than under a job description nobody wrote down.
+
+EO.3 What the steward is not
+• It is not the organization's authority: its mandate is written by the organization.
+• It is not the identity system, the security engine, the trust fabric or the agent runtime;
+  it consumes all four.
+• It is not an oracle: outside its knowledge pack it escalates.
+• It is not unbounded: volume, spend, audience and jurisdiction ceilings stop it.
+
+EO.4 The mandate — authority expressed as data
+A mandate carries: autonomy, channels, audiences, jurisdictions, languages, knowledge
+topics, prohibited topics, quiet hours with a timezone, hard limits (calls per hour and per
+day, messages per day, mass recipients, call minutes per day, monthly spend in minor units),
+disclosure duty, recording permission, emergency permission, external-recipient permission,
+and an escalation target. It has a creation time, an optional expiry and an optional
+revocation.
+
+EO.5 The autonomy ladder
+OBSERVE — the steward watches and reports; it may never act.
+DRAFT — the steward may draft, and may report its own presence; nothing it produces reaches a
+person without a human sending it.
+APPROVAL_REQUIRED — the steward may act, and a human approves each person-facing action
+before it reaches anyone.
+AUTONOMOUS — the steward acts on its own, still bounded by every mandate rule, limit, quiet
+hour, consent record and classification rule.
+Autonomy is monotone: raising it is a deliberate, recorded act, and lowering or revoking it
+takes effect immediately.
+
+EO.6 The decision
+Every steward action passes one gate, which returns ALLOW, DENY, REQUIRE_APPROVAL or
+ESCALATE together with the reason, the rule that decided it, and the obligations the action
+carries. The rules, in order: escalation is always available; the mandate must be live; a
+forbidden classification is refused; a prohibited topic is refused; channel, audience and
+external reach must be opened; jurisdiction must be known and inside the mandate; language
+must be mandated; a do-not-contact instruction is absolute; marketing requires a recorded
+opt-in and emergency requires explicit authority; knowledge outside the pack escalates; a
+reached limit stops the steward; quiet hours bind external channels; autonomy decides act,
+ask or step aside; mass communication and sensitive classifications always need a human;
+recording needs permission; and every permitted action still carries its duties.
+
+EO.7 Obligations travel with permission
+An ALLOW is never bare. It arrives with its duties attached — disclose the assistant, announce
+the recording, honour the opt-out, warn the owner before a limit, log a public statement —
+because a permission without its duty is how a platform loses the trust it was given.
+───
+
+EP. Autonomous Call Rules
+
+EP.1 Inbound
+1. A call arrives at the organization's number. The call session is created in REQUESTED and
+   moves along the declared call state machine; no state is skipped and no finished call is
+   resumed.
+2. The steward answers only if its mandate is live, voice is an authorised channel, the
+   contact's jurisdiction is inside the mandate, the language is mandated, no quiet-hours
+   restriction applies to the purpose, and its autonomy reaches the level an answered call
+   requires.
+3. Below that autonomy, the call is routed to a human instead; the steward never answers on
+   behalf of an authority it was not given.
+4. The steward states that it is an assistant where disclosure is required or where the words
+   are machine-generated. A person who asks for a human is handed to one.
+5. Outside its knowledge pack, the steward takes a message and escalates rather than guessing.
+6. A MISSED, FAILED or ABANDONED call is reported as such. Unknown is never reported as
+   delivered.
+
+EP.2 Outbound
+1. An outbound call requires AUTONOMOUS authority; below that it is queued for human approval,
+   because a ringing telephone cannot be approved after the fact.
+2. Outbound minutes, calls per hour and calls per day are bounded by the mandate, and the
+   steward stops when a ceiling is reached rather than discovering it mid-conversation.
+3. Quiet hours apply in the mandate's timezone, with the clock supplied by the caller so
+   daylight-saving transitions are resolved by the system that owns the timezone data.
+4. An authorised emergency may be placed inside quiet hours; nothing else may.
+5. Recording is permitted only where the mandate allows it, and notice of recording is an
+   obligation of the call, not an option.
+6. Every outbound attempt takes the failover ladder for its channel and region: the declared
+   primary first, then the regional carrier, then the secondary. A degraded provider is used
+   only when the caller asked for one.
+
+EP.3 Handover
+A handover to a human carries the conversation context the organization is allowed to share,
+the mandate that governs it, and the escalation target. The steward does not retain the
+caller after a handover, and the session records who took over and when.
+
+EP.4 Presence and status
+Presence states are online, offline and recently active, and they are shareable only when the
+subject permits it. Presence is a platform-internal signal: it carries no contact data and is
+never used to infer whether a person is reachable by telephone.
+
+───
+
+EQ. The Human Role the Steward Replaces
+
+EQ.1 The claim, stated plainly
+A mandate with AUTONOMOUS authority, voice, WhatsApp, email, status, meeting, presence and
+social reach is the authority a support-and-communications employee is given today. A
+subscribing organization can therefore hand that role to its steward: the repeated answering,
+the acknowledgement chasing, the routine notices, the status keeping, and the escalation when
+a person is genuinely needed.
+
+EQ.2 What that means for the organization's people
+The steward replaces the role, not the judgement. It removes the work that is mechanical and
+leaves the work that is human: decisions the mandate does not cover, conversations outside
+the knowledge pack, anything involving a prohibited topic, sensitive classifications, and
+complaints that need an accountable person. Those arrive as escalations with the history
+attached, which is a better starting point for a person than a cold queue.
+
+EQ.3 The obligations this creates for the platform
+1. Disclosure: a person speaking to a machine is told so, in words, before they invest
+   anything in the conversation.
+2. Reachability: a human must always be reachable through the escalation target, including
+   outside working hours, or the mandate's emergency authority is misleading.
+3. Opt-out: an instruction not to be contacted is absolute and survives every plan change.
+4. Review: an organization can read every decision its steward made, with the rule that
+   decided it, and can lower or revoke its authority at any time.
+5. Honesty about limits: the platform states which channels are live. Today only platform
+   presence and in-app are live; every external channel is declared and unrouted until a
+   credential exists.
+
+EQ.4 The adoption boundary
+Handing a human role to an autonomous steward is an organizational decision, taken with the
+people affected. The platform provides the mechanism, the mandate and the record; it does not
+create the staffing decision, and nothing in this phase performs a handover automatically.
+
+
+
+
+───
+
+ER. Steward Acceptance Criteria
+
+ER.1 Organizational subscription
+1. An organization with a tenant and a name can be provisioned; one without either is
+   refused.
+2. Provisioning returns a subscription in state pending and a mandate in OBSERVE with no
+   channels, audiences, jurisdictions, languages or knowledge topics.
+3. Seat entitlement follows the plan, and every plan carries at least one steward.
+
+ER.2 Authority is bounded by the mandate
+4. An action on a channel, audience, jurisdiction or language the mandate has not opened is
+   refused, and the refusal names the rule.
+5. An unknown jurisdiction is refused: unknown is not authorised.
+6. A revoked or expired mandate refuses everything except escalation to a human.
+7. Escalation is available at every autonomy level, including OBSERVE and including a
+   revoked mandate.
+
+ER.3 Autonomy
+8. OBSERVE refuses every action.
+9. DRAFT produces drafts and may report its own presence; it never sends.
+10. APPROVAL_REQUIRED queues every person-facing action for human approval.
+11. AUTONOMOUS acts alone within the mandate.
+12. Answering and placing calls require AUTONOMOUS authority; below it, a call is routed to a
+    human or queued for approval.
+
+ER.4 Protection that outranks autonomy
+13. Mass communication requires human approval at every autonomy level, and requests a
+    recipient estimate and a preview.
+14. Confidential and restricted classifications require human approval.
+15. Highly restricted classification cannot be handled by a steward at all.
+16. A do-not-contact instruction is absolute.
+17. Marketing requires a recorded opt-in with an attributable source; emergency requires
+    explicit mandate authority.
+18. A reached limit stops the steward and names the limit; an approaching limit warns the
+    owner first.
+19. External channels observe the mandate's quiet hours in its timezone; an in-app channel is
+    not a disturbance; an authorised emergency is not silenced.
+
+ER.5 Duties travel with permission
+20. Every decision carries an audit obligation.
+21. A permitted conversation obliges disclosure of the assistant where the mandate or the
+    law requires it.
+22. A permitted recording requires the mandate's permission and carries a notice duty.
+23. A public statement is logged.
+24. An opt-out obligation accompanies every allowed action to a known contact.
+
+ER.6 Provider independence
+25. Every adapter names its credential by reference; raw-looking material is refused.
+26. Routing resolves to an ACTIVE adapter for the channel and region, or refuses with the
+    reasons it rejected; a degraded provider is used only when the caller allows it.
+27. The capability matrix is derived from the registry, so no module hard-codes a provider.
+28. The registry reports no findings about itself, and only the platform's own presence
+    adapter is live.
+
+ER.7 Honesty
+29. The steward report exercises the mandate machine on real organizations and reports every
+    check with the observation that produced it.
+30. The report declares the gaps — no live external provider, no persistence, no telephony
+    binding, no steward model, no recording store, no metering, no automated handover — with
+    the consequence and the owner of each.
+31. A surface showing steward authority declares no role list of its own; authorization is
+    enforced by the platform's existing layers.
+

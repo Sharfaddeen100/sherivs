@@ -38,17 +38,44 @@ export const PHASE_10_COMMUNICATION = definePhaseContractFromSeed({
     "Every message has an authorized audience, a recorded sender and an auditable delivery path; no broadcast bypasses audience resolution.",
   dependsOn: ["01", "02", "03", "05", "08"],
   consumers: ["24", "43"],
-  substrates: ["conversations", "participants", "channels", "templates", "delivery records"],
+  substrates: [
+    "conversations",
+    "participants",
+    "channels",
+    "templates",
+    "delivery records",
+    "provider adapters",
+    "steward mandates",
+    "call sessions",
+  ],
   tests: [
     "tests/unit/communication-core.test.ts",
     "tests/unit/communication-conversation.test.ts",
     "tests/unit/communication-channels.test.ts",
     "tests/unit/communication-templates.test.ts",
+    "tests/unit/communication-providers.test.ts",
+    "tests/unit/communication-steward.test.ts",
+    "tests/unit/communication-steward-report.test.ts",
   ],
   provides: [
     { id: "communication:send", kind: "command", description: "send to an audience" },
     { id: "communication:resolve-thread", kind: "query", description: "read a conversation" },
     { id: "communication:render-template", kind: "api", description: "render a message" },
+    {
+      id: "communication:steward-decide",
+      kind: "api",
+      description: "decide whether a steward action is allowed, refused, needs approval or escalates",
+    },
+    {
+      id: "communication:route-provider",
+      kind: "query",
+      description: "resolve the carrier for a channel and region, or refuse with the reasons",
+    },
+    {
+      id: "communication:provision-subscription",
+      kind: "command",
+      description: "provision an organization with a communication subscription and an inert steward mandate",
+    },
   ],
   consumesContracts: [
     { id: "identity:resolve-actor", kind: "query" },
@@ -62,5 +89,9 @@ export const PHASE_10_COMMUNICATION = definePhaseContractFromSeed({
   sections: {
     tenancy:
       "Audience resolution is tenant-scoped and RLS-backed; a channel cannot reach another tenant's members, and cross-tenant messaging requires an explicit federation policy.",
+    aiSafety:
+      "Every subscribing organization receives a Communication Steward whose authority is a mandate: autonomy, channels, audiences, jurisdictions, languages, quiet hours, limits, disclosure and recording duties. One gate decides ALLOW, DENY, REQUIRE_APPROVAL or ESCALATE and names the rule that decided it; mass and sensitive communication always need a human, and outside its knowledge pack the steward escalates instead of answering.",
+    architecture:
+      "External delivery is provider-independent by construction: adapters are data, credentials are references, and routing resolves an ACTIVE adapter for the channel and region or refuses with the reasons. No live external provider exists yet, and the steward report states that gap rather than implying a switched-on path.",
   },
 });

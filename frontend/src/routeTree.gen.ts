@@ -129,6 +129,7 @@ import { Route as AuthenticatedStudentReportCardRouteImport } from './routes/_au
 import { Route as AuthenticatedStudentTimetableRouteImport } from './routes/_authenticated/student/timetable'
 import { Route as AuthenticatedSuperAdminAgentGovernanceRouteImport } from './routes/_authenticated/super-admin/agent-governance'
 import { Route as AuthenticatedSuperAdminBillingRouteImport } from './routes/_authenticated/super-admin/billing'
+import { Route as AuthenticatedSuperAdminCommunicationStewardRouteImport } from './routes/_authenticated/super-admin/communication-steward'
 import { Route as AuthenticatedSuperAdminDashboardRouteImport } from './routes/_authenticated/super-admin/dashboard'
 import { Route as AuthenticatedSuperAdminLogsRouteImport } from './routes/_authenticated/super-admin/logs'
 import { Route as AuthenticatedSuperAdminPlatformConfigRouteImport } from './routes/_authenticated/super-admin/platform-config'
@@ -841,6 +842,12 @@ const AuthenticatedSuperAdminBillingRoute =
     path: '/billing',
     getParentRoute: () => AuthenticatedSuperAdminRouteRoute,
   } as any)
+const AuthenticatedSuperAdminCommunicationStewardRoute =
+  AuthenticatedSuperAdminCommunicationStewardRouteImport.update({
+    id: '/communication-steward',
+    path: '/communication-steward',
+    getParentRoute: () => AuthenticatedSuperAdminRouteRoute,
+  } as any)
 const AuthenticatedSuperAdminDashboardRoute =
   AuthenticatedSuperAdminDashboardRouteImport.update({
     id: '/dashboard',
@@ -1118,6 +1125,7 @@ export interface FileRoutesByFullPath {
   '/student/timetable': typeof AuthenticatedStudentTimetableRoute
   '/super-admin/agent-governance': typeof AuthenticatedSuperAdminAgentGovernanceRoute
   '/super-admin/billing': typeof AuthenticatedSuperAdminBillingRoute
+  '/super-admin/communication-steward': typeof AuthenticatedSuperAdminCommunicationStewardRoute
   '/super-admin/dashboard': typeof AuthenticatedSuperAdminDashboardRoute
   '/super-admin/logs': typeof AuthenticatedSuperAdminLogsRoute
   '/super-admin/platform-config': typeof AuthenticatedSuperAdminPlatformConfigRoute
@@ -1265,6 +1273,7 @@ export interface FileRoutesByTo {
   '/student/timetable': typeof AuthenticatedStudentTimetableRoute
   '/super-admin/agent-governance': typeof AuthenticatedSuperAdminAgentGovernanceRoute
   '/super-admin/billing': typeof AuthenticatedSuperAdminBillingRoute
+  '/super-admin/communication-steward': typeof AuthenticatedSuperAdminCommunicationStewardRoute
   '/super-admin/dashboard': typeof AuthenticatedSuperAdminDashboardRoute
   '/super-admin/logs': typeof AuthenticatedSuperAdminLogsRoute
   '/super-admin/platform-config': typeof AuthenticatedSuperAdminPlatformConfigRoute
@@ -1414,6 +1423,7 @@ export interface FileRoutesById {
   '/_authenticated/student/timetable': typeof AuthenticatedStudentTimetableRoute
   '/_authenticated/super-admin/agent-governance': typeof AuthenticatedSuperAdminAgentGovernanceRoute
   '/_authenticated/super-admin/billing': typeof AuthenticatedSuperAdminBillingRoute
+  '/_authenticated/super-admin/communication-steward': typeof AuthenticatedSuperAdminCommunicationStewardRoute
   '/_authenticated/super-admin/dashboard': typeof AuthenticatedSuperAdminDashboardRoute
   '/_authenticated/super-admin/logs': typeof AuthenticatedSuperAdminLogsRoute
   '/_authenticated/super-admin/platform-config': typeof AuthenticatedSuperAdminPlatformConfigRoute
@@ -1563,6 +1573,7 @@ export interface FileRouteTypes {
     | '/student/timetable'
     | '/super-admin/agent-governance'
     | '/super-admin/billing'
+    | '/super-admin/communication-steward'
     | '/super-admin/dashboard'
     | '/super-admin/logs'
     | '/super-admin/platform-config'
@@ -1710,6 +1721,7 @@ export interface FileRouteTypes {
     | '/student/timetable'
     | '/super-admin/agent-governance'
     | '/super-admin/billing'
+    | '/super-admin/communication-steward'
     | '/super-admin/dashboard'
     | '/super-admin/logs'
     | '/super-admin/platform-config'
@@ -1858,6 +1870,7 @@ export interface FileRouteTypes {
     | '/_authenticated/student/timetable'
     | '/_authenticated/super-admin/agent-governance'
     | '/_authenticated/super-admin/billing'
+    | '/_authenticated/super-admin/communication-steward'
     | '/_authenticated/super-admin/dashboard'
     | '/_authenticated/super-admin/logs'
     | '/_authenticated/super-admin/platform-config'
@@ -2750,6 +2763,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSuperAdminBillingRouteImport
       parentRoute: typeof AuthenticatedSuperAdminRouteRoute
     }
+    '/_authenticated/super-admin/communication-steward': {
+      id: '/_authenticated/super-admin/communication-steward'
+      path: '/communication-steward'
+      fullPath: '/super-admin/communication-steward'
+      preLoaderRoute: typeof AuthenticatedSuperAdminCommunicationStewardRouteImport
+      parentRoute: typeof AuthenticatedSuperAdminRouteRoute
+    }
     '/_authenticated/super-admin/dashboard': {
       id: '/_authenticated/super-admin/dashboard'
       path: '/dashboard'
@@ -3198,6 +3218,7 @@ const AuthenticatedStudentRouteRouteWithChildren =
 interface AuthenticatedSuperAdminRouteRouteChildren {
   AuthenticatedSuperAdminAgentGovernanceRoute: typeof AuthenticatedSuperAdminAgentGovernanceRoute
   AuthenticatedSuperAdminBillingRoute: typeof AuthenticatedSuperAdminBillingRoute
+  AuthenticatedSuperAdminCommunicationStewardRoute: typeof AuthenticatedSuperAdminCommunicationStewardRoute
   AuthenticatedSuperAdminDashboardRoute: typeof AuthenticatedSuperAdminDashboardRoute
   AuthenticatedSuperAdminLogsRoute: typeof AuthenticatedSuperAdminLogsRoute
   AuthenticatedSuperAdminPlatformConfigRoute: typeof AuthenticatedSuperAdminPlatformConfigRoute
@@ -3216,6 +3237,8 @@ const AuthenticatedSuperAdminRouteRouteChildren: AuthenticatedSuperAdminRouteRou
     AuthenticatedSuperAdminAgentGovernanceRoute:
       AuthenticatedSuperAdminAgentGovernanceRoute,
     AuthenticatedSuperAdminBillingRoute: AuthenticatedSuperAdminBillingRoute,
+    AuthenticatedSuperAdminCommunicationStewardRoute:
+      AuthenticatedSuperAdminCommunicationStewardRoute,
     AuthenticatedSuperAdminDashboardRoute:
       AuthenticatedSuperAdminDashboardRoute,
     AuthenticatedSuperAdminLogsRoute: AuthenticatedSuperAdminLogsRoute,
