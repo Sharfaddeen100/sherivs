@@ -1,0 +1,17 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90mC:/Users/USER/Downloads/remix-of-school-os-main/remix-of-school-os-main[39m
+
+ [32m✓[39m tests/unit/platform-neutrality.test.ts [2m([22m[2m22 tests[22m[2m)[22m[33m 8020[2mms[22m[39m
+   [33m[2m✓[22m[39m Only a runtime layer may name a runtime[2m > [22mno kernel or capability file introduces itself as a runtime's subsystem [33m 5735[2mms[22m[39m
+   [33m[2m✓[22m[39m Only a runtime layer may name a runtime[2m > [22mno kernel module names a runtime at all — the runtime consumes the kernel [33m 1915[2mms[22m[39m
+ [32m✓[39m tests/unit/trust-core.test.ts [2m([22m[2m19 tests[22m[2m)[22m[32m 23[2mms[22m[39m
+ [32m✓[39m tests/unit/trust-governance.test.ts [2m([22m[2m23 tests[22m[2m)[22m[32m 206[2mms[22m[39m
+ [32m✓[39m tests/unit/trust-fabric-report.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 17[2mms[22m[39m
+ [32m✓[39m tests/unit/trust-assertions.test.ts [2m([22m[2m21 tests[22m[2m)[22m[32m 29[2mms[22m[39m
+ [32m✓[39m tests/unit/trust-entities.test.ts [2m([22m[2m19 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m6 passed[39m[22m[90m (6)[39m
+[2m      Tests [22m [1m[32m112 passed[39m[22m[90m (112)[39m
+[2m   Start at [22m 21:13:58
+[2m   Duration [22m 106.59s[2m (transform 19.03s, setup 0ms, collect 29.60s, tests 8.31s, environment 3ms, prepare 21.83s)[22m
+

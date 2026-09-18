@@ -2,7 +2,7 @@
   "artifact": "phase-completion",
   "wave": "AUDIT-1",
   "owner": "kernel (Phase 01 governance)",
-  "generatedAt": "2026-09-17T14:26:37.625Z",
+  "generatedAt": "2026-09-17T20:11:30.051Z",
   "authority": [
     "CONSTITUTION.md",
     "architecture/registry.json",
@@ -18,12 +18,12 @@
   },
   "summary": {
     "phasesAudited": 51,
-    "complete": 10,
-    "implementing": 23,
+    "complete": 11,
+    "implementing": 22,
     "architectureDefined": 18,
     "withModules": 33,
     "withResolvedModules": 32,
-    "totalTestsCited": 1997,
+    "totalTestsCited": 2005,
     "registryBeyondAudit": [
       "01",
       "02",
@@ -32,7 +32,6 @@
       "05",
       "06",
       "07",
-      "09",
       "10",
       "11",
       "12",
@@ -103,7 +102,7 @@
     ],
     "exemptionSource": "architecture/phase-completion-exemptions.json",
     "missingLevelFrequency": {
-      "L4 frontend/workspace integration": 41,
+      "L4 frontend/workspace integration": 40,
       "L3 backend": 18,
       "L2 data model": 12,
       "L5 operational maturity": 1,
@@ -426,37 +425,36 @@
       "id": "09",
       "name": "Security Trust Fabric",
       "capability": "trust-fabric",
-      "sections": "15/20",
+      "sections": "20/20",
       "modules": [
         "trust-core",
         "trust-assertions",
         "trust-entities",
-        "trust-governance"
+        "trust-governance",
+        "trust-fabric-report"
       ],
       "modulesResolve": true,
-      "citedTestFiles": 4,
-      "testsCounted": 82,
-      "executableEvidence": 4,
+      "citedTestFiles": 5,
+      "testsCounted": 90,
+      "executableEvidence": 5,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": true,
         "L3 backend": true,
-        "L4 frontend/workspace integration": false,
+        "L4 frontend/workspace integration": true,
         "L5 operational maturity": true
       },
       "registryLevels": [
         true,
-        false,
-        false,
-        false,
-        false
+        true,
+        true,
+        true,
+        true
       ],
-      "registryStatus": "IMPLEMENTING",
-      "derivedStatus": "IMPLEMENTING",
-      "complete": false,
-      "missingLevels": [
-        "L4 frontend/workspace integration"
-      ],
+      "registryStatus": "COMPLETE",
+      "derivedStatus": "COMPLETE",
+      "complete": true,
+      "missingLevels": [],
       "exemptedLevels": [],
       "unconfirmedLevels": []
     },

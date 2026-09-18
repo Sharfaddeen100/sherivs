@@ -1,0 +1,660 @@
+{
+  "$comment": "Phase 09 (Security & Trust Fabric) resolved against repository artefacts: architecture/phase-09-security-trust-fabric.md (sections A..BZ, including addenda BU command model, BV query model, BW workflow model, BX trust memory and knowledge, BY trust migration, BZ runtime consumer boundary), frontend/src/lib/kernel/phase-contracts/phase-09-trust-fabric.ts, registry row 09, the four trust-* modules plus trust-fabric-report.ts, and the control-plane surface /super-admin/trust-fabric. Classified by scripts/audit-phase-acceptance.mjs --phase=09. Both classes of unfinished work are reported rather than glossed: IMPLEMENTED_UNWIRED (an implementation with tests that no boundary invokes) and DECLARED (a capability the document requires that has no executable enforcement).",
+  "phase": "09",
+  "phaseName": "Security & Trust Fabric",
+  "source": "architecture/phase-09-security-trust-fabric.md",
+  "contract": "frontend/src/lib/kernel/phase-contracts/phase-09-trust-fabric.ts",
+  "documentIntegrity": {
+    "status": "CLOSED — COMPLETED",
+    "finding": "Two defects were corrected. (1) The document stated 15 of the 20 mandatory engineering sections: the command model, query model, workflow model, memory/knowledge section and migration section were absent. Addenda BU, BV, BW, BX and BY were authored in the document's own lettered style, stating existing behaviour — including the honest limits (no trust store to migrate, no automated workflow, no query surface). (2) Four scope statements named a runtime as the owner of the fabric ('CoreGrid Scholar's cross-system trust architecture'); per the owner decision of 2026-09-16 CoreGrid owns the fabric and Scholar is runtime-001 consuming it, so those statements were neutralised and addendum BZ states the consumer boundary. One deliberate mention remains: 'CoreGrid Scholar is runtime-001, the first consumer of this fabric and never its owner'.",
+    "verifiedAgainst": "architecture/phase-09-security-trust-fabric.md",
+    "sectionsVerified": "20/20 via scripts/verification/engineering-sections.mjs and tests/unit/kernel-contract-coverage.test.ts"
+  },
+  "ownership": {
+    "note": "Phase 09 owns trust state, trust evidence and assurance; it never owns enforcement. Phase 08 answers 'may this action happen?' and Phase 09 answers 'how much should CoreGrid trust the entities, evidence and relationships involved?' (BS). Identity is Phase 02's, tenancy Phase 03's, the agent runtime Phase 07's, data classification Phase 14's, the adversarial-defense engine Phase 42's.",
+    "canonicalOwners": {
+      "trust-state-and-evidence": "09",
+      "runtime-authorization-and-enforcement": "08",
+      "identity-assurance": "02",
+      "tenancy-boundaries": "03",
+      "agent-runtime": "07",
+      "data-classification": "14",
+      "adversarial-defense": "42",
+      "infrastructure": "21"
+    }
+  },
+  "areas": [
+    {
+      "id": "subject-registry",
+      "area": "Trust subjects and the subject vocabulary",
+      "requirement": "Trust subjects can be registered across the documented kinds (person, organization, institution, tenant, device, agent, service, application, workload, software, artifact, data source) and begin as UNKNOWN.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/trust-core.ts", "contains": "createTrustSubject" },
+        { "kind": "module", "path": "frontend/src/lib/trust-core.ts", "contains": "TRUST_SUBJECT_TYPES" },
+        { "kind": "test", "path": "tests/unit/trust-core.test.ts" }
+      ]
+    },
+    {
+      "id": "trust-states",
+      "area": "Trust state vocabulary and usability",
+      "requirement": "The ten states of F.3 exist, and the fabric distinguishes usable from non-usable states without ever treating UNKNOWN as trust.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/trust-core.ts", "contains": "TRUST_STATES" },
+        { "kind": "module", "path": "frontend/src/lib/trust-core.ts", "contains": "isUsableTrustState" },
+        { "kind": "test", "path": "tests/unit/trust-core.test.ts" }
+      ]
+    },
+    {
+      "id": "state-machine",
+      "area": "Trust state machine (legal transitions only)",
+      "requirement": "Trust moves only along declared transitions, and the machine refuses illegal moves as a value rather than throwing.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/trust-core.ts", "contains": "isTrustTransitionAllowed" },
+        { "kind": "module", "path": "frontend/src/lib/trust-core.ts", "contains": "transitionTrustState" },
+        { "kind": "test", "path": "tests/unit/trust-core.test.ts" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/trust-fabric-report.ts", "contains": "transitionTrustState" }
+      ],
+      "boundaryNote": "Closed at L4 (2026-09-16): the control-plane surface /super-admin/trust-fabric exercises the state machine and reports what it observed, so the machine is invoked by a real page rather than only by its unit suite."
+    },
+    {
+      "id": "unknown-never-trusted",
+      "area": "UNKNOWN cannot silently become TRUSTED (BR.10, BO.16)",
+      "requirement": "A subject cannot move from UNKNOWN to a trusted state directly, or by skipping the VERIFIED step; evidence is required to withdraw trust.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/trust-core.ts", "contains": "UNKNOWN cannot transition directly to a trusted state" },
+        { "kind": "test", "path": "tests/unit/trust-core.test.ts" },
+        { "kind": "test", "path": "tests/unit/trust-fabric-report.test.ts" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/trust-fabric-report.ts", "contains": "BR.10" }
+      ],
+      "boundaryNote": "Exercised: the L4 report checks UNKNOWN→TRUSTED and UNVERIFIED→TRUSTED are both refused, and names the invariant it is checking."
+    },
+    {
+      "id": "revocation-terminal",
+      "area": "REVOKED is terminal (BR.4)",
+      "requirement": "No transition leaves REVOKED; restoration requires a new, evidenced establishment.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/trust-core.ts", "contains": "REVOKED: []" },
+        { "kind": "test", "path": "tests/unit/trust-core.test.ts" },
+        { "kind": "test", "path": "tests/unit/trust-fabric-report.test.ts" }
+      ]
+    },
+    {
+      "id": "relationship-records",
+      "area": "Trust relationships and the 13 relationship types (I, AO)",
+      "requirement": "Trust relationships are recorded with type, source, target, tenant scope and evidence, and an evidence-free relationship is refused.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/trust-core.ts", "contains": "createTrustRelationship" },
+        { "kind": "module", "path": "frontend/src/lib/trust-core.ts", "contains": "TRUST_RELATIONSHIP_TYPES" },
+        { "kind": "test", "path": "tests/unit/trust-core.test.ts" }
+      ]
+    },
+    {
+      "id": "relationship-expiry",
+      "area": "Trust expiry (AB, BO.7)",
+      "requirement": "Trust relationships expire, and revocation takes effect immediately; expired trust never silently remains valid.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/trust-core.ts", "contains": "isTrustRelationshipExpired" },
+        { "kind": "module", "path": "frontend/src/lib/trust-core.ts", "contains": "revokeTrustRelationship" },
+        { "kind": "test", "path": "tests/unit/trust-core.test.ts" }
+      ]
+    },
+    {
+      "id": "tenant-scope",
+      "area": "Multi-tenant trust (AN, BR.15)",
+      "requirement": "Trust relationships and assertions carry tenant scope where applicable, and cross-tenant trust is explicit — never inferred.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/trust-core.ts", "contains": "Cross-tenant trust must be explicit" },
+        { "kind": "module", "path": "frontend/src/lib/trust-assertions.ts", "contains": "tenantId: TenantId | null" },
+        { "kind": "test", "path": "tests/unit/trust-core.test.ts" }
+      ]
+    },
+    {
+      "id": "trust-scoring",
+      "area": "Trust scoring (K)",
+      "requirement": "Trust scores are evidence-weighted confidence computed from declared factors, and a score without factors or with invalid confidence is refused.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/trust-core.ts", "contains": "evaluateTrustScore" },
+        { "kind": "module", "path": "frontend/src/lib/trust-core.ts", "contains": "TRUST_SCORE_FACTORS" },
+        { "kind": "test", "path": "tests/unit/trust-core.test.ts" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/trust-fabric-report.ts", "contains": "evaluateTrustScore" }
+      ],
+      "boundaryNote": "Exercised by the L4 report, which prints the score, the evidence-reference count, the score version and the recommended state it produces."
+    },
+    {
+      "id": "score-explainability",
+      "area": "Score properties: explainable, versioned, contextual, time-sensitive, evidence-backed (K.3, BR.9)",
+      "requirement": "A score carries its factor breakdown, evidence references, version, evaluation time and context, and it never replaces the evidence it summarises.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/trust-core.ts", "contains": "factorScores" },
+        { "kind": "module", "path": "frontend/src/lib/trust-core.ts", "contains": "trust-score-v1" },
+        { "kind": "module", "path": "frontend/src/lib/trust-core.ts", "contains": "recommendedTrustStateForScore" },
+        { "kind": "test", "path": "tests/unit/trust-core.test.ts" }
+      ]
+    },
+    {
+      "id": "assertions",
+      "area": "Trust assertions (F.1, L.2)",
+      "requirement": "An assertion carries id, issuer, subject, type, trust level, evidence, issue and expiry, scope, tenant, integrity reference and provenance — and it is refused without issuer, subject, evidence or integrity protection.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/trust-assertions.ts", "contains": "createTrustAssertion" },
+        { "kind": "module", "path": "frontend/src/lib/trust-assertions.ts", "contains": "TRUST_ASSERTION_TYPES" },
+        { "kind": "test", "path": "tests/unit/trust-assertions.test.ts" }
+      ]
+    },
+    {
+      "id": "assertion-verification",
+      "area": "Assertion verification (L, O.2, AB, BR.7, BO.3)",
+      "requirement": "Verification fails on unchecked integrity, revocation, expiry, an unaccepted issuer or a scope mismatch, and passes only when all of them hold.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/trust-assertions.ts", "contains": "verifyTrustAssertion" },
+        { "kind": "module", "path": "frontend/src/lib/trust-assertions.ts", "contains": "revokeTrustAssertion" },
+        { "kind": "test", "path": "tests/unit/trust-assertions.test.ts" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/trust-fabric-report.ts", "contains": "verifyTrustAssertion" }
+      ],
+      "boundaryNote": "Exercised by the L4 report across all five refusal paths (unchecked integrity, wrong scope, expired, unaccepted issuer, revoked) and one acceptance path."
+    },
+    {
+      "id": "evidence-quality",
+      "area": "Trust evidence quality (M.2)",
+      "requirement": "Evidence carries source, capture time, freshness window, reliability, integrity reference, provenance and confidence, and stale evidence is detected rather than reused.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/trust-assertions.ts", "contains": "createTrustEvidence" },
+        { "kind": "module", "path": "frontend/src/lib/trust-assertions.ts", "contains": "isTrustEvidenceFresh" },
+        { "kind": "test", "path": "tests/unit/trust-assertions.test.ts" }
+      ]
+    },
+    {
+      "id": "provenance-chain",
+      "area": "Trust provenance — 'why does CoreGrid trust this?' (N.1, N.2, N.3, BO.5)",
+      "requirement": "A provenance chain starts from the trust decision and must reference evidence; every important assertion is traceable to its source.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/trust-assertions.ts", "contains": "buildProvenanceChain" },
+        { "kind": "test", "path": "tests/unit/trust-assertions.test.ts" },
+        { "kind": "test", "path": "tests/unit/trust-fabric-report.test.ts" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/trust-fabric-report.ts", "contains": "buildProvenanceChain" }
+      ],
+      "boundaryNote": "Exercised: the report builds a six-link chain (decision → assertion → issuer → evidence → verification method → source) and checks that an evidence-free chain is refused."
+    },
+    {
+      "id": "revocation-model",
+      "area": "Trust revocation — reasons, kinds, attribution (AA, BO.8)",
+      "requirement": "Revocation can be recorded for the eight documented reasons as temporary suspension, permanent revocation, quarantine or conditional restoration, requires an attributable actor, and requires a condition for conditional restoration.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/trust-assertions.ts", "contains": "TRUST_REVOCATION_REASONS" },
+        { "kind": "module", "path": "frontend/src/lib/trust-assertions.ts", "contains": "createTrustRevocation" },
+        { "kind": "test", "path": "tests/unit/trust-assertions.test.ts" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/trust-fabric-report.ts", "contains": "createTrustRevocation" }
+      ],
+      "boundaryNote": "Exercised: the report checks that an anonymous revocation is refused (BR.14) and that a withdrawal of trust needs evidence of the reason (BR.2)."
+    },
+    {
+      "id": "key-and-certificate-trust",
+      "area": "Key trust registry (P) and certificate trust (Q, BO.9)",
+      "requirement": "Key metadata is registered without private material and expires; certificates are registered, refuse an already-expired certificate, and fail validation on expiry, revocation or an unverified chain.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/trust-governance.ts", "contains": "registerKeyTrust" },
+        { "kind": "module", "path": "frontend/src/lib/trust-governance.ts", "contains": "evaluateCertificateTrust" },
+        { "kind": "test", "path": "tests/unit/trust-governance.test.ts" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/trust-fabric-report.ts", "contains": "evaluateCertificateTrust" }
+      ],
+      "boundaryNote": "Exercised: the report registers a usable and an expired key, and checks certificate validation at issue, a year later, after revocation and with an unverified chain."
+    },
+    {
+      "id": "device-trust",
+      "area": "Device trust (S, BO.10)",
+      "requirement": "Device trust is computed from security-relevant facts (enrolment, posture, OS integrity, encryption, attestation, anomalies), and missing enrolment or failed attestation never produces a trusted state.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/trust-entities.ts", "contains": "evaluateDeviceTrust" },
+        { "kind": "test", "path": "tests/unit/trust-entities.test.ts" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/trust-fabric-report.ts", "contains": "evaluateDeviceTrust" }
+      ],
+      "boundaryNote": "Exercised: the report evaluates an attested device (TRUSTED) and an unattested device (never TRUSTED) side by side."
+    },
+    {
+      "id": "workload-trust",
+      "area": "Workload trust (T, BO.11)",
+      "requirement": "Workload trust evaluates deployment origin, artifact integrity, image provenance and configuration integrity, and an unverified workload is never trusted.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/trust-entities.ts", "contains": "evaluateWorkloadTrust" },
+        { "kind": "test", "path": "tests/unit/trust-entities.test.ts" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/trust-fabric-report.ts", "contains": "evaluateWorkloadTrust" }
+      ],
+      "boundaryNote": "Exercised: the report contrasts a fully verified workload with an artifact-only one."
+    },
+    {
+      "id": "agent-trust",
+      "area": "Agent trust (U, BO.12) — degradation never grants",
+      "requirement": "Agent trust considers identity, policy compliance, tool behaviour, execution history and prompt integrity; suspicious tool behaviour quarantines, and degradation never adds permissions.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/trust-entities.ts", "contains": "evaluateAgentTrust" },
+        { "kind": "test", "path": "tests/unit/trust-entities.test.ts" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/trust-fabric-report.ts", "contains": "evaluateAgentTrust" }
+      ],
+      "boundaryNote": "Exercised: the report evaluates a compliant agent and a suspicious-tool agent, checking the latter lands in QUARANTINED."
+    },
+    {
+      "id": "model-trust",
+      "area": "Model trust (V)",
+      "requirement": "Model trust records provenance, version, integrity, evaluation result, approved-use scope and rollback version, and a model missing any of provenance, integrity or evaluation is UNVERIFIED.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/trust-entities.ts", "contains": "registerModelTrust" },
+        { "kind": "test", "path": "tests/unit/trust-entities.test.ts" }
+      ]
+    },
+    {
+      "id": "supply-chain-trust",
+      "area": "Software provenance, artifact integrity and supply-chain trust (W, X, Y, BO.13)",
+      "requirement": "Software provenance records repository, commit, build, dependencies, signer and environment; artifact integrity fails on a hash mismatch or missing signature; unverifiable provenance reduces trust to UNVERIFIED or DEGRADED.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/trust-entities.ts", "contains": "registerSoftwareProvenance" },
+        { "kind": "module", "path": "frontend/src/lib/trust-entities.ts", "contains": "verifyArtifactIntegrity" },
+        { "kind": "module", "path": "frontend/src/lib/trust-entities.ts", "contains": "supplyChainTrustState" },
+        { "kind": "test", "path": "tests/unit/trust-entities.test.ts" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/trust-fabric-report.ts", "contains": "supplyChainTrustState" }
+      ],
+      "boundaryNote": "Exercised: the report records provenance, verifies a matching and a mismatching artifact, and prints the three supply-chain states (verified / degraded / unverified)."
+    },
+    {
+      "id": "federation",
+      "area": "Trust federation and external trust (AC, AD, BO.14)",
+      "requirement": "Every federation defines parties, scope, accepted assertions, verification methods, expiry, revocation and audit requirement; external trust is never unrestricted internal trust.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/trust-governance.ts", "contains": "createFederation" },
+        { "kind": "module", "path": "frontend/src/lib/trust-governance.ts", "contains": "isFederationActive" },
+        { "kind": "test", "path": "tests/unit/trust-governance.test.ts" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/trust-fabric-report.ts", "contains": "createFederation" }
+      ],
+      "boundaryNote": "Exercised: the report refuses a self-federation and an already-expired federation, then shows the scoped relationship active at issue and inert a year later."
+    },
+    {
+      "id": "delegation",
+      "area": "Trust delegation (AG)",
+      "requirement": "A delegation names delegator, delegate, authority, scope, expiry and restrictions, refuses self-delegation, and is traceable.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/trust-governance.ts", "contains": "createTrustDelegation" },
+        { "kind": "module", "path": "frontend/src/lib/trust-governance.ts", "contains": "isDelegationActive" },
+        { "kind": "test", "path": "tests/unit/trust-governance.test.ts" }
+      ]
+    },
+    {
+      "id": "trust-anchors",
+      "area": "Trust anchor management (AI, BR.12)",
+      "requirement": "Anchors (root certificates, root keys, approved issuers, registries, identity providers, signing authorities) require an identified managing administrator and can be revoked.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/trust-governance.ts", "contains": "registerTrustAnchor" },
+        { "kind": "module", "path": "frontend/src/lib/trust-governance.ts", "contains": "revokeTrustAnchor" },
+        { "kind": "test", "path": "tests/unit/trust-governance.test.ts" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/trust-fabric-report.ts", "contains": "registerTrustAnchor" }
+      ],
+      "boundaryNote": "Exercised: the report refuses an anchor with no managing administrator and records a revocation in the same pass."
+    },
+    {
+      "id": "trust-policy",
+      "area": "Trust policy registry — versioned requirements (AE)",
+      "requirement": "Trust policies are versioned and define accepted issuers, acceptable evidence, trust lifetimes, minimum assurance and attestation requirements; evaluation refuses an unaccepted issuer, unaccepted evidence, missing attestation and assurance below the minimum.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/trust-governance.ts", "contains": "createTrustPolicy" },
+        { "kind": "module", "path": "frontend/src/lib/trust-governance.ts", "contains": "evaluateTrustPolicy" },
+        { "kind": "test", "path": "tests/unit/trust-governance.test.ts" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/trust-fabric-report.ts", "contains": "evaluateTrustPolicy" }
+      ],
+      "boundaryNote": "Exercised: the report refuses an issuer-less policy and shows policy evaluation passing once, then failing on missing attestation and on assurance below the minimum."
+    },
+    {
+      "id": "zero-trust",
+      "area": "Zero-trust evaluation (AK) — verdicts, never enforcement (BS)",
+      "requirement": "The zero-trust principles produce a trust verdict (deny, challenge, trusted) from identity, session, device trust and the Phase 08 risk action, and the verdict is advice rather than enforcement.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/trust-governance.ts", "contains": "evaluateZeroTrust" },
+        { "kind": "module", "path": "frontend/src/lib/trust-governance.ts", "contains": "trustStateToUsable" },
+        { "kind": "test", "path": "tests/unit/trust-governance.test.ts" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/trust-fabric-report.ts", "contains": "evaluateZeroTrust" }
+      ],
+      "boundaryNote": "Exercised with all four verdict paths (unverified identity denies, untrusted device challenges, risk quarantine denies, fully verified passes), and the enforcement reading of 'usable' shown beside the fabric's own."
+    },
+    {
+      "id": "human-escalation",
+      "area": "Human escalation for high-impact trust changes (BM)",
+      "requirement": "Adding a root anchor, approving a federation, restoring a compromised subject, changing organization-wide policy, accepting a new certificate authority or overriding a critical revocation require human approval.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/runtime-approval.ts", "contains": "ApprovalStatus" },
+        { "kind": "test", "path": "tests/unit/runtime-extended.test.ts" },
+        { "kind": "doc", "path": "architecture/phase-09-security-trust-fabric.md", "contains": "BM. Human Escalation" }
+      ],
+      "boundary": [
+        { "kind": "contract", "path": "frontend/src/lib/kernel/phase-contracts/phase-09-trust-fabric.ts", "contains": "requiresApprovalFor" }
+      ],
+      "boundaryNote": "Enforced in part: the phase contract names the approval-gated operations, the approval lifecycle is the Phase 05 primitive, and anchors additionally require a managing administrator. A dedicated approval workflow for the trust operations does not exist yet (reported as P09-10)."
+    },
+    {
+      "id": "trust-graph",
+      "area": "Trust graph traversal and revocation propagation (I, BR.11)",
+      "requirement": "Relationships between trusted entities are represented as a graph, and revocation propagates to dependents.",
+      "required": true,
+      "evidence": [
+        { "kind": "doc", "path": "architecture/phase-09-security-trust-fabric.md", "contains": "I. Trust Graph" },
+        { "kind": "module", "path": "frontend/src/lib/trust-core.ts", "contains": "TRUST_RELATIONSHIP_TYPES" }
+      ],
+      "boundaryNote": "DECLARED: 13 relationship types and relationship records exist, but nothing traverses the graph. Revocation marks a single record (revokeTrustRelationship) and no dependent subject is re-evaluated because of it, so BR.11 ('revocation must propagate') holds only within one record. Reported as P09-3."
+    },
+    {
+      "id": "cryptographic-trust",
+      "area": "Cryptographic trust service and agility (O, AX)",
+      "requirement": "Machine-verifiable trust: signature creation and verification, key ownership, certificate chains, rotation, revocation, artifact signing and data-integrity verification, with configurable algorithms.",
+      "required": true,
+      "evidence": [
+        { "kind": "doc", "path": "architecture/phase-09-security-trust-fabric.md", "contains": "O. Cryptographic Trust" },
+        { "kind": "module", "path": "frontend/src/lib/trust-assertions.ts", "contains": "integrityReference" }
+      ],
+      "boundaryNote": "DECLARED, and this is the fabric's most important honest limit: nothing verifies a signature. Assertions carry an integrityReference and verification takes integrityVerified as a caller-supplied boolean, so the fabric records a cryptographic claim without checking it. Reported as P09-1."
+    },
+    {
+      "id": "attestation-engine",
+      "area": "Attestation lifecycle (R)",
+      "requirement": "Claims about system state (device, workload, software, runtime environment, secure boot, deployment identity) are requested, evidenced, verified and turned into assertions that update trust.",
+      "required": true,
+      "evidence": [
+        { "kind": "doc", "path": "architecture/phase-09-security-trust-fabric.md", "contains": "R. Attestation" },
+        { "kind": "module", "path": "frontend/src/lib/trust-entities.ts", "contains": "attestationVerified" }
+      ],
+      "boundaryNote": "DECLARED: device and workload trust consume an attestation verdict as input, but nothing requests evidence, verifies it or records the attestation lifecycle. Reported as P09-2."
+    },
+    {
+      "id": "trust-persistence",
+      "area": "Trust data model and database requirements (AO, AP)",
+      "requirement": "The 22 trust entities are held with immutable identifiers, tenant boundaries, temporal validity, issuer/subject/evidence/provenance/revocation references — and private cryptographic material never enters ordinary storage.",
+      "required": true,
+      "evidence": [
+        { "kind": "doc", "path": "architecture/phase-09-security-trust-fabric.md", "contains": "AP. Database Requirements" },
+        { "kind": "module", "path": "frontend/src/lib/trust-core.ts", "contains": "evidenceRefs" }
+      ],
+      "boundaryNote": "DECLARED: no trust tables exist. Records carry immutable ids, tenant scope, expiry and references in-process, and the key registry holds fingerprints only (never private material), which satisfies the P rule — but the durable half of AP does not exist. Reported as P09-4, the phase's largest structural gap."
+    },
+    {
+      "id": "phase08-consumption",
+      "area": "Trust information consumed by Phase 08 (AL, BS, BO.15)",
+      "requirement": "The Security Engine consumes trust state, score, assertion verification, provenance, attestation and revocation so that enforcement decisions carry assurance context.",
+      "required": true,
+      "evidence": [
+        { "kind": "contract", "path": "frontend/src/lib/kernel/phase-contracts/phase-09-trust-fabric.ts", "contains": "trust:verify" },
+        { "kind": "doc", "path": "architecture/phase-09-security-trust-fabric.md", "contains": "AL. Security Engine Integration" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/*.functions.ts", "contains": "trust-" }
+      ],
+      "boundaryNote": "IMPLEMENTED_UNWIRED by construction: the integration contract is declared and evaluateZeroTrust produces a verdict, but zero import sites exist outside the four trust modules — Phase 08's gate never calls the fabric. Recorded as P09-5."
+    },
+    {
+      "id": "observability",
+      "area": "Trust observability (BA)",
+      "requirement": "Trust evaluation latency, state changes, assertion failures, revocations, attestation and provenance failures, certificate expiry and score instability are monitored.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/runtime-observability.ts", "contains": "createLogger" },
+        { "kind": "test", "path": "tests/unit/foundation-observability.test.ts" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/*.functions.ts", "contains": "createLogger\\(" }
+      ],
+      "boundaryNote": "IMPLEMENTED_UNWIRED — the shared finding P01-1/P03-3/P05-4/P08-5: the observability primitive is proven by its suite, but no runtime path emits it, so no trust metric is collected. Reported as P09-7."
+    },
+    {
+      "id": "service-trust-and-posture",
+      "area": "Service trust records and security posture records (G.16, Z)",
+      "requirement": "Service trust state and trust-relevant security posture (patch status, certificate status, credential age, configuration status, integrity status, attestation status, control status) are represented as records.",
+      "required": false,
+      "evidence": [
+        { "kind": "doc", "path": "architecture/phase-09-security-trust-fabric.md", "contains": "Z. Security Posture" },
+        { "kind": "module", "path": "frontend/src/lib/trust-core.ts", "contains": "security_posture" }
+      ],
+      "boundaryNote": "DECLARED: security_posture exists as a score factor, but there is no ServiceTrustRecord and no SecurityPostureRecord — posture enters only as a caller-supplied number. Reported as P09-6."
+    },
+    {
+      "id": "trust-agents-and-mcp",
+      "area": "Trust agents (AU, AV) and MCP interfaces (AT)",
+      "requirement": "Trust analysis, provenance, investigation, supply-chain, attestation, federation and governance agents operate under least privilege, and trust MCP capabilities are exposed behind Phase 08 enforcement.",
+      "required": false,
+      "evidence": [
+        { "kind": "doc", "path": "architecture/phase-09-security-trust-fabric.md", "contains": "AU. Agents" },
+        { "kind": "doc", "path": "architecture/phase-09-security-trust-fabric.md", "contains": "AT. MCP Interfaces" }
+      ],
+      "boundaryNote": "DECLARED and not implemented: no trust agent is defined or seated, and no trust MCP capability is exposed. Phase 07 provides the runtime these agents would run under. Reported as P09-9."
+    },
+    {
+      "id": "adversarial-testing",
+      "area": "Security and adversarial testing (BE.3, BF, BO.20)",
+      "requirement": "Forged assertions, replay, trust escalation, malicious federation, revoked-credential reuse, invalid certificates, provenance tampering, chain manipulation, compromised issuers and stale evidence are tested as attacks.",
+      "required": true,
+      "evidence": [
+        { "kind": "doc", "path": "architecture/phase-09-security-trust-fabric.md", "contains": "BF. Adversarial Testing" }
+      ],
+      "boundaryNote": "DECLARED: no adversarial suite exists that simulates a compromised issuer, chain poisoning, forged assertions or replay. Refusals ARE proven (expired, revoked, scope-mismatched, unaccepted issuer, unattributable revocation, self-delegation, self-federation, hash mismatch) by tests/unit/trust-assertions.test.ts and tests/unit/trust-fabric-report.test.ts, and those refusals are credited to the areas they belong to — this area measures whether the adversarial programme exists, and it does not. Reported as P09-9."
+    },
+    {
+      "id": "federation-integration",
+      "area": "External trust integration with real providers (AD, AS)",
+      "requirement": "Federation with schools, universities, government, payment providers, identity providers, cloud providers and marketplaces, with signed webhooks, replay protection, delivery tracking and secret rotation.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/trust-governance.ts", "contains": "FederationRelationship" },
+        { "kind": "module", "path": "frontend/src/lib/runtime-webhooks.ts", "contains": "WebhookDelivery" },
+        { "kind": "doc", "path": "architecture/phase-09-security-trust-fabric.md", "contains": "AS. Webhooks" }
+      ],
+      "boundaryNote": "DECLARED: federation is recordable and scoped, and the Phase 05 webhook primitive tracks deliveries with retry and dead-lettering, but no external provider, certificate authority or signing infrastructure is integrated, and no trust event is published to a webhook. Reported as P09-8."
+    },
+    {
+      "id": "disaster-recovery-and-operations",
+      "area": "Reliability, reliability failure modes, disaster recovery and operating procedures (BB, BC, BD, BL)",
+      "requirement": "Trust infrastructure is highly available with replication, backup and recovery; UNKNOWN is never silently converted to TRUSTED; and anchor rotation, compromised-issuer response, federation suspension and policy rollback are documented and rehearsed.",
+      "required": true,
+      "evidence": [
+        { "kind": "doc", "path": "architecture/phase-09-security-trust-fabric.md", "contains": "BC. Failure Modes" },
+        { "kind": "module", "path": "frontend/src/lib/trust-core.ts", "contains": "UNKNOWN cannot transition directly to a trusted state" }
+      ],
+      "boundaryNote": "Split and reported honestly: the failure-mode requirement that matters most IS enforced — the state machine cannot convert UNKNOWN into TRUSTED, and failures produce refusals rather than grants. Reliability, backup, restore and the BL procedures are DECLARED: nothing has been rehearsed, and there is no trust store to back up. Reported as P09-10."
+    },
+    {
+      "id": "trust-migration",
+      "area": "Trust migration (BY)",
+      "requirement": "Trust records survive schema, policy, anchor, algorithm, tenant, federation and recovery migration without losing provenance, and a revocation always wins over a migrated record.",
+      "required": true,
+      "evidence": [
+        { "kind": "doc", "path": "architecture/phase-09-security-trust-fabric.md", "contains": "BY. TRUST MIGRATION" },
+        { "kind": "module", "path": "frontend/src/lib/trust-core.ts", "contains": "createTrustRelationship" }
+      ],
+      "boundaryNote": "DECLARED: migration is specified in the document (provenance survives, revocation wins, migration may not raise trust) and no migration exists — because no trust store exists. There is nothing to carry today, which is stated rather than implied."
+    },
+    {
+      "id": "phase08-boundary",
+      "area": "Phase boundary with the Security Engine (D.1, BS)",
+      "requirement": "Phase 08 owns runtime authorization, enforcement, policy execution, alerts, incident runtime, rate limiting and enforcement middleware; Phase 09 supplies trust and assurance context and duplicates none of it.",
+      "required": true,
+      "evidence": [
+        { "kind": "contract", "path": "frontend/src/lib/kernel/phase-contracts/phase-09-trust-fabric.ts", "contains": "authorization-decisions" },
+        { "kind": "doc", "path": "architecture/phase-09-security-trust-fabric.md", "contains": "BS. Phase Boundary With Phase 08" }
+      ],
+      "boundary": [
+        { "kind": "contract", "path": "frontend/src/lib/kernel/phase-contracts/phase-09-trust-fabric.ts", "contains": "never grants access by itself" }
+      ],
+      "boundaryNote": "The boundary is machine-recorded: the contract excludes authorization decisions from this phase and states that the fabric owns evidence and confidence and never grants access. Phase 09 builds no second enforcement path."
+    },
+    {
+      "id": "testing",
+      "area": "Phase test suites (BE.1, BE.2)",
+      "requirement": "Trust calculations, state transitions, assertions, expiration, revocation, provenance and policy evaluation are proven by executable tests, plus identity, engine, agent and tenant integration paths.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/trust-core.test.ts" },
+        { "kind": "test", "path": "tests/unit/trust-entities.test.ts" },
+        { "kind": "test", "path": "tests/unit/trust-assertions.test.ts" },
+        { "kind": "test", "path": "tests/unit/trust-governance.test.ts" },
+        { "kind": "test", "path": "tests/unit/trust-fabric-report.test.ts" },
+        { "kind": "contract", "path": "frontend/src/lib/kernel/phase-contracts/phase-09-trust-fabric.ts" }
+      ],
+      "boundary": [
+        { "kind": "test", "path": "tests/unit/trust-fabric-report.test.ts" }
+      ],
+      "boundaryNote": "Five suites, 90 counted tests across the phase contract. The integration half of BE.2 is partially covered: tenant scope is tested, but integration with Phase 02, Phase 07 and Phase 08 is not — because nothing consumes the fabric yet (P09-5)."
+    },
+    {
+      "id": "deployment",
+      "area": "Deployment and infrastructure (BI, BJ)",
+      "requirement": "Trust components deploy independently with encryption, isolated trust services, secure key storage, high availability, disaster recovery and controlled administrative access.",
+      "required": true,
+      "evidence": [
+        { "kind": "script", "path": "scripts/verify-infrastructure.mjs" },
+        { "kind": "doc", "path": "architecture/phase-09-security-trust-fabric.md", "contains": "BI. Deployment" }
+      ],
+      "boundary": [
+        { "kind": "script", "path": "scripts/infrastructure/preflight.mjs" }
+      ],
+      "boundaryNote": "Owner is Phase 21 (infrastructure): the trees and verifiers exist and CI runs them, but no environment has been applied (awaiting owner credentials), and the fabric is not deployed as separate services — it ships inside the application. Recorded rather than implied."
+    },
+    {
+      "id": "runtime-neutrality",
+      "area": "Runtime consumer boundary (BZ)",
+      "requirement": "CoreGrid owns the fabric: no kernel module may import a runtime, only a runtime layer may name a runtime, and no platform surface may hard-code a limited role list.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/platform-neutrality.test.ts" },
+        { "kind": "script", "path": "scripts/neutralise-scholar-framing.mjs" },
+        { "kind": "doc", "path": "architecture/phase-09-security-trust-fabric.md", "contains": "BZ. RUNTIME CONSUMER BOUNDARY" }
+      ],
+      "boundary": [
+        { "kind": "test", "path": "tests/unit/platform-neutrality.test.ts", "contains": "Only a runtime layer may name a runtime" }
+      ],
+      "boundaryNote": "Neutralised and locked in this pass: four scope statements named a runtime as the owner of the fabric; they were corrected, addendum BZ states the consumer boundary, trust-fabric-report.ts was added to the neutral-module list and /super-admin/trust-fabric to the platform-surface list, so the guard fails if either re-frames itself."
+    },
+    {
+      "id": "l4-surface",
+      "area": "Control-plane surface that exercises the fabric (L4)",
+      "requirement": "The phase has a surface where its behaviour is visible and exercised rather than described.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/trust-fabric-report.ts", "contains": "trustFabricReport" },
+        { "kind": "test", "path": "tests/unit/trust-fabric-report.test.ts" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/routes/_authenticated/super-admin/trust-fabric.tsx", "contains": "trust-fabric-report" }
+      ],
+      "boundaryNote": "Closed 2026-09-16: /super-admin/trust-fabric renders the vocabulary, the 10 invariant checks (each run against the shipped machine), the exercised decision paths, the two readings of 'usable' (fabric vs enforcement) and the 10 declared gaps. The page declares no role list of its own."
+    },
+    {
+      "id": "document-completeness",
+      "area": "Engineering-section completeness of the phase document",
+      "requirement": "The document states the mandatory engineering sections, including the command, query, workflow, memory/knowledge and migration models and the runtime consumer boundary.",
+      "required": true,
+      "evidence": [
+        { "kind": "doc", "path": "architecture/phase-09-security-trust-fabric.md", "contains": "BZ. RUNTIME CONSUMER BOUNDARY" },
+        { "kind": "script", "path": "scripts/verification/engineering-sections.mjs" },
+        { "kind": "test", "path": "tests/unit/kernel-contract-coverage.test.ts" }
+      ],
+      "boundary": [
+        { "kind": "test", "path": "tests/unit/kernel-contract-coverage.test.ts" }
+      ],
+      "boundaryNote": "20/20 mandatory sections verified by the completion audit (15/20 before this pass, when command, query, workflow, memory/knowledge and migration were absent). Addenda BU, BV, BW, BX and BY close them by stating existing behaviour, limits included."
+    },
+    {
+      "id": "acceptance-criteria",
+      "area": "Acceptance criteria and definition of done (BO, BP)",
+      "requirement": "Phase 09 is accepted only when subjects, relationships, assertions, evidence, provenance, state changes, expiry, revocation and cryptographic trust exist, device/workload/agent/software trust are represented, federation is scoped, Phase 08 can consume trust, UNKNOWN cannot become TRUSTED, changes are auditable, tenant boundaries hold, recovery works and adversarial testing passes.",
+      "required": true,
+      "evidence": [
+        { "kind": "script", "path": "scripts/audit-phase-acceptance.mjs" },
+        { "kind": "doc", "path": "architecture/phase-09-security-trust-fabric.md", "contains": "BO. Acceptance Criteria" }
+      ],
+      "boundary": [
+        { "kind": "config", "path": "architecture/phase-acceptance/phase-09-security-trust-fabric.json" }
+      ],
+      "boundaryNote": "This record IS the acceptance measurement, machine-checked by the probe. Of BO's twenty criteria the ones backed by an executable artefact are ENFORCED; criteria 9 (cryptographic verification), 14 (external federation), 15 (Phase 08 consumption), 19 (recovery) and 20 (adversarial) are DECLARED or UNWIRED and are reported above rather than asserted."
+    },
+    {
+      "id": "ai-evaluation",
+      "area": "AI-assisted trust evaluation and its limits (BG)",
+      "requirement": "AI-assisted trust systems are evaluated for false trust, false distrust, evidence and provenance hallucination, reasoning reliability and adversarial manipulation — and AI recommendations cannot silently override deterministic controls.",
+      "required": false,
+      "evidence": [
+        { "kind": "doc", "path": "architecture/phase-09-security-trust-fabric.md", "contains": "BG. AI Evaluation" }
+      ],
+      "boundaryNote": "DECLARED: no AI component participates in trust evaluation today, so there is nothing to evaluate for hallucination. The deterministic rule it protects is already in force — the phase contract states that 'a model claim is never treated as a verification', which is why no AI can move trust here."
+    },
+    {
+      "id": "performance",
+      "area": "Trust evaluation performance (BH)",
+      "requirement": "Trust evaluation is optimised through state, evidence and posture caching, efficient graph traversal and indexed provenance, and caching respects expiration and revocation.",
+      "required": false,
+      "evidence": [
+        { "kind": "doc", "path": "architecture/phase-09-security-trust-fabric.md", "contains": "BH. Performance" }
+      ],
+      "boundaryNote": "DECLARED: no caching layer exists, and none is needed yet — evaluation is in-process arithmetic over caller-supplied records. The rule that matters is respected: expiry and revocation are evaluated at read time, so nothing is served from a stale cache."
+    },
+    {
+      "id": "compliance",
+      "area": "Compliance evidence (BN)",
+      "requirement": "The fabric supports evidence for identity assurance, access assurance, provenance, data integrity, software supply-chain integrity, auditability and security controls, without defining legal compliance.",
+      "required": false,
+      "evidence": [
+        { "kind": "doc", "path": "architecture/phase-09-security-trust-fabric.md", "contains": "BN. Compliance Support" },
+        { "kind": "module", "path": "frontend/src/lib/data-governance.ts", "contains": "LINEAGE_NODE_TYPES" }
+      ],
+      "boundaryNote": "DECLARED; data governance itself is Phase 14's. Trust evidence suitable for assurance reporting exists as records (assertions, evidence, provenance chains, revocations), but no compliance report is generated and no retention rule is enforced."
+    }
+  ]
+}

@@ -44,6 +44,7 @@ export const PHASE_09_TRUST_FABRIC = definePhaseContractFromSeed({
     "tests/unit/trust-entities.test.ts",
     "tests/unit/trust-assertions.test.ts",
     "tests/unit/trust-governance.test.ts",
+    "tests/unit/trust-fabric-report.test.ts",
   ],
   provides: [
     { id: "trust:record-assertion", kind: "command", description: "record an assertion" },

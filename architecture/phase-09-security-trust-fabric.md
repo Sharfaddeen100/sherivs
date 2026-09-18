@@ -1,7 +1,7 @@
 Phase 09 — Security & Trust Fabric
 A. Identity
 A.1 Subsystem Identity
-The Security & Trust Fabric is CoreGrid Scholar's cross-system trust architecture.
+The Security & Trust Fabric is CoreGrid's cross-system trust architecture.
 It establishes, evaluates, maintains, propagates, and verifies trust relationships between:
 • users
 • identities
@@ -43,7 +43,7 @@ Cross-platform trust and assurance layer.
 ───
 
 A.5 Primary Responsibility
-Establish trustworthy relationships and trustworthy system state across CoreGrid Scholar.
+Establish trustworthy relationships and trustworthy system state across CoreGrid.
 
 ───
 
@@ -78,7 +78,7 @@ An entity may be:
 
 B. Purpose
 B.1 Primary Purpose
-Provide CoreGrid Scholar with a unified trust architecture for determining whether identities, systems, devices, agents, data, software, and external relationships can be considered trustworthy.
+Provide CoreGrid with a unified trust architecture for determining whether identities, systems, devices, agents, data, software, and external relationships can be considered trustworthy.
 B.2 Secondary Purposes
 The fabric provides:
 • trust establishment
@@ -1418,6 +1418,270 @@ Neither phase should duplicate the other's responsibilities.
 ───
 
 BT. Final Architectural Principle
-CoreGrid Scholar must not treat trust as a boolean.
+CoreGrid must not treat trust as a boolean.
 Trust is a continuously evaluated relationship backed by evidence, provenance, cryptographic assurance, context, time, and revocation.
 The Security & Trust Fabric therefore becomes the platform's shared trust substrate while remaining strictly separated from the runtime enforcement responsibilities of Phase 08.
+
+───
+
+BU. COMMAND MODEL
+
+BU.1 What a Trust Command Is
+
+A trust command is an attempt to change what the platform believes: record an
+assertion, record evidence, verify a subject, revoke trust, register a key,
+certificate or anchor, create a federation or a delegation, publish a trust policy,
+or evaluate zero-trust. Every one of them is a write to trust state, and therefore
+every one of them is attributable, evidenced and reversible-or-revocable.
+
+BU.2 The Command Path
+
+command arrives
+  → Phase 08 decides whether the actor may issue it at all (BS: enforcement is
+    not this phase's job; the fabric never authorizes its own writes)
+  → evidence is supplied and validated: an assertion needs an issuer, a subject,
+    evidence and an integrity reference (F.1, L.2)
+  → the command is applied by the fabric, which returns a result object rather
+    than throwing: refusal is a value, not an exception
+  → the state transition is recorded with evidence references attached
+  → the change is attributable: actor, action, previous state, new state,
+    evidence, policy, timestamp, correlation (AZ)
+
+BU.3 Command Classes and Their Guards
+
+| Command class | Examples | Guard that must hold |
+| --- | --- | --- |
+| Record | create assertion, create evidence, register subject | issuer + subject + evidence + integrity reference (F.1) |
+| Verify | verify assertion, evaluate certificate, evaluate policy | integrity verified, issuer accepted, scope matched, not expired, not revoked |
+| Change state | transition trust state | the transition is allowed, and UNKNOWN may never jump to a trusted state (BR.10) |
+| Revoke | revoke assertion, relationship, anchor; create revocation | attributable actor (BR.14); evidence of the reason (BR.2); conditional restoration requires its condition |
+| Register | key, certificate, model, software provenance, artifact integrity | fingerprint/hash/signature facts; already-expired certificates are refused |
+| Scope | create federation, create delegation | distinct parties, explicit scope, future expiry, restrictions recorded (AC.2, AG) |
+| Publish | create trust policy version | accepted issuers, assurance bounds, positive lifetime (AE) |
+| Evaluate | trust score, zero-trust verdict | factors with evidence references; the verdict is advice for Phase 08, never enforcement (BS) |
+
+BU.4 Approval-Gated Commands (BM)
+
+Adding a root trust anchor, approving a new federation, restoring a compromised
+trust subject, changing organization-wide trust policy, accepting a new certificate
+authority and overriding a critical revocation are human-approval operations. The
+fabric records the anchor's managing administrator today (`managedBy` is required),
+which is the minimum form of that gate; the workflow itself is Section BW.
+
+BU.5 Where Commands Live Today, and the Honest Limit
+
+- `frontend/src/lib/trust-core.ts` — subjects, state transitions, scoring, relationships.
+- `frontend/src/lib/trust-assertions.ts` — assertions, evidence, provenance, revocation.
+- `frontend/src/lib/trust-entities.ts` — device, workload, agent, model, software, artifact.
+- `frontend/src/lib/trust-governance.ts` — keys, certificates, federation, delegation, anchors, policies, zero-trust.
+
+The limit, stated plainly: these are module commands. No HTTP route and no server
+function issues a trust command today, and nothing consumes the result (P09-5). A
+command model that nothing calls is a prepared interface, not an operating one.
+
+───
+
+BV. QUERY MODEL
+
+BV.1 What a Trust Query Answers
+
+| Query | Question | Consumer |
+| --- | --- | --- |
+| trust.get_state | what is this subject's trust state right now? | Phase 08 enforcement |
+| trust.get_score | how much evidence-weighted confidence exists, and from which factors? | Phase 08, human review |
+| trust.verify_assertion | is this assertion usable for this scope, now? | Phase 08, federation |
+| trust.verify_provenance | can this decision be traced to its evidence? | auditors, incident review |
+| trust.check_attestation | is the attestation behind a device/workload claim valid? | device and workload trust |
+| trust.check_revocation | has this subject, key, certificate or relationship been revoked? | Phase 08, all consumers |
+
+BV.2 Query Rules
+
+- Tenant scope is explicit on every query where it applies (AN). Cross-tenant
+  trust is never inferred from a trust relationship.
+- Expiry and revocation are evaluated at read time: a cached trust state that
+  outlives its evidence is a defect, not an optimisation (AB, BH).
+- Answers are explainable (K.3): a score carries its factor breakdown, evidence
+  references, confidence, version and context. A number without its derivation is
+  not a trust answer.
+- Unknown is answered as unknown (BC). The fabric distinguishes TRUSTED,
+  UNVERIFIED and UNKNOWN, and never converts UNKNOWN into TRUSTED to satisfy a
+  caller.
+- A query result is evidence for a decision, never the decision itself: Phase 08
+  answers "may this action happen?", and this fabric answers "how much should it
+  be trusted, and why?" (BS).
+
+BV.3 Query Debt (reported, not hidden)
+
+No trust query surface is implemented or wired: the contract declares the six
+queries above, the fabric builds the records in-process, and no persisted trust
+store exists (P09-4), so every "query" today is a function call over a record the
+caller already holds. This is the same debt class as AW.7 and AZ.3 of Phase 08.
+
+───
+
+BW. WORKFLOW MODEL
+
+BW.1 The Trust Lifecycle Workflows
+
+| Workflow | Trigger | Evidence required | Exit condition |
+| --- | --- | --- | --- |
+| Establishment | a subject is registered | enrolment + attestation facts | state reaches VERIFIED, then TRUSTED or CONDITIONALLY_TRUSTED |
+| Continuous re-evaluation | new evidence, posture change, incident | fresh evidence within its freshness window | state is raised, lowered or left unchanged — always with the reason recorded |
+| Degradation | anomalies, posture failure, unverifiable provenance | the failing fact and its source | state becomes DEGRADED and recommended restrictions are carried to Phase 08 |
+| Quarantine | suspicious behaviour, compromised evidence | evidence of the reason (BR.2) | the subject is isolated, never silently restored |
+| Revocation | compromise, credential loss, policy violation, failed attestation | attributable actor + reason (BR.14, AA.1) | REVOKED is terminal; restoration requires a new, evidenced establishment |
+| Restoration | remediation accepted by a human | remediation evidence + approval | state returns at or below VERIFIED, never straight to TRUSTED |
+| Federation lifecycle | a cross-organization agreement is signed | parties, scope, accepted assertions, verification methods, expiry (AC.2) | federation is active until revoked or expired; external trust never becomes internal by default |
+| Anchor rotation | a root certificate or key approaches expiry | the successor anchor and its managing administrator | the old anchor is revoked, the new one is registered |
+| Compromised issuer | an accepted issuer is suspect | the incident reference | every assertion from that issuer is re-evaluated and revocations are issued |
+
+BW.2 Workflow Rules
+
+- A workflow may only move a subject along transitions the state machine allows;
+  an illegal transition is refused as a value, never silently dropped (BU.2).
+- Trust is never raised by a workflow that lacks fresh evidence (AB, M.2).
+- Degradation never grants anything: it can only reduce privilege or trigger
+  review (U.3).
+- Human approval gates the workflows of BU.4 (new anchor, new federation,
+  restoration of a compromised subject, organization-wide policy change, override
+  of a critical revocation).
+
+BW.3 Workflow Debt (reported, not hidden)
+
+The state machine and the guards are implemented and exercised; the workflows are
+not automated. There is no scheduler that re-evaluates trust on new evidence, no
+approval workflow for the BU.4 operations beyond the required managing
+administrator, and no propagation step that re-evaluates dependents after a
+revocation (P09-3, P09-5). Today a workflow runs when a caller runs it.
+
+───
+
+BX. TRUST MEMORY AND KNOWLEDGE
+
+BX.1 What the Fabric Remembers
+
+The fabric's memory is its trust record, and every part of it is evidence-backed:
+
+- **Subject memory** — a subject's current state plus the evidence references that
+  justified each transition; a state with no evidence reference is a defect.
+- **Assertion memory** — who asserted what, for which scope and tenant, issued and
+  expiring when, with which integrity reference and provenance.
+- **Evidence memory** — source, capture time, freshness window, reliability,
+  integrity reference, provenance and confidence (M.2).
+- **Revocation memory** — who revoked what, why, of which kind, and under which
+  restoration condition (AA).
+- **Policy memory** — versioned trust policies, effective from a stated time (AE).
+- **Governance memory** — keys, certificates, anchors, federations and delegations
+  with their expiries and restrictions (P, Q, AC, AG, AI).
+
+BX.2 What the Fabric Knows — the Five Laws of Trust Knowledge
+
+1. **Knowledge is granted, never assumed.** Existence produces UNKNOWN; only
+   evidence moves a subject (BR.1, BR.2).
+2. **Derived knowledge never becomes canonical.** A trust score is
+   evidence-weighted confidence with a version and a factor breakdown; it is
+   advice, and it never replaces the evidence it summarises (K.1, BR.9).
+3. **Knowledge is time-bound.** A claim is only as good as the freshness of its
+   evidence, and expiry is evaluated at read time (AB, BV.2).
+4. **Knowledge is revocable.** Every trust the fabric grants can be withdrawn, and
+   withdrawal is attributable (AA, BR.4).
+5. **Knowledge is explainable.** The provenance chain answers "why does CoreGrid
+   trust this entity?" from the decision down to the source (N.1, N.2).
+
+BX.3 Trust Knowledge Is Sensitive (AY)
+
+Trust knowledge is itself regulated data: it reveals who is suspected, what failed
+and where the platform is weak. It is therefore minimised (only the evidence
+needed for the decision), retained no longer than its usefulness, restricted in
+visibility, separated from unnecessary personal information, and tenant-scoped.
+
+BX.4 Where the Memory Lives Today
+
+In-process records built by the four trust modules, plus the kernel event and
+audit ledger as the durable substrate (Phase 33). There is no trust memory store:
+nothing persists a subject's state history today, which is why P09-4 is reported
+as the phase's largest structural gap.
+
+───
+
+BY. TRUST MIGRATION
+
+BY.1 What Migration Means for Trust
+
+Trust records outlive the systems that create them, so migration is a trust
+operation, not a database operation:
+
+- **Schema migration** — trust records evolve (a new factor, a new assertion type,
+  a new revocation kind) without invalidating what was already asserted.
+- **Policy migration** — a new policy version supersedes the old one from its
+  effective time; versions are additive and never rewritten (AE).
+- **Anchor and key migration** — rotation is a migration: the successor anchor is
+  registered first, the old one is revoked second, and both steps are attributable
+  and approval-gated (AI, BM).
+- **Credential and algorithm migration** — signatures and hashes move to stronger
+  algorithms without redesigning the trust model (AX: cryptographic agility).
+- **Tenant migration** — a subject moving between tenants is re-established in the
+  new scope; tenant scope is never inferred from a relationship (AN).
+- **Federation migration** — moving from one external provider to another means a
+  new federation relationship, a new verification method and an explicit
+  revocation of the old one (AC.2).
+- **Recovery migration** — after disaster recovery, revocations are replayed
+  before trust is served (BD).
+
+BY.2 Migration Rules
+
+- Provenance survives migration. A migrated assertion keeps its issuer, evidence
+  references and integrity reference; a record that loses its provenance becomes
+  UNVERIFIED, never TRUSTED (BR.2, BR.10).
+- Revocation wins. If a migrated record conflicts with a revocation, the
+  revocation is authoritative and the record is not usable (AA, BR.4).
+- Migration is auditable: who migrated what, from which version, with which
+  evidence, at which time (AZ).
+- A migration may not raise trust. It may preserve it or lower it; raising trust
+  requires new evidence, exactly as establishment does.
+
+BY.3 Migration Debt (reported, not hidden)
+
+No trust migration exists, because no trust store exists (P09-4). The fabric's
+state is rebuilt from the callers' records each time, so today's only migration is
+the one nobody performs: there is nothing to carry. This is stated rather than
+implied, and it is why the persisted trust data model is the phase's next
+structural step after Phase 08 consumption is wired.
+
+───
+
+BZ. RUNTIME CONSUMER BOUNDARY
+
+BZ.1 The Kernel Is the Platform
+
+CoreGrid owns the Security & Trust Fabric. A runtime is an application installed
+ON the kernel; CoreGrid Scholar is runtime-001, the first consumer of this fabric
+and never its owner. This document's scope statements therefore describe CoreGrid,
+and runtime-specific vocabulary reaches the fabric through contracts and adapters
+in the runtime layer — never by editing a kernel module.
+
+BZ.2 What a Runtime Supplies
+
+- its identity-assurance sources (which issuers it accepts, with which evidence);
+- its device, workload, agent and model populations to be evaluated;
+- its federation partners and the scopes it accepts from them;
+- its policy pack: minimum assurance, required attestation, trust lifetimes.
+
+BZ.3 What No Runtime May Do
+
+- grant itself trust, or read a trust score as permission (BS);
+- register a root anchor or approve a federation without human approval (BM);
+- convert UNKNOWN into TRUSTED, or skip VERIFIED (BR.10);
+- fork the trust state machine or the trust record shape;
+- bypass Phase 08 enforcement, or ask the fabric to decide enforcement.
+
+BZ.4 Machine Enforcement
+
+`tests/unit/platform-neutrality.test.ts` enforces the boundary structurally: no
+kernel or capability module may import a runtime, only a runtime layer may name a
+runtime, and no platform surface may hard-code a limited role list.
+`scripts/neutralise-scholar-framing.mjs --check` reports any framing regression and
+exits non-zero, so a later phase cannot quietly re-attribute the fabric to a
+runtime. The control-plane surface for this phase (`/super-admin/trust-fabric`)
+declares no role list of its own, and it exercises the shipped machine instead of
+describing it.
