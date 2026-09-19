@@ -459,7 +459,7 @@ Supports:
 ───
 
 DOMAIN 17 — EDUCATION INTERFACE LAYER
-CoreGrid Scholar interface.
+CoreGrid interface.
 Supports:
 • students
 • teachers

@@ -4,7 +4,7 @@ CoreGrid Global Cloud Fabric Platform
 ───
 
 0. ARCHITECTURAL PURPOSE
-Phase 21 is the global infrastructure orchestration and cloud-fabric layer of CoreGrid Scholar.
+Phase 21 is the global infrastructure orchestration and cloud-fabric layer of CoreGrid.
 It provides the infrastructure capabilities required to deploy, operate, scale, connect, observe, recover, and govern CoreGrid workloads across:
 • public clouds
 • private clouds
@@ -2991,7 +2991,7 @@ These must be introduced without violating existing boundaries.
 ───
 
 HY. FINAL DEFINITION
-Phase 21 is the infrastructure nervous system of CoreGrid Scholar.
+Phase 21 is the infrastructure nervous system of CoreGrid.
 It connects CoreGrid's logical platform to the physical infrastructure world.
 Its responsibility is:
 text

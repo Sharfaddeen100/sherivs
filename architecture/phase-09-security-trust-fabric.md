@@ -1655,7 +1655,7 @@ BZ. RUNTIME CONSUMER BOUNDARY
 BZ.1 The Kernel Is the Platform
 
 CoreGrid owns the Security & Trust Fabric. A runtime is an application installed
-ON the kernel; CoreGrid Scholar is runtime-001, the first consumer of this fabric
+ON the kernel; CoreGrid is runtime-001, the first consumer of this fabric
 and never its owner. This document's scope statements therefore describe CoreGrid,
 and runtime-specific vocabulary reaches the fabric through contracts and adapters
 in the runtime layer — never by editing a kernel module.

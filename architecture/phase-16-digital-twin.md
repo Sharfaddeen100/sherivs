@@ -1,7 +1,7 @@
 Phase 16 — Digital Twin
 A. Identity
 A.1 Subsystem Identity
-Phase 16 is the CoreGrid Scholar Digital Twin & Reality Representation Platform.
+Phase 16 is the CoreGrid Digital Twin & Reality Representation Platform.
 It provides the canonical digital representation of relevant real-world entities, environments, systems, processes, assets, spaces, people, equipment, infrastructure, and institutional states.
 The Digital Twin layer creates a controlled computational representation of reality.
 It connects:
@@ -1855,7 +1855,7 @@ Phase 16 is accepted when:
 ───
 
 EZ. Definition of Done
-Phase 16 is complete when CoreGrid Scholar can:
+Phase 16 is complete when CoreGrid can:
 text
 DISCOVER REAL ENTITY
         ↓
@@ -1945,7 +1945,7 @@ FA. Architectural Invariants
 ───
 
 FB. Final Architectural Principle
-Phase 16 is the Reality Representation Layer of CoreGrid Scholar.
+Phase 16 is the Reality Representation Layer of CoreGrid.
 Its fundamental responsibility is:
 text
 REALITY
@@ -2002,4 +2002,4 @@ text
 │ Reasons over governed representations    │
 └──────────────────────────────────────────┘
 
-Phase 16 therefore becomes the computational bridge between CoreGrid Scholar's representation of the real world and its future intelligence systems—without becoming the hardware layer, automation layer, analytics layer, or AI layer itself.
+Phase 16 therefore becomes the computational bridge between CoreGrid's representation of the real world and its future intelligence systems—without becoming the hardware layer, automation layer, analytics layer, or AI layer itself.

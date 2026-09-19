@@ -1,12 +1,12 @@
 PHASE 20 — GOVERNMENT EDUCATION CLOUD
-CoreGrid Scholar Government & Public Education Cloud Platform
+CoreGrid Government & Public Education Cloud Platform
 
 ───
 
 A. IDENTITY
 A.1 Subsystem Identity
-Phase 20 is the CoreGrid Scholar Government Education Cloud.
-It provides the institutional and platform capabilities required to operate CoreGrid Scholar across:
+Phase 20 is the CoreGrid Government Education Cloud.
+It provides the institutional and platform capabilities required to operate CoreGrid across:
 • ministries of education
 • departments of education
 • government agencies
@@ -20,7 +20,7 @@ It provides the institutional and platform capabilities required to operate Core
 • district education systems
 • municipal education systems
 • national education ecosystems
-It transforms CoreGrid Scholar from an institution-centric platform into a government-scale education operating environment.
+It transforms CoreGrid from an institution-centric platform into a government-scale education operating environment.
 
 ───
 
@@ -3028,7 +3028,7 @@ while preserving the ownership boundaries of every other CoreGrid phase.
 ───
 
 JU. FINAL ARCHITECTURAL PRINCIPLE
-The Government Education Cloud is the public-sector operating layer of CoreGrid Scholar.
+The Government Education Cloud is the public-sector operating layer of CoreGrid.
 It connects institutions to government authorities without turning the government layer into the owner of every underlying system.
 Its architectural boundary is:
 text
@@ -3065,5 +3065,5 @@ GOVERNMENT AUTHORITY
    PHASE 21 GLOBAL CLOUD FABRIC
 
 The fundamental distinction is:
-Phase 20 governs and operates CoreGrid Scholar at government/public-sector education scale. Phase 21 provides the underlying global cloud fabric. Phase 19 provides operational command. Phase 18 provides analytical intelligence. Phase 17 provides controlled execution. Phase 14 provides the data platform.
-That separation must remain an architectural invariant as CoreGrid Scholar expands from individual institutions into regional, national, and eventually global education ecosystems.
+Phase 20 governs and operates CoreGrid at government/public-sector education scale. Phase 21 provides the underlying global cloud fabric. Phase 19 provides operational command. Phase 18 provides analytical intelligence. Phase 17 provides controlled execution. Phase 14 provides the data platform.
+That separation must remain an architectural invariant as CoreGrid expands from individual institutions into regional, national, and eventually global education ecosystems.

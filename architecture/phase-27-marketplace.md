@@ -1878,9 +1878,9 @@ rather than fixed portal assumptions.
 
 ───
 
-CL. MARKETPLACE + COREGRID SCHOLAR
-210. Scholar Extensions
-CoreGrid Scholar may consume marketplace products such as:
+CL. MARKETPLACE AND DOMAIN RUNTIMES
+210. Runtime Extensions
+CoreGrid may consume marketplace products such as:
 • teaching tools
 • assessment tools
 • laboratory systems

@@ -715,7 +715,7 @@ Core intelligence expansion mechanism.
 Final simulation orchestration layer.
 300. Universal Simulation & Future Intelligence Civilization Engine
 The final Phase 37 architecture layer connecting:
-• CoreGrid Scholar
+• CoreGrid
 • all CoreGrid phases
 • Universal Reality Intelligence Kernel
 • Autonomous Agent Civilization OS

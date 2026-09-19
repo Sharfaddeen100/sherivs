@@ -4,7 +4,7 @@ A.1 Subsystem Identity
 The Communication Platform is CoreGrid's unified institutional communication infrastructure.
 It provides the capabilities required for people, institutions, services, applications, agents, and approved external systems to communicate through controlled, observable, reliable, multi-channel communication mechanisms.
 The platform provides a common communication substrate across CoreGrid. A runtime is a
-consumer of that substrate, never its boundary: CoreGrid Scholar is runtime-001, the first
+consumer of that substrate, never its boundary: CoreGrid is runtime-001, the first
 consumer.
 It abstracts communication channels away from individual business domains.
 
@@ -2188,7 +2188,7 @@ The following rules are mandatory:
 EK. Final Architectural Principle
 CoreGrid should never allow every subsystem to invent its own communication infrastructure.
 A student system, academic system, financial system, scheduling system, automation system, agent system, government system, and institutional command centre should all be able to request communication through the same controlled platform.
-The Communication Platform therefore acts as CoreGrid's institutional communication nervous system. A runtime consumes it rather than owning it: CoreGrid Scholar is runtime-001, the first consumer of this contract.
+The Communication Platform therefore acts as CoreGrid's institutional communication nervous system. A runtime consumes it rather than owning it: CoreGrid is runtime-001, the first consumer of this contract.
 It carries the messages.
 It does not decide the meaning of the institution's business events.
 It does not own identity.

@@ -1,24 +1,24 @@
-# COREGRID — PHASE 04 RUNTIME BUILD MAP (Scholar Educational Reality Engine)
+# COREGRID — PHASE 04 RUNTIME BUILD MAP (education reality engine, first installed ontology)
 
 Status: PLAN ARTIFACT (authoritative execution map) — living document
 Authority: architecture/phase-04-education-reality-engine.md (2,150 lines; 199 numbered contracts)
 Version: 2026-09-04
 Scope: Every Phase-04 contract item → concrete artifact (module/migration/test/functions),
-each layered on CoreGrid platform (P33 kernel + P02/P03 L2 registries) — never standalone
-Scholar, never hard-coded institution logic, never a duplicate engine.
+each layered on CoreGrid platform (P33 kernel + P02/P03 L2 registries) — never a standalone
+runtime, never hard-coded institution logic, never a duplicate engine.
 
 ---
 
 ## 0. Refined Directive (upgraded user prompt)
 
-> Build the complete **CoreGrid Scholar Educational Reality Runtime**: an AI-native,
+> Build the complete **CoreGrid Educational Reality Runtime**: an AI-native,
 > configuration-driven, relationship-driven educational operating runtime able to model the
 > diversity of African education (formal/informal/traditional/religious/vocational/technical/
 > agricultural/apprenticeship/…).
 >
 > 1. **Platform-first**: every artifact consumes CoreGrid primitives — kernel
 >    (`cg_entity/cg_relationship/cg_event/cg_observation`, `kernel/*`) and L2
->    (`cg_tenant`, `cg_identity`) — Scholar is the first runtime ON CoreGrid; nothing is an
+>    (`cg_tenant`, `cg_identity`) — the first installed runtime is runtime-001, a consumer among equals ON CoreGrid; nothing is an
 >    independent subsystem.
 > 2. **Configuration over code**: institution structures are data, never code branches.
 > 3. **Africa-first / zero hard-coding**: no hidden Western defaults; no per-institution source.
@@ -251,7 +251,7 @@ Remaining work by OWNING surface/phase (NOT Phase-04 authoring):
 | Work item | Owner |
 |---|---|
 | HTTP-layer invocation of the config family + remaining surface functions (structure/curriculum/time/participation/attendance/assessment/facilities/…) | P08 enforcement + app runtime (S6 vertical wiring) |
-| Migrating legacy education-*/academic-* modules & dashboards onto Scholar modules + kernel substrate | P24 UI migration (S6), DECISIONS.md canonicalization ADRs (human authority) |
+| Migrating legacy education-*/academic-* modules & dashboards onto the runtime's modules + kernel substrate | P24 UI migration (S6), DECISIONS.md canonicalization ADRs (human authority) |
 | Full unit-suite regression merge (259 scholar tests into the ~100-file baseline) + §5/§20 refresh | CI (S1/S6) |
 | Runtime status proposed → active + institutional grading/timetable optimisation consumption | Control-plane lifecycle (human authority) / P12 |
 | Formal perf/device/offline suites beyond unit sanity | P05/P14/P15/P21 |

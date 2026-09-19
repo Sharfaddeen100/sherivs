@@ -1,8 +1,8 @@
 Phase 14 — Data Platform
 A. Identity
 A.1 Subsystem Identity
-Phase 14 is the CoreGrid Scholar Data Platform.
-It is the institutional data infrastructure responsible for the controlled ingestion, transport, storage, transformation, cataloguing, governance, quality management, lineage, synchronization, serving, retention, archival, and lifecycle management of data across CoreGrid Scholar.
+Phase 14 is the CoreGrid Data Platform.
+It is the institutional data infrastructure responsible for the controlled ingestion, transport, storage, transformation, cataloguing, governance, quality management, lineage, synchronization, serving, retention, archival, and lifecycle management of data across CoreGrid.
 The Data Platform is the data infrastructure layer, not the owner of institutional business semantics.
 It provides the infrastructure through which CoreGrid's domains can safely create, consume, synchronize, analyze, govern, and recover data.
 
@@ -32,7 +32,7 @@ The Data Platform exists to provide:
 • tenant-aware data isolation
 • data observability
 • data governance
-The objective is to ensure that CoreGrid Scholar never evolves into a collection of disconnected databases and undocumented pipelines.
+The objective is to ensure that CoreGrid never evolves into a collection of disconnected databases and undocumented pipelines.
 
 ───
 
@@ -2060,7 +2060,7 @@ Phase 14 is accepted when:
 ───
 
 FQ. Definition of Done
-Phase 14 is complete when CoreGrid Scholar can reliably perform:
+Phase 14 is complete when CoreGrid can reliably perform:
 text
 SOURCE
    ↓
@@ -2185,6 +2185,6 @@ DOMAIN SYSTEMS
 
 But the most important rule is:
 The Data Platform transports, stores, governs, and serves institutional data; it does not redefine the institutional meaning of that data.
-CoreGrid Scholar therefore maintains a strict distinction between:
+CoreGrid therefore maintains a strict distinction between:
 data infrastructure, domain truth, analytical data, knowledge, intelligence, and decisions.
 That separation is what allows the platform to scale from a school operating system into a global institutional technology platform without turning the data layer into an ungovernable monolith.

@@ -1,11 +1,11 @@
 PHASE 17 — AUTOMATION ENGINE
-CoreGrid Scholar Controlled Automation Engine
+CoreGrid Controlled Automation Engine
 
 ───
 
 A. Identity
 A.1 Subsystem Identity
-Phase 17 is the CoreGrid Scholar Controlled Automation Engine.
+Phase 17 is the CoreGrid Controlled Automation Engine.
 It is the governed execution layer responsible for transforming authorized events, conditions, policies, schedules, workflows, and approved decisions into controlled operational actions.
 Phase 17 provides the machinery required to move from:
 text
@@ -2162,7 +2162,7 @@ Phase 17 is accepted when:
 ───
 
 FO. Definition of Done
-Phase 17 is complete when CoreGrid Scholar can safely perform:
+Phase 17 is complete when CoreGrid can safely perform:
 text
 EVENT
  ↓
@@ -2200,7 +2200,7 @@ without allowing an AI agent, workflow, developer, tenant, or external integrati
 
 FP. Final Architectural Principle
 Phase 17 is not simply an automation framework.
-It is CoreGrid Scholar's:
+It is CoreGrid's:
 Governed Action Execution Layer.
 The fundamental architecture is:
 text

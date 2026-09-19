@@ -215,7 +215,7 @@ Improves adaptive learning.
 89. Education Policy Evolution Simulator
 Tests policy improvements.
 90. African Education Runtime Evolution Layer
-First evolutionary runtime implementation inside CoreGrid Scholar.
+First evolutionary runtime implementation inside CoreGrid.
 
 ───
 

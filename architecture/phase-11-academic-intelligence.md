@@ -1,7 +1,7 @@
 Phase 11 — Academic Learning Intelligence
 A. Identity
 A.1 Subsystem Identity
-The Academic Learning Intelligence subsystem is CoreGrid Scholar's institutional intelligence layer for understanding, representing, supporting, and improving teaching and learning.
+The Academic Learning Intelligence subsystem is CoreGrid's institutional intelligence layer for understanding, representing, supporting, and improving teaching and learning.
 It converts authoritative academic data, learning activity, assessment evidence, curriculum structures, instructional resources, learner interactions, and educational signals into structured academic intelligence.
 It provides the foundation for:
 • learner understanding
@@ -34,7 +34,7 @@ Core academic-domain intelligence subsystem.
 ───
 
 A.5 Primary Responsibility
-Understand the state and progression of learning within CoreGrid Scholar while preserving institutional, pedagogical, privacy, and authorization boundaries.
+Understand the state and progression of learning within CoreGrid while preserving institutional, pedagogical, privacy, and authorization boundaries.
 
 ───
 
@@ -63,7 +63,7 @@ Outcome
 
 B. Purpose
 B.1 Primary Purpose
-Provide CoreGrid Scholar with a unified academic intelligence system capable of understanding how learning occurs and how educational outcomes evolve.
+Provide CoreGrid with a unified academic intelligence system capable of understanding how learning occurs and how educational outcomes evolve.
 
 ───
 

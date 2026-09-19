@@ -136,7 +136,7 @@ No tenant may access another tenant's resources merely because both exist within
 
 B. PURPOSE
 B1. Primary Purpose
-Provide secure, scalable, institutionally sovereign multi-tenancy across CoreGrid Scholar.
+Provide secure, scalable, institutionally sovereign multi-tenancy across CoreGrid.
 
 ───
 

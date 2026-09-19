@@ -29,7 +29,7 @@ Position
 ───
 
 A2. Identity Definition
-The CoreGrid Identity Platform is the universal identity, trust, authentication, authorization, and relationship management system of CoreGrid Scholar.
+The CoreGrid Identity Platform is the universal identity, trust, authentication, authorization, and relationship management system of CoreGrid.
 It provides the answer to:
  
 
@@ -174,7 +174,7 @@ B. Purpose
 ───
 
 B1. Primary Purpose
-The purpose of the Identity Platform is to create a universal trust foundation allowing CoreGrid Scholar to operate as an autonomous institutional operating system.
+The purpose of the Identity Platform is to create a universal trust foundation allowing CoreGrid to operate as an autonomous institutional operating system.
 
 ───
 

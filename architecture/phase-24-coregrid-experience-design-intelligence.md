@@ -16,7 +16,7 @@ individuals experience CoreGrid across every device, and it renders every
 present and future domain runtime (Scholar R-001 is the first education
 runtime, never the only one). Personalization derives from identity, role,
 context, permissions, policies and organization (P02/P03/P08 semantics), never
-from a fixed product portal. Scholar-specific wording in this document appears
+from a fixed product portal. runtime-specific wording in this document appears
 only as a worked example.
 
 ───

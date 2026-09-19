@@ -820,14 +820,14 @@ AY. RUNTIME CONSUMER BOUNDARY
 AY.1 The Kernel Is the Platform
 
 CoreGrid owns this engine. A runtime is an application installed ON the kernel.
-CoreGrid Scholar is runtime-001: the first consumer, never the owner. This
+CoreGrid is runtime-001: the first consumer, never the owner. This
 document's scope statements therefore describe CoreGrid, and runtime-specific
 vocabulary reaches the engine through an adapter in the runtime layer
 (`frontend/src/lib/runtime/scholar-*`), never by editing a kernel module.
 
 AY.2 What a Runtime Supplies
 
-- its role vocabulary and role-kind map (Scholar: the staff kinds bound to the
+- its role vocabulary and role-kind map (the installed runtime: the staff kinds bound to the
   identity catalog and consumed through `security-role-gate.ts`);
 - its policy packs — which actions require which decision class;
 - its risk-signal producers (device, location, behaviour) where it has them.

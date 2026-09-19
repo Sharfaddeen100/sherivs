@@ -386,7 +386,7 @@ City optimization
 ───
 
 DOMAIN 09 — SCHOOL DIGITAL TWIN ENGINE
-CoreGrid Scholar application.
+CoreGrid application.
 Represents:
 • students
 • teachers

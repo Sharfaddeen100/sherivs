@@ -14,7 +14,7 @@ Agent System
 
 A2. Architectural Classification
 
-The AI Agent System is the autonomous-agent infrastructure of the CoreGrid platform; CoreGrid Scholar (runtime-001) is its first consumer, and every later runtime consumes the same contracts through a neutral seat.
+The AI Agent System is the autonomous-agent infrastructure of the CoreGrid platform; CoreGrid (runtime-001) is its first consumer, and every later runtime consumes the same contracts through a neutral seat.
 It provides the runtime and governance framework required to create, register, execute, coordinate, supervise, evaluate, observe, and safely terminate AI agents.
 
 ───

@@ -2,7 +2,7 @@
 Phase 12 — Scheduling & Timetable Intelligence
 A. Identity
 A.1 Subsystem Identity
-Scheduling & Timetable Intelligence is CoreGrid Scholar's authoritative scheduling-domain subsystem.
+Scheduling & Timetable Intelligence is CoreGrid's authoritative scheduling-domain subsystem.
 It transforms institutional scheduling requirements, academic constraints, people availability, physical resources, calendars, policies, events, and learning requirements into valid, optimized, explainable schedules.
 It supports:
 •	academic timetables
@@ -31,7 +31,7 @@ It supports:
 
 B. Purpose
 B.1 Primary Purpose
-Provide CoreGrid Scholar with a reliable scheduling engine capable of producing feasible schedules while optimizing institutional objectives.
+Provide CoreGrid with a reliable scheduling engine capable of producing feasible schedules while optimizing institutional objectives.
 B.2 Secondary Purposes
 The subsystem must:
 •	detect conflicts
@@ -1905,7 +1905,7 @@ schedule history is reconstructable.
 •	───
 •	
 •	EO. Definition of Done
-•	Phase 12 is complete when CoreGrid Scholar can take:
+•	Phase 12 is complete when CoreGrid can take:
 •	
 
 •	 
@@ -1984,13 +1984,13 @@ Every production schedule must have a recoverable source of truth.
 
 
 EQ. Final Architectural Principle
-CoreGrid Scholar must treat scheduling as a constraint intelligence problem, not a calendar CRUD problem.
+CoreGrid must treat scheduling as a constraint intelligence problem, not a calendar CRUD problem.
 The fundamental loop is:
  
 
 
 The most important invariant is:
 No amount of optimization is valuable if the resulting timetable is infeasible, unauditable, inexplicable, or operationally impossible.
-Phase 12 therefore provides CoreGrid Scholar with a scheduling system that can move from simple school timetables to extremely complex 
+Phase 12 therefore provides CoreGrid with a scheduling system that can move from simple school timetables to extremely complex 
 
 institutional scheduling problems without changing the underlying architectural principles.

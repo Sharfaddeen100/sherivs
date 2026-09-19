@@ -2,8 +2,8 @@
 Phase 13 — Payment, Billing & Financial Operating System
 A. Identity
 A.1 Subsystem Identity
-Phase 13 is CoreGrid Scholar's Payment, Billing & Financial Operating System (FinOS).
-It provides the authoritative financial transaction and billing domain required for CoreGrid Scholar to operate educational institutions, organizations, enterprises, marketplaces, subscriptions, services, facilities, and future financial workflows.
+Phase 13 is CoreGrid's Payment, Billing & Financial Operating System (FinOS).
+It provides the authoritative financial transaction and billing domain required for CoreGrid to operate educational institutions, organizations, enterprises, marketplaces, subscriptions, services, facilities, and future financial workflows.
 FinOS transforms commercial and institutional obligations into controlled financial workflows.
 Its core responsibility is to answer:
 
@@ -25,7 +25,7 @@ Its core responsibility is to answer:
 B. Purpose
 
 B.1 Primary Purpose
-Provide a reliable, auditable, secure, multi-tenant financial infrastructure for CoreGrid Scholar.
+Provide a reliable, auditable, secure, multi-tenant financial infrastructure for CoreGrid.
 B.2 Secondary Purposes
 FinOS supports:
 •	pricing
@@ -2026,7 +2026,7 @@ The financial source of truth remains recoverable.
 ───
 
 EG. Definition of Done
-Phase 13 is complete when CoreGrid Scholar can safely execute:
+Phase 13 is complete when CoreGrid can safely execute:
  
 
  
@@ -2118,7 +2118,7 @@ Financial correctness takes precedence over convenience.
 ───
 
 EI. Final Architectural Principle
-CoreGrid Scholar must treat money as state that requires proof, not merely data stored in a database.
+CoreGrid must treat money as state that requires proof, not merely data stored in a database.
 The fundamental FinOS loop is:
 
  

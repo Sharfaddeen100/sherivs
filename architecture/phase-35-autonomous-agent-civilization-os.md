@@ -1,5 +1,5 @@
 PHASE 35 — AUTONOMOUS AGENT CIVILIZATION OS
-Platform: CoreGrid Scholar / CoreGrid Intelligence Civilization Layer
+Platform: CoreGrid / CoreGrid Intelligence Civilization Layer
 Phase: 35 of 40
 Architecture Class: ASI-Era Autonomous Agent Civilization Operating System
 Domain: Universal Autonomous Agent Infrastructure

@@ -19,6 +19,7 @@
  * what makes the rule survive future phases.
  */
 import { describe, expect, it } from "vitest";
+import { spawnSync } from "node:child_process";
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -253,5 +254,53 @@ describe("Only the runtime layer narrates a runtime", () => {
   it("never narrates a runtime as the platform outside the runtime layer", () => {
     const offenders = sources.filter((ref) => RUNTIME_NARRATION.test(read(ref)));
     expect(offenders).toEqual([]);
+  });
+});
+
+/* ─────────────────────────────────────────────────────────────
+ * LAW 6: the phase BLUEPRINTS state the platform, not one application.
+ *
+ * The 51 phase documents are read as law by every later phase, and 27 of them
+ * presented one runtime as the platform ("CoreGrid Scholar's institutional
+ * communication infrastructure", "Scholar is the first runtime", "Scholar-specific",
+ * "SCHOLAR EXTENSIONS" …). They were normalised by
+ * `scripts/normalise-phase-doc-framing.mjs`, which rewrites owner-framing statements
+ * into platform statements and refuses to touch a bare runtime name it cannot classify.
+ * This block makes the correction durable: a later phase cannot re-frame the blueprint,
+ * and the runtime stays runtime-001 — the first installed consumer of the kernel.
+ * ────────────────────────────────────────────────────────────*/
+
+describe("The phase blueprints describe CoreGrid, not one runtime", () => {
+  const phaseDocs = readdirSync(join(ROOT, "architecture"))
+    .filter((name) => /^phase-\d\d-.*\.md$/.test(name))
+    .map((name) => `architecture/${name}`);
+
+  it("has phase documents to check", () => {
+    expect(phaseDocs.length).toBeGreaterThan(50);
+  });
+
+  it("presents no runtime as the platform", () => {
+    const ownerFraming =
+      /CoreGrid\s+Scholar|Scholar's|Scholar is\b|Scholar consumes|Scholar owns|Scholar provides|Scholar-?specific|Scholar-only|Scholar platform|Scholar system|Scholar implementation|\bfor Scholar\b/i;
+    const offenders = [];
+    for (const ref of phaseDocs) {
+      for (const [index, line] of read(ref).split("\n").entries()) {
+        if (ownerFraming.test(line)) offenders.push(`${ref}:${index + 1}`);
+      }
+    }
+    expect(offenders).toEqual([]);
+  });
+
+  it("keeps the runtime as the first installed consumer, never the platform", () => {
+    // A document may name the runtime (runtime-001, R-001, a path in its own layer);
+    // what it may not do is claim the runtime is the platform — enforced above. Here we
+    // assert the normaliser still reports the blueprint clean, so the two instruments
+    // cannot disagree.
+    const result = spawnSync("node", ["scripts/normalise-phase-doc-framing.mjs", "--check"], {
+      cwd: ROOT,
+      encoding: "utf8",
+    });
+    expect(result.stdout).toContain("documents with owner-framing to rewrite: 0");
+    expect(result.status).toBe(0);
   });
 });

@@ -1,16 +1,16 @@
 
-PHASE 04 — COREGRID SCHOLAR EDUCATIONAL REALITY ENGINE
+PHASE 04 — CoreGrid EDUCATIONAL REALITY ENGINE
 Universal African Educational Runtime
 File:architecture/phase-04-education-reality-engine.md
 Architecture: CoreGrid v2
 Status: Scope-Locked Production Architecture
-Subsystem: CoreGrid Scholar Educational Runtime
+Subsystem: CoreGrid Educational Runtime
 Primary responsibility: Model, execute and continuously understand the complete educational and operational reality of an African educational institution.
 
 ───
 
 1. SYSTEM IDENTITY
-CoreGrid Scholar Educational Runtime is the foundational runtime that allows CoreGrid to operate as an actual educational system rather than merely a collection of school-management features.
+CoreGrid Educational Runtime is the foundational runtime that allows CoreGrid to operate as an actual educational system rather than merely a collection of school-management features.
 It answers:
 What does this institution look like?
 How does this institution operate?
@@ -27,7 +27,7 @@ The runtime must be capable of representing an institution without requiring Cor
 ───
 
 2. CORE PRINCIPLE
-CoreGrid Scholar is:
+CoreGrid is:
 configuration-driven, policy-driven, context-driven, relationship-driven and AI-native.
 The institution defines its operating reality.
 CoreGrid interprets that reality.
@@ -1905,7 +1905,7 @@ The authoritative runtime controls state.
 •	
 •	183. FINAL ARCHITECTURAL MODEL
 
-•	CoreGrid Scholar becomes:
+•	CoreGrid becomes:
 •	 
 
 •	
@@ -2066,8 +2066,8 @@ migrations are safe
 
 ───
 
-196. THE COREGRID SCHOLAR PRINCIPLE
-CoreGrid Scholar should not be:
+196. THE CoreGrid PRINCIPLE
+CoreGrid should not be:
 "a school management system with AI."
 It should be:
 an AI-native educational operating runtime capable of representing and operating the 
@@ -2087,7 +2087,7 @@ The policy engine governs it.
 •	
 •	197. LONG-TERM VISION
 •	The architecture must remain useful decades into the future.
-CoreGrid Scholar should eventually be able to 
+CoreGrid should eventually be able to 
 
 model an institution that today does not yet exist.
 It should be possible for a school to introduce:
@@ -2147,7 +2147,7 @@ The educational runtime should understand the relationships.
 The digital twin should understand the physical environment.
 The intelligence layers should understand the educational environment.
 And the system should operate without requiring a developer to write a new portal for that institution.
-That is the standard for CoreGrid Scholar Educational Runtime.
+That is the standard for CoreGrid Educational Runtime.
 
 
 ───────────────────

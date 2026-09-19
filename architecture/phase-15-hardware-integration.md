@@ -1,8 +1,8 @@
 Phase 15 — Hardware Integration
 A. Identity
 A.1 Subsystem Identity
-Phase 15 is the CoreGrid Scholar Hardware Integration Platform.
-It is the physical-device integration layer responsible for connecting CoreGrid Scholar to real-world hardware, edge devices, sensors, controllers, gateways, embedded systems, robotics, infrastructure equipment, and other supported physical systems.
+Phase 15 is the CoreGrid Hardware Integration Platform.
+It is the physical-device integration layer responsible for connecting CoreGrid to real-world hardware, edge devices, sensors, controllers, gateways, embedded systems, robotics, infrastructure equipment, and other supported physical systems.
 It creates a controlled boundary between:
 text
 PHYSICAL WORLD
@@ -1942,7 +1942,7 @@ Phase 15 is accepted when:
 ───
 
 FA. Definition of Done
-Phase 15 is complete when CoreGrid Scholar can reliably perform:
+Phase 15 is complete when CoreGrid can reliably perform:
 text
 DISCOVER
    ↓
@@ -2031,7 +2031,7 @@ FB. Architectural Invariants
 ───
 
 FC. Final Architectural Principle
-Phase 15 is the physical-world gateway of CoreGrid Scholar.
+Phase 15 is the physical-world gateway of CoreGrid.
 Its responsibility can be summarized as:
 text
 PHYSICAL WORLD

@@ -1,12 +1,12 @@
 
 PHASE 18 — ANALYTICS & DECISION INTELLIGENCE
-CoreGrid Scholar Analytics & Decision Intelligence Layer
+CoreGrid Analytics & Decision Intelligence Layer
 
 ───
 
 A. IDENTITY
 A.1 Subsystem Identity
-Phase 18 is the CoreGrid Scholar Analytics & Decision Intelligence Layer.
+Phase 18 is the CoreGrid Analytics & Decision Intelligence Layer.
 It transforms governed institutional data into:
 •	measurements
 •	metrics
@@ -2359,7 +2359,7 @@ Preserve the Phase 24 AI boundary.
 ───
 
 HZ. DEFINITION OF DONE
-Phase 18 is complete when CoreGrid Scholar can take governed institutional information and transform it into a reproducible analytical chain:
+Phase 18 is complete when CoreGrid can take governed institutional information and transform it into a reproducible analytical chain:
 
  
 

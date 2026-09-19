@@ -1,5 +1,5 @@
 PHASE 34 — UNIVERSAL COGNITIVE INTELLIGENCE ENGINE
-CoreGrid Scholar / CoreGrid Universal Intelligence Architecture
+CoreGrid / CoreGrid Universal Intelligence Architecture
 Phase: 34 of 40
 Category: Universal Cognitive Intelligence
 Architectural Class: Cross-Domain Intelligence Kernel
@@ -6127,8 +6127,8 @@ It must prove:
 
 ───
 
-UT — COREGRID SCHOLAR INTEGRATION
-CoreGrid Scholar becomes the first complete manifestation of the universal cognitive stack.
+UT — CoreGrid INTEGRATION
+CoreGrid becomes the first complete manifestation of the universal cognitive stack.
 It is not the cognitive engine itself.
 It is the first runtime using it.
 

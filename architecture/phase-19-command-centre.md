@@ -1,12 +1,12 @@
 
 PHASE 19 — INSTITUTIONAL COMMAND CENTRE
-CoreGrid Scholar Institutional Command Centre Platform
+CoreGrid Institutional Command Centre Platform
 
 ───
 
 A. IDENTITY
 A.1 Subsystem Identity
-Phase 19 is the CoreGrid Scholar Institutional Command Centre.
+Phase 19 is the CoreGrid Institutional Command Centre.
 It is the institutional operational coordination layer through which authorized users can:
 •	observe institutional state
 
@@ -2001,7 +2001,7 @@ Preserve future-evolution compatibility.
 ───
 
 HH. DEFINITION OF DONE
-Phase 19 is complete when an authorized institutional operator can enter the CoreGrid Scholar Command Centre and move through:
+Phase 19 is complete when an authorized institutional operator can enter the CoreGrid Command Centre and move through:
 
  
 
@@ -2011,7 +2011,7 @@ without the Command Centre itself becoming the owner of the underlying domain tr
 ───
 
 HI. FINAL ARCHITECTURAL PRINCIPLE
-The Institutional Command Centre is the operational nervous system of CoreGrid Scholar.
+The Institutional Command Centre is the operational nervous system of CoreGrid.
 It brings together the signals produced by the rest of the platform and gives authorized humans a coherent place to understand and coordinate the institution.
 Its boundary is:
 
@@ -2023,4 +2023,4 @@ The fundamental distinction is:
 Phase 18 tells CoreGrid what the evidence means. Phase 19 tells authorized humans what requires attention and gives them the 
 
 environment to coordinate a response. Phase 17 performs governed execution.
-That separation should remain an architectural invariant even as CoreGrid Scholar eventually grows into a global institutional platform.
+That separation should remain an architectural invariant even as CoreGrid eventually grows into a global institutional platform.
