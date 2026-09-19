@@ -17,7 +17,7 @@ import {
 import {
   scholarCapabilitiesForKind,
   scholarCapabilitiesForRole,
-} from "../../frontend/src/lib/workspace-engine/nav-catalog";
+} from "@/lib/runtime/nav-registry";
 import type { AppRole } from "../../frontend/src/lib/roles";
 
 describe("authority group → chrome kind mapping (R-001 data)", () => {

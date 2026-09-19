@@ -3,7 +3,7 @@
  *
  * Reads and writes a tenant's profile through the domain-neutral org-profile
  * RPCs (cg_org_profile substrate). The tenant boundary is resolved server-side
- * from the actor (never supplied by the client). Scholar defines the payload
+ * from the actor (never supplied by the client). The installed runtime defines the payload
  * shape via `scholar-profile.ts`; the kernel never interprets payloads.
  */
 import { createServerFn } from "@tanstack/react-start";

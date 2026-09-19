@@ -12,7 +12,7 @@ import type { AppRole } from "../../frontend/src/lib/roles";
 import {
   scholarWorkspaceHome,
   scholarWorkspaceLabelForRole,
-} from "../../frontend/src/lib/workspace-engine/nav-catalog";
+} from "@/lib/runtime/nav-registry";
 
 describe("workspace landing derivation (formerly dashboardPathForRole)", () => {
   const cases: Array<[AppRole, string]> = [

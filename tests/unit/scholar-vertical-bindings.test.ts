@@ -209,7 +209,7 @@ describe("Scholar vertical bindings — evidence is verifiable, not just cited",
 
   it("publishes the binding summary on the Command Centre", () => {
     expect(surface).toContain("scholarVerticalBindingSummary");
-    expect(surface).toContain("<ScholarBindingCard />");
+    expect(surface).toContain("<RuntimeBindingCard />");
     expect(surface).toContain("bindings.byVertical");
     expect(surface).toContain("bindings.unboundCapabilities");
     expect(surface).toContain("bindings.registryRuntimeId");

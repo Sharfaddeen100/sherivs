@@ -6,7 +6,7 @@
  * parses codes strictly and evaluates them against a member's coarse
  * membership kind — FAILING CLOSED on malformed codes, unknown features,
  * unknown kinds and unknown roles. It grants nothing by itself: it is the
- * pattern every per-feature Scholar server gate (Phases 11–13) adopts so a
+ * pattern every per-feature server gate an installed runtime adopts (Phases 11–13) so a
  * capability is never granted by accident.
  *
  * Platform super-admin evaluation bypasses kind checks ONLY for codes the
@@ -14,7 +14,12 @@
  * calls this for hiding: RLS + server functions remain the boundary.
  */
 import type { AppRole } from "@/lib/roles";
-import { isScholarFeatureCode, type ScholarNavKind } from "@/lib/workspace-engine/nav-catalog";
+import {
+  isDeclaredRuntimeFeatureCode,
+  // The runtime layer names its own nav kinds; the platform gate speaks of them
+  // generically, so the runtime's vocabulary never becomes the platform's.
+  type ScholarNavKind as RuntimeNavKind,
+} from "@/lib/runtime/nav-registry";
 
 const CAPABILITY_CODE = /^([a-z0-9]+):([a-z0-9_]+)\.([a-z0-9_.]+)$/;
 
@@ -31,8 +36,8 @@ export function parseCapabilityCode(code: string): ParsedCapabilityCode | null {
   return { runtime: match[1], kind: match[2], feature: match[3] };
 }
 
-/** Membership kinds that satisfy a Scholar chrome kind (P08-equivalent). */
-export const SCHOLAR_MEMBERSHIP_FOR_KIND: Readonly<Record<ScholarNavKind, readonly AppRole[]>> = {
+/** Membership kinds that satisfy a runtime chrome kind (P08-equivalent). */
+export const MEMBERSHIP_FOR_NAV_KIND: Readonly<Record<RuntimeNavKind, readonly AppRole[]>> = {
   org_admin: ["admin", "principal"],
   teacher: ["teacher"],
   bursar: ["bursar"],
@@ -43,7 +48,7 @@ export const SCHOLAR_MEMBERSHIP_FOR_KIND: Readonly<Record<ScholarNavKind, readon
   driver: ["driver"],
 };
 
-const SCHOLAR_KINDS = Object.keys(SCHOLAR_MEMBERSHIP_FOR_KIND) as ScholarNavKind[];
+const ROUTED_NAV_KINDS = Object.keys(MEMBERSHIP_FOR_NAV_KIND) as RuntimeNavKind[];
 
 export type CapabilityGateDecision =
   | { decision: "allow"; reason: "Capability granted" }
@@ -53,7 +58,7 @@ export type CapabilityGateDecision =
       reason: string;
     };
 
-export interface ScholarCapabilitySignals {
+export interface RuntimeCapabilitySignals {
   code: string;
   role: AppRole;
   /** Platform super-admin evaluation (bypasses kind membership checks). */
@@ -61,36 +66,36 @@ export interface ScholarCapabilitySignals {
 }
 
 /**
- * Evaluate a Scholar capability code against a membership kind. Every
+ * Evaluate a runtime capability code against the membership kind that satisfies it. Every
  * non-allow path is an explicit DENY (AT.9) — malformed, undeclared,
  * unknown-kind and role-mismatch codes all fail closed.
  */
-export function evaluateScholarCapability(
-  signals: ScholarCapabilitySignals,
+export function evaluateRuntimeCapability(
+  signals: RuntimeCapabilitySignals,
 ): CapabilityGateDecision {
   const parsed = parseCapabilityCode(signals.code);
   if (!parsed) {
     return { decision: "deny", code: "malformed", reason: "Malformed capability code" };
   }
-  const kind = parsed.kind as ScholarNavKind;
-  if (!SCHOLAR_KINDS.includes(kind)) {
+  const kind = parsed.kind as RuntimeNavKind;
+  if (!ROUTED_NAV_KINDS.includes(kind)) {
     return {
       decision: "deny",
       code: "unknown_kind",
       reason: `Unknown chrome kind "${parsed.kind}"`,
     };
   }
-  if (parsed.runtime !== "r001" || !isScholarFeatureCode(signals.code)) {
+  if (parsed.runtime !== "r001" || !isDeclaredRuntimeFeatureCode(signals.code)) {
     return {
       decision: "deny",
       code: "unknown_feature",
-      reason: `Capability not declared by the Scholar runtime: ${signals.code}`,
+      reason: `Capability not declared by the installed runtime: ${signals.code}`,
     };
   }
   if (signals.isPlatformSuper) {
     return { decision: "allow", reason: "Capability granted" };
   }
-  const allowed = SCHOLAR_MEMBERSHIP_FOR_KIND[kind];
+  const allowed = MEMBERSHIP_FOR_NAV_KIND[kind];
   if (!allowed.includes(signals.role)) {
     return {
       decision: "deny",

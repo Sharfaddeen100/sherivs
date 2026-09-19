@@ -1,18 +1,18 @@
 /**
- * CoreGrid — Phase 06/25: workspace navigation DATA seeds.
+ * CoreGrid — installed runtime navigation contribution (runtime layer).
  *
- * This module is the single home for navigation metadata. Scholar R-001 is
- * the first runtime to publish contributions — as DATA, capability-coded,
- * with no UI logic and no other hard-coded navigation anywhere in the shell.
- * Future runtimes (commerce, government, …) publish their own contributions
- * exactly the same way.
+ * A runtime publishes the navigation it owns as DATA: capability-coded items with no UI
+ * logic, resolved by the kernel's workspace engine. This file is one runtime's
+ * contribution and lives in the runtime layer, because the KERNEL holds no navigation
+ * data of its own — it renders what installed runtimes contribute, so adding a runtime
+ * adds its navigation without touching the shell or the kernel.
  *
- * Labels here are display data owned by the contributing runtime. The icons
- * are registry KEYS; the UI maps keys to components.
+ * Labels here are display data owned by the contributing runtime. The icons are registry
+ * KEYS; the UI maps keys to components.
  */
-import type { NavContribution } from "./navigation";
-import type { AppRole } from "../roles";
-import { resolveWorkspaceHome, resolveWorkspaceNav } from "./navigation";
+import type { NavContribution } from "@/lib/workspace-engine/navigation";
+import type { AppRole } from "@/lib/roles";
+import { resolveWorkspaceHome, resolveWorkspaceNav } from "@/lib/workspace-engine/navigation";
 
 export const RUNTIME_SCHOLAR = "runtime:scholar";
 

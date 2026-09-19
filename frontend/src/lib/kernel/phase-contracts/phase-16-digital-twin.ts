@@ -3,7 +3,7 @@
  *
  * Twins as governed models of reality: entities, state, relationships and
  * governance, fed by device telemetry and consumed by automation and analytics.
- * Scholar's facility twin is one consumer; any other domain twins its own.
+ * A runtime's facility twin is one consumer; any other domain twins its own.
  */
 
 import { definePhaseContractFromSeed } from "./define-phase";

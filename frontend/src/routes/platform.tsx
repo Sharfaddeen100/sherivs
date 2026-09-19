@@ -15,7 +15,7 @@ export const Route = createFileRoute("/platform")({
       {
         name: "description",
         content:
-          "One governed platform: identity, tenancy, workspaces, AI, security, analytics and 50 kernel capabilities any organization — including Scholar schools — can consume.",
+          "One governed platform: identity, tenancy, workspaces, AI, security, analytics and 50 kernel capabilities any organization — whatever their domain — can consume.",
       },
       { property: "og:type", content: "website" },
     ],
@@ -120,11 +120,11 @@ function Platform() {
 
         <section className="mt-12 rounded-xl border border-border bg-muted/20 p-6">
           <h2 className="font-display text-lg font-semibold">
-            Scholar (the education runtime) consumes {scholar.length} kernel capabilities
+            The first installed runtime consumes {scholar.length} kernel capabilities
           </h2>
           <p className="mt-1 text-sm text-muted-foreground">
             A school inherits the platform's governed core — identity, tenancy, security,
-            workspaces, AI — and adds only its own education domain. Remove Scholar and the kernel
+            workspaces, AI — and adds only its own education domain. Remove that runtime and the kernel
             stays fully valid.
           </p>
           <div className="mt-3 flex flex-wrap gap-1.5">

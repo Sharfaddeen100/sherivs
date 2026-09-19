@@ -8,7 +8,8 @@
  */
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { PLATFORM_NAME, SCHOLAR_RUNTIME_NAME } from "@/lib/platform";
+import { PLATFORM_NAME } from "@/lib/platform";
+import { INSTALLED_RUNTIME_NAME as SCHOLAR_RUNTIME_NAME } from "@/lib/runtime/installed-runtimes";
 import { Menu, X, Facebook, Twitter, Instagram, Youtube, Linkedin } from "lucide-react";
 import type { SchoolRow } from "@/contexts/app-context";
 

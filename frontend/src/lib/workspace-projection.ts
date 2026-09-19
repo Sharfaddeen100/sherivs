@@ -6,7 +6,7 @@
  * the navigation contributions that exist — and knows nothing about any runtime.
  *
  * RUNTIME NEUTRALITY: no runtime, vertical or domain may be referenced here. The
- * Scholar runtime (runtime-001) — and every future runtime — supplies its own
+ * A runtime (runtime-001 first, then every future runtime) supplies its own
  * contributions and capability sets through an adapter in the runtime layer
  * (`frontend/src/lib/runtime/scholar-workspace-projection.ts`). That is what keeps
  * a new vertical from having to touch, or destabilise, the engine.

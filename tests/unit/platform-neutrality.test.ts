@@ -78,7 +78,7 @@ describe("Platform neutrality — no vertical leaks into the neutral engine", ()
   it("keeps the Scholar projection adapter in the runtime layer", () => {
     const adapter = read("frontend/src/lib/runtime/scholar-workspace-projection.ts");
     // The adapter is the only bridge, and it must be catalog-driven.
-    expect(adapter).toContain("@/lib/workspace-engine/nav-catalog");
+    expect(adapter).toContain("@/lib/runtime/nav-registry");
     expect(adapter).toContain("Object.keys(");
     expect(adapter).toContain("EDUCATION_REALITY_ROLES");
 
@@ -134,6 +134,8 @@ const RUNTIME_LAYER = [
   /^frontend\/src\/lib\/scholar-[^/]+\.tsx?$/,
   /^frontend\/src\/lib\/runtime\/scholar[^/]*\.tsx?$/,
   /^frontend\/src\/routes\/_authenticated\/scholar\//,
+  // The runtime's own row/insert/update aliases for the tables it owns.
+  /^frontend\/src\/types\/coregrid-scholar\.ts$/,
   // A script whose whole purpose is to verify runtime-001's own configuration.
   /^scripts\/[^/]*scholar[^/]*$/,
 ];
@@ -174,5 +176,82 @@ describe("Only a runtime layer may name a runtime", () => {
     expect(script).toContain("COMMENT_SELF_IDENTIFICATION");
     expect(script).toContain("needsHuman");
     expect(script).toContain("RUNTIME_LAYER");
+  });
+});
+
+/* ─────────────────────────────────────────────────────────────
+ * LAW 4: the kernel owns no runtime's DATA, and the shell renders what is INSTALLED.
+ *
+ * `frontend/src/lib/workspace-engine/nav-catalog.ts` held ~1,070 lines of one runtime's
+ * navigation data inside the kernel's workspace engine, and the platform shell imported it
+ * directly — so the platform read as if it had been built for that runtime. The data now
+ * lives in the runtime layer (`lib/runtime/scholar-nav-catalog.ts`), a runtime-layer
+ * registry lists what is installed (`lib/runtime/nav-registry.ts`), and the shell renders
+ * `ALL_NAV_CONTRIBUTIONS`. This block keeps it that way.
+ * ────────────────────────────────────────────────────────────*/
+
+describe("The kernel owns no runtime's data", () => {
+  it("keeps runtime navigation contributions out of the kernel's workspace engine", () => {
+    for (const ref of walkSources("frontend/src/lib/workspace-engine")) {
+      const source = read(ref);
+      expect(source, `${ref} must hold no runtime contribution data`).not.toMatch(
+        /runtimeRef:\s*RUNTIME_/,
+      );
+      expect(source, `${ref} must not narrate a runtime`).not.toContain("Scholar");
+    }
+  });
+
+  it("renders navigation from the installed-runtime registry, not from one catalog", () => {
+    const registry = read("frontend/src/lib/runtime/nav-registry.ts");
+    expect(registry).toContain("INSTALLED_NAV_CONTRIBUTION_SETS");
+    expect(registry).toContain("ALL_NAV_CONTRIBUTIONS");
+
+    const shell = read("frontend/src/routes/_authenticated/route.tsx");
+    expect(shell).toContain("ALL_NAV_CONTRIBUTIONS");
+    expect(shell).not.toContain("SCHOLAR_NAV_CONTRIBUTIONS");
+  });
+
+  it("keeps a runtime's identity out of the platform's identity module", () => {
+    const platform = read("frontend/src/lib/platform.ts");
+    expect(platform).toContain("PLATFORM_NAME");
+    expect(platform, "the platform module owns the platform, not a runtime").not.toContain(
+      "SCHOLAR_RUNTIME",
+    );
+
+    const installed = read("frontend/src/lib/runtime/installed-runtimes.ts");
+    expect(installed).toContain("INSTALLED_RUNTIMES");
+    expect(installed).toContain("INSTALLED_RUNTIME_NAME");
+  });
+
+  it("keeps the platform gate's vocabulary generic", () => {
+    const gate = read("frontend/src/lib/capability-gate.ts");
+    expect(gate).toContain("evaluateRuntimeCapability");
+    expect(gate).toContain("MEMBERSHIP_FOR_NAV_KIND");
+    expect(gate, "the platform gate must not name a runtime's symbols").not.toContain(
+      "evaluateScholarCapability",
+    );
+    expect(gate).not.toContain("SCHOLAR_");
+  });
+});
+
+/* ─────────────────────────────────────────────────────────────
+ * LAW 5: outside the runtime layer, the platform speaks about an INSTALLED RUNTIME.
+ *
+ * A runtime's name in a platform file is not a neutral fact: it teaches every later phase
+ * that the platform is that application. Where the platform must refer to what is
+ * installed, it says "the installed runtime", and the runtime's own layer names itself.
+ * ────────────────────────────────────────────────────────────*/
+
+const RUNTIME_NARRATION =
+  /CoreGrid Scholar|Scholar's|Scholar is|Scholar consumes|Scholar binds|Scholar resolves|Scholar remains|Scholar-only|Scholar-flavored|Scholar catalog|Scholar runtime \(runtime-001\)/;
+
+describe("Only the runtime layer narrates a runtime", () => {
+  const sources = [...walkSources("frontend/src"), ...walkSources("scripts")].filter(
+    (ref) => !RUNTIME_LAYER.some((pattern) => pattern.test(ref)),
+  );
+
+  it("never narrates a runtime as the platform outside the runtime layer", () => {
+    const offenders = sources.filter((ref) => RUNTIME_NARRATION.test(read(ref)));
+    expect(offenders).toEqual([]);
   });
 });

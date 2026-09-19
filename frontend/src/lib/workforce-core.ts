@@ -29,7 +29,7 @@
  */
 
 /**
- * ECOSYSTEM REFRAME (platform amendment, §0): the Scholar-flavored vocabulary
+ * ECOSYSTEM REFRAME (platform amendment, §0): the domain-flavored vocabulary
  * below (institution, staff, teacher) is legacy R-001 consumption of CoreGrid
  * Phase 25. The authoritative DOMAIN-FREE contracts live in
  * `frontend/src/lib/onboarding/workforce-lifecycle.ts` (organization

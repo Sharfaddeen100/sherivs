@@ -3,8 +3,9 @@ import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
 import { useApp } from "@/contexts/app-context";
-import { scholarWorkspaceHome } from "@/lib/workspace-engine/nav-catalog";
-import { PLATFORM_NAME, SCHOLAR_RUNTIME_NAME } from "@/lib/platform";
+import { scholarWorkspaceHome } from "@/lib/runtime/nav-registry";
+import { PLATFORM_NAME } from "@/lib/platform";
+import { INSTALLED_RUNTIME_NAME as SCHOLAR_RUNTIME_NAME } from "@/lib/runtime/installed-runtimes";
 import { provisionDemoEnterprise, DEMO_CREDENTIALS } from "@/lib/demo-provision.functions";
 
 const ADMIN_DEMO =

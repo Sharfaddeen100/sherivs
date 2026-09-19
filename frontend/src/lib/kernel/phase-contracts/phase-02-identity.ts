@@ -3,9 +3,9 @@
  *
  * The universal identity substrate: one registry of actors (human,
  * organization, agent, service, device, runtime) with credentials, lifecycle,
- * relationships and roles. Scholar consumes it as its staff/student/guardian
- * identity spine; other domains consume the same contract through reserved
- * neutral seats (patient, citizen, customer).
+ * relationships and roles. A runtime binds staff, student and guardian actors to
+ * this identity spine; other domains consume the same contract through reserved
+ * neutral seats (patient, citizen, customer). No runtime holds a privileged seat.
  *
  * Boundary: identity owns WHO an actor is. Tenancy hierarchy belongs to phase
  * 03, workspace chrome to phase 06, domain attributes to the runtimes.
@@ -92,7 +92,7 @@ export const PHASE_02_IDENTITY = definePhaseContract(
         evidence: ["registry + lifecycle suites green"],
       },
       integration:
-        "Consumed by phases 03, 05, 06, 08, 22, 25 and 50; Scholar binds staff, student and guardian actors to this contract.",
+        "Consumed by phases 03, 05, 06, 08, 22, 25 and 50; a runtime binds its own actor kinds (staff, student and guardian in an education runtime) to this contract.",
       dependency:
         "Depends on phase 01 foundations and consumes the kernel capability graph rather than redefining it.",
       risk: "Risks: identity duplication across phases (single ownership), privilege creep (gated transitions) and orphaned actors (lifecycle rules).",

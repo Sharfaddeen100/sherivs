@@ -18,18 +18,20 @@ import { CommandCenterMount, openCommandCenter } from "@/components/command-cent
 import { Search as SearchIcon } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { useModKeyLabel } from "@/lib/kbd";
-import { PLATFORM_NAME, SCHOLAR_RUNTIME_NAME } from "@/lib/platform";
+import { PLATFORM_NAME } from "@/lib/platform";
+import { INSTALLED_RUNTIME_NAME as SCHOLAR_RUNTIME_NAME } from "@/lib/runtime/installed-runtimes";
 import { WorkspaceBottomNav } from "@/components/mobile-bottom-nav";
 import { OfflineBanner } from "@/components/offline-banner";
 import { AppFramePreview } from "@/components/app-frame-preview";
 import {
-  SCHOLAR_NAV_CONTRIBUTIONS,
+  ALL_NAV_CONTRIBUTIONS,
   scholarCapabilitiesForPortal,
   scholarCapabilitiesForRole,
   scholarWorkspaceHome,
   scholarWorkspaceLabelForRole,
-  type ScholarPortalKind,
-} from "@/lib/workspace-engine/nav-catalog";
+  // The runtime layer names its own portal kinds; the shell speaks of them generically.
+  type ScholarPortalKind as RuntimePortalKind,
+} from "@/lib/runtime/nav-registry";
 import { hasNavDestinations, resolveWorkspaceNav } from "@/lib/workspace-engine/navigation";
 import { resolveMemberWorkspaceExperience } from "@/lib/experience/workspace-experience";
 import { scholarWorkspaceLabelForMember } from "@/lib/runtime/scholar-workforce-nav";
@@ -125,21 +127,21 @@ function AuthenticatedLayout() {
 
   // Workspace-dynamic chrome: the mobile quick-nav is derived from the active
   // runtime's contribution data + the viewer's authorized capabilities — no
-  // fixed portal bars (Scholar R-001 is currently the only mobile runtime).
-  const scholarPortalKind: ScholarPortalKind | null =
+  // fixed portal bars, one per installed runtime that declares a portal chrome.
+  const scholarPortalKind: RuntimePortalKind | null =
     role === "parent" ? "parent" : role === "student" ? "student" : null;
   const bottomNavSections = scholarPortalKind
     ? resolveWorkspaceNav(
-        SCHOLAR_NAV_CONTRIBUTIONS,
+        ALL_NAV_CONTRIBUTIONS,
         scholarCapabilitiesForPortal(scholarPortalKind),
       )
     : [];
   const hasBottomNav = hasNavDestinations(bottomNavSections);
 
-  // Sidebar chrome is resolved the same way: Scholar R-001 contributions x the
+  // Sidebar chrome is resolved the same way: installed runtime contributions x the
   // viewer's authorized capabilities (org_admin collapsible groups, flat member workspaces).
   const sidebarSections = role
-    ? resolveWorkspaceNav(SCHOLAR_NAV_CONTRIBUTIONS, scholarCapabilitiesForRole(role))
+    ? resolveWorkspaceNav(ALL_NAV_CONTRIBUTIONS, scholarCapabilitiesForRole(role))
     : [];
 
   return (

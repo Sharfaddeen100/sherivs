@@ -252,7 +252,7 @@ export interface PhaseContractHealthRow {
   selfImprovement: SelfImprovementMode;
   /** First vertical runtime bound to this phase (`runtime:scholar`). */
   firstRuntime: string;
-  /** Reserved neutral domain seats for this phase (never Scholar-only). */
+  /** Reserved neutral domain seats for this phase (never runtime-specific). */
   neutralSeatDomains: readonly string[];
   dependencies: number;
   consumers: number;

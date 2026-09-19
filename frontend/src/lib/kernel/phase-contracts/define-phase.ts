@@ -187,7 +187,7 @@ export function definePhaseContractFromSeed(seed: PhaseContractSeed): PhaseEngin
     aiSafety: `AI may analyse ${seed.name} data and propose changes, but may not mutate canonical records, widen its own permissions or act outside the declared approval gates.`,
     observability: `${seed.name} operations, failures and policy decisions are observable without logging secrets or unnecessary personal data.`,
     testing: `Phase ${seed.id} evidence: unit suites${seed.tests?.length ? ` (${seed.tests.join(", ")})` : ""} plus the shared verification chain (typecheck, unit, registry, secrets, build).`,
-    integration: `Consumed by ${(seed.consumers ?? ["all"]).join(", ")}; Scholar is the first runtime and other domains consume the same contract through neutral seats.`,
+    integration: `Consumed by ${(seed.consumers ?? ["all"]).join(", ")}; the first installed runtime is a consumer among equals, and other domains consume the same contract through neutral seats.`,
     dependency: `Depends on ${seed.dependsOn.length ? seed.dependsOn.join(", ") : "no phase (foundation root)"}; external providers are reached only through adapters.`,
     risk: `Registered risks for ${seed.name} are tracked in PROGRESS.md; mitigations are the verification chain, policy gates and single ownership.`,
     completion: `L1–L3 require the phase document, owned state where applicable and working contracts; L4–L5 require live surfaces, observability and validation rows.`,

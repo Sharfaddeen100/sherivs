@@ -294,7 +294,7 @@ export function CommandCentre() {
               />
             ) : null}
             <ContractGovernanceCard />
-            <ScholarBindingCard />
+            <RuntimeBindingCard />
             <GeneratedExperienceCard orgType={orgForm.orgType} />
             <PhaseRunway />
           </div>
@@ -754,7 +754,7 @@ const CONTRACT_HEALTH_BY_PHASE = new Map(
 );
 
 /**
- * Scholar vertical bindings — which vertical of the first domain runtime
+ * Installed runtime bindings — which vertical of the first domain runtime
  * realizes which kernel capability. Read from the runtime's binding map, which
  * is machine-checked against the contract chain (WAVE-K9).
  */
@@ -913,7 +913,7 @@ function ContractGovernanceCard() {
         <CardDescription className="text-xs">
           Read from the kernel contract registry ({governance.generatedFrom}) — never restated here.
           Every phase declares all {governance.sectionsPerPhase} engineering sections, owns its
-          capability, and reserves neutral seats so no phase is Scholar-only. Phase names are locked
+          capability, and reserves neutral seats so no phase is runtime-only. Phase names are locked
           to the canonical phase registry (ADR 202). This panel is view-only: it displays the chain,
           it never changes authorization.
         </CardDescription>
@@ -934,14 +934,14 @@ function ContractGovernanceCard() {
   );
 }
 
-function ScholarBindingCard() {
+function RuntimeBindingCard() {
   const bindings = SCHOLAR_BINDINGS;
   return (
     <Card>
       <CardHeader>
         <CardTitle className="text-sm flex items-center gap-2">
           <Users className="size-4 text-muted-foreground" />
-          Scholar vertical bindings
+          Installed runtime bindings
           <Badge variant="secondary" className="border-0 bg-emerald-500/10 text-emerald-600">
             {bindings.boundCapabilities.length}/{bindings.consumedCapabilities.length} kernel
             capabilities bound

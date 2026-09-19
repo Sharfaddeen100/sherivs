@@ -5,7 +5,7 @@ import type { AppRole } from "@/lib/roles";
 import {
   scholarWorkspaceHome,
   scholarWorkspaceLabelForRole,
-} from "@/lib/workspace-engine/nav-catalog";
+} from "@/lib/runtime/nav-registry";
 
 /**
  * Client-side role guard. Wrap a portal's <Outlet /> with this to ensure

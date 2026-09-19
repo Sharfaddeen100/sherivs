@@ -12,7 +12,7 @@
  * - §P/R personalization: applied ONLY for policy-allowed dimensions —
  *   personalization can never escape governance.
  *
- * Scholar R-001 is one consumer; company/agency/community workspaces derive
+ * An education runtime is one consumer; company/agency/community workspaces derive
  * from the same contracts.
  */
 

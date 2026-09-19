@@ -18,7 +18,7 @@
  */
 import { scholarWorkforceKind } from "./scholar-workforce";
 import type { WorkforceAuthorityGroup } from "../workforce-kinds";
-import { scholarCapabilitiesForKind, type ScholarNavKind } from "../workspace-engine/nav-catalog";
+import { scholarCapabilitiesForKind, type ScholarNavKind } from "@/lib/runtime/nav-registry";
 
 /** Advisory chrome kind per authority group (R-001 data; only where R-001 ships one). */
 const AUTHORITY_CHROME: Readonly<Partial<Record<WorkforceAuthorityGroup, ScholarNavKind>>> = {

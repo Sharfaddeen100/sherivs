@@ -17,7 +17,7 @@ import {
   SCHOLAR_PORTAL_CAPABILITIES,
   scholarCapabilitiesForPortal,
   scholarCapabilitiesForRole,
-} from "@/lib/workspace-engine/nav-catalog";
+} from "@/lib/runtime/nav-registry";
 
 function seed(key: string, overrides: Partial<NavItemSeed> = {}): NavItemSeed {
   return { key, label: key, iconKey: "link", url: `/x/${key}`, orderHint: 0, ...overrides };

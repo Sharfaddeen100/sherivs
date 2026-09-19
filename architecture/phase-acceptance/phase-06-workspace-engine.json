@@ -156,7 +156,7 @@
       "requirement": "Each role receives the workspace its authority implies; an unauthorized workspace resolves to empty rather than to a default page.",
       "required": true,
       "evidence": [
-        { "kind": "module", "path": "frontend/src/lib/workspace-engine/nav-catalog.ts", "contains": "scholarWorkspaceHome" },
+        { "kind": "module", "path": "frontend/src/lib/runtime/nav-registry.ts", "contains": "scholarWorkspaceHome" },
         { "kind": "test", "path": "tests/unit/workspace-experience.test.ts" }
       ]
     },

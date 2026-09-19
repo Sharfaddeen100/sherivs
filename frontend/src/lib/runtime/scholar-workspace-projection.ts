@@ -19,7 +19,7 @@ import {
   SCHOLAR_WORKSPACE_LABELS,
   scholarCapabilitiesForKind,
   type ScholarNavKind,
-} from "@/lib/workspace-engine/nav-catalog";
+} from "@/lib/runtime/nav-registry";
 import {
   EDUCATION_REALITY_ROLES,
   ROLE_WORKSPACE_KEYS,

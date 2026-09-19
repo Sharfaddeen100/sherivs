@@ -7,11 +7,11 @@
  * must never cross, and the ASI profile agents operate under while touching
  * the foundation.
  *
- * RUNTIME NEUTRALITY: CoreGrid Scholar (runtime-001) is the first runtime
- * consuming this contract; every other domain (health, government,
- * commerce, …) consumes the same contract through a reserved neutral seat. No
- * section below names Scholar-specific ontology — the Scholar binding lives
- * only in `runtimeBindings`.
+ * RUNTIME NEUTRALITY: this contract is consumed by every runtime on equal
+ * terms. The first installed runtime (runtime-001) holds no privileged seat, and
+ * health, government, commerce and every other domain consume the same contract
+ * through a reserved neutral seat. No section below names a runtime-specific
+ * ontology; runtime-specific bindings live only in `runtimeBindings`.
  *
  * Ownership: phase 01 owns conventions and verification, never domain state.
  */
@@ -178,7 +178,7 @@ export const PHASE_01_FOUNDATION: PhaseEngineeringContract = {
     integration: {
       status: "complete",
       summary:
-        "Consumers are 'all': every phase and every runtime (Scholar first, other domains through neutral seats) consumes these contracts without redefining them.",
+        "Consumers are 'all': every phase and every runtime consumes these contracts without redefining them. The first installed runtime is a consumer among equals and never the owner.",
       artifacts: [
         "architecture/capability-ownership-graph.md",
         "scripts/verify-phase-consumption.mjs",

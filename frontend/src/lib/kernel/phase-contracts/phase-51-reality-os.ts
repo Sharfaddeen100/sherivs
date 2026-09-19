@@ -79,7 +79,7 @@ export const PHASE_51_REALITY_OS = definePhaseContractFromSeed({
   ],
   sections: {
     integration:
-      "Consumed by 'all': every phase and runtime reaches the system through this composed entry, and CoreGrid Scholar remains installed as runtime:scholar with no privileged path — neutrality is what makes the closure meaningful.",
+      "Consumed by 'all': every phase and runtime reaches the system through this composed entry, and the first installed runtime remains one installed runtime among equals with no privileged path — neutrality is what makes the closure meaningful.",
     completion:
       "L1 is evidenced by this contract and the phase document; L2–L5 remain pending until composition is exercised against live capability, with the completion gate being composition invariants verified on real data rather than on the design alone.",
     risk: "D2 (knowledge-graphs) and D7 (security-trust) are consumers of this closure: the OS composes their capability and must not re-own it. The standing risk is composition being read as authority, mitigated by the no-grant boundary and by invariants that fail closed.",

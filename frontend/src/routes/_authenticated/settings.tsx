@@ -197,7 +197,7 @@ function PrivacyCard({
     <GlassCard className="flex flex-col gap-4">
       <SectionTitle icon={<Bot className="size-4" />} title="AI & privacy" />
       <p className="text-sm text-[color:var(--text-secondary)]">
-        CoreGrid Scholar may use a Digital Twin to draft AI-assisted summaries and parent
+        The platform may use a Digital Twin to draft AI-assisted summaries and parent
         calls based on your linked data. Opting out blocks the school from including you in
         any AI-generated communication.
       </p>

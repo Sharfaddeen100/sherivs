@@ -2,7 +2,7 @@
  * Phase 13 — Financial System contract (seeded authoring).
  *
  * Money, fees, payments, controls and settlements with provider adapters,
- * idempotency and audit. Scholar's fee lifecycle is one consumer.
+ * idempotency and audit. A runtime's fee lifecycle is one consumer.
  */
 
 import { definePhaseContractFromSeed } from "./define-phase";

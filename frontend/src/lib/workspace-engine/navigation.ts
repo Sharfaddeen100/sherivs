@@ -6,7 +6,7 @@
  * workspace's active runtime set and the viewer's AUTHORIZED capability
  * set. This module is domain-free: no role enum, no fixed portal, no
  * scholar/business/government labels. Domain runtimes publish navigation
- * seeds as DATA (see nav-catalog) — adding a runtime never requires a
+ * seeds as DATA (see the runtime contribution catalog) — adding a runtime never requires a
  * change to this engine or to the shell components.
  *
  * Laws honoured here:

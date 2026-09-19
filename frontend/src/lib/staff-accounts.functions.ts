@@ -172,7 +172,7 @@ export const createStaffAccount = createServerFn({ method: "POST" })
 
     // Record the canonical workforce position (workforce reality, advisory).
     // Positions apply to staff accounts only — learners and guardians are
-    // Scholar ontology relationships (enrolls/guardians), never positions.
+    // Domain ontology relationships (enrolls/guardians), never positions.
     let positionTitle: string | null = null;
     if (data.positionCode) {
       if (!schoolId) throw new Error("A school scope is required to assign a position");

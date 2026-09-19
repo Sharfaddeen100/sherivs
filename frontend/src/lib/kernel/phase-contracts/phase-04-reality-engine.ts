@@ -1,10 +1,10 @@
 /**
  * Phase 04 — Reality Engine contract (seeded authoring).
  *
- * Hosts installed reality ontologies. Scholar's education ontology is the first
- * installation; health, government and logistics install theirs through the same
- * registration contract, so the host stays domain-neutral while the first domain
- * is fully served.
+ * Hosts installed reality ontologies. The first installation is an education
+ * ontology; health, government and logistics install theirs through the same
+ * registration contract, so the host stays domain-neutral while every domain is
+ * served on equal terms.
  */
 
 import { definePhaseContractFromSeed } from "./define-phase";
@@ -24,7 +24,7 @@ export const PHASE_04_REALITY_ENGINE = definePhaseContractFromSeed({
     "tenancy-isolation-rls",
   ],
   purpose:
-    "Host installed reality ontologies: give each runtime a governed way to declare entities, relationships, assessments and events over the shared substrate, beginning with the education ontology Scholar consumes.",
+    "Host installed reality ontologies: give each runtime a governed way to declare entities, relationships, assessments and events over the shared substrate, beginning with the first installed ontology.",
   ownership:
     "Single owner of ontology hosting, entity/relationship validation and runtime domain-event vocabulary registration.",
   boundaryStatement:
@@ -63,6 +63,6 @@ export const PHASE_04_REALITY_ENGINE = definePhaseContractFromSeed({
     boundary:
       "The host accepts any domain manifest and rejects none for being non-educational; the education ontology is simply the first installation registered over frontend/src/lib/kernel/domain-manifest.ts.",
     integration:
-      "Consumed by phases 11, 12, 13 and 25; Scholar is the first installed ontology while healthcare, government and logistics hold reserved seats on the same registration contract.",
+      "Consumed by phases 11, 12, 13 and 25; the first installed ontology is an education ontology, while healthcare, government and logistics hold reserved seats on the same registration contract.",
   },
 });

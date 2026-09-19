@@ -3,15 +3,15 @@
  */
 import { describe, expect, it } from "vitest";
 import {
-  evaluateScholarCapability,
+  evaluateRuntimeCapability,
   parseCapabilityCode,
-  SCHOLAR_MEMBERSHIP_FOR_KIND,
+  MEMBERSHIP_FOR_NAV_KIND,
   type CapabilityGateDecision,
 } from "../../frontend/src/lib/capability-gate";
 import {
-  isScholarFeatureCode,
+  isDeclaredRuntimeFeatureCode,
   SCHOLAR_FEATURE_CODES,
-} from "../../frontend/src/lib/workspace-engine/nav-catalog";
+} from "@/lib/runtime/nav-registry";
 
 const teacherCode = [...SCHOLAR_FEATURE_CODES].find((c) => c.startsWith("r001:teacher."));
 const adminCode = [...SCHOLAR_FEATURE_CODES].find((c) => c.startsWith("r001:org_admin."));
@@ -46,23 +46,23 @@ describe("parseCapabilityCode (strict, fail-closed)", () => {
   });
 });
 
-describe("evaluateScholarCapability (fail-closed on every non-allow path)", () => {
+describe("evaluateRuntimeCapability (fail-closed on every non-allow path)", () => {
   it("declares a real feature index", () => {
     expect(SCHOLAR_FEATURE_CODES.size).toBeGreaterThan(40);
-    expect(isScholarFeatureCode("r001:teacher.dashboard")).toBe(true);
+    expect(isDeclaredRuntimeFeatureCode("r001:teacher.dashboard")).toBe(true);
   });
 
   it("grants the matching membership kind", () => {
     if (teacherCode && adminCode) {
-      expect(evaluateScholarCapability({ code: teacherCode, role: "teacher" }).decision).toBe(
+      expect(evaluateRuntimeCapability({ code: teacherCode, role: "teacher" }).decision).toBe(
         "allow",
       );
-      expect(evaluateScholarCapability({ code: adminCode, role: "admin" }).decision).toBe("allow");
-      expect(evaluateScholarCapability({ code: adminCode, role: "principal" }).decision).toBe(
+      expect(evaluateRuntimeCapability({ code: adminCode, role: "admin" }).decision).toBe("allow");
+      expect(evaluateRuntimeCapability({ code: adminCode, role: "principal" }).decision).toBe(
         "allow",
       );
       if (parentCode) {
-        expect(evaluateScholarCapability({ code: parentCode, role: "parent" }).decision).toBe(
+        expect(evaluateRuntimeCapability({ code: parentCode, role: "parent" }).decision).toBe(
           "allow",
         );
       }
@@ -73,39 +73,39 @@ describe("evaluateScholarCapability (fail-closed on every non-allow path)", () =
 
   it("denies cross-kind access", () => {
     if (teacherCode && adminCode) {
-      expect(evaluateScholarCapability({ code: adminCode, role: "teacher" }).decision).toBe("deny");
-      expect(evaluateScholarCapability({ code: teacherCode, role: "bursar" }).decision).toBe(
+      expect(evaluateRuntimeCapability({ code: adminCode, role: "teacher" }).decision).toBe("deny");
+      expect(evaluateRuntimeCapability({ code: teacherCode, role: "bursar" }).decision).toBe(
         "deny",
       );
       expect(
-        evaluateScholarCapability({ code: parentCode ?? "r001:parent.dashboard", role: "teacher" })
+        evaluateRuntimeCapability({ code: parentCode ?? "r001:parent.dashboard", role: "teacher" })
           .decision,
       ).toBe("deny");
     }
   });
 
   it("denies malformed, undeclared and unknown-kind codes", () => {
-    expect(denyCodeOf(evaluateScholarCapability({ code: "not-a-code", role: "admin" }))).toBe(
+    expect(denyCodeOf(evaluateRuntimeCapability({ code: "not-a-code", role: "admin" }))).toBe(
       "malformed",
     );
     expect(
-      denyCodeOf(evaluateScholarCapability({ code: "r001:org_admin.not_shipped", role: "admin" })),
+      denyCodeOf(evaluateRuntimeCapability({ code: "r001:org_admin.not_shipped", role: "admin" })),
     ).toBe("unknown_feature");
     expect(
-      denyCodeOf(evaluateScholarCapability({ code: "r001:lab_tech.dashboard", role: "admin" })),
+      denyCodeOf(evaluateRuntimeCapability({ code: "r001:lab_tech.dashboard", role: "admin" })),
     ).toBe("unknown_kind");
   });
 
   it("allows platform super-admin only on declared codes", () => {
     if (adminCode) {
       expect(
-        evaluateScholarCapability({ code: adminCode, role: "teacher", isPlatformSuper: true })
+        evaluateRuntimeCapability({ code: adminCode, role: "teacher", isPlatformSuper: true })
           .decision,
       ).toBe("allow");
     }
     expect(
       denyCodeOf(
-        evaluateScholarCapability({
+        evaluateRuntimeCapability({
           code: "r001:org_admin.not_shipped",
           role: "admin",
           isPlatformSuper: true,
@@ -115,7 +115,7 @@ describe("evaluateScholarCapability (fail-closed on every non-allow path)", () =
   });
 
   it("keeps the kind→membership map complete for every Scholar chrome kind", () => {
-    for (const [kind, roles] of Object.entries(SCHOLAR_MEMBERSHIP_FOR_KIND)) {
+    for (const [kind, roles] of Object.entries(MEMBERSHIP_FOR_NAV_KIND)) {
       expect(kind.length).toBeGreaterThan(0);
       expect(roles.length).toBeGreaterThan(0);
     }

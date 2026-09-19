@@ -3,7 +3,7 @@ import type { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { resolveTenantSlug } from "@/lib/tenant";
 import { type AppRole } from "@/lib/roles";
-import { scholarWorkspaceHome } from "@/lib/workspace-engine/nav-catalog";
+import { scholarWorkspaceHome } from "@/lib/runtime/nav-registry";
 
 /**
  * UserProfile = row from public.users (tenant member).

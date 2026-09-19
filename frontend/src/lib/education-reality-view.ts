@@ -4,7 +4,7 @@
  * `architecture/phase-04-education-reality-engine.md` §1 answers nine questions
  * about an institution ("What does this institution look like?", "How does this
  * institution operate?", …). This module turns the institution's **published
- * operating model** (the Scholar reality config, read from `cg_entity`) into the
+ * operating model** (the installed runtime reality config, read from `cg_entity`) into the
  * view a workspace renders — and says plainly when there is nothing to show.
  *
  * It is pure: no I/O, no fabrication. An unpublished institution yields

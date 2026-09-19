@@ -1,10 +1,11 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { useApp } from "@/contexts/app-context";
-import { scholarWorkspaceHome } from "@/lib/workspace-engine/nav-catalog";
+import { scholarWorkspaceHome } from "@/lib/runtime/nav-registry";
 import { PublicSchoolSite } from "@/components/public/site";
 import { CommandCentre } from "@/components/command-centre/command-centre";
-import { PLATFORM_NAME, SCHOLAR_RUNTIME_DESCRIPTION } from "@/lib/platform";
+import { PLATFORM_NAME } from "@/lib/platform";
+import { INSTALLED_RUNTIME_DESCRIPTION as SCHOLAR_RUNTIME_DESCRIPTION } from "@/lib/runtime/installed-runtimes";
 
 export const Route = createFileRoute("/")({
   component: Index,

@@ -254,7 +254,7 @@ export function decideAccountAdministration(
  * vocabulary (the legacy `public.users.role` column), resolved through the
  * existing `public.get_my_role()` RPC — the kernel imports no runtime's role
  * table and keeps role-set membership declarative here so every server-function
- * family authorizes through one module. Scholar (runtime-001) is the first
+ * family authorizes through one module. The first installed runtime (runtime-001) is the
  * consumer of this gate; a second runtime supplies its own kind map through an
  * adapter in the runtime layer, never by editing this kernel module.
  */

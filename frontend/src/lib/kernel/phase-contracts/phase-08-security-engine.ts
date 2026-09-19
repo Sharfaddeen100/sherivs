@@ -3,7 +3,7 @@
  *
  * Layered authorization: RBAC, ABAC, PBAC, ReBAC plus contextual checks,
  * producing ALLOW / DENY / REDACT / ESCALATE / REQUIRE_APPROVAL decisions that
- * every other phase consumes. Scholar's role gates are one consumer.
+ * every other phase consumes. A runtime's role gates are one consumer.
  */
 
 import { definePhaseContractFromSeed } from "./define-phase";

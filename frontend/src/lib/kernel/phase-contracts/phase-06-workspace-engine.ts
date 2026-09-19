@@ -3,7 +3,7 @@
  *
  * Workspace composition: membership, composition, governance and resolution —
  * what a member sees and can do in a workspace, driven by data rather than by
- * hardcoded portals. Scholar's role dashboards are one composition; any other
+ * hardcoded portals. A runtime's role dashboards are one composition; any other
  * runtime composes its own.
  */
 
@@ -60,6 +60,6 @@ export const PHASE_06_WORKSPACE_ENGINE = definePhaseContractFromSeed({
     purpose:
       "One composition engine so every runtime's surfaces are resolved from membership and capability data instead of duplicated portal code paths.",
     integration:
-      "Consumed by phases 19, 24 and 50; Scholar resolves its staff/student/parent workspaces here while other runtimes compose theirs from the same contract.",
+      "Consumed by phases 19, 24 and 50; a runtime resolves its staff, student and parent workspaces here while other runtimes compose theirs from the same contract.",
   },
 });

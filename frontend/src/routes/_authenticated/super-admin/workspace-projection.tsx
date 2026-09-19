@@ -14,11 +14,11 @@ import {
  *
  * Access is enforced by the super-admin layout guard and, for any data, by the
  * canonical server-side gate. This page declares NO role list of its own: a
- * hand-written list of roles is exactly what goes stale — the Scholar catalog
+ * hand-written list of roles is exactly what goes stale — the installed runtime catalog
  * defines hundreds of reality roles and grows with the institution.
  *
  * Everything rendered here is catalog-derived: the neutral Phase 06 engine composes
- * navigation per workspace kind, and the Scholar runtime adapter supplies the kinds,
+ * navigation per workspace kind, and the runtime adapter supplies the kinds,
  * the contributions, the full reality-role registry, its coverage and the role
  * workspace engine's own audit findings.
  */
@@ -83,7 +83,7 @@ function WorkspaceProjectionPage() {
       <section className="uos-card mt-6 p-6">
         <h2 className="font-display text-lg font-bold">Composition by workspace kind</h2>
         <p className="mt-1 text-xs text-muted-foreground">
-          {SCHOLAR_WORKSPACE_KINDS.length} kinds declared by the Scholar catalog. Navigation items
+          {SCHOLAR_WORKSPACE_KINDS.length} kinds declared by the installed runtime catalog. Navigation items
           are withheld when their required capabilities are absent — derived from authorization,
           never from the UI.
         </p>

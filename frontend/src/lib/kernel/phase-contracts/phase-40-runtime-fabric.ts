@@ -3,7 +3,7 @@
  *
  * The fabric that composes and runs domain runtimes: installation, isolation,
  * lifecycle, resource governance and health across every runtime installed on
- * CoreGrid — Scholar included, and every future domain as an equal citizen.
+ * CoreGrid — every runtime included, and every future domain as an equal citizen.
  */
 
 import { definePhaseContractFromSeed } from "./define-phase";
@@ -70,9 +70,9 @@ export const PHASE_40_RUNTIME_FABRIC = definePhaseContractFromSeed({
   ],
   sections: {
     extension:
-      "The fabric is the extension mechanism itself: CoreGrid Scholar is installed as runtime:scholar, and every future domain installs the same way through frontend/src/lib/kernel/domain-manifest.ts — no kernel rewrite, no privileged runtime.",
+      "The fabric is the extension mechanism itself: a runtime is installed as runtime:<id> and every future domain installs the same way through frontend/src/lib/kernel/domain-manifest.ts — no kernel rewrite, no privileged runtime.",
     integration:
-      "Consumed by the closure phase 51; Scholar (R-001) holds no special status in the fabric — it is the first installed runtime among equals, which is what keeps the kernel domain-neutral.",
+      "Consumed by the closure phase 51; no runtime holds special status in the fabric — the first installed runtime is one among equals, which is what keeps the kernel domain-neutral.",
     risk: "The standing risk is a runtime acquiring implicit privileges through the fabric; mitigated by manifest validation, per-runtime quota and policy records, and by the rule that installation never changes the kernel or another runtime's authority.",
     security:
       "Runtime isolation is enforced, not assumed: each runtime runs under its own grants and tenant scope, and the fabric fails closed when a runtime's policy or quota context is missing.",

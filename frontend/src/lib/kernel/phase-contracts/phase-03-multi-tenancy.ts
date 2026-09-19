@@ -2,9 +2,8 @@
  * Phase 03 — Multi-Tenancy contract (seeded authoring).
  *
  * Tenant entity, hierarchy, lifecycle, quotas and the RLS isolation model that
- * makes tenant separation a database guarantee. Scholar consumes it as
- * school/campus tenancy; other domains consume the same contract through
- * neutral seats.
+ * makes tenant separation a database guarantee. A runtime binds school/campus
+ * tenancy to it; other domains consume the same contract through neutral seats.
  */
 
 import { definePhaseContractFromSeed } from "./define-phase";

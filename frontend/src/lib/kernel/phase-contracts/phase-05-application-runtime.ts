@@ -3,7 +3,7 @@
  *
  * Runtime primitives: commands, queries, events, outbox, jobs, webhooks,
  * feature flags, resilience and observability. Every phase publishes through
- * this transport; Scholar consumes it like any other runtime would.
+ * this transport; any runtime consumes it like any other runtime would.
  */
 
 import { definePhaseContractFromSeed } from "./define-phase";
