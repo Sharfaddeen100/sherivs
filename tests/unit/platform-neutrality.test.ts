@@ -39,9 +39,13 @@ const NEUTRAL_MODULES = [
   "frontend/src/lib/workspace-membership.ts",
   "frontend/src/lib/workspace-engine/navigation.ts",
   "frontend/src/lib/trust-fabric-report.ts",
+  "frontend/src/lib/runtime/installed-runtimes.ts",
   "frontend/src/lib/communication-providers.ts",
   "frontend/src/lib/communication-steward.ts",
   "frontend/src/lib/communication-steward-report.ts",
+  "frontend/src/lib/academic-curriculum.ts",
+  "frontend/src/lib/academic-assessment.ts",
+  "frontend/src/lib/academic-intelligence-report.ts",
 ];
 
 /** Platform/super-admin surfaces: control-plane UI, never a vertical's portal. */
@@ -53,6 +57,7 @@ const PLATFORM_SURFACES = [
   "frontend/src/routes/_authenticated/super-admin/tenants.tsx",
   "frontend/src/routes/_authenticated/super-admin/trust-fabric.tsx",
   "frontend/src/routes/_authenticated/super-admin/communication-steward.tsx",
+  "frontend/src/routes/_authenticated/super-admin/academic-intelligence.tsx",
 ];
 
 /** Imports that would couple a neutral module to one vertical's ontology. */
