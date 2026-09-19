@@ -1,0 +1,11 @@
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90mC:/Users/USER/Downloads/remix-of-school-os-main/remix-of-school-os-main[39m
+
+ [32m✓[39m tests/unit/academic-curriculum.test.ts [2m([22m[2m24 tests[22m[2m)[22m[32m 27[2mms[22m[39m
+ [32m✓[39m tests/unit/academic-intelligence-report.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 231[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m2 passed[39m[22m[90m (2)[39m
+[2m      Tests [22m [1m[32m31 passed[39m[22m[90m (31)[39m
+[2m   Start at [22m 22:19:09
+[2m   Duration [22m 25.60s[2m (transform 10.44s, setup 0ms, collect 15.99s, tests 258ms, environment 1ms, prepare 2.53s)[22m
+

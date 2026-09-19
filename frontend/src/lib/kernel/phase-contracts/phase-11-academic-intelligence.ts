@@ -37,17 +37,34 @@ export const PHASE_11_ACADEMIC_INTELLIGENCE = definePhaseContractFromSeed({
     "Derived intelligence is labelled as derived: every estimate carries its inputs, its method and its confidence, and canonical records remain untouched.",
   dependsOn: ["01", "02", "03", "04", "07"],
   consumers: ["12", "18"],
-  substrates: ["mastery projections", "pathway recommendations", "risk signals"],
+  substrates: ["mastery projections", "pathway recommendations", "risk signals", "curriculum versions", "competency graph", "learning objectives"],
   tests: [
     "tests/unit/academic-core.test.ts",
     "tests/unit/academic-mastery.test.ts",
     "tests/unit/academic-pathways.test.ts",
     "tests/unit/academic-risk.test.ts",
+    "tests/unit/academic-curriculum.test.ts",
+    "tests/unit/academic-intelligence-report.test.ts",
   ],
   provides: [
     { id: "academic:mastery-read", kind: "query", description: "read mastery estimates" },
     { id: "academic:pathway-recommend", kind: "query", description: "recommend a pathway" },
     { id: "academic:risk-signals", kind: "query", description: "read risk signals" },
+    {
+      id: "academic:curriculum-version",
+      kind: "command",
+      description: "publish a curriculum version that supersedes without editing the previous one",
+    },
+    {
+      id: "academic:competency-graph",
+      kind: "query",
+      description: "resolve competency prerequisites, refusing a cycle before it is stored",
+    },
+    {
+      id: "academic:assessment-coverage",
+      kind: "query",
+      description: "prove an assessment covers its competencies and objectives and reconciles its marks",
+    },
   ],
   consumesContracts: [
     { id: "reality:resolve-entity", kind: "query" },

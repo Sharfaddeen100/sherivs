@@ -2208,7 +2208,131 @@ Did the intervention work?
         ↓
 What changed in the learner's progression?
 
-The Academic Learning Intelligence subsystem therefore becomes CoreGrid Scholar's academic reasoning foundation.
+The Academic Learning Intelligence subsystem therefore becomes CoreGrid's academic reasoning foundation.
 It transforms fragmented educational records into structured learning intelligence while preserving a critical architectural principle:
 The system can assist teachers, learners, advisors, and institutions with intelligence, but intelligence must never silently become authority.
 Academic truth remains grounded in authoritative evidence, explicit institutional policy, provenance, human governance, and auditable contracts.
+
+───
+
+FD. Command Model
+
+FD.1 Principle
+A command expresses an intent to change academic state. Commands are validated against the
+curriculum, the competency graph and the learner's authorisation before anything is written, and
+every command either succeeds with a recorded result or is refused with a reason.
+
+FD.2 Commands this phase owns
+• publish_curriculum_version — supersede a curriculum version; refused without a reason, a
+  recorded change and a non-retroactive effective date (FB.24).
+• define_competency — register a competency; refused when a prerequisite is unknown, when the
+  competency is its own prerequisite, or when a competency-graph cycle would result (FB.25/26).
+• create_learning_objective — bind an objective to a competency with declared mastery criteria
+  and an expected level; refused when either is absent.
+• record_learning_evidence — append evidence with source, source record, actor, method,
+  confidence and provenance; refused without a source record reference, with an out-of-range
+  score or with a non-positive weight.
+• author_assessment_question — attach a question to an assessment; refused unless competency and
+  objective both exist and agree, and the cognitive level belongs to the declared framework.
+• recommend_intervention — propose an intervention for a detected gap. It recommends; it never
+  imposes (FB.21).
+• update_mastery_estimate — recompute an estimate from the preserved evidence history; the
+  history is never replaced by the estimate (Y).
+
+FD.3 Command rules
+1. A command carries tenant, actor, purpose and correlation identifiers; none may be supplied by
+   a client as authority (Phase 03, Phase 08).
+2. A command that would silently overwrite a canonical academic record is refused; derived state
+   is written to derived state only (FB.22).
+3. High-impact commands — final academic status, discipline, admissions, irreversible
+   classification — are refused for automated execution (CA).
+4. Every accepted command returns the changed value and an audit reference.
+
+───
+
+FE. Query Model
+
+FE.1 Principle
+A query reads academic intelligence and never mutates it. Every query is tenant-scoped,
+authorisation-filtered per row, and explains itself: an estimate is returned with its evidence
+count, confidence, uncertainty and model version.
+
+FE.2 Queries this phase owns
+• learner_progress(learner) — where the learner stands, with the evidence behind it.
+• learner_mastery(learner, competency) — the estimate, its confidence, its uncertainty, its
+  trend and the model version that produced it (X).
+• curriculum_version_at(curriculum, timestamp) — the version in force at a moment, so a
+  historical record can be read (K).
+• curriculum_diff(curriculum, from, to) — what changed between versions, or an explicit statement
+  that the history cannot be interpreted.
+• competency_prerequisites(competency) — direct and transitive prerequisites in dependency order.
+• learning_gaps(learner) — typed gaps with severity and detail (AE).
+• assessment_coverage(assessment) — covered and uncovered competencies and objectives, marks
+  allocated against declared, and the observed difficulty mix (T).
+• risk_signals(learner) — probabilistic signals with evidence, contributing factors, confidence,
+  uncertainty and model version (AJ).
+• recommendations(learner) — each with reason, evidence, expected benefit, limitations and
+  uncertainty (AV).
+• academic_audit_trace(subject) — evidence → model → version → inference → recommendation →
+  human decision → outcome (EX).
+
+FE.3 Query rules
+1. A query returns derived state labelled as derived; it never presents an estimate as a grade.
+2. Aggregates never expose an individual learner beyond the authorisation of the caller (AM).
+3. Missing evidence is returned as missing evidence, never as poor performance (ET).
+4. A query result carries the model version and the timestamp it was computed at.
+
+───
+
+FF. Data Model
+
+FF.1 Principle
+The data model keeps three things apart that institutions routinely conflate: the curriculum that
+was in force, the evidence that was observed, and the intelligence that was derived. Each has its
+own identity, its own version, and its own retention.
+
+FF.2 Entities
+• curriculum_node — institution, program, curriculum, course, module, unit, lesson, objective,
+  competency; the parent chain is enforced, so a course cannot sit under an institution.
+• curriculum_version — id, tenant, curriculum, version, supersedes, effective_from, reason,
+  changes; the previous version is never edited (K).
+• competency and competency_relationship — domain, name, description, prerequisites including
+  alternative prerequisite groups (N).
+• learning_objective — statement, competency, expected level, mastery criteria, assessment
+  methods, prerequisites.
+• learning_evidence — id, tenant, learner, course, competency, kind (observed fact, inferred
+  state, prediction, recommendation), source, source record, score, weight, observed_at, actor,
+  methodology, confidence, provenance reference, model version (Q).
+• assessment, assessment_blueprint, assessment_question — competency, objective, difficulty band,
+  cognitive level, marks, version.
+• mastery_state — learner, competency, estimated level, confidence, evidence count, last evidence,
+  trend, uncertainty, model version (X).
+• learning_progress, learning_gap, intervention, intervention_outcome — state machines declared in
+  AA and AG, with the effect an intervention produced (AH).
+• academic_risk_signal — type, strength, evidence references, contributing factors, confidence,
+  uncertainty, model version, status (AJ).
+• academic_model_version — model id, version, training metadata reference, evaluation results,
+  deployment status, owner, approval state (CC).
+• academic_provenance_record — who or what produced a value, from which inputs, under which policy
+  version.
+
+FF.3 Constraints and security
+• Every entity carries an immutable identifier and a tenant identifier; a cross-tenant row is
+  refused by construction and by row-level security (Phase 03).
+• Marks, scores and levels carry declared numeric ranges — a score outside 0–100 or a difficulty
+  outside 1–5 is refused at write time — and confidence and uncertainty are bounded to 0–1.
+• A prerequisite must reference an existing competency in the same tenant, and a row that would
+  create a cycle is refused.
+• Evidence rows are append-only: a correction is a new row that supersedes, so the observation
+  history survives (Y).
+• Indexes: (tenant, learner, competency, observed_at desc) on evidence; (tenant, curriculum,
+  effective_from desc) on versions; (tenant, learner, state) on interventions; (tenant, learner,
+  detected_at desc) on risk signals.
+• Every table is tenant-scoped under RLS, and aggregates are computed under the caller's
+  authorisation so an aggregate cannot reveal a learner the caller could not read directly.
+• The model arrives as a forward migration with its policies in the same change; curriculum
+  versions, evidence and model versions are retained as history, a grade is superseded with a
+  reason rather than rewritten, and retention follows institutional policy per entity class (AT, EH).
+
+
+───
