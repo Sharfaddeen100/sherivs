@@ -1,0 +1,408 @@
+{
+  "artifact": "phase-acceptance",
+  "phase": "11",
+  "phaseName": "Academic Intelligence",
+  "source": "architecture/phase-11-academic-intelligence.md",
+  "generatedAt": "2026-09-20T13:38:01.569Z",
+  "classificationDefinitions": {
+    "ENFORCED": "an executable artefact proves it (test, verifier script, migration, policy or machine-checked contract match) and, where a boundary is declared, a real call site invokes it",
+    "DECLARED": "a module, document or contract mentions it, but nothing executable proves it",
+    "IMPLEMENTED_UNWIRED": "implementation and tests exist, but the declared boundary patterns match nothing — the capability protects nothing yet",
+    "MISSING": "no artefact found"
+  },
+  "summary": {
+    "areas": 17,
+    "enforced": 12,
+    "declared": 5,
+    "implementedUnwired": 0,
+    "implementedUnwiredAreas": [],
+    "missing": 0,
+    "missingRequired": [],
+    "unresolvedEvidencePaths": []
+  },
+  "ownership": {
+    "note": "Phase 11 owns academic semantics: curriculum and its versions, the competency graph, learning objectives, assessment structure and coverage, evidence interpretation, mastery estimates, progress state, learning gaps, intervention recommendation, risk signals and academic provenance. Identity is Phase 02's, tenancy Phase 03's, canonical academic records Phase 04's, agent execution Phase 07's, authorization Phase 08's, trust Phase 09's, delivery Phase 10's, timetabling Phase 12's, financial effects Phase 13's, platform data infrastructure Phase 14's, cross-platform analytics Phase 18's and broader AI infrastructure Phase 24's. The phase owns derived insight and never canonical truth: it may not write grades, and it never presents an estimate as a record.",
+    "canonicalOwners": {
+      "academic-semantics": "11",
+      "curriculum-and-competency-structure": "11",
+      "mastery-gaps-risk-recommendation": "11",
+      "canonical-academic-records": "04",
+      "identity": "02",
+      "tenancy-rls": "03",
+      "agent-execution": "07",
+      "authorization": "08",
+      "trust-and-provenance": "09",
+      "communication-delivery": "10",
+      "scheduling": "12",
+      "financial-operations": "13"
+    }
+  },
+  "areas": [
+    {
+      "id": "curriculum-hierarchy",
+      "area": "The curriculum hierarchy is a chain, not a bag",
+      "requirement": "The nine levels from institution to competency are declared, a node must sit under the parent level its own level requires, a course may not sit under an institution, and a node may not cross a tenant boundary.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/academic-curriculum.ts",
+        "tests/unit/academic-curriculum.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/academic-curriculum.ts",
+        "tests/unit/academic-curriculum.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "frontend/src/lib/academic-intelligence-report.ts"
+      ],
+      "boundaryEvidence": [
+        "frontend/src/lib/academic-intelligence-report.ts"
+      ]
+    },
+    {
+      "id": "curriculum-versioning",
+      "area": "A curriculum change publishes a version and never edits the old one",
+      "requirement": "Publishing supersedes without editing, refuses a version without a reason or a recorded change, refuses a backdated version, and a historical record is read against the version in force at its timestamp.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/academic-curriculum.ts",
+        "tests/unit/academic-curriculum.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/academic-curriculum.ts",
+        "tests/unit/academic-curriculum.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "frontend/src/lib/academic-intelligence-report.ts"
+      ],
+      "boundaryEvidence": [
+        "frontend/src/lib/academic-intelligence-report.ts"
+      ]
+    },
+    {
+      "id": "competency-graph-acyclic",
+      "area": "The competency graph is explicit and acyclic",
+      "requirement": "Prerequisites must exist, a competency may not require itself, alternative prerequisite groups may not be empty, and a cycle is detected because it would mean no learner can ever be ready.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/academic-curriculum.ts",
+        "tests/unit/academic-curriculum.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/academic-curriculum.ts",
+        "tests/unit/academic-curriculum.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "frontend/src/lib/academic-intelligence-report.ts"
+      ],
+      "boundaryEvidence": [
+        "frontend/src/lib/academic-intelligence-report.ts"
+      ]
+    },
+    {
+      "id": "competency-levels-configurable",
+      "area": "Competency levels are institutional data",
+      "requirement": "A scale has at least two levels, may not repeat a level, and defaults to the blueprint's six without being hard-coded.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/academic-curriculum.ts",
+        "tests/unit/academic-curriculum.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/academic-curriculum.ts",
+        "tests/unit/academic-curriculum.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "learning-objectives-measurable",
+      "area": "A learning objective declares how mastery is judged",
+      "requirement": "An objective must state a measurable statement, bind to an existing competency, declare mastery criteria and declare the expected level.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/academic-curriculum.ts",
+        "tests/unit/academic-curriculum.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/academic-curriculum.ts",
+        "tests/unit/academic-curriculum.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "frontend/src/lib/academic-intelligence-report.ts"
+      ],
+      "boundaryEvidence": [
+        "frontend/src/lib/academic-intelligence-report.ts"
+      ]
+    },
+    {
+      "id": "learning-evidence-provenance",
+      "area": "Evidence carries provenance and is append-only",
+      "requirement": "Evidence records kind, source, source record, actor, methodology, confidence and provenance; a record without a source reference, with an out-of-range score or a non-positive weight is refused.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/academic-core.ts",
+        "tests/unit/academic-core.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/academic-core.ts",
+        "tests/unit/academic-core.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "frontend/src/lib/academic-intelligence-report.ts"
+      ],
+      "boundaryEvidence": [
+        "frontend/src/lib/academic-intelligence-report.ts"
+      ]
+    },
+    {
+      "id": "mastery-is-an-estimate",
+      "area": "Mastery is a confidence-weighted estimate over preserved evidence",
+      "requirement": "An estimate carries level, confidence, uncertainty, evidence count and model version, is refused without evidence, and never replaces the evidence history.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/academic-mastery.ts",
+        "tests/unit/academic-mastery.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/academic-mastery.ts",
+        "tests/unit/academic-mastery.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "frontend/src/lib/academic-intelligence-report.ts"
+      ],
+      "boundaryEvidence": [
+        "frontend/src/lib/academic-intelligence-report.ts"
+      ]
+    },
+    {
+      "id": "learning-gaps-typed",
+      "area": "A learning gap is typed, severity-rated and explained",
+      "requirement": "A gap names its type from the declared five, its severity and its detail rather than reporting a bare shortfall.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/academic-pathways.ts",
+        "tests/unit/academic-pathways.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/academic-pathways.ts",
+        "tests/unit/academic-pathways.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "frontend/src/lib/academic-intelligence-report.ts"
+      ],
+      "boundaryEvidence": [
+        "frontend/src/lib/academic-intelligence-report.ts"
+      ]
+    },
+    {
+      "id": "risk-is-probabilistic",
+      "area": "Academic risk is a probabilistic signal, never a diagnosis",
+      "requirement": "A signal carries strength, evidence references, contributing factors, confidence, uncertainty and model version, and sensitive attributes may not be used as inputs.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/academic-risk.ts",
+        "tests/unit/academic-risk.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/academic-risk.ts",
+        "tests/unit/academic-risk.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "frontend/src/lib/academic-intelligence-report.ts"
+      ],
+      "boundaryEvidence": [
+        "frontend/src/lib/academic-intelligence-report.ts"
+      ]
+    },
+    {
+      "id": "progress-states-declared",
+      "area": "Progress state is a declared set, not a free string",
+      "requirement": "Progress runs from NOT_STARTED through STARTED, IN_PROGRESS, APPROACHING_MASTERY, MASTERED, NEEDS_REVIEW and BLOCKED.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/academic-core.ts",
+        "tests/unit/academic-core.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/academic-core.ts",
+        "tests/unit/academic-core.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "assessment-intelligence",
+      "area": "Assessment structure and coverage are provable",
+      "requirement": "The seven assessment types and the cognitive framework are declared data, a question carries competency, objective, difficulty band and cognitive level, and a blueprint is checked against the questions that exist for coverage, marks and weightings.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/academic-assessment.ts",
+        "tests/unit/academic-curriculum.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/academic-assessment.ts",
+        "tests/unit/academic-curriculum.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "frontend/src/lib/academic-intelligence-report.ts"
+      ],
+      "boundaryEvidence": [
+        "frontend/src/lib/academic-intelligence-report.ts"
+      ]
+    },
+    {
+      "id": "rule-attribution-and-surface",
+      "area": "Every claimed rule names its implementation and its proof, and a real surface reads the phase",
+      "requirement": "The phase report ties each rule to a module and a suite, exercises the engines on real inputs, and is rendered by a surface that declares no role list of its own.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/academic-intelligence-report.ts",
+        "tests/unit/academic-intelligence-report.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/academic-intelligence-report.ts",
+        "tests/unit/academic-intelligence-report.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "frontend/src/routes/_authenticated/super-admin/academic-intelligence.tsx"
+      ],
+      "boundaryEvidence": [
+        "frontend/src/routes/_authenticated/super-admin/academic-intelligence.tsx"
+      ]
+    },
+    {
+      "id": "academic-persistence",
+      "area": "Academic intelligence is durable",
+      "requirement": "The data model in section FF arrives as a migration with its policies, so a curriculum version, an evidence record and the estimate computed from them can be re-read after the fact. Today the shapes exist as typed values only.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "architecture/phase-11-academic-intelligence.md",
+        "frontend/src/lib/academic-intelligence-report.ts"
+      ],
+      "matchedEvidence": [
+        "architecture/phase-11-academic-intelligence.md",
+        "frontend/src/lib/academic-intelligence-report.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "academic-model-governance",
+      "area": "Academic models are registered, evaluated and monitored",
+      "requirement": "A model version has a registry row, an evaluation result, an approval state and a lifecycle with drift monitoring. Today a model is named by a version string and nothing enforces the rest.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "frontend/src/lib/academic-intelligence-report.ts",
+        "architecture/phase-11-academic-intelligence.md"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/academic-intelligence-report.ts",
+        "architecture/phase-11-academic-intelligence.md"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "intervention-outcome-loop",
+      "area": "Intervention effectiveness is measurable",
+      "requirement": "An evaluated intervention is joined back to the mastery change it produced, so interventions can be compared. Today states and outcomes exist without the join.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "frontend/src/lib/academic-pathways.ts",
+        "frontend/src/lib/academic-intelligence-report.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/academic-pathways.ts",
+        "frontend/src/lib/academic-intelligence-report.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "evidence-ingestion-boundary",
+      "area": "Evidence arrives from real systems through an authorised boundary",
+      "requirement": "An authorised server boundary ingests evidence from assessment and attendance sources. Today nothing outside the phase calls the engines.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "frontend/src/lib/academic-intelligence-report.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/academic-intelligence-report.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "academic-search-and-export",
+      "area": "Academic search and controlled export exist",
+      "requirement": "Sections DM and DN specify search and export under authorization and audit. No index or export boundary exists yet.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "frontend/src/lib/academic-intelligence-report.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/academic-intelligence-report.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    }
+  ],
+  "ok": true,
+  "limitations": [
+    "Classification measures the presence of executable evidence, not the correctness or completeness of that evidence.",
+    "A DECLARED area is unfinished work, never a false claim — it is reported as such.",
+    "An IMPLEMENTED_UNWIRED area has a tested implementation that no boundary calls; it is reported, never counted as enforcement.",
+    "Evidence patterns are declared per phase in architecture/phase-acceptance/phase-<id>-*.json and must be reviewed when a phase is re-audited."
+  ]
+}

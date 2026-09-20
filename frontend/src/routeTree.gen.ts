@@ -127,6 +127,7 @@ import { Route as AuthenticatedStudentGradesRouteImport } from './routes/_authen
 import { Route as AuthenticatedStudentNewsRouteImport } from './routes/_authenticated/student/news'
 import { Route as AuthenticatedStudentReportCardRouteImport } from './routes/_authenticated/student/report-card'
 import { Route as AuthenticatedStudentTimetableRouteImport } from './routes/_authenticated/student/timetable'
+import { Route as AuthenticatedSuperAdminAcademicIntelligenceRouteImport } from './routes/_authenticated/super-admin/academic-intelligence'
 import { Route as AuthenticatedSuperAdminAgentGovernanceRouteImport } from './routes/_authenticated/super-admin/agent-governance'
 import { Route as AuthenticatedSuperAdminBillingRouteImport } from './routes/_authenticated/super-admin/billing'
 import { Route as AuthenticatedSuperAdminCommunicationStewardRouteImport } from './routes/_authenticated/super-admin/communication-steward'
@@ -830,6 +831,12 @@ const AuthenticatedStudentTimetableRoute =
     path: '/timetable',
     getParentRoute: () => AuthenticatedStudentRouteRoute,
   } as any)
+const AuthenticatedSuperAdminAcademicIntelligenceRoute =
+  AuthenticatedSuperAdminAcademicIntelligenceRouteImport.update({
+    id: '/academic-intelligence',
+    path: '/academic-intelligence',
+    getParentRoute: () => AuthenticatedSuperAdminRouteRoute,
+  } as any)
 const AuthenticatedSuperAdminAgentGovernanceRoute =
   AuthenticatedSuperAdminAgentGovernanceRouteImport.update({
     id: '/agent-governance',
@@ -1123,6 +1130,7 @@ export interface FileRoutesByFullPath {
   '/student/news': typeof AuthenticatedStudentNewsRoute
   '/student/report-card': typeof AuthenticatedStudentReportCardRoute
   '/student/timetable': typeof AuthenticatedStudentTimetableRoute
+  '/super-admin/academic-intelligence': typeof AuthenticatedSuperAdminAcademicIntelligenceRoute
   '/super-admin/agent-governance': typeof AuthenticatedSuperAdminAgentGovernanceRoute
   '/super-admin/billing': typeof AuthenticatedSuperAdminBillingRoute
   '/super-admin/communication-steward': typeof AuthenticatedSuperAdminCommunicationStewardRoute
@@ -1271,6 +1279,7 @@ export interface FileRoutesByTo {
   '/student/news': typeof AuthenticatedStudentNewsRoute
   '/student/report-card': typeof AuthenticatedStudentReportCardRoute
   '/student/timetable': typeof AuthenticatedStudentTimetableRoute
+  '/super-admin/academic-intelligence': typeof AuthenticatedSuperAdminAcademicIntelligenceRoute
   '/super-admin/agent-governance': typeof AuthenticatedSuperAdminAgentGovernanceRoute
   '/super-admin/billing': typeof AuthenticatedSuperAdminBillingRoute
   '/super-admin/communication-steward': typeof AuthenticatedSuperAdminCommunicationStewardRoute
@@ -1421,6 +1430,7 @@ export interface FileRoutesById {
   '/_authenticated/student/news': typeof AuthenticatedStudentNewsRoute
   '/_authenticated/student/report-card': typeof AuthenticatedStudentReportCardRoute
   '/_authenticated/student/timetable': typeof AuthenticatedStudentTimetableRoute
+  '/_authenticated/super-admin/academic-intelligence': typeof AuthenticatedSuperAdminAcademicIntelligenceRoute
   '/_authenticated/super-admin/agent-governance': typeof AuthenticatedSuperAdminAgentGovernanceRoute
   '/_authenticated/super-admin/billing': typeof AuthenticatedSuperAdminBillingRoute
   '/_authenticated/super-admin/communication-steward': typeof AuthenticatedSuperAdminCommunicationStewardRoute
@@ -1571,6 +1581,7 @@ export interface FileRouteTypes {
     | '/student/news'
     | '/student/report-card'
     | '/student/timetable'
+    | '/super-admin/academic-intelligence'
     | '/super-admin/agent-governance'
     | '/super-admin/billing'
     | '/super-admin/communication-steward'
@@ -1719,6 +1730,7 @@ export interface FileRouteTypes {
     | '/student/news'
     | '/student/report-card'
     | '/student/timetable'
+    | '/super-admin/academic-intelligence'
     | '/super-admin/agent-governance'
     | '/super-admin/billing'
     | '/super-admin/communication-steward'
@@ -1868,6 +1880,7 @@ export interface FileRouteTypes {
     | '/_authenticated/student/news'
     | '/_authenticated/student/report-card'
     | '/_authenticated/student/timetable'
+    | '/_authenticated/super-admin/academic-intelligence'
     | '/_authenticated/super-admin/agent-governance'
     | '/_authenticated/super-admin/billing'
     | '/_authenticated/super-admin/communication-steward'
@@ -2749,6 +2762,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedStudentTimetableRouteImport
       parentRoute: typeof AuthenticatedStudentRouteRoute
     }
+    '/_authenticated/super-admin/academic-intelligence': {
+      id: '/_authenticated/super-admin/academic-intelligence'
+      path: '/academic-intelligence'
+      fullPath: '/super-admin/academic-intelligence'
+      preLoaderRoute: typeof AuthenticatedSuperAdminAcademicIntelligenceRouteImport
+      parentRoute: typeof AuthenticatedSuperAdminRouteRoute
+    }
     '/_authenticated/super-admin/agent-governance': {
       id: '/_authenticated/super-admin/agent-governance'
       path: '/agent-governance'
@@ -3216,6 +3236,7 @@ const AuthenticatedStudentRouteRouteWithChildren =
   )
 
 interface AuthenticatedSuperAdminRouteRouteChildren {
+  AuthenticatedSuperAdminAcademicIntelligenceRoute: typeof AuthenticatedSuperAdminAcademicIntelligenceRoute
   AuthenticatedSuperAdminAgentGovernanceRoute: typeof AuthenticatedSuperAdminAgentGovernanceRoute
   AuthenticatedSuperAdminBillingRoute: typeof AuthenticatedSuperAdminBillingRoute
   AuthenticatedSuperAdminCommunicationStewardRoute: typeof AuthenticatedSuperAdminCommunicationStewardRoute
@@ -3234,6 +3255,8 @@ interface AuthenticatedSuperAdminRouteRouteChildren {
 
 const AuthenticatedSuperAdminRouteRouteChildren: AuthenticatedSuperAdminRouteRouteChildren =
   {
+    AuthenticatedSuperAdminAcademicIntelligenceRoute:
+      AuthenticatedSuperAdminAcademicIntelligenceRoute,
     AuthenticatedSuperAdminAgentGovernanceRoute:
       AuthenticatedSuperAdminAgentGovernanceRoute,
     AuthenticatedSuperAdminBillingRoute: AuthenticatedSuperAdminBillingRoute,

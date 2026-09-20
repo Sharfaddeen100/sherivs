@@ -2186,7 +2186,7 @@ FB. Architectural Invariants
 ───
 
 FC. Final Architectural Principle
-CoreGrid Scholar should not merely know that a learner received a score.
+CoreGrid should not merely know that a learner received a score.
 It should understand the educational meaning behind that score.
 It should understand:
 text
