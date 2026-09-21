@@ -2,7 +2,7 @@
 
 # CoreGrid — Phase Completion Status (evidence-derived)
 
-Generated: 2026-09-21T12:13:29.348Z
+Generated: 2026-09-21T12:49:26.295Z
 
 Phases audited: 51 · COMPLETE: 14 · IMPLEMENTING: 19 · ARCHITECTURE_DEFINED: 18
 
@@ -30,7 +30,7 @@ Levels: L1 conceptual · L2 data model · L3 backend · L4 frontend/workspace ·
 | 18 | Analytics Intelligence | analytics-decision-intelligence | 20/20 | 4 | 62 | yes | yes | yes | — | yes | IMPLEMENTING | IMPLEMENTING |
 | 19 | Command Centre | command-centre-surface | 16/20 | 4 | 47 | yes | yes | yes | — | yes | IMPLEMENTING | IMPLEMENTING |
 | 20 | Government Education Cloud | government-sovereign-deployments | 16/20 | 4 | 59 | yes | yes | yes | — | yes | IMPLEMENTING | IMPLEMENTING |
-| 21 | Global Cloud Fabric | cloud-fabric-byoc | 16/20 | 4 | 69 | yes | yes | yes | — | yes | IMPLEMENTING | IMPLEMENTING |
+| 21 | Global Cloud Fabric | cloud-fabric-byoc | 16/20 | 3 | 69 | yes | yes | yes | — | yes | IMPLEMENTING | IMPLEMENTING |
 | 22 | Mobile Platform | mobile-client-platform | 17/20 | 4 | 5 | yes | yes | yes | — | yes | IMPLEMENTING | IMPLEMENTING |
 | 23 | Web Platform | web-client-platform | 18/20 | 4 | 41 | yes | yes | yes | — | yes | IMPLEMENTING | IMPLEMENTING |
 | 24 | Experience & Design Intelligence | experience-design | 16/20 | 4 | 42 | yes | yes | yes | — | yes | IMPLEMENTING | IMPLEMENTING |

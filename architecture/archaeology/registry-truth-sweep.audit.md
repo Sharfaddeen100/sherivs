@@ -39,6 +39,26 @@ Two things were deliberately **not** done: the historical caveats inside these n
 were not deleted (they are dated statements about live wiring, which is what L5
 measures, and they remain true), and no level was raised without naming its artefact.
 
+## 2b. The module that resolved to nothing (P21)
+
+`audit:phases` had been printing *"Modules resolve: 32/33 phases with modules"* — one phase
+listing modules that resolve to no source. It was **P21 Global Cloud Fabric**: the row listed
+`cloud-fabric-iac` alongside `cloud-core`, `cloud-byoc` and `cloud-governance`. The three are
+real (`frontend/src/lib/cloud-*.ts`); the fourth is infrastructure-as-code, which lives in
+`infrastructure/terraform`, `infrastructure/kubernetes`, `infrastructure/workloads` and
+`infrastructure/monitoring`, not in the library namespace registry modules are resolved
+against. The row was therefore claiming a module that does not exist.
+
+Corrected: the three real modules stay, the IaC deliverable is named where it lives, and
+**no level moved** — the phase still reads L1 only, which matches its state (blueprinted and
+instantiated as IaC with 64/64 invariants proven by `infrastructure-preflight` and
+`cloud-fabric-foundation`, and **nothing deployed** pending owner credentials CF-4…CF-12).
+The audit now reports 33/33.
+
+This is the smallest correction in the sweep and the most instructive: a registry field can
+drift into meaning "things this phase delivered" instead of "modules", and the only reason it
+was caught is that a counter printed the mismatch on every run.
+
 ## 3. The three claims the audit could not evidence — hand reviews
 
 The auditor records unevidenced claims as UNKNOWN-class review items, never as
