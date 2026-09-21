@@ -135,6 +135,7 @@ import { Route as AuthenticatedSuperAdminDashboardRouteImport } from './routes/_
 import { Route as AuthenticatedSuperAdminLogsRouteImport } from './routes/_authenticated/super-admin/logs'
 import { Route as AuthenticatedSuperAdminPlatformConfigRouteImport } from './routes/_authenticated/super-admin/platform-config'
 import { Route as AuthenticatedSuperAdminRuntimeContractsRouteImport } from './routes/_authenticated/super-admin/runtime-contracts'
+import { Route as AuthenticatedSuperAdminSchedulingIntelligenceRouteImport } from './routes/_authenticated/super-admin/scheduling-intelligence'
 import { Route as AuthenticatedSuperAdminSchoolsRouteImport } from './routes/_authenticated/super-admin/schools'
 import { Route as AuthenticatedSuperAdminSettingsRouteImport } from './routes/_authenticated/super-admin/settings'
 import { Route as AuthenticatedSuperAdminSupportRouteImport } from './routes/_authenticated/super-admin/support'
@@ -879,6 +880,12 @@ const AuthenticatedSuperAdminRuntimeContractsRoute =
     path: '/runtime-contracts',
     getParentRoute: () => AuthenticatedSuperAdminRouteRoute,
   } as any)
+const AuthenticatedSuperAdminSchedulingIntelligenceRoute =
+  AuthenticatedSuperAdminSchedulingIntelligenceRouteImport.update({
+    id: '/scheduling-intelligence',
+    path: '/scheduling-intelligence',
+    getParentRoute: () => AuthenticatedSuperAdminRouteRoute,
+  } as any)
 const AuthenticatedSuperAdminSchoolsRoute =
   AuthenticatedSuperAdminSchoolsRouteImport.update({
     id: '/schools',
@@ -1138,6 +1145,7 @@ export interface FileRoutesByFullPath {
   '/super-admin/logs': typeof AuthenticatedSuperAdminLogsRoute
   '/super-admin/platform-config': typeof AuthenticatedSuperAdminPlatformConfigRoute
   '/super-admin/runtime-contracts': typeof AuthenticatedSuperAdminRuntimeContractsRoute
+  '/super-admin/scheduling-intelligence': typeof AuthenticatedSuperAdminSchedulingIntelligenceRoute
   '/super-admin/schools': typeof AuthenticatedSuperAdminSchoolsRoute
   '/super-admin/settings': typeof AuthenticatedSuperAdminSettingsRoute
   '/super-admin/support': typeof AuthenticatedSuperAdminSupportRoute
@@ -1287,6 +1295,7 @@ export interface FileRoutesByTo {
   '/super-admin/logs': typeof AuthenticatedSuperAdminLogsRoute
   '/super-admin/platform-config': typeof AuthenticatedSuperAdminPlatformConfigRoute
   '/super-admin/runtime-contracts': typeof AuthenticatedSuperAdminRuntimeContractsRoute
+  '/super-admin/scheduling-intelligence': typeof AuthenticatedSuperAdminSchedulingIntelligenceRoute
   '/super-admin/schools': typeof AuthenticatedSuperAdminSchoolsRoute
   '/super-admin/settings': typeof AuthenticatedSuperAdminSettingsRoute
   '/super-admin/support': typeof AuthenticatedSuperAdminSupportRoute
@@ -1438,6 +1447,7 @@ export interface FileRoutesById {
   '/_authenticated/super-admin/logs': typeof AuthenticatedSuperAdminLogsRoute
   '/_authenticated/super-admin/platform-config': typeof AuthenticatedSuperAdminPlatformConfigRoute
   '/_authenticated/super-admin/runtime-contracts': typeof AuthenticatedSuperAdminRuntimeContractsRoute
+  '/_authenticated/super-admin/scheduling-intelligence': typeof AuthenticatedSuperAdminSchedulingIntelligenceRoute
   '/_authenticated/super-admin/schools': typeof AuthenticatedSuperAdminSchoolsRoute
   '/_authenticated/super-admin/settings': typeof AuthenticatedSuperAdminSettingsRoute
   '/_authenticated/super-admin/support': typeof AuthenticatedSuperAdminSupportRoute
@@ -1589,6 +1599,7 @@ export interface FileRouteTypes {
     | '/super-admin/logs'
     | '/super-admin/platform-config'
     | '/super-admin/runtime-contracts'
+    | '/super-admin/scheduling-intelligence'
     | '/super-admin/schools'
     | '/super-admin/settings'
     | '/super-admin/support'
@@ -1738,6 +1749,7 @@ export interface FileRouteTypes {
     | '/super-admin/logs'
     | '/super-admin/platform-config'
     | '/super-admin/runtime-contracts'
+    | '/super-admin/scheduling-intelligence'
     | '/super-admin/schools'
     | '/super-admin/settings'
     | '/super-admin/support'
@@ -1888,6 +1900,7 @@ export interface FileRouteTypes {
     | '/_authenticated/super-admin/logs'
     | '/_authenticated/super-admin/platform-config'
     | '/_authenticated/super-admin/runtime-contracts'
+    | '/_authenticated/super-admin/scheduling-intelligence'
     | '/_authenticated/super-admin/schools'
     | '/_authenticated/super-admin/settings'
     | '/_authenticated/super-admin/support'
@@ -2818,6 +2831,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSuperAdminRuntimeContractsRouteImport
       parentRoute: typeof AuthenticatedSuperAdminRouteRoute
     }
+    '/_authenticated/super-admin/scheduling-intelligence': {
+      id: '/_authenticated/super-admin/scheduling-intelligence'
+      path: '/scheduling-intelligence'
+      fullPath: '/super-admin/scheduling-intelligence'
+      preLoaderRoute: typeof AuthenticatedSuperAdminSchedulingIntelligenceRouteImport
+      parentRoute: typeof AuthenticatedSuperAdminRouteRoute
+    }
     '/_authenticated/super-admin/schools': {
       id: '/_authenticated/super-admin/schools'
       path: '/schools'
@@ -3244,6 +3264,7 @@ interface AuthenticatedSuperAdminRouteRouteChildren {
   AuthenticatedSuperAdminLogsRoute: typeof AuthenticatedSuperAdminLogsRoute
   AuthenticatedSuperAdminPlatformConfigRoute: typeof AuthenticatedSuperAdminPlatformConfigRoute
   AuthenticatedSuperAdminRuntimeContractsRoute: typeof AuthenticatedSuperAdminRuntimeContractsRoute
+  AuthenticatedSuperAdminSchedulingIntelligenceRoute: typeof AuthenticatedSuperAdminSchedulingIntelligenceRoute
   AuthenticatedSuperAdminSchoolsRoute: typeof AuthenticatedSuperAdminSchoolsRoute
   AuthenticatedSuperAdminSettingsRoute: typeof AuthenticatedSuperAdminSettingsRoute
   AuthenticatedSuperAdminSupportRoute: typeof AuthenticatedSuperAdminSupportRoute
@@ -3269,6 +3290,8 @@ const AuthenticatedSuperAdminRouteRouteChildren: AuthenticatedSuperAdminRouteRou
       AuthenticatedSuperAdminPlatformConfigRoute,
     AuthenticatedSuperAdminRuntimeContractsRoute:
       AuthenticatedSuperAdminRuntimeContractsRoute,
+    AuthenticatedSuperAdminSchedulingIntelligenceRoute:
+      AuthenticatedSuperAdminSchedulingIntelligenceRoute,
     AuthenticatedSuperAdminSchoolsRoute: AuthenticatedSuperAdminSchoolsRoute,
     AuthenticatedSuperAdminSettingsRoute: AuthenticatedSuperAdminSettingsRoute,
     AuthenticatedSuperAdminSupportRoute: AuthenticatedSuperAdminSupportRoute,

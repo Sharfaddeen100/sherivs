@@ -1,0 +1,421 @@
+{
+  "artifact": "phase-acceptance",
+  "phase": "12",
+  "phaseName": "Scheduling & Timetable Intelligence",
+  "source": "architecture/phase-12-scheduling-intelligence.md",
+  "generatedAt": "2026-09-20T20:11:16.531Z",
+  "classificationDefinitions": {
+    "ENFORCED": "an executable artefact proves it (test, verifier script, migration, policy or machine-checked contract match) and, where a boundary is declared, a real call site invokes it",
+    "DECLARED": "a module, document or contract mentions it, but nothing executable proves it",
+    "IMPLEMENTED_UNWIRED": "implementation and tests exist, but the declared boundary patterns match nothing — the capability protects nothing yet",
+    "MISSING": "no artefact found"
+  },
+  "summary": {
+    "areas": 20,
+    "enforced": 13,
+    "declared": 7,
+    "implementedUnwired": 0,
+    "implementedUnwiredAreas": [],
+    "missing": 0,
+    "missingRequired": [],
+    "unresolvedEvidencePaths": []
+  },
+  "ownership": {
+    "note": "Phase 12 owns scheduling semantics: constraints and their priorities, availability interpretation, conflict detection and classification, conflict resolution strategy, optimization compilation, schedule generation, versioning, publication state, simulation, quality scoring, change management and explanation. Identity is Phase 02's, tenancy Phase 03's, canonical institutional reality Phase 04's, application runtime Phase 05's, workspaces Phase 06's, agent lifecycle Phase 07's, authorization Phase 08's, trust and provenance Phase 09's, delivery Phase 10's, academic requirements Phase 11's, financial effects Phase 13's, generic data infrastructure Phase 14's, hardware signals Phase 15's, digital twins Phase 16's, workflow automation Phase 17's and cross-platform analytics Phase 18's. Scheduling owns placement, never the records it schedules around.",
+    "canonicalOwners": {
+      "scheduling-semantics": "12",
+      "conflict-and-resolution-records": "12",
+      "schedule-versions-and-publication-state": "12",
+      "canonical-institutional-reality": "04",
+      "identity": "02",
+      "tenancy-rls": "03",
+      "agent-execution": "07",
+      "authorization": "08",
+      "trust-and-provenance": "09",
+      "communication-delivery": "10",
+      "academic-requirements": "11",
+      "workflow-approval": "17"
+    }
+  },
+  "areas": [
+    {
+      "id": "conflict-taxonomy",
+      "area": "Conflicts are first-class, classified records",
+      "requirement": "Collisions are represented explicitly with a type, severity, involved entities, the constraint violated, a detection timestamp, a state and proposed resolutions, covering time, resource, participant, capacity, capability, policy, travel, accessibility, calendar, dependency, publication and concurrency.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/scheduling-conflicts.ts",
+        "tests/unit/scheduling-governance.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/scheduling-conflicts.ts",
+        "tests/unit/scheduling-governance.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "participant-and-resource-collisions",
+      "area": "Participants and resources cannot be in two places at once",
+      "requirement": "Two overlapping activities sharing a participant or a resource are reported as blocking conflicts naming the participants and resources involved.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/scheduling-conflicts.ts",
+        "tests/unit/scheduling-governance.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/scheduling-conflicts.ts",
+        "tests/unit/scheduling-governance.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "capacity-and-turnaround",
+      "area": "Declared capacity is refused rather than assumed",
+      "requirement": "An assignment whose participant count exceeds a resource's declared capacity is a blocking conflict that states both numbers, and a shortfall of turnaround time between two uses is reported too.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/scheduling-governance.test.ts",
+        "frontend/src/lib/scheduling-conflicts.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/scheduling-governance.test.ts",
+        "frontend/src/lib/scheduling-conflicts.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "blocked-periods-are-policy",
+      "area": "Blocked periods and closures cannot be scheduled through",
+      "requirement": "A holiday, maintenance window or emergency closure is represented as a blocked period; an activity inside one is a critical conflict, never a preference.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/scheduling-governance.test.ts",
+        "architecture/phase-12-scheduling-intelligence.md"
+      ],
+      "matchedEvidence": [
+        "tests/unit/scheduling-governance.test.ts",
+        "architecture/phase-12-scheduling-intelligence.md"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "capability-and-accessibility",
+      "area": "Capability and accessibility requirements are constraints",
+      "requirement": "A resource that cannot supply a demanded capability is a blocking capability conflict, and a resource that does not meet a declared accessibility requirement is reported rather than silently accepted.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/scheduling-governance.test.ts",
+        "frontend/src/lib/scheduling-conflicts.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/scheduling-governance.test.ts",
+        "frontend/src/lib/scheduling-conflicts.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "travel-and-transitions",
+      "area": "Impossible transitions between sites are detected",
+      "requirement": "Where physical movement matters, the engine compares the available gap against the required travel time between resources and reports an impossible transition instead of assuming it is possible.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/scheduling-governance.test.ts",
+        "frontend/src/lib/scheduling-conflicts.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/scheduling-governance.test.ts",
+        "frontend/src/lib/scheduling-conflicts.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "infeasibility-is-reported",
+      "area": "An infeasible request is reported as infeasible",
+      "requirement": "Blocking conflicts are separated from waivable ones, feasibility is stated, and guidance is returned; no fabricated valid plan is produced and a hard constraint is never waived silently.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/scheduling-conflicts.ts",
+        "tests/unit/scheduling-governance.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/scheduling-conflicts.ts",
+        "tests/unit/scheduling-governance.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "feasibility-dominates-optimization",
+      "area": "Feasibility is never traded for efficiency",
+      "requirement": "A plan is scored across independent dimensions, feasibility is binary and derived from blocking conflicts, and disruption and stability are declared unmeasured where no change exists to measure.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/scheduling-quality.ts",
+        "tests/unit/scheduling-governance.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/scheduling-quality.ts",
+        "tests/unit/scheduling-governance.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "minimal-disruption",
+      "area": "A change is judged by the disruption it causes",
+      "requirement": "The number of changed assignments, affected participants and affected resources is measured against an explicit stability tolerance, and feasible candidates are ranked by disruption before quality.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/scheduling-quality.ts",
+        "tests/unit/scheduling-governance.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/scheduling-quality.ts",
+        "tests/unit/scheduling-governance.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "version-comparison-and-impact",
+      "area": "Versions are comparable and changes are impact-assessed",
+      "requirement": "Two versions are compared by placement, resource, participant and conflict; a proposed change states affected activities, participants, resources and the least disruptive adjustment, escalating what it cannot resolve.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/scheduling-quality.ts",
+        "tests/unit/scheduling-governance.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/scheduling-quality.ts",
+        "tests/unit/scheduling-governance.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "explainable-placements",
+      "area": "Every placement can be explained",
+      "requirement": "A placement answers why it is here, why this resource was chosen, which constraints decided it, which preferences were sacrificed and why the alternatives were rejected.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/scheduling-quality.ts",
+        "tests/unit/scheduling-governance.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/scheduling-quality.ts",
+        "tests/unit/scheduling-governance.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "fairness-measured",
+      "area": "Fairness is measured, not asserted",
+      "requirement": "Load balance across participants or resources is computed from committed load, so an unfair allocation is visible as a number rather than a claim.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/scheduling-quality.ts",
+        "tests/unit/scheduling-governance.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/scheduling-quality.ts",
+        "tests/unit/scheduling-governance.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "domain-neutral-for-every-organization",
+      "area": "The capability belongs to the platform, not to one institution",
+      "requirement": "The engines schedule participants, resources and activities as institutional data; no kernel rule is stated in one organization's vocabulary, and the phase surface shows the same capability in the language of education, healthcare, logistics, warehousing, government and manufacturing.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "architecture/phase-12-scheduling-intelligence.md",
+        "tests/unit/scheduling-intelligence-report.test.ts",
+        "frontend/src/routes/_authenticated/super-admin/scheduling-intelligence.tsx"
+      ],
+      "matchedEvidence": [
+        "architecture/phase-12-scheduling-intelligence.md",
+        "tests/unit/scheduling-intelligence-report.test.ts",
+        "frontend/src/routes/_authenticated/super-admin/scheduling-intelligence.tsx"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "engineering-sections-complete",
+      "area": "The blueprint states all twenty mandatory engineering sections",
+      "requirement": "API, event, command, query, policy, security, tenancy, workflow, agent, memory, knowledge, observability, testing, audit, dependency, boundary, ownership, failure, data model and migration semantics are all stated; ER, ES, ET and EU were authored this phase for the four that were missing.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "architecture/phase-12-scheduling-intelligence.md",
+        "architecture/phase-12-scheduling-intelligence.md",
+        "architecture/phase-12-scheduling-intelligence.md"
+      ],
+      "matchedEvidence": [
+        "architecture/phase-12-scheduling-intelligence.md",
+        "architecture/phase-12-scheduling-intelligence.md",
+        "architecture/phase-12-scheduling-intelligence.md"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "solver-adapter",
+      "area": "A solver is attached behind the abstraction",
+      "requirement": "The same validator scores, ranks and explains any candidate plan, so a solver can be attached behind the abstraction; no external solver is wired, so no plan is currently produced by one.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "frontend/src/lib/scheduling-intelligence-report.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/scheduling-intelligence-report.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "async-optimization-runs",
+      "area": "Optimization runs asynchronously and can be cancelled",
+      "requirement": "Long-running jobs need progress and controlled cancellation. The domain reports run state; the queue, progress and cancellation belong to the runtime and workflow phases.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "frontend/src/lib/scheduling-intelligence-report.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/scheduling-intelligence-report.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "interoperability-adapters",
+      "area": "External calendars and systems import through adapters",
+      "requirement": "External calendar, HR and room-management systems require adapters with their schemas isolated. Import validation is specified but no adapter is wired.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "frontend/src/lib/scheduling-intelligence-report.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/scheduling-intelligence-report.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "publication-approval-workflow",
+      "area": "Publication approval is a workflow",
+      "requirement": "Phase 12 supplies the validation and the version a publication needs; the approval workflow itself belongs to the workflow phase and is not implemented here.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "frontend/src/lib/scheduling-intelligence-report.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/scheduling-intelligence-report.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "timezone-transition-rules",
+      "area": "Daylight-saving transitions are computed",
+      "requirement": "Every interval carries an explicit timezone and a missing timezone is refused, but a calendar conversion engine that resolves daylight-saving transitions is not implemented.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "frontend/src/lib/scheduling-intelligence-report.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/scheduling-intelligence-report.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "learned-solver-selection",
+      "area": "Solver selection is learned from problem shape",
+      "requirement": "Learned heuristics, solver selection and quality learning are described by the blueprint and not implemented; any learning must remain subordinate to deterministic feasibility validation.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "frontend/src/lib/scheduling-intelligence-report.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/scheduling-intelligence-report.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    }
+  ],
+  "ok": true,
+  "limitations": [
+    "Classification measures the presence of executable evidence, not the correctness or completeness of that evidence.",
+    "A DECLARED area is unfinished work, never a false claim — it is reported as such.",
+    "An IMPLEMENTED_UNWIRED area has a tested implementation that no boundary calls; it is reported, never counted as enforcement.",
+    "Evidence patterns are declared per phase in architecture/phase-acceptance/phase-<id>-*.json and must be reviewed when a phase is re-audited."
+  ]
+}

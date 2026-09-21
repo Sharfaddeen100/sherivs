@@ -1994,3 +1994,188 @@ No amount of optimization is valuable if the resulting timetable is infeasible, 
 Phase 12 therefore provides CoreGrid with a scheduling system that can move from simple school timetables to extremely complex 
 
 institutional scheduling problems without changing the underlying architectural principles.
+
+───
+
+ER. Domain-Neutral Scheduling For Every Organization
+
+ER.1 The correction this section makes
+Earlier sections of this blueprint describe scheduling in one institution's vocabulary —
+learner, instructor, class, examination. That vocabulary is an EXAMPLE of the contract, never
+its definition. Scheduling is a platform capability: a hospital rosters clinicians against
+theatres and wards, a logistics company assigns vehicles to docks and drivers to shifts, a
+warehouse plans pickers and bays, a ministry sequences hearings and committee rooms, an airline
+pairs crews with aircraft, a factory staffs lines against maintenance windows. Every one of them
+is solving the same constrained allocation problem.
+
+ER.2 The participant is an actor, not a learner
+The engine schedules PARTICIPANTS against RESOURCES inside TIME under CONSTRAINTS. A participant
+is an actor reference owned by Phase 02; a resource is anything with capacity, capability and
+availability. What a participant is called is institutional data:
+• an education institution calls them learners, instructors and cohorts;
+• a hospital calls them patients, clinicians, nurses and rotas;
+• a logistics operator calls them drivers, vehicles, docks and shifts;
+• a warehouse calls them pickers, bays, forklifts and waves;
+• a ministry calls them delegates, secretaries, committee rooms and sessions.
+No kernel module may assume any of these names, and no scheduling rule may be expressed in one
+organization's terminology.
+
+ER.3 What stays universal
+1. A schedule is a versioned, publishable allocation of participants and resources to time.
+2. Hard constraints make a schedule invalid; soft constraints make it better or worse.
+3. An infeasible problem is reported as infeasible, never fabricated into a valid schedule.
+4. Every assignment must be explainable: which constraints allowed it and which preferences
+   were sacrificed.
+5. A change to an active schedule is measured by its disruption, not only by its efficiency.
+6. Publication requires validation, versioning and authorization; history is reconstructable.
+7. Availability, calendars and blackout periods are data an organization owns, not constants.
+8. Accessibility is a scheduling constraint, not a user-interface afterthought.
+9. Time is explicit: every instant carries a timezone, and every recurrence is bounded.
+
+ER.4 What each organization configures for itself
+• Its own activity types (a lecture, a theatre slot, a delivery window, a shift, a hearing).
+• Its own resource taxonomy (rooms, theatres, docks, bays, vehicles, equipment, lines).
+• Its own hard and soft constraints from the catalog, with its own priorities.
+• Its own calendars and blackout periods, with explicit precedence.
+• Its own objective weights, fairness policy and stability tolerance.
+• Its own publication and freeze rules, and who may override what.
+Nothing in that list is a code change: it is data the organization owns, versioned and auditable.
+
+ER.5 Multi-organization tenancy
+One platform hosts many organizations, and one organization may host many sites: a hospital
+group, a company with plants, a ministry with departments, a university with campuses. Schedules
+are tenant-scoped, cross-tenant scheduling is refused, and cross-site scheduling is an explicit
+authorization with travel and transfer time represented as constraints rather than assumptions.
+
+───
+
+ES. Query Model
+
+ES.1 Principle
+A query reads scheduling intelligence and never mutates it. Every query is tenant-scoped,
+filtered by the caller's relationship to the schedule, and explains itself: a placement is
+returned with the constraints that allowed it, the preferences it consumed and the conflicts it
+avoided.
+
+ES.2 Queries this phase owns
+• schedule(schedule, at) — the version in force at an instant, so a past allocation can be read.
+• schedule_version_at(schedule, timestamp) — which version governed a given moment.
+• schedule_compare(schedule, from, to) — changed assignments, rooms, participants, times, new
+  conflicts and resolved conflicts between two versions.
+• feasibility(schedule) — whether a version satisfies every hard constraint, with the violated
+  constraint named when it does not.
+• conflicts(schedule) — open conflicts with type, severity, entities, violated constraint and
+  proposed resolutions.
+• availability(resource, window) — resolved availability with its source, and whether that
+  source is authoritative.
+• capacity(resource, window) — declared capacity against committed load.
+• workload(resource_or_participant, window) — assigned load, gaps and balance against policy.
+• alternatives(activity) — feasible placements for one activity with the impact of each.
+• impact(change) — affected activities, participants, resources and new conflicts for a proposed
+  or applied change, and the smallest feasible adjustment.
+• quality(schedule) — the score vector (feasibility, constraints, utilization, fairness,
+  convenience, disruption, overall) with the inputs that produced it.
+• explain(assignment) — why this placement, why this room, which constraints decided it, which
+  preferences were sacrificed, why the alternatives were rejected.
+
+ES.3 Query rules
+1. A scenario or what-if result is returned as a scenario, never as the production schedule.
+2. Aggregates never reveal a participant the caller could not read directly.
+3. An unavailable or unknown value is returned as unknown; it is never defaulted to "available".
+4. Every result carries the schedule version it was computed from.
+
+───
+
+ET. Memory and Knowledge Model
+
+ET.1 Principle
+Scheduling has two kinds of retained understanding, and they must not be confused. MEMORY is
+what this organization's scheduling did — its own history, scoped to its tenant. KNOWLEDGE is
+what the platform knows about scheduling in general — the constraint catalog, the activity and
+resource taxonomies, the solver behaviour catalogue. Memory is private and reconstructable;
+knowledge is shared, versioned and replaceable.
+
+ET.2 Scheduling memory
+• Decision memory: every generation, optimization, override, publication and emergency change,
+  with the inputs, the version produced and the actor responsible.
+• Constraint memory: which constraints were declared, changed, relaxed or retired, by whom and
+  under which policy version — because a schedule is only interpretable against the constraints
+  in force when it was built.
+• Availability memory: what an organization believed about availability at the time, so a past
+  decision is not re-judged with today's data.
+• Outcome memory: what actually happened (a session ran, moved, was cancelled, a room was
+  unavailable), so stability and disruption can be measured rather than estimated.
+• Explanation memory: the explanation attached to a published version, so "why was this placed
+  here" remains answerable years later.
+Memory is tenant-scoped, purpose-limited, retention-aware and never used to widen authorization.
+
+ET.3 Scheduling knowledge
+• The constraint catalog: every constraint type with its kind, its parameters, its documented
+  refusal behaviour and the cases that must be tested (valid, invalid, boundary, conflicting,
+  interaction).
+• The activity taxonomy and the resource taxonomy, as data an organization extends rather than
+  as enums the kernel hard-codes.
+• Solver behaviour: which method performed best for which problem shape, recorded as evidence,
+  never as a policy that bypasses validation.
+• Scheduling patterns that recur across organizations — peak-load pressure, bottleneck resources,
+  seasonal demand, travel-bound sequences — offered as recommendations.
+Knowledge may inform a proposal; it may never become authority. A learned preference is a
+proposal until an organization adopts it in policy.
+
+ET.4 Boundaries
+Generic graph and memory infrastructure belongs to the platform phase that owns it; Phase 12 owns
+scheduling semantics inside it. Agent memory rules belong to Phase 07: a scheduling agent may hold
+no unrestricted schedule history, and its memory is purpose-limited, tenant-scoped, authorized,
+retention-aware and auditable.
+
+───
+
+EU. Data Model
+
+EU.1 Principle
+The data model keeps four things apart that scheduling systems routinely collapse: what was
+REQUESTED, what was PLANNED, what was PUBLISHED, and what actually HAPPENED. A plan is not a
+promise; a publication is a governed act; reality is evidence.
+
+EU.2 Entities
+• scheduling_organization_profile — the tenant's own taxonomy: activity types, resource types,
+  terminology, timezone, week start, calendars, retention.
+• schedule — id, tenant, site, name, owner, state (DRAFT, VALIDATED, PUBLISHED, FROZEN,
+  ARCHIVED), current_version.
+• schedule_version — id, schedule, version, parent_version, creator, created_at, reason,
+  validation_status, approval_status, publication_status; a published version is never edited.
+• schedule_period — the window a schedule governs (term, roster cycle, season, shift block), with
+  explicit timezone and effective dates.
+• activity — id, tenant, type, duration, priority, recurrence rule, dependencies, required
+  capabilities, participant set, resource requirements, constraints.
+• assignment — activity, participant or resource, interval, version; unique per (activity,
+  resource, interval) where policy forbids double booking.
+• resource, resource_capability, resource_availability, resource_unavailability — capacity,
+  capability tags, operating hours, maintenance state, accessibility attributes.
+• participant_group — cohort, ward team, shift crew, department: a set of participants scheduled
+  together, never a substitute for identity.
+• constraint, constraint_group, constraint_priority — kind (hard or soft), type, parameters,
+  scope, policy version.
+• conflict and conflict_resolution — type, severity, entities, violated constraint, detected_at,
+  state, proposed resolutions.
+• optimization_run, optimization_result, schedule_score — solver method, problem shape, outcome,
+  score vector, and the proof that validation ran.
+• change_request, schedule_change, schedule_exception, schedule_freeze — requested change,
+  applied change, approved exception, and the periods where change needs elevated authority.
+• schedule_publication, schedule_snapshot, schedule_scenario — governed release, reconstructable
+  snapshot, and simulated alternatives that never touch production state.
+• scheduling_audit_record — who or what acted, on which version, under which policy version.
+
+EU.3 Columns and constraints
+• Every entity carries an immutable identifier and a tenant identifier; a cross-tenant row is
+  refused by construction and by row-level security (Phase 03).
+• Every interval stores an explicit timezone and a non-negative duration; an interval whose end
+  precedes its start is refused at write time.
+• Recurrence is stored as a rule plus explicit exception dates, never as pre-expanded rows, so a
+  recurrence change cannot leave uncontrolled duplicate instances behind.
+• Capacity is numeric and non-negative; an assignment that would exceed declared capacity is
+  refused by the constraint engine and reported as a capacity conflict.
+• A published version is immutable: a change produces a new version with a parent reference.
+• Activity type and resource type are data, so an organization adds "theatre slot" or "delivery
+  window" without a schema change.
+

@@ -2,7 +2,7 @@
   "artifact": "phase-completion",
   "wave": "AUDIT-1",
   "owner": "kernel (Phase 01 governance)",
-  "generatedAt": "2026-09-20T13:41:23.005Z",
+  "generatedAt": "2026-09-21T07:47:50.207Z",
   "authority": [
     "CONSTITUTION.md",
     "architecture/registry.json",
@@ -23,7 +23,7 @@
     "architectureDefined": 18,
     "withModules": 33,
     "withResolvedModules": 32,
-    "totalTestsCited": 2145,
+    "totalTestsCited": 2172,
     "registryBeyondAudit": [
       "01",
       "02",
@@ -32,7 +32,6 @@
       "05",
       "06",
       "07",
-      "12",
       "13",
       "14",
       "15",
@@ -538,17 +537,20 @@
       "id": "12",
       "name": "Scheduling Intelligence",
       "capability": "scheduling",
-      "sections": "16/20",
+      "sections": "20/20",
       "modules": [
         "scheduling-core",
         "scheduling-constraints",
         "scheduling-availability",
-        "scheduling-validator"
+        "scheduling-validator",
+        "scheduling-conflicts",
+        "scheduling-quality",
+        "scheduling-intelligence-report"
       ],
       "modulesResolve": true,
-      "citedTestFiles": 4,
-      "testsCounted": 47,
-      "executableEvidence": 4,
+      "citedTestFiles": 6,
+      "testsCounted": 74,
+      "executableEvidence": 6,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": true,
@@ -558,12 +560,12 @@
       },
       "registryLevels": [
         true,
-        false,
-        false,
-        false,
-        false
+        true,
+        true,
+        true,
+        true
       ],
-      "registryStatus": "IMPLEMENTING",
+      "registryStatus": "COMPLETE",
       "derivedStatus": "COMPLETE",
       "complete": true,
       "missingLevels": [],

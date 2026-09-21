@@ -46,6 +46,9 @@ const NEUTRAL_MODULES = [
   "frontend/src/lib/academic-curriculum.ts",
   "frontend/src/lib/academic-assessment.ts",
   "frontend/src/lib/academic-intelligence-report.ts",
+  "frontend/src/lib/scheduling-conflicts.ts",
+  "frontend/src/lib/scheduling-quality.ts",
+  "frontend/src/lib/scheduling-intelligence-report.ts",
 ];
 
 /** Platform/super-admin surfaces: control-plane UI, never a vertical's portal. */
@@ -58,6 +61,7 @@ const PLATFORM_SURFACES = [
   "frontend/src/routes/_authenticated/super-admin/trust-fabric.tsx",
   "frontend/src/routes/_authenticated/super-admin/communication-steward.tsx",
   "frontend/src/routes/_authenticated/super-admin/academic-intelligence.tsx",
+  "frontend/src/routes/_authenticated/super-admin/scheduling-intelligence.tsx",
 ];
 
 /** Imports that would couple a neutral module to one vertical's ontology. */

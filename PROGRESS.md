@@ -159,10 +159,10 @@ Measured state of the CoreGrid platform as a whole. Every figure has evidence; n
 | Frontend phase catalog | 51 entries, 7 layers | 2026-09-02 | `frontend/src/lib/phase-catalog.ts`; `tests/unit/phase-catalog.test.ts` 6/6 |
 | Domain-layer library modules | 186 `.ts` files in `frontend/src/lib` | 2026-09-02 | directory inventory |
 | Domain phase modules (07–32) | unit-tested module sets per phase (see §11) | 2026-08-30 | PROGRESS rows / module prefixes |
-| Unit test files | 128 files in `tests/unit` | 2026-09-04 | directory inventory (incl. 27 Scholar suites) |
-| Last full unit-suite pass | 2,239 tests / 128 files | 2026-09-04 | `vitest run` full suite (128 files, incl. 27 Scholar suites + completion/assignment suites); catalog test 6/6 |
-| Typecheck | 0 errors | 2026-09-02 | `tsc --noEmit` detached run (0-byte output) |
-| Production build | passed (production build + `vite preview` verified) | 2026-08-30 | Command Centre verification session |
+| Unit test files | 187 files in `tests/unit` | 2026-09-21 | directory inventory (`dir tests/unit/*.test.ts`) |
+| Last full unit-suite pass | 2,935 tests / 187 files | 2026-09-21 | `vitest run` full suite green (all runtime, phase-acceptance probe and scheduling suites); catalog test 6/6 |
+| Typecheck | 0 errors | 2026-09-21 | `tsc --noEmit` detached run (0-byte output) |
+| Production build | passed — client + server builds green (5m 02s / 4m 25s) | 2026-09-21 | `vite build` in the phase 12 verification wave |
 | Command Centre surface | `/` route live; provision → roles → policy → launch verified | 2026-08-30 | Playwright/Chromium flow |
 | Supabase migrations | 30 SQL migrations | 2026-09-02 | `database/supabase/migrations` |
 | Runtime registry | R-001 Scholar (first domain runtime) | 2026-09-02 | §12 |
@@ -532,7 +532,7 @@ Proposed ADR index (recorded in DECISIONS.md):
 | Item | Impact | Plan |
 | --- | --- | --- |
 | No staging/production deployment pipeline | L5 unmet across all phases | After S6 vertical reaches L4 |
-| Full-suite baselines | — | 2026-09-02: 1,844 tests / 87 files; 2026-09-04 (current): 2,239 tests / 128 files green (incl. 27 Scholar suites), typecheck 0 |
+| Full-suite baselines | — | 2026-09-02: 1,844 tests / 87 files; 2026-09-04: 2,239 tests / 128 files; 2026-09-21 (current): 2,935 tests / 187 files green, typecheck 0 |
 | Observability (logs/metrics/traces) only in domain modules | Live telemetry absent | S1/S6 with P05/P14 |
 
 ---
@@ -543,7 +543,7 @@ Proposed ADR index (recorded in DECISIONS.md):
 - P0 — **BLOCKED (DB-gated):** execute `architecture/kernel-wiring-plan.md` (migration validation → `register-runtime` → event/entity/relationship/observation recording → S3) once a database-backed environment is provided.
 - P1 — **BLOCKED (DB-gated):** P08 full enforcement surface + RLS re-verification; P02/P03 universal L2 models.
 - P1 — **AUTHORED, NOT APPLIED:** `20260907000800_coregrid_role_assignment_substrate.sql` (R37) is written and now **proven in static mode** (`npm run verify:role-substrate` → `architecture/proofs/role-assignment-substrate.proof.json`, 30/30 invariants). The applied database is still unproven: run `node scripts/db-apply-one.mjs 20260907000800` where `DATABASE_URL` exists, re-run the verifier to flip the proof to `mode: "live"`, and record it here. Until then tenants cannot persist role grants, so the feature gate keeps denying for granted-only features.
-- P2 — **ACTIVE (non-DB mode):** keep ledger/registry/governance accurate and the whole tree verified (2,239 tests / 128 files; typecheck 0); targeted quality gates on loop-touched artifacts.
+- P2 — **ACTIVE (non-DB mode):** keep ledger/registry/governance accurate and the whole tree verified (2,935 tests / 187 files; typecheck 0); targeted quality gates on loop-touched artifacts.
 - P3 — Canonicalization ADRs (PLATFORM-003…008) remain required before any P33–P51 domain implementation (unchanged).
 
 ---
@@ -826,6 +826,17 @@ Normalized schema: Date · Author · Scope · Change · Validation · Status. En
 | Validation | `npm run audit:phase -- --phase=01` PASS (proof `architecture/proofs/phase-01-acceptance.proof.json`); `npm run audit:phases` re-run clean (unconfirmed claims 5 → 4; phase 01 now confirmed); `tests/unit/phase-acceptance-audit.test.ts` 8/8 (its independent re-derivation caught two real defects during authoring — a dropped RLS acceptance area and an over-strict evidence assertion, both fixed) |
 | Status | AUDITED + CLOSED — Phase 01 remains IMPLEMENTING (`L1 ✓, L2 ✗, L3 ✓, L4 ✗, L5 ✓`); its foundation is enforced and the verify chain is its operational evidence, so only the definitional L2 and the (non-applicable) L4 projection keep it from COMPLETE |
 
+### 22.19 Current entry — phase 12 Scheduling Intelligence reaches COMPLETE, and the timetable stops being a school's feature
+
+| Field | Value |
+| --- | --- |
+| Date | 2026-09-20 |
+| Author | Cline (autonomous loop, §103) |
+| Scope | Phase 12 Scheduling & Timetable Intelligence — document, three new engines, L4, registry, acceptance record, guards |
+| Change | One framing defect, one completeness defect and three structural capabilities. **Framing:** the blueprint described scheduling as a school timetable — learners, teachers, classrooms and examinations presented as the domain rather than one institution's vocabulary for a platform capability, which makes every other organization a fork; the addendum **ER. Domain-Neutral Scheduling For Every Organization** states the correction as contract (a participant is an actor reference, a resource is anything with capacity, capability and availability, the activity type is institutional data, and what an organization calls these is configuration), together with the nine universals every organization needs. **Completeness:** the document stated **16/20** mandatory engineering sections, so **ES. Query Model** (twelve read-only queries with the rules: a scenario is never returned as production state, aggregates never reveal what the caller could not read, unknown is returned as unknown rather than defaulted to available, every result carries the version it was computed from), **ET. Memory and Knowledge Model** (this organization's decision/constraint/availability/outcome/explanation memory, tenant-scoped and purpose-limited, kept apart from platform knowledge, with a learned preference remaining a proposal until the organization adopts it in policy) and **EU. Data Model** (requested / planned / published / actual kept apart, explicit timezone, non-negative duration, recurrence as a rule plus exception dates rather than pre-expanded rows, immutable published versions) were authored in the document's own lettered style → **20/20**. **Code:** `scheduling-conflicts.ts` (a twelve-type taxonomy with explicit conflict records, detection across participant, resource, capacity, capability, accessibility, calendar and travel, resolution strategies per type, and `escalateConflicts` which separates blocking from waivable and reports infeasibility instead of fabricating a valid plan), `scheduling-quality.ts` (scoring dimensions that never trade feasibility for efficiency, load balance, disruption vectors measured against an explicit stability tolerance, version comparison, impact analysis, a placement explanation naming the constraints that decided and the preferences sacrificed, and `rankCandidates` which prefers the least disruptive feasible plan) and `scheduling-intelligence-report.ts` (L4: fourteen rules each tied to a module and a suite, thirteen checks that **execute** the engines and record what they observed, six declared gaps, every total computed from live module constants) — plus the surface `/super-admin/scheduling-intelligence`, which shows the same capability in six organizations' vocabulary and declares no role list. |
+| Validation | `vitest run scheduling-governance + scheduling-intelligence-report` → **27 passed (21 + 6)**; `audit:phases --phase=12` → **`20/20 · 7 modules · 74 tests · L1–L5 all yes · COMPLETE`** with registry drift and unconfirmed claims both **none**; `audit:phase --phase=12` → **20 areas · ENFORCED 13 · DECLARED 7 · UNWIRED 0 · MISSING 0** with proof written; `verify:registry` → **PASSED** (phases 51, capabilities 50, runtimes 2); blueprint law `normalise-phase-doc-framing --check` → 52 documents scanned, **0** owner-framing to rewrite; neutrality guard `platform-neutrality.test.ts` → **43 passed**; `vite build` → **two builds green (client 5m02s, server 4m25s)**, regenerating `routeTree.gen.ts` so the new surface is reachable; `tsc --noEmit` → **0 errors** (empty output); the whole unit suite → **187 files · 2,935 tests passed**; the environment's intermittent 30-second refusals killed one full-suite run and one typecheck during this wave, and both were re-issued rather than implied. |
+| Status | CLOSED — Phase 12 is COMPLETE on all five levels, and **no production schedule is produced**: no solver is wired behind the abstraction, optimization does not yet run as a cancellable job, external calendar/HR/room adapters are specified but not implemented, publication approval remains phase 17's workflow, daylight-saving transitions are represented as explicit timezone fields rather than computed, and learned solver selection is not implemented. The validator, scorer, ranker and explainer exist, so any solver's output can be checked — which is why feasibility is binary, blocked periods are policy, and an infeasible request is reported as infeasible rather than fabricated. **Zero placeholders and zero role lists**, and the domain-neutral modules are covered by the neutrality law. |
+
 ### 22.18 Current entry — phase 11 Academic Learning Intelligence reaches COMPLETE, with the blueprint's structural gaps built
 
 | Field | Value |
@@ -1018,12 +1029,12 @@ Measured status (evidence in §5 and §20):
 | Dimension | Value |
 | --- | --- |
 | Architecture definition | 51/51 phase docs; registry files synchronized |
-| Domain-layer implementation | P02–P06 IMPLEMENTED (audit pending); P07–P32 IMPLEMENTING (L3 domain layers, unit-tested, unwired) |
+| Domain-layer implementation | registry COMPLETE on P08–P12; P02–P04 IMPLEMENTED; P01 and P05–P07 IMPLEMENTING with implemented, unit-tested domain layers; P13–P32 IMPLEMENTING (L3 domain layers, unwired) |
 | Architecture-only phases | P33–P51 ARCHITECTURE_DEFINED |
 | Live surfaces | Command Centre `/` (verified), Scholar role dashboards, API routes |
-| Tests | 2,239 tests / 128 files passing (2026-09-04, incl. 27 Scholar suites); catalog test 6/6 |
-| Typecheck | 0 errors (2026-09-02) |
-| Highest maturity reached | L4 partial on P19/Command Centre and P02–P06/legacy surfaces; no phase at L5 |
+| Tests | 2,935 tests / 187 files passing (2026-09-21); catalog test 6/6 |
+| Typecheck | 0 errors (2026-09-21) |
+| Highest maturity reached | 13 phases derive COMPLETE at L1–L5 (P01–P12 plus P27; P01's L2 is exempt under BR-01); registry COMPLETE on P08–P12; L4 partial on P19/Command Centre and P02–P06 legacy surfaces |
 | Production readiness | not satisfied (checklist §21) |
 
 These figures describe actual engineering state, not intent. Architecture is not implementation; a domain module is not a wired capability; a live screen is not a production system.
