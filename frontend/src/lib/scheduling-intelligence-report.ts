@@ -179,7 +179,7 @@ function evaluate(
   }
 }
 
-function require(condition: boolean, message: string): void {
+function require(condition: unknown, message: string): asserts condition {
   if (!condition) throw new Error(message);
 }
 

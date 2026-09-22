@@ -1,0 +1,293 @@
+{
+  "$comment": "Phase 13 (Payment, Billing & Financial Operating System) resolved against repository artefacts: architecture/phase-13-financial-system.md (A..EP; EJ domain neutrality and EK provider neutrality with split payments added this phase, plus EL command model, EM query model, EN data model, EO dependency model and EP memory and knowledge model), frontend/src/lib/kernel/phase-contracts/phase-13-financial-system.ts, registry row 13, the domain-neutral financial-* modules and their nine suites, and the /super-admin/financial-operations surface. Classified by scripts/audit-phase-acceptance.mjs. DECLARED areas are unfinished work reported rather than glossed: the engines are executable, tested and explained, while live provider adapters, persistence, the reconciliation run, collections and disputes, usage metering, asynchronous financial jobs and the authorised ingestion boundary have no artefact yet.",
+  "phase": "13",
+  "phaseName": "Payment, Billing & Financial Operating System",
+  "source": "architecture/phase-13-financial-system.md",
+  "contract": "frontend/src/lib/kernel/phase-contracts/phase-13-financial-system.ts",
+  "documentIntegrity": {
+    "status": "CLOSED — COMPLETED",
+    "finding": "The blueprint stated 14 of the 20 mandatory engineering sections: the command, query, data, dependency, memory and knowledge models were absent. Sections EL..EP were authored in the document's own lettered style. EJ states the correction the rest of the document needed — a school charging tuition, a hospital billing a procedure, a company invoicing a client, a warehouse charging handling, a ministry levying a fee and a marketplace taking commission are one workflow in different vocabulary, so no institution is the engine's default person. EK adds the two things the model was missing: provider neutrality as a capability decision, and split payments where one gross amount is attributed to several beneficiaries.",
+    "verifiedAgainst": "architecture/phase-13-financial-system.md",
+    "sectionsVerified": "20/20 via scripts/audit-phase-completion.mjs (phase 13 row: 20/20)"
+  },
+  "ownership": {
+    "note": "Phase 13 owns the money model: products and versioned prices, billing plans and periods, obligations, invoices and lines, numbering, payment intents and attempts, provider routing decisions, splits and their legs, settlements, provider fees, allocations, refunds, credits, adjustments, discounts, tax rule versions and lines, reconciliation state, financial events and outbox entries, idempotency records, financial controls and audit. Identity is Phase 02's, tenancy Phase 03's, canonical institutional reality Phase 04's, runtime primitives Phase 05's, authorization Phase 08's, trust evidence Phase 09's, delivery Phase 10's, domain pricing policy Phase 11/12/27's, generic data infrastructure Phase 14's, hardware signals Phase 15's, digital twins Phase 16's, scheduled execution Phase 17's, analytical presentation Phase 18's and economic coordination Phase 49's. FinOS records money movement and its proof, never a provider's internals and never a consuming domain's pricing policy.",
+    "canonicalOwners": {
+      "money-records-and-ledger-adjacency": "13",
+      "splits-and-beneficiary-legs": "13",
+      "provider-routing-decisions": "13",
+      "tax-rule-versions-and-lines": "13",
+      "financial-events-outbox-and-idempotency": "13",
+      "identity": "02",
+      "tenancy-rls": "03",
+      "authorization": "08",
+      "workspace-and-runtime-primitives": "05",
+      "workflow-approval": "17",
+      "analytics-presentation": "18",
+      "marketplace-logic": "27",
+      "economic-coordination": "49"
+    }
+  },
+  "areas": [
+    {
+      "id": "money-is-exact",
+      "area": "Money is exact minor units, never a float",
+      "requirement": "Every financial amount is an integer count of minor units with a declared currency and precision, and arithmetic refuses to mix currencies rather than coercing them.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/financial-core.ts", "contains": "export interface Money" },
+        { "kind": "test", "path": "tests/unit/financial-core.test.ts", "contains": "minor units" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "providers-stay-behind-adapters",
+      "area": "Routing is a decision over declared provider capabilities",
+      "requirement": "A provider is reached through a capability contract (methods, currencies, jurisdictions, partial refunds, splits, capture model, signature scheme) and the route is chosen from those capabilities plus tenant policy and cost, never hard-coded.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/financial-routing.ts", "contains": "export function selectPaymentRoute" },
+        { "kind": "test", "path": "tests/unit/financial-routing.test.ts", "contains": "selects a provider that declares the required capability" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "capability-dominates-preference",
+      "area": "A preference can never make an incapable provider eligible",
+      "requirement": "Tenant preference orders eligible candidates only, an unroutable requirement is reported rather than forced through a provider that cannot serve it, and each rejected candidate names the capability that disqualified it.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/financial-routing.ts", "contains": "disqualifiedBy" },
+        { "kind": "test", "path": "tests/unit/financial-routing.test.ts", "contains": "capability dominate preference" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "failover-cannot-double-charge",
+      "area": "Failover is refused unless the provider proved no capture",
+      "requirement": "A successful attempt, an unresolved timeout and an unproven no-capture are each refused for failover, because treating a timeout as a failure is how a payer is charged twice.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/financial-routing.ts", "contains": "export function canFailover" },
+        { "kind": "test", "path": "tests/unit/financial-routing.test.ts", "contains": "a timeout is not a failure" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "splits-account-for-the-gross",
+      "area": "Split legs sum exactly to the gross amount",
+      "requirement": "A split payment names its beneficiaries and purposes, its legs must sum exactly to the gross, and over-allocation, under-allocation, negative legs and repeated beneficiaries (where policy forbids them) are refused rather than absorbed.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/financial-splits.ts", "contains": "export function createSplitPayment" },
+        { "kind": "test", "path": "tests/unit/financial-splits.test.ts", "contains": "refuses legs that exceed the gross" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "settlement-is-per-leg",
+      "area": "Every beneficiary leg settles on its own evidence",
+      "requirement": "A leg settles once, against a settlement reference and an amount that matches, and a leg that cannot be paid stays unresolved and visible instead of its share moving to another beneficiary.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/financial-splits.ts", "contains": "export function settleSplitLeg" },
+        { "kind": "test", "path": "tests/unit/financial-splits.test.ts", "contains": "keeps the split incomplete and unknown while a leg is unresolved" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "fees-are-not-deductions",
+      "area": "Provider fees are attributed, never silently deducted",
+      "requirement": "A provider fee belongs to the leg whose route produced it, is recorded separately from the amount, and a fee larger than its leg is refused so a loss cannot hide inside the gross.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/financial-splits.ts", "contains": "export function attributeProviderFee" },
+        { "kind": "test", "path": "tests/unit/financial-splits.test.ts", "contains": "never absorb it silently" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "refunds-are-pro-rata-and-bounded",
+      "area": "A split refund is pro rata, bounded and deterministic",
+      "requirement": "A refund spreads across the legs that received money in proportion to what each received, sums exactly to the requested amount with a deterministic remainder, and can never return more from a beneficiary than that leg holds.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/financial-splits.ts", "contains": "export function refundSplitProRata" },
+        { "kind": "test", "path": "tests/unit/financial-splits.test.ts", "contains": "spreads a refund pro rata and returns exactly the requested amount" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "platform-fee-is-a-leg",
+      "area": "The platform's own revenue is a beneficiary like any other",
+      "requirement": "CoreGrid's fee is expressed as a split leg with a declared purpose, travelling the same settlement, reconciliation and reporting path as any institution's, seller's or partner's share, with no privileged code path.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/financial-intelligence-report.ts", "contains": "platform-fee-is-a-leg" },
+        { "kind": "test", "path": "tests/unit/financial-splits.test.ts", "contains": "treats the platform fee as a leg like any other" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "journal-is-append-only",
+      "area": "Financial events are append-only and ordered per aggregate",
+      "requirement": "An event carries its aggregate, contiguous sequence, payload version, causality, correlation and actor; a duplicate identity, a sequence hole or a version regression is refused, and a journal that already contains a hole is reported.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/financial-journal.ts", "contains": "export function appendFinancialEvent" },
+        { "kind": "test", "path": "tests/unit/financial-journal.test.ts", "contains": "refuses a sequence hole rather than accepting an incomplete history" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "state-is-reconstructed",
+      "area": "A balance is reconstructed from its events, not trusted from a cache",
+      "requirement": "Charged, paid, refunded, credited and outstanding amounts are derived from the recorded events with the evidence named, an absent history is reported as unknown rather than zero, and a snapshot that disagrees with the reconstruction is reported instead of preferred.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/financial-journal.ts", "contains": "export function reconstructObligation" },
+        { "kind": "test", "path": "tests/unit/financial-journal.test.ts", "contains": "reports an unknown obligation as unknown" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "postings-must-balance",
+      "area": "A ledger posting balances or is refused",
+      "requirement": "Debits must equal credits in one currency with no negative line and at least two lines, so a later accounting subsystem consumes balanced postings instead of an arbitrary balance field.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/financial-journal.ts", "contains": "export function postDoubleEntry" },
+        { "kind": "test", "path": "tests/unit/financial-journal.test.ts", "contains": "refuses an unbalanced posting rather than rounding it" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "events-are-durable-before-published",
+      "area": "A financial event is durable before it is published",
+      "requirement": "A domain event enters a transactional outbox with the state change that produced it, the same event cannot be queued twice, and publish or failure attempts are recorded with their count.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/financial-journal.ts", "contains": "export function enqueueOutbox" },
+        { "kind": "test", "path": "tests/unit/financial-journal.test.ts", "contains": "queues an event once and never twice" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "tax-is-jurisdiction-data",
+      "area": "Tax is jurisdiction data resolved per charge, never a default",
+      "requirement": "The tax rule that applied is resolved by jurisdiction, category and instant; an undeclared jurisdiction is unknown rather than zero, ambiguous versions are refused, exempt and zero-rated rules yield no tax, and inclusive and exclusive pricing are computed in exact minor units with one stated rounding rule.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/financial-tax.ts", "contains": "export function calculateTax" },
+        { "kind": "test", "path": "tests/unit/financial-tax.test.ts", "contains": "reports an undeclared jurisdiction as unknown instead of zero tax" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "domain-neutral-for-every-organization",
+      "area": "The capability belongs to the platform, not to one institution",
+      "requirement": "The debtor and beneficiary are identity references, charge reasons, tax rules, calendars and provider choices are institutional data, and the phase expresses the same capability in several organizations' own vocabulary without any institution being the default.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/financial-intelligence-report.ts", "contains": "ORGANIZATION_VOCABULARY" },
+        { "kind": "test", "path": "tests/unit/financial-intelligence-report.test.ts", "contains": "never defaults to one institution's people" },
+        { "kind": "test", "path": "tests/unit/platform-neutrality.test.ts", "contains": "financial-splits" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "rule-attribution-and-surface",
+      "area": "Every claimed rule names its implementation and its proof, and a real surface reads the phase",
+      "requirement": "Each rule the phase claims is tied to a module and a suite that exist, each executed check carries the observation it produced, and a platform surface renders those checks, the rules, the organizations' vocabulary and the declared gaps.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/financial-intelligence-report.ts", "contains": "export function runFinancialChecks" },
+        { "kind": "test", "path": "tests/unit/financial-intelligence-report.test.ts", "contains": "names a module and a suite that exist" },
+        { "kind": "module", "path": "frontend/src/routes/_authenticated/super-admin/financial-operations.tsx", "contains": "financial-operations" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "engineering-sections-complete",
+      "area": "The blueprint states all twenty mandatory engineering sections",
+      "requirement": "The phase document carries every mandatory engineering section, including the command, query, data, dependency, memory and knowledge models added in this phase.",
+      "required": true,
+      "evidence": [
+        { "kind": "document", "path": "architecture/phase-13-financial-system.md", "contains": "EL. Command Model" },
+        { "kind": "document", "path": "architecture/phase-13-financial-system.md", "contains": "EM. Query Model" },
+        { "kind": "document", "path": "architecture/phase-13-financial-system.md", "contains": "EN. Data Model" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "provider-adapters-live",
+      "area": "A live payment provider is reached behind the abstraction",
+      "requirement": "At least one real provider adapter implements authorization, capture, refund, webhook and settlement translation, passing provider contract tests.",
+      "required": false,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/financial-intelligence-report.ts", "contains": "GAP-FIN-01" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "financial-persistence",
+      "area": "Financial records are durable",
+      "requirement": "A forward-only migration creates invoices, payments, splits, journal events, outbox entries and idempotency records with tenant isolation, currency constraints and append-only history, and the engines read and write them.",
+      "required": false,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/financial-intelligence-report.ts", "contains": "GAP-FIN-02" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "reconciliation-run",
+      "area": "Reconciliation runs over a provider statement and opens exceptions",
+      "requirement": "A scheduled run compares a whole provider statement against internal records, producing matched, exception and unresolved sets, and each exception carries a workflow to resolution with evidence.",
+      "required": false,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/financial-intelligence-report.ts", "contains": "GAP-FIN-03" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "collections-and-disputes",
+      "area": "Collections, disputes and chargebacks are tracked",
+      "requirement": "Receivables ageing, dunning, dispute and chargeback lifecycles exist as explicit state machines with evidence requirements and financial effects that never silently reverse a payment.",
+      "required": false,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/financial-intelligence-report.ts", "contains": "GAP-FIN-04" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "usage-metering-and-renewals",
+      "area": "Metered usage and renewals produce charges",
+      "requirement": "Metered usage records drive deterministic overage computation and renewal invoices with idempotent batch keys, without fabricating usage.",
+      "required": false,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/financial-intelligence-report.ts", "contains": "GAP-FIN-05" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "async-financial-work",
+      "area": "Financial jobs run asynchronously and safely",
+      "requirement": "Batch billing, webhook bursts, settlement polling and reconciliation runs execute as restartable, cancellable jobs with deterministic idempotency keys so a failed job cannot duplicate an invoice.",
+      "required": false,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/financial-intelligence-report.ts", "contains": "GAP-FIN-06" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "authorised-ingestion-boundary",
+      "area": "Platform surfaces read and write through the engines",
+      "requirement": "Fee, payroll, expense and reconciliation surfaces call the phase's engines behind an authorised boundary, so no surface keeps a second money record.",
+      "required": false,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/financial-intelligence-report.ts", "contains": "GAP-FIN-07" }
+      ],
+      "boundary": []
+    }
+  ]
+}

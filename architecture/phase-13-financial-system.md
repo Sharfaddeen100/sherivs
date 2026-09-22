@@ -626,7 +626,7 @@ student-specific discount where authorized
 •	
 •	───
 •	
-•	AQ. Scholarships
+•	AQ. Scholarships and waivers (one discount category among many)
 •	Scholarship support may include:
 scholarship award
 eligibility
@@ -636,6 +636,8 @@ effective period
 
 remaining amount
 Scholarship policy belongs to the appropriate education/business domain; FinOS records its financial effect.
+
+A scholarship is not a privileged case. It is one waiver category an organization declares, alongside corporate sponsorship, hardship waiver, goodwill credit, partner subsidy, promotional discount, statutory exemption and any other category the organization defines. FinOS stores the category and the financial effect with provenance; it never infers entitlement, never assumes an organization has scholarships, and never assumes a payer is a learner. Wherever this document names a category — tuition, examination fee, scholarship, hostel fee — read it as an example an organization supplies as data, not as a case the engine branches on (see EJ).
 
 ───
 
@@ -2127,3 +2129,251 @@ The fundamental FinOS loop is:
 The financial system must always preserve the distinction between:
 what CoreGrid expected to happen, what the payment provider reported happened, what CoreGrid verified happened, and what was ultimately reconciled.
 That distinction is foundational to building an institutional-grade financial operating system.
+
+───
+
+EJ. Domain-Neutral Financial Operations for Every Organization
+FinOS belongs to CoreGrid, not to one kind of institution. A school charging tuition, a hospital billing a
+procedure, a company invoicing a client, a warehouse charging handling, a ministry levying a fee and a
+marketplace taking commission are the same financial workflow in different vocabulary. Therefore:
+
+• The debtor and the beneficiary are identity references (Phase 02): a person, an organization, a
+household or guardian relationship, an internal cost centre or a partner. The model never names one kind
+of payer, and no field assumes a payer is a learner.
+• Charge reasons, products, services, discount categories, tax rules, billing calendars and payment
+provider choices are institutional data with lifecycle and versioning — configuration, never a code
+branch.
+• "Tuition", "examination fee", "subscription", "municipal levy" and "marketplace commission" are
+examples an organization stores, not cases the engine switches on.
+• A scholarship or bursary is one waiver category among many — corporate sponsorship, hardship waiver,
+goodwill credit, partner subsidy, promotional discount. FinOS records the financial effect with
+provenance; the policy that decides eligibility belongs to the consuming domain, and the platform never
+infers entitlement.
+• Currency, jurisdiction, tax treatment and available payment methods are resolved per transaction, so an
+organization operating across countries or entities does not fork the engine.
+• The platform's own revenue is expressed as a split beneficiary (see EK), exactly like any other
+beneficiary. There is no privileged "platform fee" code path.
+• Surfaces are named for financial processes, never for one institution's role list: authority comes from
+Phase 08 as a decision over identity, tenant, relationship, policy and context.
+
+The neutrality obligation is executable, not rhetorical: no domain-neutral financial module may contain a
+vertical's vocabulary, the neutrality guard enforces it, and the phase's own intelligence report must
+express the same capability in several organizations' own words without a single institution being the
+default person.
+
+───
+
+EK. Payment-Provider Neutrality and Split Payments
+
+EK.1 Provider Neutrality
+FinOS never depends on one payment provider. A provider is reached only through an adapter that declares:
+• its identity and capability set: supported payment methods, currencies, jurisdictions, capture model,
+refund model, partial-refund support, split support and webhook signature scheme;
+• request, response and webhook translation, with provider-specific errors mapped into FinOS error
+classes;
+• its tokenization surface — a provider token reference only, never raw card, wallet or bank credential;
+• its settlement and fee reporting shape, so provider fees are recorded separately from gross amounts.
+
+Routing is a decision over capability, currency, jurisdiction, tenant policy, risk and cost. A routing
+decision is explainable: it names the candidates considered, the capability that disqualified each
+rejected candidate, and the policy that applied. Failover re-routes only where the provider proved that
+no capture occurred — an attempt that timed out is never treated as a failure (EH 40), because treating
+it as one is how systems double-charge.
+
+EK.2 Split Payments
+A single gross payment may satisfy multiple beneficiaries. FinOS models this as an explicit split: one
+payment, N legs, each leg naming its beneficiary identity, amount, currency, purpose, provider route,
+settlement reference and reconciliation state.
+• The legs must sum exactly to the gross amount. Over-allocation and under-allocation are refused, never
+  silently absorbed or rounded away.
+• A split is immutable once created: a correction is a compensating split or a governed adjustment, never
+  an edit of a leg whose money has already moved.
+• Every leg settles and reconciles on its own. A settlement covering several legs must name them, and a
+  leg without settlement evidence stays unsettled even when its siblings are paid.
+• Provider fees are attributed to the leg whose route produced them and are never silently deducted from
+  the gross amount.
+• Refunds are applied across legs pro rata to what each leg received, with any remainder assigned
+  deterministically, so refunding a split can never return more from a beneficiary than it received.
+• Idempotency is per split: replaying the same split identity produces no second movement of money.
+• CoreGrid's own fee is a leg like any other, so platform revenue travels the same ledger, reconciliation
+  and reporting path as an institution's, a seller's or a partner's share. There is no privileged path.
+• If a beneficiary cannot be paid, the remainder is never silently rolled into another beneficiary's leg:
+  the leg stays unresolved until policy resolves it, and the unresolved state is visible.
+
+EK.3 What remains outside
+Provider internals, a provider's compliance posture, the pricing policy of consuming domains and the
+payout schedules of financial institutions stay outside FinOS. The engine owns the money-movement record
+and its proof, and it never assumes that a provider's compliance discharges CoreGrid's own obligations
+(see CO).
+
+───
+
+EL. Command Model
+Every financial mutation is a command with a declared authority, validation set, idempotency
+requirement, approval rule and audit obligation. Commands never trust client-supplied tenant, role,
+amount, currency or payment state, and a command either completes atomically with its event or changes
+nothing.
+
+• defineProduct / versionPrice — refuses an effective date that would retrospectively rewrite an issued
+  invoice, a price with unsafe precision, and a product without a declared category.
+• issueInvoice — refuses an unknown debtor, an invoice line without a declared reason, a currency that
+  contradicts its lines, a duplicate invoice number, a tenant mismatch between debtor and issuer, and a
+  zero-total invoice that is not explicitly marked waived.
+• voidInvoice / replaceInvoice — refuses an invoice with money applied to it (the correction must be a
+  credit, refund or adjustment) and refuses any request without a reason. An issued invoice is never
+  deleted.
+• recordObligation — refuses a negative amount, a missing due date, an unknown source and a beneficiary
+  outside the tenant boundary.
+• createPaymentIntent — refuses an amount above the outstanding balance unless overpayment policy
+  explicitly allows it, refuses a currency mismatch with the invoice, and refuses an intent with no
+  debtor.
+• recordPaymentAttempt — refuses an attempt against a closed intent, a duplicate provider reference, and
+  a currency mismatch between intent and attempt.
+• confirmPayment — refuses unverified provider evidence. A timeout is recorded as an unresolved attempt,
+  never as a failure, and confirmation is accepted only from independently verified provider evidence.
+• verifyAndIngestProviderEvent — refuses an invalid signature, an unknown provider and a replayed event
+  identity. Ingestion is idempotent on the provider event identity, durable before any financial effect.
+• createSplit — refuses legs that do not sum exactly to the gross, a negative leg, a repeated beneficiary
+  where policy forbids it, and a route no adapter can serve.
+• settleSplitLeg — refuses a leg already settled, a settlement reference that does not exist, and an
+  amount that differs from the leg. A settlement covering several legs must name them.
+• refundPayment / refundSplit — refuses a refund exceeding the refundable amount per leg, a refund whose
+  actor lacks refund authority for that amount, and a high-value refund without the approval policy's
+  decision. Refunds are pro-rated across legs with a deterministic remainder.
+• applyCredit — refuses a credit beyond its available amount, an expired credit, and a currency mismatch.
+• adjustObligation — refuses an adjustment without a reason, without the required authority, and one that
+  exceeds the obligation unless an explicit policy permits it. Adjustment is never used as a disguised
+  refund.
+• recordMeteredUsage — refuses fabricated or negative usage, and refuses usage attributed to a period
+  already billed, because billing must not be rewritten after the fact.
+• runBatchBilling — refuses a batch without a deterministic idempotency key, so a restarted job cannot
+  create duplicate invoices.
+• reconcile / resolveReconciliationException — refuses closing an exception without evidence, and refuses
+  a resolution that does not name its cause and its correction.
+• changeFinancialConfiguration — refuses an unversioned change, a change that would alter historical
+  records, and a change without the authority the policy names.
+• rotateProviderCredential — refuses without elevated authorization and a recorded reason.
+
+Command rules, uniformly: authenticate, resolve tenant, authorize (Phase 08), validate, execute
+atomically, persist the domain event transactionally with the state change, audit the actor and reason,
+and return only data the caller may see. Commands classified as high-impact are refused for automated
+execution: an agent may propose them, never perform them.
+
+───
+
+EM. Query Model
+Queries are read-only: no query may mutate financial state, and no query may be satisfied by
+manufactured, preview or simulated data when its subject is production money.
+
+Representative queries: outstanding balance as at a date; an invoice exactly as issued; the payment
+history of an obligation; the allocation map of a payment; the refundable amount of a payment and of
+each split leg; the settlement status of a split and its legs; reconciliation state with open
+exceptions; receivables ageing for a tenant and period; the collection state of a debtor; the tax
+breakdown of an invoice; the price that applied on a date; and the complete provenance of any financial
+object.
+
+Every financial query obeys five rules.
+
+1. Canonical and derived are labelled. What CoreGrid expected, what the provider reported, what CoreGrid
+independently verified and what was reconciled are four distinct answers, never merged into one status.
+A projection is never presented as canonical truth.
+2. Unknown is returned as unknown. A missing payment, an unsettled leg, an unverified attempt and an
+absent exchange rate are states, never defaulted to zero, paid or settled. A balance is either known or
+explicitly unknown.
+3. Every result carries its as-of context: the instant it was computed, and the configuration versions
+that shaped it (price version, tax rule version, exchange rate and its source, billing calendar).
+4. Aggregates never reveal an object the caller could not read. Cross-tenant totals are refused rather
+than masked, and a total is never a side channel for an inaccessible record.
+5. Exports and statements require authority, are audited, are minimized to the purpose, and never
+contain provider credentials or full payment-instrument identifiers.
+
+───
+
+EN. Data Model
+Separate records, each with its own lifecycle, because collapsing them is how financial systems lose the
+ability to prove anything: configuration (versioned), product, price version, billing plan, billing
+period and calendar, charge reason, obligation, invoice, invoice line, invoice numbering sequence,
+payment intent, payment attempt, provider route decision, split, split leg, settlement, provider fee,
+payment allocation, refund, credit, adjustment, discount application, tax rule version, tax line,
+metered usage record, subscription and its state changes, collection state, dispute, chargeback,
+reconciliation run, reconciliation exception, financial event, outbox entry, audit record and
+idempotency record.
+
+Constraints the database enforces, not the application alone: tenant on every financial row; currency
+consistency within an invoice, a payment and a split; amounts as integer minor units with a declared
+currency precision (never binary floating point); unique invoice number per tenant scope and fiscal
+period; split legs summing exactly to their gross; non-negative amounts; refundable amount never
+exceeding the received amount per leg; credit application never exceeding available credit; allocation
+never exceeding the payment; explicit state-machine columns; immutable historical rows (issued invoices,
+price versions, tax versions, exchange rates and financial events are append-only); foreign keys across
+obligation, invoice, payment, allocation, refund, credit, split and settlement; and tenant-scoped row
+level security so a cross-tenant read is impossible at the storage layer, not merely rejected in code.
+
+Indexes are chosen for the queries that matter: outstanding receivables by tenant and due date, payments
+by intent and provider reference, split legs by beneficiary and settlement state, reconciliation
+exceptions by state and age, and financial events by aggregate sequence.
+
+Migration and retention: every change is a forward-only migration with a validation step; historical
+amounts, currencies, timestamps, references and invoice history are preserved rather than rewritten for
+convenience; retention honours legal, tax, financial and privacy obligations, so financial records are
+kept while unnecessary personal data is minimized and masked, and no retention rule is used as an excuse
+to accumulate personal data that has no financial purpose.
+
+───
+
+EO. Dependency Model
+Dependencies point one way. FinOS depends on: Phase 01 (configuration, secrets and verification
+discipline), Phase 02 (identity — who owes and who is owed), Phase 03 (tenant boundary), Phase 05
+(runtime primitives: commands, queries, events, jobs, idempotency), Phase 08 (authorization decisions),
+Phase 09 (trust evidence), Phase 14 (data infrastructure) and Phase 17 (scheduled execution). It never
+depends on a domain runtime's vocabulary, on a payment provider's SDK shape, or on any consumer's policy
+model.
+
+Consumers call FinOS through its contracts and never reach around them: Phase 10 delivers financial
+notifications but never decides financial state; Phase 17 automates financial workflows but cannot bypass
+a control; Phase 18 reads financial facts and never mutates them; Phase 25 sends marketplace money
+movement through FinOS primitives while keeping marketplace logic; Phase 27 bills through FinOS;
+Phase 49 coordinates economic activity above FinOS rather than beside it; Phase 11 and Phase 12 create
+obligations (fees, services, bookings) and read payment state but never write financial records; Phase 15
+and Phase 16 supply facility and twin facts that may price a service, never money movement.
+
+The boundary rules that keep the dependency graph acyclic: pricing policy belongs to the consuming
+domain while price records belong to FinOS; entitlement and eligibility decisions belong to the domain
+that owns the policy while the financial effect is recorded by FinOS; communication, analytics and
+automation are downstream of financial facts, never upstream of financial truth; and no phase may keep a
+second money record, because a duplicated ledger is a boundary violation rather than a feature.
+
+If a dedicated accounting subsystem is introduced later (see BF), it enters as a consumer of FinOS
+financial events through an adapter that preserves provenance, and it replaces nothing in the dependency
+direction above.
+
+───
+
+EP. Financial Memory and Knowledge Model
+Financial memory and platform knowledge are different things and are stored differently.
+
+Organization memory (tenant-scoped, purpose-limited, retained under policy): decision memory (who
+approved what, on which evidence, under which policy version), dispute memory (claims, evidence,
+resolution and the reasoning), reconciliation exception memory (the cause, the correction and the
+pattern), collection memory (what was attempted, what was promised, what happened), customer billing
+memory (payment reliability per debtor, where lawful), and configuration history (which price, tax,
+calendar and limit versions applied when). Memory is never a shadow ledger: it explains financial
+records, it does not become an alternative source of money truth.
+
+Platform knowledge (cross-tenant, no tenant-identifying data): the provider capability catalogue,
+payment-method taxonomies, failure and error taxonomies mapped across providers, reconciliation
+exception classes, currency and minor-unit metadata, tax jurisdiction catalogues, and observed provider
+behaviour such as settlement latency and failure rates. Knowledge is evidence, versioned and dated, and
+it may inform routing and risk decisions without exposing one tenant to another.
+
+Three laws govern knowledge. First, learning is evidence, not authority: a fraud signal, a settlement
+prediction or a routing preference is recorded with its evidence, confidence and uncertainty, and it
+remains a proposal until an organization's policy adopts it. Second, knowledge never widens access: no
+aggregate or trained signal may reveal another tenant's financial object, and knowledge stores carry no
+tenant-identifying fields. Third, retention is explicit: memory expires under the tenant's policy and
+legal obligations, knowledge under platform policy, and neither accumulates personal data without a
+financial purpose.
+
+AI operates inside this model and never replaces it: models may detect anomalies, predict failures,
+prioritise collections and assist reconciliation, but authoritative financial state changes only through
+deterministic commands with authority, approval and audit (see ED, EE, EF, EG).

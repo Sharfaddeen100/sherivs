@@ -2,7 +2,7 @@
   "artifact": "phase-completion",
   "wave": "AUDIT-1",
   "owner": "kernel (Phase 01 governance)",
-  "generatedAt": "2026-09-21T12:49:26.295Z",
+  "generatedAt": "2026-09-22T14:14:36.641Z",
   "authority": [
     "CONSTITUTION.md",
     "architecture/registry.json",
@@ -18,14 +18,13 @@
   },
   "summary": {
     "phasesAudited": 51,
-    "complete": 14,
-    "implementing": 19,
+    "complete": 15,
+    "implementing": 18,
     "architectureDefined": 18,
     "withModules": 33,
     "withResolvedModules": 33,
-    "totalTestsCited": 2172,
+    "totalTestsCited": 2247,
     "registryBeyondAudit": [
-      "13",
       "14",
       "15",
       "16",
@@ -69,7 +68,7 @@
     ],
     "exemptionSource": "architecture/phase-completion-exemptions.json",
     "missingLevelFrequency": {
-      "L4 frontend/workspace integration": 37,
+      "L4 frontend/workspace integration": 36,
       "L3 backend": 18,
       "L2 data model": 12,
       "L5 operational maturity": 1,
@@ -546,37 +545,40 @@
       "id": "13",
       "name": "Financial System",
       "capability": "financial-ledger",
-      "sections": "14/20",
+      "sections": "20/20",
       "modules": [
         "financial-core",
         "financial-payments",
         "financial-settlements",
-        "financial-controls"
+        "financial-controls",
+        "financial-splits",
+        "financial-routing",
+        "financial-journal",
+        "financial-tax",
+        "financial-intelligence-report"
       ],
       "modulesResolve": true,
-      "citedTestFiles": 4,
-      "testsCounted": 55,
-      "executableEvidence": 4,
+      "citedTestFiles": 9,
+      "testsCounted": 130,
+      "executableEvidence": 9,
       "evidence": {
         "L1 conceptual": true,
         "L2 data model": true,
         "L3 backend": true,
-        "L4 frontend/workspace integration": false,
+        "L4 frontend/workspace integration": true,
         "L5 operational maturity": true
       },
       "registryLevels": [
         true,
-        false,
-        false,
-        false,
-        false
+        true,
+        true,
+        true,
+        true
       ],
-      "registryStatus": "IMPLEMENTING",
-      "derivedStatus": "IMPLEMENTING",
-      "complete": false,
-      "missingLevels": [
-        "L4 frontend/workspace integration"
-      ],
+      "registryStatus": "COMPLETE",
+      "derivedStatus": "COMPLETE",
+      "complete": true,
+      "missingLevels": [],
       "exemptedLevels": [],
       "unconfirmedLevels": []
     },

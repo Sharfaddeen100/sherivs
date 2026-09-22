@@ -49,6 +49,11 @@ const NEUTRAL_MODULES = [
   "frontend/src/lib/scheduling-conflicts.ts",
   "frontend/src/lib/scheduling-quality.ts",
   "frontend/src/lib/scheduling-intelligence-report.ts",
+  "frontend/src/lib/financial-splits.ts",
+  "frontend/src/lib/financial-routing.ts",
+  "frontend/src/lib/financial-journal.ts",
+  "frontend/src/lib/financial-tax.ts",
+  "frontend/src/lib/financial-intelligence-report.ts",
 ];
 
 /** Platform/super-admin surfaces: control-plane UI, never a vertical's portal. */
@@ -62,6 +67,7 @@ const PLATFORM_SURFACES = [
   "frontend/src/routes/_authenticated/super-admin/communication-steward.tsx",
   "frontend/src/routes/_authenticated/super-admin/academic-intelligence.tsx",
   "frontend/src/routes/_authenticated/super-admin/scheduling-intelligence.tsx",
+  "frontend/src/routes/_authenticated/super-admin/financial-operations.tsx",
 ];
 
 /** Imports that would couple a neutral module to one vertical's ontology. */

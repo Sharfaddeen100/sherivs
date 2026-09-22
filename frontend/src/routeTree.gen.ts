@@ -132,6 +132,7 @@ import { Route as AuthenticatedSuperAdminAgentGovernanceRouteImport } from './ro
 import { Route as AuthenticatedSuperAdminBillingRouteImport } from './routes/_authenticated/super-admin/billing'
 import { Route as AuthenticatedSuperAdminCommunicationStewardRouteImport } from './routes/_authenticated/super-admin/communication-steward'
 import { Route as AuthenticatedSuperAdminDashboardRouteImport } from './routes/_authenticated/super-admin/dashboard'
+import { Route as AuthenticatedSuperAdminFinancialOperationsRouteImport } from './routes/_authenticated/super-admin/financial-operations'
 import { Route as AuthenticatedSuperAdminLogsRouteImport } from './routes/_authenticated/super-admin/logs'
 import { Route as AuthenticatedSuperAdminPlatformConfigRouteImport } from './routes/_authenticated/super-admin/platform-config'
 import { Route as AuthenticatedSuperAdminRuntimeContractsRouteImport } from './routes/_authenticated/super-admin/runtime-contracts'
@@ -862,6 +863,12 @@ const AuthenticatedSuperAdminDashboardRoute =
     path: '/dashboard',
     getParentRoute: () => AuthenticatedSuperAdminRouteRoute,
   } as any)
+const AuthenticatedSuperAdminFinancialOperationsRoute =
+  AuthenticatedSuperAdminFinancialOperationsRouteImport.update({
+    id: '/financial-operations',
+    path: '/financial-operations',
+    getParentRoute: () => AuthenticatedSuperAdminRouteRoute,
+  } as any)
 const AuthenticatedSuperAdminLogsRoute =
   AuthenticatedSuperAdminLogsRouteImport.update({
     id: '/logs',
@@ -1142,6 +1149,7 @@ export interface FileRoutesByFullPath {
   '/super-admin/billing': typeof AuthenticatedSuperAdminBillingRoute
   '/super-admin/communication-steward': typeof AuthenticatedSuperAdminCommunicationStewardRoute
   '/super-admin/dashboard': typeof AuthenticatedSuperAdminDashboardRoute
+  '/super-admin/financial-operations': typeof AuthenticatedSuperAdminFinancialOperationsRoute
   '/super-admin/logs': typeof AuthenticatedSuperAdminLogsRoute
   '/super-admin/platform-config': typeof AuthenticatedSuperAdminPlatformConfigRoute
   '/super-admin/runtime-contracts': typeof AuthenticatedSuperAdminRuntimeContractsRoute
@@ -1292,6 +1300,7 @@ export interface FileRoutesByTo {
   '/super-admin/billing': typeof AuthenticatedSuperAdminBillingRoute
   '/super-admin/communication-steward': typeof AuthenticatedSuperAdminCommunicationStewardRoute
   '/super-admin/dashboard': typeof AuthenticatedSuperAdminDashboardRoute
+  '/super-admin/financial-operations': typeof AuthenticatedSuperAdminFinancialOperationsRoute
   '/super-admin/logs': typeof AuthenticatedSuperAdminLogsRoute
   '/super-admin/platform-config': typeof AuthenticatedSuperAdminPlatformConfigRoute
   '/super-admin/runtime-contracts': typeof AuthenticatedSuperAdminRuntimeContractsRoute
@@ -1444,6 +1453,7 @@ export interface FileRoutesById {
   '/_authenticated/super-admin/billing': typeof AuthenticatedSuperAdminBillingRoute
   '/_authenticated/super-admin/communication-steward': typeof AuthenticatedSuperAdminCommunicationStewardRoute
   '/_authenticated/super-admin/dashboard': typeof AuthenticatedSuperAdminDashboardRoute
+  '/_authenticated/super-admin/financial-operations': typeof AuthenticatedSuperAdminFinancialOperationsRoute
   '/_authenticated/super-admin/logs': typeof AuthenticatedSuperAdminLogsRoute
   '/_authenticated/super-admin/platform-config': typeof AuthenticatedSuperAdminPlatformConfigRoute
   '/_authenticated/super-admin/runtime-contracts': typeof AuthenticatedSuperAdminRuntimeContractsRoute
@@ -1596,6 +1606,7 @@ export interface FileRouteTypes {
     | '/super-admin/billing'
     | '/super-admin/communication-steward'
     | '/super-admin/dashboard'
+    | '/super-admin/financial-operations'
     | '/super-admin/logs'
     | '/super-admin/platform-config'
     | '/super-admin/runtime-contracts'
@@ -1746,6 +1757,7 @@ export interface FileRouteTypes {
     | '/super-admin/billing'
     | '/super-admin/communication-steward'
     | '/super-admin/dashboard'
+    | '/super-admin/financial-operations'
     | '/super-admin/logs'
     | '/super-admin/platform-config'
     | '/super-admin/runtime-contracts'
@@ -1897,6 +1909,7 @@ export interface FileRouteTypes {
     | '/_authenticated/super-admin/billing'
     | '/_authenticated/super-admin/communication-steward'
     | '/_authenticated/super-admin/dashboard'
+    | '/_authenticated/super-admin/financial-operations'
     | '/_authenticated/super-admin/logs'
     | '/_authenticated/super-admin/platform-config'
     | '/_authenticated/super-admin/runtime-contracts'
@@ -2810,6 +2823,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSuperAdminDashboardRouteImport
       parentRoute: typeof AuthenticatedSuperAdminRouteRoute
     }
+    '/_authenticated/super-admin/financial-operations': {
+      id: '/_authenticated/super-admin/financial-operations'
+      path: '/financial-operations'
+      fullPath: '/super-admin/financial-operations'
+      preLoaderRoute: typeof AuthenticatedSuperAdminFinancialOperationsRouteImport
+      parentRoute: typeof AuthenticatedSuperAdminRouteRoute
+    }
     '/_authenticated/super-admin/logs': {
       id: '/_authenticated/super-admin/logs'
       path: '/logs'
@@ -3261,6 +3281,7 @@ interface AuthenticatedSuperAdminRouteRouteChildren {
   AuthenticatedSuperAdminBillingRoute: typeof AuthenticatedSuperAdminBillingRoute
   AuthenticatedSuperAdminCommunicationStewardRoute: typeof AuthenticatedSuperAdminCommunicationStewardRoute
   AuthenticatedSuperAdminDashboardRoute: typeof AuthenticatedSuperAdminDashboardRoute
+  AuthenticatedSuperAdminFinancialOperationsRoute: typeof AuthenticatedSuperAdminFinancialOperationsRoute
   AuthenticatedSuperAdminLogsRoute: typeof AuthenticatedSuperAdminLogsRoute
   AuthenticatedSuperAdminPlatformConfigRoute: typeof AuthenticatedSuperAdminPlatformConfigRoute
   AuthenticatedSuperAdminRuntimeContractsRoute: typeof AuthenticatedSuperAdminRuntimeContractsRoute
@@ -3285,6 +3306,8 @@ const AuthenticatedSuperAdminRouteRouteChildren: AuthenticatedSuperAdminRouteRou
       AuthenticatedSuperAdminCommunicationStewardRoute,
     AuthenticatedSuperAdminDashboardRoute:
       AuthenticatedSuperAdminDashboardRoute,
+    AuthenticatedSuperAdminFinancialOperationsRoute:
+      AuthenticatedSuperAdminFinancialOperationsRoute,
     AuthenticatedSuperAdminLogsRoute: AuthenticatedSuperAdminLogsRoute,
     AuthenticatedSuperAdminPlatformConfigRoute:
       AuthenticatedSuperAdminPlatformConfigRoute,

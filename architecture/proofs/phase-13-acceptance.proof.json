@@ -1,0 +1,498 @@
+{
+  "artifact": "phase-acceptance",
+  "phase": "13",
+  "phaseName": "Payment, Billing & Financial Operating System",
+  "source": "architecture/phase-13-financial-system.md",
+  "generatedAt": "2026-09-21T21:24:34.064Z",
+  "classificationDefinitions": {
+    "ENFORCED": "an executable artefact proves it (test, verifier script, migration, policy or machine-checked contract match) and, where a boundary is declared, a real call site invokes it",
+    "DECLARED": "a module, document or contract mentions it, but nothing executable proves it",
+    "IMPLEMENTED_UNWIRED": "implementation and tests exist, but the declared boundary patterns match nothing — the capability protects nothing yet",
+    "MISSING": "no artefact found"
+  },
+  "summary": {
+    "areas": 24,
+    "enforced": 16,
+    "declared": 8,
+    "implementedUnwired": 0,
+    "implementedUnwiredAreas": [],
+    "missing": 0,
+    "missingRequired": [],
+    "unresolvedEvidencePaths": []
+  },
+  "ownership": {
+    "note": "Phase 13 owns the money model: products and versioned prices, billing plans and periods, obligations, invoices and lines, numbering, payment intents and attempts, provider routing decisions, splits and their legs, settlements, provider fees, allocations, refunds, credits, adjustments, discounts, tax rule versions and lines, reconciliation state, financial events and outbox entries, idempotency records, financial controls and audit. Identity is Phase 02's, tenancy Phase 03's, canonical institutional reality Phase 04's, runtime primitives Phase 05's, authorization Phase 08's, trust evidence Phase 09's, delivery Phase 10's, domain pricing policy Phase 11/12/27's, generic data infrastructure Phase 14's, hardware signals Phase 15's, digital twins Phase 16's, scheduled execution Phase 17's, analytical presentation Phase 18's and economic coordination Phase 49's. FinOS records money movement and its proof, never a provider's internals and never a consuming domain's pricing policy.",
+    "canonicalOwners": {
+      "money-records-and-ledger-adjacency": "13",
+      "splits-and-beneficiary-legs": "13",
+      "provider-routing-decisions": "13",
+      "tax-rule-versions-and-lines": "13",
+      "financial-events-outbox-and-idempotency": "13",
+      "identity": "02",
+      "tenancy-rls": "03",
+      "authorization": "08",
+      "workspace-and-runtime-primitives": "05",
+      "workflow-approval": "17",
+      "analytics-presentation": "18",
+      "marketplace-logic": "27",
+      "economic-coordination": "49"
+    }
+  },
+  "areas": [
+    {
+      "id": "money-is-exact",
+      "area": "Money is exact minor units, never a float",
+      "requirement": "Every financial amount is an integer count of minor units with a declared currency and precision, and arithmetic refuses to mix currencies rather than coercing them.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/financial-core.ts",
+        "tests/unit/financial-core.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/financial-core.ts",
+        "tests/unit/financial-core.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "providers-stay-behind-adapters",
+      "area": "Routing is a decision over declared provider capabilities",
+      "requirement": "A provider is reached through a capability contract (methods, currencies, jurisdictions, partial refunds, splits, capture model, signature scheme) and the route is chosen from those capabilities plus tenant policy and cost, never hard-coded.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/financial-routing.ts",
+        "tests/unit/financial-routing.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/financial-routing.ts",
+        "tests/unit/financial-routing.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "capability-dominates-preference",
+      "area": "A preference can never make an incapable provider eligible",
+      "requirement": "Tenant preference orders eligible candidates only, an unroutable requirement is reported rather than forced through a provider that cannot serve it, and each rejected candidate names the capability that disqualified it.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/financial-routing.ts",
+        "tests/unit/financial-routing.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/financial-routing.ts",
+        "tests/unit/financial-routing.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "failover-cannot-double-charge",
+      "area": "Failover is refused unless the provider proved no capture",
+      "requirement": "A successful attempt, an unresolved timeout and an unproven no-capture are each refused for failover, because treating a timeout as a failure is how a payer is charged twice.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/financial-routing.ts",
+        "tests/unit/financial-routing.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/financial-routing.ts",
+        "tests/unit/financial-routing.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "splits-account-for-the-gross",
+      "area": "Split legs sum exactly to the gross amount",
+      "requirement": "A split payment names its beneficiaries and purposes, its legs must sum exactly to the gross, and over-allocation, under-allocation, negative legs and repeated beneficiaries (where policy forbids them) are refused rather than absorbed.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/financial-splits.ts",
+        "tests/unit/financial-splits.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/financial-splits.ts",
+        "tests/unit/financial-splits.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "settlement-is-per-leg",
+      "area": "Every beneficiary leg settles on its own evidence",
+      "requirement": "A leg settles once, against a settlement reference and an amount that matches, and a leg that cannot be paid stays unresolved and visible instead of its share moving to another beneficiary.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/financial-splits.ts",
+        "tests/unit/financial-splits.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/financial-splits.ts",
+        "tests/unit/financial-splits.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "fees-are-not-deductions",
+      "area": "Provider fees are attributed, never silently deducted",
+      "requirement": "A provider fee belongs to the leg whose route produced it, is recorded separately from the amount, and a fee larger than its leg is refused so a loss cannot hide inside the gross.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/financial-splits.ts",
+        "tests/unit/financial-splits.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/financial-splits.ts",
+        "tests/unit/financial-splits.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "refunds-are-pro-rata-and-bounded",
+      "area": "A split refund is pro rata, bounded and deterministic",
+      "requirement": "A refund spreads across the legs that received money in proportion to what each received, sums exactly to the requested amount with a deterministic remainder, and can never return more from a beneficiary than that leg holds.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/financial-splits.ts",
+        "tests/unit/financial-splits.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/financial-splits.ts",
+        "tests/unit/financial-splits.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "platform-fee-is-a-leg",
+      "area": "The platform's own revenue is a beneficiary like any other",
+      "requirement": "CoreGrid's fee is expressed as a split leg with a declared purpose, travelling the same settlement, reconciliation and reporting path as any institution's, seller's or partner's share, with no privileged code path.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/financial-intelligence-report.ts",
+        "tests/unit/financial-splits.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/financial-intelligence-report.ts",
+        "tests/unit/financial-splits.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "journal-is-append-only",
+      "area": "Financial events are append-only and ordered per aggregate",
+      "requirement": "An event carries its aggregate, contiguous sequence, payload version, causality, correlation and actor; a duplicate identity, a sequence hole or a version regression is refused, and a journal that already contains a hole is reported.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/financial-journal.ts",
+        "tests/unit/financial-journal.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/financial-journal.ts",
+        "tests/unit/financial-journal.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "state-is-reconstructed",
+      "area": "A balance is reconstructed from its events, not trusted from a cache",
+      "requirement": "Charged, paid, refunded, credited and outstanding amounts are derived from the recorded events with the evidence named, an absent history is reported as unknown rather than zero, and a snapshot that disagrees with the reconstruction is reported instead of preferred.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/financial-journal.ts",
+        "tests/unit/financial-journal.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/financial-journal.ts",
+        "tests/unit/financial-journal.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "postings-must-balance",
+      "area": "A ledger posting balances or is refused",
+      "requirement": "Debits must equal credits in one currency with no negative line and at least two lines, so a later accounting subsystem consumes balanced postings instead of an arbitrary balance field.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/financial-journal.ts",
+        "tests/unit/financial-journal.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/financial-journal.ts",
+        "tests/unit/financial-journal.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "events-are-durable-before-published",
+      "area": "A financial event is durable before it is published",
+      "requirement": "A domain event enters a transactional outbox with the state change that produced it, the same event cannot be queued twice, and publish or failure attempts are recorded with their count.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/financial-journal.ts",
+        "tests/unit/financial-journal.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/financial-journal.ts",
+        "tests/unit/financial-journal.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "tax-is-jurisdiction-data",
+      "area": "Tax is jurisdiction data resolved per charge, never a default",
+      "requirement": "The tax rule that applied is resolved by jurisdiction, category and instant; an undeclared jurisdiction is unknown rather than zero, ambiguous versions are refused, exempt and zero-rated rules yield no tax, and inclusive and exclusive pricing are computed in exact minor units with one stated rounding rule.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/financial-tax.ts",
+        "tests/unit/financial-tax.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/financial-tax.ts",
+        "tests/unit/financial-tax.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "domain-neutral-for-every-organization",
+      "area": "The capability belongs to the platform, not to one institution",
+      "requirement": "The debtor and beneficiary are identity references, charge reasons, tax rules, calendars and provider choices are institutional data, and the phase expresses the same capability in several organizations' own vocabulary without any institution being the default.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/financial-intelligence-report.ts",
+        "tests/unit/financial-intelligence-report.test.ts",
+        "tests/unit/platform-neutrality.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/financial-intelligence-report.ts",
+        "tests/unit/financial-intelligence-report.test.ts",
+        "tests/unit/platform-neutrality.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "rule-attribution-and-surface",
+      "area": "Every claimed rule names its implementation and its proof, and a real surface reads the phase",
+      "requirement": "Each rule the phase claims is tied to a module and a suite that exist, each executed check carries the observation it produced, and a platform surface renders those checks, the rules, the organizations' vocabulary and the declared gaps.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/financial-intelligence-report.ts",
+        "tests/unit/financial-intelligence-report.test.ts",
+        "frontend/src/routes/_authenticated/super-admin/financial-operations.tsx"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/financial-intelligence-report.ts",
+        "tests/unit/financial-intelligence-report.test.ts",
+        "frontend/src/routes/_authenticated/super-admin/financial-operations.tsx"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "engineering-sections-complete",
+      "area": "The blueprint states all twenty mandatory engineering sections",
+      "requirement": "The phase document carries every mandatory engineering section, including the command, query, data, dependency, memory and knowledge models added in this phase.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "architecture/phase-13-financial-system.md",
+        "architecture/phase-13-financial-system.md",
+        "architecture/phase-13-financial-system.md"
+      ],
+      "matchedEvidence": [
+        "architecture/phase-13-financial-system.md",
+        "architecture/phase-13-financial-system.md",
+        "architecture/phase-13-financial-system.md"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "provider-adapters-live",
+      "area": "A live payment provider is reached behind the abstraction",
+      "requirement": "At least one real provider adapter implements authorization, capture, refund, webhook and settlement translation, passing provider contract tests.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "frontend/src/lib/financial-intelligence-report.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/financial-intelligence-report.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "financial-persistence",
+      "area": "Financial records are durable",
+      "requirement": "A forward-only migration creates invoices, payments, splits, journal events, outbox entries and idempotency records with tenant isolation, currency constraints and append-only history, and the engines read and write them.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "frontend/src/lib/financial-intelligence-report.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/financial-intelligence-report.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "reconciliation-run",
+      "area": "Reconciliation runs over a provider statement and opens exceptions",
+      "requirement": "A scheduled run compares a whole provider statement against internal records, producing matched, exception and unresolved sets, and each exception carries a workflow to resolution with evidence.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "frontend/src/lib/financial-intelligence-report.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/financial-intelligence-report.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "collections-and-disputes",
+      "area": "Collections, disputes and chargebacks are tracked",
+      "requirement": "Receivables ageing, dunning, dispute and chargeback lifecycles exist as explicit state machines with evidence requirements and financial effects that never silently reverse a payment.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "frontend/src/lib/financial-intelligence-report.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/financial-intelligence-report.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "usage-metering-and-renewals",
+      "area": "Metered usage and renewals produce charges",
+      "requirement": "Metered usage records drive deterministic overage computation and renewal invoices with idempotent batch keys, without fabricating usage.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "frontend/src/lib/financial-intelligence-report.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/financial-intelligence-report.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "async-financial-work",
+      "area": "Financial jobs run asynchronously and safely",
+      "requirement": "Batch billing, webhook bursts, settlement polling and reconciliation runs execute as restartable, cancellable jobs with deterministic idempotency keys so a failed job cannot duplicate an invoice.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "frontend/src/lib/financial-intelligence-report.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/financial-intelligence-report.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "authorised-ingestion-boundary",
+      "area": "Platform surfaces read and write through the engines",
+      "requirement": "Fee, payroll, expense and reconciliation surfaces call the phase's engines behind an authorised boundary, so no surface keeps a second money record.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "frontend/src/lib/financial-intelligence-report.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/financial-intelligence-report.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    }
+  ],
+  "ok": true,
+  "limitations": [
+    "Classification measures the presence of executable evidence, not the correctness or completeness of that evidence.",
+    "A DECLARED area is unfinished work, never a false claim — it is reported as such.",
+    "An IMPLEMENTED_UNWIRED area has a tested implementation that no boundary calls; it is reported, never counted as enforcement.",
+    "Evidence patterns are declared per phase in architecture/phase-acceptance/phase-<id>-*.json and must be reviewed when a phase is re-audited."
+  ]
+}

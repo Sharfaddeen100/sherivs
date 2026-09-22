@@ -295,11 +295,19 @@ describe("CF-3 — containment, neutrality and ownership", () => {
     expect(contract).toContain("cloud-fabric-iac");
     expect(contract).toContain("tests/unit/infrastructure-fabric.test.ts");
 
+    // Registry modules resolve as source modules under frontend/src/lib, so the row
+    // registers the phase's three real modules and names the IaC deliverable where it
+    // actually lives. Listing cloud-fabric-iac as a module made phase 21 the one phase
+    // whose modules resolved to nothing (registry-truth sweep, 2026-09-21).
     const registry = JSON.parse(infraText("architecture/registry.json")) as {
-      phases: Array<{ id: string; modules: string[] }>;
+      phases: Array<{ id: string; modules: string[]; notes?: string }>;
     };
     const phase21 = registry.phases.find((entry) => entry.id === "21");
-    expect(phase21?.modules).toContain("cloud-fabric-iac");
+    for (const module of ["cloud-core", "cloud-byoc", "cloud-governance"]) {
+      expect(phase21?.modules, `phase 21 should register ${module}`).toContain(module);
+    }
+    expect(phase21?.modules ?? []).not.toContain("cloud-fabric-iac");
+    expect(phase21?.notes ?? "").toContain("infrastructure/terraform");
     expect(existsSync(join(ROOT, "infrastructure/terraform/versions.tf"))).toBe(true);
   });
 
