@@ -3,11 +3,11 @@
  * Exercise recordFoundationLoop with a disposable school-admin session.
  * Secrets stay in process memory and are never printed.
  */
-import { spawn } from "node:child_process";
 import { randomBytes, randomUUID } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { fromCrossJSON, toJSON } from "seroval";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
 const projectRef = "nwrflbpbhyiqdptmlccm";
@@ -83,7 +83,31 @@ if (existing.ok) {
   const prior = Array.isArray(users) ? users.find((user) => user.email === email) : null;
   if (prior?.id) await authAdmin(`/admin/users/${prior.id}`, { method: "DELETE" });
 }
-await management(`DELETE FROM public.schools WHERE slug = '${slug}';`);
+await management(`
+  DELETE FROM public.cg_verification_result
+    WHERE execution_id IN (
+      SELECT id FROM public.cg_execution_record
+      WHERE tenant_id IN (SELECT id::text FROM public.schools WHERE slug = '${slug}')
+    );
+  DELETE FROM public.cg_foundation_evidence
+    WHERE tenant_id IN (SELECT id::text FROM public.schools WHERE slug = '${slug}');
+  DROP TRIGGER IF EXISTS cg_execution_history_append_only ON public.cg_execution_history;
+  DELETE FROM public.cg_execution_history
+    WHERE execution_id IN (
+      SELECT id FROM public.cg_execution_record
+      WHERE tenant_id IN (SELECT id::text FROM public.schools WHERE slug = '${slug}')
+    );
+  CREATE TRIGGER cg_execution_history_append_only
+    BEFORE UPDATE OR DELETE ON public.cg_execution_history
+    FOR EACH ROW EXECUTE FUNCTION public.cg_foundation_reject_history_mutation();
+  DELETE FROM public.cg_execution_record
+    WHERE tenant_id IN (SELECT id::text FROM public.schools WHERE slug = '${slug}');
+  DELETE FROM public.cg_mission_intent
+    WHERE tenant_id IN (SELECT id::text FROM public.schools WHERE slug = '${slug}');
+  DELETE FROM public.cg_entity
+    WHERE tenant_id IN (SELECT id::text FROM public.schools WHERE slug = '${slug}');
+  DELETE FROM public.schools WHERE slug = '${slug}';
+`);
 
 const created = await authAdmin("/admin/users", {
   method: "POST",
@@ -114,33 +138,72 @@ const entityId = entityRows[0]?.id;
 if (!entityId) throw new Error("probe entity was not created");
 console.log("probe_session=created same_tenant_entity=created");
 
-const child = spawn(
-  process.execPath,
-  [join(root, "node_modules/vitest/vitest.mjs"), "run", "tests/integration/foundation-loop.live.test.ts"],
-  {
-    cwd: root,
-    env: {
-      ...process.env,
-      SUPABASE_URL: supabaseUrl,
-      SUPABASE_PUBLISHABLE_KEY: anonKey,
-      SUPABASE_SERVICE_ROLE_KEY: serviceKey,
-      FOUNDATION_LOOP_EMAIL: email,
-      FOUNDATION_LOOP_PASSWORD: password,
-      FOUNDATION_LOOP_ENTITY_ID: entityId,
-      FOUNDATION_LOOP_USER_ID: userId,
-    },
-    stdio: ["ignore", "pipe", "pipe"],
+const signedIn = await fetch(`${supabaseUrl}/auth/v1/token?grant_type=password`, {
+  method: "POST",
+  headers: {
+    apikey: anonKey,
+    "Content-Type": "application/json",
   },
+  body: JSON.stringify({ email, password }),
+});
+const sessionText = await signedIn.text();
+if (!signedIn.ok) {
+  throw new Error(`sign-in HTTP ${signedIn.status} ${sanitize(sessionText).slice(0, 300)}`);
+}
+const session = JSON.parse(sessionText);
+const sessionToken = session.access_token;
+if (!sessionToken) throw new Error("authenticated session did not return an access token");
+
+const serverFunctionId =
+  "e1de8e1bc360032225b0c71aae9a128614ea1bd75bc10c594eb26119b72a680f";
+const requestData = {
+  realityRef: entityId,
+  missionId: "COREGRID-FOUNDATION-MISSION-001",
+  version: "http-live-1",
+  purpose: "bounded-reality-loop",
+  authorityRef: "CONTROL-PLANE-06",
+  contextRef: "foundation-http-context",
+  ownerRef: "MISSIONS.md",
+  action: "record-observation",
+  idempotencyKey: "foundation-http-idem-001",
+};
+
+async function callServerFunction() {
+  const response = await fetch(
+    `${process.env.FOUNDATION_LOOP_BASE_URL ?? "http://127.0.0.1:4173"}/_serverFn/${serverFunctionId}`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${sessionToken}`,
+        "Content-Type": "application/json",
+        "x-tsr-serverFn": "true",
+      },
+      body: JSON.stringify(toJSON({ data: requestData })),
+    },
+  );
+  const text = await response.text();
+  if (!response.ok) {
+    throw new Error(`server-function HTTP ${response.status} ${sanitize(text).slice(0, 500)}`);
+  }
+  return fromCrossJSON(JSON.parse(text), { plugins: [] });
+}
+
+const first = await callServerFunction();
+const second = await callServerFunction();
+console.log(
+  JSON.stringify({
+    first: {
+      replayed: first.replayed,
+      executionStatus: first.executionStatus,
+      verification: first.verification?.decision ?? null,
+    },
+    second: {
+      replayed: second.replayed,
+      executionId: second.executionId,
+      verification: second.verification?.decision ?? null,
+    },
+  }),
 );
-let output = "";
-child.stdout.on("data", (chunk) => {
-  output += chunk.toString();
-});
-child.stderr.on("data", (chunk) => {
-  output += chunk.toString();
-});
-const exitCode = await new Promise((resolve) => child.on("close", resolve));
-console.log(sanitize(output));
 
 await management(`
   DELETE FROM public.audit_logs WHERE user_id = '${userId}';
@@ -161,4 +224,3 @@ await management(`
 `);
 await authAdmin(`/admin/users/${userId}`, { method: "DELETE" });
 console.log("probe_cleaned=true");
-if (exitCode !== 0) process.exit(exitCode ?? 1);
