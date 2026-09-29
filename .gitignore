@@ -22,6 +22,7 @@ database/supabase/.temp/
 # Environment files (keep .env.example)
 .env
 .env.*
+test-results/
 !.env.example
 
 # Wrangler / Cloudflare
