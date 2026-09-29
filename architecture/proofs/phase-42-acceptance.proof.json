@@ -1,0 +1,163 @@
+{
+  "artifact": "phase-acceptance",
+  "phase": "42",
+  "phaseName": "Zero Trust & Adversarial Defense Engine",
+  "source": "architecture/phase-42-zero-trust-security-adversarial-defense-civilization-engine.md",
+  "generatedAt": "2026-09-28T15:12:55.025Z",
+  "classificationDefinitions": {
+    "ENFORCED": "an executable artefact proves it (test, verifier script, migration, policy or machine-checked contract match) and, where a boundary is declared, a real call site invokes it",
+    "DECLARED": "a module, document or contract mentions it, but nothing executable proves it",
+    "IMPLEMENTED_UNWIRED": "implementation and tests exist, but the declared boundary patterns match nothing — the capability protects nothing yet",
+    "MISSING": "no artefact found"
+  },
+  "summary": {
+    "areas": 6,
+    "enforced": 5,
+    "declared": 1,
+    "implementedUnwired": 0,
+    "implementedUnwiredAreas": [],
+    "missing": 0,
+    "missingRequired": [],
+    "unresolvedEvidencePaths": []
+  },
+  "ownership": {
+    "canonicalOwners": {
+      "adversarial-verification-and-defense-posture": "42",
+      "authorization-enforcement": "08",
+      "trust-evidence": "09",
+      "agent/tool-security": "08/07",
+      "security-events-and-incidents": "08"
+    }
+  },
+  "areas": [
+    {
+      "id": "agent-and-tool-fail-closed",
+      "area": "Agent and tool actions fail closed or require review",
+      "requirement": "Undeployed/suspended agents, denied tools and dangerous tool categories are denied or routed to human review; acting-as-user requires explicit grant.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/kernel/phase-contracts/phase-42-adversarial-defense.ts",
+        "tests/unit/security-agent-controls.test.ts",
+        "tests/unit/security-agent-controls.test.ts",
+        "tests/unit/security-agent-controls.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/kernel/phase-contracts/phase-42-adversarial-defense.ts",
+        "tests/unit/security-agent-controls.test.ts",
+        "tests/unit/security-agent-controls.test.ts",
+        "tests/unit/security-agent-controls.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "risk-and-sensitive-operation-escalation",
+      "area": "Risk signals and sensitive operations escalate appropriately",
+      "requirement": "Risk levels derive from evidence signals, critical signals quarantine, and high/critical sensitive operations require human review.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/security-risk.test.ts",
+        "tests/unit/security-risk.test.ts",
+        "tests/unit/security-risk.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/security-risk.test.ts",
+        "tests/unit/security-risk.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "immutable-security-events-and-evidence",
+      "area": "Security events and evidence are attributable and immutable",
+      "requirement": "Security events retain tenant/actor/evidence context, cannot be deleted, and evidence records are access-controlled.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/security-events.test.ts",
+        "tests/unit/security-events.test.ts",
+        "tests/unit/security-events.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/security-events.test.ts",
+        "tests/unit/security-events.test.ts",
+        "tests/unit/security-events.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "alert-and-incident-lifecycle",
+      "area": "Alerts and security incidents follow ordered closure requirements",
+      "requirement": "Alerts and incidents transition through ordered states, require owners/evidence, and cannot close without resolution.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/security-events.test.ts",
+        "tests/unit/security-events.test.ts",
+        "tests/unit/security-events.test.ts",
+        "tests/unit/security-events.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/security-events.test.ts",
+        "tests/unit/security-events.test.ts",
+        "tests/unit/security-events.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "defense-boundary-and-recommendation-only",
+      "area": "Defense measures and recommends without owning enforcement",
+      "requirement": "Adversarial defense does not grant/revoke access, weaken controls or replace Phase 08/09 enforcement and trust authority.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/kernel/phase-contracts/phase-42-adversarial-defense.ts",
+        "frontend/src/lib/kernel/phase-contracts/phase-42-adversarial-defense.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/kernel/phase-contracts/phase-42-adversarial-defense.ts",
+        "frontend/src/lib/kernel/phase-contracts/phase-42-adversarial-defense.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "live-adversarial-exercises-and-posture",
+      "area": "Live adversarial exercises, anomaly posture and hardening operations are wired",
+      "requirement": "Controlled exercises run with declared scope, findings persist with evidence, anomaly thresholds are governed, and hardening remains approval-gated.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "architecture/phase-42-zero-trust-security-adversarial-defense-civilization-engine.md"
+      ],
+      "matchedEvidence": [
+        "architecture/phase-42-zero-trust-security-adversarial-defense-civilization-engine.md"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    }
+  ],
+  "ok": true,
+  "limitations": [
+    "Classification measures the presence of executable evidence, not the correctness or completeness of that evidence.",
+    "A DECLARED area is unfinished work, never a false claim — it is reported as such.",
+    "An IMPLEMENTED_UNWIRED area has a tested implementation that no boundary calls; it is reported, never counted as enforcement.",
+    "Evidence patterns are declared per phase in architecture/phase-acceptance/phase-<id>-*.json and must be reviewed when a phase is re-audited."
+  ]
+}

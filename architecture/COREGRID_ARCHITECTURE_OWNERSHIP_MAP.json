@@ -1,0 +1,114 @@
+{
+  "mission": "COREGRID-MISSION-0001",
+  "artifact": "COREGRID_ARCHITECTURE_OWNERSHIP_MAP",
+  "status": "DESIGNED",
+  "evidenceDate": "2026-09-27",
+  "ownershipLaw": "One canonical owner; other systems may consume, derive, observe, coordinate, represent, cache, or index but must not silently own.",
+  "sources": [
+    "architecture/capability-ownership-graph.md",
+    "architecture/kernel-phase-contract-program.md",
+    "architecture/registry.json",
+    "REGISTRY.md",
+    "BOUNDARIES.md"
+  ],
+  "owners": [
+    {
+      "concept": "identity",
+      "canonicalOwner": "02",
+      "machineComponents": ["frontend/src/lib/identity-registry.ts", "database/supabase/migrations/20260904020000_coregrid_l2_identity_tenancy.sql"],
+      "consumers": ["03", "05", "06", "08", "22", "25", "50"],
+      "status": "IMPLEMENTED",
+      "evidenceClass": "VERIFIED"
+    },
+    {
+      "concept": "tenant",
+      "canonicalOwner": "03",
+      "machineComponents": ["frontend/src/lib/tenant-registry.ts", "database/supabase/migrations/20260904020000_coregrid_l2_identity_tenancy.sql"],
+      "consumers": ["all"],
+      "status": "IMPLEMENTED",
+      "evidenceClass": "VERIFIED"
+    },
+    {
+      "concept": "reality-primitives",
+      "canonicalOwner": "33",
+      "machineComponents": ["frontend/src/lib/kernel/reality.ts", "frontend/src/lib/kernel-reality.functions.ts", "database/supabase/migrations/20260903000000_coregrid_universal_kernel_substrate.sql"],
+      "consumers": ["04", "34", "36", "48", "51"],
+      "status": "PARTIAL",
+      "evidenceClass": "VERIFIED"
+    },
+    {
+      "concept": "runtime-primitives",
+      "canonicalOwner": "05",
+      "machineComponents": ["frontend/src/lib/runtime-*", "frontend/src/lib/kernel/outbox.ts"],
+      "consumers": ["all"],
+      "status": "PARTIAL",
+      "evidenceClass": "VERIFIED"
+    },
+    {
+      "concept": "security-enforcement",
+      "canonicalOwner": "08",
+      "machineComponents": ["frontend/src/lib/security-core.ts", "frontend/src/lib/security-role-gate.ts", "frontend/src/lib/security-agent-controls.ts"],
+      "consumers": ["all"],
+      "status": "IMPLEMENTED",
+      "evidenceClass": "VERIFIED"
+    },
+    {
+      "concept": "trust-fabric",
+      "canonicalOwner": "09",
+      "machineComponents": ["frontend/src/lib/trust-*"],
+      "consumers": ["08", "42"],
+      "status": "PARTIAL",
+      "evidenceClass": "VERIFIED"
+    },
+    {
+      "concept": "workforce",
+      "canonicalOwner": "25",
+      "machineComponents": ["frontend/src/lib/workforce-*", "database/supabase/migrations/20260907000000_coregrid_workforce_kind_substrate.sql"],
+      "consumers": ["runtime-001"],
+      "status": "IMPLEMENTED_DOMAIN_SLICE",
+      "evidenceClass": "VERIFIED"
+    },
+    {
+      "concept": "ai-context",
+      "canonicalOwner": "26",
+      "machineComponents": ["frontend/src/lib/ai-context.ts"],
+      "consumers": ["07", "34", "35"],
+      "status": "PARTIAL",
+      "evidenceClass": "VERIFIED"
+    },
+    {
+      "concept": "financial-ledger",
+      "canonicalOwner": "13",
+      "machineComponents": ["frontend/src/lib/financial-*"],
+      "consumers": ["27", "49"],
+      "status": "IMPLEMENTED_LIBRARY",
+      "evidenceClass": "VERIFIED"
+    },
+    {
+      "concept": "evolution-lifecycle",
+      "canonicalOwner": "32",
+      "machineComponents": ["frontend/src/lib/evolution-*"],
+      "consumers": ["47"],
+      "status": "CONFLICTING_WITH_38_47",
+      "evidenceClass": "VERIFIED"
+    },
+    {
+      "concept": "mission",
+      "canonicalOwner": null,
+      "machineComponents": [],
+      "consumers": [],
+      "status": "MISSING",
+      "evidenceClass": "VERIFIED"
+    },
+    {
+      "concept": "evidence-registry",
+      "canonicalOwner": null,
+      "machineComponents": ["architecture/proofs", "architecture/phase-acceptance", "architecture/archaeology"],
+      "consumers": ["verification", "conformance", "progress"],
+      "status": "PARTIAL_FILE_PLANE",
+      "evidenceClass": "VERIFIED"
+    }
+  ],
+  "unresolvedOwnershipClusters": ["D1", "D2", "D3", "D4", "D5", "D7"],
+  "rule": "Ownership candidates require governance decision before implementation expansion."
+}

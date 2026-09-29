@@ -1,0 +1,63 @@
+{
+  "mission": "COREGRID-MISSION-0001",
+  "directive": "V5.1 Parts 0-109 plus V5.2 Parts 110-141",
+  "artifact": "COREGRID_V52_GATE_CHECKPOINT",
+  "captured": "2026-09-29",
+  "registryPhases": 51,
+  "phase52Registration": "NOT_CANONICAL",
+  "gates": {
+    "0": "VERIFIED",
+    "1": "VERIFIED_WITH_CONFLICTS",
+    "2": "VERIFIED",
+    "3": "PARTIAL_WITH_RECORDED_DECISIONS",
+    "4": "RECORDED_MAPPED_ONLY",
+    "5": "NOT_AUTHORIZED",
+    "6": "RECORDED_ON_RECEIVING_SURFACES",
+    "7": "NOT_STARTED",
+    "8": "PARTIAL",
+    "9": "PARTIAL",
+    "10": "PARTIAL",
+    "11": "OWNERSHIP_RECORDED",
+    "12": "SCHEMA_AUTHORED_NOT_APPLIED",
+    "13": "NOT_STARTED",
+    "14": "DEFERRED",
+    "15": "STATIC_ONLY",
+    "16": "BLOCKED"
+  },
+  "preservedConflicts": ["phase-27", "phase-33"],
+  "campaign52": {
+    "mappedScopeRecorded": 19,
+    "receivingSurfacesUpdated": 20,
+    "blockedUntouched": [
+      "CG-P52-GAP-001",
+      "CG-P52-GAP-002",
+      "CG-P52-GAP-003",
+      "CG-P52-GAP-004",
+      "CG-P52-GAP-005",
+      "CG-P52-GAP-006",
+      "CG-P52-GAP-008",
+      "CG-P52-GAP-019"
+    ],
+    "implementationAuthorization": "DENIED"
+  },
+  "foundationMission001": {
+    "status": "AUTHORITY_RECORDED_IN_MEMORY_CONTRACT_PERSISTENCE_BLOCKED",
+    "authorityDecision": "architecture/COREGRID_FOUNDATION_MISSION_001_AUTHORITY_DECISION.json",
+    "implementation": "frontend/src/lib/control-plane/foundation-mission.ts",
+    "implementationAuthorization": "SCHEMA_AUTHORED_NOT_APPLIED",
+    "migration": "database/supabase/migrations/20260929000000_coregrid_foundation_mission_001.sql",
+    "rollback": "database/supabase/rollbacks/20260929000000_coregrid_foundation_mission_001.sql"
+  },
+  "unverified": [
+    "lint",
+    "e2e-browser",
+    "live-supabase",
+    "deployment",
+    "operational-telemetry"
+  ],
+  "foundationServerPath": "frontend/src/lib/foundation-loop.functions.ts",
+  "migrationApply": "APPLIED_DEV_PROJECT",
+  "migrationEvidence": "Six foundation tables present on nwrflbpbhyiqdptmlccm with RLS enabled, no anon or authenticated grants, and a rolled-back constraint probe leaving zero probe rows.",
+  "nextAuthorizedGate": "Exercise recordFoundationLoop with an authenticated school-admin session against a same-tenant cg_entity. Live HTTP execution remains unverified.",
+  "rule": "Acceptance coverage and receiving-surface notes are not implementation, verification, conformance, or operation."
+}

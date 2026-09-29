@@ -1,0 +1,101 @@
+{
+  "$comment": "Evidence map for Phase 34. Cognition is evaluated as derived intelligence over evidence; provider access remains Phase 26 and live world-model persistence remains declared.",
+  "phase": "34",
+  "phaseName": "Universal Cognitive Intelligence Engine",
+  "source": "architecture/phase-34-universal-cognitive-intelligence-engine.md",
+  "contract": "frontend/src/lib/kernel/phase-contracts/phase-34-cognitive-engine.ts",
+  "ownership": {
+    "canonicalOwners": {
+      "reasoning-and-explanations": "34",
+      "world-models-and-derived-beliefs": "34",
+      "model-provider-access": "26",
+      "reality-substrate": "33",
+      "agent-lifecycle": "07",
+      "knowledge-graph": "48",
+      "canonical-truth": "owning-phase"
+    }
+  },
+  "areas": [
+    {
+      "id": "reasoning-trace-and-explanation",
+      "area": "Cognitive reasoning produces traceable explanations without exposing chain of thought",
+      "requirement": "Reasoning traces identify operations and outputs, while explanations identify evidence and rationale.",
+      "required": true,
+      "evidence": [
+        { "kind": "contract", "path": "frontend/src/lib/kernel/phase-contracts/phase-34-cognitive-engine.ts", "contains": "Every cognitive output is explainable" },
+        { "kind": "test", "path": "tests/unit/ai.test.ts", "contains": "creates reasoning trace without chain-of-thought" },
+        { "kind": "test", "path": "tests/unit/ai.test.ts", "contains": "builds useful explanation" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "uncertainty-and-calibration",
+      "area": "Cognitive confidence and uncertainty remain measurable",
+      "requirement": "Cognitive outputs expose uncertainty and calibration error rather than treating confidence as truth or authority.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/ai.test.ts", "contains": "estimates uncertainty" },
+        { "kind": "test", "path": "tests/unit/ai.test.ts", "contains": "measures calibration error" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "claim-verification-and-hallucination",
+      "area": "Claims require evidence and unsupported outputs are detected",
+      "requirement": "Supported claims are verifiable, unsupported claims fail verification, and uncited outputs are flagged as hallucination risk.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/ai.test.ts", "contains": "verifies supported claim" },
+        { "kind": "test", "path": "tests/unit/ai.test.ts", "contains": "rejects unsupported claim" },
+        { "kind": "test", "path": "tests/unit/ai.test.ts", "contains": "detects hallucination for uncited output" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "consensus-and-escalation",
+      "area": "Disagreement and high-risk cognition escalate",
+      "requirement": "Model disagreement escalates, multi-model verification follows its declared policy, and high-risk cognition requires verification or approval.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/ai.test.ts", "contains": "consensus escalates on disagreement" },
+        { "kind": "test", "path": "tests/unit/ai.test.ts", "contains": "multi-model verification requires majority" },
+        { "kind": "test", "path": "tests/unit/ai.test.ts", "contains": "high-risk gate blocks without verification or approval" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "policy-budget-and-derived-output-safety",
+      "area": "Cognitive actions remain policy, budget and output governed",
+      "requirement": "Risk classification, policy precedence, budgets, quotas, output evaluation, release stages, canary limits and kill switches constrain derived intelligence.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/ai.test.ts", "contains": "resolves policy precedence restrictively" },
+        { "kind": "test", "path": "tests/unit/ai.test.ts", "contains": "consumes budget within limits" },
+        { "kind": "test", "path": "tests/unit/ai.test.ts", "contains": "promotes only when all gates pass" },
+        { "kind": "test", "path": "tests/unit/ai.test.ts", "contains": "kill switch disables capability independently" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "supervised-self-improvement",
+      "area": "Cognitive learning and self-improvement remain supervised",
+      "requirement": "Unsupervised self-modification is prohibited and learning deployment requires evaluation, validation, approval and controlled deployment.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/ai.test.ts", "contains": "no unsupervised self-modification" },
+        { "kind": "test", "path": "tests/unit/ai.test.ts", "contains": "safe learning requires all gates" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "live-world-model-and-cognitive-runtime",
+      "area": "World models and cognitive runtime execution are durable and observable",
+      "requirement": "World models, beliefs, goals, explanations and cognitive traces persist with provenance and are executed through authorized runtime boundaries.",
+      "required": false,
+      "evidence": [
+        { "kind": "document", "path": "architecture/phase-34-universal-cognitive-intelligence-engine.md", "contains": "cognitive provenance" }
+      ],
+      "boundary": []
+    }
+  ]
+}

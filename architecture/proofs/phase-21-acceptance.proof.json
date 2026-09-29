@@ -1,0 +1,155 @@
+{
+  "artifact": "phase-acceptance",
+  "phase": "21",
+  "phaseName": "Global Cloud Fabric",
+  "source": "architecture/phase-21-global-cloud-fabric.md",
+  "generatedAt": "2026-09-28T13:22:41.340Z",
+  "classificationDefinitions": {
+    "ENFORCED": "an executable artefact proves it (test, verifier script, migration, policy or machine-checked contract match) and, where a boundary is declared, a real call site invokes it",
+    "DECLARED": "a module, document or contract mentions it, but nothing executable proves it",
+    "IMPLEMENTED_UNWIRED": "implementation and tests exist, but the declared boundary patterns match nothing — the capability protects nothing yet",
+    "MISSING": "no artefact found"
+  },
+  "summary": {
+    "areas": 5,
+    "enforced": 5,
+    "declared": 0,
+    "implementedUnwired": 0,
+    "implementedUnwiredAreas": [],
+    "missing": 0,
+    "missingRequired": [],
+    "unresolvedEvidencePaths": []
+  },
+  "ownership": {
+    "note": "Phase 21 owns region/environment topology, BYOC registrations, placement policy and cloud governance. It does not own domain data, sovereign policy packs or planetary infrastructure.",
+    "canonicalOwners": {
+      "regions-environments-placement": "21",
+      "byoc-and-cloud-governance": "21",
+      "domain-data": "owning phases",
+      "tenancy": "03",
+      "security": "08",
+      "sovereign-policy": "20",
+      "planetary-infrastructure": "44"
+    }
+  },
+  "areas": [
+    {
+      "id": "provider-neutral-placement",
+      "area": "Infrastructure plans and placement are provider-neutral",
+      "requirement": "Regions, providers, deployments and placement plans carry declared capabilities and zones, and plans require explicit approval before application.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/cloud-core.ts",
+        "tests/unit/cloud-core.test.ts",
+        "tests/unit/cloud-core.test.ts",
+        "tests/unit/cloud-core.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/cloud-core.ts",
+        "tests/unit/cloud-core.test.ts",
+        "tests/unit/cloud-core.test.ts",
+        "tests/unit/cloud-core.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "byoc-trust-and-revocation",
+      "area": "BYOC registration has trust, permissions, health and revocation",
+      "requirement": "BYOC environments require an issuer and trust establishment, explicit permission manifests, health state and reasoned revocation.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/cloud-byoc.ts",
+        "tests/unit/cloud-byoc.test.ts",
+        "tests/unit/cloud-byoc.test.ts",
+        "tests/unit/cloud-byoc.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/cloud-byoc.ts",
+        "tests/unit/cloud-byoc.test.ts",
+        "tests/unit/cloud-byoc.test.ts",
+        "tests/unit/cloud-byoc.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "fabric-health-and-recovery",
+      "area": "Cloud governance models health, incidents, cost and recovery",
+      "requirement": "Health, SLO, alert, incident, runbook, cost, break-glass, migration, exit and kill-switch records are explicit governance objects.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/cloud-governance.ts",
+        "tests/unit/cloud-governance.test.ts",
+        "tests/unit/cloud-governance.test.ts",
+        "tests/unit/cloud-governance.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/cloud-governance.ts",
+        "tests/unit/cloud-governance.test.ts",
+        "tests/unit/cloud-governance.test.ts",
+        "tests/unit/cloud-governance.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "infrastructure-invariants-and-neutrality",
+      "area": "Infrastructure-as-code is verified for containment and neutrality",
+      "requirement": "The fabric verifier checks infrastructure digests, secrets, remote state, pinned versions, cluster baseline, sandbox containment, neutrality and ownership without duplicating domain engines.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "scripts/verify-infrastructure.mjs",
+        "tests/unit/infrastructure-fabric.test.ts",
+        "tests/unit/infrastructure-fabric.test.ts",
+        "tests/unit/infrastructure-fabric.test.ts"
+      ],
+      "matchedEvidence": [
+        "scripts/verify-infrastructure.mjs",
+        "tests/unit/infrastructure-fabric.test.ts",
+        "tests/unit/infrastructure-fabric.test.ts",
+        "tests/unit/infrastructure-fabric.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "deployment-is-credential-gated",
+      "area": "No cloud environment is claimed as deployed",
+      "requirement": "Provisioning remains behind reviewed IaC and owner credentials; verifier evidence records the gate and does not prove that apply has occurred.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/infrastructure-fabric.test.ts",
+        "frontend/src/lib/cloud-core.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/infrastructure-fabric.test.ts",
+        "frontend/src/lib/cloud-core.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    }
+  ],
+  "ok": true,
+  "limitations": [
+    "Classification measures the presence of executable evidence, not the correctness or completeness of that evidence.",
+    "A DECLARED area is unfinished work, never a false claim — it is reported as such.",
+    "An IMPLEMENTED_UNWIRED area has a tested implementation that no boundary calls; it is reported, never counted as enforcement.",
+    "Evidence patterns are declared per phase in architecture/phase-acceptance/phase-<id>-*.json and must be reviewed when a phase is re-audited."
+  ]
+}

@@ -2114,3 +2114,14 @@ Two rules keep this knowledge safe to expose:
 
 The knowledge surface is the super-admin workspace `/super-admin/runtime-contracts`,
 which renders the subsystems and the self-check result, including failures.
+
+<!-- campaign-52-wp02-receiving-record -->
+
+## Campaign-52 WP-02 receiving record
+
+Status: `SCOPE_RECORDED_IMPLEMENTATION_DENIED`
+Source: `architecture/COREGRID_CAMPAIGN_52_WP_02_RECEIVING_RECONCILIATION.json`
+
+These mapped Phase 52 extracts are received here as provenance. They do not authorize runtime implementation, a new phase, or a registry expansion.
+
+- `CG-P52-GAP-012`: Clients share contracts. The proposed directory tree is source design and does not authorize a repository migration.

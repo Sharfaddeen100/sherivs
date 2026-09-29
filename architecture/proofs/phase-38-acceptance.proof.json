@@ -1,0 +1,91 @@
+{
+  "artifact": "phase-acceptance",
+  "phase": "38",
+  "phaseName": "Evolution Engine",
+  "source": "architecture/phase-38-evolution-engine.md",
+  "generatedAt": "2026-09-28T15:12:48.595Z",
+  "classificationDefinitions": {
+    "ENFORCED": "an executable artefact proves it (test, verifier script, migration, policy or machine-checked contract match) and, where a boundary is declared, a real call site invokes it",
+    "DECLARED": "a module, document or contract mentions it, but nothing executable proves it",
+    "IMPLEMENTED_UNWIRED": "implementation and tests exist, but the declared boundary patterns match nothing — the capability protects nothing yet",
+    "MISSING": "no artefact found"
+  },
+  "summary": {
+    "areas": 3,
+    "enforced": 0,
+    "declared": 3,
+    "implementedUnwired": 0,
+    "implementedUnwiredAreas": [],
+    "missing": 0,
+    "missingRequired": [],
+    "unresolvedEvidencePaths": []
+  },
+  "ownership": {
+    "canonicalOwners": {
+      "evolution-lifecycle": "32",
+      "evolution-programs-and-staged-migration": "38",
+      "governance-alignment": "39",
+      "self-improvement-ratification": "47"
+    }
+  },
+  "areas": [
+    {
+      "id": "evolution-engine-boundary",
+      "area": "Evolution engine ownership composes existing evolution capability",
+      "requirement": "Phase 38 stages managed transformation without creating a competing evolution-lifecycle capability or governance authority.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "architecture/phase-38-evolution-engine.md"
+      ],
+      "matchedEvidence": [
+        "architecture/phase-38-evolution-engine.md"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "staged-migration-and-invariant-verification",
+      "area": "Staged migrations and post-change invariant verification are defined",
+      "requirement": "Evolution programs provide staged migration, rollback, invariant verification and controlled retirement.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "architecture/phase-38-evolution-engine.md"
+      ],
+      "matchedEvidence": [
+        "architecture/phase-38-evolution-engine.md"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "live-evolution-program-execution",
+      "area": "Live platform evolution execution is wired",
+      "requirement": "Evolution programs execute at an authorized live boundary with durable state, evidence, rollback and conformance.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "architecture/phase-38-evolution-engine.md"
+      ],
+      "matchedEvidence": [
+        "architecture/phase-38-evolution-engine.md"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    }
+  ],
+  "ok": true,
+  "limitations": [
+    "Classification measures the presence of executable evidence, not the correctness or completeness of that evidence.",
+    "A DECLARED area is unfinished work, never a false claim — it is reported as such.",
+    "An IMPLEMENTED_UNWIRED area has a tested implementation that no boundary calls; it is reported, never counted as enforcement.",
+    "Evidence patterns are declared per phase in architecture/phase-acceptance/phase-<id>-*.json and must be reviewed when a phase is re-audited."
+  ]
+}

@@ -1,0 +1,226 @@
+{
+  "artifact": "phase-acceptance",
+  "phase": "30",
+  "phaseName": "Globalization",
+  "source": "architecture/phase-30-globalization.md",
+  "generatedAt": "2026-09-28T13:22:58.574Z",
+  "classificationDefinitions": {
+    "ENFORCED": "an executable artefact proves it (test, verifier script, migration, policy or machine-checked contract match) and, where a boundary is declared, a real call site invokes it",
+    "DECLARED": "a module, document or contract mentions it, but nothing executable proves it",
+    "IMPLEMENTED_UNWIRED": "implementation and tests exist, but the declared boundary patterns match nothing — the capability protects nothing yet",
+    "MISSING": "no artefact found"
+  },
+  "summary": {
+    "areas": 8,
+    "enforced": 7,
+    "declared": 1,
+    "implementedUnwired": 0,
+    "implementedUnwiredAreas": [],
+    "missing": 0,
+    "missingRequired": [],
+    "unresolvedEvidencePaths": []
+  },
+  "ownership": {
+    "canonicalOwners": {
+      "locale-and-format-rules": "30",
+      "localized-content": "30",
+      "regional-context-and-jurisdiction": "30",
+      "domain-semantics": "owning-domain-phase",
+      "human-interface": "50",
+      "sovereign-policy": "20"
+    }
+  },
+  "areas": [
+    {
+      "id": "locale-resolution-and-language-fallback",
+      "area": "Locale resolution respects authorization and language fallback",
+      "requirement": "Locales require language metadata, institutional policy takes precedence over user preference, and fallback cannot select unauthorized locales.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/kernel/phase-contracts/phase-30-globalization.ts",
+        "tests/unit/globalization.test.ts",
+        "tests/unit/globalization.test.ts",
+        "tests/unit/globalization.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/kernel/phase-contracts/phase-30-globalization.ts",
+        "tests/unit/globalization.test.ts",
+        "tests/unit/globalization.test.ts",
+        "tests/unit/globalization.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "rtl-unicode-and-cultural-safety",
+      "area": "RTL, Unicode, names, addresses and cultural conventions are safe",
+      "requirement": "Direction and Unicode safety are explicit, bidi overrides are detected, and cultural/name/address models do not impose universal conventions.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/globalization.test.ts",
+        "tests/unit/globalization.test.ts",
+        "tests/unit/globalization.test.ts",
+        "tests/unit/globalization.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/globalization.test.ts",
+        "tests/unit/globalization.test.ts",
+        "tests/unit/globalization.test.ts",
+        "tests/unit/globalization.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "translation-and-content-governance",
+      "area": "Translations and localized content preserve approval, version and drift",
+      "requirement": "AI translations require human review, updates reset approval, terminology proposals do not silently apply, and content fallback/drift/governance are controlled.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/globalization.test.ts",
+        "tests/unit/globalization.test.ts",
+        "tests/unit/globalization.test.ts",
+        "tests/unit/globalization.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/globalization.test.ts",
+        "tests/unit/globalization.test.ts",
+        "tests/unit/globalization.test.ts",
+        "tests/unit/globalization.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "jurisdiction-residency-and-temporal-rules",
+      "area": "Jurisdiction, residency, timezone and calendar rules preserve history",
+      "requirement": "Jurisdiction chains, effective-dated rules, data transfer restrictions, timezone-aware events, calendars and holidays are explicit and versioned.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/globalization.test.ts",
+        "tests/unit/globalization.test.ts",
+        "tests/unit/globalization.test.ts",
+        "tests/unit/globalization.test.ts",
+        "tests/unit/globalization.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/globalization.test.ts",
+        "tests/unit/globalization.test.ts",
+        "tests/unit/globalization.test.ts",
+        "tests/unit/globalization.test.ts",
+        "tests/unit/globalization.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "regional-format-and-economic-representation",
+      "area": "Currency, tax, units, documents, communication and integrations are localized representations",
+      "requirement": "Regional formatting preserves source context, validates currencies/tax types, uses historical FX, and does not redefine domain truth.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/globalization.test.ts",
+        "tests/unit/globalization.test.ts",
+        "tests/unit/globalization.test.ts",
+        "tests/unit/globalization.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/globalization.test.ts",
+        "tests/unit/globalization.test.ts",
+        "tests/unit/globalization.test.ts",
+        "tests/unit/globalization.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "regional-governance-and-readiness",
+      "area": "Configuration, feature availability and country expansion are gated",
+      "requirement": "Specific configuration precedence, immutable rules, regional dependencies, readiness scores, pilots, support and SLAs are explicit.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/globalization.test.ts",
+        "tests/unit/globalization.test.ts",
+        "tests/unit/globalization.test.ts",
+        "tests/unit/globalization.test.ts",
+        "tests/unit/globalization.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/globalization.test.ts",
+        "tests/unit/globalization.test.ts",
+        "tests/unit/globalization.test.ts",
+        "tests/unit/globalization.test.ts",
+        "tests/unit/globalization.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "localization-quality-connectivity-and-events",
+      "area": "Localization QA, connectivity adaptation, regional graph and events are bounded",
+      "requirement": "Locale matrices cover LTR/RTL, test runs and human review are recorded, limited networks adapt sync/offline behavior, regional graphs validate, and only known events publish.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/globalization.test.ts",
+        "tests/unit/globalization.test.ts",
+        "tests/unit/globalization.test.ts",
+        "tests/unit/globalization.test.ts",
+        "tests/unit/globalization.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/globalization.test.ts",
+        "tests/unit/globalization.test.ts",
+        "tests/unit/globalization.test.ts",
+        "tests/unit/globalization.test.ts",
+        "tests/unit/globalization.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "live-globalization-runtime",
+      "area": "Durable globalization registries and runtime projections are wired",
+      "requirement": "Locale, translation, jurisdiction, format and regional readiness records persist and are consumed by authorized runtime surfaces.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "architecture/phase-30-globalization.md"
+      ],
+      "matchedEvidence": [
+        "architecture/phase-30-globalization.md"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    }
+  ],
+  "ok": true,
+  "limitations": [
+    "Classification measures the presence of executable evidence, not the correctness or completeness of that evidence.",
+    "A DECLARED area is unfinished work, never a false claim — it is reported as such.",
+    "An IMPLEMENTED_UNWIRED area has a tested implementation that no boundary calls; it is reported, never counted as enforcement.",
+    "Evidence patterns are declared per phase in architecture/phase-acceptance/phase-<id>-*.json and must be reviewed when a phase is re-audited."
+  ]
+}

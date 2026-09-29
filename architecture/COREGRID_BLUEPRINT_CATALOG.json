@@ -1,0 +1,5101 @@
+{
+  "mission": "COREGRID-MISSION-0001",
+  "artifact": "COREGRID_BLUEPRINT_CATALOG",
+  "status": "OBSERVED_WITH_UNRESOLVED_OWNERSHIP",
+  "capturedAt": "2026-09-28T19:04:18.233Z",
+  "classificationVocabulary": [
+    "strategic",
+    "architecture",
+    "domain",
+    "capability",
+    "system",
+    "runtime",
+    "data",
+    "reality-causal",
+    "security",
+    "interface",
+    "infrastructure",
+    "integration",
+    "migration",
+    "evolution",
+    "research",
+    "experimental",
+    "operational",
+    "policy",
+    "composite"
+  ],
+  "blueprints": [
+    {
+      "artifactId": "architecture:COREGRID_ACCEPTANCE_COVERAGE_AUDIT.md",
+      "sourceLocation": "architecture/COREGRID_ACCEPTANCE_COVERAGE_AUDIT.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:COREGRID_AUTHORITY_ALIAS_MAP.md",
+      "sourceLocation": "architecture/COREGRID_AUTHORITY_ALIAS_MAP.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:COREGRID_CONTROL_PLANE_RECONCILIATION.md",
+      "sourceLocation": "architecture/COREGRID_CONTROL_PLANE_RECONCILIATION.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:COREGRID_FIRST_MISSION_DEFINITION.md",
+      "sourceLocation": "architecture/COREGRID_FIRST_MISSION_DEFINITION.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:COREGRID_FOUNDATION_MISSION_001_QUALIFICATION.md",
+      "sourceLocation": "architecture/COREGRID_FOUNDATION_MISSION_001_QUALIFICATION.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:COREGRID_MISSION_0001_ENGINEERING_PLAN.md",
+      "sourceLocation": "architecture/COREGRID_MISSION_0001_ENGINEERING_PLAN.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:COREGRID_PHASE_52_CANDIDATE_PROPOSALS.md",
+      "sourceLocation": "architecture/COREGRID_PHASE_52_CANDIDATE_PROPOSALS.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:COREGRID_PHASE_52_OWNERSHIP_RECONCILIATION.md",
+      "sourceLocation": "architecture/COREGRID_PHASE_52_OWNERSHIP_RECONCILIATION.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:COREGRID_PHASE_52_RECONCILIATION.md",
+      "sourceLocation": "architecture/COREGRID_PHASE_52_RECONCILIATION.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:COREGRID_PHASE_52_VERIFICATION_MATRIX.md",
+      "sourceLocation": "architecture/COREGRID_PHASE_52_VERIFICATION_MATRIX.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:COREGRID_PROTOTYPE_ARCHAEOLOGY.md",
+      "sourceLocation": "architecture/COREGRID_PROTOTYPE_ARCHAEOLOGY.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:COREGRID_REALITY_ONTOLOGY_MAP.md",
+      "sourceLocation": "architecture/COREGRID_REALITY_ONTOLOGY_MAP.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:COREGRID_RUNTIME_READINESS.md",
+      "sourceLocation": "architecture/COREGRID_RUNTIME_READINESS.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:README.md",
+      "sourceLocation": "architecture/README.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:archaeology-inventory.md",
+      "sourceLocation": "architecture/archaeology-inventory.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:archaeology:domain-neutrality-wave-2.audit.md",
+      "sourceLocation": "architecture/archaeology/domain-neutrality-wave-2.audit.md",
+      "kind": "audit",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:archaeology:phase-01-foundation.audit.md",
+      "sourceLocation": "architecture/archaeology/phase-01-foundation.audit.md",
+      "kind": "audit",
+      "canonicalPhase": "01",
+      "claimedOwner": "Foundation",
+      "status": "COMPLETE",
+      "implementationReferences": [
+        "foundation-standards"
+      ],
+      "consumers": [
+        "all"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:archaeology:phase-02-identity.audit.md",
+      "sourceLocation": "architecture/archaeology/phase-02-identity.audit.md",
+      "kind": "audit",
+      "canonicalPhase": "02",
+      "claimedOwner": "Identity",
+      "status": "COMPLETE",
+      "implementationReferences": [
+        "identity",
+        "identity-registry",
+        "identity-credentials",
+        "identity-lifecycle",
+        "identity-relationships",
+        "roles"
+      ],
+      "consumers": [
+        "03",
+        "05",
+        "06",
+        "08",
+        "22",
+        "25",
+        "50"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:archaeology:phase-03-multi-tenancy.audit.md",
+      "sourceLocation": "architecture/archaeology/phase-03-multi-tenancy.audit.md",
+      "kind": "audit",
+      "canonicalPhase": "03",
+      "claimedOwner": "Multi-Tenancy",
+      "status": "COMPLETE",
+      "implementationReferences": [
+        "tenant",
+        "tenant-core",
+        "tenant-registry",
+        "tenant-isolation",
+        "tenant-lifecycle",
+        "tenant-quota",
+        "tenant-topology"
+      ],
+      "consumers": [
+        "all"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:archaeology:phase-04-reality-engine.audit.md",
+      "sourceLocation": "architecture/archaeology/phase-04-reality-engine.audit.md",
+      "kind": "audit",
+      "canonicalPhase": "04",
+      "claimedOwner": "Education Reality Engine",
+      "status": "COMPLETE",
+      "implementationReferences": [
+        "education-core",
+        "education-curriculum",
+        "education-institution",
+        "education-assessment",
+        "education-facilities",
+        "education-governance",
+        "education-reality-view",
+        "runtime/scholar",
+        "runtime/scholar-events"
+      ],
+      "consumers": [
+        "11",
+        "12",
+        "13",
+        "25"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:archaeology:phase-05-application-runtime.audit.md",
+      "sourceLocation": "architecture/archaeology/phase-05-application-runtime.audit.md",
+      "kind": "audit",
+      "canonicalPhase": "05",
+      "claimedOwner": "Core Application Runtime",
+      "status": "COMPLETE",
+      "implementationReferences": [
+        "runtime-core",
+        "runtime-command-query",
+        "runtime-events",
+        "runtime-jobs",
+        "runtime-capabilities",
+        "runtime-observability",
+        "runtime-self-report",
+        "runtime-webhooks",
+        "runtime-integrations",
+        "runtime-resilience",
+        "runtime-feature-flags",
+        "runtime-approval",
+        "runtime-bulk"
+      ],
+      "consumers": [
+        "all"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:archaeology:phase-06-workspace-engine.audit.md",
+      "sourceLocation": "architecture/archaeology/phase-06-workspace-engine.audit.md",
+      "kind": "audit",
+      "canonicalPhase": "06",
+      "claimedOwner": "Workspace Engine",
+      "status": "COMPLETE",
+      "implementationReferences": [
+        "workspace-core",
+        "workspace-composition",
+        "workspace-membership",
+        "workspace-governance",
+        "workspace-projection"
+      ],
+      "consumers": [
+        "19",
+        "24",
+        "50"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:archaeology:phase-07-ai-agent-system.audit.md",
+      "sourceLocation": "architecture/archaeology/phase-07-ai-agent-system.audit.md",
+      "kind": "audit",
+      "canonicalPhase": "07",
+      "claimedOwner": "AI Agent System",
+      "status": "COMPLETE",
+      "implementationReferences": [
+        "agent-core",
+        "agent-memory",
+        "agent-tasks",
+        "agent-plans",
+        "agent-governance-report"
+      ],
+      "consumers": [
+        "26",
+        "35",
+        "47",
+        "50"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:archaeology:phase-08-security-engine.audit.md",
+      "sourceLocation": "architecture/archaeology/phase-08-security-engine.audit.md",
+      "kind": "audit",
+      "canonicalPhase": "08",
+      "claimedOwner": "Security Engine",
+      "status": "COMPLETE",
+      "implementationReferences": [
+        "security-core",
+        "security-risk",
+        "security-policy",
+        "security-session",
+        "security-events",
+        "security-agent-controls",
+        "security-role-gate"
+      ],
+      "consumers": [
+        "all"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:archaeology:phase-09-security-trust-fabric.audit.md",
+      "sourceLocation": "architecture/archaeology/phase-09-security-trust-fabric.audit.md",
+      "kind": "audit",
+      "canonicalPhase": "09",
+      "claimedOwner": "Security Trust Fabric",
+      "status": "COMPLETE",
+      "implementationReferences": [
+        "trust-core",
+        "trust-assertions",
+        "trust-entities",
+        "trust-governance",
+        "trust-fabric-report"
+      ],
+      "consumers": [
+        "08",
+        "42"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:archaeology:phase-10-communication-platform.audit.md",
+      "sourceLocation": "architecture/archaeology/phase-10-communication-platform.audit.md",
+      "kind": "audit",
+      "canonicalPhase": "10",
+      "claimedOwner": "Communication Platform",
+      "status": "COMPLETE",
+      "implementationReferences": [
+        "communication-core",
+        "communication-conversation",
+        "communication-channels",
+        "communication-templates",
+        "communication-providers",
+        "communication-steward",
+        "communication-steward-report"
+      ],
+      "consumers": [
+        "24",
+        "43"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:archaeology:phase-11-academic-intelligence.audit.md",
+      "sourceLocation": "architecture/archaeology/phase-11-academic-intelligence.audit.md",
+      "kind": "audit",
+      "canonicalPhase": "11",
+      "claimedOwner": "Academic Intelligence",
+      "status": "COMPLETE",
+      "implementationReferences": [
+        "academic-core",
+        "academic-mastery",
+        "academic-pathways",
+        "academic-risk",
+        "academic-curriculum",
+        "academic-assessment",
+        "academic-intelligence-report"
+      ],
+      "consumers": [
+        "12",
+        "18"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:archaeology:phase-12-scheduling-intelligence.audit.md",
+      "sourceLocation": "architecture/archaeology/phase-12-scheduling-intelligence.audit.md",
+      "kind": "audit",
+      "canonicalPhase": "12",
+      "claimedOwner": "Scheduling Intelligence",
+      "status": "COMPLETE",
+      "implementationReferences": [
+        "scheduling-core",
+        "scheduling-constraints",
+        "scheduling-availability",
+        "scheduling-validator",
+        "scheduling-conflicts",
+        "scheduling-quality",
+        "scheduling-intelligence-report"
+      ],
+      "consumers": [
+        "04",
+        "25"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:archaeology:phase-13-financial-system.audit.md",
+      "sourceLocation": "architecture/archaeology/phase-13-financial-system.audit.md",
+      "kind": "audit",
+      "canonicalPhase": "13",
+      "claimedOwner": "Financial System",
+      "status": "COMPLETE",
+      "implementationReferences": [
+        "financial-core",
+        "financial-payments",
+        "financial-settlements",
+        "financial-controls",
+        "financial-splits",
+        "financial-routing",
+        "financial-journal",
+        "financial-tax",
+        "financial-intelligence-report"
+      ],
+      "consumers": [
+        "27",
+        "49"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:archaeology:registry-truth-sweep.audit.md",
+      "sourceLocation": "architecture/archaeology/registry-truth-sweep.audit.md",
+      "kind": "audit",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:capability-ownership-graph.md",
+      "sourceLocation": "architecture/capability-ownership-graph.md",
+      "kind": "architecture-map",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:cloud-fabric-implementation-blueprint.md",
+      "sourceLocation": "architecture/cloud-fabric-implementation-blueprint.md",
+      "kind": "blueprint",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:cloud-fabric-migration-plan.md",
+      "sourceLocation": "architecture/cloud-fabric-migration-plan.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:dependency-graph.md",
+      "sourceLocation": "architecture/dependency-graph.md",
+      "kind": "architecture-map",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:duplication-map.md",
+      "sourceLocation": "architecture/duplication-map.md",
+      "kind": "architecture-map",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:engineering-section-completeness-matrix.md",
+      "sourceLocation": "architecture/engineering-section-completeness-matrix.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:execution-plan.md",
+      "sourceLocation": "architecture/execution-plan.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:foundation-limits-map.md",
+      "sourceLocation": "architecture/foundation-limits-map.md",
+      "kind": "architecture-map",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:kernel-phase-contract-program.md",
+      "sourceLocation": "architecture/kernel-phase-contract-program.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:kernel-wiring-plan.md",
+      "sourceLocation": "architecture/kernel-wiring-plan.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:migration-plan.md",
+      "sourceLocation": "architecture/migration-plan.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-01-foundation.md",
+      "sourceLocation": "architecture/phase-01-foundation.md",
+      "kind": "phase-blueprint",
+      "canonicalPhase": "01",
+      "claimedOwner": "Foundation",
+      "status": "COMPLETE",
+      "implementationReferences": [
+        "foundation-standards"
+      ],
+      "consumers": [
+        "all"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-02-identity.md",
+      "sourceLocation": "architecture/phase-02-identity.md",
+      "kind": "phase-blueprint",
+      "canonicalPhase": "02",
+      "claimedOwner": "Identity",
+      "status": "COMPLETE",
+      "implementationReferences": [
+        "identity",
+        "identity-registry",
+        "identity-credentials",
+        "identity-lifecycle",
+        "identity-relationships",
+        "roles"
+      ],
+      "consumers": [
+        "03",
+        "05",
+        "06",
+        "08",
+        "22",
+        "25",
+        "50"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-03-multi-tenancy.md",
+      "sourceLocation": "architecture/phase-03-multi-tenancy.md",
+      "kind": "phase-blueprint",
+      "canonicalPhase": "03",
+      "claimedOwner": "Multi-Tenancy",
+      "status": "COMPLETE",
+      "implementationReferences": [
+        "tenant",
+        "tenant-core",
+        "tenant-registry",
+        "tenant-isolation",
+        "tenant-lifecycle",
+        "tenant-quota",
+        "tenant-topology"
+      ],
+      "consumers": [
+        "all"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-04-education-reality-engine.md",
+      "sourceLocation": "architecture/phase-04-education-reality-engine.md",
+      "kind": "phase-blueprint",
+      "canonicalPhase": "04",
+      "claimedOwner": "Education Reality Engine",
+      "status": "COMPLETE",
+      "implementationReferences": [
+        "education-core",
+        "education-curriculum",
+        "education-institution",
+        "education-assessment",
+        "education-facilities",
+        "education-governance",
+        "education-reality-view",
+        "runtime/scholar",
+        "runtime/scholar-events"
+      ],
+      "consumers": [
+        "11",
+        "12",
+        "13",
+        "25"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-04-runtime-build-map.md",
+      "sourceLocation": "architecture/phase-04-runtime-build-map.md",
+      "kind": "architecture-map",
+      "canonicalPhase": "04",
+      "claimedOwner": "Education Reality Engine",
+      "status": "COMPLETE",
+      "implementationReferences": [
+        "education-core",
+        "education-curriculum",
+        "education-institution",
+        "education-assessment",
+        "education-facilities",
+        "education-governance",
+        "education-reality-view",
+        "runtime/scholar",
+        "runtime/scholar-events"
+      ],
+      "consumers": [
+        "11",
+        "12",
+        "13",
+        "25"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-05-core-application-runtime.md",
+      "sourceLocation": "architecture/phase-05-core-application-runtime.md",
+      "kind": "phase-blueprint",
+      "canonicalPhase": "05",
+      "claimedOwner": "Core Application Runtime",
+      "status": "COMPLETE",
+      "implementationReferences": [
+        "runtime-core",
+        "runtime-command-query",
+        "runtime-events",
+        "runtime-jobs",
+        "runtime-capabilities",
+        "runtime-observability",
+        "runtime-self-report",
+        "runtime-webhooks",
+        "runtime-integrations",
+        "runtime-resilience",
+        "runtime-feature-flags",
+        "runtime-approval",
+        "runtime-bulk"
+      ],
+      "consumers": [
+        "all"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-06-workspace-engine.md",
+      "sourceLocation": "architecture/phase-06-workspace-engine.md",
+      "kind": "phase-blueprint",
+      "canonicalPhase": "06",
+      "claimedOwner": "Workspace Engine",
+      "status": "COMPLETE",
+      "implementationReferences": [
+        "workspace-core",
+        "workspace-composition",
+        "workspace-membership",
+        "workspace-governance",
+        "workspace-projection"
+      ],
+      "consumers": [
+        "19",
+        "24",
+        "50"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-07-ai-agent-system.md",
+      "sourceLocation": "architecture/phase-07-ai-agent-system.md",
+      "kind": "phase-blueprint",
+      "canonicalPhase": "07",
+      "claimedOwner": "AI Agent System",
+      "status": "COMPLETE",
+      "implementationReferences": [
+        "agent-core",
+        "agent-memory",
+        "agent-tasks",
+        "agent-plans",
+        "agent-governance-report"
+      ],
+      "consumers": [
+        "26",
+        "35",
+        "47",
+        "50"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-08-security-engine.md",
+      "sourceLocation": "architecture/phase-08-security-engine.md",
+      "kind": "phase-blueprint",
+      "canonicalPhase": "08",
+      "claimedOwner": "Security Engine",
+      "status": "COMPLETE",
+      "implementationReferences": [
+        "security-core",
+        "security-risk",
+        "security-policy",
+        "security-session",
+        "security-events",
+        "security-agent-controls",
+        "security-role-gate"
+      ],
+      "consumers": [
+        "all"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-09-security-trust-fabric.md",
+      "sourceLocation": "architecture/phase-09-security-trust-fabric.md",
+      "kind": "phase-blueprint",
+      "canonicalPhase": "09",
+      "claimedOwner": "Security Trust Fabric",
+      "status": "COMPLETE",
+      "implementationReferences": [
+        "trust-core",
+        "trust-assertions",
+        "trust-entities",
+        "trust-governance",
+        "trust-fabric-report"
+      ],
+      "consumers": [
+        "08",
+        "42"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-10-communication-platform.md",
+      "sourceLocation": "architecture/phase-10-communication-platform.md",
+      "kind": "phase-blueprint",
+      "canonicalPhase": "10",
+      "claimedOwner": "Communication Platform",
+      "status": "COMPLETE",
+      "implementationReferences": [
+        "communication-core",
+        "communication-conversation",
+        "communication-channels",
+        "communication-templates",
+        "communication-providers",
+        "communication-steward",
+        "communication-steward-report"
+      ],
+      "consumers": [
+        "24",
+        "43"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-11-academic-intelligence.md",
+      "sourceLocation": "architecture/phase-11-academic-intelligence.md",
+      "kind": "phase-blueprint",
+      "canonicalPhase": "11",
+      "claimedOwner": "Academic Intelligence",
+      "status": "COMPLETE",
+      "implementationReferences": [
+        "academic-core",
+        "academic-mastery",
+        "academic-pathways",
+        "academic-risk",
+        "academic-curriculum",
+        "academic-assessment",
+        "academic-intelligence-report"
+      ],
+      "consumers": [
+        "12",
+        "18"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-12-scheduling-intelligence.md",
+      "sourceLocation": "architecture/phase-12-scheduling-intelligence.md",
+      "kind": "phase-blueprint",
+      "canonicalPhase": "12",
+      "claimedOwner": "Scheduling Intelligence",
+      "status": "COMPLETE",
+      "implementationReferences": [
+        "scheduling-core",
+        "scheduling-constraints",
+        "scheduling-availability",
+        "scheduling-validator",
+        "scheduling-conflicts",
+        "scheduling-quality",
+        "scheduling-intelligence-report"
+      ],
+      "consumers": [
+        "04",
+        "25"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-13-financial-system.md",
+      "sourceLocation": "architecture/phase-13-financial-system.md",
+      "kind": "phase-blueprint",
+      "canonicalPhase": "13",
+      "claimedOwner": "Financial System",
+      "status": "COMPLETE",
+      "implementationReferences": [
+        "financial-core",
+        "financial-payments",
+        "financial-settlements",
+        "financial-controls",
+        "financial-splits",
+        "financial-routing",
+        "financial-journal",
+        "financial-tax",
+        "financial-intelligence-report"
+      ],
+      "consumers": [
+        "27",
+        "49"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-14-data-platform.md",
+      "sourceLocation": "architecture/phase-14-data-platform.md",
+      "kind": "phase-blueprint",
+      "canonicalPhase": "14",
+      "claimedOwner": "Data Platform",
+      "status": "IMPLEMENTING",
+      "implementationReferences": [
+        "data-core",
+        "data-catalog",
+        "data-quality",
+        "data-governance"
+      ],
+      "consumers": [
+        "all"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-15-hardware-integration.md",
+      "sourceLocation": "architecture/phase-15-hardware-integration.md",
+      "kind": "phase-blueprint",
+      "canonicalPhase": "15",
+      "claimedOwner": "Hardware Integration",
+      "status": "IMPLEMENTING",
+      "implementationReferences": [
+        "hardware-core",
+        "hardware-telemetry",
+        "hardware-commands",
+        "hardware-lifecycle"
+      ],
+      "consumers": [
+        "16",
+        "44"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-16-digital-twin.md",
+      "sourceLocation": "architecture/phase-16-digital-twin.md",
+      "kind": "phase-blueprint",
+      "canonicalPhase": "16",
+      "claimedOwner": "Digital Twin",
+      "status": "IMPLEMENTING",
+      "implementationReferences": [
+        "twin-core",
+        "twin-graph",
+        "twin-state",
+        "twin-governance"
+      ],
+      "consumers": [
+        "17",
+        "18",
+        "46"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-17-automation-engine.md",
+      "sourceLocation": "architecture/phase-17-automation-engine.md",
+      "kind": "phase-blueprint",
+      "canonicalPhase": "17",
+      "claimedOwner": "Automation Engine",
+      "status": "IMPLEMENTING",
+      "implementationReferences": [
+        "automation-core",
+        "automation-workflow",
+        "automation-actions",
+        "automation-governance"
+      ],
+      "consumers": [
+        "all"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-18-analytics-intelligence.md",
+      "sourceLocation": "architecture/phase-18-analytics-intelligence.md",
+      "kind": "phase-blueprint",
+      "canonicalPhase": "18",
+      "claimedOwner": "Analytics Intelligence",
+      "status": "IMPLEMENTING",
+      "implementationReferences": [
+        "analytics-core",
+        "analytics-models",
+        "analytics-decisions",
+        "analytics-governance"
+      ],
+      "consumers": [
+        "19",
+        "34"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-19-command-centre.md",
+      "sourceLocation": "architecture/phase-19-command-centre.md",
+      "kind": "phase-blueprint",
+      "canonicalPhase": "19",
+      "claimedOwner": "Command Centre",
+      "status": "IMPLEMENTING",
+      "implementationReferences": [
+        "command-core",
+        "command-alerts",
+        "command-incidents",
+        "command-governance"
+      ],
+      "consumers": [
+        "control-plane"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-20-government-education-cloud.md",
+      "sourceLocation": "architecture/phase-20-government-education-cloud.md",
+      "kind": "phase-blueprint",
+      "canonicalPhase": "20",
+      "claimedOwner": "Government Education Cloud",
+      "status": "IMPLEMENTING",
+      "implementationReferences": [
+        "government-core",
+        "government-policy",
+        "government-data",
+        "government-governance"
+      ],
+      "consumers": [
+        "44"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-21-global-cloud-fabric.md",
+      "sourceLocation": "architecture/phase-21-global-cloud-fabric.md",
+      "kind": "phase-blueprint",
+      "canonicalPhase": "21",
+      "claimedOwner": "Global Cloud Fabric",
+      "status": "IMPLEMENTING",
+      "implementationReferences": [
+        "cloud-core",
+        "cloud-byoc",
+        "cloud-governance"
+      ],
+      "consumers": [
+        "44"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-22-mobile-platform.md",
+      "sourceLocation": "architecture/phase-22-mobile-platform.md",
+      "kind": "phase-blueprint",
+      "canonicalPhase": "22",
+      "claimedOwner": "Mobile Platform",
+      "status": "IMPLEMENTING",
+      "implementationReferences": [
+        "platform-core",
+        "platform-device",
+        "platform-offline",
+        "platform-observability"
+      ],
+      "consumers": [
+        "runtime-001"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-23-web-platform.md",
+      "sourceLocation": "architecture/phase-23-web-platform.md",
+      "kind": "phase-blueprint",
+      "canonicalPhase": "23",
+      "claimedOwner": "Web Platform",
+      "status": "IMPLEMENTING",
+      "implementationReferences": [
+        "web-core",
+        "web-storage",
+        "web-performance",
+        "web-platform"
+      ],
+      "consumers": [
+        "runtime-001"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-24-coregrid-experience-design-intelligence.md",
+      "sourceLocation": "architecture/phase-24-coregrid-experience-design-intelligence.md",
+      "kind": "phase-blueprint",
+      "canonicalPhase": "24",
+      "claimedOwner": "Experience & Design Intelligence",
+      "status": "IMPLEMENTING",
+      "implementationReferences": [
+        "experience-core",
+        "experience-personalization",
+        "experience-accessibility",
+        "experience-governance"
+      ],
+      "consumers": [
+        "50"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-25-institutional-onboarding-administration-workforce-identity-platform.md",
+      "sourceLocation": "architecture/phase-25-institutional-onboarding-administration-workforce-identity-platform.md",
+      "kind": "phase-blueprint",
+      "canonicalPhase": "25",
+      "claimedOwner": "Institutional Onboarding & Workforce",
+      "status": "COMPLETE",
+      "implementationReferences": [
+        "institution-core",
+        "workforce-core",
+        "onboarding-core",
+        "attendance-identity",
+        "institution-admin",
+        "workforce-positions",
+        "onboarding/onboarding-flow"
+      ],
+      "consumers": [
+        "runtime-001"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-26-ai-intelligence-layer.md",
+      "sourceLocation": "architecture/phase-26-ai-intelligence-layer.md",
+      "kind": "phase-blueprint",
+      "canonicalPhase": "26",
+      "claimedOwner": "AI Intelligence Layer",
+      "status": "IMPLEMENTING",
+      "implementationReferences": [
+        "ai-core",
+        "ai-context",
+        "ai-reasoning",
+        "ai-governance",
+        "ai-services"
+      ],
+      "consumers": [
+        "07",
+        "34",
+        "35"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-27-marketplace.md",
+      "sourceLocation": "architecture/phase-27-marketplace.md",
+      "kind": "phase-blueprint",
+      "canonicalPhase": "27",
+      "claimedOwner": "Marketplace",
+      "status": "IMPLEMENTED",
+      "implementationReferences": [
+        "marketplace-core",
+        "marketplace-vendor",
+        "marketplace-package",
+        "marketplace-entitlement",
+        "marketplace-governance"
+      ],
+      "consumers": [
+        "49",
+        "51"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-28-developer-platform.md",
+      "sourceLocation": "architecture/phase-28-developer-platform.md",
+      "kind": "phase-blueprint",
+      "canonicalPhase": "28",
+      "claimedOwner": "Developer Platform",
+      "status": "IMPLEMENTING",
+      "implementationReferences": [
+        "dev-core",
+        "dev-api",
+        "dev-env",
+        "dev-build",
+        "dev-governance"
+      ],
+      "consumers": [
+        "27",
+        "51"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-29-coregrid-integration.md",
+      "sourceLocation": "architecture/phase-29-coregrid-integration.md",
+      "kind": "phase-blueprint",
+      "canonicalPhase": "29",
+      "claimedOwner": "CoreGrid Integration",
+      "status": "IMPLEMENTING",
+      "implementationReferences": [
+        "integration-core",
+        "integration-transform",
+        "integration-connect",
+        "integration-ops",
+        "integration-governance"
+      ],
+      "consumers": [
+        "43"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-30-globalization.md",
+      "sourceLocation": "architecture/phase-30-globalization.md",
+      "kind": "phase-blueprint",
+      "canonicalPhase": "30",
+      "claimedOwner": "Globalization",
+      "status": "IMPLEMENTING",
+      "implementationReferences": [
+        "globalization-core",
+        "localization-content",
+        "regional-context",
+        "global-formats",
+        "global-governance"
+      ],
+      "consumers": [
+        "04",
+        "50"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-31-enterprise-scale.md",
+      "sourceLocation": "architecture/phase-31-enterprise-scale.md",
+      "kind": "phase-blueprint",
+      "canonicalPhase": "31",
+      "claimedOwner": "Enterprise Scale",
+      "status": "IMPLEMENTING",
+      "implementationReferences": [
+        "enterprise-core",
+        "enterprise-capacity",
+        "enterprise-reliability",
+        "enterprise-operations",
+        "enterprise-governance"
+      ],
+      "consumers": [
+        "40"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-32-future-evolution.md",
+      "sourceLocation": "architecture/phase-32-future-evolution.md",
+      "kind": "phase-blueprint",
+      "canonicalPhase": "32",
+      "claimedOwner": "Future Evolution",
+      "status": "IMPLEMENTING",
+      "implementationReferences": [
+        "evolution-core",
+        "evolution-experiments",
+        "evolution-migration",
+        "evolution-intelligence",
+        "evolution-governance"
+      ],
+      "consumers": [
+        "47"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-33-reality-intelligence-kernel.md",
+      "sourceLocation": "architecture/phase-33-reality-intelligence-kernel.md",
+      "kind": "phase-blueprint",
+      "canonicalPhase": "33",
+      "claimedOwner": "Reality Intelligence Kernel (URIK)",
+      "status": "ARCHITECTURE_DEFINED",
+      "implementationReferences": [
+        "kernel/reality",
+        "kernel/domain-manifest",
+        "kernel/outbox",
+        "kernel/runtime-registry"
+      ],
+      "consumers": [
+        "34",
+        "36",
+        "48",
+        "51"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-34-universal-cognitive-intelligence-engine.md",
+      "sourceLocation": "architecture/phase-34-universal-cognitive-intelligence-engine.md",
+      "kind": "phase-blueprint",
+      "canonicalPhase": "34",
+      "claimedOwner": "Universal Cognitive Intelligence Engine",
+      "status": "ARCHITECTURE_DEFINED",
+      "implementationReferences": [],
+      "consumers": [
+        "26",
+        "35"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-35-autonomous-agent-civilization-os.md",
+      "sourceLocation": "architecture/phase-35-autonomous-agent-civilization-os.md",
+      "kind": "phase-blueprint",
+      "canonicalPhase": "35",
+      "claimedOwner": "Autonomous Agent Civilization OS",
+      "status": "ARCHITECTURE_DEFINED",
+      "implementationReferences": [],
+      "consumers": [
+        "07"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-36-universal-memory-knowledge-civilization-engine.md",
+      "sourceLocation": "architecture/phase-36-universal-memory-knowledge-civilization-engine.md",
+      "kind": "phase-blueprint",
+      "canonicalPhase": "36",
+      "claimedOwner": "Universal Memory & Knowledge Engine",
+      "status": "ARCHITECTURE_DEFINED",
+      "implementationReferences": [],
+      "consumers": [
+        "34",
+        "35",
+        "07"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-37-simulation-future-intelligence-engine.md",
+      "sourceLocation": "architecture/phase-37-simulation-future-intelligence-engine.md",
+      "kind": "phase-blueprint",
+      "canonicalPhase": "37",
+      "claimedOwner": "Simulation & Future Intelligence Engine",
+      "status": "ARCHITECTURE_DEFINED",
+      "implementationReferences": [],
+      "consumers": [
+        "41"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-38-evolution-engine.md",
+      "sourceLocation": "architecture/phase-38-evolution-engine.md",
+      "kind": "phase-blueprint",
+      "canonicalPhase": "38",
+      "claimedOwner": "Evolution Engine",
+      "status": "ARCHITECTURE_DEFINED",
+      "implementationReferences": [],
+      "consumers": [
+        "47"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-39-governance-alignment-engine.md",
+      "sourceLocation": "architecture/phase-39-governance-alignment-engine.md",
+      "kind": "phase-blueprint",
+      "canonicalPhase": "39",
+      "claimedOwner": "Governance & Alignment Engine",
+      "status": "ARCHITECTURE_DEFINED",
+      "implementationReferences": [],
+      "consumers": [
+        "51"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-40-universal-runtime-fabric.md",
+      "sourceLocation": "architecture/phase-40-universal-runtime-fabric.md",
+      "kind": "phase-blueprint",
+      "canonicalPhase": "40",
+      "claimedOwner": "Universal Runtime Fabric",
+      "status": "ARCHITECTURE_DEFINED",
+      "implementationReferences": [],
+      "consumers": [
+        "51"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-41-reality-simulation-autonomous-sandbox-civilization-engine.md",
+      "sourceLocation": "architecture/phase-41-reality-simulation-autonomous-sandbox-civilization-engine.md",
+      "kind": "phase-blueprint",
+      "canonicalPhase": "41",
+      "claimedOwner": "Reality Simulation & Autonomous Sandbox Engine",
+      "status": "ARCHITECTURE_DEFINED",
+      "implementationReferences": [],
+      "consumers": [
+        "37",
+        "47"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-42-zero-trust-security-adversarial-defense-civilization-engine.md",
+      "sourceLocation": "architecture/phase-42-zero-trust-security-adversarial-defense-civilization-engine.md",
+      "kind": "phase-blueprint",
+      "canonicalPhase": "42",
+      "claimedOwner": "Zero Trust & Adversarial Defense Engine",
+      "status": "ARCHITECTURE_DEFINED",
+      "implementationReferences": [],
+      "consumers": [
+        "08"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-43-universal-interface-connectivity-intelligence.md",
+      "sourceLocation": "architecture/phase-43-universal-interface-connectivity-intelligence.md",
+      "kind": "phase-blueprint",
+      "canonicalPhase": "43",
+      "claimedOwner": "Universal Interface & Connectivity Intelligence",
+      "status": "ARCHITECTURE_DEFINED",
+      "implementationReferences": [],
+      "consumers": [
+        "50",
+        "51"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-44-planetary-distributed-infrastructure-engine.md",
+      "sourceLocation": "architecture/phase-44-planetary-distributed-infrastructure-engine.md",
+      "kind": "phase-blueprint",
+      "canonicalPhase": "44",
+      "claimedOwner": "Planetary Distributed Infrastructure Engine",
+      "status": "ARCHITECTURE_DEFINED",
+      "implementationReferences": [],
+      "consumers": [
+        "15",
+        "21"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-45-ai-compute-civilization-engine.md",
+      "sourceLocation": "architecture/phase-45-ai-compute-civilization-engine.md",
+      "kind": "phase-blueprint",
+      "canonicalPhase": "45",
+      "claimedOwner": "AI Compute Civilization Engine",
+      "status": "ARCHITECTURE_DEFINED",
+      "implementationReferences": [],
+      "consumers": [
+        "26"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-46-universal-digital-twin-civilization-layer.md",
+      "sourceLocation": "architecture/phase-46-universal-digital-twin-civilization-layer.md",
+      "kind": "phase-blueprint",
+      "canonicalPhase": "46",
+      "claimedOwner": "Universal Digital Twin Civilization Layer",
+      "status": "ARCHITECTURE_DEFINED",
+      "implementationReferences": [],
+      "consumers": [
+        "16"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-47-autonomous-engineering-self-improvement-engine.md",
+      "sourceLocation": "architecture/phase-47-autonomous-engineering-self-improvement-engine.md",
+      "kind": "phase-blueprint",
+      "canonicalPhase": "47",
+      "claimedOwner": "Autonomous Engineering Self-Improvement Engine",
+      "status": "ARCHITECTURE_DEFINED",
+      "implementationReferences": [],
+      "consumers": [
+        "32",
+        "38",
+        "39"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-48-civilization-knowledge-graph.md",
+      "sourceLocation": "architecture/phase-48-civilization-knowledge-graph.md",
+      "kind": "architecture-map",
+      "canonicalPhase": "48",
+      "claimedOwner": "Civilization Knowledge Graph",
+      "status": "ARCHITECTURE_DEFINED",
+      "implementationReferences": [],
+      "consumers": [
+        "33",
+        "36"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-49-autonomous-economy-engine.md",
+      "sourceLocation": "architecture/phase-49-autonomous-economy-engine.md",
+      "kind": "phase-blueprint",
+      "canonicalPhase": "49",
+      "claimedOwner": "Autonomous Economy Engine",
+      "status": "ARCHITECTURE_DEFINED",
+      "implementationReferences": [],
+      "consumers": [
+        "13",
+        "27"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-50-human-civilization-interface-layer.md",
+      "sourceLocation": "architecture/phase-50-human-civilization-interface-layer.md",
+      "kind": "phase-blueprint",
+      "canonicalPhase": "50",
+      "claimedOwner": "Human Civilization Interface Layer",
+      "status": "ARCHITECTURE_DEFINED",
+      "implementationReferences": [],
+      "consumers": [
+        "06",
+        "24"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-51-universal-reality-operating-system-kernel.md",
+      "sourceLocation": "architecture/phase-51-universal-reality-operating-system-kernel.md",
+      "kind": "phase-blueprint",
+      "canonicalPhase": "51",
+      "claimedOwner": "Universal Reality OS Kernel",
+      "status": "ARCHITECTURE_DEFINED",
+      "implementationReferences": [],
+      "consumers": [
+        "all"
+      ],
+      "scopeLock": "PHASE_REGISTRY_CONTRACT_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-00-occurrence-079.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-00-occurrence-079.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-01-occurrence-001.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-01-occurrence-001.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-01-occurrence-006.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-01-occurrence-006.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-01-occurrence-025.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-01-occurrence-025.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-01-occurrence-026.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-01-occurrence-026.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-01-occurrence-027.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-01-occurrence-027.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-01-occurrence-028.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-01-occurrence-028.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-01-occurrence-034.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-01-occurrence-034.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-01-occurrence-045.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-01-occurrence-045.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-01-occurrence-048.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-01-occurrence-048.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-01-occurrence-049.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-01-occurrence-049.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-01-occurrence-080.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-01-occurrence-080.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-01-occurrence-144.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-01-occurrence-144.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-01-occurrence-157.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-01-occurrence-157.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-01-occurrence-173.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-01-occurrence-173.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-01-occurrence-190.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-01-occurrence-190.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-01-occurrence-199.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-01-occurrence-199.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-01-occurrence-209.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-01-occurrence-209.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-01-occurrence-227.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-01-occurrence-227.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-01-occurrence-228.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-01-occurrence-228.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-01-occurrence-237.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-01-occurrence-237.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-01-occurrence-238.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-01-occurrence-238.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-01-occurrence-258.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-01-occurrence-258.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-01-occurrence-259.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-01-occurrence-259.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-01-occurrence-260.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-01-occurrence-260.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-01-occurrence-279.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-01-occurrence-279.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-01-occurrence-289.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-01-occurrence-289.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-02-occurrence-002.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-02-occurrence-002.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-02-occurrence-003.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-02-occurrence-003.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-02-occurrence-007.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-02-occurrence-007.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-02-occurrence-008.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-02-occurrence-008.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-02-occurrence-029.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-02-occurrence-029.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-02-occurrence-030.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-02-occurrence-030.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-02-occurrence-031.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-02-occurrence-031.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-02-occurrence-035.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-02-occurrence-035.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-02-occurrence-036.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-02-occurrence-036.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-02-occurrence-050.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-02-occurrence-050.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-02-occurrence-051.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-02-occurrence-051.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-02-occurrence-081.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-02-occurrence-081.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-02-occurrence-120.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-02-occurrence-120.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-02-occurrence-132.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-02-occurrence-132.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-02-occurrence-141.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-02-occurrence-141.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-02-occurrence-145.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-02-occurrence-145.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-02-occurrence-158.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-02-occurrence-158.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-02-occurrence-170.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-02-occurrence-170.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-02-occurrence-172.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-02-occurrence-172.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-02-occurrence-174.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-02-occurrence-174.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-02-occurrence-191.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-02-occurrence-191.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-02-occurrence-200.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-02-occurrence-200.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-02-occurrence-210.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-02-occurrence-210.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-02-occurrence-229.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-02-occurrence-229.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-02-occurrence-239.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-02-occurrence-239.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-02-occurrence-256.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-02-occurrence-256.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-02-occurrence-257.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-02-occurrence-257.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-02-occurrence-261.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-02-occurrence-261.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-02-occurrence-280.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-02-occurrence-280.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-02-occurrence-290.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-02-occurrence-290.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-02-occurrence-311.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-02-occurrence-311.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-03-occurrence-004.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-03-occurrence-004.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-03-occurrence-005.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-03-occurrence-005.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-03-occurrence-009.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-03-occurrence-009.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-03-occurrence-010.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-03-occurrence-010.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-03-occurrence-017.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-03-occurrence-017.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-03-occurrence-018.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-03-occurrence-018.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-03-occurrence-032.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-03-occurrence-032.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-03-occurrence-033.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-03-occurrence-033.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-03-occurrence-037.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-03-occurrence-037.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-03-occurrence-038.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-03-occurrence-038.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-03-occurrence-052.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-03-occurrence-052.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-03-occurrence-053.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-03-occurrence-053.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-03-occurrence-073.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-03-occurrence-073.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-03-occurrence-082.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-03-occurrence-082.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-03-occurrence-121.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-03-occurrence-121.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-03-occurrence-142.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-03-occurrence-142.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-03-occurrence-146.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-03-occurrence-146.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-03-occurrence-159.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-03-occurrence-159.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-03-occurrence-168.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-03-occurrence-168.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-03-occurrence-175.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-03-occurrence-175.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-03-occurrence-179.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-03-occurrence-179.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-03-occurrence-181.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-03-occurrence-181.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-03-occurrence-192.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-03-occurrence-192.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-03-occurrence-201.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-03-occurrence-201.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-03-occurrence-211.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-03-occurrence-211.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-03-occurrence-230.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-03-occurrence-230.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-03-occurrence-240.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-03-occurrence-240.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-03-occurrence-262.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-03-occurrence-262.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-03-occurrence-278.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-03-occurrence-278.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-03-occurrence-284.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-03-occurrence-284.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-03-occurrence-291.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-03-occurrence-291.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-03-occurrence-303.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-03-occurrence-303.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-04-occurrence-011.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-04-occurrence-011.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-04-occurrence-012.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-04-occurrence-012.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-04-occurrence-019.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-04-occurrence-019.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-04-occurrence-020.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-04-occurrence-020.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-04-occurrence-039.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-04-occurrence-039.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-04-occurrence-040.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-04-occurrence-040.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-04-occurrence-054.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-04-occurrence-054.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-04-occurrence-055.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-04-occurrence-055.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-04-occurrence-057.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-04-occurrence-057.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-04-occurrence-059.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-04-occurrence-059.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-04-occurrence-061.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-04-occurrence-061.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-04-occurrence-070.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-04-occurrence-070.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-04-occurrence-074.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-04-occurrence-074.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-04-occurrence-083.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-04-occurrence-083.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-04-occurrence-122.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-04-occurrence-122.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-04-occurrence-143.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-04-occurrence-143.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-04-occurrence-147.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-04-occurrence-147.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-04-occurrence-160.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-04-occurrence-160.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-04-occurrence-165.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-04-occurrence-165.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-04-occurrence-166.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-04-occurrence-166.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-04-occurrence-176.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-04-occurrence-176.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-04-occurrence-183.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-04-occurrence-183.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-04-occurrence-193.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-04-occurrence-193.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-04-occurrence-202.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-04-occurrence-202.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-04-occurrence-212.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-04-occurrence-212.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-04-occurrence-231.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-04-occurrence-231.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-04-occurrence-241.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-04-occurrence-241.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-04-occurrence-263.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-04-occurrence-263.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-04-occurrence-281.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-04-occurrence-281.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-04-occurrence-282.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-04-occurrence-282.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-04-occurrence-283.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-04-occurrence-283.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-04-occurrence-285.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-04-occurrence-285.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-04-occurrence-287.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-04-occurrence-287.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-04-occurrence-292.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-04-occurrence-292.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-04-occurrence-304.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-04-occurrence-304.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-04-occurrence-308.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-04-occurrence-308.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-04-occurrence-309.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-04-occurrence-309.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-05-occurrence-013.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-05-occurrence-013.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-05-occurrence-014.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-05-occurrence-014.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-05-occurrence-021.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-05-occurrence-021.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-05-occurrence-022.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-05-occurrence-022.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-05-occurrence-041.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-05-occurrence-041.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-05-occurrence-042.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-05-occurrence-042.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-05-occurrence-056.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-05-occurrence-056.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-05-occurrence-058.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-05-occurrence-058.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-05-occurrence-060.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-05-occurrence-060.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-05-occurrence-062.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-05-occurrence-062.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-05-occurrence-064.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-05-occurrence-064.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-05-occurrence-071.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-05-occurrence-071.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-05-occurrence-075.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-05-occurrence-075.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-05-occurrence-084.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-05-occurrence-084.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-05-occurrence-123.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-05-occurrence-123.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-05-occurrence-148.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-05-occurrence-148.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-05-occurrence-161.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-05-occurrence-161.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-05-occurrence-167.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-05-occurrence-167.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-05-occurrence-169.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-05-occurrence-169.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-05-occurrence-171.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-05-occurrence-171.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-05-occurrence-177.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-05-occurrence-177.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-05-occurrence-185.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-05-occurrence-185.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-05-occurrence-194.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-05-occurrence-194.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-05-occurrence-203.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-05-occurrence-203.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-05-occurrence-213.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-05-occurrence-213.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-05-occurrence-232.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-05-occurrence-232.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-05-occurrence-242.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-05-occurrence-242.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-05-occurrence-264.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-05-occurrence-264.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-05-occurrence-286.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-05-occurrence-286.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-05-occurrence-293.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-05-occurrence-293.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-05-occurrence-305.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-05-occurrence-305.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-05-occurrence-310.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-05-occurrence-310.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-05-occurrence-312.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-05-occurrence-312.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-06-occurrence-015.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-06-occurrence-015.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-06-occurrence-016.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-06-occurrence-016.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-06-occurrence-023.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-06-occurrence-023.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-06-occurrence-024.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-06-occurrence-024.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-06-occurrence-043.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-06-occurrence-043.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-06-occurrence-044.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-06-occurrence-044.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-06-occurrence-046.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-06-occurrence-046.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-06-occurrence-047.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-06-occurrence-047.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-06-occurrence-063.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-06-occurrence-063.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-06-occurrence-072.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-06-occurrence-072.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-06-occurrence-076.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-06-occurrence-076.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-06-occurrence-085.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-06-occurrence-085.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-06-occurrence-124.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-06-occurrence-124.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-06-occurrence-133.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-06-occurrence-133.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-06-occurrence-149.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-06-occurrence-149.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-06-occurrence-162.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-06-occurrence-162.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-06-occurrence-178.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-06-occurrence-178.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-06-occurrence-180.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-06-occurrence-180.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-06-occurrence-182.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-06-occurrence-182.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-06-occurrence-184.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-06-occurrence-184.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-06-occurrence-186.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-06-occurrence-186.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-06-occurrence-195.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-06-occurrence-195.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-06-occurrence-204.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-06-occurrence-204.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-06-occurrence-214.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-06-occurrence-214.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-06-occurrence-233.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-06-occurrence-233.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-06-occurrence-243.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-06-occurrence-243.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-06-occurrence-265.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-06-occurrence-265.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-06-occurrence-288.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-06-occurrence-288.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-06-occurrence-294.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-06-occurrence-294.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-06-occurrence-306.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-06-occurrence-306.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-06-occurrence-313.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-06-occurrence-313.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-07-occurrence-065.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-07-occurrence-065.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-07-occurrence-086.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-07-occurrence-086.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-07-occurrence-125.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-07-occurrence-125.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-07-occurrence-134.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-07-occurrence-134.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-07-occurrence-150.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-07-occurrence-150.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-07-occurrence-163.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-07-occurrence-163.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-07-occurrence-188.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-07-occurrence-188.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-07-occurrence-196.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-07-occurrence-196.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-07-occurrence-205.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-07-occurrence-205.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-07-occurrence-215.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-07-occurrence-215.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-07-occurrence-234.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-07-occurrence-234.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-07-occurrence-244.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-07-occurrence-244.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-07-occurrence-266.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-07-occurrence-266.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-07-occurrence-295.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-07-occurrence-295.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-07-occurrence-307.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-07-occurrence-307.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-08-occurrence-066.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-08-occurrence-066.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-08-occurrence-077.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-08-occurrence-077.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-08-occurrence-087.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-08-occurrence-087.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-08-occurrence-126.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-08-occurrence-126.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-08-occurrence-135.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-08-occurrence-135.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-08-occurrence-151.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-08-occurrence-151.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-08-occurrence-164.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-08-occurrence-164.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-08-occurrence-189.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-08-occurrence-189.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-08-occurrence-197.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-08-occurrence-197.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-08-occurrence-206.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-08-occurrence-206.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-08-occurrence-216.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-08-occurrence-216.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-08-occurrence-235.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-08-occurrence-235.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-08-occurrence-245.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-08-occurrence-245.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-08-occurrence-267.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-08-occurrence-267.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-08-occurrence-296.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-08-occurrence-296.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-09-occurrence-067.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-09-occurrence-067.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-09-occurrence-088.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-09-occurrence-088.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-09-occurrence-127.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-09-occurrence-127.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-09-occurrence-136.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-09-occurrence-136.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-09-occurrence-152.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-09-occurrence-152.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-09-occurrence-187.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-09-occurrence-187.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-09-occurrence-198.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-09-occurrence-198.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-09-occurrence-207.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-09-occurrence-207.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-09-occurrence-217.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-09-occurrence-217.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-09-occurrence-246.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-09-occurrence-246.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-09-occurrence-268.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-09-occurrence-268.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-09-occurrence-297.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-09-occurrence-297.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-10-occurrence-068.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-10-occurrence-068.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-10-occurrence-089.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-10-occurrence-089.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-10-occurrence-128.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-10-occurrence-128.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-10-occurrence-137.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-10-occurrence-137.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-10-occurrence-153.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-10-occurrence-153.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-10-occurrence-208.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-10-occurrence-208.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-10-occurrence-218.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-10-occurrence-218.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-10-occurrence-247.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-10-occurrence-247.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-10-occurrence-269.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-10-occurrence-269.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-10-occurrence-298.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-10-occurrence-298.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-11-occurrence-069.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-11-occurrence-069.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-11-occurrence-090.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-11-occurrence-090.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-11-occurrence-129.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-11-occurrence-129.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-11-occurrence-138.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-11-occurrence-138.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-11-occurrence-154.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-11-occurrence-154.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-11-occurrence-219.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-11-occurrence-219.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-11-occurrence-248.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-11-occurrence-248.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-11-occurrence-270.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-11-occurrence-270.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-11-occurrence-299.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-11-occurrence-299.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-12-occurrence-091.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-12-occurrence-091.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-12-occurrence-130.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-12-occurrence-130.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-12-occurrence-139.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-12-occurrence-139.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-12-occurrence-155.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-12-occurrence-155.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-12-occurrence-220.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-12-occurrence-220.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-12-occurrence-249.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-12-occurrence-249.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-12-occurrence-271.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-12-occurrence-271.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-12-occurrence-300.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-12-occurrence-300.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-13-occurrence-078.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-13-occurrence-078.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-13-occurrence-092.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-13-occurrence-092.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-13-occurrence-131.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-13-occurrence-131.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-13-occurrence-140.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-13-occurrence-140.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-13-occurrence-156.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-13-occurrence-156.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-13-occurrence-221.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-13-occurrence-221.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-13-occurrence-250.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-13-occurrence-250.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-13-occurrence-272.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-13-occurrence-272.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-13-occurrence-301.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-13-occurrence-301.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-14-occurrence-093.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-14-occurrence-093.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-14-occurrence-222.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-14-occurrence-222.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-14-occurrence-251.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-14-occurrence-251.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-14-occurrence-273.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-14-occurrence-273.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-14-occurrence-302.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-14-occurrence-302.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-15-occurrence-094.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-15-occurrence-094.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-15-occurrence-223.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-15-occurrence-223.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-15-occurrence-252.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-15-occurrence-252.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-15-occurrence-274.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-15-occurrence-274.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-16-occurrence-095.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-16-occurrence-095.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-16-occurrence-224.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-16-occurrence-224.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-16-occurrence-253.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-16-occurrence-253.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-16-occurrence-275.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-16-occurrence-275.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-17-occurrence-096.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-17-occurrence-096.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-17-occurrence-225.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-17-occurrence-225.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-17-occurrence-254.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-17-occurrence-254.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-17-occurrence-276.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-17-occurrence-276.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-18-occurrence-097.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-18-occurrence-097.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-18-occurrence-226.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-18-occurrence-226.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-18-occurrence-236.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-18-occurrence-236.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-18-occurrence-255.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-18-occurrence-255.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-18-occurrence-277.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-18-occurrence-277.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-19-occurrence-098.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-19-occurrence-098.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-20-occurrence-099.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-20-occurrence-099.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-21-occurrence-100.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-21-occurrence-100.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-22-occurrence-101.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-22-occurrence-101.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-23-occurrence-102.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-23-occurrence-102.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-24-occurrence-103.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-24-occurrence-103.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-25-occurrence-104.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-25-occurrence-104.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-26-occurrence-105.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-26-occurrence-105.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-27-occurrence-106.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-27-occurrence-106.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-28-occurrence-107.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-28-occurrence-107.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-29-occurrence-108.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-29-occurrence-108.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-30-occurrence-109.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-30-occurrence-109.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-31-occurrence-110.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-31-occurrence-110.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-32-occurrence-111.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-32-occurrence-111.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-33-occurrence-112.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-33-occurrence-112.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-34-occurrence-113.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-34-occurrence-113.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-35-occurrence-114.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-35-occurrence-114.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-36-occurrence-115.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-36-occurrence-115.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-37-occurrence-116.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-37-occurrence-116.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-38-occurrence-117.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-38-occurrence-117.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-39-occurrence-118.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-39-occurrence-118.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-52-extracts:block-40-occurrence-119.md",
+      "sourceLocation": "architecture/phase-52-extracts/block-40-occurrence-119.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-blueprint-neutrality-report.md",
+      "sourceLocation": "architecture/phase-blueprint-neutrality-report.md",
+      "kind": "blueprint",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-completion-status.md",
+      "sourceLocation": "architecture/phase-completion-status.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:phase-portfolio-upgrade-plan.md",
+      "sourceLocation": "architecture/phase-portfolio-upgrade-plan.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:scholar-experience-engine.md",
+      "sourceLocation": "architecture/scholar-experience-engine.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:scholar-phase-consumption-audit.md",
+      "sourceLocation": "architecture/scholar-phase-consumption-audit.md",
+      "kind": "audit",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:scholar-phase-power-map.md",
+      "sourceLocation": "architecture/scholar-phase-power-map.md",
+      "kind": "architecture-map",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    },
+    {
+      "artifactId": "architecture:scholar-role-engine.md",
+      "sourceLocation": "architecture/scholar-role-engine.md",
+      "kind": "architecture",
+      "canonicalPhase": null,
+      "claimedOwner": null,
+      "status": "UNSCOPED",
+      "implementationReferences": [],
+      "consumers": [],
+      "scopeLock": "REVIEW_REQUIRED"
+    }
+  ],
+  "unresolvedOwnership": [
+    "D1",
+    "D2",
+    "D3",
+    "D4",
+    "D5",
+    "D7"
+  ],
+  "phase52": {
+    "registered": false,
+    "implementationAuthorized": false,
+    "source": "architecture/phase-52-cross domain and engineering sections"
+  },
+  "nextGate": "Semantic review and ownership reconciliation before scope locking."
+}

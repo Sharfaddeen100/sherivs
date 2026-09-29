@@ -1,0 +1,112 @@
+{
+  "missionId": "COREGRID-FOUNDATION-MISSION-001",
+  "parentMission": "COREGRID-MISSION-0001",
+  "missionType": "FOUNDATION_VERTICAL_SLICE",
+  "title": "Reality-to-Evidence Governed Mission Slice",
+  "status": "PROPOSED_NOT_AUTHORIZED_FOR_IMPLEMENTATION",
+  "authority": {
+    "governingSources": [
+      "CONSTITUTION.md",
+      "COREGRID MASTER GOVERNANCE GPT-5.6 LUNA ENGINEERING OPERATING CONTRACT.md",
+      "COREGRID LUNA ADAPTIVE REASONING GOVERNANCE.md",
+      "CONTROL-PLANE.md",
+      "REGISTRY.md",
+      "BOUNDARIES.md",
+      "architecture/COREGRID_GAP_REGISTER.json"
+    ],
+    "phaseCreation": "FORBIDDEN_BY_THIS_MISSION",
+    "infrastructureExpansion": "FORBIDDEN_BY_THIS_MISSION"
+  },
+  "rationale": {
+    "observed": [
+      "Kernel reality contracts, identity, tenancy, runtime registry, outbox, and phase contracts exist and pass executable unit coverage.",
+      "Full unit suite passes: 192 files and 3015 tests.",
+      "TypeScript typecheck and production build pass.",
+      "A durable universal mission/objective/evidence/execution chain is recorded as CG-GAP-003, CG-GAP-004, and CG-GAP-005.",
+      "Live kernel wiring remains blocked until approved Supabase credentials and controlled teardown are available."
+    ],
+    "decision": "The smallest coherent next slice is to connect existing reality, identity, tenant, context, mission intent, authorized execution, evidence, and verification contracts without creating a new phase or infrastructure system."
+  },
+  "scope": {
+    "includes": [
+      "Define a typed mission intent contract over existing identity, tenant, policy, context, and reality primitives.",
+      "Define evidence and verification references that preserve source, actor, tenant, time, provenance, status, and lineage.",
+      "Define an execution record boundary that links preconditions, executor, outcome, evidence, idempotency, and rollback state.",
+      "Exercise the slice with deterministic unit, failure, authorization, tenant-boundary, provenance, and conformance tests.",
+      "Prepare a controlled live verification procedure using existing Supabase adapters only."
+    ],
+    "excludes": [
+      "New phase registration",
+      "New database, queue, vector store, graph store, or microservice",
+      "Autonomous production side effects",
+      "Broad Phase 52 implementation",
+      "Resolution of unresolved D1-D7 ownership conflicts",
+      "Scholar domain expansion",
+      "Production deployment"
+    ]
+  },
+  "candidateOwners": {
+    "missionIntent": "UNRESOLVED_REQUIRES_GOVERNANCE",
+    "executionBoundary": "Phase 05 candidate with mission-owner decision",
+    "evidenceLifecycle": "Phase 09 / Assurance ownership unresolved",
+    "identity": "Phase 02",
+    "tenantIsolation": "Phase 03",
+    "realityPrimitives": "Phase 33",
+    "authorization": "Phase 08",
+    "verification": "Assurance / Control-Plane-09"
+  },
+  "dependencies": [
+    "02",
+    "03",
+    "05",
+    "08",
+    "09",
+    "33"
+  ],
+  "workforce": {
+    "architecture": "Review ownership and contracts",
+    "implementation": "Implement only approved existing-boundary contracts",
+    "security": "Review authorization, tenant isolation, provenance, and replay behavior",
+    "verification": "Run independent contract, failure, and conformance evidence",
+    "operations": "Define runtime and rollback observations",
+    "modelRouting": {
+      "complexity": "C4",
+      "risk": "R3",
+      "uncertainty": "U4",
+      "verification": "V4",
+      "selectedEffort": "XHIGH_OR_MAX",
+      "reason": "Cross-phase ownership and evidence lifecycle remain unresolved"
+    }
+  },
+  "acceptance": [
+    "Every mission intent has an identity, tenant, purpose, authority, context, lifecycle, and owner reference.",
+    "Unauthorized, cross-tenant, expired, and revoked execution requests fail closed.",
+    "Every execution record is idempotent and distinguishes requested action from observed outcome.",
+    "Evidence records preserve provenance, temporal status, source, verification status, and supersession/revocation state.",
+    "Verification is independently recordable and cannot be inferred from worker completion.",
+    "Failure, rollback, quarantine, and operator-escalation states are explicit.",
+    "All claims remain scoped to IMPLEMENTED, EXECUTED, OBSERVED, VERIFIED, or CONFORMANT based on actual evidence.",
+    "Existing full typecheck, unit, build, and reconciliation gates remain green."
+  ],
+  "evidencePlan": [
+    "Typed contracts and schema review",
+    "Unit and contract tests",
+    "Authorization and tenant-isolation tests",
+    "Failure and idempotency tests",
+    "Provenance and evidence-lineage tests",
+    "Independent verification report",
+    "Controlled live Supabase run only when credentials are supplied"
+  ],
+  "rollback": {
+    "code": "Revert only the bounded mission-slice changes after preserving test and verification output.",
+    "data": "No persistence mutation authorized until a separate migration and rollback plan is approved.",
+    "architecture": "No registry or mother-surface authority changes are authorized by this definition."
+  },
+  "gates": {
+    "current": "BLOCKED_PENDING_OWNERSHIP_AND_MISSION_CONTRACT_DECISION",
+    "implementation": "Requires approved owner and contract boundary",
+    "runtime": "Requires approved Supabase credentials and controlled teardown",
+    "closure": "Requires executable evidence, independent verification, and conformance assessment"
+  },
+  "nextAction": "Reconcile mission, evidence, and execution ownership against the 13 mothers, 12 control-plane mechanisms, and existing phase contracts before implementation."
+}

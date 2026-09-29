@@ -1,0 +1,274 @@
+{
+  "artifact": "phase-acceptance",
+  "phase": "31",
+  "phaseName": "Enterprise Scale",
+  "source": "architecture/phase-31-enterprise-scale.md",
+  "generatedAt": "2026-09-28T15:12:32.958Z",
+  "classificationDefinitions": {
+    "ENFORCED": "an executable artefact proves it (test, verifier script, migration, policy or machine-checked contract match) and, where a boundary is declared, a real call site invokes it",
+    "DECLARED": "a module, document or contract mentions it, but nothing executable proves it",
+    "IMPLEMENTED_UNWIRED": "implementation and tests exist, but the declared boundary patterns match nothing — the capability protects nothing yet",
+    "MISSING": "no artefact found"
+  },
+  "summary": {
+    "areas": 10,
+    "enforced": 9,
+    "declared": 1,
+    "implementedUnwired": 0,
+    "implementedUnwiredAreas": [],
+    "missing": 0,
+    "missingRequired": [],
+    "unresolvedEvidencePaths": []
+  },
+  "ownership": {
+    "canonicalOwners": {
+      "capacity-and-scale-models": "31",
+      "reliability-objectives": "31",
+      "operations-and-runbooks": "31",
+      "domain-performance": "owning-domain-phase",
+      "cloud-placement": "21",
+      "planetary-infrastructure": "44"
+    }
+  },
+  "areas": [
+    {
+      "id": "workload-isolation-and-boundaries",
+      "area": "Workloads, pools and service boundaries preserve isolation",
+      "requirement": "Workloads are typed, assigned only to accepting pools, expensive work is isolated from critical interactive work, and state/service ownership is explicit.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/kernel/phase-contracts/phase-31-enterprise-scale.ts",
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/kernel/phase-contracts/phase-31-enterprise-scale.ts",
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "quotas-rate-limits-and-backpressure",
+      "area": "Capacity quotas, rate limits, queues and event streams are bounded",
+      "requirement": "Quota hierarchy, protected capacity, adaptive limits, backpressure, queue completeness, ordering and replay retention are governed.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "consistency-slo-and-idempotency",
+      "area": "Consistency, idempotency, SLOs and latency budgets match workload truth",
+      "requirement": "Authoritative operations use appropriate consistency, duplicate delivery requires idempotency, service tiers and error/latency budgets are measurable.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "recovery-failure-domains-and-resilience",
+      "area": "Recovery objectives, failure domains, cells and resilience are explicit",
+      "requirement": "RPO/RTO, replication, failure isolation, cell boundaries, regional architecture and resilience controls are complete before readiness claims.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "capacity-autoscale-and-chaos-evidence",
+      "area": "Capacity forecasts, autoscaling and chaos tests require evidence",
+      "requirement": "Peak demand/headroom, bounded autoscaling, scale-to-zero constraints, production-like load certification and controlled chaos experiments are explicit.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "incidents-runbooks-readiness-and-cost",
+      "area": "Operations, incidents, readiness, cost and performance remain governed",
+      "requirement": "Incident progression, alert severity, runbook steps, operational readiness, abnormal cost growth, cost circuits and performance contracts are explicit.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "progressive-delivery-and-drift",
+      "area": "Provisioning, rollout, rollback, policy and configuration drift are controlled",
+      "requirement": "Provisioning/deprovisioning, progressive delivery, kill switches, rollback compatibility, reversible policies and configuration drift detection are explicit.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "service-readiness-mass-events-and-recovery",
+      "area": "Service ownership, readiness, bottlenecks, mass events and recovery order are explicit",
+      "requirement": "Services have owners and readiness evidence, bottlenecks are prioritized, mass events are controlled, event storms are protected, and recovery respects dependencies.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "bounded-autonomy-and-data-ownership",
+      "area": "Autonomous scale actions and engineering contracts remain bounded",
+      "requirement": "Autonomous scale actions require bounded/observable/rollback-capable contracts, and services cannot access data they do not own.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/enterprise-scale.test.ts",
+        "tests/unit/enterprise-scale.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "live-scale-observability-and-operations",
+      "area": "Live enterprise telemetry and operational execution are wired",
+      "requirement": "Capacity, SLO, error-budget, queue, cost and recovery records are collected from a live runtime and operational runbooks can execute with evidence.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "architecture/phase-31-enterprise-scale.md"
+      ],
+      "matchedEvidence": [
+        "architecture/phase-31-enterprise-scale.md"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    }
+  ],
+  "ok": true,
+  "limitations": [
+    "Classification measures the presence of executable evidence, not the correctness or completeness of that evidence.",
+    "A DECLARED area is unfinished work, never a false claim — it is reported as such.",
+    "An IMPLEMENTED_UNWIRED area has a tested implementation that no boundary calls; it is reported, never counted as enforcement.",
+    "Evidence patterns are declared per phase in architecture/phase-acceptance/phase-<id>-*.json and must be reviewed when a phase is re-audited."
+  ]
+}

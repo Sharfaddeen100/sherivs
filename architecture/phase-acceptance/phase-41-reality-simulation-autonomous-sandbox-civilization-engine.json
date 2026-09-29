@@ -1,0 +1,48 @@
+{
+  "$comment": "Evidence map for Phase 41. The current repository contains sandbox architecture text but no dedicated universal sandbox acceptance suite; all criteria remain declared.",
+  "phase": "41",
+  "phaseName": "Reality Simulation & Autonomous Sandbox Engine",
+  "source": "architecture/phase-41-reality-simulation-autonomous-sandbox-civilization-engine.md",
+  "contract": "frontend/src/lib/kernel/phase-contracts/phase-41-sandbox-engine.ts",
+  "ownership": {
+    "canonicalOwners": {
+      "sandbox-provisioning-and-isolation": "41",
+      "scenario-definition": "37",
+      "canonical-records": "kernel/owning-domain-phase",
+      "production-execution": "owning-phase",
+      "planetary-infrastructure": "44"
+    }
+  },
+  "areas": [
+    {
+      "id": "sandbox-isolation-boundary",
+      "area": "Sandbox isolation and lifecycle are defined",
+      "requirement": "Sandbox state, grants, credentials, lifecycle and resource boundaries isolate simulated realities from production.",
+      "required": false,
+      "evidence": [
+        { "kind": "document", "path": "architecture/phase-41-reality-simulation-autonomous-sandbox-civilization-engine.md", "contains": "complete isolation between" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "sandbox-promotion-boundary",
+      "area": "Promotion from sandbox is proposal-only and audited",
+      "requirement": "Sandbox output cannot write canonical reality; promotion requires validation, policy, approval and audit.",
+      "required": false,
+      "evidence": [
+        { "kind": "document", "path": "architecture/phase-41-reality-simulation-autonomous-sandbox-civilization-engine.md", "contains": "Nothing reaches production without:" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "live-sandbox-execution",
+      "area": "Sandbox execution, cleanup and operational evidence are wired",
+      "requirement": "Sandbox runs execute with scoped credentials, bounded resources, escape detection, cleanup and reproducible evidence.",
+      "required": false,
+      "evidence": [
+        { "kind": "document", "path": "architecture/phase-41-reality-simulation-autonomous-sandbox-civilization-engine.md", "contains": "sandbox lifecycle" }
+      ],
+      "boundary": []
+    }
+  ]
+}

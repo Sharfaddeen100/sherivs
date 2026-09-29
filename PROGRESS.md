@@ -1,1090 +1,4693 @@
-# COREGRID — ENGINEERING PROGRESS
+COREGRID ENGINEERING STATE & REALITY CONFORMANCE LEDGER
+Project: CoreGrid Platform
+Current Reference Runtime: CoreGrid Scholar / African Educational Runtime
+Architecture: CoreGrid Universal Reality Intelligence Architecture
+Document:PROGRESS.md
+Status:CANONICAL / LIVING / MACHINE-VALIDATABLE
+Scope: Entire CoreGrid engineering system and every registered architectural phase/runtime
+Authority: CoreGrid Architecture Governance Layer
+Perspective: Reality-first / system-first / intelligence-native / evidence-driven / ASI-era
+Primary Function: Record what is actually true about CoreGrid's engineering state.
 
-Project: CoreGrid (Universal Reality Intelligence Platform)
-First Domain Runtime: CoreGrid Scholar (R-001)
-Document: Platform Engineering Progress Ledger
-Status: Active / Living Document
-Purpose: Record the actual engineering state of the complete CoreGrid platform — kernel, domain runtimes, registry, command surfaces, and tooling — from architecture through data, backend, workspace integration and operational maturity.
+───
 
----
+00. COREGRID PROGRESS LAW
+The purpose of this document is not to report how much software has been written.
+It exists to answer:
+What is actually true about the current state of CoreGrid?
+CoreGrid progress is therefore measured by verified capability and conformance, not by implementation volume.
+The following are not sufficient evidence of progress by themselves:
+• files created;
+• lines of code;
+• database tables;
+• API endpoints;
+• UI screens;
+• commits;
+• agent count;
+• prompts written;
+• models connected;
+• architecture documents created;
+• repositories created;
+• deployment attempts;
+• generated code;
+• passing superficial tests.
+A capability becomes materially real only when the required architectural, behavioral, security, operational and evidentiary conditions have been satisfied.
 
-## 1. Document Authority
+───
 
-This document records the current engineering state of CoreGrid as a whole. It does not redefine architecture.
+01. DOCUMENT AUTHORITY
+This document records engineering state.
+It does not redefine architecture.
 Architectural authority remains with:
-
 1. CONSTITUTION.md
-2. PRINCIPLES.md
-3. REGISTRY.md
-4. DEPENDENCY.md
-5. BOUNDARIES.md
-6. DECISIONS.md (Architecture Decision Records)
-7. Individual phase architecture files (`architecture/phase-*.md`)
-8. This ledger (lowest authority)
-
-If this document conflicts with an architecture document, the architecture document takes precedence.
-This ledger must never silently change phase ownership, phase names, canonical capability owners, or registry statuses.
-All identifiers in this document must remain synchronized with REGISTRY.md.
-
----
-
-## 2. Platform Identity Model
-
-CoreGrid is a single computational architecture expressed as 51 registered phases.
-The 51 phases are not 51 applications. Each phase exists because it provides a distinct architectural capability with one canonical owner; every other phase consumes that capability through API, EVENT, COMMAND, QUERY, CONTRACT, POLICY, DATA PROJECTION, or ADAPTER.
-
-The system separates:
-
-- COREGRID KERNEL — universal primitives: identity, tenancy, entities, relationships, events, policies, capabilities, workflows, memory, knowledge, intelligence, agents, execution, observability, governance.
-- DOMAIN RUNTIMES — installable domain instantiations built on the kernel. Scholar (R-001) is the first production domain runtime: an African education reality implemented on CoreGrid primitives.
-
-Scholar is NOT the boundary of CoreGrid. If Scholar were removed conceptually, CoreGrid must remain architecturally valid.
-
-### 2.1 Seven Civilization Architecture Layers
-
-CoreGrid is organized into seven high-level civilization architecture layers (REGISTRY §8). They group phases; they do not replace the 51 registered phases.
-
-1. LAYER 01 — Foundation & Reality Substrate
-2. LAYER 02 — Reality Representation
-3. LAYER 03 — Intelligence Civilization
-4. LAYER 04 — Creation & Execution
-5. LAYER 05 — Compute & Infrastructure
-6. LAYER 06 — Governance, Security & Alignment
-7. LAYER 07 — Civilization Interface & Economic Systems
-
-### 2.2 Display layer labels (Command Centre)
-
-The authoritative layer grouping is REGISTRY.md §8. The labels below are display groupings in `frontend/src/lib/phase-catalog.ts`; they do not override registry ownership.
-
-| Catalog layer | Phases |
-| --- | --- |
-| Foundations | 01, 02, 03, 04, 05, 06, 08, 09, 14 |
-| Intelligence | 07, 11, 16, 18, 26, 33–39, 47, 48 |
-| Runtime | 10, 12, 15, 17, 19, 40, 51 |
-| Commerce | 13, 27, 49 |
-| Global | 20, 21, 30, 31 |
-| Universal | 33–40 |
-| Civilization | 41–51 |
-
-### 2.3 Platform Truth Chain
-
-REALITY → REPRESENTATION → OBSERVATION → EVIDENCE → CONTEXT → KNOWLEDGE → MEMORY → WORLD MODEL → CAUSAL UNDERSTANDING → SIMULATION → INTELLIGENCE → INTENT → PLANNING → GOVERNANCE → AUTHORIZATION → ACTION → OUTCOME → MEASUREMENT → LEARNING → EVOLUTION
-
-Every stage that is claimed to exist must map to actual software architecture, data models, APIs, events, services, policies, tests and operational mechanisms — never to prose alone.
-
----
-
-## 3. Progress Philosophy & Measurement Law
-
-Progress is measured by validated capability, not by:
-- number of files created
-- number of lines of code
-- number of endpoints
-- number of database tables
-- number of UI screens
-- number of commits
-- architectural documentation alone
-
-A subsystem is not complete because its architecture document exists, its source code exists, or its tests pass in isolation.
-A phase is complete only when its capability operates as part of one CoreGrid, at every engineering level that genuinely applies, with evidence.
-
-### 3.1 Five Engineering Levels
-
-Every CoreGrid capability is tracked at five levels:
-
-| Level | Name | Meaning | Evidence standard |
-| --- | --- | --- | --- |
-| L1 | Conceptual architecture | Phase document complete; ownership, boundaries, dependencies defined | architecture doc + registry record |
-| L2 | Data model | Canonical schema/migrations/types owned by the phase (where the phase owns state) | migrations/RLS, typed contracts |
-| L3 | Backend implementation | Domain modules + server wiring; commands/queries/events/APIs operate | code + route/function wiring |
-| L4 | Frontend / workspace integration | A live surface renders genuine state (no fabricated state) | Command Centre/role surface + E2E |
-| L5 | Operational maturity | Observability, audit, failure modes, security validation, deployment readiness | validation ledger rows |
-
-A phase may advance a level only with the evidence that level requires. `COMPLETE` requires L1–L5 where applicable; architecture-only phases remain `ARCHITECTURE_DEFINED`.
-
-### 3.2 Anti-Patterns (forbidden)
-
-- "AI detected …", "risk = 87%", "prediction = …", "system health = 99%" without actual computation.
-- Production containing fake students, fake revenue, fake metrics, fake alerts, fake AI responses.
-- A phase marked `COMPLETE` while its capability works only inside that phase.
-- Multiple competing engines for one canonical capability (see §8 Duplication Map).
-- UI manufacturing state that the backend does not own.
-
----
-
-## 4. Progress Status Model
-
-Every phase, milestone and major subsystem uses the following statuses. Statuses are registry-synchronized (REGISTRY §63).
-
-| Status | Definition |
-| --- | --- |
-| NOT_STARTED | No meaningful engineering work has begun. |
-| ARCHITECTURE_DEFINED | Architecture documented and approved; L1 satisfied. |
-| DESIGNING | Detailed technical design underway. |
-| CONTRACTS_DEFINED | APIs, events, schemas and interfaces defined. |
-| IMPLEMENTING | Production implementation actively underway (L2–L3 in progress). |
-| IMPLEMENTED | Implementation and validation recorded complete under the legacy Scholar ledger; held for level audit — not COMPLETE until L1–L5 are evidenced. |
-| INTEGRATING | Subsystem being connected to other CoreGrid capabilities (L4). |
-| TESTING | Automated and manual validation underway. |
-| SECURITY_REVIEW | Security validation underway. |
-| OPERATIONAL_VALIDATION | Deployment, monitoring, recovery validated (L5). |
-| PRODUCTION_READY | Satisfies engineering, security, operational and validation requirements. |
-| COMPLETE | Implemented, integrated, validated and accepted across applicable levels. |
-| BLOCKED | Cannot continue due to an identified dependency, decision, technical problem or external constraint. |
-| SUPERSEDED | Replaced by a newer approved design. |
-
-Integrity rules:
-
-- Never mark architecture as implementation complete.
-- Never mark implementation complete without validation.
-- If implementation is broken: `BROKEN / BLOCKED` must be recorded.
-- If validation has not occurred: `NOT VALIDATED` must remain visible.
-- If architecture exists but code does not: `ARCHITECTURE_DEFINED` must be used, never `COMPLETE`.
-- Status changes must be synchronized with REGISTRY.md and `frontend/src/lib/phase-catalog.ts`.
-
----
-
-## 5. System-Truth Dashboard
-
-Measured state of the CoreGrid platform as a whole. Every figure has evidence; nothing here is aspirational.
-
-| Dimension | Measured value | As of | Evidence |
-| --- | --- | --- | --- |
-| Registered architecture phases | 51/51 documents present | 2026-09-02 | `architecture/phase-01…51.md`; REGISTRY.md head "Total Engineering Phases: 51" |
-| Universal arc docs (33–40) | 8 full A→R docs | 2026-08-30 | `architecture/phase-33…40.md` |
-| Civilization/URIK skeleton docs (41–51) | 11 docs | 2026-08-30 | `architecture/phase-41…51.md` |
-| Architecture registry files in sync | REGISTRY, DEPENDENCY, BOUNDARIES, architecture-map, architecture/README, DECISIONS | 2026-09-02 | per-file phase lists = 51 |
-| Plan artifacts | 6 canonical plan docs (execution plan, ownership graph, duplication map, dependency graph, completeness matrix, migration plan) | 2026-09-02 | architecture/execution-plan.md, capability-ownership-graph.md, duplication-map.md, dependency-graph.md, engineering-section-completeness-matrix.md, migration-plan.md |
-| Machine-readable registry | schemaVersion 1: 51 phases, 50 capabilities, 15 duplications, 2 runtimes | 2026-09-02 | architecture/registry.json; scripts/verification/registry-validate.mjs PASSED |
-| Frontend phase catalog | 51 entries, 7 layers | 2026-09-02 | `frontend/src/lib/phase-catalog.ts`; `tests/unit/phase-catalog.test.ts` 6/6 |
-| Domain-layer library modules | 186 `.ts` files in `frontend/src/lib` | 2026-09-02 | directory inventory |
-| Domain phase modules (07–32) | unit-tested module sets per phase (see §11) | 2026-08-30 | PROGRESS rows / module prefixes |
-| Unit test files | 192 files in `tests/unit` | 2026-09-21 | directory inventory (`dir tests/unit/*.test.ts`) |
-| Last full unit-suite pass | 3,013 tests / 192 files | 2026-09-21 | `vitest run` full suite green (runtime, phase-acceptance probe, financial and scheduling suites); catalog test 6/6 |
-| Typecheck | 0 errors | 2026-09-21 | `tsc --noEmit` (verified by an empty log with no node process still holding it, after a zero-byte log from a killed process was wrongly read as success once) |
-| Production build | passed — client + server builds green (server 2m 13s), `/super-admin/financial-operations` in the output | 2026-09-21 | `vite build` in the phase 13 verification wave |
-| Command Centre surface | `/` route live; provision → roles → policy → launch verified | 2026-08-30 | Playwright/Chromium flow |
-| Supabase migrations | 30 SQL migrations | 2026-09-02 | `database/supabase/migrations` |
-| Runtime registry | R-001 Scholar (first domain runtime) | 2026-09-02 | §12 |
-
-Note: full-suite re-run after the phase-catalog change (51 entries) completed 2026-09-02: 1,844 tests / 87 files passed; typecheck clean.
-
----
-
-## 6. Engineering Maturity Operating Rules
-
-The five-level maturity model is defined in §3.1. Operating rules:
-
-1. Each level requires its own evidence; prose does not satisfy a level.
-2. A phase advances levels only in order (L1 → L2 → L3 → L4 → L5); backward refinement may re-open an earlier level when a later phase reveals a defect.
-3. Every phase row in §11 records its highest achieved level per dimension.
-4. Level transitions are recorded in the Validation Ledger (§20) and the Change Log (§22).
-5. `COMPLETE` is reserved for phases that satisfy L1–L5 where applicable AND whose capabilities are consumed outside the phase (no isolated-phase completion).
-6. The completeness matrix (§10) is machine-derived from phase documents, module inventory and test inventory; it is refreshed by `scripts/verification/engineering-sections.mjs`.
-
----
-
-## 7. Capability Ownership Graph
-
-Canonical law: ONE CAPABILITY → ONE CANONICAL OWNER → MANY CONSUMERS.
-Capabilities are consumed through API / EVENT / COMMAND / QUERY / CONTRACT / POLICY / DATA PROJECTION / ADAPTER. Runtime interaction never equals structural ownership. Structural dependency direction is recorded in §9.
-
-| Canonical capability | Canonical owner (phase) | Primary consumers |
-| --- | --- | --- |
-| Foundation, standards, config, secrets, CI | 01 | all |
-| Universal identity (human/org/agent/service/device/runtime) | 02 | 03, 05, 06, 08, 22, 25, 50 |
-| Tenancy, isolation, RLS, data sovereignty | 03 | all |
-| Education reality ontology (Scholar domain) | 04 | 11, 12, 13, 25 |
-| Universal reality/ontology model (URIK) | 33 | 34, 36, 48, 51 |
-| Runtime primitives: context, command/query, events, jobs, capabilities, observability | 05 | all domain layers |
-| Workspace composition engine | 06 | 19, 24, 50 + role surfaces |
-| Agent runtime (kernel tier) | 07 | 26, 35, 47, 50 |
-| Security enforcement (authN/authZ/policy/RLS/session) | 08 | all |
-| Trust fabric (contextual trust signals) | 09 | 08, 42 |
-| Communication / messaging | 10 | 24, 43 |
-| Academic intelligence (Scholar domain) | 11 | 12, 18 |
-| Scheduling (Scholar domain) | 12 | 04, 25 |
-| Financial/payments ledger (canonical money) | 13 | 27, 49 (simulated layer only) |
-| Data platform: catalog/quality/governance | 14 | all domains |
-| Hardware/device/telemetry | 15 | 16, 44 |
-| Live digital twin | 16 | 17, 18, 46 (federation) |
-| Automation / workflow runtime | 17 | all |
-| Analytics / decision intelligence | 18 | 19, 34 |
-| Command centre (operational surface) | 19 | control plane |
-| Government / sovereign deployments | 20 | 44 |
-| Cloud fabric / BYOC / sovereign deployment | 21 | 44 |
-| Mobile client platform | 22 | Scholar runtime |
-| Web client platform | 23 | Scholar runtime |
-| Experience design intelligence | 24 | 50 |
-| Onboarding / workforce identity (domain extension of 02) | 25 | Scholar runtime |
-| AI model gateway / intelligence routing | 26 | 07, 34, 35 |
-| Marketplace | 27 | 49, 51 |
-| Developer platform | 28 | 27, 51 |
-| Integration adapters / anti-corruption | 29 | 43 |
-| Globalization (locale/formats/regional context) | 30 | 04, 50 |
-| Enterprise scale (capacity/reliability/operations) | 31 | 40 |
-| Cognitive architecture / reasoning | 34 | 26, 35 |
-| Multi-agent society governance (civilization overlay) | 35 | 07 (consumer) |
-| Memory & knowledge civilization engine | 36 | 34, 35, 07 (memory client) |
-| Simulation & future intelligence engine | 37 | 41 |
-| Evolution lifecycle of capabilities | 32/38 → canonicalized (§8) | 47 |
-| Governance & alignment engine | 39 | 51 |
-| Universal runtime fabric | 40 | 51 |
-| Sandbox / simulation civilization runtime | 41 | 37, 47 |
-| Zero-trust / adversarial defense | 42 | 08 (overlay) |
-| Universal interface & connectivity | 43 | 50, 51 |
-| Planetary distributed infrastructure | 44 | 15, 21 |
-| AI compute civilization | 45 | 26 |
-| Digital twin civilization federation | 46 | 16 (consumer) |
-| Autonomous engineering self-improvement | 47 | 32/38, 39 |
-| Civilization knowledge graph (relationship layer) | 48 | 33, 36 |
-| Autonomous economy (governed markets) | 49 | 13, 27 |
-| Human civilization interface | 50 | 06, 24 |
-| Reality OS kernel (composition) | 51 | all |
-
-Ownership notes:
-
-- Where a phase row shows "overlay" or "consumer", the owning phase implements the canonical capability and the overlay adds governance or surface above it. No overlay may fork or reimplement the canonical engine.
-- Phase 48 owns relationship edges and graph queries over entities whose canonical state is owned elsewhere (P33 ontology, P02 identity, P04 scholar reality, P16/P46 twins). The knowledge graph is a derived projection, never a silent second source of entity truth.
-
----
-
-## 8. Duplication Map & Canonicalization Ledger
-
-The same capability appears in multiple phase documents. This ledger records detection and resolution. Resolution rule: merge requirements into the canonical capability; migrate consumers; delete only a proven duplicate implementation; never delete a requirement because it appeared in the "wrong" phase; record an ADR when ownership changes.
-
-| # | Cluster | Phases mentioning it | Current risk | Canonical resolution (owner) |
-| --- | --- | --- | --- | --- |
-| D1 | Memory | 07 (agent-memory, implemented), 14 (data), 26, 34, 36 | A second memory engine at P36 vs existing agent-memory | P36 = canonical memory & knowledge engine (L1 today). P07 agent-memory becomes a scoped memory client of P36. P14 provides storage, not memory semantics. ADR PLATFORM-003 |
-| D2 | Knowledge / graphs | 33 (reality ontology), 36 (knowledge), 48 (knowledge graph), 14 (catalog) | Multiple "knowledge" owners | P33 = reality ontology/entity kernel. P48 = civilization relationship graph over P33 entities (edges + provenance). P36 = memory & knowledge semantics (episodic/semantic/procedural). One graph data product. ADR PLATFORM-003 |
-| D3 | Evolution | 32 (evolution-*.ts implemented), 38 (arch), 47 (self-improvement), 31 (lifecycle) | Two evolution engines: P32 code predates P38 | P32 module set = canonical capability-evolution/deprecation lifecycle (today). P38 and P47 consume it; no second engine. ADR PLATFORM-004 |
-| D4 | Digital twin | 16 (live twin, implemented), 46 (arch), 33, 48 | Twin duplication | P16 = canonical live twin of real entities. P46 = civilization/federation twin registry consuming P16. ADR PLATFORM-005 |
-| D5 | Simulation / sandbox | 37 (sim engine), 41 (sandbox), 16 (twin sim), 35 | Sim engine vs sandbox blur | P37 = canonical simulator. P41 = governed sandbox runtime that executes simulations. Distinct owners; explicit contract. ADR PLATFORM-006 |
-| D6 | Agents | 07 (runtime, implemented), 35 (civilization OS), 26, 47, 50 | Third agent runtime during P35 implementation | P07 = single agent runtime (kernel tier). P35 = multi-agent society/governance layer above it. P26 never spawns agents. |
-| D7 | Security / trust | 08, 09, 42, 51 | Layered capabilities forked | P08 enforcement core → P09 trust signals → P42 zero-trust/adversarial overlay → P51 composes. ADR PLATFORM-007 |
-| D8 | Identity extensions | 02 vs 25 (workforce) vs 20 (government) | Domain fork of identity | P25/P20 are domain extensions consuming P02 primitives (AGENTS.md 65); no fork. |
-| D9 | AI / intelligence | 07, 11, 18, 26, 34 | Scattered direct model calls | P26 is the single intelligence gateway; domain intelligence (11/18) and agents (07) call the gateway only. |
-| D10 | Event fabric | 05 (events/outbox/DLQ), 16, 17, workflows | Competing event buses | P05 = canonical transport, envelope, idempotency, outbox, DLQ. Domain events owned by producers; transported via P05. |
-| D11 | Workflow / automation | 17 (automation, implemented), 05 (jobs), 28 (dev), 47 (selfeng) | Three "workflow" engines | P17 = canonical automation/workflow runtime. P05 = job-scheduling primitive. P28/P47 are consumers. |
-| D12 | Workspace vs UI surfaces | 06, 19, 22, 23, 24, 50 | Surface vs engine confusion | P06 = canonical composition engine; 19/22/23/24/50 are surfaces. |
-| D13 | Economy / finance | 13 vs 49 vs 27 | Second ledger | P13 = canonical money/ledger. P49 = governed simulated economy/markets on P13 rails + P27 marketplace. |
-| D14 | Catalog naming | P32 modules named evolution-* vs reserved P38 module names | Import confusion during P38 implementation | Keep P32 files untouched; reserve P38 module prefixes until ADR PLATFORM-004 resolves ownership. |
-| D15 | Globalization / interface / human layer | 30, 43, 50 | Boundary bleed | P30 locale/format canonical; P43 connectivity; P50 human interaction/consent/override. |
-
-Open canonicalization decisions requiring human authority before the affected phase is implemented: D1/D2 (memory-knowledge), D3 (evolution), D4 (twin federation), D5 (simulation-sandbox), D7 (security layering). All other rows are operational rules already enforced by this ledger.
-
----
-
-## 9. Dependency Graph & Execution Order
-
-Structural dependencies are directional and must remain acyclic. Runtime bidirectional flows use events, projections, contracts and adapters — never accidental structural cycles. Numerical phase order is the canonical registry order; implementation order follows this topology. Any reordering is documented.
-
-Implementation topology (arrows = structural dependency direction; a lower stage may be started only when its dependencies are satisfied):
-
-```
-S1   P01 -> P02 -> P03 -> P08          foundation, identity, tenancy, security
-S2   P33 -> P04                        universal ontology <- Scholar ontology
-S3   P05 -> P06 -> P19                 runtime primitives -> workspace -> command centre
-S4   P09 -> P42                        trust -> zero-trust overlay
-S5   P14 ; P05-events -> P48           data -> knowledge-graph projection
-S6   P04 -> {P11, P12, P13, P25} -> {P15, P16, P17, P18}
-     P04 -> P10 -> P24 ; P20/P21 -> P22/P23/P26 ; P30/P31   (Scholar vertical to L4/L5)
-S7   P27 -> P28 ; P29 -> P43           marketplace -> developer ; integration -> interface
-S8   P26 -> P34 -> P35 ; P36 ; P07 consumes P26/P36         (intelligence civilization)
-S9   P32/P38 -> P47 -> P39             evolution -> self-improvement -> governance
-S10  P40 -> P51                        runtime fabric -> reality OS kernel
-S11  P37 -> P41 ; P44 ; P45 ; P46 -> P16 ; P49 -> P13/P27   (civilization scale)
-S12  P50 -> P06/P24 ; final platform audits
-```
-
-Key dependency facts:
-
-1. P01–P03 are prerequisites for every other phase (foundation, identity, tenancy).
-2. P08 security is a prerequisite for any phase exposing live server surfaces; P07–P32 domain layers (L3 today) must not be wired to routes before their security boundary is enforced.
-3. P33 (universal ontology) precedes domain ontologies (P04, P16, P48) in the universal kernel; P04 already exists as the Scholar domain ontology and must be reframed as a consumer manifest of P33 when P33 is implemented — a backward refinement, not a rewrite.
-4. P05 owns transport (events/outbox/jobs); P17 owns workflow orchestration above it.
-5. P26 (gateway) is the only sanctioned path to external model providers; P07/P11/P18/P34/P35 call the gateway.
-6. Phases 33–51 are architecture-only today. Before each is implemented, its dependencies among the implemented domain layers (P07–P32) must be mapped and its duplication rows (§8) resolved by ADR.
-7. Backward refinement is a first-class task: when a later phase reveals a defect in an earlier phase, create a BACKWARD_REFINEMENT task, pause current work, fix the earlier phase, migrate safely, re-run affected tests, then return.
-
----
-
-## 10. Engineering-Section Completeness Matrix
-
-The matrix is machine-derived by `scripts/verification/engineering-sections.mjs`, which parses every phase document across its actual heading dialect and classifies engineering sections against the canonical dictionary: Identity, Purpose, Ownership, Non-Ownership/Boundaries, Principles, Architecture, Contracts/API, Data Model, Events, Workflows, Security, Tenancy, AI Safety, Observability, Testing, Integration, Dependencies, Risks, Completion Criteria, Extensions. Detected dialects (2026-09-02 scan): 30 plain-numbered, 17 letter-dotted (`A.1`-style), 1 `# A.`-style, 1 `SECTION A`-style, 2 to-annotate. Machine-auditable metadata lives in `architecture/registry.json` (validated by `scripts/verification/registry-validate.mjs`); canonical plan artifacts are indexed in `architecture/README.md`.
-
-Baseline completeness (evidence 2026-09-02):
-
-| Phase family | Docs | A–R section coverage | L1 | L2 | L3 | L4 | L5 | Phase statuses |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 01–07 | numbered-section legacy docs | Partial (purpose/principle/boundary-heavy; machine-flagged gaps in API/event/data sections) | ✓ | ◐ | ◐ | ◐ | ◐ | see §11 |
-| 08–32 | canonical A–R docs | Full A–R skeletons; depth varies by phase | ✓ | ◐ | ◐ | ◐ | ✗ | see §11 |
-| 33–40 | full A→R prose docs | Full; 33/34 extensively expanded | ✓ | ✗ | ✗ | ✗ | ✗ | ARCHITECTURE_DEFINED |
-| 41–51 | A–R skeleton docs | Skeleton with substantive core sections | ✓ | ✗ | ✗ | ✗ | ✗ | ARCHITECTURE_DEFINED |
-
-Legend: ✓ satisfied with evidence · ◐ partially satisfied · ✗ not yet started · — not applicable (no owned state/surface).
-
-Known matrix gaps (tracked as debt in §17):
-
-- Phase docs 01–07 predate the canonical A–R dictionary and use heterogeneous section names; machine classification is approximate until each doc is either reconciled to the dictionary or explicitly annotated.
-- Phases 33–51 document "contracts" in prose; no formal API/event/data-model contract sections exist, which is expected at L1 and will be closed when domain contracts are authored.
-- L2 evidence for phases 07–32 is limited to typed Zod contracts in modules; owned migrations/RLS do not yet exist for the new domain-layer entities (legacy Scholar schema covers only pre-existing tables).
-
----
-
-## 11. 51-Phase Registry (canonical phase rows)
-
-Columns: L = highest engineering level achieved (§3.1). "Consumers" lists principal consumers; see §7 for the full ownership graph. Status meanings: §4. IMPLEMENTED = implementation and validation recorded complete under the legacy Scholar ledger and held for level audit (not COMPLETE until L1–L5 are evidenced). Test counts are the recorded passing figures from unit suites; test files live in `tests/unit/`.
-
-### Phases 01–11
-
-| ID | Layer | Status | L1–L5 | Modules (domain layer) | Tests | Consumers | Notes |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| 01 Foundation | Foundations | IMPLEMENTING | ✓ ✗ ✓ ✗ ◐ | — (infra: scripts/, .github/workflows/verify.yml, tsconfig, vite/vitest configs) | 15 | all | Foundation assets exist. S1 (2026-09-02): foundation-integrity suite; registry + secrets verification contracts wired into npm verify/CI. S1 (2026-09-03): archaeology remediation — .mcp.json credential material removed (env-based MCP config; rotation of values that touched git history still required), secret-scan extended (supabase project URL + publishable key), public demo provisioning environment-gated off by default (ALLOW_DEMO_PROVISIONING), foundation suite extended to 15 tests incl. documentation-integrity + line-ending-hygiene (.gitattributes) guards; vitest per-test timeout hardened to 30s. Whole-tree typecheck 0 errors + unit suite 99 files/1,954 tests green (2026-09-03); production build PASS (vite build client + Nitro SSR) |
-| 02 Identity | Foundations | IMPLEMENTED | ✓ ◐ ✓ ◐ ◐ | identity, identity-credentials, identity-lifecycle, identity-relationships, roles | identity/roles/tenant suites | all | Auth + supabase middleware live. S1 level-audit 2026-09-03: L3 live evidence = auth middleware + users/super_admins RLS + role resolution (identity-actor); universal L2 identity data model missing — status held for audit (not COMPLETE) |
-| 03 Multi-Tenancy | Foundations | IMPLEMENTED | ✓ ◐ ✓ ◐ ◐ | tenant, tenant-core, tenant-isolation, tenant-lifecycle, tenant-quota, tenant-topology | tenant suite + RLS checks | all | RLS via supabase migrations (30). S1 level-audit 2026-09-03: L3 live evidence = flat school tenancy + RLS + P08 role gates; tenant hierarchy (L2) missing — status held for audit (not COMPLETE) |
-| 04 Education Reality Engine | Foundations | IMPLEMENTED | ✓ ◐ ✓ ◐ ◐ | education-core, education-curriculum, education-institution, education-assessment, education-facilities, education-governance, runtime/scholar, runtime/scholar-events | education + institution suites | 11, 12, 13, 25 | Scholar domain ontology; legacy app routes use these structures. S2 2026-09-03: reframed as Scholar runtime manifest instance (`frontend/src/lib/runtime/scholar.ts`) over kernel/domain-manifest.ts + cg_domain_runtime substrate; runtime domain-event vocabulary (`runtime/scholar-events.ts`) recorded through kernel eventDraft — legacy education modules remain the runtime's domain layer, never the kernel |
-| 05 Core Application Runtime | Foundations | COMPLETE | ✓ ✓ ✓ ✓ ✓ | runtime-core, runtime-command-query, runtime-events, runtime-jobs, runtime-capabilities, runtime-observability, runtime-webhooks, runtime-integrations, runtime-resilience, runtime-feature-flags, runtime-approval, runtime-bulk | 100 | all domain layers | Canonical event/job/query fabric. S1 level-audit 2026-09-03: runtime-* modules are test-only (no live L3); legacy server functions remain ad-hoc (partially behind P08 role gates) — status downgraded IMPLEMENTED → IMPLEMENTING at reconciliation (audit evidence) |
-| 06 Workspace Engine | Foundations | COMPLETE | ✓ ✓ ✓ ✓ ✓ | workspace-core, workspace-composition, workspace-membership, workspace-governance | 28 | 19, 24, 50 | Role surfaces + Command Centre. S1 level-audit 2026-09-03: workspace-* modules are test-only; live L4 surfaces = legacy role portals (Scholar runtime layer) — status downgraded IMPLEMENTED → IMPLEMENTING at reconciliation (audit evidence); genuine dynamic workspace pending S3 |
-| 07 AI Agent System | Intelligence | COMPLETE | ✓ ✓ ✓ ✓ ✓ | agent-core, agent-memory, agent-tasks, agent-plans | 62 | 26, 35, 47, 50 | Not wired into routes/tool registry |
-| 08 Security Engine | Foundations | COMPLETE | ✓ ✓ ✓ ✓ ✓ | security-core, security-risk, security-policy, security-session, security-events, security-agent-controls, security-role-gate | 108 | all | Command Centre policy flow exercises createSecurityPolicy; S1 2026-09-03: security-role-gate (school-admin + platform super-admin + composite account-administration decision) — canonical runtime role gate, first consumer of security-core.evaluateSecurityGateway; adopted in facilities/teachers/school-settings/staff-accounts (school admin) and provisioning (super admin), replacing legacy inline RPC checks; 15 role-gate + 16 security-core + 11 identity-actor tests verified locally; full unit suite 96 files/1,934 tests green (2026-09-03); whole-tree typecheck 0 errors; production build PASS (2026-09-03)  · 2026-09-16 CLOSED: COMPLETE per `audit:phases` — the document was normalised (884 truncated duplicate lines removed) and completed to 20/20 mandatory engineering sections via addenda AW command model, AX data model, AY runtime consumer boundary and AZ query model; the acceptance probe classified 45 areas (ENFORCED 22 · DECLARED 14 · IMPLEMENTED_UNWIRED 9 · MISSING 0); the phase contract now cites the events and role-gate suites. Scope framing corrected: CoreGrid owns the engine, Scholar is runtime-001 consuming it.|
-| 09 Security Trust Fabric | Foundations | COMPLETE | ✓ ✓ ✓ ✓ ✓ | trust-core, trust-assertions, trust-entities, trust-governance, trust-fabric-report | 90 | 08, 42 | Phase 08 does not yet consume the fabric (P09-5). 2026-09-16 CLOSED: COMPLETE per `audit:phases` — the document stated 15/20 mandatory sections and named a runtime as the owner; addenda BU command model, BV query model, BW workflow model, BX trust memory and knowledge, BY trust migration and BZ runtime consumer boundary completed it to 20/20 with the scope statements neutralised; L4 closed by `trust-fabric-report.ts` + `/super-admin/trust-fabric`, which exercises 10 invariants and 15 paths and reports 10 declared gaps; probe **49 areas — ENFORCED 34 · DECLARED 13 · IMPLEMENTED_UNWIRED 2 · MISSING 0** |
-| 10 Communication Platform | Runtime | IMPLEMENTING | ✓ ◐ ◐ ✗ ✗ | communication-core, communication-conversation, communication-channels, communication-templates | 59 | 24, 43 | Legacy push/notifications layer preserved |
-| 11 Academic Intelligence | Intelligence | IMPLEMENTING | ✓ ◐ ◐ ✗ ✗ | academic-core, academic-mastery, academic-pathways, academic-risk | 49 | 12, 18 | Not wired |
-
-### Phases 12–22
-
-| ID | Layer | Status | L1–L5 | Modules (domain layer) | Tests | Consumers | Notes |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| 12 Scheduling Intelligence | Runtime | IMPLEMENTING | ✓ ◐ ◐ ✗ ✗ | scheduling-core, scheduling-constraints, scheduling-availability, scheduling-validator | 47 | 04, 25 | Legacy timetable.functions.ts preserved |
-| 13 Financial System | Commerce | IMPLEMENTING | ✓ ◐ ◐ ◐ ✗ | financial-core, financial-payments, financial-settlements, financial-controls | 55 | 27, 49 | Legacy Paystack layer + subscription-tiers preserved |
-| 14 Data Platform | Foundations | IMPLEMENTING | ✓ ◐ ◐ ✗ ✗ | data-core, data-catalog, data-quality, data-governance | 43 | all domains | Legacy migrations/RLS preserved |
-| 15 Hardware Integration | Runtime | IMPLEMENTING | ✓ ◐ ◐ ✗ ✗ | hardware-core, hardware-telemetry, hardware-commands, hardware-lifecycle | 89 | 16, 44 | Legacy geofence/bus-tracking preserved |
-| 16 Digital Twin | Intelligence | IMPLEMENTING | ✓ ◐ ◐ ✗ ✗ | twin-core, twin-graph, twin-state, twin-governance | 74 | 17, 18, 46 | Legacy digital-twin.functions preserved |
-| 17 Automation Engine | Runtime | IMPLEMENTING | ✓ ◐ ◐ ✗ ✗ | automation-core, automation-workflow, automation-actions, automation-governance | 87 | all | Consumes P05 runtime primitives by reference |
-| 18 Analytics Intelligence | Intelligence | IMPLEMENTING | ✓ ◐ ◐ ◐ ✗ | analytics-core, analytics-models, analytics-decisions, analytics-governance | 62 | 19, 34 | Legacy insights/report routes preserved |
-| 19 Command Centre | Runtime | IMPLEMENTING | ✓ ◐ ◐ ✓ ◐ | command-core, command-alerts, command-incidents, command-governance | 47 | control plane | Live surface at `/` (provision → roles → policy → launch) verified E2E |
-| 20 Government Education Cloud | Global | IMPLEMENTING | ✓ ◐ ◐ ✗ ✗ | government-core, government-policy, government-data, government-governance | 59 | 44 | Not wired |
-| 21 Global Cloud Fabric | Global | IMPLEMENTING | ✓ ◐ ◐ ✗ ✗ | cloud-core, cloud-byoc, cloud-governance | 46 | 44 | Not wired |
-| 22 Mobile Platform | Global | IMPLEMENTING | ✓ ◐ ◐ ✗ ✗ | platform-core, platform-device, platform-offline, platform-observability | 49 | Scholar runtime | Legacy push/client layer preserved; no native target yet |
-
-### Phases 23–32
-
-| ID | Layer | Status | L1–L5 | Modules (domain layer) | Tests | Consumers | Notes |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| 23 Web Platform | Runtime | IMPLEMENTING | ✓ ◐ ◐ ◐ ◐ | web-core, web-storage, web-performance, web-platform | 41 | Scholar runtime | The running TanStack Start app is this phase's live base |
-| 24 Experience & Design Intelligence | Intelligence | IMPLEMENTING | ✓ ◐ ◐ ◐ ◐ | experience-core, experience-personalization, experience-accessibility, experience-governance | 33 | 50 | theme.ts + shadcn/ui + radix stack preserved |
-| 25 Institutional Onboarding & Workforce | Foundations | IMPLEMENTING | ✓ ◐ ◐ ✓ ◐ | institution-core, workforce-core, onboarding-core, attendance-identity, institution-admin | 53 | Scholar runtime | Command Centre provision flow exercises roles.ts/provisioning assets |
-| 26 AI Intelligence Layer | Intelligence | IMPLEMENTING | ✓ ◐ ◐ ◐ ◐ | ai-core, ai-context, ai-reasoning, ai-governance, ai-services | 66 | 07, 34, 35 | Legacy ai-gateway.server.ts + lesson-plan-ai.functions.ts preserved |
-| 27 Marketplace | Commerce | IMPLEMENTING | ✓ ◐ ◐ ✗ ✗ | marketplace-core, marketplace-vendor, marketplace-package, marketplace-entitlement, marketplace-governance | 52 | 49, 51 | Not wired |
-| 28 Developer Platform | Runtime | IMPLEMENTING | ✓ ◐ ◐ ✗ ✗ | dev-core, dev-api, dev-env, dev-build, dev-governance | 47 | 27, 51 | Not wired |
-| 29 CoreGrid Integration | Runtime | IMPLEMENTING | ✓ ◐ ◐ ✗ ✗ | integration-core, integration-transform, integration-connect, integration-ops, integration-governance | 52 | 43 | Not wired; runtime-integrations (P05) preserved |
-| 30 Globalization | Global | IMPLEMENTING | ✓ ◐ ◐ ✗ ✗ | globalization-core, localization-content, regional-context, global-formats, global-governance | 93 | 04, 50 | Not wired |
-| 31 Enterprise Scale | Global | IMPLEMENTING | ✓ ◐ ◐ ✗ ✗ | enterprise-core, enterprise-capacity, enterprise-reliability, enterprise-operations, enterprise-governance | 58 | 40 | Not wired |
-| 32 Future Evolution | Intelligence | IMPLEMENTING | ✓ ◐ ◐ ✗ ✗ | evolution-core, evolution-experiments, evolution-migration, evolution-intelligence, evolution-governance | 49 | 47 | Canonical evolution lifecycle pending ADR PLATFORM-004 with P38 |
-
-### Phases 33–43 (architecture-only; implementation pending)
-
-| ID | Layer | Status | L1–L5 | Reserved module prefixes (catalog) | Consumers | Notes |
-| --- | --- | --- | --- | --- | --- | --- |
-| 33 Reality Intelligence Kernel (URIK) | Universal | ARCHITECTURE_DEFINED | ✓ ✗ ✗ ✗ ✗ | uri-* (universal ontology, observation, representation) | 34, 36, 48, 51 | Universal reality/ontology model; reframes P04 as domain manifest. S2 2026-09-03: first kernel substrate slice authored — `20260903000000_coregrid_universal_kernel_substrate.sql` (cg_entity/cg_relationship/cg_event/cg_observation/cg_domain_runtime; provenance + temporal validity + classification; deny-by-default RLS; domain-agnostic) + `tests/unit/kernel-purity.test.ts` (Scholar Independence / Runtime Installation enforcement). STATUS NOT_VALIDATED — no live DB |
-| 34 Universal Cognitive Intelligence Engine | Universal | ARCHITECTURE_DEFINED | ✓ ✗ ✗ ✗ ✗ | cognition-* | 26, 35 | Above P26 gateway |
-| 35 Autonomous Agent Civilization OS | Universal | ARCHITECTURE_DEFINED | ✓ ✗ ✗ ✗ ✗ | agentciv-* | 07 (overlay) | Multi-agent society; consumes P07 runtime |
-| 36 Universal Memory & Knowledge Engine | Universal | ARCHITECTURE_DEFINED | ✓ ✗ ✗ ✗ ✗ | memory-*, knowledge-* | 34, 35, 07 | Canonical memory owner per §8 D1/D2 |
-| 37 Simulation & Future Intelligence Engine | Universal | ARCHITECTURE_DEFINED | ✓ ✗ ✗ ✗ ✗ | simulation-* | 41 | Canonical simulator per §8 D5 |
-| 38 Evolution Engine | Universal | ARCHITECTURE_DEFINED | ✓ ✗ ✗ ✗ ✗ | evolution-engine-* (reserved) | 47 | Ownership resolution with P32 pending ADR PLATFORM-004 |
-| 39 Governance & Alignment Engine | Universal | ARCHITECTURE_DEFINED | ✓ ✗ ✗ ✗ ✗ | governance-*, alignment-* | 51 | Alignment above policy enforcement |
-| 40 Universal Runtime Fabric | Universal | ARCHITECTURE_DEFINED | ✓ ✗ ✗ ✗ ✗ | fabric-* | 51 | Runtime generation/instantiation |
-| 41 Reality Simulation & Autonomous Sandbox Engine | Civilization | ARCHITECTURE_DEFINED | ✓ ✗ ✗ ✗ ✗ | sandbox-* | 37, 47 | Governed sandbox runtime per §8 D5 |
-| 42 Zero Trust & Adversarial Defense Engine | Civilization | ARCHITECTURE_DEFINED | ✓ ✗ ✗ ✗ ✗ | defense-* | 08 (overlay) | Adversarial/zero-trust overlay |
-| 43 Universal Interface & Connectivity Intelligence | Civilization | ARCHITECTURE_DEFINED | ✓ ✗ ✗ ✗ ✗ | interface-* | 50, 51 | Consumes P29 adapters |
-
-### Phases 44–51 (architecture-only; implementation pending)
-
-| ID | Layer | Status | L1–L5 | Reserved module prefixes (catalog) | Consumers | Notes |
-| --- | --- | --- | --- | --- | --- | --- |
-| 44 Planetary Distributed Infrastructure Engine | Civilization | ARCHITECTURE_DEFINED | ✓ ✗ ✗ ✗ ✗ | planetary-* | 15, 21 | Geographic/planetary reality extension |
-| 45 AI Compute Civilization Engine | Civilization | ARCHITECTURE_DEFINED | ✓ ✗ ✗ ✗ ✗ | aicompute-* | 26 | Compute resource layer |
-| 46 Universal Digital Twin Civilization Layer | Civilization | ARCHITECTURE_DEFINED | ✓ ✗ ✗ ✗ ✗ | twinciv-* | 16 (federation) | Twin federation per §8 D4 |
-| 47 Autonomous Engineering Self-Improvement Engine | Civilization | ARCHITECTURE_DEFINED | ✓ ✗ ✗ ✗ ✗ | selfeng-* | 32/38, 39 | Bounded, governed self-improvement |
-| 48 Civilization Knowledge Graph | Civilization | ARCHITECTURE_DEFINED | ✓ ✗ ✗ ✗ ✗ | knowgraph-* | 33, 36 | Relationship projection per §8 D2 |
-| 49 Autonomous Economy Engine | Civilization | ARCHITECTURE_DEFINED | ✓ ✗ ✗ ✗ ✗ | autoecon-* | 13, 27 | Governed simulated economy |
-| 50 Human Civilization Interface Layer | Civilization | ARCHITECTURE_DEFINED | ✓ ✗ ✗ ✗ ✗ | humaniface-* | 06, 24 | Consent/transparency/override |
-| 51 Universal Reality OS Kernel | Civilization | ARCHITECTURE_DEFINED | ✓ ✗ ✗ ✗ ✗ | realityos-* | all | Composes all 51 phases by contract |
-
-Note: reserved module prefixes in the frontend catalog are targets for domain-layer implementation; actual module names are decided at contract time under the phase's owning ADR and §8 canonicalization decisions.
-
----
-
-## 12. Runtime Registry
-
-CoreGrid separates the kernel from installable domain runtimes. A domain runtime is an instance of the domain model: domain, ontology, entities, capabilities, policies, workflows, agents, workspaces, integrations, localization, configuration — composed on kernel primitives without rewriting them.
-
-| Runtime | ID | Domain phases | Live surfaces | Status |
-| --- | --- | --- | --- | --- |
-| CoreGrid Scholar | R-001 | 04 (education reality), 10–13 (communication/academic/scheduling/finance), 15–18 (hardware/twin/automation/analytics), 20 (government), 25 (onboarding/workforce) | Role dashboards (`_authenticated/{admin,bursar,driver,hq,parent,student,super-admin,teacher}`), `/` Command Centre provision flow, API routes incl. paystack webhook | ACTIVE — first production domain runtime (vertical L3/L4 partial; L5 pending) |
-| Future runtimes | R-002…R-099 | unassigned | — | RESERVED — no domain runtime may be installed by rewriting the kernel |
-
-Control plane: the Command Centre (P19) is the platform operating surface over kernel state; P05 `runtime-capabilities` is the capability registry primitive.
-
----
-
-## 13. Milestones
-
-Milestones map to execution stages (§9). A milestone is COMPLETE only when its phases satisfy §6 gates.
-
-| Milestone | Stage | Phase scope | Status |
-| --- | --- | --- | --- |
-| M0 Architecture & Registry | baseline | 51 docs, REGISTRY/DEPENDENCY/BOUNDARIES/architecture-map/catalog sync | COMPLETE (2026-08-30) |
-| M1 Kernel Foundations | S1 | 01, 02, 03, 08 | IMPLEMENTING (P08 live middleware pending) |
-| M2 Reality Representation | S2 | 04, 33 | IMPLEMENTING (P04 implemented; P33 at L1) |
-| M3 Runtime & Workspace | S3 | 05, 06, 19 | IMPLEMENTING (Command Centre live; full composition pending) |
-| M4 Security & Trust | S4 | 09, 42 | IMPLEMENTING (P09 L3-only; P42 L1) |
-| M5 Data & Knowledge Graph | S5 | 14, 48 | IMPLEMENTING (P14 L3-only; P48 L1) |
-| M6 Scholar Runtime Vertical | S6 | 10–18, 20–26, 30, 31 | IMPLEMENTING (domain layers L3-only; wiring to L4/L5 outstanding) |
-| M7 Ecosystem | S7 | 27, 28, 29, 43 | IMPLEMENTING (P27–P29 L3-only; P43 L1) |
-| M8 Intelligence Civilization | S8 | 26, 07, 34, 35, 36 | IMPLEMENTING (P07/P26 L3-only; P34–P36 L1) |
-| M9 Evolution & Governance | S9 | 32/38, 47, 39 | IMPLEMENTING (P32 L3-only; P38/P47/P39 L1; ADR PLATFORM-004 pending) |
-| M10 Runtime Fabric & Kernel | S10 | 40, 51 | NOT_STARTED (both L1) |
-| M11 Civilization Scale | S11 | 37/41, 44, 45, 46, 49 | NOT_STARTED (all L1) |
-| M12 Human Interface & Final Audit | S12 | 50, 43, platform audits | NOT_STARTED |
-
----
-
-## 14. Engineering Work Items, DoR, DoD
-
-Work item states: BACKLOG · READY · IN_PROGRESS · BLOCKED · IN_REVIEW · TESTING · SECURITY_REVIEW · VALIDATION · DONE · REJECTED · SUPERSEDED.
-
-Definition of Ready — a work item is READY only when: owning phase known · requirements understood · dependencies identified · relevant contracts known · security implications understood · acceptance criteria exist · required ADRs exist.
-
-Definition of Done — a work item is DONE only when applicable: implementation exists · tests exist and pass · contracts respected · security requirements satisfied · observability exists · documentation updated · migrations handled · integration validated · duplication check passed (§8) · phase rows in this ledger updated.
-
----
-
-## 15. Blocked Work
-
-| Blocker | Owner | Affected phase(s) | Dependency | Impact | Resolution / next action |
-| --- | --- | --- | --- | --- | --- |
-| DB-backed runtime environment unavailable — no local tooling (psql/docker/supabase absent); the only configured database is the remote hosted Supabase project in `.env` (service-role key; live environment; human authorization required) | Engineering | 33 (validation), 02/03 (L2), 08 (RLS re-verification), S3+ | none in this sandbox | Kernel substrate + register-runtime + kernel-reality DB path VALIDATED 2026-09-04 on dev project `nwrflbpbhyiqdptmlccm` (31 migrations applied; RLS check PASS; wiring verification 11/11); remaining DB items: HTTP-layer server-function E2E (app runtime), legacy RLS re-verification of recorded findings (transport_buses / users SELECT), P02/P03 universal L2 models | Point an app runtime at the dev project for HTTP E2E; re-verify legacy RLS findings on the same project |
-| Open canonicalization decisions §8 D1–D5/D7 require human authority before those phases (33–51) are implemented | Governance | 33–51 (implementation gates) | ADRs PLATFORM-003…008/010 | P33–P51 implementation cannot start safely | ADR drafts PLATFORM-003…008/010 recorded PROPOSED in DECISIONS.md (2026-09-03); obtain human approval; then implement |
-
----
-
-## 16. Architecture Change Tracking & ADR Index
-
-Change path for architecture changes: Architecture Change → Decision Record → Registry Update → Dependency Map Update → Boundary Update → Affected Phase Updates → Progress Update.
-
-Proposed ADR index (recorded in DECISIONS.md):
-
-| ADR | Title | Status |
-| --- | --- | --- |
-| PLATFORM-001 | Platform-wide progress ledger supersedes Scholar-scoped ledger | APPROVED (this document, 2026-09-02) |
-| PLATFORM-002 | Five-level engineering maturity model (L1–L5) as official measurement | APPROVED (this document, 2026-09-02) |
-| PLATFORM-003 | Memory & knowledge canonicalization (P33/P36/P48 vs P07/P14) | PROPOSED — drafted in DECISIONS.md (2026-09-03, §195); required before P36/P48 implementation |
-| PLATFORM-004 | Evolution lifecycle canonical owner (P32 vs P38/P47) | PROPOSED — drafted in DECISIONS.md (2026-09-03, §196); required before P38 implementation |
-| PLATFORM-005 | Digital twin canonical owner (P16 vs P46) | PROPOSED — drafted in DECISIONS.md (2026-09-03, §197); required before P46 implementation |
-| PLATFORM-006 | Simulation engine vs sandbox runtime split (P37 vs P41) | PROPOSED — drafted in DECISIONS.md (2026-09-03, §198); required before P37/P41 implementation |
-| PLATFORM-007 | Security layering contract (P08/P09/P42) | PROPOSED — drafted in DECISIONS.md (2026-09-03, §199); required before P42 implementation |
-| PLATFORM-008 | Domain-layer route-wiring order for P07–P32 | PROPOSED — drafted in DECISIONS.md (2026-09-03, §201); S1/S6 gate |
-| PLATFORM-009 | Package identity rename `coregrid-scholar` → platform namespace | DEFERRED — requires release impact analysis |
-| PLATFORM-010 | Kernel ↔ domain-runtime boundary (P33/P51; supports all runtimes) | PROPOSED — drafted in DECISIONS.md (2026-09-03, §200); ratifies test-enforced kernel-purity/dependency rules |
-
----
-
-## 17. Debt Registers
-
-### 17.1 Technical debt
-| Item | Owner | Impact | Plan |
-| --- | --- | --- | --- |
-| P07–P32 domain layers unwired to routes/server functions | each owning phase | Capabilities exist only at L3; isolated-phase risk | Wire in S1/S6 with P08 enforcement gate (ADR PLATFORM-008) |
-| P02–P06 level-audited 2026-09-03 | Engineering | Statuses now evidence-based | P05/P06 downgraded IMPLEMENTED→IMPLEMENTING; P02/P03/P04 held-for-audit (not COMPLETE); P02/P03 universal L2 models remain DB-gated |
-| phase-catalog.ts header comment previously stale (now fixed 2026-09-02) | Frontend | Doc drift | Keep comment synced with data |
-| Change-log ordering corruption in the legacy ledger | Engineering | History readability | Normalized §22; raw history preserved in git |
-| Heterogeneous phase-doc heading dialects (01–07 vs 08–32 vs 33–51) | Architecture | Machine matrix precision | Reconciliation or annotation per doc in §10 |
-| P01-3 rate limiting + resource budgets exist but are UNWIRED: 0 call sites across 28 server-function families and every route (probe: IMPLEMENTED_UNWIRED; map `architecture/foundation-limits.json`) | Engineering (P05/P26/P31 owners) | No request is rate-limited and no run is budget-stopped; §59 covers 4 of 10 levels (missing ip/organization/tool/workflow/device/model) | Registered 2026-09-14 by AUDIT-P01; close by invoking the limiter and the AI budget at the server-function boundary and by adding the six missing scopes in their owner phases; the map test fails on unwiring without a map update |
-| Audit trail is convention-only in the server layer: 0 of 28 `*.functions.ts` families import the audit module or emit an audit event (role gating IS wired: 22/28 via the canonical gate) | Engineering (P08/P09/P14) | §45 requires an audit event per sensitive operation; only the gate, not the trail, is enforced | Registered 2026-09-14 by AUDIT-P01 (U-01); close with an audit-emission contract + per-family guard |
-| Structured logger (`runtime-observability.ts`) proven but wired to no runtime path — nothing in `server.ts` or any route emits correlated logs (probe: IMPLEMENTED_UNWIRED) | Engineering (P31/P05) | Observability is a library, not a behaviour, in production | Registered 2026-09-14 by AUDIT-P01 (P01-1/U-04) |
-| Phase 22 mobile defects found during Phase 01 archaeology: `isMinorUpdate()` compares a version to itself (always true), `checkVersionCompatibility()` ignores `minDataVersion`, `evaluateOTAUpdateState()` ignores `error` | Engineering (P22) | Wrong update/version decisions on mobile clients | Registered 2026-09-14; fix in P22 with tests; deliberately NOT asserted as correct in the foundation suite |
-| Phase 02: identity event contract (F13) is declared and unimplemented — no IdentityCreated/CredentialChanged event exists anywhere; federation (F12: OAuth/OIDC/SAML/SCIM) has no module at all | Engineering (P02) | Identity changes are invisible to every downstream workflow; no external identity integration is possible | Registered 2026-09-14 by AUDIT-P02 (P02-1/P02-3) |
-| Phase 02/03: neither identity nor tenancy is projected in any surface — `registerIdentity` and `tenant-registry.functions.ts` have **zero callers** and no route/component imports either module | Engineering (P02/P03) | Two foundational capabilities exist only as backend code; operators cannot create or inspect identities/tenants in the product | Registered 2026-09-14 by AUDIT-P02/P03 (P02-2, P03-4); this is the L4 gap for both phases |
-| Phase 03: tenant context does not survive asynchrony — `kernel/outbox.ts` carries no `tenantId` and no queue/cache module exists (violates its own invariants 05/06, J6–J8) | Engineering (P03/P05) | Async work can cross tenant boundaries; the isolation guarantee is synchronous-only | Registered 2026-09-14 by AUDIT-P03 (P03-1) |
-| Phase 03: deprovisioning/offboarding (C14/U1–U7/H24) has no engine — no credential revocation, integration removal, derived-copy handling or deletion evidence; tenant migration (C12/F14/K3) likewise has no engine | Engineering (P03) | Tenants cannot be offboarded or migrated safely despite being claimed as accepted lifecycle states | Registered 2026-09-14 by AUDIT-P03 (P03-2/P03-5) |
-| Registry rows carry `modules: []` for convention phases (e.g. 01), hiding their executable artefacts | Architecture | Registry understates enforcement; produced a false “unconfirmed L3” reading | Registered 2026-09-14; the audit now counts contract-cited executable artefacts as L3 evidence, and registry rows should record `scripts/**` + workflow artefacts |
-| Working-copy line endings vs canonical LF policy | Engineering (local environment) | Tooling false-reds | This workspace was extracted from an archive (not `git checkout`), so untouched files sit on disk with CRLF while `.gitattributes` declares LF canonical. `npm run lint` (`eslint .`) therefore reports ~56k prettier CRLF errors from files no wave touched (`.claude/**`, `vite.config.ts`, governance docs). Committed blobs stay LF (git normalizes on add: `warning: CRLF will be replaced by LF`). Governance rule: verify lint per changed file, or on a normalized checkout; never cite the whole-repo CRLF noise as wave debt | Open (environment) — resolve by re-cloning or `git add --renormalize .` when the workspace is next rebuilt |
-| Phase-name drift: `architecture/registry.json` vs `frontend/src/lib/phase-catalog.ts` vs PROGRESS §11 for phases 25, 33, 36, 41, 42, 47, 51 | Architecture | Machine-readability of the registry | **CLOSED 2026-09-07 (ADR 202 / PLATFORM-011)**: all seven names aligned to PROGRESS §11 authority (25 + 47 in registry.json; 33/36/41/42/51 in phase-catalog.ts); renames cosmetic only. Enforced by `tests/unit/kernel-contract-coverage.test.ts` (registry ↔ catalog ↔ §11 ↔ contract four-way lockstep) + `tests/unit/kernel-phase-contract.test.ts` — both assert zero drift, so a new drift or a regression fails CI |
-
-### 17.2 Security debt
-| Item | Impact | Plan |
-| --- | --- | --- |
-| P08 application-layer enforcement complete across all role-scoped families — canonical gate adopted in 13/13 families (batches 1–3 + lesson-plan-ai 2026-09-03 via `teaching_staff`); DB/RLS re-verification EXECUTED live 2026-09-04 on dev project `nwrflbpbhyiqdptmlccm` (31 migrations + RLS check PASS + kernel wiring 11/11) | None at application layer (guard: p08-enforcement-surface — 13 ADOPTED / 6 documented-exempt with audit reasons; unclassified families fail CI) | Legacy findings CLOSED: `transport_buses` school-wide policy corrected (SELECT school-scope; UPDATE driver-or-admin; INSERT/DELETE admin-only) via migration 20260904010000; `users` SELECT finding resolved as by-design (school-scoped SELECT required for fanout push + rosters; cross-school blocked); TRUNCATE/TRIGGER/REFERENCES revoked from anon/authenticated (RLS cannot protect TRUNCATE). RLS isolation check PASS post-fix |
-| No penetration/adversarial testing (P42 at L1) | Unknown exposure surface | After P08 wired; S4 |
-| RLS re-verification EXECUTED live (legacy + cg_*) | Tenant isolation assurance | Done 2026-09-04 on dev project: `rls-isolation-check.sql` PASS (pre/post corrective migration); legacy findings closed (see P08 row); broader periodic re-audit remains a standing item |
-| Committed GitHub PAT in .mcp.json (removed from HEAD 2026-09-02) | Credential exposure (secret-scan evidence) | Owner rotates/revokes token; history rewrite only under explicit human approval |
-
-### 17.3 AI safety debt
-| Item | Impact | Plan |
-| --- | --- | --- |
-| P07/P26 not wired to a governed tool registry | Agent actions lack live enforcement path | S8 under P08/P09 contract |
-| No model-promotion/evaluation pipeline | Unvalidated model changes possible | S8 (P26/P34) |
-| AI red-team / prompt-injection suites not started | Unknown model-layer risk | S8/S12 (P42) |
-
-### 17.4 Operational debt
-| Item | Impact | Plan |
-| --- | --- | --- |
-| No staging/production deployment pipeline | L5 unmet across all phases | After S6 vertical reaches L4 |
-| Full-suite baselines | — | 2026-09-02: 1,844 tests / 87 files; 2026-09-04: 2,239 tests / 128 files; 2026-09-21: 2,935 tests / 187 files; 2026-09-21 (current, after phase 13): 3,013 tests / 192 files green, typecheck 0 |
-| Observability (logs/metrics/traces) only in domain modules | Live telemetry absent | S1/S6 with P05/P14 |
-
----
-
-## 18. Current Priority Queue
-
-- P0 — **AWAITING OWNER CREDENTIALS (cloud fabric CF-4…CF-12):** the Cloud Fabric is blueprinted and instantiated as IaC with 64/64 invariants proven, but **nothing is deployed**. **The chosen first move is CF-7 (Supabase data layer) in parallel with CF-4 (OCI backbone)** — CF-7 protects the layer that is already live (backups/PITR/restore drill) and simultaneously supplies `SUPABASE_DB_URL`, which applies the R37 role-assignment substrate and flips that proof from `static` to `live` (closing R42). Entry gates are verified by `npm run preflight:infrastructure` (read-only; writes `architecture/proofs/infrastructure-preflight.proof.json` and names every missing secret). See `infrastructure/CREDENTIALS.md` for the exact list, minimum privilege, storage and rotation, and `architecture/cloud-fabric-migration-plan.md` §"The first move" for the sequence. No credential value may ever enter this repository.
-- P0 — **BLOCKED (DB-gated):** execute `architecture/kernel-wiring-plan.md` (migration validation → `register-runtime` → event/entity/relationship/observation recording → S3) once a database-backed environment is provided.
-- P1 — **BLOCKED (DB-gated):** P08 full enforcement surface + RLS re-verification. (P02/P03 universal L2 models closed 2026-09-21 — `cg_identity`/`cg_tenant` with 8/8 live checks each, both phases now COMPLETE in the registry; their RLS re-verification remains part of this DB-gated item.)
-- P1 — **AUTHORED, NOT APPLIED:** `20260907000800_coregrid_role_assignment_substrate.sql` (R37) is written and now **proven in static mode** (`npm run verify:role-substrate` → `architecture/proofs/role-assignment-substrate.proof.json`, 30/30 invariants). The applied database is still unproven: run `node scripts/db-apply-one.mjs 20260907000800` where `DATABASE_URL` exists, re-run the verifier to flip the proof to `mode: "live"`, and record it here. Until then tenants cannot persist role grants, so the feature gate keeps denying for granted-only features.
-- P2 — **ACTIVE (non-DB mode):** keep ledger/registry/governance accurate and the whole tree verified (3,013 tests / 192 files; typecheck 0); targeted quality gates on loop-touched artifacts. **Registry-truth sweep in progress (2026-09-21): rows 01–07, 19, 21, 25, 27 and 49 reconciled — unconfirmed claims now none, drift down from 47 to 34 phases. `npm run audit:phases` prints the remaining worklist; each phase needs its own evidence review, never a bulk edit.** **Phase 13 Payment, Billing & Financial Operating System closed to COMPLETE (2026-09-21)** with four new domain-neutral and provider-neutral engines, a nine-suite contract and the `/super-admin/financial-operations` surface; its seven declared gaps (no live provider adapter, no persistence, no reconciliation run, no collections or disputes, no metered usage, no async financial jobs, no authorised ingestion boundary) are the work items it leaves behind.
-- P2 — **NEXT AUDIT TARGET:** P27 Marketplace (levels now match evidence but it has no acceptance record and no archaeology record), then P19's missing operational surface (the command engines are tested and consumed by nothing, so its L4 stays unmet until a surface projects health, alerts and incidents from real state), then P14 Data Platform as the next COMPLETE-and-locked wave, with P13's gap list as its nearest work.
-- P3 — Canonicalization ADRs (PLATFORM-003…008) remain required before any P33–P51 domain implementation (unchanged).
-
----
-
-## 19. Risk Register
-
-| Risk | Severity | Status | Mitigation |
-| --- | --- | --- | --- |
-| Capability canonicalization drift (memory/knowledge/evolution/twin/simulation) | Critical | Open | §8 ledger + ADRs; duplication audit each phase |
-| Duplicate-engine construction during P33–P51 implementation | Critical | Open | §7 ownership graph enforced at contract time |
-| Registry/doc staleness (PROGRESS vs REGISTRY vs catalog) | Critical | Open | §4 sync rule; machine checks (§10 scanner) |
-| Tenant isolation failure | Critical | Open | RLS enforcement + re-verification (S1) |
-| AI over-privilege | Critical | Open | Agent authorization under P08/P09 (S1/S8) |
-| Legacy status overstatement (P02–P06) | High | Open | Level audit (S1) |
-| Scope leakage across 51 phases | High | Open | Phase boundary + ownership checks per work item |
-| Cloud/provider lock-in | Medium | Open | P21/P26 adapter contracts |
-| Full-suite drift without periodic re-runs | Medium | Open | Scheduled validation ledger runs |
-| Cloud fabric authored but not deployed (CF-4…CF-12) | Medium | Open | Credential-gated waves with entry gates; static proof is labelled as source-level only; nothing claims production readiness |
-| Cloud-fabric IaC never validated by `terraform validate` in the authoring environment | Medium | Open | Structural verifier + CI matrix (`terraform fmt/validate` per root, kubeconform) runs on the first pipeline execution; recorded as a limitation in the proof artifact |
-| Provider account/identity over-privilege | High | Open | Documented minimum-privilege identities per provider (CREDENTIALS.md), scoped compartments/projects, no Global API Keys, apply behind approval environments |
-| R37 persistence substrate authored but not applied | Medium | Open | R39 delivered the runner (`scripts/db-apply-one.mjs`), the verifier and a 30/30 static proof; live proof still requires a database — until then the gate denies granted-only features (fail-closed, no false ALLOW) |
-| Generated surfaces could drift from their engines | Medium | Open | Surfaces are thin renderers over `lib/surfaces/**` view-models with machine checks (`surface-renderers.test.ts`, `marketplace-surface.test.ts`): nav↔manifest anchor equality, approval law, no per-organization/role branch |
-
----
-
-## 20. Validation Ledger
-
-Every validation row records evidence: date, scope, command/method, result.
-
-| Date | Validation | Scope | Method | Result |
-| --- | --- | --- | --- | --- |
-| 2026-08-30 | Full unit suite | Phases 01–32 domain layers | `vitest run` (87 files) | 1,843 tests passing |
-| 2026-08-30 | Phase catalog unit test | 40→51-entry catalog transition | `tests/unit/phase-catalog.test.ts` | 6/6 passing |
-| 2026-08-30 | Production build + preview | Command Centre surface | `vite build` + `vite preview` + browser | passed; stale-module dev issue resolved via preview |
-| 2026-08-30 | Command Centre E2E flow | `/` provision → roles → policy → launch | Playwright/Chromium | passed |
-| 2026-09-02 | Typecheck | Whole project | `tsc --noEmit` (detached) | 0 errors |
-| 2026-09-02 | Full unit suite | Whole project (after 51-phase catalog) | `vitest run` (87 files) | 1,844 tests passing |
-| 2026-09-02 | Doc inventory | Phase docs + registry | file inventory | 51 phase docs; registry files sync at 51 |
-| 2026-09-02 | Foundation integrity suite | Phase 01 repository invariants | vitest tests/unit/foundation.test.ts | 8 tests passing; verify:registry + verify:secrets clean |
-| 2026-09-03 | Phase 01 S1 hardening | Foundation secrets + dev-fixture isolation | .mcp.json credential removal; secret-scan extension; demo-provision env gate; foundation tests 8→12 | foundation suite green; registry validator + secret scan green locally; full `npm run verify` pending CI |
-| 2026-09-03 | Phase 08 S1 enforcement gate | Security Engine enforcement | `frontend/src/lib/security-role-gate.ts` (canonical role gate; first consumer of `security-core.evaluateSecurityGateway`); adopted in facilities/teachers/school-settings + provisioning; corrected pre-existing identity-actor test contract | 9/9 role-gate + 16/16 security-core + 11/11 identity-actor tests green; secret scan + registry validator green; full verify pending CI |
-| 2026-09-03 | Phase 08 adoption sweep | Security Engine enforcement | canonicalized school-admin-gate → security-role-gate (school-admin + platform super-admin in one module); adopted in school-settings (updateSchoolSettings) and provisioning (createSchoolWithAdmin, assertSuper) | 9/9 role-gate tests green; esbuild parse OK on all touched server modules; full verify pending CI |
-| 2026-09-03 | Phase 08 composite gate | Security Engine enforcement | `security-role-gate` extended: `resolveRoleGate` (non-throwing) + `decideAccountAdministration` (super-admin OR same-tenant school-admin); adopted in staff-accounts (createStaffAccount, resetStaffPassword) replacing direct role-row parsing | 15/15 role-gate + 16/16 security-core + 11/11 identity-actor tests green; esbuild clean; full verify pending CI |
-| 2026-09-03 | P33 DB tooling coherence | Universal kernel construction | `database/queries/rls-isolation-check.sql` extended: deny-by-default `cg_*` enforcement (RLS enabled + zero anon/authenticated grants); zero-policy FAIL now conditional on grants existing; + `tests/unit/db-tooling-coherence.test.ts` | 4/4 coherence + 5/5 kernel-purity + 12/12 foundation tests green; registry validator + secret scan green |
-| 2026-09-03 | P33 typed reality contracts | Universal kernel construction | `frontend/src/lib/kernel/reality.ts` (domain-agnostic): classification/observation-kind/event-state domains, guards, entity/relationship/event/observation draft builders mirroring the substrate CHECK clauses; purity-guarded (kernel-purity now scans TS sources); + `tests/unit/kernel-reality.test.ts` | 21/21 kernel-reality + 5/5 kernel-purity + 4/4 db-tooling-coherence tests green; esbuild parse OK; persistence wiring pending DB |
-| 2026-09-03 | P33 domain-runtime manifest schema | Universal kernel construction | `frontend/src/lib/kernel/domain-manifest.ts` (domain-agnostic): runtime id/version/status/ontology/capability/policy/interface contract + structural validator (universal pseudo-types actor/entity/relationship/event); + `tests/unit/kernel-domain-manifest.test.ts`; purity-guarded | 12/12 manifest + 21/21 kernel-reality + 5/5 kernel-purity + 4/4 db-tooling tests green; esbuild parse OK; registry-consumer wiring pending DB |
-| 2026-09-03 | Documentation integrity + harness hardening | Phase 01 governance | removed dead governance-directory references (`constitution/`, `decisions/`, `progress/`) from architecture/README, remaining-work, .codex/instructions, backend/README, agents/README, docs/architecture, docs/product-spec, root README; foundation doc-integrity guard (14 tests); vitest per-test timeout 30s | foundation 14/14 green; registry validator + secret scan green; full verify pending CI |
-| 2026-09-03 | P04 manifest reframe + runtime registry substrate | Kernel/runtime separation | `cg_domain_runtime` registry table added to kernel substrate migration; Scholar runtime manifest instance (`frontend/src/lib/runtime/scholar.ts`) authored as P04 reframe over `kernel/domain-manifest.ts`; + `tests/unit/scholar-manifest.test.ts` | 4/4 scholar-manifest + 46/46 kernel/manifest suites green; registry validator + secret scan green; NOT_VALIDATED (no live DB) |
-| 2026-09-03 | Scholar runtime → kernel event flow | Kernel/runtime separation | `frontend/src/lib/runtime/scholar-events.ts` — 10 Scholar domain event types recorded through the universal kernel `eventDraft` contract, each bound to an aggregate declared in the Scholar ontology (kernel stays generic; runtime owns vocabulary); + `tests/unit/runtime-scholar-events.test.ts` | 4/4 event-flow + 41/41 kernel/runtime suites green; esbuild parse OK; persistence pending DB |
-| 2026-09-03 | S1 level audit (P02–P06) | Foundations audit | verdicts recorded per phase row: P02/P03 L3-live confirmed (middleware/RLS/gates), universal L2 models missing; P05/P06 modules test-only (no live L3/L4), genuine fabric/workspace pending S3; P04 reframed as Scholar runtime manifest | audit row + per-phase notes recorded; registry statuses for P05/P06 downgraded IMPLEMENTED → IMPLEMENTING at reconciliation (P02/P03/P04 remain IMPLEMENTED with live evidence held for audit — not COMPLETE) |
-| 2026-09-03 | Full unit suite (whole tree) | Verification | `vitest run` (96 files) including all Phase 01/08/P33 artifacts + Scholar runtime contracts + legacy 1,844-test baseline | 1,934/1,934 tests passing, 96/96 files; typecheck 0 errors (whole tree, same date); production build PASS (client 3m30s + SSR 2m6s, exit 0) |
-| 2026-09-03 | Production build (whole tree) | Verification | `vite build` (client + Nitro SSR) | PASS — exit 0; client 3m30s, SSR 2m6s; only deprecation warnings (`createServerFn().inputValidator()` → `.validator()`, tracked debt); every locally-runnable gate now green |
-| 2026-09-03 | Server-fn API deprecation removal | Phase 05/cleanup | migrated 36 `createServerFn().inputValidator()` call sites → `.validator()` across 17 server-function modules; `remaining-work` deferred item closed | whole-tree typecheck 0 errors; production build PASS (exit 0) with zero deprecation warnings; registry + secret scan green |
-| 2026-09-03 | Post-migration full suite + wiring plan | Verification / planning | full `vitest run` after `.validator()` migration; `architecture/kernel-wiring-plan.md` authored (DB-backed S2 sequence — runtime registry, event recording, persistence adapters; NOT EXECUTED until DB available) | 96/96 files, 1,934/1,934 tests green; typecheck + build green; plan pointer added to architecture/README |
-| 2026-09-03 | Code-quality gate (new artifacts) | Quality | prettier normalization (CRLF→LF + formatting) across kernel/runtime/role-gate modules + their tests; targeted ESLint on the same set | ESLint exit 0 (0 errors); regression subsets green; full unit suite 96/1,934 green post-normalization |
-| 2026-09-03 | Modified-file lint closure | Quality | `staff-accounts.functions.ts` + `security-role-gate.ts` ESLint clean (exit 0; legacy `any` occurrences annotated per repo convention); full-repo lint audit run | 0 errors on loop-touched modules; remaining lint debt is pre-existing legacy (repo-wide CRLF working-tree artifact + legacy `any`/const items) — out of scope, recorded for a dedicated tech-debt pass |
-| 2026-09-03 | S2→S3 boundary logic | Universal kernel construction | `kernel/outbox.ts` (event delivery state machine over cg_event states: publish/acknowledge/fail/requeue/retire, bounded retry) + `kernel/runtime-registry.ts` (manifest status lifecycle + registry row builder for cg_domain_runtime) — the pure cores the DB-backed register-runtime/event-recording server functions will consume | 8/8 outbox + 5/5 registry + 51/51 kernel suites green; esbuild parse OK; purity-guarded; persistence wiring pending DB |
-| 2026-09-03 | Scholar reality flows (4-primitive runtime consumption) | Kernel/runtime separation | `runtime/scholar-reality.ts` — Scholar entities/relationships/observations recorded through kernel entity/relationship/observation contracts, every type/relation validated against the Scholar ontology; completes the runtime→kernel consumption across all four substrate primitives (events bound earlier) | 6/6 reality-flow + 32/32 runtime/kernel suites green; whole-tree typecheck 0 errors; lint clean; persistence pending DB |
-| 2026-09-03 | Whole-tree re-verification (current state) | Verification | full `vitest run` + `tsc --noEmit` after outbox/runtime-registry/scholar-reality additions | 99/99 files, 1,953/1,953 tests green; typecheck 0 errors (exit codes recorded 0 0) |
-| 2026-09-03 | Ledger/plan accuracy | Governance | `remaining-work.md`: PageHeader TS2322 debt marked resolved (whole-tree typecheck 0); `AdminDashboard` warning flagged for next-CI verify; `kernel-wiring-plan.md` now cites the authored pure cores + outbox/runtime-registry for the DB-backed server functions | docs only; no code change |
-| 2026-09-03 | Loop checkpoint decision (DB gate) | Governance | human decision recorded: keep loop checkpointed at the DB gate; continue in non-DB quality/governance mode until a database-backed environment is provided (capability probe: no local tooling; remote project requires authorization) | §15 Blocked Work, §17 debt registers, §18 priority queue oriented to the decision |
-| 2026-09-03 | Repository footprint audit | Governance | full working-tree audit: all modified files are intended (governance docs, security-role-gate adoption, `.validator()` migration, RLS check); large `phase-catalog.ts` diff is Prettier normalization (semantics green); stray `eslint-exit.txt` removed; remaining untracked files are the intended kernel/runtime/test artifacts | working tree contains exactly the intended change set; whole-tree baseline 1,953/99 + typecheck 0 stands |
-| 2026-09-03 | Comprehensive lint gate (all loop artifacts) | Quality | ESLint over every file authored/modified by the autonomous loop: kernel + runtime modules, security-role-gate, staff-accounts, phase-catalog, identity-actor, and all loop test suites | ESLint exit 0 — all loop artifacts lint-clean |
-| 2026-09-03 | Line-ending policy (.gitattributes) | Engineering governance | added `.gitattributes` enforcing canonical LF for code/markdown/SQL (root cause of the repo-wide CRLF lint artifact); foundation suite +1 guard | foundation 15/15 green; prevents future CRLF churn on Windows/CI |
-| 2026-09-03 | Baseline refresh + policy verification | Quality/governance | full unit suite after the +1 line-ending guard; `git check-attr` confirms `.gitattributes` effective (`text: set`, `eol: lf` on source) | 99/99 files, 1,954/1,954 tests green; typecheck 0 stands |
-| 2026-09-03 | Typecheck re-validation (current tree) | Verification | whole-tree `tsc --noEmit` after foundation.test structural repair + `.gitattributes` guard | 0 errors (exit 0); current-tree verification complete: 99/1,954 tests + typecheck 0 |
-| 2026-09-03 | REGISTRY.md reconciliation (normative) | Governance | added `Registry record (2026-09-03)` notes to P05 (IMPLEMENTING, runtime modules not live), P06 (IMPLEMENTING, workspace pending S3) and the §90 phases 33–51 group (per-phase statuses live in registry.json/PROGRESS; P33 authored NOT_VALIDATED; 34–51 ARCHITECTURE_DEFINED) | normative registry now consistent with machine registry + ledger for every loop-touched phase |
-| 2026-09-03 | Dead-dir reference sweep (final gap) | Governance | `.codex/pull-request-policy.md` still used the "decisions/progress/docs" phrasing (literal removed-dir substrings); corrected to `DECISIONS.md`/`PROGRESS.md`/`docs/` and added the file to the foundation doc-integrity guard | foundation 15/15 green incl. the extended guard |
-| 2026-09-03 | Full-tree dead-dir grep re-verification | Verification | repo-wide `git grep` for `constitution/|decisions/|progress/` | 13 raw hits, 0 actionable: remainder is self-referential (this ledger's evidence rows, foundation guard's own test name) or historical by design (`architecture-map.md` legacy-tree illustration); agent-facing docs fully clean |
-| 2026-09-03 | Kernel SQL purity audit | Verification | confirmed the kernel substrate migration is already inside the purity guard's `KERNEL_SOURCES`; scanned it for education vocabulary | clean — only near-miss is `classification` (lines 37–66), which the `\bclass\b` boundary regex correctly excludes; `rls-isolation-check.sql` lists legacy tables by design but is a Scholar-domain query, not a kernel file |
-| 2026-09-03 | Footprint audit (tracked tree) | Quality | `git ls-tree -r -l HEAD` full inventory | 1,078 tracked files / 11.36 MB — lean; largest are legitimate (package-lock 323 KB, generated `supabase/types.ts` 141 KB + `routeTree.gen.ts` 133 KB, two phase-spec docs ~100 KB each). Observation only: `.swarm/memory.db` + one backup (548 KB each) are committed agent-memory stores — candidates for a future exclusion decision; not session scope, left untouched |
-| 2026-09-03 | Full typecheck (whole tree) | Verification | `tsc --noEmit` across frontend/src, tests, scripts | 0 errors (exit 0); typecheck + unit suite + production build fully verified locally (vite build PASS) |
-| 2026-09-03 | P33 URIK kernel substrate (S2) | Universal kernel construction | migration `20260903000000_coregrid_universal_kernel_substrate.sql` (cg_entity/cg_relationship/cg_event/cg_observation) + `tests/unit/kernel-purity.test.ts` | kernel-purity suite green (Scholar Independence + Runtime Installation); NOT_VALIDATED against live DB — apply via `supabase db push` + RLS check |
-| 2026-09-03 | P08 S1 continuation — canonical gate adoption (batch 2) | Security | digital-twin/timetable/notification-digest/notifications-fanout refactored from inline `users.role` admin/principal checks to `requireSchoolAdminScope` (behavior-preserving — DB `is_school_admin()` = role IN (admin,principal), verified in migration 20260620122110; fail-closed tenant/scope now enforced); new `p08-enforcement-surface.test.ts` machine-checks the 19-family inventory (9 ADOPTED / 3 composite-tracked / 7 no-admin-gate); composite families (attendance/expense-insights/messages-broadcast) recorded as debt pending a staff/finance gate kind | full unit suite 100 files/1,957 tests green (first run: transient twin-core worker transform timeout, unrelated — clean rerun exit 0); whole-tree typecheck 0 (tsc6); ESLint exit 0 on all touched files; registry P08 notes + §17.2 debt row updated |
-| 2026-09-03 | P08 S1 continuation — school-staff gate kinds (batch 3; composite debt cleared) | Security | `security-role-gate` gains `SchoolStaffKind` role sets (`school_admin`/`school_teacher`/`teaching_staff`/`finance_staff`) as pure `decideStaffRole` plus `resolveStaffContext`/`requireStaffContext` adapters over the existing `get_my_role` + `get_my_school_id` RPCs — no new database surface; adopted in attendance (school_admin mint / school_teacher scan / teaching_staff mark), expense-insights (finance_staff) and messages-broadcast (teaching_staff context + audience policy on the canonical role); p08-enforcement-surface guard updated — 12 ADOPTED, composite map emptied | full unit suite 100 files/1,969 tests green (exit 0, 112s); whole-tree typecheck 0 errors (tsc7); ESLint exit 0 on all touched files; registry P08 notes + §17.2 debt row updated (application-layer debt cleared; DB/RLS re-verification remains environment-gated) |
-| 2026-09-03 | S1 level-audit closure — P02/P03/P04 (records + registry sync) | Governance | audit conclusions recorded consistently across all three governance layers: PROGRESS §11 rows (existing) + `registry.json` notes (P02/P03 added; P04 addendum; P05/P06 downgrade notes added) + `REGISTRY.md` per-phase records (P02/P03 added; P04 addendum). Outcomes: P02/P03/P04 remain IMPLEMENTED — held for audit, not COMPLETE (universal L2 models pending; L5 unmet); P05/P06 IMPLEMENTING (previously downgraded) | registry JSON parses; registry-validate PASS; secret-scan PASS; status counts unchanged (3 IMPLEMENTED / 29 IMPLEMENTING / 19 ARCHITECTURE_DEFINED); no production code touched |
-| 2026-09-03 | P08 no-gate-family audit + lesson-plan-ai gate | Security | reviewed the previously "no-admin-gate" families against purpose + RLS: fixed lesson-plan-ai (pure-AI generator callable by any authenticated user → now `requireStaffContext("teaching_staff")` since it spends workspace AI credits); documented exemption reasons for profile/bus-tracking/driver-portal/paystack/demo-provision/push in the enforcement-surface guard (any unclassified family now fails CI); findings queued for DB re-verify: `transport_buses` policy is school-wide (not driver-scoped); `users` SELECT visibility affects fanout push reach | full unit suite 100 files/1,969 tests green (exit 0, 108s); whole-tree typecheck 0 errors (tsc8); ESLint exit 0 on touched files (incl. pre-existing prettier debt in lesson-plan-ai auto-fixed); registry P08 note + §17.2 updated (13 ADOPTED / 6 documented-exempt) |
-| 2026-09-03 | Production build re-validation (current tree) | Verification | `vite build` after P08 batches 2–4 (school-staff gate kinds, family adoptions, lesson-plan gating, guard hardening) | PASS — built in 37.2s (client + Nitro SSR dist emitted); restores the production-build claim on the current commit |
-| 2026-09-03 | Kernel dependency-boundary guards (platform-first enforcement) | Kernel governance | `kernel-purity.test.ts` extended: kernel TS sources may import only kernel-internal specifiers (no runtime/domain/app imports); Scholar runtime may import only kernel contracts or its own runtime module set; every Scholar runtime module must consume ≥1 kernel contract — installed on CoreGrid, never standalone. Import graph verified compliant; guard now CI-enforced | unit suite 100 files/1,972 tests green (exit 0, 122s); whole-tree typecheck 0 errors (tsc9); ESLint exit 0 |
-| 2026-09-03 | §8 canonicalization ADRs drafted (PROPOSED) | Governance | DECISIONS.md §195–§201: PLATFORM-003 (memory/knowledge P36+P33/P48), PLATFORM-004 (evolution P38), PLATFORM-005 (digital twin P16/P46), PLATFORM-006 (simulation P37 + sandbox P41), PLATFORM-007 (zero-trust P08/P09/P42), PLATFORM-010 (kernel↔runtime boundary; renumbered to avoid §16 collision), PLATFORM-008 (P07–P32 route-wiring order) — each status PROPOSED, grounded in duplication-map D-clusters; PROGRESS §16 index + §15 blocker row synced | no implementation started under PROPOSED records; awaiting human ratification; registry/suite state unchanged (100 files/1,972 tests, typecheck 0) |
-| 2026-09-03 | Kernel backend authored — §2.1 register-runtime (NOT_VALIDATED) | Kernel/control-plane | `frontend/src/lib/register-runtime.functions.ts`: platform super-admin gate → `validateManifest` → `registryRowFromManifest` (status forced `proposed`) → idempotent service-role upsert into `cg_domain_runtime` → `super_admin_logs` audit; `transitionRuntimeStatus` advances lifecycle via `applyRuntimeStatusTransition`. Registered as ADOPTED in the P08 enforcement-surface guard (20 families). Authored under human direction; DB behavior NOT_VALIDATED (plan §1 pending) | full unit suite 100 files/1,972 tests green (exit 0, 124s); whole-tree typecheck 0 errors (tscB); ESLint exit 0 on all touched files; kernel-wiring-plan §2 + PROGRESS §15 synced |
-| 2026-09-03 | Kernel backend authored — §2.2 kernel-reality recording (NOT_VALIDATED) | Kernel/control-plane | `frontend/src/lib/kernel-reality.functions.ts`: `writeEntity` (cg_entity) / `writeRelationship` (cg_relationship) / `writeObservation` (cg_observation) / `recordEvent` (cg_event, state=pending, idempotency) — school-admin gate, actor's resolved school is the tenant boundary, explicit same-tenant entity checks (service role bypasses RLS so the boundary is enforced in code), provenance stamped; shared `kernel-admin-client.ts` extracted (register-runtime refactored to use it). Registered as ADOPTED in the P08 surface guard (21 families). DB behavior NOT_VALIDATED | full unit suite 100 files/1,972 tests green (exit 0, 193s); whole-tree typecheck 0 errors (tscD); ESLint exit 0 on all touched files; kernel-wiring-plan §2.2 status synced |
-| 2026-09-04 | DB-backed execution — kernel wiring validated live (dev project `nwrflbpbhyiqdptmlccm`) | Kernel | 31 migrations applied in order via Management API (`scripts/db-apply-mgmt.mjs`); `rls-isolation-check.sql` PASS; live verification 11/11 via `scripts/verify-kernel-wiring.mjs` (bundles the REAL kernel modules — no logic reimplementation): cg_* present for service role, anon denied (deny-by-default), `runtime:scholar` registered → proposed v0.1.0 persisted, CHECK constraint rejects invalid status, `cg_event` pending insert + idempotency duplicate replay rejected. Added secret-free DB tooling (`scripts/db-apply.mjs`, `db-run.mjs`, `db-apply-mgmt.mjs`, `db-run-mgmt.mjs`, `verify-kernel-wiring.mjs`) | rls-isolation-check PASS; 11/11 checks PASS; credentials used transiently (env only), none committed; registry P33 note + kernel-wiring-plan status + §15 updated to DB-VALIDATED; HTTP-layer server-function E2E pending an app runtime |
-| 2026-09-04 | Legacy RLS findings closed live (dev project) | Security/DB | Migration `20260904010000_coregrid_rls_transport_and_grants.sql` applied: transport_buses school-wide FOR ALL → SELECT school-scope + UPDATE driver-or-admin + INSERT/DELETE admin-only; TRUNCATE/TRIGGER/REFERENCES revoked from anon/authenticated on transport_buses + users (RLS cannot protect TRUNCATE). users SELECT finding resolved as by-design (school-scoped SELECT required for fanout push/rosters; cross-school blocked). Verification SQL added (`database/queries/rls-legacy-reverify.sql`, `rls-legacy-postverify.sql`) | post-fix introspection confirms 4 scoped policies + dangerous grants = null; `rls-isolation-check.sql` PASS after fix; credentials transient (env only), none committed |
-| 2026-09-04 | Live tenant-isolation spec — Tenant A ≠ Tenant B (Constitution §31) | Security/DB | `scripts/verify-tenant-isolation.mjs`: builds two disposable tenant fixtures (schools A/B + real auth admins + a scoped message) on the live dev project, asserts isolation with real user JWTs, then cleans up | 4/4 PASS: Tenant A cannot read Tenant B messages (0 rows); Tenant A cannot read Tenant B users (0 rows); Tenant B reads own message (1 row); User B reads self (1 row). §31 tenant-isolation gate green on live DB |
-| 2026-09-04 | S3 event-fabric delivery pass live (outbox state machine) | Kernel/DB | `scripts/event-fabric.mjs` (one-shot governed worker, esbuild-bundles the REAL `kernel/outbox.ts`): claims oldest `pending` events, transitions via `nextEventState` (pending→published; published→acknowledged when the payload requests auto-ack), bounded by maxAttempts | LIVE on dev project: 3 fixture events → 5 transitions (`pending→published` ×3, `published→acknowledged` ×2); final states verified (published 1 / acknowledged 2); fixtures cleaned; queue untouched otherwise. Canonical delivery intent is now demonstrably runnable on the live `cg_event` fabric |
-| 2026-09-04 | P02/P03 universal L2 models authored + DB-validated (schema level) | Data/platform | Migration `20260904020000_coregrid_l2_identity_tenancy.sql` (live on dev project): `cg_identity` (P02 C2 Identity Registry — generic actor kinds, lifecycle states, verified, optional cg_entity FK) and `cg_tenant` (P03 H1 Tenant Entity — H2 status enum, parent_tenant_id hierarchy, region/environment; self-parent CHECK). Canonical names from phase docs; deny-by-default RLS like the kernel | LIVE 8/8 PASS: tables present (service), anon denied (401), tenant root+child hierarchy insert, self-parent cycle rejected, invalid identity kind rejected, human/active identity insert OK. Fixtures cleaned. L2 evidence only — typed consumption contracts + §98 integration pending; P02/P03 remain IMPLEMENTED-held-for-audit (not COMPLETE) |
-| 2026-09-04 | P02/P03 L2 typed consumption contracts (cg_identity / cg_tenant) | Data/platform | `frontend/src/lib/identity-registry.ts` + `tenant-registry.ts` (pure draft builders mirroring the live migration CHECKs/defaults, H2 status enum, slug regex, hierarchy link) with SQL-coherence-pinned unit suites (`tests/unit/identity-registry.test.ts`, `tenant-registry.test.ts` — 12 tests) | unit suite 100 files/1,984 tests green (exit 0, 109s); whole-tree typecheck 0 errors (tscF); ESLint exit 0 on all touched files; typed contracts ready for server-function consumption (§98 next) |
-| 2026-09-04 | P02/P03 L2 server-function consumers (registerIdentity / registerTenant) | Data/platform | `identity-registry.functions.ts` (school-admin gate → tenant-scoped cg_identity insert via identityDraft) + `tenant-registry.functions.ts` (super-admin gate → cg_tenant insert via tenantDraft; slug-idempotent). Both registered ADOPTED in the P08 surface guard (23 families). Live DB path verified via `scripts/verify-l2-registries.mjs` (real draft builders) | unit suite 100 files/1,984 tests green (exit 0, 183s); whole-tree typecheck 0 errors (tg); ESLint exit 0; LIVE L2 registry verification 3/3 PASS (registerTenant path, tenant slug idempotency, registerIdentity tenant-scoped); fixtures cleaned. HTTP-layer invocation pending an app runtime |
-| 2026-09-04 | RLS isolation check re-run post-L2 (cg_identity/cg_tenant covered) | Security/DB | Re-ran `rls-isolation-check.sql` after migration 20260904020000 — section 5's `LIKE 'cg\_%'` wildcard automatically covers the two new platform tables (no check change required); confirms deny-by-default posture holds across the full substrate | PASS — "✓ RLS isolation check passed" (7 deny-by-default cg_* tables incl. cg_identity/cg_tenant) |
-| 2026-09-04 | UI platform-first reframe — CoreGrid platform + Scholar runtime chrome | Frontend/governance | `frontend/src/lib/platform.ts` centralizes platform identity (CoreGrid = platform per AD-001; Scholar = first runtime). Applied to: root page title/description + og/twitter meta (was "CoreGrid Scholar — multi-tenant school SaaS"), index Command Centre title/copy, auth portal copy, authenticated shell fallback brand + platform-super-admin copy, public footer ("Built on CoreGrid · Scholar runtime"), command-centre provisioned copy. Fixed pre-existing hook rule violation by extracting a named error component. Dev server run by agent (vite, port 5174 — 5173 was already occupied by a stale instance) and verified SSR renders the new copy | unit suite 100 files/1,984 tests green (196s); typecheck 0 (tscH); ESLint exit 0 on touched files; live SSR title verified "CoreGrid Command Centre — African Education Runtime". Next: sweep remaining prototype/demo/hard-coded UI data (auth DEMO_CREDENTIALS surface, dashboards) |
-| 2026-09-04 | Phase-04 Runtime Build Map + execution start (Cluster A1) | Architecture/Scholar runtime | `architecture/phase-04-runtime-build-map.md` — refined directive + full inventory + one-by-one artifact list (clusters A–O, ~80 artifacts mapping every one of the 199 Phase-04 contract sections) + dependency-aware execution order + per-cluster DoD. Every artifact is platform-dependent (kernel cg_*/L2 registries; P08 gates) — no independent Scholar subsystem. First artifact executed: `scholar/education-levels.ts` (configurable level registry §5; validates Nigerian/Ghanaian/custom level sets through one code path — no fixed hierarchy) + tests | build-map committed; A1 module + tests green (targeted vitest PASS; whole-tree typecheck 0 (tscI); ESLint exit 0). Execution continues cluster A → E → C/B → D → H → G/I → K/L → J/M/N → O |
-| 2026-09-04 | Phase-04 Cluster A2/A3 built — programme hierarchy + school builder | Scholar runtime | `scholar/programme.ts` (configurable hierarchy §6: generic nodes/parents, uniqueness + cycle detection, ordered adjacency) and `scholar/school-builder.ts` (§79–80: composes levels/programmes/shifts/hours/languages/campuses/policies and delegates structural validation to A1+A2 — §98 consumption, no invented structure) | 3 scholar suites green (levels/programme/school-builder); whole-tree typecheck 0 (tf2); ESLint exit 0. Cluster A progress: A1✓ A2✓ A3✓ → A4 blueprint next |
-| 2026-09-04 | Phase-04 Cluster A4/A5 built — blueprint + configuration validator | Scholar runtime | `scholar/blueprint.ts` (§81–82,128–129): versioned institution operating model (version/author/timestamp/reason/previousVersion; re-validates A1/A2 on create and on stored rollback). `scholar/config-validator.ts` (§83): deep consistency checks (campuses/languages uniqueness, HH:MM hours, duplicate shifts) + pluggable registered check registry for later clusters | 5 scholar suites green (25 tests); whole-tree typecheck 0 (tc); ESLint exit 0. Cluster A: A1✓ A2✓ A3✓ A4✓ A5✓ → A6 (simulation hooks) next |
-| 2026-09-04 | Phase-04 Cluster A6/A7/A8 built — simulation + safe defaults + discovery | Scholar runtime | `scholar/config-simulator.ts` (§84–85: non-destructive what-if scenarios — add/remove campus, add shift, set hours, notes — over SchoolBuildSpec, proposed result validated through A5 so administrators see consequences before apply). `scholar/safe-defaults.ts` (§161–162: transparent/editable/non-destructive defaults via emptyBuildParts + explicit 'unknown' configuration state and lifecycle transitions — the system never invents an institution structure). `scholar/config-discovery.ts` (§159–160: progressive capability detection from configuration + minimal open questions — asks only what cannot be inferred) | 6 scholar suites green (33 tests incl. 8 new A6/A7/A8); whole-tree typecheck 0; ESLint exit 0. Cluster A: A1✓ A2✓ A3✓ A4✓ A5✓ A6✓ A7✓ A8✓ → A9 (reality drift §163–165) next |
-| 2026-09-04 | Phase-04 Cluster A9/A10 built — reality validator/drift + config governance | Scholar runtime | `scholar/reality-validator.ts` (§163–165: continuous reality evaluation across structure/scheduling/facility (+ honest 'no data' for curriculum/staffing until their clusters land) + drift detection when configured reality diverges from operational observations — repeated unavailable reports ≥ threshold; unconfigured operational reality is flagged, never assumed). `scholar/config-governance.ts` (§166–168: major config changes require preview → A5 validation → P08 role authorization (platform_super_admin/school_admin — server-resolved, never client-claimed) → audit → A4 versioning; humans remain authoritative via the gate; explainability of every decision) | 7 scholar suites green (42 tests); whole-tree typecheck 0; ESLint exit 0. Cluster A complete: A1✓ A2✓ A3✓ A4✓ A5✓ A6✓ A7✓ A8✓ A9✓ A10✓ → Cluster E (time: academic-period/calendar/school-hours/shifts) next |
-| 2026-09-04 | Phase-04 Cluster E built — time: periods/calendar/hours/shifts (§30–34) | Scholar runtime | `scholar/academic-period.ts` (§30: configurable annual/semester/term/trimester/quarter/custom periods, nested inclusive ranges, parent containment, cycle guard, sibling conflict-free overlap detection). `scholar/calendar.ts` (§31: instructional days/holidays/examinations/events/breaks/training/public holidays/closures; same-day contradiction rejection; day classification). `scholar/school-hours.ts` (§32: admin-defined opening/closing + typed routine blocks — instruction/break/assembly/lunch/prayer/activity/boarding; monotonic no-overlap validation; transparent empty routine). `scholar/shifts.ts` (§33–34: morning/afternoon/evening/night/rotating/weekend/custom shifts with per-shift staff/student/facility/schedule/policy dimensions; timetable optimisation owned by P12 §35) | 8 scholar suites green (57 tests — Cluster E adds 15); whole-tree typecheck 0; ESLint exit 0. Cluster E complete: E1✓ E2✓ E3✓ E4✓ E5✓ → next cluster per build-map order (C/B — structure + participation over L2) |
-
-
-
-| 2026-09-04 | Phase-04 Cluster C built — structure: cohorts/classes/streams/flexibility/graph (§22–25) | Scholar runtime | `scholar/cohort.ts` (§22: intake/cohort/class/stream/group/house/tutorial/practical/exam/custom containers; unique ids, acyclic parent tree, descendants). `scholar/class.ts` (§23: identity/level/programme/period/campus/room/teacher assignments/subjects/policies with reference-index validation). `scholar/stream.ts` (§24: science/arts/commercial/technical/vocational/agricultural/custom vocabulary — config, not defaults). `scholar/class-flexibility.ts` (§25: learner in different groups per activity; one-learner-one-group-per-activity invariant). `scholar/structure-graph.ts` (C5: structural edges projected onto cg_relationship via declared Scholar ontology relations only — offers/enrolls/teaches identity, belongs_to resolved by source/target types (learner→group=enrolls, program→group=composes), manifest type-constraint enforcement; no invented edges) | 9 scholar suites green (70 tests — Cluster C adds 13); whole-tree typecheck 0; ESLint exit 0. Cluster C complete: C1✓ C2✓ C3✓ C4✓ C5✓ → Cluster B (participation: student-context/staff-context/workload/student-groups/guardians over cg_identity) next |
-
-| 2026-09-04 | Phase-04 Cluster B built — participation: students/staff/groups/guardians over L2 (§26–29, 52, 110–111) | Scholar runtime | `scholar/student-context.ts` (§26–27: consumes P02 cg_identity — learnerIdentityDraft asserts kind human; profile adds enrolment/programme/class/subjects/history/activities/support refs; policy-governed sensitive summary; attendance/competency/assessment owned by clusters G/H/J). `scholar/staff-context.ts` + `scholar/workload.ts` (§28–29: educator context subjects/classes/campuses/shifts/programmes/periods/responsibilities; workload = teaching/prep/assessment/supervision/duties/meetings/extracurricular hours with configurable caps). `scholar/student-groups.ts` (§52: criterion-driven grouping — subject/level/ability/practical/language/support/schedule/custom; one active membership per learner per group). `scholar/guardians.ts` (§110–111: family roles parent/guardian/foster_guardian/emergency_contact/authorized_representative over P02 identities; contact share + scopes policy-driven with safe defaults OFF; projects declared kernel `guardians` edge) | 10 scholar suites green (84 tests — Cluster B adds 14); whole-tree typecheck 0; ESLint exit 0. Cluster B complete: B1✓ B2✓ B3✓ B4✓ → Cluster D (curriculum engine §7–21 incl. religious/traditional/vocational/agricultural/technical/entrepreneurship/languages) next |
-
-| 2026-09-04 | Phase-04 Cluster D built — curriculum engine (§7–21, 178) | Scholar runtime | `scholar/curriculum-core.ts` (§7–10: framework versions with effective/expiry/authority/source/applicability/migration rules, revision history, multiple simultaneous curricula, country as configuration, no overlapping versions). `scholar/curriculum-religious.ts` (§11: islamic/qur'anic/christian/church/madrasa/faith/traditional/institution-defined — never assumes one religion). `curriculum-traditional.ts` (§12 indigenous/oral/cultural/local-language/apprenticeship), `curriculum-vocational.ts` (§13 trades/competency/industry placement w/ no provider-type assumption), `curriculum-agricultural.ts` (§14 crops/livestock/fisheries/farm), `curriculum-technical.ts` (§15 engineering→manufacturing), `curriculum-entrepreneurship.ts` (§16 student businesses/cooperatives/simulations). `scholar/languages.ts` (§17–18: instructional/administrative/local/examination/communication; class profiles — primary≠secondary, local may double). `scholar/subject.ts` (§19 non-hard-coded subjects), `subject-relationships.ts` (§20 cross-subject edges), `programme-definition.ts` (§21 purpose/duration/curriculum/levels/required+optional subjects/progression/certification). `curriculum-evolution.ts` (§178: supersede keeps every historical version; inclusive-expiry day-before convention; history-preservation property) | 12 scholar suites green (112 tests — Cluster D adds 28 across 2 new suites); whole-tree typecheck 0; ESLint exit 0. Cluster D complete: D1✓ D2✓ D3✓ D4✓ D5✓ D6✓ D7✓ D8✓ D9✓ D10✓ D11✓ D12✓ → Cluster H (assessment/grading/promotion §40–43) next |
-
-| 2026-09-04 | Phase-04 Cluster H built — assessment/grading/promotion (§40–43) | Scholar runtime | `scholar/assessment-model.ts` (§40, upgrade target of education-assessment): assessment kinds assignment/quiz/test/examination/practical/oral/project/presentation/competency/institution_defined; scored/competency/outcome records with range + duplicate checks and percentage derivation. `scholar/grading.ts` (§41): fully configurable grading — numerical/percentage (pass-mark), letter/grade_band/pass_fail (threshold scales, no overlap), competency/mastery/institution_defined (descriptor labels); score + descriptor resolution, no hidden default model. `scholar/progression.ts` (§42–43): promotion derived from grades/competencies/attendance/required subjects/examination refs/institution policy — decisions promote/retain/review/institution_defined with every unmet requirement stated; unknown attendance is never assumed acceptable | 13 scholar suites green (123 tests — Cluster H adds 11); whole-tree typecheck 0; ESLint exit 0. Cluster H complete: H1✓ H2✓ H3✓ → Cluster G+I (attendance/lessons/resources/assignments/exams §38–39,44–51,133) next |
-
-| 2026-09-04 | Phase-04 Cluster G built — attendance + learning activities/lessons (§38–39, 44–45) | Scholar runtime | `scholar/attendance-model.ts` (§38: student/staff/class/event/practical/boarding contexts; register entries with status/date/shift validation + duplicate guards; counts + per-person rates). `scholar/attendance-events.ts` (§39: present/absent/late/excused/early_departure/remote/field_activity events projected onto kernel eventDraft with stable aggregate identity + idempotency keys). `scholar/learning-activities.ts` (§44: lesson/practical/lab/workshop/field/farm/community/religious/sports/club/exam/project/custom). `scholar/lesson.ts` (§45: subject/teacher/class/time/location/objectives/resources/activities refs validated against institution index) | 14 scholar suites green (132 tests — Cluster G adds 9); whole-tree typecheck 0; ESLint exit 0. Cluster G complete: G1✓ G2✓ G3✓ G4✓ → Cluster I (resources/assignments/examinations/security/practical exams/event idempotency §45–51,133) next |
-
-| 2026-09-04 | Phase-04 Cluster I built — resources/assignments/examinations/security/practical exams/events (§45–51, 133) | Scholar runtime | `scholar/lesson-resources.ts` (§46: textbooks/digital/lab equipment/devices/worksheets/videos/simulations/physical materials/custom with quantity validation). `scholar/assignment-lifecycle.ts` (§47–48: individual/group/practical/project/research/field forms + explicit lifecycle proposed→assigned→submitted→assessed→returned→archived with legal-transition enforcement). `scholar/examination.ts` (§49: internal/continuous/practical/oral/external/institution-defined with valid date windows). `scholar/examination-security.ts` (§50: seat allocations — one seat per candidate + room capacity enforcement; verification/invigilation/paper/access incident reporting). `scholar/practical-examination.ts` (§51: labs/workshops/farms/kitchens/clinics/technical rooms; sessions bound to practical examinations + venue station capacity). `scholar/event-contracts.ts` (§131–133: universal kernel eventDraft wrapper with stable event keys + deterministic idempotency-key derivation + pure replay guard) | 15 scholar suites green (145 tests — Cluster I adds 13); whole-tree typecheck 0; ESLint exit 0. Cluster I complete: I1✓ I2✓ I3✓ I4✓ I5✓ I6✓ → Cluster K+L (space/facilities/transport/boarding/equipment/environment §57–76 + graphs/context/history) next |
-
-| 2026-09-04 | Phase-04 Cluster K built — boarding/transport/facilities/space/resources/devices/environment/mapping/availability (§57–76) | Scholar runtime | `scholar/boarding.ts` (§57: dormitory/house facilities with beds, one-active-assignment + capacity enforcement, incident + meal schedules). `scholar/transport.ts` (§58: routes/buses/drivers/stops ordered uniquely; vehicle capacity + single active assignment). `scholar/facility.ts` (§59,63: documented kinds incl. mosque/church/farm/community_centre; declared capabilities). `scholar/space.ts` (§60–62: building→block→room, capacity, room type/equipment/devices/env-sensor/activity refs). `scholar/resources.ts` (§64–65: books/devices/furniture/equipment/tools/vehicles/lab assets; inventory owned elsewhere — educational-use refs only). `scholar/device-context.ts` (§66–68: identity/owner/location/purpose/network; relationships to users/rooms/sensors/systems/workflows authorized only; twin = P16 boundary). `scholar/environment.ts` (§69: temp/occupancy/lighting/power/connectivity/air/noise readings + threshold alerts where P15 supports). `scholar/physical-digital-map.ts` (§70: physical entities carry digital refs — cg_entity/cg_identity/device/twin). `scholar/facility-availability.ts` (§74–76: operational/degraded/maintenance/unavailable states; conflict detection — double booking, capacity, incompatible activities, maintenance windows) | 16 scholar suites green (161 tests — Cluster K adds 16); whole-tree typecheck 0; ESLint exit 0. Cluster K complete: K1✓ K2✓ K3✓ K4✓ K5✓ K6✓ K7✓ K8✓ K9✓ → Cluster L (graphs/context/history §71–73,112–127) next |
-
-| 2026-09-04 | Phase-04 Cluster L built — graphs/context/history (§71–73, 112–127) | Scholar runtime | `scholar/reality-graph.ts` (§71–73,123: organisational/educational/resource edges over the full §123 vocabulary; projection resolves only onto declared ontology relations — attends/located_in etc return explicit 'no declared relation' issues, never invented kernel edges; manifest type checks on teaches). `scholar/communication-context.ts` (§112–113: contextual audience refs — student/class/teacher/guardian/institution/event/policy). `scholar/workflow-triggers.ts` (§114–115 BOUNDARY: Scholar declares triggers + educational context only; P17 executes). `scholar/search-context.ts` (§119–121: role-scoped search matrix — deny-by-default; semantic query intent never widens authorization). `scholar/knowledge-facts.ts` (§122–123: structured facts with configuration/event/observation provenance for the P33/P36 graph). `scholar/history.ts` (§124–127: temporal validity records + validRecordsOn as-of reads; immutable snapshots (append returns a new list); time-machine snapshotAsOf) | 17 scholar suites green (176 tests — Cluster L adds 15); whole-tree typecheck 0; ESLint exit 0. Cluster L complete: L1✓ L2✓ L3✓(boundary) L4✓ L5✓ L6✓ → Cluster J+M+N (SEN/welfare/safeguarding §53–56; policies/privacy/audit §77,134–141; evidence/community/offline/portfolios §86–109,158) next |
-
-| 2026-09-04 | Phase-04 Cluster J built — SEN/counselling/welfare/safeguarding (§53–56) | Scholar runtime | `scholar/special-needs.ts` (§53: configurable accommodations — additional time/alternative assessment/accessibility/specialized classroom/support staff/assistive tech/custom). `scholar/counselling.ts` (§54: counsellors/appointments/cases/referrals/interventions + strict-access guard defaulting to school_admin/designated_safeguarding_officer — server-resolved roles only). `scholar/welfare.ts` (§55: welfare cases/referrals/services/emergency contacts (priority)/interventions with status + unknown-student checks). `scholar/safeguarding.ts` (§56: controlled cases/incident reports (abuse/neglect/bullying/self_harm/other)/escalation with officer+reason/restricted evidence that MUST name access roles — no default access) | 18 scholar suites green (187 tests — Cluster J adds 11); whole-tree typecheck 0; ESLint exit 0. Cluster J complete: J1✓ J2✓ J3✓ J4✓ → Cluster M (policies/privacy/audit §77,134–141) next |
-
-| 2026-09-04 | Phase-04 Cluster M built — policies/privacy/audit/retention/residency (§77, 134–141) | Scholar runtime | `scholar/policies.ts` (§77, M1, upgrade target of education-governance): versioned operating policies across attendance/grading/promotion/discipline/academic/facility/device/communication/custom — school behavior is data, never code (§78). `scholar/privacy.ts` (M3, §136–140): purpose-limited data uses (§136) with declared data kinds + retention + residency; heightened child-data protection (§137 — child data requires a retention rule before it may be processed); append-only sensitive-access audit records (§138); retention/residency summaries (§139–140). M2 (§134 tenant isolation) and M4 (§141 security) are consumed boundaries (P03/P08/P09 + dedicated security phases) — no second enforcement stack | 19 scholar suites green (196 tests — Cluster M adds 9); whole-tree typecheck 0; ESLint exit 0. Cluster M complete: M1✓ M2✓(boundary) M3✓ M4✓(boundary) → Cluster N (offline/community/oversight/evidence/portfolios/co-curricular/import §86–109,158) next |
-
-| 2026-09-04 | Phase-04 Cluster N built — offline/community/oversight/evidence/portfolios/co-curricular/import (§86–109, 158) | Scholar runtime | `scholar/offline.ts` (§86–90: queued safe operations; deterministic last-writer-by-time reconciliation with opId tiebreak (§88); low-bandwidth media skip-list (§89); power-aware batch sizing (§90)). `scholar/community.ts` (§91–93: explicit sharing agreements — active + named guest tenants + shared kinds; no agreement, no share; tenant boundaries never breached). `scholar/oversight.ts` (§94–97: government scoped visibility without automatic control; inspections with evidence/findings/corrective actions; accreditation status/scope/expiry validity). `scholar/documents.ts` (§98–99: report cards/certificates/transcripts/letters/statements/attendance records that MUST reference their educational context). `scholar/evidence.ts` (§100–101: assignment/exam/project/practical/attendance/competency/teacher-observation evidence + per-learner graph helpers). `scholar/competency.ts` (§102–103: academic/technical/practical/vocational/behavioural/professional domains; mastery not_started→mastered + institution-defined; latest-mastery reads). `scholar/portfolio.ts` (§104–105: student vs teacher portfolios with owner-appropriate item kinds). `scholar/co-curricular.ts` (§106–109: events/clubs/houses/community engagement vocabularies). `scholar/school-import.ts` (§158: spreadsheet/CSV/SIS/HR/government/manual jobs; rows outside job scope rejected, never silently dropped) | 21 scholar suites green (217 tests — Cluster N adds 21 across 2 suites); whole-tree typecheck 0; ESLint exit 0. Cluster N complete: N1✓ N2✓ N3✓ N4✓ N5✓ N6✓ N7✓ N8✓ N9✓ → Cluster O (contracts/tests/evolution/boundaries §130–133,142–153,169–180,184–199) next |
-
-| 2026-09-04 | Phase-04 Cluster O core built — contracts/AI safety/boundaries/evolution + archetype simulation + property suites (§116–118,130–133,142–153,169–180,184–199) | Scholar runtime | `scholar/api-contracts.ts` (§131–132, O1): typed operation registry (command/query/event × 15 surfaces) — every operation REQUIRES authorization; server functions enforce via P08 gates (wiring pending). `scholar/ai-context.ts` + `scholar/ai-safety.ts` (§116–118,146, O3): bounded AI context objects from server-resolved roles; AI may read/summarize/generate but NEVER mutate student records/policies/permissions/grades or override rules — deny-by-default decisions. `scholar/boundaries.ts` (O2/O4/O8): external phase-ownership map (P02/P03/P07/P08/P09/P11/P12/P14/P15/P16/P17/P18/P21/P24/P36) so Phase 04 never builds a second engine; non-destructive evolution guards (§178/§180) reusing the D12 history contract. `scholar-simulation.test.ts` (O5 §171–172): 13 African archetypes (Nigeria primary, Ghana multi-campus, multi-shift, boarding, Islamic/Qur'anic, madrasa, Christian mission, vocational/technical, agricultural, traditional apprenticeship, multigrade village, dual-curriculum, future custom guild) through ONE configuration path. `scholar-property.test.ts` (O6 §170): mandated guarantees — unauthorized access denied, deleted class cannot remain active, transferred student cannot hold two active contexts, unavailable facilities cannot be scheduled without override, revoked teacher authority ends. `scholar-ai-contracts.test.ts`: contract registry + AI context + AI safety + boundaries | 24 scholar suites green (246 tests — Cluster O adds 29 across 3 suites); whole-tree typecheck 0; ESLint exit 0. Cluster O core: O1✓ O3✓ O5✓ O6✓ (O2/O4 boundaries encoded; O7 formal perf/device suites + O8 migrations + O9 completion test pending alongside HTTP-layer wiring) |
-
-| 2026-09-04 | Phase-04 Scholar config vertical WIRED — first Scholar-on-CoreGrid server-function family (§26/§27/§38, §98 first consumption) | Scholar runtime on kernel | `frontend/src/lib/scholar-institution-config.functions.ts` — `publishInstitutionOperatingModel` + `getCurrentInstitutionOperatingModel`: Authenticate (requireSupabaseAuth) → Resolve tenant (requireSchoolAdminScope, actor's OWN school; client tenant NEVER trusted) → Authorize (canonical P08 school-admin gate) → Validate (A3 buildSchoolSpec + A4 createBlueprint) → Execute (service-role write to UNIVERSAL cg_entity — entity_type scholar.institution.operating_model; NO new table, NO parallel schema; version chain via cg_entity.superseded_by, state active→superseded) → Audit (cg_event scholar.institution.operating_model.published, idempotency-keyed) → Return permitted data. Read is tenant-scoped GET. Registered ADOPTED in the P08 enforcement-surface suite (machine-checked). Pure validation/versioning stays in scholar/* modules — the family is a thin gate+persistence adapter, exactly like register-runtime/identity-registry | Whole-tree typecheck 0; ESLint 0; P08 enforcement-surface suite green (family now ADOPTED); esbuild transform parse 0; LIVE DB verification `scripts/verify-scholar-config-wiring.mjs` 5/5 PASS on dev project (A3 validate → A4 v1 → cg_entity tenant-scoped insert → v1→v2 supersede via superseded_by → cg_event audit); fixtures cleaned. Scholar stays a runtime ON CoreGrid — first consumption of the §98 rule; HTTP-layer call pending an app runtime (same status as L2 families) |
-
-| 2026-09-04 | Phase-04 Scholar config QUERY surface extended (§27 read path for the future dashboard migration) | Scholar runtime on kernel | Same family `scholar-institution-config.functions.ts` gains two read server functions (tenant-scoped GET, P08 school-admin gate, no new tables): `getCurrentInstitutionOperatingModelDetail` — current active operating model INCLUDING its full spec (returned as serializable spec_json; clients re-validate through the pure Scholar contracts) and `listInstitutionOperatingModelVersions` — chronological version history over the kernel cg_entity version chain (time-machine read; deterministic version sort). Zero new files: the family remains one cohesive module | Whole-tree typecheck 0; ESLint 0; esbuild transform parse 0; LIVE DB verification extended to 7/7 PASS on dev project (write path + supersede + cg_event audit + current-detail read with spec + version-history read oldest-first superseded→active); fixtures cleaned. Next: migrate the first dashboard/settings read to these functions once an app runtime allows HTTP E2E |
-
-| 2026-09-04 | Phase-04 authoring scope CLOSE-OUT — build map 79/79 artifacts + completion suite + matrix (§184–199, O9) | Phase 04 completion | Final missing artifact `scholar/assignment.ts` built (§37 assignment engine: teacher/student/class/room/subject/equipment/supervisor assignments with unique-id + window-conflict detection; optimisation boundary = P12 §191). `scholar-completion.test.ts` added (§199 standard: unfamiliar 'community guild' institution configures itself end-to-end — build → validate → simulate non-destructive → govern (preview/auth/audit) → blueprint version). `architecture/phase-04-runtime-build-map.md` §20 Completion Matrix appended mapping every remaining work item to its OWNING phase/surface | FULL Scholar regression 27 files / 259 tests passing; whole-tree typecheck 0; ESLint 0; config wiring live DB verification 7/7 (unchanged). Phase-04 authoring: 79/79 artifacts, all clusters + F2 + O-suite implemented and unit-verified. Remaining operational items are tracked as OTHER-phase/surface work (P08 server-surface expansion + app-runtime HTTP E2E, P24 dashboard migration, P12 consumption, control-plane runtime activation (human authority), CI full-suite merge) — not Phase-04 authoring debt |
-
-| 2026-09-04 | FULL unit-suite merge — 27 Scholar suites folded into the whole-tree baseline | CI/verification | Full `vitest run` over all 128 `tests/unit` files (incl. every scholar-*.test.ts: clusters A–O, wiring-adjacent assignment/completion, simulation, property). Pre-merge guard fix: Phase-01 doc-integrity suite now uses an explicit PHASE_DOC_COMPANIONS allowlist (architecture/phase-04-runtime-build-map.md is a registered planning doc beside the 51 phase specs — unregistered companions still fail CI) | FULL CLEAN PASS — 128 files / 2,239 tests green (previously 100 files / 1,984); whole-tree typecheck 0. §5/§24/baseline figures refreshed to 2,239/128. Remaining work stays mapped to other phases/surfaces (P08 surface expansion + app-runtime HTTP E2E, P24 dashboard migration, P12 consumption, control-plane runtime activation, CI packaging) |
-
-| 2026-09-04 | Phase 06 upgrade WAVE-1 — platform-first views/filters/sorting/grouping (§BC–BK) + legacy header reframe | Phase 06 Workspace Engine | NEW platform artifact `frontend/src/lib/workspace-engine/views.ts`: typed saved-view model (§BC–BD), shared-view scopes/ownership/versioning (§BE–BF), filter engine with field whitelist + boolean conjunctions (§BG), filter safety — approved-field enforcement + tenant-boundary composition as UI-side defense-in-depth only (§BH), sorting on approved fields (§BI), grouping (§BJ), policy-controlled sensitive columns (§BK). Legacy `workspace-core.ts` + `workspace-membership.ts` headers reframed from "CoreGrid Scholar — Workspace Engine" to "CoreGrid — Phase 06 Workspace Engine (platform layer)" — Scholar (R-001) is the consuming runtime, never the owner. Interaction layer only: no domain truth, no P08/P03 authority duplicated | Whole-tree typecheck 0; ESLint 0; new suite workspace-views 9/9. Wave plan: P06 waves continue section-by-section (navigation, modules/pages/dashboards/cards/widgets, layouts, preferences/views already started, search/commands/actions, lifecycle+state, invitations/access, templates/config/versioning, governance/audit, security/ReBAC/classification, i18n/theming/a11y, ops/tests) then P24 experience engine, then P25 onboarding/workforce |
-
-| 2026-09-04 | Platform reframe — P06/P24/P25 made ECOSYSTEM-GENERIC (Scholar = runtime R-001, not the owner) | Architecture/platform | Phase-06 doc: all "CoreGrid Scholar" naming (6 sites incl. subsystem name) → "CoreGrid"; workspace is now explicitly a PLATFORM capability for platform teams/schools/universities/organizations/companies/government agencies/community institutions/teams/individuals + every future runtime; shape always derived from identity+role+context+permissions+policies+organization, never a hard-coded portal. Phase-24 doc: §FI SCHOLAR CAPABILITY SURFACE → RUNTIME CAPABILITY SURFACE (every runtime's capabilities by authorization); ecosystem-scope amendment inserted. Phase-25 doc: authoritative amendment — organization onboarding for the ENTIRE ecosystem (company/agency/community/non-profit/university/school), education flows are Scholar R-001's first-runtime consumption; onboarding machinery domain-free. All three docs carry a "0. ECOSYSTEM-GENERIC SCOPE" amendment block. Legacy workspace modules workspace-composition/governance headers reframed to "CoreGrid — Phase 06 (platform layer)". Command Centre copy de-scholarized: header now "CoreGrid platform · N phases"; provisioned card reads "A CoreGrid domain runtime … The organization, roles and policy set…" | Whole-tree typecheck 0; ESLint 0; foundation doc-integrity + workspace-views suites green (docs LF-normalized; Scholar-brand residual scan clean in 06/24). Next: domain-neutral P25 onboarding + P24 experience typed modules (wave builds), then runtime-neutral workspace display composition |
-
-| 2026-09-04 | Phase 25 upgrade WAVE-1 — domain-neutral organization onboarding flow | Phase 25 Onboarding & Workforce Identity | NEW platform artifact `frontend/src/lib/onboarding/onboarding-flow.ts`: ONE governed onboarding pipeline for ANY CoreGrid organization (school/university/company/government agency/community institution/non-profit — orgType is data, never a code branch). Sequential lifecycle organization_created → profile_configured → tenant_provisioned (+P03 tenant + P02 org identity) → admin_provisioned (initial administrator, never the org identity) → policy_set_installed → workspace_provisioned (P06) → runtime_activated (ANY present/future domain runtime) → active; stage-jump and missing-artifact rejection; activeRuntimeContext hands P06 the derived surface context (no fixed portals). Scholar R-001 appears only as one example runtimeId | Whole-tree typecheck 0; ESLint 0; suite onboarding-flow 9/9. Next waves: P25 invitations/activation/staff lifecycle + P24 experience contracts |
-
-| 2026-09-04 | Phase 25 upgrade WAVE-2 — invitations/activation + onboarding progress | Phase 25 Onboarding & Workforce Identity | NEW `frontend/src/lib/onboarding/invitations.ts`: domain-neutral organization invitations for ANY ecosystem organization — pending→accepted/expired/revoked, server-resolved inviter, intended role is a DATA code (authorization still resolved by P08), channelRef deferred to P10 delivery; acceptance records the accepting identity; EXPIRED and REVOKED access always fails. Plus progress/resume exports on the flow module (`requiredArtifactsForStage`, `onboardingProgress` → next stage/ratio/complete). 17 tests green across onboarding-flow + invitations suites | Whole-tree typecheck 0; ESLint 0; vitest 17/17. Next: P25 staff/workforce lifecycle contract, then P24 waves |
-
-| 2026-09-04 | Phase 25 upgrade WAVE-3 — domain-neutral workforce lifecycle contracts | Phase 25 Onboarding & Workforce Identity | NEW `frontend/src/lib/onboarding/workforce-lifecycle.ts`: organization membership lifecycle for ANY CoreGrid actor — invited→activating→active→suspended→on_leave→transferred→deactivated→archived (adjacency mirrors legacy R-001 file for 1:1 mapping); EVERY transition validated AND tenant+organization scoped (cross-tenant/cross-org denied), immutable audit preserved through archiving, activation needs role codes, deactivation needs reason, expired access fails; role change (BF) demands permissions/policies/workspace/onboarding/audit recalculation; transfer (BE) auto-pending recalculation; SoD Requester≠Approver≠Executor (BL) + dual control (BM); offboarding (BI) stepwise, completes only after access revocation. Legacy `workforce-core.ts` header amended as superseded R-001 reference | Whole-tree typecheck 0; ESLint 0; vitest 9/9 wave-3. Next: P24 experience-platform waves |
-
-| 2026-09-04 | Phase 24 upgrade WAVE-1 — experience-platform contracts | Phase 24 Experience & Design Intelligence | NEW platform artifact `frontend/src/lib/experience/experience-platform.ts`: domain-neutral contracts every runtime workspace consumes. §G–J/BW/BY semantic tokens: light+dark schemes, system-mode resolution, high-contrast overrides, density-aware spacing, token accessor (no raw hex outside tokens). §N/R/X IA: workspace navigation derived from capability refs + org/runtime data (never fixed portals); node filter is cosmetic only — backend authorization always governs. §BL/BM: WCAG AA defaults, focus-visible, 44px touch targets, contrast-ratio math with A/AA/AAA thresholds. §P/R personalization: applied ONLY for policy-allowed dimensions; denials reported, never silently ignored. Scholar R-001 is one consumer; company/agency/community derive from the same contracts | Whole-tree typecheck 0; ESLint 0; vitest 10/10. Next: P24 waves 2+ (workspace experience/i18n components + experience intelligence), then P06 lifecycle/template waves |
-
-| 2026-09-04 | De-hardcoding UI WAVE-1 — workspace-dynamic navigation chrome | Phase 06/24/25 runtime composition | NEW `workspace-engine/navigation.ts` (domain-free): sidebar/bottom-nav/home chrome is RESOLVED, never authored — contributions (runtimeRef + capability-coded seeds) × viewer authorized-capability set → visible sections; AND-gating, key dedupe (first wins), provenance, no role enum, no portal strings in engine. NEW `workspace-engine/nav-catalog.ts`: the ONE home for navigation metadata — Scholar R-001 parent/student contributions as DATA (capability codes, icon registry keys, display labels); future runtimes publish identically. `mobile-bottom-nav.tsx` rewritten: fixed Parent/Student bars → single capability-driven `WorkspaceBottomNav` (zero hard-coded items); `_authenticated/route.tsx` now derives mobile chrome from catalog + capabilities | Whole-tree typecheck 0; ESLint 0; vitest 8/8. Next waves: PortalSidebar NAV/ADMIN_SECTIONS → catalog resolution; command-centre wizard de-scholarize to runtime provisioning; role→capability authority in P02/P08 |
-
-| 2026-09-04 | De-hardcoding UI WAVE-2 — PortalSidebar now workspace-dynamic | Phase 06 workspace engine + R-001 chrome | Deleted the sidebar's hard-coded `NAV: Record<AppRole, Item[]>` + `ADMIN_SECTIONS` (~300 lines of role-locked UI). Engine extended generically (per-section `collapsible` + group `iconKey`; per-item `activeUrls`/`activePrefixes`). `nav-catalog.ts` now publishes ALL Scholar R-001 sidebar data: org_admin collapsible groups (Intelligence/Academic/Finance/Learner Services/Communication/Administration/Platform) + flat teacher/bursar/hq/super_admin/driver workspaces — capability-coded `r001:<kind>.*`, single-source kind→capability prefix resolution (`scholarCapabilitiesForKind`). `PortalSidebar` rewritten to render resolved `WorkspaceNavSection[]` only (icon registry keys → components; zero role enums/portal strings); `_authenticated/route.tsx` resolves sidebar + bottom chrome from the same catalog | Whole-tree typecheck 0; ESLint 0; vitest 8/8. Next: command-centre wizard de-scholarize to runtime provisioning; roles.ts redirect behind P02/P08 |
-
-| 2026-09-04 | De-hardcoding UI WAVE-3 — Command Centre provisions any CoreGrid organization | Phase 25 onboarding + platform provisioning UI | `command-centre.tsx` de-scholarized end-to-end (904→850 lines): wizard now provisions a CoreGrid ORGANIZATION through the domain-free `createOrganizationOnboarding` pipeline (org class = DATA incl school/university/company/agency/community/non-profit/network), role step uses generic role CODES (org_administrator/educator/learner/finance/… resolved by P08 — R-001 portal roles removed), step labels/subtitles/copy generic ("organization", tenant onboarding, runtime provisioning). Removed `createInstitution`/`InstitutionType`/`OwnershipType`/`ROLE_LABEL`/`AppRole` dependencies; only remaining "school" tokens are one allowed data value + option label. Enter-workspace link remains the R-001 first-runtime destination | Whole-tree typecheck 0; ESLint 0. Next: roles.ts redirect/labels behind P02/P08 authority; page-level dashboards/hub grids → data-driven |
-| 2026-09-04 | De-hardcoding UI WAVE-4 — post-login landings resolved from chrome; roles.ts type-only | Phase 06 workspace engine + P02/P08 authority | `frontend/src/lib/roles.ts` reduced to the `AppRole` type union only (P02/P08 boundary note). NEW `navigation.resolveWorkspaceHome(sections)` returns the orderHint-0 destination of resolved chrome; catalog adds `scholarWorkspaceHome(role)` + `scholarWorkspaceLabelForRole(role)` (+ SCHOLAR_WORKSPACE_LABELS). All four legacy consumers rewired off `dashboardPathForRole`/`ROLE_LABEL`: `role-guard.tsx` (capability-denial bounce + workspace copy), `routes/index.tsx` (post-login home), `routes/auth.tsx` (post-auth landing), `contexts/app-context.tsx` (realtime role-change redirect), plus `_authenticated/route.tsx` header label/brand-link. `roles.test.ts` rewritten: same landing expectations now pinned against the chrome-derived helpers | Whole-tree typecheck 0; ESLint 0; vitest 23/23 (roles + workspace-navigation). Next: page-level dashboards/hub grids → data-driven; scan pages for R-001 mocks |
-| 2026-09-07 | R-001 workforce reality WAVE-1 — 45 African school staff kinds as governed data | Phase 25 Workforce Identity + Phase 02 reality data + Scholar runtime | NEW substrate migration 20260907000000: domain-neutral `cg_workforce_kind` (per-runtime catalog; families/employment classes/authority groups; advisory only — Phase 08 stays the ONLY authorization authority) + `cg_workforce_position` (tenant-scoped, time-bounded appointments; multi-position per person; single primary per tenant; zero-policy RLS, service-role only, mirrors kernel substrate posture). Seed migration 20260907000100 installs runtime:scholar catalog: 45 positions reflecting African educational reality — BoG/SMC chair+members, Head/Deputy Head, Director of Studies, QA/Standards, Senior/HoD/Subject/SNE teachers, interns, exam/records officers, librarian, lab/agriculture/workshop/ICT/media technicians, welfare + boarding matron/master, nurse, registrar/HR/secretary/stores, bursar/accountant/cashier/procurement, transport/driver, estates/maintenance, catering, security supervisor+guard, chaplain, sports, music/cultural arts. NEW typed contracts: `workforce-kinds.ts` (domain-neutral Zod schema, integrity audit, family/kind selectors — no domain vocabulary) + `runtime/scholar-workforce.ts` (typed R-001 catalog, module-load audit, legacy membership→position title guidance). Staff-accounts flow records the real post on account creation (server fn writes cg_workforce_position; parent/student positions rejected) and admin UI picks positions from catalog-driven optgroups + shows canonical African titles | Whole-tree typecheck 0; ESLint 0; vitest 14/14 workforce-kinds suite (catalog integrity + SQL↔TS code/row parity). Next: multi-position assignment UI, position listing/HR surface, per-kind capability gates (P08 groups), P22/P23/P24/P06 waves over this substrate |
-| 2026-09-07 | R-001 workforce reality WAVE-2 — org-admin HR position surface + P02 account↔identity closure | Phase 25 Workforce Identity + Phase 02 Identity | NEW migration 20260907000300 (RPC surface over the zero-policy position substrate): `list_workforce_positions(tenant)` (joined kind title/family/authority + scope re-derivation, org admin only), `assign_workforce_position(...)` (demotes prior primary, re-activates ended appointment via ON CONFLICT, runtime-parameterized, FK-safe) and `end_workforce_position(...)` — every function re-checks `is_school_admin()` AND `get_my_school_id()=tenant` server-side; grants to authenticated. NEW `workforce-positions.ts` typed view contract (employment/status enums, zod schema, open-roll grouping, display summaries) + `workforce-positions.functions.ts` server functions (canonical school-admin scope; learner/parent targets rejected). Account creation now ALSO registers the person as a canonical human identity in cg_identity (identityDraft, external_subject=auth uid, verified) — Phase 02 typed-consumption closure in the runtime. Staff-accounts UI lists positions per account as chips (★ = primary) via the gated RPC | Whole-tree typecheck 0; ESLint 0; vitest 20/20 (workforce-positions + workforce-kinds suites). Next: per-kind capability gates (P06/P08), P22/P23/P24 waves over the substrate |
-
-| 2026-09-07 | Workforce substrate live-validation pack — DB push blocked by missing CLI credentials in sandbox | Phase 25/02 migrations | Live REST probe (service-role) against project `srhmfaoyhpvhdfxmagho`: cg_identity PASS (P02 live), cg_domain_runtime holds `runtime:scholar` (proposed 0.1.0) PASS, cg_workforce_kind/cg_workforce_position/list_workforce_positions all 404 — migrations 20260907000000/0100/0300 authored but NOT applied. Sandbox has only SUPABASE_URL + service-role key (no `sbp_*` access token, no DB password) so `supabase db push` cannot authenticate here. Offline-completable convention steps shipped: rls-isolation-check.sql §8 (RLS on/grants, seed count = 45, single-primary partial index, RPC presence + authenticated EXECUTE), `scripts/verify-workforce-substrate.mjs` (no-write service-role parity verifier; RUN OUTPUT: 2 PASS / 3 FAIL above), seed FK guard inserts the runtime:scholar cg_domain_runtime row idempotently (required by catalog FK), apply commands added to migration headers. APPLY ON HOST WITH CLI: `supabase login` then `supabase db push --workdir database/supabase`; re-run `node scripts/verify-workforce-substrate.mjs`; expect 5/5 PASS | Live evidence: 2 PASS / 3 FAIL (migrations pending) |
-| 2026-09-07 | Workforce substrate APPLIED + VERIFIED on live project | Phase 25/02 substrate (live) | Applied `20260907000000`, `20260907000100`, `20260907000300` to project `nwrflbpbhyiqdptmlccm` via Supabase Management API after token-access proof showed config.toml project_id (`srhmfaoyhpvhdfxmagho`) was stale — corrected to `nwrflbpbhyiqdptmlccm` (matches .env + token). The RPC migration originally failed PG validation: GRANT with partial argument lists is invalid for functions with defaults — fixed to full declared signatures and re-applied cleanly. Migrations headers marked APPLIED + VERIFIED. LIVE PROOF: `node scripts/verify-workforce-substrate.mjs` → 7/7 PASS (db catalog = typed catalog = 45 kinds; position table + org-admin RPC reachable; RLS deny-by-default intact) | Evidence: 7/7 PASS 2026-09-07 |
-| 2026-09-07 | R-001 workforce reality WAVE-3 — kind→chrome advisory resolution + self-position RPC (Phase 06/P08) | Phase 06 workspace + Phase 25/08 boundary | NEW migration 20260907000400 `get_my_primary_workforce_position()` — self-scoped SECURITY DEFINER (identity_ref = auth.uid() only; no params, nothing client-suppliable) returning the member's own active/on-leave primary position with kind title/family/authority. NEW `runtime/scholar-workforce-nav.ts`: authority-group → Scholar chrome-kind mapping (data: org_admin/teaching_* → org_admin/teacher chrome, finance_officer → bursar, transport → driver; all other groups = no dedicated chrome → null), shrink-only capability resolution (position-derived ∩ membership; empty intersection returns membership unchanged — no escalation, no lockout), and member workspace label preferring the real post title. Authenticated layout header now shows the member's REAL post (e.g. "Head Teacher", "Examination Officer") via self-RPC when present, else the coarse membership label. Migration APPLIED + VERIFIED live | Whole-tree typecheck 0; ESLint 0; vitest 9/9; live verifier 8/8 PASS (20260907000400 applied) |
-| 2026-09-07 | Phase 22/23 platform wiring WAVE-R4 — platform contracts go live in the app shell | Phase 22 Mobile Platform + Phase 23 Web Platform | First live consumers of the authored-but-unwired platform modules: `client-platform.ts` (pure SSR-safe detection: device platform from UA into P22 `DevicePlatform` vocabulary, viewport breakpoint, color-scheme mapping, `isTouchPrimary`, and full runtime classification reusing the P23 `classifyBrowser`) + `use-client-platform.ts` (SSR-safe hook snapshotting connectivity/breakpoint/color scheme/reduced motion/platform with real event listeners) + `offline-banner.tsx` mounted in the authenticated layout (renders only while offline; aria-live; zero authorization impact). Confirmed the gap first: platform/web modules had NO app importers except platform-error-reporting (1) — L2–L4 empty matrix was real | Whole-tree typecheck 0; ESLint 0; vitest 5/5. Next: P23 service-worker/PWA + error-boundary surfaces, then P24 experience waves |
-| 2026-09-07 | R-001 workforce reality WAVE-R5 — full position manager in the HR UI (Phase 25 close) | Phase 25 Workforce Identity (L4 UI) | Staff-accounts now manages the real African posts end-to-end per account: `PositionManager` renders each member's open positions (★ primary) with one-tap END and a catalog-driven, family-grouped picker to ADD additional positions — multi-position reality (e.g. subject teacher + examination officer) is now operable, not just displayable. Writes flow through the org-admin assign/end RPCs (tenant re-derived server-side; parent/student targets rejected); the UI reflects workforce reality and never grants access (Phase 08 unchanged). Query invalidation covers both the HR list and the member's own primary-position chrome label | Whole-tree typecheck 0; ESLint 0; vitest 23/23 this run (workforce-kinds + scholar-workforce-nav); workforce-positions/roles/navigation suites previously green. Next: P24 experience waves + per-feature r001 capability codes for Phases 11–13 |
-| 2026-09-07 | R-001 workforce reality WAVE-R6 — staffing-reality roll summary in HR UI | Phase 25 Workforce Identity (L4 UI) | `summarizeWorkforcePositions(rows)` pure roll summarizer (total/open positions, distinct people with posts, families represented among open posts, open primaries) + tests. Staff-accounts now shows a live 4-tile staffing-reality strip above the account list — people with positions, open positions, families represented, primary posts — computed from the already-fetched org-admin positions RPC (no new query, no new DB object) | Whole-tree typecheck 0; ESLint 0; vitest 8/8 (workforce-positions). Next: P24 experience waves + per-feature r001 capability codes (Phases 11–13) |
-| 2026-09-07 | R-001 workforce reality WAVE-R7 — primary-position auto-promotion on end (Phase 25 lifecycle) | Phase 25 Workforce Lifecycle (L3 DB) | Migration 20260907000500 replaces `end_workforce_position`: ending a member's PRIMARY appointment now auto-promotes their most recently started open secondary appointment (single-primary invariant preserved for chrome/landing derivation — a stepping-down HoD who stays a Subject Teacher keeps a primary post). Ends of secondary posts unaffected; all scope gates unchanged (school admin + own-tenant re-derived; fail-closed). Applied live via Management API (HTTP 201; function body compiled). NOTE: behavioral path requires an authenticated school-admin fixture to exercise end-to-end; static + regression evidence recorded | Live verifier regression 8/8 PASS post-apply |
-| 2026-09-07 | WAVE-R8a — platform/browser target profiles for every delivery surface | Phase 22/23 platform code | NEW `lib/platform/platform-targets.ts`: per-target profiles for ALL P22 delivery targets (ios/android/web/windows/macos/linux/tablet + PWA mode) with runtime family/category/capability sets, plus per-browser profiles for Chrome/Edge/Firefox/Safari/Opera/Samsung Internet (P23 vocabulary) with conservative fail-closed capability flags (Safari web-push false, Firefox PWA false, unknown → all false). Helpers: `resolvePlatformTargetProfile`, `resolveBrowserTargetProfile`, `devicePlatformToTarget`, `isNativeInstallable`. PWA stays config-level (sw.js is push-only and already opt-in registered by push-client — no double registration) | Vitest 7/7 (platform-targets); tsc 0; eslint 0 |
-| 2026-09-07 | WAVE-R8b — app-size side preview popup + Phase 01–51 power map/roadmap | Phase 22/24 dev surface + governance | NEW `components/app-frame-preview.tsx`: floating desktop-only control (bottom-right) opening a right-side, device-framed, same-origin iframe of the CURRENT route at ~390px phone width — test the live UI at app size inside the desktop browser; mounted in the authenticated shell. NEW `architecture/scholar-phase-power-map.md`: 01–51 phase inventory with Scholar power role + build status (registry-backed; 33–51 = DOC only) and the R-wave roadmap | tsc 0; eslint 0 (component) |
-| 2026-09-07 | WAVE-R9 — Phase 24 workspace experience + greeting surfaces | Phase 24 Experience & Design Intelligence (L4 UI) | NEW `experience/workspace-experience.ts`: domain-neutral member experience resolver — localized (i18n-extensible, en shipped) time-of-day greeting (`dayPartForHour`/`greetingForHour`) + `resolveMemberWorkspaceExperience` preferring the member's real post title (position-aware) over the coarse membership label. Authenticated shell now greets the member ("Good morning, Jane") and shows their position-aware role line — Phase 24 experience intelligence over the R-3 position-aware chrome | Vitest 5/5; tsc 0; eslint 0 |
-| 2026-09-07 | WAVE-R10 — per-feature r001 capability codes + fail-closed gate primitive | Phase 06/08 per-feature authorization foundation | nav-catalog now exports the SHIPPED feature-code index (`SCHOLAR_FEATURE_CODES`, `isScholarFeatureCode`) derived from contribution data (single home). NEW `capability-gate.ts`: strict `parseCapabilityCode` (runtime/kind/feature), `SCHOLAR_MEMBERSHIP_FOR_KIND` kind→membership map (org_admin=admin|principal, etc.), and `evaluateScholarCapability` that FAILS CLOSED on malformed codes, undeclared features, unknown kinds and role mismatch; platform super-admin bypass only on declared codes. This is the enforcement primitive future per-feature Scholar server gates (Phases 11–13) adopt — grants nothing by itself | Vitest 8/8 (capability-gate); tsc 0; eslint 0 |
-| 2026-09-07 | WAVE-R11 — workforce catalog extended to 71 African school-ecosystem kinds | Phase 25 Workforce Reality (full ecosystem) | Seed 20260907000600 (+26 kinds) applied live: religious/madrassa instructors, TVET/vocational/tailoring/carpentry/electrical/construction/hospitality/entrepreneurship/business/computer instructors, campus & branch directors/deputies, shift coordinators, premises officers, education-ministry liaison, hostel manager, evening study & weekend coordinators, school psychologist, first-aid officer, library assistant, early-years/lower-upper-secondary coordinators, careers & university liaison — total **71 kinds** (db=typed=71 verified live). UI is catalog-driven so the position picker/roll surfaces now expose all 71 automatically; membership access levels (users.role) remain the 8 coarse P08 signals by design. RLS §8 expected count updated to 71; parity suite reads both seed files | Vitest 14/14; tsc 0; eslint 0; live verifier 8/8 (db=71 typed=71) |
-| 2026-09-07 | WAVE-R12 — per-page guide & tips surface | Phase 24/25 guide surfaces | NEW `guidance/page-tips.ts` registry: route-keyed, longest-prefix-matched "what can I do here" guidance for admin base, staff-accounts, HR, analytics/intelligence, finance, timetable/classes, library, parent, student, settings, messages and notifications (content-only, never behavior/authorization). NEW `components/page-tips.tsx` collapsible card rendered automatically by `PortalPage` on every page that has guidance (uses router location; SSR-safe). Bonus fix: `StatCard` in portal-shell had a pre-existing conditional `useCountUp` after early return (rules-of-hooks error surfaced by lint) — hook order corrected | Vitest 3/3 (page-tips); tsc 0; eslint 0 |
-| 2026-09-07 | WAVE-R13 — school template auto-recommendation (CoreGrid adapts; never forces) | Phase 04/25 template engine | NEW `onboarding/template-engine.ts` (domain-neutral): InstitutionTemplate + match/rank (`matchTemplate`, `recommendTemplates` best-first, uncovered-features never dropped) + `auditTemplates`. NEW `runtime/scholar-school-templates.ts`: 13 feature keys (curriculum streams incl. religious/technical/vocational/agricultural/entrepreneurship, schedule day/double-shift/boarding, site multi-campus/premises, community public/private) + 11 school templates (public/private day, Christian mission, Islamic/madrassa, TVET, technical, agricultural, entrepreneurship, boarding, double-shift, multi-campus group). NEW `/admin/school-profile` page (sidebar + page-tips entry): org admins tick what their school ACTUALLY runs; matching templates are suggested and nothing is forced or removed. Route tree regenerated (production build PASS) | Vitest 9/9; tsc 0; eslint 0; vite build 0 |
-| 2026-09-07 | WAVE-R14 — dynamic school-day recommendation over Phase-04 contracts | Phase-04 Scholar day/hours deep dive | NEW `scholar/day-recommendation.ts`: profile-driven builder producing VALIDATED day routines for any opening/closing pair (presets for 12:00, 13:00, 14:00, 17:00, 18:00 closing models), double-shift windows (morning + afternoon sessions), and optional boarding evening-study windows — every routine passed through `validateSchoolDayRoutine` before return; never invents blocks (§162). Extends (never duplicates) existing school-hours/shifts/boarding contracts | Vitest 5/5; tsc 0; eslint 0. Remaining R-14 scope (next): wire recommendations into timetable/class-structure surfaces & multi-campus environment refs |
-| 2026-09-07 | WAVE-R15 — KERNEL capability registry (domain-neutral shared context) | Phase 33 kernel substrate + platform graph | NEW `kernel/kernel-capability-registry.ts`: typed consumption of the 50-capability platform graph (registry.json) — each capability has id/label/ownerPhase/consumers; helpers `kernelCapabilityById`, `kernelCapabilitiesForPhase`, and `kernelCapabilitiesConsumedByScholar()` (direct runtime-001 consumers: mobile/web/onboarding-workforce + domain owners 04/10-13/15-18/20/25). The KERNEL owns what the platform can do; Scholar declares consumption and never redefines the graph. Foundation for shared-context marketing/org surfaces (R-16 UI next) | Vitest 4/4; tsc 0; eslint 0 |
-| 2026-09-07 | WAVE-R16 — public /platform marketing surface over the kernel capability graph + R-14 remainder (multi-campus wiring) | Phase 33 kernel + Phase-04 dynamic surfaces | NEW public route `/platform`: dynamic marketing page rendering ALL 50 kernel capabilities grouped by owner phase (01–51) straight from the kernel registry — domain-neutral, "one platform, every organization, their rules" — with a Scholar-consumed capability chip set and footer framing runtimes as tenants (never owners) of the kernel. R-14 remainder: `scholar/day-recommendation.ts` now also resolves PER-CAMPUS validated day routines (`recommendSiteRoutines`, `CampusSchoolWindow`) so timetable/class surfaces can bind sessions to a campus reference — each campus keeps its own windows/closing model and boarding prep. Route tree regenerated (vite build PASS) | Vitest 11/11 (day-recommendation 7 + kernel registry 4); tsc 0; eslint 0; build 0 |
-| 2026-09-07 | WAVE-R17 — school-day preview bound into the profile surface | Phase-04 dynamic schedule surfaces (L4 UI) | Admin `School profile & templates` page now previews the RECOMMENDED SCHOOL DAY live: closing-time select (12:00/13:00/14:00/17:00/18:00 presets); selecting double-shift appends the afternoon session and selecting boarding adds the evening-study routine — all computed through the validated `recommendDayRoutines` engine and rendered as session cards with HH:MM windows; invalid days surface the engine's issues. Profile → schedule binding visible end-to-end; timetable page binding follows in a later wave | Vitest 13/13 (day-recommendation 7 + school-templates 6); tsc 0; eslint 0 |
-| 2026-09-07 | WAVE-R18 — remaining candidates: timetable day-window binding, curriculum gating, i18n foundation | Phase 04/12/24 surfaces | (1) TIMETABLE BINDING: `/admin/timetable` gains a "School-day windows" strip (closing 12:00–18:00, double-shift, boarding) computed through the validated day engine — the AI period generator now has explicit boundaries instead of assuming a fixed day. (2) CURRICULUM GATING: `runtime/scholar-curriculum-gating.ts` maps school-profile features to curriculum modules (core+traditional always; religious/technical/vocational/agricultural/entrepreneurship surface ONLY when selected) — display-level, never forces a school. (3) I18N: `lib/locale.ts` negotiation foundation (supported locales, normalization, safe default) | Vitest 12/12 (curriculum 3 + locale 2 + day 7); tsc 0; eslint 0 |
-| 2026-09-07 | WAVE-R19 — Phase 01–51 consumption audit (skip-if-built governance loop) | Platform governance | NEW `scripts/verify-phase-consumption.mjs` + `architecture/scholar-phase-consumption-audit.md`: for every phase 01–51 the audit answers (a) does Scholar consume it? (b) is it built (domain-neutral module + suite)? Output: 26 CONSUMED/BUILT, 0 consumed gaps, 21 NOT-CONSUMED (07 agents/21 cloud/27–29/31–32/34–51) skipped for Scholar-specific work by design. Rule enforced: consumed+not-built → build domain-neutral in the kernel, Scholar is only a consumer; built → skip and move on. Exit 0 when no gaps remain | Audit run: consumed-gaps = 0 |
-| 2026-09-07 | WAVE-R20 — Automation vertical (Phase 17 consumption adapter) | Phase 17 Automation Engine vertical | Scholar CONSUMES the domain-neutral Phase-17 engine via `runtime/scholar-automation-policy.ts`: Scholar operation kinds → risk levels (timetable_publish R0, attendance_alert/fee_reminder R1, grade_publish/position_end_prompt R2, exam_change/fee_waiver R3, writeoff R4) evaluated through `automation-core.applyFailClosed` — kernel owns the decision rule, Scholar supplies only its own risk data + condition inputs. Unknown kinds fail closed (never allowed) | Vitest 5/5; tsc 0; eslint 0. Next verticals: Payments→fees lifecycle, Digital Twin→facilities, AI→operations |
-| 2026-09-07 | WAVE-R21 — Payments→fees lifecycle vertical (Phase 13 consumption) | Phase 13 Financial System vertical | Scholar CONSUMES the domain-neutral Phase-13 financial core via `runtime/scholar-fee-lifecycle.ts`: fee account balance + kernel obligation status (open/partial/paid/overdue from dueDate) computed exclusively with kernel money primitives (`money`, `subtractMoney`, `compareMoney`, `isZeroMoney`, integer minor units — no floating point) + per-term roll. Invalid accounts fail closed (no currency, overpayment) | Vitest 5/5; tsc 0; eslint 0. Next verticals: Digital Twin→facilities, AI→operations |
-| 2026-09-07 | WAVE-R22 — Digital Twin→facilities vertical (Phase 16 consumption) | Phase 16 Digital Twin vertical | Scholar CONSUMES Phase-16 contracts via `runtime/scholar-facility-twin.ts`: facility twin kinds (classroom/laboratory/room/building/facility/campus/asset/infrastructure/operational_environment — all validated against the kernel `TWIN_KINDS`), facility metrics → twin attributes, observation sources restricted to the kernel `OBSERVATION_SOURCES` vocabulary, and freshness classification over the kernel `ObservationQuality` set (VALID/STALE/INVALID; unknown sources fail closed). Audit helper proves the whole binding uses only kernel vocabulary | Vitest 3/3; tsc 0; eslint 0. Next vertical: AI→operations |
-| 2026-09-07 | WAVE-R23 — AI→operations vertical (Phase 26 consumption) — VERTICALS COMPLETE | Phase 26 AI Intelligence Layer vertical | Scholar CONSUMES Phase-26 governance via `runtime/scholar-ai-operations.ts`: operation traits (impact/autonomy/data classification) → kernel `classifyAiRisk` (lesson-plan low, discipline/admission medium, exam-security/financial high, lockdown critical), then kernel `evaluateHighRiskGate` (high ⇒ multi-model or approval; critical ⇒ both) and `shouldEscalate` (unknown kinds and low confidence escalate). Kernel owns every rule; Scholar supplies only data. This completes the R-20→R-23 vertical queue (Automation, Payments→fees, Digital Twin→facilities, AI→operations) | Vitest 5/5; tsc 0; eslint 0 |
-| 2026-09-07 | WAVE-R24 — School-profile persistence + auto-apply (leftover #1) | Phase 25/33 org profile (L3+L4) | NEW substrate migration 20260907000700 `cg_org_profile` (domain-neutral tenant profile store: tenant_ref/runtime_ref/profile_key/payload JSON; kernel never interprets payloads) + org-admin RPCs (`get_org_profile`/`upsert_org_profile`, scope re-derived server-side, fail-closed) — APPLIED live. NEW `runtime/scholar-profile.ts` (Scholars profile key school_profile_v1: validated features vs template catalog + closing preset) + `org-profile.functions.ts` server functions. School-profile page now LOADS a previously saved profile and SAVES the org's real choices (features + closing model) so they persist and can drive every surface automatically | Vitest 10/10 (scholar-profile 4 + school-templates 6); tsc 0; eslint 0. NEXT leftovers in order: fees-page binding, facility-twin dashboard binding, governance refresh |
-| 2026-09-07 | WAVE-R25 — Fee-lifecycle binding into /admin/fees (leftover #2) | Phase 13 → L4 UI binding | `/admin/fees` now shows a **kernel-computed roll strip** (Paid / Partial / Open / Overdue) above the invoice CRUD — every invoice's balance and obligation status is derived through `scholar-fee-lifecycle` (Phase-13 money primitives, integer minor units) from the live fees table (amount/paid_amount/due_date) rather than trusting the stored status column | Vitest 5/5 (fee-lifecycle); tsc 0; eslint 0. NEXT leftovers: facility-twin dashboard binding, governance refresh |
-| 2026-09-07 | WAVE-R26 — Facility-twin binding surface (leftover #3) | Phase 16 → L4 UI binding | NEW `/admin/facilities` (sidebar + tips): every school facility is bound to a kernel twin kind via `classifyFacilityTwinKind` (laboratory/classroom/room/building/operational_environment/infrastructure/asset/facility — validated against kernel `TWIN_KINDS`), with the six observation attributes it can publish shown as chips and estate counts per kind. Route tree regenerated (build PASS) | Vitest 5/5 (facility twin suite incl. classifier); tsc 0; eslint 0; build 0. LAST leftover: governance refresh |
-| 2026-09-07 | WAVE-R27 — Governance refresh after R-1..R-26 (leftover #4) | Platform governance | Registry notes refreshed for phases 02 (typed consumption contracts + cg_identity registration + workforce substrate live) and 06 (resolution-based chrome/landings live; kind→chrome, tips, cg_org_profile persistence, facility-twin binding); `engineering-section-completeness-matrix.md` bumped to 2026-09-07 with new known-gap item 5 (26/26 Scholar-consumed phases built, 0 gaps, audit pointer). Registry validation re-run: PASSED (phases=51 capabilities=50 duplications=15 runtimes=2) | registry-validate PASSED; json-ok |
-| 2026-09-07 | WAVE-K1 — Kernel phase-contract program opens at Phase 01 (Scholar first, domains neutral) | Phase 01 (kernel-neutral contract layer) | NEW `kernel/engineering-sections.ts` (canonical 20-section dictionary = PROGRESS §10 terms + 7 ASI invariants, 5 mandatory), `kernel/phase-contract.ts` (contract schema, validator, connected-DAG graph, ASI law, neutral-seat law), `kernel/phase-contracts/phase-01-foundation.ts` (all 20 sections declared with artifacts/evidence; owns foundation-standards-config-secrets-ci; Scholar = first runtime + healthcare/government/commerce neutral seats; assistive tier, proposal-only self-improvement), `kernel/phase-contracts/index.ts` (`validatePhaseContracts` whole-set gate), charter `architecture/kernel-phase-contract-program.md`. Nothing Scholar was removed or downgraded — existing modules/tests are cited as evidence | NEW suite `tests/unit/kernel-phase-contract.test.ts` (dictionary, coverage, Phase 01 contract, capability-ownership, connection law, graph cycles/orphans, ASI invariant + tier caps, neutral seats, whole-set validation); vitest 0 · tsc 0 · eslint 0 |
-| 2026-09-07 | WAVE-K2 — Phase 02–07 contracts authored (Scholar first, domains neutral) | Phases 02–07 (kernel contract layer) | Added `phase-contracts/define-phase.ts`: explicit authoring (`definePhaseContract`) plus seeded generation (`definePhaseContractFromSeed`) that derives all twenty sections from declared facts (phase doc, capability, dependencies, consumers, substrates, tests) with per-section overrides. Authored contracts: 02 Identity, 03 Multi-Tenancy, 04 Reality Engine host, 05 Core Application Runtime, 06 Workspace Engine, 07 AI Agent System — each machine-declaring 20/20 sections, kernel-capability ownership, dependencies + consumers, ASI profile, and Scholar-first binding with reserved neutral domain seats. Connection validation now checks refs against the full 51-phase registry, and the graph only draws edges between authored contracts so waves land incrementally without phantom dangling nodes | Contract suite extended (27 tests: dictionary, coverage, ownership, connection law, graph cycles/orphans, ASI caps, neutral seats, whole-set validation, artifact-existence); vitest 0 · tsc 0 · eslint 0; full suite 152 files/2,424 tests green apart from the in-flight contract suite now fixed |
-| 2026-09-07 | WAVE-K3 — Phase 08–14 contracts authored (security, trust, communication, academic, scheduling, finance, data) | Phases 08–14 (kernel contract layer) | Seven more contracts, each machine-declaring 20/20 engineering sections, capability ownership, dependencies, consumers, ASI profile and Scholar-first binding with reserved neutral seats. Graph law refined: dependency edges must be acyclic (build order) while capability-consumption edges may be mutual (registry already has 08↔09 and 04↔12 consumption pairs) — mutual consumption is now explicitly allowed, orphan/dangling/cycle checks retained | Contract suite 27 tests green (incl. new mutual-consumption case); vitest 0 · tsc 0 · eslint 0 |
-| 2026-09-07 | WAVE-K5 — Phase 21–32 contracts authored + naming-drift control (mobile, web, experience, onboarding/workforce, AI gateway, marketplace, developer platform, integration, globalization, enterprise scale, evolution) | Phases 21–32 (kernel contract layer) | Twelve contracts, 20/20 engineering sections each, all registered in the connected contract graph. CoreGrid law encoded per phase: clients are untrusted and offline capability only shrinks (22), browser storage is never a data store (23), personalization may never widen visibility (24), workforce kinds describe work and never grant authority (25), the AI gateway is the only sanctioned model path with the full privacy pipeline (26), nothing installs itself (27), extensions obey the same architecture law (28), adapters never write canonical records (29), translations never change meaning (30), scale is proven not assumed (31), evolution is governed and self-improvement is never permission expansion (32 — first contract at `governed-autonomous` with `governed` self-improvement). New governance controls in the contract suite: PROGRESS §11 name alignment for every contract, registry↔catalog drift limited to the documented set (new drift fails), capability-graph principal validation | Suite 34 tests green; vitest 0 · tsc 0 · eslint 0; finding recorded in §17.1 debt register |
-| 2026-09-07 | WAVE-K6a — Phase 33–40 contracts authored (universal layer) with ADR-backed duplication governance | Phases 33–40 (kernel contract layer) | Eight contracts covering the universal layer: 33 URIK (universal ontology substrate; cites migration 20260903000000 + kernel-purity suite; 6 neutral domain seats), 34 cognitive engine, 35 agent civilization OS, 36 memory & knowledge (canonical memory owner for D1/D2 under ADR PLATFORM-003), 37 simulation engine (D5, ADR PLATFORM-006), 38 evolution engine (composes phase 32's capability; owns none by registry truth — D3/D14, ADR PLATFORM-004), 39 governance & alignment (D7 boundary: aligns, never enforces), 40 runtime fabric (Scholar installed as one runtime among equals). Two kernel-law refinements: phase contracts may own no capability (`ownershipNote`), and a phase may declare `ownsNoCanonicalTruth` explicitly — a pure derivation phase such as 34 must state it rather than leave owners empty, and declaring both is rejected | Suite 35 tests green; vitest 0 · tsc 0 · eslint 0; contracts 40/51 authored, contiguous 01–40 |
-| 2026-09-07 | WAVE-K6b — Phase 41–51 contracts authored: all 51 phases now carry a machine-checkable engineering contract | Phases 41–51 (kernel contract layer) | Eleven civilization-layer contracts: 41 sandbox engine (D5/ADR PLATFORM-006), 42 adversarial defense (D7/PLATFORM-007, recommendation-only), 43 interface & connectivity, 44 planetary infrastructure, 45 AI compute (gateway stays the only model path), 46 twin civilization federation (D4/PLATFORM-005), 47 self-improvement engine (D3/PLATFORM-004, D6, D11 — proposes and stages, never ratifies or deploys), 48 civilization knowledge graph (D2/PLATFORM-003, provenance+ownership+authorization+confidence per edge), 49 autonomous economy (D13, ledger-backed settlement), 50 human civilization interface (consent/explanation/override; D12/D15 stay CLOSED), 51 reality OS kernel (highest ASI tier: civilization-scale, autonomy 3, governed self-improvement, composition is never authority). Suite asserts all 51 contracts are contiguous from 01 | Suite 35 tests green incl. 51-contract completeness lock; vitest 0 · tsc 0 · eslint 0; all 51 phases contract-complete |
-| 2026-09-07 | WAVE-K4 — Phase 15–20 contracts authored (hardware, twin, automation, analytics, command centre, government cloud) | Phases 15–20 (kernel contract layer) | Six more contracts, 20/20 engineering sections each, registered in the connected contract graph with the full 51-phase registry for connection refs. Boundary laws recorded per phase: devices never interpret (15 to 16), twins project reality and never grant access (16), automation orchestrates but never owns domain rules (17), analytics never fabricates metrics (18), command centre renders nothing it does not own (19), sovereignty never relaxes isolation (20) | Contract suite 27 tests green; vitest 0, tsc 0, eslint 0 |
-| 2026-09-07 | WAVE-K4 — Phase 15–20 contracts authored (hardware, twin, automation, analytics, command centre, government cloud) | Phases 15–20 (kernel contract layer) | Six more contracts, 20/20 engineering sections each, registered in the connected contract graph with the full 51-phase registry for connection refs. Boundary laws recorded per phase: devices never interpret (15→16), twins project reality and never grant access (16), automation orchestrates but never owns domain rules (17), analytics never fabricates metrics (18), command centre renders nothing it does not own (19), sovereignty never relaxes isolation (20) | Contract suite 27 tests green; vitest 0 · tsc 0 · eslint 0 |
-| 2026-09-07 | WAVE-K4 — Phase 15–20 contracts authored (hardware, twin, automation, analytics, command centre, government cloud) | Phases 15–20 (kernel contract layer) | Six more contracts, 20/20 engineering sections each, registered in the connected contract graph with the full 51-phase registry for connection refs. Boundary laws recorded per phase: devices never interpret (15→16), twins project reality and never grant access (16), automation orchestrates but never owns domain rules (17), analytics never fabricates metrics (18), command centre renders nothing it does not own (19), sovereignty never relaxes isolation (20) | Contract suite 27 tests green; vitest 0 · tsc 0 · eslint 0 |
-| 2026-09-13 | WAVE-AUDIT-1 — the Phase Completion Gate became executable; reconnaissance inventory recorded | Governance (`scripts/audit-phase-completion.mjs`, `architecture/archaeology-inventory.md`) | NEW `npm run audit:phases`: derives the Constitution's five-level maturity model from ARTEFACTS and reconciles it against `architecture/registry.json` — L1 conceptual (phase doc with ≥8 engineering sections + kernel contract), L2 data model (data-model vocabulary + a migration or declared substrate), L3 backend (modules resolve + contract-cited tests exist with real counts), L4 frontend/workspace (a route/component references the modules or capability), L5 operational (a proof/verifier/CI job/runbook/infra file names it). Emits `architecture/proofs/phase-completion.proof.json` + generated `architecture/phase-completion-status.md`. **Verdict: 51 audited — COMPLETE 7** (03 tenancy, 04 education-reality ontology, 08 security enforcement, 12 scheduling, 24 experience design, 27 marketplace, 33 reality ontology), **IMPLEMENTING 25, ARCHITECTURE_DEFINED 19**; dominant gap **L4 frontend/workspace projection = 43 phases**, then L3 = 20, L2 = 13, L5 = 2, L1 = 1 (phase 49). Two drift findings recorded, not smoothed over: the registry **understates 45 phases** (hand-maintained Level-1-only vectors while 26 phases ship modules and 1,875 contract-cited tests exist) and **5 registry claims could not be evidenced** (01/02 L3, 19/25 L4, 49 L1) — classified UNKNOWN for hand review. Semantics are deliberately conservative: only PROVABLE defects fail the gate (a contract citing a missing test artifact, or a registered phase with no architecture document); incompleteness is reported honestly, never dressed up. NEW `architecture/archaeology-inventory.md` indexes all eleven mandated archaeology outputs against real artefacts — nine present, two partial, three genuinely missing (prototype destruction report, frontend migration map, unknowns register) and registered as work packages AT-1…AT-3 | NEW suite `tests/unit/phase-completion-audit.test.ts` (7 tests: auditor runs clean, all 51 phases audited once with defined levels, levels derived from artefacts, gate fails only on provable defects, status table matches the proof, test counts reconcile, stale/unconfirmed claims are recorded); vitest green · tsc 0 · eslint 0 · verify:registry PASSED |
-| 2026-09-13 | WAVE-CF-0…CF-3 — Cloud Fabric inspected, mapped, blueprinted, and instantiated as IaC | Phase 21 instantiation (`architecture/cloud-fabric-*.md`, `infrastructure/**`, `scripts/verify-infrastructure.mjs`) | **CF-0/CF-1 (inspect + map):** repository-wide inspection recorded as evidence — application = TanStack Start SSR app built to `dist/`; data = hosted Supabase project + 54 migrations; identity/authz = Supabase auth + RLS + `security-role-gate`; 51 phase contracts machine-validated; Phase 21's domain model already implemented in `cloud-core.ts`/`cloud-byoc.ts`/`cloud-governance.ts` (46 tests); **no IaC, no container, no cluster, no CD, no observability backend, no cache/queue deploy, no n8n, no agent runtime deployment**; authoring environment has Node + git only (no terraform/kubectl/helm/docker). **CF-2 (blueprint):** `architecture/cloud-fabric-implementation-blueprint.md` maps every directive concept to its owning phase (identity 02, tenancy 03, authz 08/09, data 14, automation 17, analytics 18, security 42, agents 07, sandbox 41, twin 16/46, runtime fabric 40, planetary 44, AI compute 45, foundation/CI/secrets 01) and states the provider responsibility matrix (OCI primary control plane, Hetzner elastic workers 5→500, Vultr regional edge, Cloudflare global traffic, Supabase reality data layer), the control plane, Kubernetes fabric, data/storage/cache/event fabrics, n8n as an executor (Phase 17 owns decisions), Hermes/Jarvis as **optional** layers with a degraded-mode obligation, agent runtime + sandbox containment, zero-trust/security, DR/residency, observability + reliability agents with approvals, FinOps, IaC laws, CI/CD, and the approval matrix. **CF-3 (Terraform foundation):** `infrastructure/terraform/**` — 6 reusable modules (network, kubernetes, node_pool, object_storage, secret_refs, dns_edge), 5 provider roots (oci, hetzner, vultr, cloudflare, supabase) + one production composition with an environment precondition gate that refuses to apply when a required secret is absent; remote state everywhere; pinned providers; `secret_refs` proves secret *names* without values; `infrastructure/kubernetes/**` — the exact 8 namespaces with Pod Security `restricted`, per-namespace quotas/limit ranges/priority classes, default-deny ingress+egress with explicit allowances, RBAC with no cluster-admin and no implicit tokens for agents/runtimes/sandbox, ExternalSecret references, and a sandbox namespace that cannot reach runtime namespaces (TTL + lowest priority + fixtures only); `infrastructure/monitoring/**` contract; `CREDENTIALS.md` (names, minimum privilege, storage, rotation — never values) | **`npm run verify:infrastructure` → 59/59 invariants hold**, proof at `architecture/proofs/cloud-fabric-foundation.proof.json` bound by SHA-256 to all 51 infrastructure files; NEW suite `tests/unit/infrastructure-fabric.test.ts` (11 tests: verifier runs clean, proof↔code digest binding, all nine law categories green, provider/module/namespace surface, limitations + credential-gated next waves, credential-free repository, sensitive variables, remote state, pinning, cluster baseline, sandbox containment, domain neutrality, no duplicate engines, credential-gated waves, phase-21 contract + registry registration, npm contract); `registry.json`/`phase-catalog.ts`/phase-21 contract updated (module `cloud-fabric-iac`, new test + IaC substrates/commands); CI: `.github/workflows/infrastructure-verify.yml` (invariants + terraform fmt/validate per root + kubeconform, no credentials) and `.github/workflows/infrastructure-plan-apply.yml` (manual plan → **approval-gated apply**, credentials from GitHub Environments only) | **Wave CF-4…CF-12 remain BLOCKED pending owner credentials** (`infrastructure/CREDENTIALS.md`); nothing was deployed and no credential was requested into the repository |
-
-| 2026-09-13 | WAVE-R39 — the R37 substrate is proven (runner + verifier + proof artifact), not merely asserted | Persistence proof (`scripts/**`, `architecture/proofs/**`) | NEW `scripts/db-apply-one.mjs`: applies exactly ONE migration by filename prefix (`--dry-run` supported), refuses ambiguous prefixes, reads `DATABASE_URL` from the environment only and reports a clear failure when `pg` is absent. NEW `scripts/verify-role-assignment-substrate.mjs` + `npm run verify:role-substrate`: STATIC mode (always) proves the authored source — both tables, RLS enabled, **zero** policies (deny-by-default), REVOKE from anon/authenticated, GRANT to service_role, all six RPCs declared as SECURITY DEFINER with EXECUTE granted, every tenant-scoped RPC re-deriving scope from `is_school_admin()` + `get_my_school_id()`, `granted_by` captured from `auth.uid()` with no client parameter, revocation preserving history, and SQL↔server-function lockstep; LIVE mode (when `DATABASE_URL` is set) adds applied-database checks (relations, RLS flag, zero policies, per-role table privileges, RPC signatures + EXECUTE, active-uniqueness indexes). Writes `architecture/proofs/role-assignment-substrate.proof.json` bound to the migration by SHA-256 digest (CRLF-normalised), with `liveProcedure` and explicit `limitations`. Result in this environment: **30/30 invariants hold, mode=static**; live application remains DB-gated and is the only outstanding step | NEW suite `tests/unit/role-substrate-proof.test.ts` (7 tests: verifier runs clean and re-emits the artifact, digest binding, mode honesty vs `DATABASE_URL`, every recorded invariant ok + required law ids present, migration status line stays honest, `--dry-run` executable today); `npm run verify`, `scripts/README.md` updated; vitest green · tsc 0 · eslint 0 |
-| 2026-09-13 | WAVE-R40 — the generated environment is SERVED (site renderer, manifest route, generated runtime) | UI layer (`frontend/src/lib/surfaces/**`, 3 routes, 1 component) | NEW view-models (pure, engine-consuming, no authorization): `generated-site-view.ts` (class → brand, nav, blocks with provenance, governance, manifest + shells; class labels derived from the key), `runtime-view.ts` (server-derived roles → workspaces + dashboard widgets + platform departments + fail-closed notices), `marketplace-view.ts` (R41). NEW routes: `/reality/:class` renders the generated public site (sections, rationale, audiences, approval notices, manifest + shell summary) fed by the SAME view that generates the manifest; `/manifest.webmanifest` is a real served route (TanStack server handler, `application/manifest+json`, tenant brand when `?school=<slug>`, class otherwise, and a validated fallback instead of an uninstallable manifest); `/runtime` (authenticated) renders the actor's generated runtime — workspaces, widgets and CoreGrid departments composed from `getMyRealityRoles` + `getMyFeatureAccess` (never a client role list) with every empty result explained. NEW `scripts/generate-pwa-icons.mjs` + `npm run generate:icons` writes REAL PNG icons (own CRC32/zlib encoder, no image dependency) to `public/icons/` so "installability validated" is not a lie; `__root.tsx` links the manifest + apple-touch-icon + theme-colour; the Command Centre card links the new surfaces | NEW suite `tests/unit/surface-renderers.test.ts` (15 tests: label derivation, nav==blocks anchors, manifest-shortcut↔anchor equality, tenant-less = labelled preview, approval law, shell adapters, non-education classes universal-only, audience←role-category index, runtime fail-closed/composition/unknown roles/platform departments, anti-hardcoding scan of all 7 surface sources, engine-output assertions, real icon bytes); vitest green · tsc 0 · eslint 0 |
-| 2026-09-13 | WAVE-R41 — marketplace discover/install surface + CoreGrid internal workspace surface | UI layer (2 routes) | NEW `/marketplace`: the catalog is PUBLISHED from the selected organization class (one listing per installed feature code over the existing marketplace contracts), search reuses `keywordDiscover`, listings show vendor/version/trust/support/requirements, and every install decision is rendered from the R38 gate — with no tenant bound the surface states the unmet conditions instead of offering a button that would fail (it never fabricates an entitlement). NEW `/platform/org`: the CoreGrid internal operating workspace — departments, the roles that staff them and each department's widget keys, straight from `platformOrgSnapshot()`/`platformOrgRoles()`, with the structural audit printed on the surface (sound vs issues) | NEW suite `tests/unit/marketplace-surface.test.ts` (8 tests: one listing per installed code with provable coverage, never self-asserted trust, deny without tenant/entitlement with reasons, ALLOW once an active entitlement exists + already-installed denial, keyword discovery hit/miss, trust ordering keeps every listing, audited platform snapshot, route-source assertions incl. no fabricated entitlement); vitest green · tsc 0 · eslint 0 | NEW migration `20260907000800_coregrid_role_assignment_substrate.sql` (AUTHORED, not applied): `cg_role_assignment` + `cg_role_grant` with active-uniqueness partial indexes, touch triggers, zero-policy RLS, anon/authenticated REVOKE, service-role GRANT, and six SECURITY DEFINER RPCs (list/assign/end assignments; list/grant/revoke grants) that re-derive the tenant from the actor via `is_school_admin()` + `get_my_school_id()` and capture `granted_by` from `auth.uid()` (never client-supplied). NEW `roles/role-assignment-store.ts`: zod row contracts, in-force/time-bounded resolution, active-grant merging into catalog roles (the exact `roles` input the feature gate consumes), unknown-capability rejection and row audit. NEW `scholar-role-assignments.functions.ts`: self-scope `getMyRealityRoles` (assembles the caller's role set + tenant grants and returns feature decisions) plus five admin-scoped functions through the canonical gate; registered ADOPTED | NEW suite `tests/unit/scholar-persistence-marketplace.test.ts` incl. SQL↔server-function lockstep assertions; vitest 14 passed (2 files) · tsc 0 · eslint 0 |
-| 2026-09-07 | WAVE-R37 — reality-role assignment & grant persistence (tenants can finally install grants) | Persistence substrate + gated server functions | NEW migration `20260907000800_coregrid_role_assignment_substrate.sql` (AUTHORED, not applied): `cg_role_assignment` + `cg_role_grant` with active-uniqueness partial indexes, touch triggers, zero-policy RLS, anon/authenticated REVOKE, service-role GRANT, and six SECURITY DEFINER RPCs (list/assign/end assignments; list/grant/revoke grants) that re-derive the tenant from the actor via `is_school_admin()` + `get_my_school_id()` and capture `granted_by` from `auth.uid()` (never client-supplied). NEW `roles/role-assignment-store.ts`: zod row contracts, in-force/time-bounded resolution, active-grant merging into catalog roles (the exact `roles` input the feature gate consumes), unknown-capability rejection and row audit. NEW `scholar-role-assignments.functions.ts`: self-scope `getMyRealityRoles` (assembles the caller's role set + tenant grants and returns feature decisions) plus five admin-scoped functions through the canonical gate; registered ADOPTED | NEW suite `tests/unit/scholar-persistence-marketplace.test.ts` incl. SQL↔server-function lockstep assertions; vitest 14 passed (2 files) · tsc 0 · eslint 0 |
-| 2026-09-07 | WAVE-R38 — marketplace published from reality + consent-bound experience memory | Marketplace (P27 contracts reused) + experience memory | NEW `scholar/marketplace/listing-publisher.ts`: publishes one product+listing per installed feature code through the EXISTING `marketplace-core` contracts (verified vendor required, semver bundle, trust stays `unverified`, unpublished until reviewed). NEW `scholar/marketplace/install-gate.ts`: installs gated on tenant, known code, not-already-installed and an ACTIVE entitlement (reusing `marketplace-entitlement`). NEW `scholar/experience/experience-memory.ts` (§23): memory is opt-in, purpose-scoped, tenant+subject scoped, bounded by a 400-day retention ceiling, with a real forget path and an audit that rejects stored-without-consent / expired / over-retention records | Covered by `tests/unit/scholar-persistence-marketplace.test.ts`; vitest green · tsc 0 · eslint 0 |
-| 2026-09-07 | WAVE-R32–R36 — capability codes + gates, CoreGrid internal org, dashboard grids, PWA/shell, rendered experience | Scholar runtime (gates, platform org, grids, PWA, operator surface) | **R33**: 27 per-feature capability codes (`r001.<domain>.<feature>`) each installed over a registered kernel capability + registered phase + reachable workspace; `feature-gate.ts` decides fail-closed (unknown code, missing identity/tenant, feature outside the reality, roles outside the feature's categories, or no installed grant → DENY; policies only tighten; `assertFeatureAccess` throws); server functions `getMyFeatureAccess` (self) + `previewTenantExperience` (admin gate) are read-only and ADOPTED in the P08 inventory. **R32**: 6 CoreGrid platform departments generated from COREGRID_INTERNAL role groups with widget data; workspaces produced only for departments the actor's roles staff. **R34**: 26 dashboard contributions bound to feature codes + workspaces + role categories; widgets appear only when the feature is enabled AND a role participates; ordered by size then declaration. **R35**: PWA manifest generated from brand + the reality's own sections (shortcuts) with installability validation; iOS/Android/desktop shell adapters as data (safe areas, status bar, back behaviour, offline strategy, biometrics, touch targets) validated. **R36**: 14 organization-class reality presets (non-education classes keep education features empty by design) and a Command Centre **Generated experience preview** card rendering sections, workspaces, generated dashboards and feature codes with governance stated | NEW suites `tests/unit/scholar-feature-gate.test.ts` (16) + `tests/unit/scholar-runtime-waves.test.ts` (15); role engine gained `roleIdsForWorkforceKind`; OPERATIONS gained its human_resources/admissions workspaces; vitest 113 passed across 8 scholar suites · tsc 0 · eslint 0 |
-
-| 2026-09-07 | WAVE-R31 — Dynamic Experience & Website Generation engine (reality generates the digital environment) | Scholar runtime (new `frontend/src/lib/scholar/experience/**`) | NEW engine: an organization's reality GENERATES its public presence and internal application. Catalog: 20 site sections (home/about/leadership/admissions/programmes/curriculum/departments/campus/facilities/student life/**boarding life**/**faith & values**/**skills training**/**agriculture**/news/events/gallery/contact/parent portal/student portal) over 13 registered components, each section scoped by the EXISTING institution vocabulary (feature keys + template ids) and by audience. Generation: sections exist only when the reality gives them a home (a day school never gets a boarding-life section; a TVET institute gets skills training with feature/template rationale), public navigation excludes private surfaces, internal application = the ROLE ENGINE's workspaces for the roles the reality implies (traced to source roles + best-supported landing), brand identity is data (logo/colours/fonts/tone/language/domain — no custom frontend per organization), personalization derives audiences from authorized roles (public visitor → marketing presence, parent/learner → portal, role holders → their workspaces). Governance: tenant context required, audience exposure enforced (a private surface can never be requested by the wrong audience), `requiresApproval` sections need an approved content item and **AI proposals require a human approver — never silently published** | NEW suite `tests/unit/scholar-experience-engine.test.ts` (19 tests: Islamic boarding academy vs day school vs TVET generation, private-surface exclusion, audience filter, internal-application generation, brand validation, personalization from roles, governance incl. tenant/exposure/approval, anti-static-architecture scan of the engine sources); charter `architecture/scholar-experience-engine.md`; vitest 19 passed · tsc 0 · eslint 0 |
-| 2026-09-07 | WAVE-R30 — Educational Reality Role Engine (universal education reality role architecture) | Scholar runtime (new `frontend/src/lib/scholar/roles/**`) | NEW engine: 24 role categories (government, regulatory, institutional leadership, academic, teaching, student support, finance, operations, health, safety, technology, facilities, transport, boarding, community, vocational, technical, agricultural, religious, traditional, research, examination, quality assurance, CoreGrid internal) expressed as **56 groups → 532 role names → 524 unique role definitions** (8 multi-reality merges recorded, never duplicated). Reality vocabulary is the EXISTING institution vocabulary (feature keys + template ids + education levels + jurisdictions) — no second ontology. **No role duplication**: staffed roles link to the existing P25 workforce kinds through `ROLE_STAFFING_ALIASES` (e.g. `Principal` → `head_of_school`, `Bursar` → `bursar`, `House Master` → `boarding_care_master`); posts with no kind yet stay unstaffed and are listed in `ROLE_PENDING_WORKFORCE_POSTS`. Engines: definition + validation (permissions must reference kernel capabilities), registry (groups → roles, merge by identity, linkage, selectors), catalog audit, template engine (reality → PRIMARY/SECONDARY/OPTIONAL suggestions with rationale + Islamic/Christian/secular/alternative naming alternatives), borrowing (provenance from → into → reason), inheritance (cycles rejected, effective permissions can never escalate), permission (Role→Policy→Permission→Resource→Action, fail-closed, most-restrictive-wins, RBAC/ABAC/PBAC/ReBAC/RLS reported), workspace (roles → workspaces traced to the roles that unlocked them + best-supported landing), context (identity + tenant + time-bounded assignments, tenant-isolated, fail-closed). **Least privilege by construction**: no catalog role grants anything | NEW suites `tests/unit/scholar-role-engine.test.ts` (30 tests) + `tests/unit/scholar-role-catalog.test.ts` (11 tests) incl. anti-hardcoding scan of the engine sources (`if (role === …)`, `schoolType === …`, `institutionType === …` must not exist), directive coverage spot checks (48 roles in their reality categories) and library-layer import law; charter `architecture/scholar-role-engine.md`; vitest 41 passed · tsc 0 · eslint 0 |
-| 2026-09-07 | WAVE-K10 — purity guard globbed over every Scholar runtime module + binding evidence verified against the route tree | Kernel boundary + Scholar vertical bindings | (1) The purity guard no longer keeps a hand-written module list: it GLOBS `runtime/scholar-*.ts` (≥12 modules) and applies two laws to all of them — library-layer imports only (no UI/shell/provider reach) — while the kernel-consumption law stays on the runtime's entry modules. (2) Binding evidence is now verified beyond existence: every route evidence path must appear in the generated `routeTree.gen.ts` **and** map to a route id the tree exposes (`/admin/classes`, `/hq/reports`, …), so a citation can no longer point at an unregistered route | `tests/unit/kernel-purity.test.ts`, `tests/unit/scholar-vertical-bindings.test.ts`; 28 tests green · tsc 0 · eslint 0 |
-| 2026-09-07 | WAVE-K9 — Scholar vertical bindings locked against the contract chain (consumer side of the kernel) | Scholar runtime (first domain runtime) ← kernel contract chain | NEW `frontend/src/lib/runtime/scholar-vertical-bindings.ts`: a domain→kernel binding map (24 bindings across 7 verticals — admin / teacher / parent / bursar / driver / hq / runtime) covering **all 13 kernel capabilities Scholar consumes**, each binding citing live route or runtime-module evidence. `scholarVerticalBindingSummary()` publishes the consumer view; `validateScholarVerticalBindings()` rejects invented capabilities, capabilities Scholar does not consume, duplicate bindings, missing evidence, evidence outside `frontend/src/`, and unbound verticals/consumption. Chain coupling: every bound capability resolves to an authored contract phase, and that phase's contract declares `runtime:scholar` as `runtimeBindings.firstRuntime`; `architecture/registry.json` runtime-001 phase list corrected to the exact owner set (22 mobile + 23 web client platforms were consumed by Scholar but unlisted). Command Centre gains a read-only **Scholar vertical bindings** card beside the contract-governance panel | NEW suite `tests/unit/scholar-vertical-bindings.test.ts` (coverage law, contract-chain coupling, ledger agreement, evidence existence/non-empty, validator rejection cases, operator-surface binding); `tests/unit/kernel-purity.test.ts` now guards the new runtime module (must import a kernel contract, may import only kernel/runtime specifiers); registry-validate PASSED |
-| 2026-09-07 | WAVE-K8 — Contract governance bound into the Command Centre (operators see contract health where they work) | Kernel contract layer → Phase 19 operator surface | `phaseContractGovernance()` in `kernel/phase-contracts/index.ts` projects the coverage snapshot plus runtime-binding facts (owned capability, sections declared/total, ASI tier + autonomy, first runtime, reserved domain seats, deps/consumers) and reports `compliant`; `phaseContractHealthById()` gives per-phase lookup. The Command Centre (`components/command-centre/command-centre.tsx`) renders a **read-only "Engineering contract governance" card** (contracts, sections/phase, connected roots, bound runtime, autonomy tiers, reserved seats, layer distribution) and extends the 51-row phase runway with **Contract / Autonomy / First runtime** columns joined by phase id. No literal chain totals on the surface; the panel is explicitly view-only (Phase 19 displays, Phase 08 authorizes) | NEW suite `tests/unit/command-centre-contract-governance.test.ts` (10 tests: snapshot projection, chain-complete, Scholar binding + neutral seats, per-row derivation, 1:1 catalog join, capability-registry safety, render binding, runway columns, no literal totals, view-only guard); vitest 26 passed (3 files) · tsc 0 · eslint 0 on changed files |
-| 2026-09-07 | P08 enforcement-surface inventory re-synced (families added by R-24 / R-73) | Phase 08 (security enforcement surface) | `org-profile.functions.ts` (R-24) and `workforce-positions.functions.ts` (R-73) already call the canonical `requireSchoolAdminScope` gate but were never registered in the P08 inventory, so the machine-checked inventory test failed on exactly those two families. Both registered as ADOPTED — inventory is now 20 adopted / 6 documented-exempt / 0 unclassified across 26 families. No runtime behaviour changed (the gate was already enforced) | `tests/unit/p08-enforcement-surface.test.ts` green (3/3); count corrected in the ledger |
-| 2026-09-07 | WAVE-K7 — Contract coverage published + naming drift closed (ADR 202) | Kernel contract layer → platform surface + docs | (1) `phaseContractCoverageSnapshot()` in `kernel/phase-contracts/index.ts` derives every published figure from the 51 authored contracts (totals, layers, statuses, ASI tiers, connected roots, per-phase rows) — surfaces render the snapshot, never a hand-maintained summary. (2) `/platform` now carries a contract-coverage section (per-layer chips, section-completeness, autonomy tiers, 51-row table) bound to that snapshot. (3) registry.json `runtime:scholar` note records firstRuntime across all 51 contracts; reserved-runtime note records neutral-seat registration. (4) ADR 202 / PLATFORM-011 closes the §17.1 naming debt: registry 25 + 47 and catalog 33/36/41/42/51 aligned to PROGRESS §11 (cosmetic only) | NEW suite `tests/unit/kernel-contract-coverage.test.ts` (10 tests: coverage partitions, autonomy ceilings, graph-root parity, row derivation, surface binding, four-way naming lockstep, ADR record); drift test flipped to assert zero drift; registry-validate PASSED (phases=51 capabilities=50 duplications=15 runtimes=2) |
-| pending | Integration/contract suites | Cross-phase contracts (§9) | to be defined | per S1–S12 |
-| pending | Security / RLS / tenant isolation | P03/P08/P09 | `database/queries/rls-isolation-check.sql` + suites | per S1/S4 |
-| pending | Property/chaos/failure tests | Event fabric, workflows, idempotency | to be defined | per S1/S6 |
-| pending | E2E regression | Scholar vertical L4 surfaces | Playwright | per S6 |
-
----
-
-## 21. Production Readiness Checklist
-
-Not yet satisfied for any surface beyond dev/preview. Required before `PRODUCTION_READY`:
-
-- [ ] Security: P08 enforcement middleware live; RLS verified; authN/authZ tested
-- [ ] Tenant isolation: cross-tenant suite passing (Tenant A cannot access Tenant B)
-- [ ] Observability: logs/metrics/traces emitted from live surfaces; audit trail verified
-- [ ] Data: migrations applied in clean environment; backup/recovery tested
-- [ ] Reliability: retry/idempotency/failure modes exercised
-- [ ] Deployment: reproducible staging pipeline; rollback strategy tested
-- [ ] AI: model calls routed through P26 gateway with policy checks; no fake intelligence
-- [ ] E2E: complete user flows green
-- [ ] Docs: registry + this ledger reflect reality
-
----
-
-## 22. Change Log
-
-Normalized schema: Date · Author · Scope · Change · Validation · Status. Entries are chronological (newest last). Full historical entries of the legacy ledger are preserved verbatim in git (commit `05f709a` and earlier).
-
-### 22.1 Platform history (consolidated from the legacy Scholar-scoped ledger)
-
-| Date(s) | Author | Scope | Change | Validation | Legacy status |
-| --- | --- | --- | --- | --- | --- |
-| 2026-08-19 | Codex | P01 | Repository source inventory; portable package-manager verification contracts; CI verification workflow; system audit | pending `npm run verify` at the time | — |
-| 2026-08-19 → 23 | Cline | P02–P06 | Identity, multi-tenancy, education reality, core application runtime (incl. resilience/webhooks/approval/bulk extension), workspace engine domain layers | cumulative unit suites | P02–P06 IMPLEMENTED |
-| 2026-08-25 | Cline | P07–P09 | AI agent system, security engine, security & trust fabric domain layers | 62/81/82 unit tests | IMPLEMENTING |
-| 2026-08-26 | Cline | P10–P18 | Communication, academic, scheduling, financial, data, hardware, digital twin, automation, analytics domain layers | 43–89 unit tests per phase | IMPLEMENTING |
-| 2026-08-27 → 28 | Cline | P19–P28 | Command centre, government cloud, cloud fabric, mobile, web, experience, workforce, AI layer, marketplace, developer platform domain layers | 33–66 unit tests per phase | IMPLEMENTING |
-| 2026-08-28 | Cline | P29–P32 | Integration fabric, globalization, enterprise scale, future evolution domain layers | 47–93 unit tests per phase | IMPLEMENTING |
-| 2026-08-30 | Cline | P19/25/08 | Command Centre live surface at `/`: provision school → roles → policy → launch; react-table runway | Playwright/Chromium E2E passed; production build + preview verified | surface milestone COMPLETE |
-| 2026-08-30 | Cline | P33–P40 | Eight full Universal Intelligence arc architecture docs + registry sync to 40 | doc inventory | ARCHITECTURE_DEFINED |
-| 2026-08-30 | Cline | P41–P51 | Eleven Civilization/Ultimate Kernel skeleton docs + registry sync to 51 (REGISTRY, PROGRESS, architecture-map, DEPENDENCY, BOUNDARIES, architecture/README, frontend catalog) | catalog test 6/6 | ARCHITECTURE_DEFINED |
-| 2026-08-30 | Cline | platform | Full regression after Phase 32 domain work | 1,843 tests / 87 files | green |
-
-### 22.2 Current entry
-
-| Field | Value |
-| --- | --- |
-| Date | 2026-09-02 |
-| Author | Cline |
-| Scope | Platform-wide (ledger migration) |
-| Change | Replaced the Scholar-scoped PROGRESS.md with the platform-wide COREGRID Engineering Progress ledger: platform identity model (§2), five-level maturity law (§3/§6), system-truth dashboard (§5), capability ownership graph (§7), duplication map & canonicalization ledger (§8), dependency graph & execution order (§9), engineering-section completeness matrix (§10), canonical 51-phase registry (§11), runtime registry (§12), milestones rebuilt from execution stages (§13), consolidated debt/risk/priority registers (§17–§19), validation ledger (§20), normalized change log (§22). Historical content preserved in git. |
-| Validation | typecheck 0 errors (2026-09-02); full unit suite re-run 1,844 tests / 87 files (2026-09-02); no production code modified. |
-| Status | COMPLETE for ledger migration; execution continues at Stage S1 per §9/§13. |
-
-### 22.3 Current entry — Phase 01 (Foundation)
-
-| Field | Value |
-| --- | --- |
-| Date | 2026-09-02 |
-| Author | Cline (autonomous loop, §103) |
-| Scope | Phase 01 Foundation |
-| Change | Foundation-integrity test suite; registry + secrets verification contracts wired into npm run verify; committed GitHub PAT in .mcp.json surfaced by secret-scan and removed from HEAD |
-| Validation | foundation suite 8/8; verify:registry PASSED; verify:secrets PASSED |
-| Status | IMPLEMENTING — L1 ✓, L2 ◐, L3 ◐, L4 ✗, L5 ✗; gate partial; loop advances to Phase 02 |
-
-### 22.4 Current entry — AUDIT-P01 (Phase 01 archaeology intake)
-
-| Field | Value |
-| --- | --- |
-| Date | 2026-09-14 |
-| Author | Cline (autonomous loop, §103) |
-| Scope | Phase 01 Foundation — archaeology intake (reconnaissance only, no capability implemented) |
-| Change | Four-way verification (pasted document ↔ `architecture/phase-01-foundation.md` ↔ kernel contract ↔ registry ↔ code): the pasted text matches the repo document (2,508 lines, §1–§101) and the contract owns `foundation-standards-config-secrets-ci`. New machine probe `scripts/audit-phase-acceptance.mjs` (`npm run audit:phase -- --phase=01`) resolves the document's acceptance criteria against real artefacts and classifies each ENFORCED / DECLARED / MISSING, driven by per-phase data (`architecture/phase-acceptance/phase-01-foundation.json`) so later phases need no code. Result: **43 areas — ENFORCED 40 · DECLARED 2 (observability, error handling) · MISSING 1 (§59–§60 rate limits/budgets)**; every REQUIRED area is evidenced, so the probe passes. Audit L3 rule refined to count contract-cited **executable** artefacts (scripts/tests/migrations/infrastructure/CI), which resolves phase 01's registry L3 claim from UNKNOWN to CONFIRMED without inflating architecture-only phases. Findings recorded in `architecture/archaeology/phase-01-foundation.audit.md` (ownership table: no duplication with 02/03/07/08/09/14/16/17/19/26/31/36/40/46) plus work items P01-1…P01-4, BR-01 and unknowns U-01…U-04 in §17. |
-| Validation | `npm run audit:phase -- --phase=01` PASS (proof `architecture/proofs/phase-01-acceptance.proof.json`); `npm run audit:phases` re-run clean (unconfirmed claims 5 → 4; phase 01 now confirmed); `tests/unit/phase-acceptance-audit.test.ts` 8/8 (its independent re-derivation caught two real defects during authoring — a dropped RLS acceptance area and an over-strict evidence assertion, both fixed) |
-| Status | AUDITED + CLOSED — Phase 01 remains IMPLEMENTING (`L1 ✓, L2 ✗, L3 ✓, L4 ✗, L5 ✓`); its foundation is enforced and the verify chain is its operational evidence, so only the definitional L2 and the (non-applicable) L4 projection keep it from COMPLETE |
-
-### 22.21 Current entry — phase 13 becomes CoreGrid's financial operating system, not a school's billing module
-
-| Field | Value |
-| --- | --- |
-| Date | 2026-09-21 |
-| Author | Cline (autonomous loop, §103) |
-| Scope | Phase 13 Payment, Billing & Financial Operating System — document, four new engines, L4, registry, acceptance record, guards |
-| Change | Three defects, and only one of them was a missing feature. **Framing:** the blueprint read as a school's billing system — tuition, examination fees, learners and guardians presented as the domain rather than one institution's vocabulary. **Two missing contracts:** the model had no statement of provider neutrality (what an adapter must declare, how routing is decided, why failover is dangerous) and no split payments (one collected amount attributed to several beneficiaries, which is exactly what a marketplace, a multi-party service or a commission-bearing workflow needs). **Completeness:** the document stated **14/20** mandatory engineering sections. **Document:** seven sections were authored in its own lettered style → **20/20** — **EJ** domain-neutral financial operations for every organization (the debtor and beneficiary are identity references; charge reasons, tax rules, calendars, discount categories and provider choices are institutional data; a bursary is one waiver category among many, with eligibility policy left to the consuming domain; the platform's own revenue is a split beneficiary rather than a special case), **EK** provider neutrality and split payments (capability-declared adapters, explainable routing, failover only where the provider proved no capture, and the split contract: legs summing exactly to the gross, immutability, per-leg settlement, fees attributed to their leg, pro-rata refunds with a deterministic remainder, idempotency per split, unresolved legs kept visible), **EL** command model (eighteen commands with their refusal conditions and uniform command rules), **EM** query model (canonical and derived labelled, unknown returned as unknown, every result carrying its as-of and configuration versions), **EN** data model (constraints the database enforces, indexes, migration and retention), **EO** dependency model (one-way dependencies and the rule that no phase keeps a second money record) and **EP** financial memory and knowledge (tenant memory versus cross-tenant knowledge, with learning as evidence rather than authority). **Code:** `financial-splits.ts` (immutable splits, exact gross accounting, per-leg settlement, fee attribution with refusal of a fee larger than its leg, pro-rata refunds that can never return more from a beneficiary than it received, and the platform fee as an ordinary leg), `financial-routing.ts` (provider profiles, routing where capability dominates preference and every rejected candidate names its disqualifier, cost and preference ranking, unroutable requirements reported, failover refused after a success, after an unresolved timeout and without proof of no capture), `financial-journal.ts` (append-only events with contiguous sequence, causation and correlation; a transactional outbox; reconstruction of money state from events with the evidence named and a disagreeing cache reported rather than preferred; double-entry-compatible postings refused when unbalanced, multi-currency or negative) and `financial-tax.ts` (versioned rules resolved by jurisdiction, category and instant, where an undeclared jurisdiction is unknown rather than zero, ambiguous versions are refused, and inclusive/exclusive pricing is computed in integer minor units with one stated rounding rule) — plus `financial-intelligence-report.ts` (16 rules, 16 checks that **execute** the engines and record their observations, 7 declared gaps, six organizations' vocabulary) and the surface `/super-admin/financial-operations`, which renders all of it and declares no role list. |
-| Validation | Nine financial suites → **126 tests passed** (55 before this phase); `audit:phase --phase=13` → **24 areas · ENFORCED 16 · DECLARED 8 · UNWIRED 0 · MISSING 0** with proof written; `audit:phases --phase=13` → **COMPLETE 1 · 9 modules resolve · 130 tests counted · drift none · unconfirmed claims none**; document sections **20/20**; `verify:registry` PASSED; blueprint law 0 owner-framing; neutrality guard green with four modules and one surface added. **Honesty correction:** this wave's typecheck reported **four real type errors in phase 12's `scheduling-intelligence-report.ts`** — its `require(...)` guard was typed `void`, so TypeScript could not narrow `capacity`, `calendar`, `travel` or `feasibility`. The guard is now `asserts condition`. **The phase 12 entry's claim of a clean typecheck was wrong**, resting on a zero-byte log written by a process the environment killed: an empty log was read as an empty error list. It is corrected in that entry rather than left standing, and the lesson is recorded: a zero-byte verification log is not evidence of success. |
-| Status | CLOSED — Phase 13 is COMPLETE as a domain layer and **moves no real money**: no live provider adapter, no persistence migration, no reconciliation run over a provider statement, no collections or dispute state machines, no metered usage or renewals, no asynchronous financial jobs, and no authorised ingestion boundary, so the fee, payroll, expense and reconciliation surfaces still read their own tables — the second-money-record risk the phase's own dependency model forbids, now recorded as a work item rather than hidden. The engines themselves are provider-neutral and domain-neutral: the same split, routing, journal and tax contracts serve an education provider, a health provider, a logistics operator, a warehouse operator, a public agency and a marketplace, each in its own vocabulary. **Zero placeholders, zero role lists.** |
-
-### 22.20 Current entry — the registry stops contradicting the evidence: 11 rows reconciled and 3 unproven claims withdrawn
-
-| Field | Value |
-| --- | --- |
-| Date | 2026-09-21 |
-| Author | Cline (autonomous loop, §103) |
-| Scope | Platform-wide registry truth — `architecture/registry.json` rows 01–07, 19, 25, 27, 49 |
-| Change | Twelve phase waves had been closing their own rows while `audit:phases` kept reporting the same two lists about everyone else: phases whose evidence exceeded their registry claim, and phases claiming a level no artefact supported. This wave reconciled both, evidence-first and one row at a time. **Seven phases whose own records had already closed them** (P01–P07) still read `IMPLEMENTING`/`IMPLEMENTED` with levels that stopped at L1 — corrected to the evidence vector the audit derives, with test counts refreshed from the contract-cited suites (P01 37→38, P02 null→38, P03 null→56); every historical caveat inside those notes was left in place, dated and unedited, because those statements about live wiring, DB-gated validation and the S3 fabric remain true and the sweep note is appended after them, not instead of them. **P25's L4 claim turned out to be right and the row wrong** — the audit could not evidence it because the module list was incomplete: `workforce-positions.ts` declares itself *"Phase 25 Workforce Identity"* and `onboarding/onboarding-flow.ts` declares *"Phase 25 … domain-neutral ORGANIZATION ONBOARDING FLOW"*, the contract already cited their suites, and `/admin/staff-accounts` imports them; with the attribution fixed the projection is plainly evidenced, tests were corrected 53→128, and the workforce extension of identity is confirmed as the approved duplication D8. **P19's L4 claim was withdrawn**: the hand review confirmed the audit rather than exposing a blind spot — nothing imports command-core/-alerts/-incidents/-governance, `lib/surfaces` has no command view, and the `/` Command Centre is a provisioning console (security policy, onboarding flow, phase catalog), so the platform genuinely has no surface for health signals, alerts or incidents. **P49's L1 claim was withdrawn** because its document states 7 of 20 mandatory sections. **P27 was deliberately left `IMPLEMENTED — held for audit`** even though its levels now match evidence, because it has no acceptance record and no archaeology record; closing it on an artefact scan alone would be the assertion-without-evidence the laws forbid, so it is named the next audit target. No level was raised without an artefact naming it, no claim was kept because a phase "should" have it, no exemption was widened (P01's L2 exemption remains recorded separately, never as evidence), no rule was bent to fit a document, and no code was written to satisfy a level — the one shortcut available for P19 was refused and recorded as such. **A fourth correction closed the last module-resolution defect**: P21 listed `cloud-fabric-iac` as a module although it is infrastructure-as-code living in `infrastructure/terraform`, `infrastructure/kubernetes`, `infrastructure/workloads` and `infrastructure/monitoring` — the row now names its three real modules (`cloud-core`, `cloud-byoc`, `cloud-governance`) and the IaC where it lives, with no level moved, so the audit reports 33/33 phases with modules resolving instead of 32/33. |
-| Validation | `npm run audit:phases` → **COMPLETE 14 · IMPLEMENTING 19 · ARCHITECTURE_DEFINED 18** (was 13/20/18); **unconfirmed claims: none** (was P19 L4, P25 L4, P49 L1); **registry drift 47 → 34 phases** with P01–P12, P19, P25 and P27 cleared; **every phase with modules now resolves (33/33, was 32/33)**; `npm run verify:registry` → **PASSED** (phases 51, capabilities 50, duplications 15, runtimes 2); targeted suites re-run after the edits — phase completion audit, acceptance-audit, acceptance probes, kernel phase contract, phase catalog, foundation and neutrality → **7 files · 127 tests passed**; `architecture/phase-completion-status.md` and `architecture/proofs/phase-completion.proof.json` regenerated by the auditor rather than hand-edited. |
-| Status | CLOSED — the registry no longer contradicts the evidence in either direction for the eleven rows reviewed, and the two lists it reports are now honest: 34 phases still drift and must each be reviewed on their own evidence. Work items recorded in `architecture/archaeology/registry-truth-sweep.audit.md` §7: build the P19 operational surface (L4 unmet until then), run the P27 audit wave, author P49's missing engineering sections, reduce the HR surface's direct Supabase reads so P25's engines own their data path, and continue the sweep for the remaining phases. |
-
-### 22.19 Current entry — phase 12 Scheduling Intelligence reaches COMPLETE, and the timetable stops being a school's feature
-
-| Field | Value |
-| --- | --- |
-| Date | 2026-09-20 |
-| Author | Cline (autonomous loop, §103) |
-| Scope | Phase 12 Scheduling & Timetable Intelligence — document, three new engines, L4, registry, acceptance record, guards |
-| Change | One framing defect, one completeness defect and three structural capabilities. **Framing:** the blueprint described scheduling as a school timetable — learners, teachers, classrooms and examinations presented as the domain rather than one institution's vocabulary for a platform capability, which makes every other organization a fork; the addendum **ER. Domain-Neutral Scheduling For Every Organization** states the correction as contract (a participant is an actor reference, a resource is anything with capacity, capability and availability, the activity type is institutional data, and what an organization calls these is configuration), together with the nine universals every organization needs. **Completeness:** the document stated **16/20** mandatory engineering sections, so **ES. Query Model** (twelve read-only queries with the rules: a scenario is never returned as production state, aggregates never reveal what the caller could not read, unknown is returned as unknown rather than defaulted to available, every result carries the version it was computed from), **ET. Memory and Knowledge Model** (this organization's decision/constraint/availability/outcome/explanation memory, tenant-scoped and purpose-limited, kept apart from platform knowledge, with a learned preference remaining a proposal until the organization adopts it in policy) and **EU. Data Model** (requested / planned / published / actual kept apart, explicit timezone, non-negative duration, recurrence as a rule plus exception dates rather than pre-expanded rows, immutable published versions) were authored in the document's own lettered style → **20/20**. **Code:** `scheduling-conflicts.ts` (a twelve-type taxonomy with explicit conflict records, detection across participant, resource, capacity, capability, accessibility, calendar and travel, resolution strategies per type, and `escalateConflicts` which separates blocking from waivable and reports infeasibility instead of fabricating a valid plan), `scheduling-quality.ts` (scoring dimensions that never trade feasibility for efficiency, load balance, disruption vectors measured against an explicit stability tolerance, version comparison, impact analysis, a placement explanation naming the constraints that decided and the preferences sacrificed, and `rankCandidates` which prefers the least disruptive feasible plan) and `scheduling-intelligence-report.ts` (L4: fourteen rules each tied to a module and a suite, thirteen checks that **execute** the engines and record what they observed, six declared gaps, every total computed from live module constants) — plus the surface `/super-admin/scheduling-intelligence`, which shows the same capability in six organizations' vocabulary and declares no role list. |
-| Validation | `vitest run scheduling-governance + scheduling-intelligence-report` → **27 passed (21 + 6)**; `audit:phases --phase=12` → **`20/20 · 7 modules · 74 tests · L1–L5 all yes · COMPLETE`** with registry drift and unconfirmed claims both **none**; `audit:phase --phase=12` → **20 areas · ENFORCED 13 · DECLARED 7 · UNWIRED 0 · MISSING 0** with proof written; `verify:registry` → **PASSED** (phases 51, capabilities 50, runtimes 2); blueprint law `normalise-phase-doc-framing --check` → 52 documents scanned, **0** owner-framing to rewrite; neutrality guard `platform-neutrality.test.ts` → **43 passed**; `vite build` → **two builds green (client 5m02s, server 4m25s)**, regenerating `routeTree.gen.ts` so the new surface is reachable; `tsc --noEmit` → **claimed clean in this entry and that claim was WRONG (corrected 2026-09-21 by the phase 13 wave)**: the run was re-issued after an environment kill and produced no output file at all, and an empty log was read as an empty error list. The phase 13 typecheck found **four real errors in this phase's own `scheduling-intelligence-report.ts`** — its `require(...)` guard was typed `(condition: boolean, message: string): void`, so TypeScript could not narrow `capacity`, `calendar`, `travel` or `feasibility` after the guard. The signature is now `asserts condition`, they compile clean, and this entry is corrected rather than left standing. A zero-byte verification log is not evidence of success; the whole unit suite → **187 files · 2,935 tests passed**; the environment's intermittent 30-second refusals killed one full-suite run and one typecheck during this wave, and both were re-issued rather than implied. |
-| Status | CLOSED — Phase 12 is COMPLETE on all five levels, and **no production schedule is produced**: no solver is wired behind the abstraction, optimization does not yet run as a cancellable job, external calendar/HR/room adapters are specified but not implemented, publication approval remains phase 17's workflow, daylight-saving transitions are represented as explicit timezone fields rather than computed, and learned solver selection is not implemented. The validator, scorer, ranker and explainer exist, so any solver's output can be checked — which is why feasibility is binary, blocked periods are policy, and an infeasible request is reported as infeasible rather than fabricated. **Zero placeholders and zero role lists**, and the domain-neutral modules are covered by the neutrality law. |
-
-### 22.18 Current entry — phase 11 Academic Learning Intelligence reaches COMPLETE, with the blueprint's structural gaps built
-
-| Field | Value |
-| --- | --- |
-| Date | 2026-09-19 |
-| Author | Cline (autonomous loop, §103) |
-| Scope | Phase 11 Academic Learning Intelligence — document, three new engines, L4, registry, acceptance record, guards |
-| Change | Three defects were corrected and three structural capabilities were built. **Document:** the committed copy ended mid-section inside §EV and was missing everything from "model version" through §EW, §EX, §EY, §EZ, §FA, §FB and §FC — the tail was restored; it then stated **17/20** mandatory engineering sections, so **FD. Command Model** (seven commands, each with its refusal conditions, and high-impact commands refused for automated execution), **FE. Query Model** (ten queries whose rules are: derived is labelled derived, aggregates never expose an individual learner, missing evidence is never poor performance) and **FF. Data Model** (entities, bounded ranges, append-only evidence, indexes, RLS, migration and retention) were authored in the document's own lettered style → **20/20**. A duplicated FF section created by a retried write was caught by counting headings and removed. The restored tail had also reintroduced owner-framing ("CoreGrid Scholar's academic reasoning foundation"), which the blueprint law refuses; corrected to CoreGrid's, with the runtime remaining runtime-001, the first installed consumer. **Code:** `academic-curriculum.ts` (nine-level hierarchy refusing a skipped parent and a cross-tenant node; `publishCurriculumVersion` superseding without editing, refusing a version with no reason or change and refusing a backdating; `curriculumVersionAt` so a 2026 grade is read against the 2026 curriculum; `curriculumDiff` reporting an uninterpretable history; `defineCompetency` + `findCompetencyCycle` because a cycle means no learner can ever be ready; `transitivePrerequisites` dependency-first; `createLearningObjective` refusing an objective without criteria or expected level), `academic-assessment.ts` (seven assessment types, configurable cognitive framework, question validation, and `evaluateBlueprintCoverage` measuring the questions that exist rather than the intent) and `academic-intelligence-report.ts` (L4: eight rules each tied to a module and a suite, eleven checks exercising the engines on a real curriculum, six declared gaps). Surface `/super-admin/academic-intelligence` renders the report and declares no role list. **Contract:** substrates and provides extended with curriculum version, competency graph and assessment coverage, both new suites cited, counted tests **49 → 80**. **Registry:** row 11 corrected from `IMPLEMENTING [L1 ✓ only] tests: 49` to **COMPLETE [✓ ✓ ✓ ✓ ✓] tests: 80** with three new modules, after the audit had derived every level. **Guards:** the three modules joined `NEUTRAL_MODULES` and the surface joined `PLATFORM_SURFACES`. **Acceptance record:** `architecture/phase-acceptance/phase-11-academic-intelligence.json`, 17 areas. |
-| Validation | `vitest run` on `academic-curriculum` + `academic-intelligence-report` → **31 passed (24 + 7), green on first run**; `audit:phases` row 11 → **`20/20 · 7 modules · 80 tests · L1–L5 all yes · COMPLETE/COMPLETE`** with **no registry drift for phase 11**; acceptance probe re-run for phase 11 after the record was written; `vite build` run to regenerate `routeTree.gen.ts` so the surface is reachable; `tsc --noEmit` and the neutrality guard run after the final edits — any command killed by the environment is named here rather than implied: the machine intermittently refuses commands for 30–60 seconds at a time, which killed one guard run and one typecheck during this wave, and both were re-issued. |
-| Status | CLOSED — Phase 11 is COMPLETE on all five levels, and it is **not** connected to production data. Declared gaps, in the report and in the acceptance record: no persistence for curriculum versions, evidence or mastery estimates; no model registry, evaluation record, approval state or drift monitor behind `modelVersion`; no intervention-outcome join so effectiveness cannot be compared; no authorised ingestion boundary, so nothing outside the phase calls the engines; no search or export surface; no similarity or external-signal adapter. **Zero placeholders and zero role lists:** no role literal appears in any file this wave added, every number in the report comes from a call rather than a constant, and the new surface is covered by the no-role-list law. |
-
-
-### 22.17 Current entry — the 51 phase blueprints stop framing one runtime as the platform, and the L4 gap register is published
-
-| Field | Value |
-| --- | --- |
-| Date | 2026-09-19 |
-| Author | Cline (autonomous loop, §103) |
-| Scope | The whole architecture portfolio: 52 phase documents, and the per-phase L1–L5 standing that decides what to build from phase 11 onward. |
-| Change | The owner's finding — "most of the architecture blueprint was specifically built for Scholar" — was measured before it was touched: **88 runtime mentions across 29 documents, 83 of them owner-framing** ("CoreGrid Scholar's institutional communication infrastructure", "Scholar is the first runtime", "Scholar consumes", "Scholar-specific", "SCHOLAR EXTENSIONS"), with 23 documents already clean. A permanent tool now owns the correction: `scripts/normalise-phase-doc-framing.mjs` rewrites owner-framing into platform statements deterministically (CoreGrid Scholar → CoreGrid; Scholar's X → CoreGrid's X; Scholar is/consumes/owns/binds/resolves/implements → the platform / a runtime; Scholar-specific → runtime-specific; for/by/with/to Scholar → an installed runtime), is **case-insensitive** after a second pass caught uppercase headings the first pass missed, and **refuses to rewrite a bare runtime name it cannot classify** — those are reported for a human instead. Result: **31 documents, 77 lines rewritten, 0 owner-framing statements left, 0 residual mentions**; the runtime remains named exactly where it is a fact (runtime-001, R-001, the first installed runtime, and its own file paths). Five statements needed a human decision and got one: the phase-04 build-map title and its scope line, its migration row, the phase-08 runtime-supplied role vocabulary, and the marketplace heading/extension list. The correction is now a **law**: `tests/unit/platform-neutrality.test.ts` gained **Law 6 — the phase blueprints describe CoreGrid, not one runtime**, which scans every `architecture/phase-*.md` for owner-framing patterns and additionally runs the normaliser in `--check` mode, so the two instruments cannot disagree. Finally, `scripts/plan-phase-portfolio.mjs` publishes `architecture/phase-portfolio-upgrade-plan.md`: **51 phases audited · 12 derived COMPLETE · 39 missing L4 · 1 missing L5 · 18 architecture-defined**, with the exact L4 artefact each phase needs (a surface that imports the phase's module and **exercises** it, the pattern phases 06–10 used) and the five laws that now apply to every phase built from here. |
-| Validation | `node scripts/normalise-phase-doc-framing.mjs --check` → **52 documents scanned, 0 owner-framing to rewrite, 0 residual mentions, exit 0**; `vitest run tests/unit/platform-neutrality.test.ts` → **34 passed** (including Law 6's blueprint scan and its normaliser-agreement check); `tsc --noEmit` → clean; the plan generator re-run after fixing its own Derived/Registry column swap (3 → **12** complete, matching the audit exactly). |
-| Status | CLOSED for the blueprint upgrade. **The portfolio is now consistent:** no phase document can present a runtime as the platform, and the phase contracts, kernel modules, platform surfaces and runtime registry were neutralised in the previous entry. **What remains is building, not re-framing:** 39 phases have no L4 surface yet and 18 are architecture-defined only; the build order is published in `architecture/phase-portfolio-upgrade-plan.md` and starts at phase 11 (Academic Intelligence, 17/20 sections, L4 missing). Each phase from here follows the same method: blueprint (already neutral) → document to 20/20 → implement with tests → close L4 with a surface that exercises the phase → close L5 with operational evidence → correct the registry from evidence → run the probe and the full chain. |
-
-
-### 22.16 Current entry — the platform stops reading as one runtime's application (domain-neutrality wave 2)
-
-| Field | Value |
-| --- | --- |
-| Date | 2026-09-18 |
-| Author | Cline (autonomous loop, §103) |
-| Scope | Platform-wide domain neutrality — the owner found that the platform mentioned one runtime as if CoreGrid had been built for it. Kernel, shell, gate, contracts, surfaces and prose. |
-| Change | Wave 1 had neutralised what the kernel *said about itself*; it missed what the kernel *held* and what the platform *wired*. Three real couplings were removed. (1) **The kernel held one runtime's data**: `lib/workspace-engine/nav-catalog.ts` — inside the kernel's workspace engine — carried ~1,070 lines of a single runtime's navigation (portal capability sets, contribution seeds, feature-code index, workspace labels), and the platform shell imported it directly as *the* navigation. The catalog now lives in the runtime layer (`lib/runtime/scholar-nav-catalog.ts`), a runtime-layer registry lists what is installed (`lib/runtime/nav-registry.ts` — `INSTALLED_NAV_CONTRIBUTION_SETS`, `ALL_NAV_CONTRIBUTIONS`, and a neutral alias `isDeclaredRuntimeFeatureCode`), and the shell renders `ALL_NAV_CONTRIBUTIONS`. 14 importers were repointed mechanically. (2) **The platform's identity module owned a runtime's identity**: `lib/platform.ts` exported the runtime's id, name and description; those moved to `lib/runtime/installed-runtimes.ts` and four consumers take the name from the runtime layer. (3) **The platform gate spoke a runtime's vocabulary**: `lib/capability-gate.ts` exported `evaluateScholarCapability`, `ScholarCapabilitySignals`, `SCHOLAR_MEMBERSHIP_FOR_KIND`, `SCHOLAR_KINDS` and a refusal reason naming the runtime — now `evaluateRuntimeCapability`, `RuntimeCapabilitySignals`, `MEMBERSHIP_FOR_NAV_KIND`, `ROUTED_NAV_KINDS`, a neutral reason, and an aliased import of the runtime's own type. Kernel contracts from phases 01, 02, 03, 04, 05, 06, 08, 13, 16, 40 and 51 plus `define-phase.ts` and `phase-contracts/index.ts` were rewritten to describe the platform ("a runtime", "the first installed runtime") instead of one product; the kernel `phase-contracts/**` now contains **no occurrence of a runtime's name**. Platform surfaces (`routes/platform.tsx`, `super-admin/workspace-projection.tsx`, `admin/facilities.tsx`, `settings.tsx`, the command centre's bindings card — renamed) and platform-wide prose (`styles.css`, `education-reality-view.ts`, `experience/experience-platform.ts`, `org-profile.functions.ts`, `staff-accounts.functions.ts`, `workspace-projection.ts`, `security-role-gate.ts`, `workforce-core.ts`) now speak about *installed* runtimes. Nothing inside the runtime's own layer was renamed: `lib/scholar/**`, `lib/runtime/scholar-*`, `routes/_authenticated/scholar/**`, `types/coregrid-scholar.ts` keep their names, and the guard now says so by path. Two new machine laws lock it: **Law 4** — the kernel owns no runtime's data (no contribution data in the kernel's workspace engine, navigation from the installed-runtime registry, no runtime identity in the platform's identity module, generic gate vocabulary); **Law 5** — outside the runtime layer the platform never narrates a runtime as the platform. |
-| Validation | Targeted suites after the move: **platform-neutrality 31 ✓ (both new laws), capability-gate 8 ✓, workspace-navigation 11 ✓, roles 12 ✓, scholar-workforce-nav 9 ✓, scholar-vertical-bindings 19 ✓, phase-acceptance-probes 11 ✓**; `tsc --noEmit` → **clean** (one error found *by this pass* and fixed: an aliased import in the shell left by the mechanical rename); full `vitest run` before the final two test-reference fixes → **2861 passed / 2863**, and both failures were stale references in tests and records (a component symbol assertion and a phase-06 proof file), fixed and re-verified green; `audit-phase-acceptance --phase=06` re-run to regenerate its proof after repointing one evidence entry from the removed kernel path; the neutrality scanner confirms **0 narrating files** outside the runtime layer across 568 scanned files. |
-| Status | CLOSED for wave 2, with the remainder stated. **Still runtime-prefixed where a consumer asks the runtime a question:** the super-admin projection surface imports `scholarRoleWorkspaceCoverage` / `SCHOLAR_WORKSPACE_KINDS` from the runtime adapter, and every `tests/unit/*.test.ts` header still reads "CoreGrid Scholar — Phase NN" (the next sweep, using the same comment-only treatment wave 1 applied to modules). **Still education-flavoured in the kernel:** `education-reality-view.ts` and its suite — framing is neutral and ownership is phase 04's, but a later wave should decide whether those belong in the runtime layer outright. Full record: `architecture/archaeology/domain-neutrality-wave-2.audit.md`. |
-
-
-### 22.15 Current entry — phase 10 Communication Platform completes, and every organization is given a steward with a written mandate
-
-| Field | Value |
-| --- | --- |
-| Date | 2026-09-18 |
-| Author | Cline (autonomous loop, §103) |
-| Scope | Phase 10 Communication Platform (Runtime, S6) — owner-requested upgrade, document, contract, executable steward, provider independence, L4, registry, acceptance probe, neutrality |
-| Change | The owner asked for two things: finish the phase, and make the platform's communication a **capability every organization subscribes to**, served by an autonomous **Communication Steward** that handles voice, WhatsApp, email, social, status, meetings and presence, and can replace the support-and-communications role. Built: `communication-steward.ts` — a mandate as **data** (autonomy, channels, audiences, jurisdictions, languages, knowledge and prohibited topics, quiet hours with a timezone, hard limits in minor units, disclosure duty, recording and emergency permission, escalation target, expiry, revocation) and one gate, `evaluateStewardAction`, returning ALLOW / DENY / REQUIRE_APPROVAL / ESCALATE with the rule that decided it and the **obligations that travel with permission**; consent with attribution, do-not-contact scopes, call-session machine, escalation thresholds, knowledge-pack coverage, presence. `communication-providers.ts` — 21 real adapters (Twilio, Africa's Talking, Vonage, Telnyx, Plivo, MessageBird, Exotel, Meta WhatsApp Business, SMTP relay, SendGrid, Postmark, Amazon SES, FCM, APNS, Web Push, Google Meet, Zoom, Meta social, X, LinkedIn, platform presence) as data behind one shape, credentials by reference only, capability matrix derived from the registry, region-aware selection, tiered failover, lifecycle machine. `communication-steward-report.ts` + `/super-admin/communication-steward` — L4 that **exercises** the mandate machine on three real organizations (12 checks: inert new mandate, autonomy ladder, mass and sensitive approval, quiet hours, consent, opt-out, jurisdiction, knowledge, limits, recording, revocation with escalation still allowed, routing refused because nothing is live) and reports **7 declared gaps** in the open. The document went **18/20 → 20/20** by addenda EL dependency register / EM steward mandate data model / EN organization subscription / EP autonomous call rules / EQ the human role the steward replaces / ER steward acceptance criteria, and five runtime-owner statements were neutralised. Five **real defects** were found by writing probes first and fixed at source: the `ProviderAdapter` interface was truncated with its closing members orphaned 540 lines later (the module could not compile); `isUsableProviderHealth` was called but never defined (ten tests failed on the reference error); `ACTION_MINIMUM_AUTONOMY` let a **DRAFT steward send real messages** — every person-facing action now needs at least APPROVAL_REQUIRED, and new rule 12b makes APPROVAL_REQUIRED mean a human approves each person-facing action; two adapter notes were stubs; routing refusals now distinguish "no adapter declares this channel" from "adapters exist but none satisfies the requirement". Contract corrected (**59 → 168 tests**, three new capability ids declared) and registry row 10 corrected from `IMPLEMENTING [✓ ✗ ✗ ✗ ✗] tests: 59` to **COMPLETE [✓ ✓ ✓ ✓ ✓] tests: 168** with three new modules. |
-| Validation | Acceptance probe: **34 areas — ENFORCED 27 · DECLARED 7 · IMPLEMENTED_UNWIRED 0 · MISSING 0**, every required area evidenced; `audit:phases` row 10 → `20/20 · 7 modules · 168 tests · L1–L5 yes · COMPLETE` and **phase 10 left the registry-drift list**; `verify:registry` PASS (51 phases, 50 capabilities, 2 runtimes); targeted `vitest run` → **146 passed** across `platform-neutrality` (26), `phase-acceptance-probes` (11), `communication-steward` (65), `communication-providers` (34), `communication-steward-report` (10); **full `vitest run` → 183 files, 2,858 tests, all passed (EXIT 0)**; **`tsc --noEmit` → EXIT 0, no diagnostics**; `vite build` succeeded (2m29s) and regenerated `routeTree.gen.ts` with `/super-admin/communication-steward`; neutrality guard extended to the three new modules and the new surface; `neutralise-scholar-framing --check` → 0 self-identifications from 567 files. Sequencing caveat stated rather than smoothed: the production build ran **before** the final contract and document edits (the contract's `sections` keys were corrected afterwards — type-safe by `tsc`, but not re-bundled). |
-| Status | CLOSED — Phase 10 is COMPLETE on all five levels, with its limits stated. **The steward can decide; nothing can yet deliver.** Every external adapter is DISCOVERED (no credential is provisioned), so `selectProvider` refuses every real channel and only platform presence and in-app are live; there is no persistence for mandates, consent, do-not-contact entries or call sessions; no provider call is performed and no webhook surface receives receipts; there is no model and no knowledge-pack store behind the steward, so it decides *whether* it may speak, not what to say; recording has no storage, retention or access policy; plans and seats are descriptive with no metering; and replacing a human role remains an organizational decision recorded, never automated. |
-
-
-### 22.14 Current entry — phase 09 Security & Trust Fabric closes to COMPLETE, and the fabric's report is honest about being unread
-
-| Field | Value |
-| --- | --- |
-| Date | 2026-09-16 |
-| Author | Cline (autonomous loop, §103) |
-| Scope | Phase 09 Security & Trust Fabric (Foundations, S4) — document, L4, registry, probe, neutrality |
-| Change | Four defects were corrected. (1) The document stated **15/20** mandatory engineering sections: the **command**, **query**, **workflow**, **memory/knowledge** and **migration** models were absent. Addenda **BU. COMMAND MODEL**, **BV. QUERY MODEL**, **BW. WORKFLOW MODEL**, **BX. TRUST MEMORY AND KNOWLEDGE**, **BY. TRUST MIGRATION** and **BZ. RUNTIME CONSUMER BOUNDARY** were authored in the document's own lettered style, stating existing behaviour and its limits (no trust store to migrate, no automated workflow, no query surface) → **20/20**. (2) Four scope statements named a runtime as the owner of the fabric ("CoreGrid Scholar's cross-system trust architecture"); per the owner decision of 2026-09-16 CoreGrid owns the fabric and Scholar is runtime-001 **consuming** it, so they were neutralised, addendum BZ states the boundary, and one deliberate consumer sentence remains. (3) L4 was the only unsatisfied level: `trust-fabric-report.ts` + `/super-admin/trust-fabric` were built. The report does not describe the fabric — it **exercises** it: 10 invariants (a subject starts UNKNOWN; UNKNOWN cannot jump to a trusted state; trust cannot be withdrawn without evidence of the reason; REVOKED is terminal; revocation is attributable; relationships expire and revoke immediately; an evidence-free relationship is refused; a subject cannot trust itself; a score refuses to exist without evidence-backed factors and always carries its breakdown) and 15 exercised paths across assertions, evidence freshness, provenance chains, device/workload/agent/model trust, supply chain, keys, certificates, federation, delegation, anchors, policy and zero-trust. It reports **10 declared gaps** and surfaces that the fabric's usable set includes VERIFIED while the Phase 08 integration reading does not. (4) The contract cited four suites; the new suite is cited now (tests **82 → 90**), and the registry row was corrected from `IMPLEMENTING [✓ ✗ ✗ ✗ ✗] tests: 82` with **empty notes** to **COMPLETE [✓ ✓ ✓ ✓ ✓] tests: 90**, module list + `trust-fabric-report`, with the closure recorded. |
-| Validation | Acceptance probe: **49 areas — ENFORCED 34 · DECLARED 13 · IMPLEMENTED_UNWIRED 2 · MISSING 0**, `ok: true`; `audit:phases` re-run clean (phase 09 derives COMPLETE, all five levels, no exemptions); new suite `trust-fabric-report.test.ts` 8/8; platform-neutrality guard extended (module added to the neutral list, surface to the platform-surface list) and green; `verify:registry` PASS; `neutralise-scholar-framing --check` → 0 self-identifications |
-| Status | CLOSED — Phase 09 is COMPLETE on all five levels. The honesty that matters: the fabric is **rich and unread**. It implements 10 trust states behind a guarded machine, scoring, assertions, provenance, revocation, device/workload/agent/model trust, supply chain, keys, certificates, federation, delegation, anchors, policy and zero-trust — and **nothing outside its four modules imports it**, so Phase 08's gate never asks it anything (P09-5, the phase's first work item ahead of persistence). Registration is P09-1…P09-10: no cryptographic verification (no signature is ever checked), no attestation engine, no graph traversal or revocation propagation, no trust persistence, no service-trust or posture records, no telemetry, no external provider integration, no trust agents/MCP/adversarial programme, no rehearsed DR or anchor rotation. |
-
-### 22.13 Current entry — phase 08 Security Engine closes to COMPLETE, and the kernel-framing law is enforced
-
-| Field | Value |
-| --- | --- |
-| Date | 2026-09-16 |
-| Author | Cline (autonomous loop, §103) |
-| Scope | Phase 08 Security Engine; platform-wide framing correction (kernel and capability modules plus the platform tooling) |
-| Change | Three defects were found by reading the document rather than trusting the gate. (1) The phase document opened with a truncated duplicate of its own specification (sections A…Z.1, cut off mid-section) above the complete copy: 884 lines removed, 1,555 → 671 lines. (2) It named one runtime as the owner of the engine; per the owner decision of 2026-09-16 CoreGrid owns it and Scholar is runtime-001 **consuming** it, so the scope sentences were neutralised and addendum **AY** states the consumer boundary. (3) It stated 18/20 mandatory engineering sections: **AW. COMMAND MODEL**, **AX. DATA MODEL**, **AY. RUNTIME CONSUMER BOUNDARY** and **AZ. QUERY MODEL** were authored in the document's own lettered style, stating existing behaviour — including the honest limits (no persisted security tables, no detection engine, no query surface) — → **20/20**. Two implemented suites (events, role gate) were uncited by the contract, so counted tests rise 70 → **108**; the registry row was corrected from `IMPLEMENTING [✓ ✗ ✗ ✗ ✗] tests: 96` to **COMPLETE [✓ ✓ ✓ ✓ ✓] tests: 108**. Acceptance probe: **45 areas — ENFORCED 22 · DECLARED 14 · IMPLEMENTED_UNWIRED 9 · MISSING 0**, `ok: true`; the unwired class is reported, never counted as enforcement (risk, session, agent/tool controls, security events, alerts, incidents, evidence and observability are tested libraries that no boundary calls yet). Separately the same reading found the kernel-framing defect: **73 kernel and capability modules** introduced themselves as "CoreGrid Scholar — …", including all seven `security-*` modules and the platform tooling. They were re-framed by `scripts/neutralise-scholar-framing.mjs` (comment lines only — provably inert; anything else is reported for a human decision), and `tests/unit/platform-neutrality.test.ts` now enforces three laws: a kernel module imports no runtime, **only a runtime layer may name a runtime**, and no platform surface hard-codes a limited role list. The repository's own README already stated the correct model: "CoreGrid Scholar is the first major production runtime built on CoreGrid. It is not the architectural boundary of CoreGrid." |
-| Validation | `audit:phases` → COMPLETE 11 · IMPLEMENTING 22 · ARCHITECTURE_DEFINED 18, `ok: true`; acceptance probe phase 08 PASS (MISSING 0, no unresolved evidence paths); platform-neutrality suite green; `scripts/neutralise-scholar-framing.mjs --check` → 0 self-identifications across 561 kernel/capability files (5 documented consumer/runtime references remain deliberately); typecheck 0 errors; production build PASS; `verify:registry` PASS; secrets scan PASS |
-| Status | CLOSED — Phase 08 is COMPLETE on all five levels with no exemptions, and the framing correction is machine-locked so no later phase can re-frame the kernel. Residual debt is registered as P08-1…P08-9 rather than glossed; the persisted security data model, the detection engine and disaster recovery remain this phase's honest gaps. |
-
-### 22.12 Current entry — neutrality and role-catalog correction (phases 02–07)
-
-| Field | Value |
-| --- | --- |
-| Date | 2026-09-14 |
-| Author | Cline (autonomous loop, §103) |
-| Scope | Domain neutrality (05/06/07), role-catalog correctness (02/03/06), and the lock that stops a future phase undoing an earlier one |
-| Change | Three defects in this session's own work, found by owner review and fixed: **(1) a neutral module imported a runtime** — Phase 06's `workspace-projection.ts` imported the Scholar catalog; it is now an input-driven neutral engine (`composeWorkspace({key,label,capabilities,contributions})`, zero runtime imports) with the Scholar binding moved to the runtime layer (`runtime/scholar-workspace-projection.ts`). **(2) A surface declared a hand-written role list** — `ROLES = ["super_admin","hq","admin","teacher","student","parent"]` on a platform whose Scholar registry holds **hundreds** of roles and grows; the projection now derives every workspace kind from the catalog label map and counts the **full reality-role registry** (`EDUCATION_REALITY_ROLES`), surfacing unassigned roles and the role workspace engine's audit findings. **(3) Page-level role guards were used as gates** — removed from `identities`, `education-reality` and `tenants` (stale by construction; authorization is server-side + RLS), and `tenants` **moved out of the Scholar portal into the platform control plane** (`/super-admin/tenants`) since tenancy is platform infrastructure — it had also been gated on `hq`, which is not the platform super-admin role. |
-| Validation | **`audit:phases`: COMPLETE 10 · IMPLEMENTING 23 · ARCHITECTURE_DEFINED 18** — phases **01–07 all COMPLETE**; probes re-run after the correction: 01 `42/0/3/0`, 02 `11/1/0/0`, 03 `16/2/1/0`, 04 `16/0/0/0`, 05 `12/0/1/0`, 06 `16/2/0/0`, 07 `14/0/0/0`; typecheck 0 errors; production build PASS with regenerated route tree; **new lock `tests/unit/platform-neutrality.test.ts`** (9 neutral modules must import no vertical; 5 platform surfaces must declare no role list; the projection must be catalog-derived) plus the rewritten projection suite → 25/25 |
-| Status | **Phases 01–07 are COMPLETE and the correction is locked.** The neutrality guard now fails on exactly the three defects above, so a later phase cannot reintroduce them, and the phase-06 record documents the correction rather than hiding it. |
-
-### 22.11 Current entry — phase 06 Workspace Engine completes and reaches COMPLETE
-
-| Field | Value |
-| --- | --- |
-| Date | 2026-09-14 |
-| Author | Cline (autonomous loop, §103) |
-| Scope | Phase 06 Workspace Engine — document completion, L4 projection, registry accuracy |
-| Change | **Document:** 18/20 mandatory engineering sections — memory and knowledge were missing. Addendum **IE. WORKSPACE MEMORY AND KNOWLEDGE** was authored in the document's own lettered style (A…ID): what a workspace remembers (session state, context history, preferences, saved/shared views, recent activity, snapshots) and what it knows (navigation catalog, module registry, composition contracts, component registry, capability contract, status/dependency health) → **20/20**. **L4 (the only missing level):** `workspace-projection.ts` resolves each role's capabilities from the catalog and composes its navigation with the REAL engine (`resolveWorkspaceNav`), and `/super-admin/workspace-projection` renders the result per role — sections, items, home, quick nav, and which roles resolve to an **empty** workspace. The tests assert the property rather than a snapshot: every item a role receives is one its capabilities allow, nothing is duplicated, empty stays empty, quick-nav entries exist in the composed sections. **Registry accuracy:** row 06 claimed `tests: null` and levels `[L1 ✓, L2 ✗, L3 ✗, L4 ✗, L5 ✗]`; the audit derives **L1 ✓ L2 ✓ L3 ✓ L5 ✓** with 28 tests, now recorded along with the new module. |
-| Validation | **`audit:phases`: COMPLETE 9 · IMPLEMENTING 24 · ARCHITECTURE_DEFINED 18**, `ok: true` — phase 06 derives all five levels with `sections 20/20`; acceptance probe **18 areas: ENFORCED 16 · DECLARED 2 · UNWIRED 0 · MISSING 0**; projection suite 6/6; production build PASS (route tree regenerated) |
-| Status | **Phases 01–06 are COMPLETE.** Open and reported: P06-4 workspace lifecycle events declared but never emitted; P06-5 workspace provisioning/export/clone/reset reserved (needs a workspace persistence substrate phase 06 deliberately does not own); U-06 snapshots are in-memory and live validation is DB-gated (CF-7). |
-
-### 22.10 Current entry — phase 05 completes its architecture and reaches COMPLETE
-
-| Field | Value |
-| --- | --- |
-| Date | 2026-09-14 |
-| Author | Cline (autonomous loop, §103) |
-| Scope | Phase 05 Core Application Runtime — document completion, L4 projection, registry accuracy |
-| Change | Same treatment as phase 04, and the same two findings. **Document:** 19/20 mandatory engineering sections — the knowledge/self-description section was missing. Addendum **HD. RUNTIME KNOWLEDGE** was authored in the document's own lettered style, stating what the runtime knows about itself, that this knowledge is *exercised rather than asserted*, and that runtime knowledge never becomes domain truth → **20/20**. **L4 (the only missing level):** `runtime-self-report.ts` + `/super-admin/runtime-contracts` render the execution subsystems and a self-check that calls the SHIPPED state machines with real inputs — a tenant window that must deny beyond its limit and reset, a circuit that must open, refuse, then permit one probe, a timeout override that must not disturb other operations, an undeclared event version that must be rejected, and a retryable command without its idempotency key that must be refused. A failure is displayed as a failure and `failingChecks` names it, so the page cannot claim a health the runtime does not have. **Registry accuracy:** row 05 claimed `tests: null` and levels `[L1 ✓, L2 ✗, L3 ✗, L4 ✗, L5 ✗]` while the audit derives **L1 ✓ L2 ✓ L3 ✓ L5 ✓** with **100 tests**; the row now records both. |
-| Validation | **`audit:phases`: COMPLETE 8 · IMPLEMENTING 25 · ARCHITECTURE_DEFINED 18**, `inconsistencies: 0` — phase 05 derives all five levels with `sections 20/20`; acceptance probe **13 areas: ENFORCED 12 · UNWIRED 1 · DECLARED 0 · MISSING 0**; self-report suite 5/5; typecheck 0 errors; production build PASS (route tree regenerated); probe guard + completion audit green |
-| Status | Phases **01–05 are COMPLETE**. Open and reported, not hidden: phase 05's observability is UNWIRED (primitive proven, no runtime path emits it — shared with P01-1/P03-3), plus the earlier P01–P04 items. |
-
-### 22.9 Current entry — phase 04 completes its architecture and reaches COMPLETE
-
-| Field | Value |
-| --- | --- |
-| Date | 2026-09-14 |
-| Author | Cline (autonomous loop, §103) |
-| Scope | Phase 04 Education Reality Engine — document completion, L4 projection, registry accuracy |
-| Change | **The architecture document was incomplete and was completed**, as instructed: it stated 16 of the 20 mandatory engineering sections, leaving **data model, command model, agent boundary, observability, dependency map and failure behaviour** implicit. Addendum sections **199–204** were authored in the document's own numbered style, describing behaviour that already exists (kernel substrate tables, the gated command model, AI-never-authors-reality, event/outbox observability, the dependency map, and non-fabricating failure behaviour) rather than inventing new scope → **20/20**, machine-counted by `npm run audit:phases`. **L4** was then closed with real code: `education-reality-view.ts` (pure, tested derivation from the published operating model) projected by `/admin/education-reality`, which answers the document's own §1 questions and reports `published` / `not_published` / `invalid_spec` — it never renders a default school. **Registry accuracy:** row 04 claimed `tests: null` and understated levels; it now records 81 tests and its real module list. |
-| Validation | **`audit:phases`: COMPLETE 7 · IMPLEMENTING 26 · ARCHITECTURE_DEFINED 18** — phase 04 derives all five levels with `sections 20/20`; acceptance probe **16 areas: ENFORCED 16 · DECLARED 0 · UNWIRED 0 · MISSING 0**; guards (probe guard, completion audit, education-reality-view, education) **66/66**; typecheck 0 errors; production build PASS with regenerated route tree; `verify:registry` PASS |
-| Status | Phases **01, 02, 03 and 04 are COMPLETE**. Open items stay registered: P04 unknowns (live `cg_*` substrate validation is DB-gated — CF-7; tenant-attributable signals still unwired) plus the previously logged P01/P02/P03 items. |
-
-### 22.8 Current entry — phase 01 closes to COMPLETE (foundation projection + BR-01 exemption)
-
-| Field | Value |
-| --- | --- |
-| Date | 2026-09-14 |
-| Author | Cline (autonomous loop, §103) |
-| Scope | Phase 01 Foundation — L4 projection, BR-01 level-model refinement, registry accuracy |
-| Change | Phase 01's last two blockers are closed honestly. **L4:** the foundation's standards became a real module (`frontend/src/lib/foundation-standards.ts`, reading the phase-01 contract) and `/platform` now renders the foundation's capability id plus the four verification contracts it provides — a projection of the capability's own contract. Rendering a capability *name* in the 50-capability catalogue was explicitly **not** accepted as a projection; the strict L4 rule was kept and the work was done instead. **L2 (BR-01):** Phase 01 owns no persistent state by construction, so its L2 is **exempt**, recorded in `architecture/phase-completion-exemptions.json` with reason, owner, justifying evidence, `closesWhen` and owner ratification — never evidenced, never hidden. The audit now refuses an exemption on a level that already has evidence (that would hide work), requires at least three evidenced levels for COMPLETE, and records every applied exemption in the proof and the status table (`exempt`). Registry row 01 records the `foundation-standards` module. |
-| Validation | **`audit:phases`: COMPLETE 6 · IMPLEMENTING 27 · ARCHITECTURE_DEFINED 18**, `inconsistencies: 0`, exemptions applied: 1 (phase 01 / L2). Acceptance probes: phase 01 **42 ENFORCED · 3 UNWIRED · 0 DECLARED · 0 MISSING** (45 areas), phase 02 **11/1/0/0**, phase 03 **16/2/1/0**. Typecheck 0 errors; foundation + audit suites 45/45 after updating the one assertion that encoded "no exemptions exist". |
-| Status | **Phases 01, 02 and 03 are COMPLETE.** Everything still open is reported, not smoothed over: the three UNWIRED foundation libraries (structured logger, runtime limiter, AI budget), P02-1 identity events, P02-3 federation (reserved), P03-1 async tenant boundaries, P03-2 deprovisioning, P03-3 tenant observability wiring, P03-5 tenant migration (reserved). |
-
-### 22.7 Current entry — phases 02 and 03 reach COMPLETE by closing their L4 gaps
-
-| Field | Value |
-| --- | --- |
-| Date | 2026-09-14 |
-| Author | Cline (autonomous loop, §103) |
-| Scope | Phase 02 Identity and Phase 03 Multi-Tenancy — closing work (P02-2, P02-4, P03-4) |
-| Change | Both foundational phases had exactly one level missing: **L4 workspace projection**. Identity and tenancy were implemented, tested, migrated and gate-protected — and invisible in the product (`registerIdentity` had zero callers; no route imported a tenant module). Closed with real code, not re-labelling: **`listIdentities`** (tenant boundary resolved from the actor's own session, query filtered by that resolved id) + **`/admin/identities`** (register + list, role-guarded, real state); **`listTenants`** (canonical super-admin gate, fail closed — never a tenant enumeration vector) + **`/admin/tenants`** (real `cg_tenant` state, hierarchy shown as a parent reference only so topology never implies inherited access, and the existing slug-idempotent `registerTenant` for provisioning). Registry rows 02 and 03 now include the `identity-registry` and `tenant-registry` modules they had omitted. |
-| Validation | **`audit:phases`: COMPLETE 5 · IMPLEMENTING 28 · ARCHITECTURE_DEFINED 18** — phases **02 (Identity)** and **03 (Multi-Tenancy)** now derive `L1 ✓ L2 ✓ L3 ✓ L4 ✓ L5 ✓` from artefacts; acceptance probes re-run: phase 02 **11 ENFORCED · 1 DECLARED · 0 UNWIRED**, phase 03 **16 ENFORCED · 2 DECLARED · 1 UNWIRED**; typecheck 0 errors; production build PASS (route tree regenerated); probe guard + completion audit + P08 enforcement surface 14/14; `verify:registry` PASS |
-| Status | Phase 02 and phase 03 are **COMPLETE**. Remaining acceptance areas are recorded as open or reserved, not closed by assertion: P02-1 identity events (the only DECLARED area in 02), P02-3 federation (reserved — needs providers), P03-1 async tenant boundaries, P03-2 deprovisioning, P03-3 tenant observability wiring, P03-5 tenant migration (reserved — needs infrastructure). Phase 01 remains IMPLEMENTING (definitional L2 + non-applicable L4). |
-
-### 22.6 Current entry — AUDIT-P02/P03 (Identity and Multi-Tenancy intake, probes for all)
-
-| Field | Value |
-| --- | --- |
-| Date | 2026-09-14 |
-| Author | Cline (autonomous loop, §103) |
-| Scope | Phase 02 Identity and Phase 03 Multi-Tenancy — archaeology + acceptance probes; generic probe guard |
-| Change | Both phases received a full intake: four-way verification, acceptance probe, five-level vector, ownership review and a per-phase archaeology record. **Phase 02 — 12 areas: ENFORCED 10 · DECLARED 1 · UNWIRED 1 · MISSING 0.** The pasted document is structurally degraded (A5/A6, C5/C6, E3, F2 I/O, H2–H17 fields, I8, J16, K2/K7/K8, M2, DoD table and invariant bodies empty) so the repository document is authoritative. Phase 02 is **one level from COMPLETE**: L1/L2/L3/L5 hold and only L4 is missing, because `registerIdentity` has **no caller** and no surface imports any identity module. Its identity event contract (F13) is declared and unimplemented, and federation (F12) has no module at all. **Phase 03 — 19 areas: ENFORCED 15 · DECLARED 2 · UNWIRED 2 · MISSING 0.** The paste is complete; `cg_tenant` carries the H2 status enum verbatim, hierarchy FK, region column and RLS; quotas/entitlements/fairness/cross-tenant/residency/invariants all have executable evidence. Real gaps: tenant context does not survive asynchrony (outbox has no `tenantId`, no queue/cache module), deprovisioning/offboarding has no engine, tenant observability is unwired and tenancy has no workspace projection. |
-| Validation | `audit:phase --phase=02` PASS; `audit:phase --phase=03` PASS; `tests/unit/phase-acceptance-probes.test.ts` — a new generic guard that discovers every `architecture/phase-acceptance/phase-*.json`, requires a proof, and re-derives the classification contract (evidence paths resolve, ENFORCED only on executable evidence plus a matched boundary, REQUIRED areas never MISSING); `audit:phases` unchanged (COMPLETE 5) |
-| Status | AUDITED — Phase 02 is one projection away from COMPLETE; Phase 03 is L4 + async boundaries away. Both are registered with owned work items (P02-1…P02-3, P03-1…P03-5) rather than being silently re-labelled. |
-
-### 22.5 Current entry — AUDIT-P01 closure wave (Phase 01 remaining work)
-
-| Field | Value |
-| --- | --- |
-| Date | 2026-09-14 |
-| Author | Cline (autonomous loop, §103) |
-| Scope | Phase 01 Foundation — P01-1…P01-4, U-01…U-04, BR-01 registration |
-| Change | Closed the Phase 01 acceptance gaps with executable evidence, without implementing a duplicate capability: `foundation-observability.test.ts` (10 tests: correlation, credential/PII redaction on the live log path, percentile convention, health aggregation), `foundation-error-architecture.test.ts` (7 tests: bounded capture/5 s TTL/consume-once, safe no-op bridge, classified forwarding), `foundation-limits-map.test.ts` (5 tests re-deriving the §59/§60 map against source, failing on overclaim AND underclaim). Published `architecture/foundation-limits.json` + `foundation-limits-map.md` — the canonical map of §59 rate-limit scopes and §60 budget kinds to their real owners (05 runtime limiter; 26 AI budget/quota; 03 tenant quotas; 31 autoscaling limits), instead of building a second engine (duplication law). Probe result: **44 areas — ENFORCED 41 · IMPLEMENTED_UNWIRED 3 · DECLARED 0 · MISSING 0**; the new UNWIRED class records capabilities whose implementation and tests are real but which no boundary invokes (structured logger, runtime limiter, AI budget). U-01 answered: audit trail is convention-only (0/28 server-function families emit audit; role gating is wired 22/28). U-02 answered: 0 boundary call sites for the limiter/budget. Registry phase 01 now records `tests: 37` + the artefacts; the contract cites the new suites. |
-| Validation | New suites 22/22; acceptance suite 9/9; affected suites (phase-completion-audit, kernel-contract-coverage, phase-catalog, foundation) 38/38; `audit:phase --phase=01` PASS; `audit:phases` re-run clean — **COMPLETE 5 / IMPLEMENTING 28 / ARCHITECTURE_DEFINED 18**, unconfirmed claims 5 → 3 (19, 25, 49); `verify:registry` PASS |
-| Status | CLOSED — two audit measurements were corrected while closing this wave. (1) Widening the cited-test extraction let phases count the suites their contracts cite, which at first reported **Phase 02 as COMPLETE**. (2) Checking that claim exposed an L4 **false positive**: L4 was matching the bare word "identity" inside marketing prose on `/platform`. L4 now requires a distinctive reference (the capability id, or a route/component importing the phase's module directly); no surface imports any identity module, so phase 02 drops back to IMPLEMENTING and the honest count is **COMPLETE 5**. L4 now understates rather than overstates — the safe direction, documented as a limitation, to be closed by hand review with recorded evidence. BR-01 (the L2 level model for conventions phases) remains an unratified refinement proposal; Phase 01 deliberately does NOT flip to COMPLETE. |
-
----
-
-## 23. Agent Progress Rules
-
-Autonomous coding agents MUST:
-
-1. Read this document before substantial implementation work.
-2. Update progress when a major engineering milestone changes.
-3. Never mark architecture as implementation complete.
-4. Never mark implementation complete without validation.
-5. Never hide blocked work; never silently remove failed work.
-6. Never silently change phase ownership or canonical capability ownership (§7).
-7. Never build a second engine for a canonical capability (§8).
-8. Record architecture conflicts, technical debt, security debt and AI safety debt (§17).
-9. Keep phase status synchronized with REGISTRY.md and the frontend catalog.
-10. Update affected progress entries after architecture changes.
-11. Preserve historical progress; append to the Change Log in the §22 schema.
-12. Verify no isolated-phase completion: a phase advances only when its capability is consumed by other phases.
-13. Continue to the next phase or stage automatically after completion validation — do not ask the user which phase to build.
-14. Ask the user only when the decision requires human authority (destructive database operations, irreversible security actions, production deployment, legal/compliance, architectural contradictions, §8 open canonicalization decisions).
-
-Implementation sequence before a new capability:
-
-Read Architecture → Identify Owning Phase → Check Dependencies (§9) → Check Boundaries → Check Duplication (§8) → Check Existing Implementation → Check Existing Contracts → Implement → Test → Security Validation → Update Registry/Catalog → Update this Ledger.
-
----
-
-## 24. Current Overall Platform Status
-
-Measured status (evidence in §5 and §20):
-
-| Dimension | Value |
-| --- | --- |
-| Architecture definition | 51/51 phase docs; registry files synchronized |
-| Domain-layer implementation | registry COMPLETE on P01–P13 and P25 (14 rows); P27 IMPLEMENTED — held for audit; P14–P32 IMPLEMENTING (L3 domain layers, unwired) |
-| Architecture-only phases | P33–P51 ARCHITECTURE_DEFINED |
-| Live surfaces | Command Centre `/` (verified), Scholar role dashboards, API routes |
-| Tests | 3,013 tests / 192 files passing (2026-09-21, after phase 13); catalog test 6/6 |
-| Typecheck | 0 errors (2026-09-21) |
-| Highest maturity reached | 15 phases derive COMPLETE at L1–L5 (P01–P13, P25, P27; P01's L2 is exempt under BR-01); registry COMPLETE on P01–P13 and P25 (14 rows), with P27 held at IMPLEMENTED pending its own audit; L4 partial on P19/Command Centre and P02–P06 legacy surfaces |
-| Production readiness | not satisfied (checklist §21) |
-
-These figures describe actual engineering state, not intent. Architecture is not implementation; a domain module is not a wired capability; a live screen is not a production system.
-
----
-
-## 25. Next Engineering Objectives
-
-Executed autonomously in order (per §9/§13), stopping only for §23.14 conditions:
-
-1. S1 — Wire P08 security enforcement as live middleware/gateway over server routes; re-verify RLS/tenant isolation; level-audit P02–P06.
-2. Record ADRs PLATFORM-003…008 in DECISIONS.md and obtain approval for the canonicalization decisions (§8 open rows).
-3. S6 — Wire the Scholar runtime vertical (P11/P12/P13/P16/P17/P18/P25) behind enforcement; complete the Command Centre as the platform operating surface.
-4. Re-run the full unit suite after each wiring checkpoint and refresh §5/§20 figures.
-5. S2/S8 onward — P33 URIK domain contract design (L2/L3), then sequential continuation to S12.
-6. Periodic architectural audits: duplication (§8), ownership (§7), tenant isolation, security, E2E system test (§§96–99 of the master constitution).
-
----
-
-## 26. Final Principle
-
-Progress must answer one question accurately: what is actually true about the state of CoreGrid right now — the kernel, its runtimes, its registry, its surfaces, its tests and its operations?
-
-Not what we intended to build.
-Not what has been designed.
-Not what has been discussed.
-Not what an agent was instructed to create.
-
-Only what has been implemented, tested, validated, integrated and operationally demonstrated may be marked complete.
-This ledger is a living engineering document and must evolve with the platform.
+2. ARCHITECTURE-PRINCIPLES.md
+3. ARCHITECTURE-REGISTRY.md
+4. ARCHITECTURE-DEPENDENCY-MAP.md
+5. ARCHITECTURE-BOUNDARIES.md
+6. ARCHITECTURE-POLICIES.md
+7. ARCHITECTURE-DECISIONS.md
+8. Individual phase architecture specifications
+9. Approved contracts and schemas
+The progress ledger may report that architecture is incomplete, contradictory, blocked or drifting.
+It may not silently redefine the architecture to make progress appear healthier.
+If a conflict exists:
+text
+CONSTITUTION
+      ↓
+PRINCIPLES
+      ↓
+REGISTRY
+      ↓
+DEPENDENCY MAP
+      ↓
+BOUNDARIES
+      ↓
+POLICIES
+      ↓
+DECISIONS
+      ↓
+PHASE ARCHITECTURE
+      ↓
+CONTRACTS
+      ↓
+IMPLEMENTATION
+      ↓
+PROGRESS / EVIDENCE
+
+Progress records reality.
+It does not manufacture it.
+
+───
+
+02. COREGRID PROGRESS PHILOSOPHY
+CoreGrid does not equate:
+text
+IMPLEMENTED
+=
+WORKING
+=
+VALIDATED
+=
+SAFE
+=
+PRODUCTION READY
+
+These are separate states.
+The canonical engineering progression is:
+text
+ARCHITECTURE
+      ↓
+OWNERSHIP
+      ↓
+BOUNDARIES
+      ↓
+DEPENDENCIES
+      ↓
+DESIGN
+      ↓
+CONTRACTS
+      ↓
+DATA / STATE MODEL
+      ↓
+IMPLEMENTATION
+      ↓
+INTEGRATION
+      ↓
+BEHAVIOURAL VALIDATION
+      ↓
+SECURITY VALIDATION
+      ↓
+INTELLIGENCE VALIDATION
+      ↓
+PERFORMANCE VALIDATION
+      ↓
+RELIABILITY VALIDATION
+      ↓
+OPERATIONAL VALIDATION
+      ↓
+PRODUCTION READINESS
+      ↓
+PRODUCTION
+      ↓
+RUNTIME OBSERVATION
+      ↓
+CONFORMANCE
+      ↓
+LEARNING
+      ↓
+EVOLUTION
+
+This is a closed engineering reality loop.
+
+───
+
+03. PROGRESS IS A STATE OF REALITY
+A progress record must describe the actual state of a system at a known point in time.
+Therefore every material progress claim should answer:
+text
+WHAT
+      ↓
+WHERE
+      ↓
+OWNED BY WHOM
+      ↓
+DEFINED BY WHICH ARCHITECTURE
+      ↓
+IMPLEMENTED WHERE
+      ↓
+VALIDATED HOW
+      ↓
+WITH WHAT EVIDENCE
+      ↓
+UNDER WHAT ENVIRONMENT
+      ↓
+WITH WHAT LIMITATIONS
+      ↓
+AS OF WHEN
+
+A statement such as:
+"Phase 07 is complete"
+is insufficient.
+A valid state must be closer to:
+text
+Phase: 07
+Architecture: APPROVED
+Design: COMPLETE
+Contracts: COMPLETE
+Implementation: 64%
+Integration: PARTIAL
+Security: VALIDATED
+Agent Tool Authorization: PARTIAL
+AI Evaluation: NOT COMPLETE
+Operational Validation: NOT COMPLETE
+Production Readiness: NOT READY
+Evidence: EV-...
+Last Verified: ...
+
+
+───
+
+04. PROGRESS OBJECT MODEL
+CoreGrid progress is represented as a multidimensional state object.
+text
+PROGRESS OBJECT
+
+Identity
+Ownership
+Architecture
+Dependencies
+Design
+Contracts
+Data
+Implementation
+Integration
+Testing
+Security
+Intelligence
+Performance
+Reliability
+Observability
+Operations
+Documentation
+Deployment
+Production Readiness
+Runtime Conformance
+Evidence
+Known Limitations
+Debt
+Risks
+Blockers
+Change History
+
+No single percentage may replace these dimensions.
+
+───
+
+05. PROGRESS DIMENSIONS
+Every major phase or capability may independently track:
+1. Architecture
+2. Ownership
+3. Boundary
+4. Dependency
+5. Design
+6. Contract
+7. Data
+8. State
+9. Implementation
+10. Integration
+11. Functional validation
+12. Security validation
+13. Privacy validation
+14. AI/intelligence validation
+15. Performance validation
+16. Reliability validation
+17. Observability
+18. Operations
+19. Deployment
+20. Documentation
+21. Production readiness
+22. Runtime conformance
+23. Evidence completeness
+This prevents a single completion number from hiding engineering reality.
+
+───
+
+06. ARCHITECTURAL COMPLETION
+Architecture completion means:
+• purpose defined;
+• ownership defined;
+• scope defined;
+• boundaries defined;
+• dependencies defined;
+• invariants identified;
+• major data/state concepts identified;
+• contracts identified;
+• security considerations identified;
+• operational expectations identified;
+• validation requirements identified;
+• architecture approved.
+Architecture completion does not imply implementation.
+
+───
+
+07. IMPLEMENTATION COMPLETION
+Implementation completion means that the required production code or infrastructure exists.
+It does not imply:
+• correctness;
+• security;
+• reliability;
+• interoperability;
+• operational readiness;
+• production readiness.
+Implementation may therefore be:
+text
+100%
+
+while production readiness remains:
+text
+0%
+
+
+───
+
+08. VALIDATION COMPLETION
+Validation completion means that the required behavior has been demonstrated through appropriate evidence.
+Validation may include:
+• unit testing;
+• integration testing;
+• contract testing;
+• end-to-end testing;
+• adversarial testing;
+• security testing;
+• performance testing;
+• resilience testing;
+• AI evaluation;
+• synchronization testing;
+• human acceptance;
+• operational exercises;
+• production observation.
+Passing tests are evidence.
+They are not the same thing as universal correctness.
+
+───
+
+09. PRODUCTION READINESS
+Production readiness is a compound state.
+A capability cannot become PRODUCTION_READY merely because implementation is complete.
+It must satisfy the applicable requirements for:
+text
+Architecture
+Ownership
+Security
+Data Integrity
+Tenant Isolation
+Contracts
+Testing
+Observability
+Reliability
+Recovery
+Deployment
+Rollback
+Operations
+Documentation
+Cost Controls
+Compliance
+AI Governance
+Human Escalation
+
+
+───
+
+10. COREGRID STATE VOCABULARY
+Canonical phase states:
+text
+NOT_STARTED
+DISCOVERING
+ARCHITECTURE_DEFINED
+DESIGNING
+CONTRACTS_DEFINED
+IMPLEMENTING
+INTEGRATING
+TESTING
+SECURITY_REVIEW
+INTELLIGENCE_REVIEW
+OPERATIONAL_VALIDATION
+PRODUCTION_CANDIDATE
+PRODUCTION_READY
+ACTIVE
+COMPLETE
+DEGRADED
+BLOCKED
+FAILED
+DRIFTED
+SUPERSEDED
+RETIRED
+
+
+───
+
+11. STATE SEMANTICS
+NOT_STARTED
+No meaningful engineering activity exists.
+DISCOVERING
+Requirements, existing systems, dependencies, evidence or architecture are still being investigated.
+ARCHITECTURE_DEFINED
+Architecture has been approved but implementation is not necessarily underway.
+DESIGNING
+Detailed implementation design is underway.
+CONTRACTS_DEFINED
+Required interfaces, schemas, commands, queries, events or protocols are defined.
+IMPLEMENTING
+Implementation is actively underway.
+INTEGRATING
+The capability is being connected to other CoreGrid systems.
+TESTING
+Validation is actively occurring.
+SECURITY_REVIEW
+Security validation is incomplete and under review.
+INTELLIGENCE_REVIEW
+AI or intelligence behavior is undergoing evaluation.
+OPERATIONAL_VALIDATION
+Deployment, monitoring, recovery and real operational behavior are being validated.
+PRODUCTION_CANDIDATE
+The capability appears complete but has not yet satisfied final production acceptance.
+PRODUCTION_READY
+All applicable readiness requirements are satisfied.
+ACTIVE
+The capability is operating within its approved environment.
+COMPLETE
+The capability is implemented, integrated, validated and accepted according to its defined scope.
+DEGRADED
+The capability is operating but one or more material capabilities are impaired.
+BLOCKED
+Progress cannot continue without resolving a dependency, decision, technical problem, security issue, external constraint or architectural ambiguity.
+FAILED
+The implementation or validation attempt did not satisfy its required criteria.
+DRIFTED
+Implementation or runtime behavior has materially diverged from approved architecture, contracts or decisions.
+SUPERSEDED
+A newer approved implementation or architecture replaces it.
+RETIRED
+The capability has intentionally ceased operation.
+
+───
+
+12. PHASE STATUS IS NOT A SINGLE VALUE
+Each phase has:
+text
+ARCHITECTURE_STATE
+IMPLEMENTATION_STATE
+VALIDATION_STATE
+SECURITY_STATE
+OPERATIONAL_STATE
+PRODUCTION_STATE
+RUNTIME_STATE
+CONFORMANCE_STATE
+
+The phase's headline status is derived from these states.
+It must never conceal material failure.
+
+───
+
+13. COMPLETION MODEL
+CoreGrid uses multidimensional completion.
+Example:
+text
+Phase 14 — Data Platform
+
+Architecture                 COMPLETE
+Ownership                    COMPLETE
+Boundaries                   COMPLETE
+Dependencies                COMPLETE
+Design                       COMPLETE
+Contracts                    IN_PROGRESS
+Data Model                   IN_PROGRESS
+Implementation              42%
+Integration                  15%
+Testing                      10%
+Security                     NOT_STARTED
+Observability                NOT_STARTED
+Operations                   NOT_STARTED
+Production Readiness         0%
+Runtime Conformance          NOT_STARTED
+
+The phase is therefore not complete.
+
+───
+
+14. COREGRID REALITY-CONFORMANCE MODEL
+Because CoreGrid is a Reality Intelligence platform, engineering progress must ultimately measure whether implementation conforms to the architecture's intended computational representation of reality.
+Therefore CoreGrid tracks:
+text
+ARCHITECTURAL TRUTH
+        ↓
+IMPLEMENTED REPRESENTATION
+        ↓
+OBSERVED RUNTIME BEHAVIOR
+        ↓
+VALIDATION EVIDENCE
+        ↓
+CONFORMANCE
+
+A system can be:
+text
+Architecturally correct
+but implementation-incomplete.
+
+Implemented
+but behaviorally incorrect.
+
+Behaviorally correct
+but insecure.
+
+Secure
+but operationally unreliable.
+
+Operationally reliable
+but architecturally drifted.
+
+These distinctions must remain visible.
+
+───
+
+15. REALITY STATE VS ENGINEERING STATE
+CoreGrid distinguishes:
+Engineering State
+What has been built.
+Runtime State
+What is currently happening.
+Reality State
+What the system represents as happening in its domain.
+Evidence State
+What has actually been demonstrated.
+Governance State
+What is authorized and approved.
+These must not be conflated.
+
+───
+
+16. EVIDENCE IS PART OF PROGRESS
+Every material completion claim should reference evidence.
+Examples:
+text
+TEST-2026-001
+SEC-2026-014
+PERF-2026-009
+DR-2026-003
+DEPLOY-2026-002
+OBS-2026-007
+AI-EVAL-2026-004
+
+Evidence may include:
+• test results;
+• logs;
+• traces;
+• screenshots;
+• deployment records;
+• benchmark results;
+• security assessments;
+• simulation results;
+• operational exercises;
+• incident records;
+• human acceptance;
+• runtime observations.
+
+───
+
+17. NO EVIDENCE, NO VERIFIED COMPLETION
+The following rule is mandatory:
+A material completion claim without appropriate evidence is an unverified claim.
+Unverified work may still exist.
+It must simply be represented honestly.
+
+───
+
+18. EVIDENCE PROVENANCE
+Evidence must identify:
+text
+Evidence ID
+Capability
+Phase
+Environment
+Version
+Commit / Build
+Test or Observation
+Timestamp
+Actor
+Result
+Limitations
+Related Decision
+Related Contract
+
+
+───
+
+19. ENGINEERING EXECUTION STATES
+Individual work items use:
+text
+BACKLOG
+READY
+IN_PROGRESS
+BLOCKED
+IN_REVIEW
+TESTING
+SECURITY_REVIEW
+VALIDATION
+DONE
+REJECTED
+SUPERSEDED
+
+
+───
+
+20. WORK ITEM OWNERSHIP
+Every non-trivial work item must have:
+text
+Owning Phase
+Owning Capability
+Responsible Actor
+Required Dependencies
+Required Evidence
+Acceptance Criteria
+
+No orphaned work.
+
+───
+
+21. DEFINITION OF READY
+A work item is READY only when:
+• owning phase is known;
+• capability ownership is known;
+• architecture is understood;
+• dependencies are identified;
+• relevant contracts are known;
+• security implications are understood;
+• acceptance criteria exist;
+• required decisions exist;
+• required evidence can be produced.
+
+───
+
+22. DEFINITION OF DONE
+A work item is DONE only when applicable:
+• implementation exists;
+• expected behavior is demonstrated;
+• tests pass;
+• contracts are respected;
+• security requirements are satisfied;
+• observability exists;
+• migrations are handled;
+• integration is validated;
+• documentation is updated;
+• evidence is recorded.
+
+───
+
+23. NO CODE-BASED COMPLETION
+These are invalid completion arguments:
+text
+"The files exist."
+
+"The endpoint works locally."
+
+"The UI renders."
+
+"The database table exists."
+
+"The agent responds."
+
+"The build passes."
+
+"The model is connected."
+
+"The deployment succeeded."
+
+These may be evidence of progress.
+They are not sufficient evidence of system completion.
+
+───
+
+24. ARCHITECTURE-TO-IMPLEMENTATION TRACEABILITY
+Every substantial implementation must be traceable to:
+text
+Architecture
+→ Decision
+→ Phase
+→ Capability
+→ Contract
+→ Implementation
+→ Test
+→ Evidence
+
+This creates an engineering lineage.
+
+───
+
+25. IMPLEMENTATION-TO-ARCHITECTURE TRACEABILITY
+The reverse relationship must also be maintained.
+CoreGrid must be able to determine:
+text
+Which architecture requirement
+is implemented by this code?
+
+If the answer is unknown, the implementation may represent:
+• undocumented architecture;
+• accidental capability;
+• scope leakage;
+• obsolete code;
+• experimental code;
+• technical debt.
+
+───
+
+26. NO SILENT ARCHITECTURE CREATION
+Code must not become architecture merely because it exists.
+If implementation reveals a genuinely missing architectural capability:
+text
+DISCOVER
+   ↓
+ANALYZE
+   ↓
+IDENTIFY OWNER
+   ↓
+CHECK EXISTING PHASES
+   ↓
+CHECK EXISTING DECISIONS
+   ↓
+PROPOSE ARCHITECTURAL CHANGE
+   ↓
+APPROVE
+   ↓
+UPDATE GOVERNANCE
+   ↓
+IMPLEMENT
+
+
+───
+
+27. COREGRID PHASE REGISTRY
+The canonical phase inventory is determined by ARCHITECTURE-REGISTRY.md.
+The progress ledger must consume that registry rather than independently redefining the phase universe.
+Current reference runtime architecture includes the following registered Scholar-era/reference phases:
+
+Phase
+Name
+Architecture
+Implementation
+Validation
+Current State
+
+01
+Foundation
+Complete
+Pending
+Pending
+ARCHITECTURE_DEFINED
+
+02
+Identity
+Complete
+Pending
+Pending
+ARCHITECTURE_DEFINED
+
+03
+Multi-Tenancy
+Complete
+Pending
+Pending
+ARCHITECTURE_DEFINED
+
+04
+Education Reality Engine
+Complete
+Pending
+Pending
+ARCHITECTURE_DEFINED
+
+05
+Core Application Runtime
+Complete
+Pending
+Pending
+ARCHITECTURE_DEFINED
+
+06
+Workspace Engine
+Complete
+Pending
+Pending
+ARCHITECTURE_DEFINED
+
+07
+AI Agent System
+Complete
+Pending
+Pending
+ARCHITECTURE_DEFINED
+
+08
+Security Engine
+Complete
+Pending
+Pending
+ARCHITECTURE_DEFINED
+
+09
+Security Trust Fabric
+Complete
+Pending
+Pending
+ARCHITECTURE_DEFINED
+
+10
+Communication Platform
+Complete
+Pending
+Pending
+ARCHITECTURE_DEFINED
+
+11
+Academic Intelligence
+Complete
+Pending
+Pending
+ARCHITECTURE_DEFINED
+
+12
+Scheduling Intelligence
+Complete
+Pending
+Pending
+ARCHITECTURE_DEFINED
+
+13
+Financial System
+Complete
+Pending
+Pending
+ARCHITECTURE_DEFINED
+
+14
+Data Platform
+Complete
+Pending
+Pending
+ARCHITECTURE_DEFINED
+
+15
+Hardware Integration
+Complete
+Pending
+Pending
+ARCHITECTURE_DEFINED
+
+16
+Digital Twin
+Complete
+Pending
+Pending
+ARCHITECTURE_DEFINED
+
+17
+Automation Engine
+Complete
+Pending
+Pending
+ARCHITECTURE_DEFINED
+
+18
+Analytics Intelligence
+Complete
+Pending
+Pending
+ARCHITECTURE_DEFINED
+
+19
+Command Centre
+Complete
+Pending
+Pending
+ARCHITECTURE_DEFINED
+
+20
+Government Education Cloud
+Complete
+Pending
+Pending
+ARCHITECTURE_DEFINED
+
+21
+Global Cloud Fabric
+Complete
+Pending
+Pending
+ARCHITECTURE_DEFINED
+
+22
+Mobile Platform
+Complete
+Pending
+Pending
+ARCHITECTURE_DEFINED
+
+23
+Web Platform
+Complete
+Pending
+Pending
+ARCHITECTURE_DEFINED
+
+24
+Experience & Design Intelligence
+Complete
+Pending
+Pending
+ARCHITECTURE_DEFINED
+
+25
+Institutional Onboarding & Workforce
+Complete
+Pending
+Pending
+ARCHITECTURE_DEFINED
+
+26
+AI Intelligence Layer
+Complete
+Pending
+Pending
+ARCHITECTURE_DEFINED
+
+27
+Marketplace
+Complete
+Pending
+Pending
+ARCHITECTURE_DEFINED
+
+28
+Developer Platform
+Complete
+Pending
+Pending
+ARCHITECTURE_DEFINED
+
+29
+CoreGrid Integration
+Complete
+Pending
+Pending
+ARCHITECTURE_DEFINED
+
+30
+Globalization
+Complete
+Pending
+Pending
+ARCHITECTURE_DEFINED
+
+31
+Enterprise Scale
+Complete
+Pending
+Pending
+ARCHITECTURE_DEFINED
+
+32
+Future Evolution
+Complete
+Pending
+Pending
+ARCHITECTURE_DEFINED
+
+33
+Reality Intelligence Kernel (URIK)
+Complete
+Pending
+Pending
+ARCHITECTURE_DEFINED
+
+34
+Universal Cognitive Intelligence Engine
+Complete
+Pending
+Pending
+ARCHITECTURE_DEFINED
+
+35
+Autonomous Agent Civilization OS
+Complete
+Pending
+Pending
+ARCHITECTURE_DEFINED
+
+36
+Universal Memory & Knowledge Engine
+Complete
+Pending
+Pending
+ARCHITECTURE_DEFINED
+
+37
+Simulation & Future Intelligence Engine
+Complete
+Pending
+Pending
+ARCHITECTURE_DEFINED
+
+38
+Evolution Engine
+Complete
+Pending
+Pending
+ARCHITECTURE_DEFINED
+
+39
+Governance & Alignment Engine
+Complete
+Pending
+Pending
+ARCHITECTURE_DEFINED
+
+40
+Universal Runtime Fabric
+Complete
+Pending
+Pending
+ARCHITECTURE_DEFINED
+
+41
+Reality Simulation & Autonomous Sandbox Engine
+Complete
+Pending
+Pending
+ARCHITECTURE_DEFINED
+
+42
+Zero Trust & Adversarial Defense Engine
+Complete
+Pending
+Pending
+ARCHITECTURE_DEFINED
+
+43
+Universal Interface & Connectivity Intelligence
+Complete
+Pending
+Pending
+ARCHITECTURE_DEFINED
+
+44
+Planetary Distributed Infrastructure Engine
+Complete
+Pending
+Pending
+ARCHITECTURE_DEFINED
+
+45
+AI Compute Civilization Engine
+Complete
+Pending
+Pending
+ARCHITECTURE_DEFINED
+
+46
+Universal Digital Twin Civilization Layer
+Complete
+Pending
+Pending
+ARCHITECTURE_DEFINED
+
+47
+Autonomous Engineering Self-Improvement Engine
+Complete
+Pending
+Pending
+ARCHITECTURE_DEFINED
+
+48
+Civilization Knowledge Graph
+Complete
+Pending
+Pending
+ARCHITECTURE_DEFINED
+
+49
+Autonomous Economy Engine
+Complete
+Pending
+Pending
+ARCHITECTURE_DEFINED
+
+50
+Human Civilization Interface Layer
+Complete
+Pending
+Pending
+ARCHITECTURE_DEFINED
+
+51
+Universal Reality OS Kernel
+Complete
+Pending
+Pending
+ARCHITECTURE_DEFINED
+
+
+Important: This table is a progress view of the currently referenced architecture. It is not an independent phase registry.
+The authoritative phase universe remains the Architecture Registry.
+
+───
+
+28. SCHOLAR IS A RUNTIME, NOT COREGRID
+Progress must no longer imply:
+text
+CoreGrid = Scholar
+
+Instead:
+text
+COREGRID
+   ↓
+UNIVERSAL REALITY INTELLIGENCE INFRASTRUCTURE
+   ↓
+DOMAIN RUNTIMES
+   ├── African Educational Runtime
+   ├── Future Domain Runtime
+   ├── Institutional Runtime
+   ├── Government Runtime
+   ├── Enterprise Runtime
+   └── Other Authorized Runtime
+
+Scholar is therefore a reference/domain runtime.
+Progress inside Scholar must not automatically become universal CoreGrid progress.
+
+───
+
+29. RUNTIME PROMOTION LAW
+A capability developed inside Scholar becomes CoreGrid-wide only when it has been explicitly evaluated for:
+• universality;
+• abstraction;
+• ownership;
+• dependency;
+• security;
+• tenancy;
+• policy;
+• domain neutrality;
+• interoperability;
+• runtime portability.
+Otherwise it remains runtime-local.
+
+───
+
+30. SCHOLAR QUARANTINE PRINCIPLE
+Scholar-specific assumptions must not silently contaminate CoreGrid's universal architecture.
+Examples include:
+• school-specific entities;
+• education-only workflows;
+• academic terminology;
+• institutional policies;
+• curriculum assumptions;
+• school-specific UI;
+• school-specific automation.
+These remain domain/runtime knowledge unless formally promoted.
+
+───
+
+31. AFRICAN EDUCATIONAL RUNTIME
+The African Educational Runtime is treated as a domain runtime that instantiates CoreGrid's universal capabilities for African education.
+Its progress therefore tracks:
+text
+CoreGrid capability
++
+African education domain model
++
+regional configuration
++
+institutional reality
++
+runtime contracts
++
+local constraints
+
+African-first architecture is an adaptability input.
+It is not an architectural limitation on CoreGrid.
+
+───
+
+32. PHASE IMPLEMENTATION ORDER
+Phase numbers do not dictate engineering execution order.
+Implementation follows dependencies.
+The broad execution topology is:
+text
+FOUNDATION
+    ↓
+IDENTITY
+    ↓
+TENANCY
+    ↓
+SECURITY / TRUST
+    ↓
+DATA / STATE
+    ↓
+CORE RUNTIME
+    ↓
+INSTITUTIONAL REALITY
+    ↓
+WORKSPACES
+    ↓
+DOMAIN CAPABILITIES
+    ↓
+INTELLIGENCE
+    ↓
+AUTOMATION
+    ↓
+SIMULATION / DIGITAL REALITY
+    ↓
+COMMAND / OPERATIONS
+    ↓
+PLATFORMS
+    ↓
+ECOSYSTEM
+
+Actual ordering must be derived from the Dependency Map.
+
+───
+
+33. DEPENDENCY-AWARE EXECUTION
+A phase may be implemented out of numerical order when:
+• required dependency exists;
+• dependency is validated;
+• deviation is documented;
+• ownership remains clear;
+• architecture is not violated.
+A numerical phase sequence is not a substitute for dependency reasoning.
+
+───
+
+34. DEPENDENCY BLOCKING
+If capability A depends materially on capability B, and B is not sufficiently ready:
+text
+A = BLOCKED
+
+unless an approved interface, stub, simulator or temporary implementation explicitly satisfies the dependency contract.
+
+───
+
+35. SIMULATED DEPENDENCIES
+Simulation may be used for development.
+But:
+text
+SIMULATED
+≠
+PRODUCTION
+
+A simulated dependency must be explicitly labelled.
+
+───
+
+36. PHASE PROGRESS TEMPLATE
+Every phase should maintain:
+text
+PHASE ID
+PHASE NAME
+
+Architecture
+Ownership
+Boundaries
+Dependencies
+Design
+Contracts
+Data
+State
+Implementation
+Integration
+Testing
+Security
+Privacy
+AI / Intelligence
+Performance
+Reliability
+Observability
+Operations
+Deployment
+Documentation
+Production Readiness
+Runtime Conformance
+Evidence
+
+Blockers
+Risks
+Technical Debt
+Security Debt
+AI Safety Debt
+Operational Debt
+Scope Leakage
+Architecture Drift
+Open Decisions
+
+
+───
+
+37. CAPABILITY-LEVEL PROGRESS
+Phases are too coarse to fully describe engineering reality.
+Therefore each phase should contain independently trackable capabilities.
+text
+PHASE
+   ↓
+CAPABILITY
+   ↓
+SUBCAPABILITY
+   ↓
+WORK ITEM
+   ↓
+IMPLEMENTATION
+   ↓
+EVIDENCE
+
+This prevents a phase from appearing complete because only a subset of its functionality exists.
+
+───
+
+38. CAPABILITY COMPLETION
+A capability may only be marked complete when:
+text
+Architecture
++
+Ownership
++
+Contract
++
+Implementation
++
+Validation
++
+Security
++
+Observability
++
+Required Operations
++
+Evidence
+
+are satisfied for its declared scope.
+
+───
+
+39. BLOCKED WORK
+Every blocked item must record:
+text
+Blocker ID
+Phase
+Capability
+Blocker
+Type
+Owner
+Dependency
+Impact
+Severity
+Required Decision
+Proposed Resolution
+Next Action
+Expected Resolution
+Status
+
+
+───
+
+40. BLOCKER TYPES
+Canonical blocker classes:
+text
+ARCHITECTURE
+DECISION
+DEPENDENCY
+CONTRACT
+IMPLEMENTATION
+DATA
+SECURITY
+PRIVACY
+AI
+INFRASTRUCTURE
+VENDOR
+RESOURCE
+ENVIRONMENT
+TESTING
+OPERATIONS
+EXTERNAL
+UNKNOWN
+
+
+───
+
+41. BLOCKER HONESTY
+A blocked item must remain blocked.
+Do not:
+• hide blockers;
+• rename blockers as progress;
+• create fake workarounds;
+• silently bypass dependencies;
+• mark incomplete capability as complete.
+
+───
+
+42. ARCHITECTURE DRIFT
+Architecture drift occurs when:
+text
+Approved Architecture
+        ≠
+Implementation
+
+or:
+text
+Approved Contract
+        ≠
+Observed Runtime Behavior
+
+or:
+text
+Approved Ownership
+        ≠
+Actual System Responsibility
+
+Drift must be explicitly recorded.
+
+───
+
+43. DRIFT STATES
+text
+NO_DRIFT
+SUSPECTED
+CONFIRMED
+MITIGATED
+RECONCILED
+ACCEPTED_EXCEPTION
+SUPERSEDED
+
+
+───
+
+44. SCOPE LEAKAGE
+Scope leakage occurs when a capability gradually assumes responsibilities owned by another phase.
+Every scope leakage event records:
+text
+Scope Leakage ID
+Source Phase
+Receiving Phase
+Capability
+Incorrect Responsibility
+Correct Owner
+Reason
+Impact
+Resolution
+Architecture Updates
+Status
+
+
+───
+
+45. DUPLICATE SYSTEM DETECTION
+CoreGrid must actively detect duplicate capabilities.
+Examples:
+text
+Two identity authorities
+Two tenant authorities
+Two canonical user records
+Two independent permission engines
+Two competing event definitions
+Two separate audit authorities
+
+Duplicate implementation is not automatically duplicate ownership.
+But duplicate canonical authority is prohibited unless explicitly governed.
+
+───
+
+46. CANONICAL DATA PROGRESS
+Data capabilities must track:
+text
+Entity Ownership
+Canonical Source
+Schema
+Lifecycle
+Provenance
+Versioning
+Retention
+Access
+Security
+Reconciliation
+Migration
+Backup
+Recovery
+Observability
+
+
+───
+
+47. REALITY MODEL PROGRESS
+Reality-oriented phases must additionally track:
+text
+Entities
+Relationships
+State
+Events
+Processes
+Temporal State
+Causality
+Constraints
+Policies
+Actors
+Resources
+Locations
+Evidence
+Observations
+Consequences
+Uncertainty
+Historical State
+Simulation State
+
+A reality engine is not considered complete because it can store records.
+
+───
+
+48. EVENT PROGRESS
+Events must be validated for:
+text
+Identity
+Time
+Ordering
+Origin
+Actor
+Cause
+Context
+Affected Entities
+Previous State
+New State
+Evidence
+Correlation
+Causality
+Consequences
+Idempotency
+Replayability
+
+
+───
+
+49. PROCESS PROGRESS
+A process capability must distinguish:
+text
+Trigger
+Preconditions
+Actors
+Resources
+Steps
+State Transitions
+Constraints
+Decisions
+Actions
+Outputs
+Side Effects
+Failures
+Compensation
+Completion
+Consequences
+
+
+───
+
+50. CAUSAL PROGRESS
+Where causal reasoning is part of a capability, validation must distinguish:
+text
+Observed Correlation
+Documented Causation
+Hypothesized Causation
+Modelled Causation
+Simulated Consequence
+Validated Causal Relationship
+
+The system must not convert hypotheses into facts merely because an intelligent model generated them.
+
+───
+
+51. TEMPORAL PROGRESS
+Where applicable, capabilities must represent:
+text
+Past State
+Current State
+Future Planned State
+Expected State
+Predicted State
+Counterfactual State
+Historical Reconstruction
+Temporal Uncertainty
+
+
+───
+
+52. UNCERTAINTY PROGRESS
+CoreGrid must preserve uncertainty rather than forcing false certainty.
+Represent:
+text
+KNOWN
+OBSERVED
+SUPPORTED
+CALCULATED
+INFERRED
+HYPOTHESIZED
+PREDICTED
+SIMULATED
+UNKNOWN
+CONTRADICTORY
+
+
+───
+
+53. INTELLIGENCE PROGRESS
+AI capability maturity is not measured by model connectivity.
+It is measured across:
+text
+Grounding
+Context
+Reasoning
+Memory
+Tool Use
+Authorization
+Planning
+Execution
+Verification
+Uncertainty Handling
+Evidence
+Auditability
+Evaluation
+Cost
+Latency
+Reliability
+Safety
+
+
+───
+
+54. AI IS NOT AUTOMATICALLY A CAPABILITY
+Connecting an LLM does not mean CoreGrid has created intelligence infrastructure.
+A model becomes part of a governed intelligence capability only when:
+• its role is defined;
+• inputs are governed;
+• outputs are classified;
+• permissions are controlled;
+• tools are authorized;
+• evidence is captured;
+• evaluation exists;
+• failure behavior exists.
+
+───
+
+55. AI VALIDATION MATRIX
+AI capabilities should be evaluated for:
+text
+Accuracy
+Grounding
+Instruction Following
+Context Integrity
+Permission Compliance
+Policy Compliance
+Tool Correctness
+Hallucination Resistance
+Prompt Injection Resistance
+Data Leakage Resistance
+Adversarial Robustness
+Regression
+Latency
+Cost
+Reliability
+Uncertainty Calibration
+Evidence Quality
+
+
+───
+
+56. AGENT PROGRESS
+Agent capability must track:
+text
+Identity
+Role
+Authority
+Context
+Memory
+Tools
+Permissions
+Policy
+Objectives
+Planning
+Execution
+Verification
+Escalation
+Audit
+Recovery
+Termination
+
+An agent responding successfully is not equivalent to an agent being production-safe.
+
+───
+
+57. AUTONOMY PROGRESS
+Autonomy is tracked separately from implementation.
+text
+AUT-L0  OBSERVE
+AUT-L1  EXPLAIN
+AUT-L2  RECOMMEND
+AUT-L3  PLAN
+AUT-L4  EXECUTE WITH APPROVAL
+AUT-L5  BOUNDED AUTONOMY
+AUT-L6  CONTINUOUS AUTONOMOUS OPERATION
+
+The permitted autonomy level must be explicitly governed.
+
+───
+
+58. RISK AND AUTONOMY ARE DIFFERENT DIMENSIONS
+Never infer:
+text
+Higher Autonomy
+=
+Higher Authorization
+
+or:
+text
+More Intelligent
+=
+More Authority
+
+Autonomy, risk and authority remain separate architectural concepts.
+
+───
+
+59. SECURITY PROGRESS
+Security progress tracks:
+text
+Authentication
+Authorization
+Tenant Isolation
+Identity Integrity
+Secrets
+Encryption
+Network Security
+Application Security
+Data Security
+Auditability
+Threat Detection
+Incident Response
+Recovery
+Adversarial Validation
+
+
+───
+
+60. SECURITY DEBT
+Security debt includes:
+• authorization weaknesses;
+• tenant isolation weaknesses;
+• exposed credentials;
+• sensitive-data exposure;
+• insecure defaults;
+• missing audit trails;
+• weak secrets management;
+• missing threat detection;
+• incomplete incident response;
+• untested recovery.
+Security debt is always explicitly visible.
+
+───
+
+61. AI SAFETY DEBT
+AI safety debt includes:
+• insufficient evaluation;
+• weak grounding;
+• missing authorization;
+• unsafe tools;
+• excessive autonomy;
+• prompt injection exposure;
+• data leakage;
+• insufficient human escalation;
+• missing rollback;
+• insufficient monitoring;
+• uncontrolled model changes.
+
+───
+
+62. OPERATIONAL DEBT
+Operational debt includes:
+• missing monitoring;
+• weak alerting;
+• missing backups;
+• incomplete recovery;
+• undocumented deployments;
+• manual production procedures;
+• missing rollback;
+• unknown infrastructure dependencies;
+• unreproducible environments.
+
+───
+
+63. TECHNICAL DEBT
+Technical debt must record:
+text
+Debt ID
+Subsystem
+Description
+Origin
+Reason
+Risk
+Impact
+Temporary Mitigation
+Permanent Resolution
+Owner
+Priority
+Status
+
+Debt must never disappear merely because the implementation has moved forward.
+
+───
+
+64. ARCHITECTURE DEBT
+Architecture debt is distinct from technical debt.
+Examples:
+• unresolved ownership;
+• ambiguous phase boundary;
+• missing contract;
+• contradictory architecture;
+• unresolved dependency;
+• undocumented architectural assumption;
+• temporary architectural exception.
+
+───
+
+65. DECISION DEBT
+Decision debt exists when engineering cannot safely proceed because a required architectural choice remains unresolved.
+Track:
+text
+Decision ID
+Question
+Affected Phase
+Affected Capability
+Options Under Review
+Blocking Impact
+Required Authority
+Status
+
+
+───
+
+66. CONTRACT DEBT
+Contract debt exists when systems communicate without sufficiently defined:
+• inputs;
+• outputs;
+• schemas;
+• errors;
+• authorization;
+• versioning;
+• compatibility;
+• ownership;
+• lifecycle.
+
+───
+
+67. OBSERVABILITY PROGRESS
+A production capability must be observable at appropriate levels:
+text
+Logs
+Metrics
+Traces
+Events
+Audit Records
+Health Signals
+Dependency State
+Resource State
+AI Evaluation Signals
+Security Signals
+Business/Domain Signals
+
+
+───
+
+68. SELF-OBSERVABILITY
+CoreGrid should progressively become capable of determining:
+text
+What is running?
+What is failing?
+Where is it failing?
+Why is it failing?
+What changed?
+What depends on it?
+Who is affected?
+What evidence exists?
+What action is authorized?
+
+Self-observation does not grant self-authority.
+
+───
+
+69. RUNTIME CONFORMANCE
+Runtime conformance asks:
+Does the deployed system behave according to the architecture, contracts, policies and approved decisions?
+Conformance validation may inspect:
+• configuration;
+• schemas;
+• routes;
+• permissions;
+• dependencies;
+• runtime behavior;
+• events;
+• logs;
+• deployment state;
+• agent behavior.
+
+───
+
+70. CONFORMANCE STATES
+text
+UNKNOWN
+CONFORMANT
+PARTIALLY_CONFORMANT
+NON_CONFORMANT
+DRIFTED
+EXCEPTION_APPROVED
+UNDER_REMEDIATION
+
+
+───
+
+71. PRODUCTION STATE
+Production status must distinguish:
+text
+DEPLOYED
+AVAILABLE
+ACTIVE
+DEGRADED
+PARTIALLY_AVAILABLE
+MAINTENANCE
+INCIDENT
+ROLLED_BACK
+OFFLINE
+RETIRED
+
+Deployment is not equivalent to successful operation.
+
+───
+
+72. FAILURE IS ENGINEERING DATA
+Failure must be preserved.
+A failed implementation provides information about:
+• assumptions;
+• constraints;
+• architecture;
+• dependencies;
+• environment;
+• system behavior.
+Failed work must not be silently deleted from engineering history.
+
+───
+
+73. INCIDENT-TO-ARCHITECTURE FEEDBACK
+Material incidents must be capable of flowing back into:
+text
+Incident
+ ↓
+Evidence
+ ↓
+Root Cause
+ ↓
+Architecture Impact
+ ↓
+Decision
+ ↓
+Implementation
+ ↓
+Validation
+ ↓
+Progress
+
+
+───
+
+74. CHANGE PROPAGATION
+An architectural change triggers:
+text
+Decision
+   ↓
+Registry
+   ↓
+Dependency Map
+   ↓
+Boundaries
+   ↓
+Policies
+   ↓
+Affected Phase Specifications
+   ↓
+Contracts
+   ↓
+Implementation
+   ↓
+Tests
+   ↓
+Operational Validation
+   ↓
+Progress Ledger
+
+No silent partial propagation.
+
+───
+
+75. ARCHITECTURAL CHANGE IMPACT
+Every material change should identify:
+text
+Affected Phases
+Affected Capabilities
+Affected Contracts
+Affected Data
+Affected Policies
+Affected Security Controls
+Affected Deployments
+Affected Tests
+Affected Runtime Behavior
+Migration Requirements
+Rollback Requirements
+
+
+───
+
+76. NO SILENT SCOPE EXPANSION
+When implementation discovers functionality belonging elsewhere:
+1. stop the disputed expansion;
+2. identify existing ownership;
+3. inspect dependencies;
+4. inspect existing contracts;
+5. inspect decisions;
+6. record the scope issue;
+7. update architecture if required;
+8. resume only after ownership is resolved.
+
+───
+
+77. NO SILENT PHASE CREATION
+Engineering tools must not create:
+text
+phase-33-...
+phase-34-...
+
+or any new canonical phase merely because functionality was discovered.
+First determine whether the capability belongs to:
+• an existing phase;
+• a runtime;
+• a sub-capability;
+• a shared platform capability;
+• an extension;
+• a future reserved phase.
+New phases require approved architectural governance.
+
+───
+
+78. PROGRESS AND ARCHITECTURAL DISCOVERY
+Engineering may discover architecture that was not previously known.
+That discovery must be treated as:
+text
+DISCOVERY
+
+until formally incorporated.
+Code does not retroactively become canonical architecture.
+
+───
+
+79. PRIORITY MODEL
+Engineering priority is represented as:
+text
+P0 — CRITICAL
+P1 — HIGH
+P2 — STRATEGIC
+P3 — ECOSYSTEM
+
+Priority does not change architectural ownership.
+
+───
+
+80. CURRENT PRIORITY QUEUE
+P0 — Critical
+• repository integrity;
+• architecture consistency;
+• identity foundation;
+• tenant isolation;
+• security foundation;
+• data protection;
+• backup and recovery;
+• observability foundation;
+• engineering reproducibility.
+P1 — High
+• core runtime;
+• institutional reality;
+• dynamic workspace;
+• communication;
+• data platform;
+• AI authorization;
+• African Educational Runtime.
+P2 — Strategic
+• scheduling;
+• financial infrastructure;
+• digital twin;
+• automation;
+• analytics;
+• institutional command.
+P3 — Ecosystem
+• mobile;
+• web;
+• marketplace;
+• developer platform;
+• globalization;
+• enterprise-scale capabilities.
+Priority remains subject to actual dependency and risk conditions.
+
+───
+
+81. CURRENT ARCHITECTURAL RISKS
+The primary engineering risk classes include:
+text
+ARCHITECTURE DRIFT
+SCOPE LEAKAGE
+PHASE OVERLAP
+TENANT ISOLATION FAILURE
+AI OVER-PRIVILEGE
+DATA OWNERSHIP AMBIGUITY
+EXCESSIVE COUPLING
+PREMATURE DISTRIBUTION
+PREMATURE ABSTRACTION
+CLOUD LOCK-IN
+OFFLINE RECONCILIATION FAILURE
+CONFIGURATION COMPLEXITY
+AI COST ESCALATION
+OPERATIONAL COMPLEXITY
+CONTRACT DRIFT
+SECURITY REGRESSION
+OBSERVABILITY GAPS
+UNVALIDATED AUTONOMY
+
+
+───
+
+82. RISK RECORD
+Every material risk records:
+text
+Risk ID
+Description
+Affected Phase
+Affected Capability
+Likelihood
+Impact
+Current Controls
+Residual Risk
+Owner
+Mitigation
+Evidence
+Status
+
+Risk severity must not be hidden by project optimism.
+
+───
+
+83. VALIDATION LEDGER
+Every major capability should eventually provide applicable evidence for:
+text
+Functional Validation
+Contract Validation
+Security Validation
+Privacy Validation
+Performance Validation
+Reliability Validation
+Integration Validation
+AI Validation
+Operational Validation
+UX Validation
+Recovery Validation
+Conformance Validation
+
+
+───
+
+84. USER EXPERIENCE AS SYSTEM VALIDATION
+UI/UX is part of engineering.
+Validation includes:
+• accessibility;
+• responsiveness;
+• device adaptation;
+• navigation;
+• onboarding;
+• role-aware experience;
+• contextual experience;
+• AI interaction;
+• low-bandwidth behavior;
+• offline behavior;
+• error recovery;
+• localization;
+• state continuity.
+The interface is a control/observation surface over underlying reality.
+It is not the system itself.
+
+───
+
+85. PERFORMANCE VALIDATION
+Where applicable, measure:
+text
+API Latency
+Database Latency
+Query Cost
+Queue Latency
+Event Latency
+AI Latency
+Synchronization Latency
+Startup Time
+Mobile Performance
+Web Performance
+Resource Consumption
+Concurrency
+Throughput
+Storage Growth
+Network Consumption
+
+
+───
+
+86. RELIABILITY VALIDATION
+Validate behavior under:
+text
+Application Restart
+Dependency Failure
+Database Failure
+Queue Failure
+Network Failure
+Cloud Failure
+Region Failure
+Device Disconnection
+Synchronization Conflict
+Partial Failure
+Timeout
+Retry Storm
+Duplicate Delivery
+Recovery
+Rollback
+
+
+───
+
+87. DISTRIBUTED REALITY VALIDATION
+Where CoreGrid operates across disconnected or distributed environments, validate:
+text
+Offline Operation
+Local State
+Synchronization
+Conflict Detection
+Conflict Resolution
+Causality Preservation
+Ordering
+Duplicate Events
+Partial Replication
+Network Partition
+Reconnection
+Recovery
+
+
+───
+
+88. SIMULATION VALIDATION
+Simulation is a first-class engineering instrument.
+High-impact changes may be evaluated through:
+text
+Scenario Simulation
+Failure Simulation
+Load Simulation
+Security Simulation
+Agent Simulation
+Counterfactual Analysis
+Historical Replay
+Migration Simulation
+Disaster Simulation
+
+Simulation does not automatically prove production behavior.
+
+───
+
+89. REPLAYABILITY
+Where applicable, CoreGrid should preserve enough evidence to reconstruct:
+text
+What happened?
+When?
+To what?
+Because of what?
+Under which policy?
+With which version?
+Using which configuration?
+With which actor?
+With which evidence?
+
+
+───
+
+90. HISTORICAL ENGINEERING STATE
+Progress must preserve historical states.
+Do not overwrite history merely to show the newest status.
+The system should support:
+text
+Current State
+Previous State
+Change
+Reason
+Evidence
+Actor
+Timestamp
+
+
+───
+
+91. PROGRESS TIMELINE
+Material engineering changes should record:
+text
+Date
+Actor
+Change
+Affected Phase
+Affected Capability
+Previous State
+New State
+Evidence
+Decision
+Reason
+
+
+───
+
+92. MILESTONE MODEL
+Canonical milestones:
+text
+M0  Architecture
+M1  Repository / Engineering Foundation
+M2  Identity / Tenancy
+M3  Institutional Reality
+M4  Core Runtime
+M5  Dynamic Workspace
+M6  Security / Trust
+M7  Data Platform
+M8  Intelligence / Agent Infrastructure
+M9  Academic Domain Intelligence
+M10 Financial Infrastructure
+M11 Digital Reality / Digital Twin
+M12 Automation
+M13 Analytics
+M14 Institutional Command
+M15 Cloud / Infrastructure
+M16 Mobile / Web
+M17 Ecosystem
+M18 Enterprise Scale
+
+Milestones summarize engineering progression.
+They do not replace phase-level evidence.
+
+───
+
+93. CURRENT MILESTONE STATE
+text
+M0  Architecture                    COMPLETE
+M1  Repository Foundation           NOT_STARTED
+M2  Identity / Tenancy              NOT_STARTED
+M3  Institutional Reality           NOT_STARTED
+M4  Core Runtime                    NOT_STARTED
+M5  Dynamic Workspace               NOT_STARTED
+M6  Security / Trust               NOT_STARTED
+M7  Data Platform                   NOT_STARTED
+M8  Intelligence Infrastructure    NOT_STARTED
+M9  Academic Intelligence           NOT_STARTED
+M10 Financial Infrastructure        NOT_STARTED
+M11 Digital Twin                    NOT_STARTED
+M12 Automation                      NOT_STARTED
+M13 Analytics                       NOT_STARTED
+M14 Institutional Command           NOT_STARTED
+M15 Cloud Infrastructure            NOT_STARTED
+M16 Mobile / Web                    NOT_STARTED
+M17 Ecosystem                       NOT_STARTED
+M18 Enterprise Scale                NOT_STARTED
+
+
+───
+
+94. MILESTONE COMPLETION RULE
+A milestone is complete only when its defined exit criteria have been demonstrated.
+The presence of implementation work does not automatically complete a milestone.
+
+───
+95. PRODUCTION READINESS CHECKLIST
+For critical production capabilities:
+text
+[ ] Architecture approved
+[ ] Ownership defined
+[ ] Boundaries defined
+[ ] Dependencies documented
+[ ] Contracts documented
+[ ] Data ownership defined
+[ ] State model defined
+[ ] Security reviewed
+[ ] Authentication implemented
+[ ] Authorization implemented
+[ ] Tenant isolation validated
+[ ] Audit logging implemented
+[ ] Observability implemented
+[ ] Error handling implemented
+[ ] Retry behavior defined
+[ ] Idempotency considered
+[ ] Backup strategy defined
+[ ] Recovery tested
+[ ] Automated tests passing
+[ ] Performance tested
+[ ] Reliability tested
+[ ] AI evaluation completed where applicable
+[ ] Documentation complete
+[ ] Deployment reproducible
+[ ] Rollback tested
+[ ] Operational ownership assigned
+[ ] Evidence recorded
+[ ] Runtime conformance verified
+
+
+───
+
+96. RELEASE READINESS
+A release candidate must additionally identify:
+text
+Release ID
+Version
+Included Capabilities
+Excluded Capabilities
+Known Issues
+Known Risks
+Migration Requirements
+Rollback Plan
+Observability
+Security Status
+Validation Evidence
+Approval
+Deployment Environment
+
+
+───
+
+97. DEPLOYMENT IS NOT COMPLETION
+The following distinction is mandatory:
+text
+DEPLOYED
+≠
+AVAILABLE
+≠
+HEALTHY
+≠
+VALIDATED
+≠
+PRODUCTION READY
+≠
+COMPLETE
+
+
+───
+
+98. PRODUCTION OBSERVATION
+After deployment, the capability enters a runtime observation period where applicable.
+Observe:
+text
+Errors
+Latency
+Resource Consumption
+Security Signals
+Data Integrity
+Tenant Isolation
+AI Behavior
+User Behavior
+Operational Incidents
+Unexpected Dependencies
+Architecture Drift
+
+
+───
+
+99. POST-DEPLOYMENT CONFORMANCE
+A deployed capability may be returned from:
+text
+PRODUCTION_READY
+
+to:
+text
+DEGRADED
+DRIFTED
+FAILED
+
+if runtime evidence demonstrates material problems.
+Completion is not permanent immunity from failure.
+
+───
+
+100. REGRESSION
+A previously complete capability may become incomplete when:
+• requirements change;
+• architecture changes;
+• dependencies change;
+• security assumptions change;
+• runtime behavior regresses;
+• validation expires;
+• a critical vulnerability appears;
+• contract compatibility breaks.
+Progress therefore remains a living state.
+
+───
+
+101. SECURITY REGRESSION
+Security regression automatically invalidates applicable readiness claims where the regression materially affects the capability's security requirements.
+
+───
+
+102. AI REGRESSION
+AI behavior must be continuously evaluated where model behavior can change.
+A model upgrade can invalidate:
+• accuracy evidence;
+• grounding evidence;
+• tool-use validation;
+• safety evidence;
+• latency assumptions;
+• cost assumptions.
+Model replacement is therefore an engineering change, not merely a configuration change, when behaviorally material.
+
+───
+
+103. MODEL PROVIDER REPLACEABILITY
+CoreGrid progress must not become dependent on one model vendor.
+Where applicable, track:
+text
+Model Provider
+Model Version
+Capability
+Fallback
+Evaluation
+Cost
+Latency
+Context Limits
+Known Failure Modes
+
+
+───
+
+104. INTELLIGENCE CONFORMANCE
+An intelligence capability is conformant only when its actual behavior remains within:
+text
+ROLE
+AUTHORITY
+CONTEXT
+POLICY
+PERMISSION
+TOOL SCOPE
+DATA SCOPE
+OUTPUT CONTRACT
+SAFETY BOUNDARY
+
+
+───
+
+105. AGENT FAILURE STATE
+Agent systems must explicitly represent:
+text
+HEALTHY
+DEGRADED
+BLOCKED
+UNAUTHORIZED
+TOOL_FAILURE
+MODEL_FAILURE
+CONTEXT_FAILURE
+MEMORY_FAILURE
+POLICY_FAILURE
+VERIFICATION_FAILURE
+ESCALATED
+TERMINATED
+
+
+───
+
+106. NO AUTONOMOUS SUCCESS WITHOUT VERIFICATION
+For consequential autonomous actions:
+text
+PLAN
+ ↓
+AUTHORIZE
+ ↓
+EXECUTE
+ ↓
+OBSERVE
+ ↓
+VERIFY
+ ↓
+RECORD
+
+Execution alone is not proof of successful outcome.
+
+───
+
+107. OUTCOME VALIDATION
+CoreGrid distinguishes:
+text
+ACTION EXECUTED
+
+from:
+text
+INTENDED OUTCOME ACHIEVED
+
+The latter requires evidence.
+
+───
+
+108. CLOSED-LOOP PROGRESS
+For mature intelligence systems:
+text
+OBSERVE
+ ↓
+UNDERSTAND
+ ↓
+REASON
+ ↓
+PLAN
+ ↓
+ACT
+ ↓
+OBSERVE CONSEQUENCE
+ ↓
+VERIFY
+ ↓
+LEARN
+ ↓
+ADAPT
+
+Every loop must remain governed.
+
+───
+
+109. NO SILENT SELF-MODIFICATION
+An intelligent system must not modify architecture, governance, authorization, canonical data ownership or critical safety boundaries merely because its own reasoning recommends doing so.
+Such changes enter the governed change process.
+
+───
+
+110. PROGRESS INTEGRITY
+The progress ledger must never become a manually optimistic status report.
+If implementation is broken:
+text
+FAILED
+
+or:
+text
+BLOCKED
+
+must be visible.
+If validation has not occurred:
+text
+NOT_VALIDATED
+
+must remain visible.
+If architecture exists but implementation does not:
+text
+ARCHITECTURE_DEFINED
+
+must be used.
+
+───
+
+111. NO PROGRESS THEATRE
+CoreGrid explicitly rejects:
+• inflated completion percentages;
+• status inflation;
+• duplicate accomplishments;
+• counting generated code as capability;
+• counting UI as backend completion;
+• counting AI responses as intelligence completion;
+• counting deployment as validation;
+• counting tests without meaningful coverage as correctness;
+• hiding failed experiments;
+• deleting inconvenient evidence.
+
+───
+
+112. PERCENTAGES ARE DERIVED
+Percentages should be derived from measurable completion dimensions.
+They should not be manually chosen to communicate optimism.
+For example:
+text
+Architecture      100%
+Implementation     20%
+Validation          5%
+Security            0%
+Operations           0%
+Production          0%
+
+This is more truthful than:
+text
+Project: 70% complete
+
+
+───
+
+113. PROGRESS WEIGHTING
+If aggregate progress is required, the weighting methodology must be explicitly defined.
+No arbitrary percentage may be presented as engineering truth.
+Aggregate metrics are dashboards.
+The underlying dimensions remain authoritative.
+
+───
+
+114. COMPLETION GATES
+A capability may progress through gates:
+text
+G0 DISCOVERED
+G1 ARCHITECTED
+G2 DESIGNED
+G3 CONTRACTED
+G4 IMPLEMENTED
+G5 INTEGRATED
+G6 VALIDATED
+G7 SECURED
+G8 OPERATIONALLY VALIDATED
+G9 PRODUCTION READY
+G10 ACTIVE
+G11 CONFORMANT
+
+Gates may be skipped only when the applicable architecture explicitly declares that a gate is not relevant.
+
+───
+
+115. GATE EVIDENCE
+Every gate transition requires evidence appropriate to the gate.
+No evidence:
+text
+NO TRANSITION
+
+
+───
+
+116. ENGINEERING STATE MACHINE
+Conceptually:
+text
+DISCOVERED
+    ↓
+ARCHITECTED
+    ↓
+DESIGNED
+    ↓
+CONTRACTED
+    ↓
+IMPLEMENTED
+    ↓
+INTEGRATED
+    ↓
+VALIDATED
+    ↓
+SECURED
+    ↓
+OPERATIONALLY VALIDATED
+    ↓
+PRODUCTION READY
+    ↓
+ACTIVE
+    ↓
+OBSERVED
+    ↓
+CONFORMANT
+
+Failure can occur from any active state.
+Recovery may return the capability to an earlier state.
+
+───
+
+117. STATE TRANSITION RULE
+Every transition must have:
+text
+Previous State
+New State
+Reason
+Actor
+Timestamp
+Evidence
+
+
+───
+
+118. STATE IMMUTABILITY
+Historical progress transitions must not be silently rewritten.
+Corrections create new history.
+
+───
+
+119. PROGRESS RECONCILIATION
+At defined intervals, CoreGrid should compare:
+text
+Architecture
+vs
+Progress Ledger
+vs
+Repository
+vs
+Runtime
+vs
+Deployment
+vs
+Observability
+vs
+Evidence
+
+Any contradiction becomes a reconciliation item.
+
+───
+
+120. REPOSITORY RECONCILIATION
+The engineering system should detect:
+• undocumented directories;
+• unowned modules;
+• stale modules;
+• orphaned phase references;
+• duplicate systems;
+• dead implementations;
+• undocumented APIs;
+• contracts without implementations;
+• implementations without contracts.
+
+───
+
+121. RUNTIME RECONCILIATION
+Runtime inspection should compare:
+text
+Expected Architecture
+vs
+Actual Deployment
+vs
+Actual Configuration
+vs
+Actual Runtime Behavior
+
+
+───
+
+122. PROGRESS RECONCILIATION STATUS
+text
+RECONCILED
+PARTIALLY_RECONCILED
+DRIFT_DETECTED
+UNKNOWN
+
+
+───
+
+123. ARCHITECTURAL CONFLICT TRACKING
+Format:
+text
+Conflict ID:
+Date:
+Affected Phases:
+Affected Capabilities:
+Conflict:
+Existing Decisions:
+Impact:
+Resolution:
+Architecture Documents Updated:
+Implementation Impact:
+Evidence:
+Status:
+
+
+───
+
+124. SCOPE LEAKAGE TRACKING
+Format:
+text
+Scope Leakage ID:
+Affected Phase:
+Detected In:
+Capability:
+Incorrect Responsibility:
+Correct Owner:
+Impact:
+Resolution:
+Architecture Updated:
+Status:
+
+
+───
+
+125. TECHNICAL DEBT TRACKING
+Format:
+text
+Debt ID:
+Debt Type:
+Subsystem:
+Problem:
+Origin:
+Reason:
+Risk:
+Impact:
+Temporary Mitigation:
+Permanent Solution:
+Owner:
+Priority:
+Status:
+Evidence:
+
+
+───
+
+126. CURRENT ENGINEERING RISK REGISTER
+Initial risk classes:
+
+Risk
+Severity
+State
+Primary Control
+
+Architecture drift
+Critical
+Open
+Architecture enforcement
+
+Scope leakage
+Critical
+Open
+Explicit ownership
+
+Tenant isolation failure
+Critical
+Open
+Security architecture
+
+AI over-privilege
+Critical
+Open
+Agent authorization
+
+Data fragmentation
+High
+Open
+Canonical ownership
+
+Excessive coupling
+High
+Open
+Contracts
+
+Premature microservices
+Medium
+Open
+Modular architecture
+
+Cloud lock-in
+Medium
+Open
+Controlled abstraction
+
+Offline synchronization conflicts
+High
+Open
+Reconciliation
+
+Configuration complexity
+High
+Open
+Declarative governance
+
+AI cost escalation
+High
+Open
+Model policy and budgets
+
+Operational complexity
+High
+Open
+Observability and automation
+
+
+Severity is a governance signal, not a claim that the underlying failure has occurred.
+
+───
+
+127. ARCHITECTURAL RISK VS ACTIVE FAILURE
+CoreGrid must distinguish:
+text
+RISK EXISTS
+
+from:
+text
+FAILURE HAS OCCURRED
+
+A risk register must not be interpreted as evidence that the corresponding failure already exists.
+
+───
+
+128. ENGINEERING DEBT PRIORITY
+Default attention order:
+text
+Safety / Security
+      ↓
+Data Integrity
+      ↓
+Architecture Integrity
+      ↓
+Reliability
+      ↓
+Observability
+      ↓
+Operational Debt
+      ↓
+Technical Debt
+      ↓
+Optimization
+
+Actual priority may be altered by approved context.
+
+───
+
+129. PROGRESS AND COST
+Engineering state should track material cost dimensions where relevant:
+text
+Compute
+Storage
+Network
+Model Inference
+Human Operations
+Infrastructure
+Vendor
+Synchronization
+Maintenance
+
+Cost is an architectural variable.
+
+───
+
+130. PROGRESS AND RESOURCE CONSUMPTION
+A capability that technically works but requires economically unsustainable resources must not be considered operationally mature.
+
+───
+
+131. OFFLINE-FIRST PROGRESS
+For applicable CoreGrid runtimes, validation includes:
+text
+Disconnected Operation
+Local Authentication
+Local Authorization
+Local Data
+Queued Actions
+Conflict Detection
+Synchronization
+Recovery
+Bandwidth Efficiency
+
+
+───
+
+132. SOVEREIGN DEPLOYMENT PROGRESS
+Where sovereign deployment is required, track:
+text
+Data Residency
+Compute Residency
+Identity Residency
+Key Management
+Network Boundaries
+Administrative Control
+Offline Capability
+External Dependencies
+Recovery
+Audit
+
+
+───
+
+133. MULTI-ENVIRONMENT PROGRESS
+A capability may have different states across:
+text
+LOCAL
+DEVELOPMENT
+TEST
+STAGING
+PILOT
+PRODUCTION
+EDGE
+OFFLINE
+SOVEREIGN
+CLOUD
+
+Never collapse environment-specific truth into one status.
+
+───
+
+134. ENVIRONMENT CONFORMANCE
+Every environment may require separate:
+text
+Version
+Configuration
+Dependencies
+Secrets
+Data
+Policies
+Validation
+Health
+
+
+───
+
+135. MULTI-TENANT PROGRESS
+Tenant-sensitive capabilities must validate:
+text
+Isolation
+Authorization
+Context
+Data Access
+Cross-Tenant Leakage
+Administrative Boundaries
+Tenant Configuration
+Tenant-Specific Policy
+Tenant Lifecycle
+
+
+───
+
+136. TENANT PROGRESS ≠ GLOBAL PROGRESS
+A capability working for one tenant does not prove that it is valid for the entire multi-tenant platform.
+
+───
+
+137. DATA MIGRATION PROGRESS
+Migrations must track:
+text
+Source
+Destination
+Schema Version
+Data Volume
+Transformation
+Validation
+Rollback
+Backup
+Integrity
+Downtime
+Reconciliation
+
+
+───
+
+138. MIGRATION COMPLETION
+A migration is complete only after:
+text
+Transfer
++
+Validation
++
+Reconciliation
++
+Operational Acceptance
+
+
+───
+
+139. BACKUP AND RECOVERY PROGRESS
+Backup capability must track:
+text
+Backup Coverage
+Frequency
+Retention
+Encryption
+Restore Procedure
+Restore Validation
+Recovery Time
+Recovery Point
+Cross-Environment Recovery
+
+
+───
+
+140. DISASTER RECOVERY PROGRESS
+DR cannot be considered complete because a recovery document exists.
+Recovery must be tested.
+
+───
+
+141. DOCUMENTATION PROGRESS
+Documentation is an engineering artifact.
+Track:
+text
+Architecture
+API
+Contracts
+Deployment
+Operations
+Security
+Data
+Recovery
+Troubleshooting
+AI Behavior
+Known Limitations
+
+
+───
+
+142. DOCUMENTATION CONFORMANCE
+Documentation should remain synchronized with:
+text
+Implementation
+Contracts
+Architecture
+Runtime
+Deployment
+
+Documentation drift is engineering drift.
+
+───
+
+143. AUTOMATED PROGRESS VALIDATION
+Where practical, CI should validate:
+text
+Phase IDs
+Capability IDs
+Decision References
+Contract References
+Dependency References
+Status Values
+Evidence References
+Owner References
+Architecture References
+Orphaned Work
+Orphaned Implementations
+Broken Links
+Invalid State Transitions
+
+
+───
+
+144. MACHINE-READABLE PROGRESS
+The canonical machine-readable progress representation should be designed to support automated validation.
+Example:
+yaml
+progress:
+  phase_id: 14
+  name: data-platform
+
+  state:
+    architecture: complete
+    design: complete
+    contracts: in_progress
+    implementation: not_started
+    validation: not_started
+    security: not_started
+    operations: not_started
+    production: not_ready
+    conformance: unknown
+
+  ownership:
+    phase: phase-14
+    capabilities:
+      - data-canonicalization
+      - persistence
+      - reconciliation
+
+  evidence: []
+
+  blockers: []
+
+  risks:
+    - RISK-DATA-001
+
+  debt:
+    technical: []
+    security: []
+    architecture: []
+
+  last_verified: null
+
+
+───
+
+145. PROGRESS FILE STRUCTURE
+Recommended engineering structure:
+text
+architecture/
+  governance/
+    PROGRESS.md
+
+  progress/
+    index.yaml
+    phases/
+      phase-01.yaml
+      phase-02.yaml
+      ...
+    capabilities/
+      ...
+    evidence/
+      ...
+    blockers/
+      ...
+    risks/
+      ...
+    debt/
+      ...
+    milestones/
+      ...
+
+The human-readable PROGRESS.md remains the primary engineering overview.
+Machine-readable records support automation.
+
+───
+
+146. PROGRESS REGISTRY
+The progress registry should eventually expose:
+text
+Phase
+Capability
+State
+Owner
+Evidence
+Dependencies
+Blockers
+Risks
+Debt
+Conformance
+Last Verified
+
+
+───
+
+147. PROGRESS GRAPH
+CoreGrid should treat engineering state as a graph:
+text
+PHASE
+ ↓
+CAPABILITY
+ ↓
+CONTRACT
+ ↓
+IMPLEMENTATION
+ ↓
+TEST
+ ↓
+EVIDENCE
+ ↓
+CONFORMANCE
+
+with cross-links to:
+text
+DECISION
+DEPENDENCY
+BOUNDARY
+POLICY
+RISK
+DEBT
+INCIDENT
+DEPLOYMENT
+
+
+───
+
+148. PROGRESS GRAPH INTEGRITY
+The graph must detect:
+• orphaned capabilities;
+• orphaned evidence;
+• orphaned implementations;
+• broken decision links;
+• invalid phase references;
+• contradictory states;
+• missing owners;
+• missing acceptance criteria.
+
+───
+
+149. PROGRESS QUERIES
+The engineering intelligence layer should eventually answer questions such as:
+text
+What is actually complete?
+
+What is implemented but unvalidated?
+
+What is blocked?
+
+What is architecturally drifted?
+
+Which capabilities depend on this capability?
+
+Which production capabilities have unresolved security debt?
+
+Which phase contains the most unresolved decisions?
+
+Which implementations have no architectural owner?
+
+Which architecture requirements have no implementation?
+
+Which production systems have not been recently verified?
+
+
+───
+
+150. PROGRESS AS ENGINEERING INTELLIGENCE
+The progress ledger should eventually become queryable infrastructure rather than a passive document.
+This enables CoreGrid to understand its own engineering state.
+
+───
+
+151. SELF-DESCRIBING ENGINEERING STATE
+CoreGrid should be able to describe:
+text
+WHAT EXISTS
+WHAT IS PLANNED
+WHAT IS IMPLEMENTED
+WHAT WORKS
+WHAT DOES NOT WORK
+WHAT IS UNKNOWN
+WHAT IS BLOCKED
+WHAT IS DRIFTED
+WHAT IS SAFE
+WHAT IS NOT SAFE
+WHAT IS PRODUCTION READY
+WHAT EVIDENCE SUPPORTS EACH CLAIM
+
+
+───
+
+152. UNKNOWN IS A VALID STATE
+The engineering system must allow:
+text
+UNKNOWN
+
+when evidence is insufficient.
+Unknown must not automatically become:
+text
+NOT_STARTED
+
+or:
+text
+COMPLETE
+
+
+───
+
+153. NEGATIVE KNOWLEDGE
+CoreGrid should preserve knowledge of:
+text
+What failed
+What was rejected
+What was abandoned
+What was disproven
+What remains uncertain
+What has not been tested
+
+This prevents repeated engineering mistakes.
+
+───
+
+154. EXPERIMENTAL WORK
+Experimental systems must be explicitly classified.
+text
+EXPERIMENTAL
+
+does not imply:
+text
+PRODUCTION
+
+Experimental implementations must not silently become canonical architecture.
+
+───
+
+155. PROTOTYPE BOUNDARY
+Prototype code must have:
+text
+Prototype ID
+Owner
+Purpose
+Expiration / Review
+Known Limitations
+Production Promotion Criteria
+
+
+───
+
+156. FEATURE FLAGS
+Feature flags are not architectural ownership.
+They control availability.
+They do not redefine:
+• authority;
+• ownership;
+• security;
+• canonical truth;
+• phase boundaries.
+
+───
+
+157. RELEASE FLAGS
+A release flag may change exposure.
+It must not be used to conceal incomplete validation.
+
+───
+
+158. PROGRESS AND GOVERNANCE
+Material progress claims may trigger governance actions.
+Examples:
+text
+Architecture drift
+→ Decision review
+
+Security failure
+→ Security governance
+
+Contract conflict
+→ Dependency review
+
+New capability
+→ Ownership review
+
+Repeated failure
+→ Architecture review
+
+
+───
+
+159. ENGINEERING AGENT RULE
+Any engineering agent operating on CoreGrid must inspect:
+text
+Constitution
+Principles
+Registry
+Dependency Map
+Boundaries
+Policies
+Decisions
+Relevant Phase
+Relevant Progress
+Existing Implementation
+Existing Contracts
+
+before substantial implementation.
+
+───
+
+160. ENGINEERING AGENT MUST NOT INVENT STATUS
+Agents must not mark:
+text
+COMPLETE
+PRODUCTION_READY
+VALIDATED
+SECURE
+CONFORMANT
+
+without evidence satisfying the relevant gate.
+
+───
+
+161. ENGINEERING AGENT PROGRESS LOOP
+text
+READ
+ ↓
+UNDERSTAND
+ ↓
+INSPECT
+ ↓
+PLAN
+ ↓
+IMPLEMENT
+ ↓
+TEST
+ ↓
+VERIFY
+ ↓
+COLLECT EVIDENCE
+ ↓
+UPDATE STATE
+ ↓
+REPORT LIMITATIONS
+
+
+───
+
+162. AGENT SELF-VERIFICATION
+An engineering agent should verify its own claims through independent evidence where practical.
+It must not treat its own generated output as sufficient proof.
+
+───
+
+163. AGENT FAILURE TRANSPARENCY
+When an agent cannot complete work:
+text
+BLOCKED
+
+must be reported with the actual blocker.
+The agent must not fabricate completion.
+
+───
+
+164. AI-GENERATED CODE STATUS
+AI-generated code is classified by its engineering state, not by its origin.
+text
+AI-GENERATED
+
+does not mean:
+text
+VALIDATED
+
+or:
+text
+TRUSTED
+
+
+───
+
+165. MODEL CHANGE IMPACT
+When a material model changes, affected capabilities must be evaluated for:
+text
+Behavioral Regression
+Security
+Latency
+Cost
+Grounding
+Tool Use
+Policy Compliance
+Output Compatibility
+
+
+───
+
+166. CONTINUOUS VALIDATION
+Validation does not end at deployment for dynamic systems.
+CoreGrid should continuously validate:
+text
+Health
+Contracts
+Security
+Performance
+AI Behavior
+Data Integrity
+Runtime Conformance
+
+
+───
+
+167. CONTINUOUS CONFORMANCE
+The mature state of CoreGrid engineering is:
+text
+BUILD
+ ↓
+VALIDATE
+ ↓
+DEPLOY
+ ↓
+OBSERVE
+ ↓
+COMPARE
+ ↓
+DETECT DRIFT
+ ↓
+REMEDIATE
+ ↓
+REVALIDATE
+
+
+───
+
+168. DRIFT DETECTION
+Drift detection should eventually compare:
+text
+Architecture
+Code
+Configuration
+Dependencies
+Deployment
+Runtime
+Data Schemas
+Policies
+AI Models
+Contracts
+
+
+───
+
+169. RECONCILIATION ENGINE
+A future CoreGrid Engineering Intelligence capability may automatically produce:
+text
+ARCHITECTURE ↔ CODE
+ARCHITECTURE ↔ RUNTIME
+DECISION ↔ IMPLEMENTATION
+CONTRACT ↔ IMPLEMENTATION
+POLICY ↔ BEHAVIOR
+PHASE ↔ CAPABILITY
+CAPABILITY ↔ EVIDENCE
+
+mismatch reports.
+
+───
+
+170. ENGINEERING HEALTH
+CoreGrid engineering health should be multidimensional.
+text
+Architecture Integrity
+Implementation Integrity
+Security Integrity
+Data Integrity
+Contract Integrity
+Runtime Integrity
+Evidence Integrity
+Operational Integrity
+Governance Integrity
+
+No single health score should conceal critical failures.
+
+───
+
+171. HEALTH STATES
+text
+HEALTHY
+DEGRADED
+AT_RISK
+BLOCKED
+FAILED
+UNKNOWN
+
+
+───
+
+172. NO FALSE GREEN
+A system with a critical unresolved security or data-integrity failure cannot be represented as globally healthy merely because other dimensions are functioning.
+
+───
+
+173. CRITICAL FAILURE PROPAGATION
+Material failures may propagate state to dependent capabilities.
+Example:
+text
+Identity Authority FAILED
+        ↓
+Authorization-dependent capabilities
+        ↓
+PRODUCTION READINESS INVALIDATED
+
+The dependency graph determines actual propagation.
+
+───
+
+174. BLAST-RADIUS TRACKING
+Every critical failure should identify:
+text
+Origin
+Affected Capability
+Affected Phase
+Affected Runtime
+Affected Tenant Class
+Affected Contract
+Affected Data
+Affected Users / Actors
+Recovery
+
+
+───
+
+175. RECOVERY STATE
+Recovery tracking:
+text
+DETECTED
+CONTAINED
+UNDER_REPAIR
+RECOVERED
+VALIDATING
+RESTORED
+POST_INCIDENT_REVIEW
+
+
+───
+
+176. POST-INCIDENT ARCHITECTURE REVIEW
+Material incidents should determine whether:
+text
+Architecture
+Decision
+Contract
+Implementation
+Testing
+Observability
+Security
+Operations
+
+must change.
+
+───
+
+177. NO SILENT RECOVERY
+Recovery does not erase the incident.
+The historical record remains.
+
+───
+
+178. ENGINEERING MEMORY
+The progress system should preserve engineering memory:
+text
+Decisions
+Failures
+Experiments
+Evidence
+Incidents
+Migrations
+Architecture Changes
+Runtime Changes
+Validation
+
+This becomes part of CoreGrid's institutional engineering knowledge.
+
+───
+
+179. PROGRESS AS TEMPORAL KNOWLEDGE
+CoreGrid must be able to answer:
+What did we believe was complete at a particular point in time?
+and:
+What evidence existed at that time?
+This requires historical progress records.
+
+───
+
+180. DECISION-TO-PROGRESS LINK
+Material architecture decisions should be linked to progress.
+Example:
+text
+Decision AD-021
+      ↓
+Affected Phase 08
+      ↓
+Affected Capability
+      ↓
+Implementation Work
+      ↓
+Validation Evidence
+
+
+───
+
+181. PROGRESS-TO-DECISION FEEDBACK
+Progress can expose the need for a new decision.
+Examples:
+text
+Repeated blocker
+→ missing architecture decision
+
+Scope conflict
+→ ownership decision
+
+Performance failure
+→ architecture decision
+
+Vendor constraint
+→ deployment decision
+
+AI behavior failure
+→ intelligence governance decision
+
+
+───
+
+182. DECISION DEBT VISIBILITY
+No implementation should silently absorb unresolved architectural choices merely to keep the project moving.
+
+───
+
+183. ARCHITECTURAL EXCEPTIONS
+Temporary exceptions must record:
+text
+Exception ID
+Reason
+Scope
+Owner
+Risk
+Compensating Control
+Expiration
+Approval
+Replacement Plan
+
+Expired exceptions become governance violations unless renewed.
+
+───
+
+184. EMERGENCY ENGINEERING
+During a production incident, temporary deviations may be necessary.
+Emergency changes must:
+text
+Contain
+Record
+Stabilize
+Validate
+Reconcile
+Ratify or Revert
+
+They must not become permanent architecture by accident.
+
+───
+
+185. PROGRESS FREEZE
+For major releases, CoreGrid may enter:
+text
+PROGRESS_FREEZE
+
+where only approved changes affecting release safety or correctness are permitted.
+The freeze state must be explicit.
+
+───
+
+186. RELEASE ACCEPTANCE
+Release acceptance requires:
+text
+Scope Known
+Risks Known
+Blockers Known
+Evidence Available
+Security Accepted
+Operations Ready
+Rollback Available
+Known Limitations Recorded
+
+
+───
+
+187. KNOWN LIMITATIONS
+Every mature capability should explicitly document what it does not guarantee.
+This prevents architectural assumptions from becoming accidental promises.
+
+───
+
+188. PROGRESS REPORTING
+Human-readable reports should distinguish:
+text
+FACT
+EVIDENCE
+INFERENCE
+UNKNOWN
+RISK
+PLAN
+
+These categories must not be mixed.
+
+───
+
+189. ENGINEERING CLAIM TAXONOMY
+CoreGrid recognizes:
+text
+IMPLEMENTED
+TESTED
+VALIDATED
+OBSERVED
+MEASURED
+VERIFIED
+CONFORMANT
+PRODUCTION READY
+ACTIVE
+
+Each term has separate meaning.
+
+───
+
+190. FINAL ENGINEERING TRUTH RULE
+The strongest progress statement is not:
+"We built it."
+It is:
+"This capability exists, its architecture is authorized, its implementation is identifiable, its behavior has been validated, its security and operational requirements have been tested, its evidence is recorded, and its current runtime state is known."
+
+───
+
+191. CURRENT REFERENCE ARCHITECTURE STATE
+For the current CoreGrid Scholar/reference-runtime architecture:
+text
+Architecture Definition        COMPLETE
+Phase Decomposition            COMPLETE
+Ownership Definition           COMPLETE
+Boundary Definition            COMPLETE
+Dependency Mapping             COMPLETE
+Architecture Decisions         COMPLETE
+Governance Documentation       COMPLETE
+
+This describes architectural preparation.
+It does not describe production software implementation.
+
+───
+
+192. CURRENT IMPLEMENTATION STATE
+Current declared state:
+text
+Production Implementation      NOT_STARTED
+Production Integration         NOT_STARTED
+Production Validation          NOT_STARTED
+Production Deployment          NOT_STARTED
+Runtime Conformance            NOT_STARTED
+
+These values must be updated only from verified engineering evidence.
+
+───
+
+193. CURRENT OVERALL STATE
+text
+COREGRID
+
+ARCHITECTURE
+████████████████████ 100%
+
+IMPLEMENTATION
+░░░░░░░░░░░░░░░░░░░░ 0%
+
+INTEGRATION
+░░░░░░░░░░░░░░░░░░░░ 0%
+
+VALIDATION
+░░░░░░░░░░░░░░░░░░░░ 0%
+
+SECURITY VALIDATION
+░░░░░░░░░░░░░░░░░░░░ 0%
+
+OPERATIONAL READINESS
+░░░░░░░░░░░░░░░░░░░░ 0%
+
+PRODUCTION READINESS
+░░░░░░░░░░░░░░░░░░░░ 0%
+
+RUNTIME CONFORMANCE
+░░░░░░░░░░░░░░░░░░░░ 0%
+
+These percentages are current declared architecture-first state indicators.
+They are not a universal measurement of the entire CoreGrid civilization architecture.
+
+───
+
+194. NEXT ENGINEERING OBJECTIVE
+The next engineering objective is:
+text
+ARCHITECTURE DEFINITION
+        ↓
+REPOSITORY ENGINEERING FOUNDATION
+
+Before substantial production implementation:
+1. inspect the actual repository;
+2. identify existing code;
+3. identify existing configuration;
+4. identify current dependencies;
+5. identify existing data;
+6. identify existing runtime assumptions;
+7. identify technology constraints;
+8. reconcile implementation against architecture;
+9. identify reusable components;
+10. identify obsolete components;
+11. identify architectural drift;
+12. establish reproducible development;
+13. establish testing;
+14. establish observability;
+15. establish deployment foundations.
+No blind rewrite should occur.
+
+───
+
+195. EXISTING SYSTEMS ARE EVIDENCE
+If an existing implementation exists, engineering must:
+text
+INSPECT
+ ↓
+UNDERSTAND
+ ↓
+MAP
+ ↓
+VALIDATE
+ ↓
+REUSE WHERE VALID
+ ↓
+REFACTOR WHERE REQUIRED
+ ↓
+REPLACE WHERE NECESSARY
+
+Existing code is neither automatically correct nor automatically disposable.
+
+───
+
+196. REPOSITORY DISCOVERY GATE
+Before major implementation, establish:
+text
+Repository Structure
+Framework
+Language
+Runtime
+Package Manager
+Database
+Authentication
+Authorization
+Deployment
+Environment Variables
+Existing APIs
+Existing Schemas
+Existing Components
+Existing Tests
+Existing CI
+Existing Observability
+Existing Integrations
+
+
+───
+
+197. ENGINEERING FOUNDATION GATE
+M1 cannot be considered complete until the engineering environment can reproducibly:
+text
+Install
+Build
+Run
+Test
+Lint
+Type-check
+Observe
+Deploy
+Rollback
+
+according to the project's actual technology stack.
+
+───
+
+198. COREGRID ENGINEERING LOOP
+The canonical implementation loop is:
+text
+READ GOVERNANCE
+      ↓
+READ ARCHITECTURE
+      ↓
+READ PROGRESS
+      ↓
+INSPECT REALITY
+      ↓
+IDENTIFY OWNERSHIP
+      ↓
+RESOLVE DEPENDENCIES
+      ↓
+DESIGN
+      ↓
+CONTRACT
+      ↓
+IMPLEMENT
+      ↓
+TEST
+      ↓
+VERIFY
+      ↓
+OBSERVE
+      ↓
+RECORD EVIDENCE
+      ↓
+UPDATE PROGRESS
+      ↓
+DETECT DRIFT
+      ↓
+RECONCILE
+      ↓
+CONTINUE
+
+
+───
+
+199. ENGINEERING AGENT IMPLEMENTATION RULE
+Before implementing a capability, an engineering agent must:
+text
+1. Read relevant governance.
+2. Identify the owning phase.
+3. Identify the owning capability.
+4. Inspect existing implementation.
+5. Inspect dependencies.
+6. Inspect contracts.
+7. Inspect decisions.
+8. Inspect progress.
+9. Determine required evidence.
+10. Implement only within approved scope.
+11. Test.
+12. Validate.
+13. Record evidence.
+14. Update progress.
+15. Report unresolved limitations.
+
+
+───
+
+200. ENGINEERING AGENT PROHIBITIONS
+Engineering agents must not:
+• invent phases;
+• silently change ownership;
+• silently modify architecture;
+• declare unverified completion;
+• hide failed tests;
+• delete evidence;
+• bypass authorization;
+• bypass tenant boundaries;
+• silently expand scope;
+• create duplicate canonical systems;
+• treat generated code as validated;
+• treat model output as truth;
+• treat deployment as completion;
+• treat a passing build as production readiness.
+
+───
+
+201. COREGRID PROGRESS INVARIANTS
+The following are immutable progress laws:
+INVARIANT 01
+Architecture completion never implies implementation completion.
+INVARIANT 02
+Implementation completion never implies validation completion.
+INVARIANT 03
+Validation completion never implies production readiness without operational requirements.
+INVARIANT 04
+Deployment never implies correctness.
+INVARIANT 05
+AI output never constitutes architectural truth merely because a model produced it.
+INVARIANT 06
+A progress status requires evidence appropriate to its claim.
+INVARIANT 07
+Unknown must remain unknown until evidence resolves it.
+INVARIANT 08
+Failed work remains part of engineering history.
+INVARIANT 09
+Implementation cannot silently create canonical architecture.
+INVARIANT 10
+Phase ownership cannot be silently transferred.
+INVARIANT 11
+Runtime-local progress does not automatically become CoreGrid-wide progress.
+INVARIANT 12
+Historical progress must remain reconstructable.
+INVARIANT 13
+Material drift must be visible.
+INVARIANT 14
+Critical security or integrity failures invalidate affected readiness claims.
+INVARIANT 15
+Progress reports reality rather than intention.
+
+───
+
+202. MACHINE-VALIDATION REQUIREMENTS
+The progress system should eventually automatically reject or flag:
+text
+Invalid Phase ID
+Invalid Status
+Missing Owner
+Missing Evidence
+Invalid Decision Reference
+Invalid Dependency Reference
+Invalid Contract Reference
+Impossible State Transition
+Complete Without Required Gates
+Production Ready Without Required Evidence
+Orphaned Implementation
+Orphaned Capability
+Unresolved Critical Blocker
+Expired Exception
+Architecture Drift
+Contract Drift
+Status Contradiction
+
+
+───
+
+203. PROGRESS CI
+A future CoreGrid engineering CI layer should validate progress automatically.
+Conceptually:
+text
+GOVERNANCE
+   ↓
+ARCHITECTURE
+   ↓
+PROGRESS
+   ↓
+REPOSITORY
+   ↓
+TESTS
+   ↓
+RUNTIME
+   ↓
+EVIDENCE
+   ↓
+CONFORMANCE CHECK
+
+
+───
+
+204. PROGRESS AUDIT
+At significant milestones, perform an engineering-state audit.
+Audit:
+text
+Architecture
+Implementation
+Contracts
+Dependencies
+Security
+Data
+Testing
+Evidence
+Runtime
+Deployment
+Operations
+Conformance
+Debt
+Risks
+
+
+───
+
+205. AUDIT RESULT
+Possible results:
+text
+CONFORMANT
+CONFORMANT_WITH_LIMITATIONS
+DRIFT_DETECTED
+INSUFFICIENT_EVIDENCE
+BLOCKED
+NON_CONFORMANT
+
+
+───
+
+206. ENGINEERING STATE SNAPSHOT
+At any important point, CoreGrid should be able to generate a snapshot:
+text
+COREGRID ENGINEERING STATE
+Timestamp:
+Repository:
+Commit:
+Architecture Version:
+Decision Set:
+Environment:
+Phase:
+Capability:
+Implementation:
+Validation:
+Security:
+Operations:
+Conformance:
+Evidence:
+Blockers:
+Risks:
+Debt:
+Known Limitations:
+
+
+───
+
+207. REPRODUCIBLE ENGINEERING STATE
+A state claim should be reproducible from:
+text
+Version
++
+Configuration
++
+Environment
++
+Code
++
+Data State
++
+Dependencies
++
+Evidence
+
+where applicable.
+
+───
+
+208. ENGINEERING TIME
+Progress is temporal.
+Therefore:
+text
+CURRENT
+
+must always mean:
+Current relative to a known verification timestamp and environment.
+
+───
+
+209. STALE STATUS
+A status may become stale when:
+• significant code changes occur;
+• architecture changes;
+• dependencies change;
+• models change;
+• security changes;
+• runtime changes;
+• validation evidence expires.
+Stale status must be revalidated.
+
+───
+
+210. STATUS FRESHNESS
+Where practical, progress records should contain:
+text
+last_verified
+verified_by
+verification_method
+environment
+commit
+
+
+───
+
+211. NO PERMANENT COMPLETION CLAIM
+COMPLETE means complete against a defined scope and version.
+It does not mean:
+never needs further engineering.
+Future changes may create a new state.
+
+───
+
+212. VERSIONED PROGRESS
+Progress must be associated with:
+text
+Architecture Version
+Phase Version
+Contract Version
+Implementation Version
+Deployment Version
+Model Version
+
+where applicable.
+
+───
+
+213. CHANGE LOG
+Every material progress change records:
+text
+Date
+Author / Actor
+Change
+Affected Phase
+Affected Capability
+Previous State
+New State
+Reason
+Evidence
+Related Decision
+
+
+───
+
+214. INITIAL CHANGE LOG
+text
+Date:
+Initial CoreGrid Scholar v2 progress architecture.
+
+Change:
+Established architecture-first engineering progress tracking.
+
+Current architectural state:
+Architecture defined.
+
+Current implementation state:
+Not started.
+
+Current production state:
+Not ready.
+
+Status:
+ACTIVE.
+
+Future entries must preserve chronological history.
+
+───
+
+215. FINAL ENGINEERING QUESTION
+Whenever CoreGrid's engineering system reports status, it must answer:
+What is actually true right now?
+Not:
+text
+What did we plan?
+What did we prompt?
+What did an agent generate?
+What files exist?
+What did we intend?
+What should work?
+
+But:
+text
+What exists?
+What works?
+What has been verified?
+What evidence proves it?
+What remains unknown?
+What is broken?
+What is blocked?
+What has drifted?
+What is safe?
+What is production-ready?
+What is actually running?
+
+
+───
+
+216. COREGRID REALITY ENGINEERING PRINCIPLE
+CoreGrid is ultimately building a computational system capable of representing, understanding, governing and acting upon changing realities.
+Its engineering ledger must therefore evolve beyond:
+text
+PROJECT MANAGEMENT
+
+into:
+text
+ENGINEERING STATE INTELLIGENCE
+
+The progress system becomes a structured representation of the state of CoreGrid itself.
+
+───
+
+217. THE ENGINEERING SELF-MODEL
+The mature CoreGrid engineering layer should maintain a continuously reconcilable model of:
+text
+ARCHITECTURE
+PHASES
+CAPABILITIES
+DEPENDENCIES
+CONTRACTS
+IMPLEMENTATIONS
+DATA
+RUNTIME
+DEPLOYMENTS
+AGENTS
+MODELS
+TESTS
+EVIDENCE
+RISKS
+DEBT
+INCIDENTS
+DECISIONS
+CONFORMANCE
+
+This is the beginning of CoreGrid's engineering self-model.
+It does not grant autonomous authority.
+It provides structured self-observation.
+
+───
+
+218. ENGINEERING SELF-AWARENESS BOUNDARY
+CoreGrid may know:
+text
+what it contains;
+what it expects;
+what is running;
+what is failing;
+what has changed;
+what evidence exists;
+what is uncertain;
+what depends on what.
+
+This does not mean CoreGrid automatically has authority to alter itself.
+Self-observation and self-authority remain separate.
+
+───
+
+219. FUTURE ENGINEERING INTELLIGENCE
+As CoreGrid matures, its engineering system may progressively support:
+text
+Architecture Discovery
+Dependency Discovery
+Drift Detection
+Failure Prediction
+Test Generation
+Validation Planning
+Evidence Collection
+Impact Analysis
+Migration Planning
+Cost Analysis
+Security Analysis
+Runtime Diagnosis
+Conformance Analysis
+Engineering Knowledge Retrieval
+
+These are engineering intelligence capabilities.
+They remain governed by CoreGrid's architecture and authority model.
+
+───
+
+220. AUTONOMOUS ENGINEERING BOUNDARY
+Engineering intelligence may:
+text
+OBSERVE
+ANALYZE
+PROPOSE
+SIMULATE
+TEST
+VALIDATE
+REPORT
+
+before it is permitted to:
+text
+MODIFY
+DEPLOY
+MIGRATE
+ROLLBACK
+RECONFIGURE
+
+Those actions require explicitly governed authority.
+
+───
+
+221. COREGRID ENGINEERING CLOSED LOOP
+The mature engineering architecture is:
+text
+┌───────────────────────┐
+                     │       GOVERNANCE      │
+                     └───────────┬───────────┘
+                                 ↓
+                     ┌───────────────────────┐
+                     │      ARCHITECTURE     │
+                     └───────────┬───────────┘
+                                 ↓
+                     ┌───────────────────────┐
+                     │       PROGRESS        │
+                     └───────────┬───────────┘
+                                 ↓
+                     ┌───────────────────────┐
+                     │       IMPLEMENT       │
+                     └───────────┬───────────┘
+                                 ↓
+                     ┌───────────────────────┐
+                     │        VALIDATE       │
+                     └───────────┬───────────┘
+                                 ↓
+                     ┌───────────────────────┐
+                     │        DEPLOY         │
+                     └───────────┬───────────┘
+                                 ↓
+                     ┌───────────────────────┐
+                     │        OBSERVE        │
+                     └───────────┬───────────┘
+                                 ↓
+                     ┌───────────────────────┐
+                     │       EVIDENCE        │
+                     └───────────┬───────────┘
+                                 ↓
+                     ┌───────────────────────┐
+                     │      CONFORMANCE      │
+                     └───────────┬───────────┘
+                                 ↓
+                     ┌───────────────────────┐
+                     │       RECONCILE       │
+                     └───────────┬───────────┘
+                                 ↓
+                     ┌───────────────────────┐
+                     │       EVOLVE          │
+                     └───────────┬───────────┘
+                                 │
+                                 └──────→ GOVERNANCE
+
+This is the engineering lifecycle CoreGrid should progressively embody.
+
+───
+222. FINAL COREGRID PROGRESS LAW
+Progress is not the amount of software produced. Progress is the amount of verified capability that has become real, governed, observable, secure, interoperable, operational and conformant with CoreGrid's architecture.
+
+───
+
+223. FINAL TRUTH LAW
+CoreGrid must preserve the distinction between:
+text
+INTENDED
+DEFINED
+DESIGNED
+CONTRACTED
+IMPLEMENTED
+INTEGRATED
+TESTED
+VALIDATED
+DEPLOYED
+OBSERVED
+VERIFIED
+CONFORMANT
+ACTIVE
+COMPLETE
+
+No stage may silently impersonate another.
+
+───
+
+224. FINAL REALITY INTELLIGENCE LAW
+The ultimate purpose of this ledger is to allow CoreGrid to know, with evidence:
+text
+WHAT COREGRID IS
+WHAT COREGRID CONTAINS
+WHAT COREGRID HAS BUILT
+WHAT COREGRID CAN DO
+WHAT COREGRID CANNOT YET DO
+WHAT COREGRID IS CURRENTLY DOING
+WHAT COREGRID IS FAILING TO DO
+WHAT COREGRID KNOWS
+WHAT COREGRID DOES NOT KNOW
+WHAT COREGRID HAS VERIFIED
+WHAT COREGRID HAS NOT VERIFIED
+WHAT COREGRID IS AUTHORIZED TO CHANGE
+WHAT COREGRID MUST NOT CHANGE
+
+
+───
+
+225. CANONICAL STATUS
+Document:PROGRESS.md
+Status:CANONICAL / LIVING
+Authority: CoreGrid Architecture Governance Layer
+Purpose: Engineering-state truth, evidence tracking, conformance tracking and historical progress.
+Core Rule:
+The ledger must describe CoreGrid as it actually exists, not as it was intended to exist.
+Scholar Boundary:
+Scholar is a reference/domain runtime within CoreGrid. Scholar progress must not be mistaken for universal CoreGrid completion.
+Engineering Boundary:
+No implementation becomes architecture merely because code exists.
+Evidence Boundary:
+No material completion claim becomes verified without appropriate evidence.
+Autonomy Boundary:
+Engineering intelligence may observe, analyze, propose, simulate and validate; authority to modify CoreGrid remains explicitly governed.
+Final State:
+text
+COREGRID ENGINEERING PROGRESS
+        ↓
+ENGINEERING STATE
+        ↓
+RUNTIME OBSERVATION
+        ↓
+EVIDENCE
+        ↓
+CONFORMANCE
+        ↓
+ENGINEERING KNOWLEDGE
+        ↓
+CONTROLLED EVOLUTION
+
+Canonical Principle:
+CoreGrid does not merely track what engineers have done. CoreGrid progressively develops the ability to know, represent, verify and govern the actual state of its own engineered reality.

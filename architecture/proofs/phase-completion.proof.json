@@ -2,7 +2,7 @@
   "artifact": "phase-completion",
   "wave": "AUDIT-1",
   "owner": "kernel (Phase 01 governance)",
-  "generatedAt": "2026-09-22T14:14:36.641Z",
+  "generatedAt": "2026-09-28T15:35:41.052Z",
   "authority": [
     "CONSTITUTION.md",
     "architecture/registry.json",
@@ -23,7 +23,7 @@
     "architectureDefined": 18,
     "withModules": 33,
     "withResolvedModules": 33,
-    "totalTestsCited": 2247,
+    "totalTestsCited": 2248,
     "registryBeyondAudit": [
       "14",
       "15",
@@ -46,6 +46,7 @@
       "35",
       "36",
       "37",
+      "38",
       "39",
       "40",
       "41",
@@ -71,7 +72,6 @@
       "L4 frontend/workspace integration": 36,
       "L3 backend": 18,
       "L2 data model": 12,
-      "L5 operational maturity": 1,
       "L1 conceptual": 1
     }
   },
@@ -206,7 +206,7 @@
       ],
       "modulesResolve": true,
       "citedTestFiles": 2,
-      "testsCounted": 81,
+      "testsCounted": 82,
       "executableEvidence": 2,
       "evidence": {
         "L1 conceptual": true,
@@ -1501,7 +1501,7 @@
         "L2 data model": false,
         "L3 backend": false,
         "L4 frontend/workspace integration": false,
-        "L5 operational maturity": false
+        "L5 operational maturity": true
       },
       "registryLevels": [
         true,
@@ -1516,8 +1516,7 @@
       "missingLevels": [
         "L2 data model",
         "L3 backend",
-        "L4 frontend/workspace integration",
-        "L5 operational maturity"
+        "L4 frontend/workspace integration"
       ],
       "exemptedLevels": [],
       "unconfirmedLevels": []

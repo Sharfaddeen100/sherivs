@@ -1,0 +1,106 @@
+{
+  "mission": "COREGRID-MISSION-0001",
+  "artifact": "COREGRID_ARCHITECTURE_TO_CODE_TRACEABILITY",
+  "status": "DESIGNED",
+  "evidenceDate": "2026-09-27",
+  "chain": [
+    "ARCHITECTURE",
+    "CONTRACT",
+    "SCHEMA",
+    "IMPLEMENTATION",
+    "RUNTIME",
+    "TEST",
+    "EXECUTION",
+    "EVIDENCE",
+    "VERIFICATION",
+    "CONFORMANCE"
+  ],
+  "traces": [
+    {
+      "concept": "identity",
+      "architecture": ["architecture/phase-02-identity.md", "REGISTRY.md"],
+      "contract": ["frontend/src/lib/kernel/phase-contracts/phase-02-identity.ts"],
+      "schema": ["database/supabase/migrations/20260904020000_coregrid_l2_identity_tenancy.sql"],
+      "implementation": ["frontend/src/lib/identity-registry.ts", "frontend/src/lib/identity-registry.functions.ts"],
+      "runtime": ["frontend/src/middleware.ts"],
+      "test": ["tests/unit/identity-registry.test.ts"],
+      "evidence": ["architecture/proofs/phase-02-acceptance.proof.json", "architecture/phase-acceptance/phase-02-identity.json"],
+      "verification": ["scripts/verify-l2-registries.mjs"],
+      "conformance": ["tests/unit/platform-neutrality.test.ts"],
+      "closure": "PARTIAL_OPERATIONAL"
+    },
+    {
+      "concept": "reality-primitives",
+      "architecture": ["architecture/phase-33-reality-intelligence-kernel.md"],
+      "contract": ["frontend/src/lib/kernel/phase-contracts/phase-33-reality-kernel.ts"],
+      "schema": ["database/supabase/migrations/20260903000000_coregrid_universal_kernel_substrate.sql"],
+      "implementation": ["frontend/src/lib/kernel/reality.ts", "frontend/src/lib/kernel-reality.functions.ts"],
+      "runtime": ["frontend/src/lib/runtime/scholar.ts"],
+      "test": ["tests/unit/kernel-reality.test.ts"],
+      "evidence": ["architecture/proofs/phase-completion.proof.json"],
+      "verification": ["scripts/verify-kernel-wiring.mjs"],
+      "conformance": ["tests/unit/kernel-purity.test.ts"],
+      "closure": "PARTIAL"
+    },
+    {
+      "concept": "workforce",
+      "architecture": ["architecture/phase-25-institutional-onboarding-administration-workforce-identity-platform.md"],
+      "contract": ["frontend/src/lib/kernel/phase-contracts/phase-25-onboarding-workforce.ts"],
+      "schema": ["database/supabase/migrations/20260907000000_coregrid_workforce_kind_substrate.sql", "database/supabase/migrations/20260907000800_coregrid_role_assignment_substrate.sql"],
+      "implementation": ["frontend/src/lib/workforce-positions.ts", "frontend/src/lib/workforce-positions.functions.ts"],
+      "runtime": ["frontend/src/routes/_authenticated/admin/staff-accounts.tsx"],
+      "test": ["tests/unit/workforce-positions.test.ts"],
+      "evidence": ["architecture/proofs/role-assignment-substrate.proof.json"],
+      "verification": ["scripts/verify-workforce-substrate.mjs"],
+      "conformance": ["tests/unit/p08-enforcement-surface.test.ts"],
+      "closure": "IMPLEMENTED_DOMAIN_SLICE"
+    },
+    {
+      "concept": "mission-orchestration",
+      "architecture": ["MISSIONS.md", "architecture/phase-07-ai-agent-system.md", "architecture/phase-47-autonomous-engineering-self-improvement-engine.md"],
+      "contract": [],
+      "schema": [],
+      "implementation": [],
+      "runtime": [],
+      "test": [],
+      "evidence": [],
+      "verification": [],
+      "conformance": [],
+      "closure": "BREAKS_AT_CONTRACT"
+    },
+    {
+      "concept": "evidence-fabric",
+      "architecture": ["ASSURANCE.md", "CONTROL-PLANE-04-EVIDENCE.md"],
+      "contract": [],
+      "schema": ["database/supabase/migrations/20260903000000_coregrid_universal_kernel_substrate.sql"],
+      "implementation": ["architecture/proofs", "architecture/phase-acceptance", "architecture/archaeology"],
+      "runtime": [],
+      "test": ["tests/unit/scholar-evidence-documents.test.ts"],
+      "evidence": ["architecture/proofs"],
+      "verification": ["scripts/audit-phase-acceptance.mjs"],
+      "conformance": [],
+      "closure": "FILE_PLANE_ONLY"
+    },
+    {
+      "concept": "verification",
+      "architecture": ["ASSURANCE.md", "CONTROL-PLANE-09-VERIFICATION.md"],
+      "contract": ["frontend/src/lib/kernel/phase-contract.ts"],
+      "schema": [],
+      "implementation": ["scripts/verification", "scripts/verify-kernel-wiring.mjs"],
+      "runtime": [".github/workflows/verify.yml"],
+      "test": ["tests/unit/phase-completion-audit.test.ts"],
+      "evidence": ["architecture/proofs"],
+      "verification": ["package.json:verify"],
+      "conformance": ["tests/unit/kernel-phase-contract.test.ts"],
+      "closure": "TOOLING_IMPLEMENTED"
+    }
+  ],
+  "brokenLinks": [
+    "Mission architecture -> contract",
+    "Universal evidence architecture -> durable registry",
+    "Execution architecture -> durable execution state",
+    "Conformance architecture -> independent conformance report",
+    "Drift architecture -> persisted lifecycle and remediation"
+  ],
+  "rule": "Traceability claims are evidence classifications, not completion claims."
+}

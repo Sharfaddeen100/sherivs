@@ -1,0 +1,82 @@
+{
+  "$comment": "Phase 20 acceptance definition derived from architecture/phase-20-government-education-cloud.md, the phase contract, government-* modules and their four unit suites. Sovereign configuration and reports are represented and tested as typed libraries; no sovereign deployment or live statutory boundary is inferred.",
+  "phase": "20",
+  "phaseName": "Government Education Cloud",
+  "source": "architecture/phase-20-government-education-cloud.md",
+  "contract": "frontend/src/lib/kernel/phase-contracts/phase-20-government-cloud.ts",
+  "ownership": {
+    "note": "Phase 20 owns residency configuration, jurisdiction policy packs and statutory report definitions. It never owns domain data, planetary infrastructure or globalization content.",
+    "canonicalOwners": {
+      "residency-and-policy-packs": "20",
+      "statutory-reports": "20",
+      "domain-records": "owning phases",
+      "tenancy": "03",
+      "authorization": "08",
+      "planetary-infrastructure": "44",
+      "globalization": "30"
+    }
+  },
+  "areas": [
+    {
+      "id": "sovereign-tenant-and-jurisdiction",
+      "area": "Government tenants and jurisdictions are explicit",
+      "requirement": "Government tenants, configurable jurisdiction hierarchies, federations and education networks require valid identity, scope and expiry data.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/government-core.ts" },
+        { "kind": "test", "path": "tests/unit/government-core.test.ts", "contains": "creates active tenant with provided fields" },
+        { "kind": "test", "path": "tests/unit/government-core.test.ts", "contains": "creates jurisdiction with configurable hierarchy" },
+        { "kind": "test", "path": "tests/unit/government-core.test.ts", "contains": "rejects past expiry" }
+      ]
+    },
+    {
+      "id": "policy-and-programme-lifecycle",
+      "area": "Policy, programme and emergency lifecycles are ordered",
+      "requirement": "Policies and programmes move only through legal states, funding is positive, approvals cannot repeat and emergency declarations require coherent affected-region data.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/government-policy.ts" },
+        { "kind": "test", "path": "tests/unit/government-policy.test.ts", "contains": "rejects invalid transition" },
+        { "kind": "test", "path": "tests/unit/government-policy.test.ts", "contains": "rejects zero budget" },
+        { "kind": "test", "path": "tests/unit/government-policy.test.ts", "contains": "rejects normal status with affected regions" }
+      ]
+    },
+    {
+      "id": "data-sharing-and-residency",
+      "area": "Government data exchange preserves purpose and residency",
+      "requirement": "Reports, data-sharing agreements, external systems, catalogs and residency policies carry purpose, stewards, approval and location controls; de-identification modes are explicit.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/government-data.ts" },
+        { "kind": "test", "path": "tests/unit/government-data.test.ts", "contains": "rejects agreement without purpose" },
+        { "kind": "test", "path": "tests/unit/government-data.test.ts", "contains": "creates location policy" },
+        { "kind": "test", "path": "tests/unit/government-data.test.ts", "contains": "pseudonymizes value" }
+      ]
+    },
+    {
+      "id": "governance-evidence-and-outcomes",
+      "area": "Government operations retain compliance and outcome evidence",
+      "requirement": "Dashboards, SLOs, legal holds, compliance evidence, supplier risk, KPIs, warnings and AI registry entries have typed records and explicit acceptance/invariant structures.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/government-governance.ts" },
+        { "kind": "test", "path": "tests/unit/government-governance.test.ts", "contains": "creates immutable retention policy" },
+        { "kind": "test", "path": "tests/unit/government-governance.test.ts", "contains": "creates compliance evidence" },
+        { "kind": "test", "path": "tests/unit/government-governance.test.ts", "contains": "creates architectural invariant" }
+      ]
+    },
+    {
+      "id": "sovereign-runtime-boundary",
+      "area": "Sovereign placement and reporting remain unwired",
+      "requirement": "A tenant-authorized deployment and statutory reporting boundary must enforce residency and policy packs; current evidence proves only typed government libraries and tests.",
+      "required": false,
+      "evidence": [
+        { "kind": "contract", "path": "frontend/src/lib/kernel/phase-contracts/phase-20-government-cloud.ts", "contains": "government-sovereign-deployments" },
+        { "kind": "module", "path": "frontend/src/lib/government-data.ts" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/*.functions.ts", "contains": "applyGovernmentPolicyPack" }
+      ]
+    }
+  ]
+}

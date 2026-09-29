@@ -1,0 +1,134 @@
+{
+  "$comment": "Evidence map for Phase 29. Executable tests prove integration mechanics and safety policies; live provider persistence and exchange remain declared.",
+  "phase": "29",
+  "phaseName": "CoreGrid Integration",
+  "source": "architecture/phase-29-coregrid-integration.md",
+  "contract": "frontend/src/lib/kernel/phase-contracts/phase-29-integration.ts",
+  "ownership": {
+    "canonicalOwners": {
+      "adapters-and-connections": "29",
+      "transformations-and-reconciliation": "29",
+      "integration-security-and-operations": "29",
+      "integration-governance": "29",
+      "domain-truth": "owning-domain-phase",
+      "authorization": "08",
+      "universal-interface-connectivity": "43"
+    }
+  },
+  "areas": [
+    {
+      "id": "connector-tenant-credential-boundary",
+      "area": "Connectors and credentials are tenant-scoped and least-privilege",
+      "requirement": "Connector lifecycle, integration scope, credential expiry/isolation and least-privilege needs are explicit.",
+      "required": true,
+      "evidence": [
+        { "kind": "contract", "path": "frontend/src/lib/kernel/phase-contracts/phase-29-integration.ts", "contains": "Every exchange is declared and reversible" },
+        { "kind": "test", "path": "tests/unit/integration.test.ts", "contains": "creates integration instance with tenant scope" },
+        { "kind": "test", "path": "tests/unit/integration.test.ts", "contains": "credential validity and tenant isolation" },
+        { "kind": "test", "path": "tests/unit/integration.test.ts", "contains": "least privilege satisfied only for declared needs" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "mapping-validation-and-idempotency",
+      "area": "Inbound mapping, validation, idempotency and dead-letter handling are explicit",
+      "requirement": "Unknown or invalid payloads are quarantined/dead-lettered, mappings are declared, and duplicate events are not processed twice.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/integration.test.ts", "contains": "applies mappings to canonical shape" },
+        { "kind": "test", "path": "tests/unit/integration.test.ts", "contains": "validates inbound payload" },
+        { "kind": "test", "path": "tests/unit/integration.test.ts", "contains": "idempotency prevents duplicate processing" },
+        { "kind": "test", "path": "tests/unit/integration.test.ts", "contains": "records dead-letter entries without secrets" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "retry-rate-limit-and-reconciliation",
+      "area": "Integration retries, rate limits, synchronization and reconciliation preserve truth",
+      "requirement": "Retry classes are bounded, provider rate limits are respected, field authority is unambiguous, conflicts are policy-resolved, and reconciliation gaps are surfaced.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/integration.test.ts", "contains": "retries only transient and rate-limited classes" },
+        { "kind": "test", "path": "tests/unit/integration.test.ts", "contains": "respects provider rate limits" },
+        { "kind": "test", "path": "tests/unit/integration.test.ts", "contains": "field authority must be unambiguous" },
+        { "kind": "test", "path": "tests/unit/integration.test.ts", "contains": "reconciles and flags gaps" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "protocol-ai-and-provider-certification",
+      "area": "Protocol translation and AI mapping proposals are governed",
+      "requirement": "Lossy translations are visible, AI mapping changes require approval in production, mock providers support tests, and production certification requires all gates.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/integration.test.ts", "contains": "lossless translation detection" },
+        { "kind": "test", "path": "tests/unit/integration.test.ts", "contains": "AI mapping proposals require approval in production" },
+        { "kind": "test", "path": "tests/unit/integration.test.ts", "contains": "AI never silently alters production mappings" },
+        { "kind": "test", "path": "tests/unit/integration.test.ts", "contains": "production certification requires all gates" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "webhook-and-network-security",
+      "area": "Webhook and network security checks fail closed",
+      "requirement": "Webhook signature, freshness, replay, authentication and authorization are required; network TLS, certificate and allowlist checks are enforced.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/integration.test.ts", "contains": "webhook delivery secure only with all checks" },
+        { "kind": "test", "path": "tests/unit/integration.test.ts", "contains": "network security enforces TLS/IP allowlist" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "health-observability-and-audit",
+      "area": "Integration health, logs, traces, metrics, alerts and audit are attributable",
+      "requirement": "Provider health, sanitized logs, trace spans, metrics, alerts, certificates and audit events remain observable.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/integration.test.ts", "contains": "evaluates connector health" },
+        { "kind": "test", "path": "tests/unit/integration.test.ts", "contains": "records sanitized integration logs" },
+        { "kind": "test", "path": "tests/unit/integration.test.ts", "contains": "computes metrics" },
+        { "kind": "test", "path": "tests/unit/integration.test.ts", "contains": "certificate expiry detection" },
+        { "kind": "test", "path": "tests/unit/integration.test.ts", "contains": "records audit events" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "risk-approval-drift-and-resilience",
+      "area": "Integration governance responds to risk, drift and connectivity failure",
+      "requirement": "High-risk production entry requires the approval chain, schema drift quarantines according to risk, integrations can pause/disconnect, and store-and-forward handles unreliable connectivity.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/integration.test.ts", "contains": "high-risk integrations require full approval chain" },
+        { "kind": "test", "path": "tests/unit/integration.test.ts", "contains": "evaluates schema drift response by risk" },
+        { "kind": "test", "path": "tests/unit/integration.test.ts", "contains": "pauses and resumes without deleting config" },
+        { "kind": "test", "path": "tests/unit/integration.test.ts", "contains": "emergency disconnect for critical integrations" },
+        { "kind": "test", "path": "tests/unit/integration.test.ts", "contains": "store-and-forward for unreliable connectivity" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "normalization-and-traceable-events",
+      "area": "External normalization, identifiers and integration events preserve lineage",
+      "requirement": "Timezone/currency normalization preserves context, external IDs remain traceable, and integration events are typed and attributable.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/integration.test.ts", "contains": "normalizes timestamps preserving timezone" },
+        { "kind": "test", "path": "tests/unit/integration.test.ts", "contains": "normalizes currency" },
+        { "kind": "test", "path": "tests/unit/integration.test.ts", "contains": "external ID mapping is traceable" },
+        { "kind": "test", "path": "tests/unit/integration.test.ts", "contains": "publishes integration events" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "live-provider-boundary",
+      "area": "Live external exchange and durable integration state are wired",
+      "requirement": "Provider credentials, connections, sync jobs, reconciliation records and integration events persist and operate at an authorized live boundary.",
+      "required": false,
+      "evidence": [
+        { "kind": "document", "path": "architecture/phase-29-coregrid-integration.md", "contains": "Integration API" }
+      ],
+      "boundary": []
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "$comment": "Architecture-phase acceptance definition. It records design and contract evidence without claiming implementation, runtime, deployment, or operational completion.",
+  "phase": "46",
+  "phaseName": "Universal Digital Twin Civilization Layer",
+  "source": "architecture/phase-46-universal-digital-twin-civilization-layer.md",
+  "contract": "frontend/src/lib/kernel/phase-contracts/phase-46-twin-civilization.ts",
+  "ownership": {
+    "canonicalOwners": {
+      "phase-46-capability": "46"
+    },
+    "note": "Registry ownership is observed. Cross-phase duplication and runtime ownership remain subject to Mission 0001 reconciliation."
+  },
+  "areas": [
+    {
+      "id": "architecture-and-contract-defined",
+      "area": "Architecture and phase contract are defined",
+      "requirement": "The phase has a canonical blueprint and machine-readable phase contract; this proves definition only.",
+      "required": true,
+      "evidence": [
+        {
+          "kind": "document",
+          "path": "architecture/phase-46-universal-digital-twin-civilization-layer.md",
+          "contains": "Universal Digital Twin Civilization Layer"
+        },
+        {
+          "kind": "contract",
+          "path": "frontend/src/lib/kernel/phase-contracts/phase-46-twin-civilization.ts",
+          "contains": "phaseId"
+        }
+      ]
+    },
+    {
+      "id": "implementation-runtime-and-operations",
+      "area": "Implementation, runtime, deployment and operations remain unverified",
+      "requirement": "Executable modules, runtime consumers, deployment evidence and operational proof must be established by a later bounded mission; this definition does not infer them from design text.",
+      "required": false,
+      "evidence": [
+        {
+          "kind": "document",
+          "path": "architecture/phase-46-universal-digital-twin-civilization-layer.md",
+          "contains": "Implementation"
+        }
+      ]
+    }
+  ]
+}

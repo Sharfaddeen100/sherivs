@@ -1,0 +1,179 @@
+{
+  "artifact": "phase-acceptance",
+  "phase": "18",
+  "phaseName": "Analytics Intelligence",
+  "source": "architecture/phase-18-analytics-intelligence.md",
+  "generatedAt": "2026-09-28T13:22:34.137Z",
+  "classificationDefinitions": {
+    "ENFORCED": "an executable artefact proves it (test, verifier script, migration, policy or machine-checked contract match) and, where a boundary is declared, a real call site invokes it",
+    "DECLARED": "a module, document or contract mentions it, but nothing executable proves it",
+    "IMPLEMENTED_UNWIRED": "implementation and tests exist, but the declared boundary patterns match nothing — the capability protects nothing yet",
+    "MISSING": "no artefact found"
+  },
+  "summary": {
+    "areas": 6,
+    "enforced": 5,
+    "declared": 0,
+    "implementedUnwired": 1,
+    "implementedUnwiredAreas": [
+      "analytics-runtime-boundary"
+    ],
+    "missing": 0,
+    "missingRequired": [],
+    "unresolvedEvidencePaths": []
+  },
+  "ownership": {
+    "note": "Phase 18 owns analytical models, metric definitions, decision records and analytics governance. Canonical records, workflow execution and cognitive architecture remain outside this phase.",
+    "canonicalOwners": {
+      "models-metrics-decisions": "18",
+      "derived-outputs": "18",
+      "governed-data-lineage": "14",
+      "canonical-records": "owning phases",
+      "workflow-execution": "17",
+      "cognitive-architecture": "34"
+    }
+  },
+  "areas": [
+    {
+      "id": "metric-provenance-and-unknowns",
+      "area": "Metrics carry ownership, provenance and honest unknowns",
+      "requirement": "Metrics require an owner and formula, analytical outputs carry provenance and version, and missing previous or source data is not converted into zero or success.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/analytics-core.ts",
+        "tests/unit/analytics-core.test.ts",
+        "tests/unit/analytics-core.test.ts",
+        "tests/unit/analytics-core.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/analytics-core.ts",
+        "tests/unit/analytics-core.test.ts",
+        "tests/unit/analytics-core.test.ts",
+        "tests/unit/analytics-core.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "models-are-validated-and-drift-aware",
+      "area": "Analytical models have lifecycle and drift governance",
+      "requirement": "Models require metadata and ownership, cannot be promoted before validation, and drift is detectable against declared thresholds.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/analytics-models.ts",
+        "tests/unit/analytics-models.test.ts",
+        "tests/unit/analytics-models.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/analytics-models.ts",
+        "tests/unit/analytics-models.test.ts",
+        "tests/unit/analytics-models.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "forecast-and-anomaly-honesty",
+      "area": "Forecasts and anomalies state assumptions and limits",
+      "requirement": "Descriptive statistics do not fabricate empty samples, correlations do not claim causation, anomalies carry evidence and forecasts carry bounds and non-guarantee language.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/analytics-models.ts",
+        "tests/unit/analytics-models.test.ts",
+        "tests/unit/analytics-models.test.ts",
+        "tests/unit/analytics-models.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/analytics-models.ts",
+        "tests/unit/analytics-models.test.ts",
+        "tests/unit/analytics-models.test.ts",
+        "tests/unit/analytics-models.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "decision-constraints-and-evidence",
+      "area": "Recommendations and decisions are constrained and evidenced",
+      "requirement": "Unknown feasibility is infeasible, policy-violating optimization is rejected, recommendations require evidence and uncertainty, and decisions record selected options and outcomes.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/analytics-decisions.ts",
+        "tests/unit/analytics-decisions.test.ts",
+        "tests/unit/analytics-decisions.test.ts",
+        "tests/unit/analytics-decisions.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/analytics-decisions.ts",
+        "tests/unit/analytics-decisions.test.ts",
+        "tests/unit/analytics-decisions.test.ts",
+        "tests/unit/analytics-decisions.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "privacy-and-reproducibility-governance",
+      "area": "Reporting is tenant, privacy and version governed",
+      "requirement": "Metric/report changes are versioned, reproducibility requires a matching snapshot and analytics access protects tenant, role, classification and small-cell privacy.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/analytics-governance.ts",
+        "tests/unit/analytics-governance.test.ts",
+        "tests/unit/analytics-governance.test.ts",
+        "tests/unit/analytics-governance.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/analytics-governance.ts",
+        "tests/unit/analytics-governance.test.ts",
+        "tests/unit/analytics-governance.test.ts",
+        "tests/unit/analytics-governance.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "analytics-runtime-boundary",
+      "area": "Analytics remains a tested library pending a consuming boundary",
+      "requirement": "A governed surface or server boundary must read analytics from real data and route actions through policy; current evidence does not prove such invocation.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "IMPLEMENTED_UNWIRED",
+      "declaredEvidence": [
+        "frontend/src/lib/kernel/phase-contracts/phase-18-analytics-intelligence.ts",
+        "frontend/src/lib/analytics-decisions.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/kernel/phase-contracts/phase-18-analytics-intelligence.ts",
+        "frontend/src/lib/analytics-decisions.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "frontend/src/lib/*.functions.ts"
+      ],
+      "boundaryEvidence": []
+    }
+  ],
+  "ok": true,
+  "limitations": [
+    "Classification measures the presence of executable evidence, not the correctness or completeness of that evidence.",
+    "A DECLARED area is unfinished work, never a false claim — it is reported as such.",
+    "An IMPLEMENTED_UNWIRED area has a tested implementation that no boundary calls; it is reported, never counted as enforcement.",
+    "Evidence patterns are declared per phase in architecture/phase-acceptance/phase-<id>-*.json and must be reviewed when a phase is re-audited."
+  ]
+}

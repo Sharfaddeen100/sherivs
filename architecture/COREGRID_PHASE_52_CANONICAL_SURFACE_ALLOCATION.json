@@ -1,0 +1,213 @@
+{
+  "mission": "COREGRID-MISSION-0001",
+  "artifact": "COREGRID_PHASE_52_CANONICAL_SURFACE_ALLOCATION",
+  "status": "PARTIAL_ALLOCATION_OF_18_BLOCK_HIERARCHY_NOT_CANONICAL_PHASE_REGISTRATION",
+  "source": {
+    "path": "architecture/phase 52 cross domaiin and engineering sections",
+    "sha256": "A69A3E74FAA88B78B6FB33C36A499E764F7DE04A2C4B33B20C5795D1084CE286",
+    "lineBreaks": 115807,
+    "lineRangesStatus": "PROVISIONAL_UNTIL_DETERMINISTIC_BLOCK_EXTRACTOR_RUNS",
+    "scope": "The 18 entries below map the later 18-block engineering hierarchy only. The corpus also contains earlier repeated block sets and numbered domain sections that require separate extraction and deduplication."
+  },
+  "allocationLaw": {
+    "primaryMotherSurface": "Exactly one canonical mother surface per extracted engineering block",
+    "canonicalPhaseOwner": "Exactly one existing phase owner where current evidence supports ownership",
+    "crossReferences": "Consumers and dependencies are references only and do not transfer ownership",
+    "newPhaseRule": "No new phase is registered by this artifact; unowned capabilities remain PROPOSED or UNRESOLVED",
+    "sourcePreservation": "Original corpus remains unchanged; allocations preserve source line ranges and lineage"
+  },
+  "blocks": [
+    {
+      "block": "01",
+      "name": "System Identity, Purpose and Reality Intelligence Foundation",
+      "sourceLines": "2575-3270",
+      "primaryMotherSurface": "REALITY.md",
+      "canonicalPhaseOwner": "33",
+      "phaseStatus": "ARCHITECTURE_DEFINED",
+      "classification": "EXTENSION_OF_EXISTING",
+      "secondarySurfaces": ["COREGRID.md", "ARCHITECTURE.md", "BLUEPRINTS.md"]
+    },
+    {
+      "block": "02",
+      "name": "Physical Entity Intelligence, Device Identity, Sensor Fabric, Predictive Maintenance and Environmental Intelligence",
+      "sourceLines": "3277-4895",
+      "primaryMotherSurface": "REALITY.md",
+      "canonicalPhaseOwner": "15",
+      "phaseStatus": "DESIGNED",
+      "classification": "CANDIDATE_EXTENSION",
+      "secondarySurfaces": ["ENGINEERING.md", "ASSURANCE.md"]
+    },
+    {
+      "block": "03",
+      "name": "Universal Runtime, Domain Packages and Runtime Generation",
+      "sourceLines": "UNVERIFIED_BLOCK_BOUNDARY",
+      "primaryMotherSurface": "RUNTIME.md",
+      "canonicalPhaseOwner": "40",
+      "phaseStatus": "DESIGNED",
+      "classification": "DUPLICATE_OR_CONFLICT",
+      "secondarySurfaces": ["IMPLEMENTATION.md", "ARCHITECTURE.md"]
+    },
+    {
+      "block": "04",
+      "name": "Digital Reality, Temporal State, Causality and Simulation",
+      "sourceLines": "UNVERIFIED_BLOCK_BOUNDARY",
+      "primaryMotherSurface": "REALITY.md",
+      "canonicalPhaseOwner": "16",
+      "phaseStatus": "DESIGNED",
+      "classification": "DUPLICATE_OR_CONFLICT",
+      "secondarySurfaces": ["ASSURANCE.md", "BLUEPRINTS.md"]
+    },
+    {
+      "block": "05",
+      "name": "Organization Brain, Intelligence and Model Gateway",
+      "sourceLines": "UNVERIFIED_BLOCK_BOUNDARY",
+      "primaryMotherSurface": "COREGRID.md",
+      "canonicalPhaseOwner": "26",
+      "phaseStatus": "DESIGNED",
+      "classification": "DUPLICATE_OR_CONFLICT",
+      "secondarySurfaces": ["WORKFORCE.md", "CONTROL-PLANE-05-CONTEXT-ASSEMBLY.md"]
+    },
+    {
+      "block": "06",
+      "name": "Event Fabric and State Transition Processing",
+      "sourceLines": "110879-111987",
+      "primaryMotherSurface": "RUNTIME.md",
+      "canonicalPhaseOwner": "05",
+      "phaseStatus": "PARTIAL",
+      "classification": "EXTENSION_OF_EXISTING",
+      "secondarySurfaces": ["MISSIONS.md", "ASSURANCE.md"]
+    },
+    {
+      "block": "07",
+      "name": "Knowledge, Evidence and Provenance",
+      "sourceLines": "UNVERIFIED_BLOCK_BOUNDARY; known capability anchor 98083-98140",
+      "primaryMotherSurface": "ASSURANCE.md",
+      "canonicalPhaseOwner": "09",
+      "phaseStatus": "PARTIAL",
+      "classification": "UNOWNED_CANDIDATE",
+      "secondarySurfaces": ["REALITY.md", "CONTROL-PLANE-04-EVIDENCE.md"],
+      "candidateBoundary": true
+    },
+    {
+      "block": "08",
+      "name": "Dynamic Agent Fabric and Multiplexer",
+      "sourceLines": "UNVERIFIED_BLOCK_BOUNDARY",
+      "primaryMotherSurface": "WORKFORCE.md",
+      "canonicalPhaseOwner": "07",
+      "phaseStatus": "PARTIAL",
+      "classification": "DUPLICATE_OR_CONFLICT",
+      "secondarySurfaces": ["CONTROL-PLANE-07-WORKFORCE-DELEGATION.md", "ASSURANCE.md"]
+    },
+    {
+      "block": "09",
+      "name": "Memory and Context",
+      "sourceLines": "UNVERIFIED_BLOCK_BOUNDARY",
+      "primaryMotherSurface": "REALITY.md",
+      "canonicalPhaseOwner": "36",
+      "phaseStatus": "DESIGNED",
+      "classification": "DUPLICATE_OR_CONFLICT",
+      "secondarySurfaces": ["CONTROL-PLANE-05-CONTEXT-ASSEMBLY.md", "ASSURANCE.md"]
+    },
+    {
+      "block": "10",
+      "name": "Policy, Security and Guardians",
+      "sourceLines": "UNVERIFIED_BLOCK_BOUNDARY",
+      "primaryMotherSurface": "GOVERNANCE.md",
+      "canonicalPhaseOwner": "08",
+      "phaseStatus": "PARTIAL",
+      "classification": "DUPLICATE_OR_CONFLICT",
+      "secondarySurfaces": ["ASSURANCE.md", "CONTROL-PLANE-10-CONFORMANCE.md"]
+    },
+    {
+      "block": "11",
+      "name": "Workflow, Tool and Action Fabric",
+      "sourceLines": "UNVERIFIED_BLOCK_BOUNDARY",
+      "primaryMotherSurface": "MISSIONS.md",
+      "canonicalPhaseOwner": "17",
+      "phaseStatus": "PARTIAL",
+      "classification": "EXTENSION_OF_EXISTING",
+      "secondarySurfaces": ["IMPLEMENTATION.md", "CONTROL-PLANE-06-MISSION-ORCHESTRATION.md"]
+    },
+    {
+      "block": "12",
+      "name": "Simulation and Digital Twins",
+      "sourceLines": "UNVERIFIED_BLOCK_BOUNDARY",
+      "primaryMotherSurface": "REALITY.md",
+      "canonicalPhaseOwner": "16",
+      "phaseStatus": "DESIGNED",
+      "classification": "DUPLICATE_OR_CONFLICT",
+      "secondarySurfaces": ["ASSURANCE.md", "BLUEPRINTS.md"]
+    },
+    {
+      "block": "13",
+      "name": "Universal Workspace and UI Compiler",
+      "sourceLines": "UNVERIFIED_BLOCK_BOUNDARY",
+      "primaryMotherSurface": "WORKFORCE.md",
+      "canonicalPhaseOwner": "06",
+      "phaseStatus": "PARTIAL",
+      "classification": "EXTENSION_OF_EXISTING",
+      "secondarySurfaces": ["ENGINEERING.md", "RUNTIME.md"]
+    },
+    {
+      "block": "14",
+      "name": "Observability, Reliability and Self-Healing",
+      "sourceLines": "UNVERIFIED_BLOCK_BOUNDARY; known capability anchor 111777-111881",
+      "primaryMotherSurface": "ASSURANCE.md",
+      "canonicalPhaseOwner": "18",
+      "phaseStatus": "PARTIAL",
+      "classification": "EXTENSION_OF_EXISTING",
+      "secondarySurfaces": ["RUNTIME.md", "CONTROL-PLANE-09-VERIFICATION.md"]
+    },
+    {
+      "block": "15",
+      "name": "Deployment, Scaling and Economics",
+      "sourceLines": "UNVERIFIED_BLOCK_BOUNDARY",
+      "primaryMotherSurface": "ENGINEERING.md",
+      "canonicalPhaseOwner": "21",
+      "phaseStatus": "PARTIAL",
+      "classification": "EXTENSION_OF_EXISTING",
+      "secondarySurfaces": ["ECOSYSTEM.md", "RUNTIME.md"]
+    },
+    {
+      "block": "16",
+      "name": "Developer and Ecosystem Runtime",
+      "sourceLines": "UNVERIFIED_BLOCK_BOUNDARY",
+      "primaryMotherSurface": "ECOSYSTEM.md",
+      "canonicalPhaseOwner": "28",
+      "phaseStatus": "DESIGNED",
+      "classification": "EXTENSION_OF_EXISTING",
+      "secondarySurfaces": ["IMPLEMENTATION.md", "BLUEPRINTS.md"]
+    },
+    {
+      "block": "17",
+      "name": "Phase Binding and Architectural Registry Reconciliation",
+      "sourceLines": "UNVERIFIED_BLOCK_BOUNDARY; known block anchor 97020-97078",
+      "primaryMotherSurface": "ARCHITECTURE.md",
+      "canonicalPhaseOwner": "REGISTRY_GOVERNANCE",
+      "phaseStatus": "PROPOSED_ONLY",
+      "classification": "GOVERNANCE_ARTIFACT",
+      "secondarySurfaces": ["REGISTRY.md", "CONTROL-PLANE-01-REGISTRY.md"],
+      "candidateBoundary": false
+    },
+    {
+      "block": "18",
+      "name": "CoreGrid Digital Workforce",
+      "sourceLines": "UNVERIFIED_BLOCK_BOUNDARY",
+      "primaryMotherSurface": "WORKFORCE.md",
+      "canonicalPhaseOwner": "25",
+      "phaseStatus": "DESIGNED",
+      "classification": "EXTENSION_OF_EXISTING",
+      "secondarySurfaces": ["MISSIONS.md", "CONTROL-PLANE-07-WORKFORCE-DELEGATION.md"]
+    }
+  ],
+  "unresolved": [
+    {
+      "id": "p52-unowned-spatial-evidence",
+      "status": "UNOWNED_CANDIDATE",
+      "proposedMotherSurface": "REALITY.md",
+      "requiredGovernance": ["spatial ontology", "evidence lifecycle", "security boundary", "tenant model", "acceptance criteria"],
+      "mayRegisterAsPhase": false
+    }
+  ],
+  "nextGate": "Validate exact block boundaries and source hashes, then produce reviewable per-block extracts. Do not update the 51-phase registry or claim implementation until ownership and acceptance evidence are approved."
+}

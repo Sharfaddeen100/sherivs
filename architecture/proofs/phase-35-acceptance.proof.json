@@ -1,0 +1,168 @@
+{
+  "artifact": "phase-acceptance",
+  "phase": "35",
+  "phaseName": "Autonomous Agent Civilization OS",
+  "source": "architecture/phase-35-autonomous-agent-civilization-os.md",
+  "generatedAt": "2026-09-28T15:12:39.082Z",
+  "classificationDefinitions": {
+    "ENFORCED": "an executable artefact proves it (test, verifier script, migration, policy or machine-checked contract match) and, where a boundary is declared, a real call site invokes it",
+    "DECLARED": "a module, document or contract mentions it, but nothing executable proves it",
+    "IMPLEMENTED_UNWIRED": "implementation and tests exist, but the declared boundary patterns match nothing — the capability protects nothing yet",
+    "MISSING": "no artefact found"
+  },
+  "summary": {
+    "areas": 6,
+    "enforced": 5,
+    "declared": 1,
+    "implementedUnwired": 0,
+    "implementedUnwiredAreas": [],
+    "missing": 0,
+    "missingRequired": [],
+    "unresolvedEvidencePaths": []
+  },
+  "ownership": {
+    "canonicalOwners": {
+      "society-structure-and-coordination": "35",
+      "agent-identity-and-grants": "07",
+      "authorization": "08",
+      "cognitive-reasoning": "34",
+      "agent-memory": "07/36",
+      "society-audit": "35"
+    }
+  },
+  "areas": [
+    {
+      "id": "agent-identity-lifecycle-and-risk",
+      "area": "Agent identities, owners, lifecycle and risk controls are explicit",
+      "requirement": "Agents require tenant, owner, purpose, version and scope; lifecycle transitions and risk profiles control deployment and autonomy.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/kernel/phase-contracts/phase-35-agent-civilization.ts",
+        "tests/unit/agent-core.test.ts",
+        "tests/unit/agent-core.test.ts",
+        "tests/unit/agent-core.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/kernel/phase-contracts/phase-35-agent-civilization.ts",
+        "tests/unit/agent-core.test.ts",
+        "tests/unit/agent-core.test.ts",
+        "tests/unit/agent-core.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "tenant-scoped-agent-execution",
+      "area": "Agent execution context is tenant-bound and cross-tenant action fails closed",
+      "requirement": "Agent execution validates tenant scope, rejects cross-tenant operations and keeps context attributable to actor/session/execution.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/agent-core.test.ts",
+        "tests/unit/agent-core.test.ts",
+        "tests/unit/agent-core.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/agent-core.test.ts",
+        "tests/unit/agent-core.test.ts",
+        "tests/unit/agent-core.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "agent-task-state-and-recovery",
+      "area": "Agent tasks are ordered, bounded, checkpointed and cancellable",
+      "requirement": "Tasks reject skipped transitions, enforce deadlines/retry ceilings, support checkpoints/resume and preserve cancellation authority and metadata.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/agent-tasks.test.ts",
+        "tests/unit/agent-tasks.test.ts",
+        "tests/unit/agent-tasks.test.ts",
+        "tests/unit/agent-tasks.test.ts",
+        "tests/unit/agent-tasks.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/agent-tasks.test.ts",
+        "tests/unit/agent-tasks.test.ts",
+        "tests/unit/agent-tasks.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "agent-governance-and-loop-safety",
+      "area": "Agent governance rules are tied to executable checks",
+      "requirement": "Governance reports derive task state, memory trust, plan validation, loop safety and tenant-scoped agent checks from enforcing modules and tests.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/agent-governance-report.test.ts",
+        "tests/unit/agent-governance-report.test.ts",
+        "tests/unit/agent-governance-report.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/agent-governance-report.test.ts",
+        "tests/unit/agent-governance-report.test.ts",
+        "tests/unit/agent-governance-report.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "agent-memory-and-authority-boundary",
+      "area": "Agent memory and model intelligence do not become authority",
+      "requirement": "Agent governance preserves trust/classification boundaries and keeps permissions, canonical architecture and human approval outside model preference.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/agent-memory.test.ts",
+        "tests/unit/agent-governance-report.test.ts",
+        "tests/unit/agent-governance-report.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/agent-memory.test.ts",
+        "tests/unit/agent-governance-report.test.ts",
+        "tests/unit/agent-governance-report.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "live-society-coordination-and-audit",
+      "area": "Agent societies coordinate collectively with durable audit and suspension",
+      "requirement": "Society formation, collective actions, inter-agent negotiation, individual attribution, suspension and society-level audit execute at a live authorized boundary.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "architecture/phase-35-autonomous-agent-civilization-os.md"
+      ],
+      "matchedEvidence": [
+        "architecture/phase-35-autonomous-agent-civilization-os.md"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    }
+  ],
+  "ok": true,
+  "limitations": [
+    "Classification measures the presence of executable evidence, not the correctness or completeness of that evidence.",
+    "A DECLARED area is unfinished work, never a false claim — it is reported as such.",
+    "An IMPLEMENTED_UNWIRED area has a tested implementation that no boundary calls; it is reported, never counted as enforcement.",
+    "Evidence patterns are declared per phase in architecture/phase-acceptance/phase-<id>-*.json and must be reviewed when a phase is re-audited."
+  ]
+}

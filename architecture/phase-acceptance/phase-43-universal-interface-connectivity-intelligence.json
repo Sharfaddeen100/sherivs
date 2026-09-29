@@ -1,0 +1,80 @@
+{
+  "$comment": "Evidence map for Phase 43. Current evidence is inherited from Phase 29 integration contracts; universal interface registry and live connectivity remain declared.",
+  "phase": "43",
+  "phaseName": "Universal Interface & Connectivity Intelligence",
+  "source": "architecture/phase-43-universal-interface-connectivity-intelligence.md",
+  "contract": "frontend/src/lib/kernel/phase-contracts/phase-43-interface-connectivity.ts",
+  "ownership": {
+    "canonicalOwners": {
+      "protocol-and-interface-registry": "43",
+      "connectivity-governance": "43",
+      "integration-transform": "29",
+      "device-telemetry": "15",
+      "human-interface": "50",
+      "authorization": "08"
+    }
+  },
+  "areas": [
+    {
+      "id": "protocol-and-translation-boundary",
+      "area": "Protocol adapters and translation remain explicit",
+      "requirement": "Protocol adapters identify lossless/lossy translation and AI mapping proposals cannot silently change production mappings.",
+      "required": true,
+      "evidence": [
+        { "kind": "contract", "path": "frontend/src/lib/kernel/phase-contracts/phase-43-interface-connectivity.ts", "contains": "Connectivity carries traffic, never authority" },
+        { "kind": "test", "path": "tests/unit/integration.test.ts", "contains": "creates protocol adapter" },
+        { "kind": "test", "path": "tests/unit/integration.test.ts", "contains": "lossless translation detection" },
+        { "kind": "test", "path": "tests/unit/integration.test.ts", "contains": "AI never silently alters production mappings" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "authenticated-connectivity-security",
+      "area": "Interface traffic is authenticated, authorized and network constrained",
+      "requirement": "Webhook and network connectivity require signature, freshness, replay, authentication, authorization, TLS, certificate validation and allowlists.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/integration.test.ts", "contains": "webhook delivery secure only with all checks" },
+        { "kind": "test", "path": "tests/unit/integration.test.ts", "contains": "network security enforces TLS/IP allowlist" },
+        { "kind": "test", "path": "tests/unit/integration.test.ts", "contains": "integration security requires all controls" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "connectivity-health-and-observability",
+      "area": "Connectivity health, certificates, metrics and audit are observable",
+      "requirement": "Interface/provider health, sanitized logs, traces, metrics, alerts, certificate expiry and audit events are recorded.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/integration.test.ts", "contains": "evaluates connector health" },
+        { "kind": "test", "path": "tests/unit/integration.test.ts", "contains": "records sanitized integration logs" },
+        { "kind": "test", "path": "tests/unit/integration.test.ts", "contains": "certificate expiry detection" },
+        { "kind": "test", "path": "tests/unit/integration.test.ts", "contains": "records audit events" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "connectivity-governance-and-resilience",
+      "area": "Connectivity changes, drift and unreliable networks remain governed",
+      "requirement": "High-risk exchanges require approval, schema drift responds by risk, critical connections can disconnect, and limited connectivity supports store-and-forward.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/integration.test.ts", "contains": "high-risk integrations require full approval chain" },
+        { "kind": "test", "path": "tests/unit/integration.test.ts", "contains": "evaluates schema drift response by risk" },
+        { "kind": "test", "path": "tests/unit/integration.test.ts", "contains": "emergency disconnect for critical integrations" },
+        { "kind": "test", "path": "tests/unit/integration.test.ts", "contains": "store-and-forward for unreliable connectivity" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "live-interface-registry-and-connectivity",
+      "area": "Universal interface registry and live connectivity paths are wired",
+      "requirement": "Protocols, device/interface classes and access paths persist, resolve authorization and tenant context, and operate with live external connections.",
+      "required": false,
+      "evidence": [
+        { "kind": "document", "path": "architecture/phase-43-universal-interface-connectivity-intelligence.md", "contains": "protocol" }
+      ],
+      "boundary": []
+    }
+  ]
+}

@@ -1,0 +1,122 @@
+{
+  "$comment": "Evidence map for Phase 26. Executable criteria cover governed AI contracts; live provider execution and gateway wiring remain declared.",
+  "phase": "26",
+  "phaseName": "AI Intelligence Layer",
+  "source": "architecture/phase-26-ai-intelligence-layer.md",
+  "contract": "frontend/src/lib/kernel/phase-contracts/phase-26-ai-intelligence.ts",
+  "ownership": {
+    "canonicalOwners": {
+      "model-registry-and-routing": "26",
+      "context-assembly-and-retrieval": "26",
+      "ai-governance-and-evaluation": "26",
+      "agent-lifecycle": "07",
+      "domain-intelligence": "11/18/34",
+      "authorization": "08",
+      "data-classification": "14"
+    }
+  },
+  "areas": [
+    {
+      "id": "request-tenant-purpose-boundary",
+      "area": "AI requests carry explicit tenant, purpose, permissions, and requester context",
+      "requirement": "AI request construction fails closed without tenant, purpose, or permissions, and context cannot grant permission or cross tenant boundaries.",
+      "required": true,
+      "evidence": [
+        { "kind": "contract", "path": "frontend/src/lib/kernel/phase-contracts/phase-26-ai-intelligence.ts", "contains": "AI receives only authorized information" },
+        { "kind": "test", "path": "tests/unit/ai.test.ts", "contains": "creates AI request with explicit tenant/purpose/permissions" },
+        { "kind": "test", "path": "tests/unit/ai.test.ts", "contains": "context never grants permissions" },
+        { "kind": "test", "path": "tests/unit/ai.test.ts", "contains": "enforces tenant boundary" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "provider-neutral-model-routing",
+      "area": "Models are registered, versioned, routed, and safely replaced",
+      "requirement": "Models require identity/version/capability metadata, high-risk routing requires approved verified models, and fallback/cascade behavior is explicit.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/ai.test.ts", "contains": "registers model" },
+        { "kind": "test", "path": "tests/unit/ai.test.ts", "contains": "high-risk routing requires production-approved verified models" },
+        { "kind": "test", "path": "tests/unit/ai.test.ts", "contains": "selects approved fallback" },
+        { "kind": "test", "path": "tests/unit/ai.test.ts", "contains": "escalates cascade on evaluation failure" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "context-trust-and-retrieval",
+      "area": "Context trust, retrieval, freshness, and grounding are enforced",
+      "requirement": "Untrusted content is not treated as system instruction, retrieval is tenant/domain authorized, stale/conflicting sources are visible, and responses require grounding.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/ai.test.ts", "contains": "classifies context trust levels" },
+        { "kind": "test", "path": "tests/unit/ai.test.ts", "contains": "filters retrieval by authorization" },
+        { "kind": "test", "path": "tests/unit/ai.test.ts", "contains": "response is grounded only with authorized confident source" },
+        { "kind": "test", "path": "tests/unit/ai.test.ts", "contains": "detects knowledge conflict across sources" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "reasoning-evidence-and-hallucination",
+      "area": "Reasoning outputs preserve evidence, uncertainty, and verification distinctions",
+      "requirement": "Reasoning traces avoid chain-of-thought exposure, claims require evidence, uncertainty is estimated, and unsupported outputs are detected.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/ai.test.ts", "contains": "creates reasoning trace without chain-of-thought" },
+        { "kind": "test", "path": "tests/unit/ai.test.ts", "contains": "rejects unsupported claim" },
+        { "kind": "test", "path": "tests/unit/ai.test.ts", "contains": "detects hallucination for uncited output" },
+        { "kind": "test", "path": "tests/unit/ai.test.ts", "contains": "consensus escalates on disagreement" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "risk-approval-and-escalation",
+      "area": "AI risk, approval, escalation, and human authority are explicit",
+      "requirement": "High-risk and critical AI operations require verification and appropriate approval; low confidence, policy ambiguity, and unknown operations escalate.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/ai.test.ts", "contains": "high-risk gate blocks without verification or approval" },
+        { "kind": "test", "path": "tests/unit/ai.test.ts", "contains": "escalates on low confidence or high risk" },
+        { "kind": "test", "path": "tests/unit/scholar-ai-operations.test.ts", "contains": "mandates human approval AND verification for critical risk" },
+        { "kind": "test", "path": "tests/unit/scholar-ai-operations.test.ts", "contains": "escalates low confidence and unknown kinds" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "budget-quota-and-resilience",
+      "area": "AI usage budgets, quotas, caching, and circuit protection are bounded",
+      "requirement": "AI consumption respects budget/quota limits, cache reuse preserves tenant scope, and repeated provider failures open a circuit.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/ai.test.ts", "contains": "consumes budget within limits" },
+        { "kind": "test", "path": "tests/unit/ai.test.ts", "contains": "consumes quota" },
+        { "kind": "test", "path": "tests/unit/ai.test.ts", "contains": "cached result reusable only within tenant/freshness/classification" },
+        { "kind": "test", "path": "tests/unit/ai.test.ts", "contains": "opens circuit breaker on repeated failures" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "output-safety-and-promotion",
+      "area": "AI outputs and learning promotion remain validated and supervised",
+      "requirement": "Structured output, moderation, age-aware protection, consent, learning gates, release stages, canary limits, kill switches, and telemetry sanitization are enforced.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/ai.test.ts", "contains": "validates structured output" },
+        { "kind": "test", "path": "tests/unit/ai.test.ts", "contains": "moderates generated content" },
+        { "kind": "test", "path": "tests/unit/ai.test.ts", "contains": "safe learning requires all gates" },
+        { "kind": "test", "path": "tests/unit/ai.test.ts", "contains": "kill switch disables capability independently" },
+        { "kind": "test", "path": "tests/unit/ai.test.ts", "contains": "sanitizes telemetry" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "live-provider-gateway-boundary",
+      "area": "Live provider gateway execution and call audit are wired",
+      "requirement": "Production model calls traverse the governed gateway, persist call/cost/audit records, and remain operationally observable.",
+      "required": false,
+      "evidence": [
+        { "kind": "document", "path": "architecture/phase-26-ai-intelligence-layer.md", "contains": "Every production inference must be traceable" }
+      ],
+      "boundary": []
+    }
+  ]
+}

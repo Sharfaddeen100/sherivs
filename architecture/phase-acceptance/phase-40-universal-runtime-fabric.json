@@ -1,0 +1,96 @@
+{
+  "$comment": "Evidence map for Phase 40. Executable runtime contracts are measured; live runtime installation, isolation persistence and deployment remain declared.",
+  "phase": "40",
+  "phaseName": "Universal Runtime Fabric",
+  "source": "architecture/phase-40-universal-runtime-fabric.md",
+  "contract": "frontend/src/lib/kernel/phase-contracts/phase-40-runtime-fabric.ts",
+  "ownership": {
+    "canonicalOwners": {
+      "runtime-composition-and-isolation": "40",
+      "runtime-lifecycle": "40",
+      "runtime-health-and-quota": "40",
+      "domain-runtime-ontology": "installed-runtime",
+      "kernel-substrate": "33",
+      "orchestration-closure": "51"
+    }
+  },
+  "areas": [
+    {
+      "id": "webhook-delivery-and-retry",
+      "area": "Runtime webhook delivery is signed, replay-resistant and retry bounded",
+      "requirement": "Webhook signatures, versions, timestamp skew, delivery attempts, retries and dead-letter outcomes are explicit.",
+      "required": true,
+      "evidence": [
+        { "kind": "contract", "path": "frontend/src/lib/kernel/phase-contracts/phase-40-runtime-fabric.ts", "contains": "Runtime installation is a data operation over a stable contract" },
+        { "kind": "test", "path": "tests/unit/runtime-extended.test.ts", "contains": "accepts a valid signature" },
+        { "kind": "test", "path": "tests/unit/runtime-extended.test.ts", "contains": "rejects timestamp outside skew" },
+        { "kind": "test", "path": "tests/unit/runtime-extended.test.ts", "contains": "moves to dead-letter after max attempts" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "tenant-aware-integrations-and-anticorruption",
+      "area": "Runtime integration adapters preserve tenant context and canonical boundaries",
+      "requirement": "Adapters require tenant context when declared and external/canonical transformations remain explicit anti-corruption mappings.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/runtime-extended.test.ts", "contains": "enforces tenant context for tenant-scoped adapters" },
+        { "kind": "test", "path": "tests/unit/runtime-extended.test.ts", "contains": "blocks disabled adapters" },
+        { "kind": "test", "path": "tests/unit/runtime-extended.test.ts", "contains": "transforms external data to canonical (anti-corruption)" },
+        { "kind": "test", "path": "tests/unit/runtime-extended.test.ts", "contains": "transforms canonical data to external" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "resilience-and-resource-bounds",
+      "area": "Runtime resilience uses circuit breakers, limits, timeouts and bulkheads",
+      "requirement": "Failures open circuits, rate limits reset and reject excess traffic, timeouts are capped, and bulkheads bound concurrency.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/runtime-extended.test.ts", "contains": "opens after failure threshold" },
+        { "kind": "test", "path": "tests/unit/runtime-extended.test.ts", "contains": "blocks requests over limit" },
+        { "kind": "test", "path": "tests/unit/runtime-extended.test.ts", "contains": "caps at max timeout" },
+        { "kind": "test", "path": "tests/unit/runtime-extended.test.ts", "contains": "limits concurrent calls" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "feature-approval-and-bulk-operations",
+      "area": "Runtime features, approvals and bulk operations remain governed",
+      "requirement": "Feature flags honor tenant overrides and kill switches, approval requests expire and cannot be double-approved, and bulk operations track partial failures/transfers.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/runtime-extended.test.ts", "contains": "applies tenant overrides" },
+        { "kind": "test", "path": "tests/unit/runtime-extended.test.ts", "contains": "kill switch disables feature" },
+        { "kind": "test", "path": "tests/unit/runtime-extended.test.ts", "contains": "cannot approve an already-approved request" },
+        { "kind": "test", "path": "tests/unit/runtime-extended.test.ts", "contains": "reports partial failure" },
+        { "kind": "test", "path": "tests/unit/runtime-extended.test.ts", "contains": "tracks import/export progress" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "capability-health-observability",
+      "area": "Runtime capabilities and health signals are scoped and observable",
+      "requirement": "Capabilities enforce tenant/platform isolation and deprecation, logs redact sensitive fields, metrics expose percentiles, and health reflects degradation/unhealthy dependencies.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/runtime.test.ts", "contains": "enforces tenant context requirement" },
+        { "kind": "test", "path": "tests/unit/runtime.test.ts", "contains": "enforces platform-only isolation" },
+        { "kind": "test", "path": "tests/unit/runtime.test.ts", "contains": "does not expose deprecated capabilities" },
+        { "kind": "test", "path": "tests/unit/runtime.test.ts", "contains": "redacts sensitive fields from logs" },
+        { "kind": "test", "path": "tests/unit/runtime.test.ts", "contains": "creates unhealthy status when critical fails" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "live-runtime-fabric-operation",
+      "area": "Runtime installation, suspension, quotas and health operate at a live boundary",
+      "requirement": "Domain runtime manifests install/suspend/retire without kernel rewrites, with durable isolation, policy, quota and health evidence.",
+      "required": false,
+      "evidence": [
+        { "kind": "document", "path": "architecture/phase-40-universal-runtime-fabric.md", "contains": "runtime generation" }
+      ],
+      "boundary": []
+    }
+  ]
+}

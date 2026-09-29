@@ -3,7 +3,7 @@
   "phase": "06",
   "phaseName": "Workspace Engine",
   "source": "architecture/phase-06-workspace-engine.md",
-  "generatedAt": "2026-09-19T14:39:20.942Z",
+  "generatedAt": "2026-09-28T12:05:20.913Z",
   "classificationDefinitions": {
     "ENFORCED": "an executable artefact proves it (test, verifier script, migration, policy or machine-checked contract match) and, where a boundary is declared, a real call site invokes it",
     "DECLARED": "a module, document or contract mentions it, but nothing executable proves it",

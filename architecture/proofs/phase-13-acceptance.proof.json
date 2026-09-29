@@ -3,7 +3,7 @@
   "phase": "13",
   "phaseName": "Payment, Billing & Financial Operating System",
   "source": "architecture/phase-13-financial-system.md",
-  "generatedAt": "2026-09-21T21:24:34.064Z",
+  "generatedAt": "2026-09-28T12:05:27.941Z",
   "classificationDefinitions": {
     "ENFORCED": "an executable artefact proves it (test, verifier script, migration, policy or machine-checked contract match) and, where a boundary is declared, a real call site invokes it",
     "DECLARED": "a module, document or contract mentions it, but nothing executable proves it",

@@ -1,0 +1,119 @@
+{
+  "artifact": "phase-acceptance",
+  "phase": "39",
+  "phaseName": "Governance & Alignment Engine",
+  "source": "architecture/phase-39-governance-alignment-engine.md",
+  "generatedAt": "2026-09-28T15:12:50.116Z",
+  "classificationDefinitions": {
+    "ENFORCED": "an executable artefact proves it (test, verifier script, migration, policy or machine-checked contract match) and, where a boundary is declared, a real call site invokes it",
+    "DECLARED": "a module, document or contract mentions it, but nothing executable proves it",
+    "IMPLEMENTED_UNWIRED": "implementation and tests exist, but the declared boundary patterns match nothing — the capability protects nothing yet",
+    "MISSING": "no artefact found"
+  },
+  "summary": {
+    "areas": 4,
+    "enforced": 3,
+    "declared": 1,
+    "implementedUnwired": 0,
+    "implementedUnwiredAreas": [],
+    "missing": 0,
+    "missingRequired": [],
+    "unresolvedEvidencePaths": []
+  },
+  "ownership": {
+    "canonicalOwners": {
+      "alignment-expectations-and-conformance": "39",
+      "authorization-enforcement": "08",
+      "trust-verification": "09",
+      "adversarial-defense": "42",
+      "governance-authority": "governance documents"
+    }
+  },
+  "areas": [
+    {
+      "id": "contract-governance-projection",
+      "area": "Governance projection derives from canonical kernel contracts",
+      "requirement": "The governance surface projects contract coverage and does not own independent chain facts.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/kernel/phase-contracts/phase-39-governance-alignment.ts",
+        "tests/unit/command-centre-contract-governance.test.ts",
+        "tests/unit/command-centre-contract-governance.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/kernel/phase-contracts/phase-39-governance-alignment.ts",
+        "tests/unit/command-centre-contract-governance.test.ts",
+        "tests/unit/command-centre-contract-governance.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "phase-coverage-and-neutrality",
+      "area": "Alignment coverage is complete, registered and runtime-neutral",
+      "requirement": "Every phase has a contract row, registered capability relationship, neutral runtime seat and bounded autonomy level.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/command-centre-contract-governance.test.ts",
+        "tests/unit/command-centre-contract-governance.test.ts",
+        "tests/unit/command-centre-contract-governance.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/command-centre-contract-governance.test.ts",
+        "tests/unit/command-centre-contract-governance.test.ts",
+        "tests/unit/command-centre-contract-governance.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "view-only-governance-boundary",
+      "area": "Governance alignment remains view-only and cannot authorize actions",
+      "requirement": "The governance projection displays alignment and contract health without becoming an authorization input or duplicating security enforcement.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/command-centre-contract-governance.test.ts",
+        "tests/unit/command-centre-contract-governance.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/command-centre-contract-governance.test.ts",
+        "tests/unit/command-centre-contract-governance.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "live-alignment-drift-and-escalation",
+      "area": "Live alignment evaluation, drift records and escalation are wired",
+      "requirement": "Observed behavior is evaluated against expectations, drift is persisted with evidence and actor attribution, and escalation occurs without altering enforcement authority.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "architecture/phase-39-governance-alignment-engine.md"
+      ],
+      "matchedEvidence": [
+        "architecture/phase-39-governance-alignment-engine.md"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    }
+  ],
+  "ok": true,
+  "limitations": [
+    "Classification measures the presence of executable evidence, not the correctness or completeness of that evidence.",
+    "A DECLARED area is unfinished work, never a false claim — it is reported as such.",
+    "An IMPLEMENTED_UNWIRED area has a tested implementation that no boundary calls; it is reported, never counted as enforcement.",
+    "Evidence patterns are declared per phase in architecture/phase-acceptance/phase-<id>-*.json and must be reviewed when a phase is re-audited."
+  ]
+}

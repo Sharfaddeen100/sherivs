@@ -1,0 +1,46 @@
+{
+  "$comment": "Architecture-phase acceptance definition. It records design and contract evidence without claiming implementation, runtime, deployment, or operational completion.",
+  "phase": "49",
+  "phaseName": "Autonomous Economy Engine",
+  "source": "architecture/phase-49-autonomous-economy-engine.md",
+  "contract": "frontend/src/lib/kernel/phase-contracts/phase-49-autonomous-economy.ts",
+  "ownership": {
+    "canonicalOwners": {
+      "phase-49-capability": "49"
+    },
+    "note": "Registry ownership is observed. Cross-phase duplication and runtime ownership remain subject to Mission 0001 reconciliation."
+  },
+  "areas": [
+    {
+      "id": "architecture-and-contract-defined",
+      "area": "Architecture and phase contract are defined",
+      "requirement": "The phase has a canonical blueprint and machine-readable phase contract; this proves definition only.",
+      "required": true,
+      "evidence": [
+        {
+          "kind": "document",
+          "path": "architecture/phase-49-autonomous-economy-engine.md",
+          "contains": "Autonomous Economy Engine"
+        },
+        {
+          "kind": "contract",
+          "path": "frontend/src/lib/kernel/phase-contracts/phase-49-autonomous-economy.ts",
+          "contains": "phaseId"
+        }
+      ]
+    },
+    {
+      "id": "implementation-runtime-and-operations",
+      "area": "Implementation, runtime, deployment and operations remain unverified",
+      "requirement": "Executable modules, runtime consumers, deployment evidence and operational proof must be established by a later bounded mission; this definition does not infer them from design text.",
+      "required": false,
+      "evidence": [
+        {
+          "kind": "document",
+          "path": "architecture/phase-49-autonomous-economy-engine.md",
+          "contains": "Implementation"
+        }
+      ]
+    }
+  ]
+}

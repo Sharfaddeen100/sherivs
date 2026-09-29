@@ -1,0 +1,104 @@
+{
+  "$comment": "Evidence map for Phase 33. This probes the universal reality kernel and purity boundary; live database execution and operational observation remain declared.",
+  "phase": "33",
+  "phaseName": "Reality Intelligence Kernel (URIK)",
+  "source": "architecture/phase-33-reality-intelligence-kernel.md",
+  "contract": "frontend/src/lib/kernel/phase-contracts/phase-33-reality-kernel.ts",
+  "ownership": {
+    "canonicalOwners": {
+      "universal-entity-relationship-event-observation-substrate": "33",
+      "domain-ontology": "installed-runtime",
+      "authorization": "08",
+      "knowledge-graph-feature-set": "48",
+      "digital-twin-feature-set": "16",
+      "runtime-installation": "33"
+    }
+  },
+  "areas": [
+    {
+      "id": "sql-contract-coherence",
+      "area": "Universal kernel SQL and typed contracts remain coherent",
+      "requirement": "Classifications, observation kinds, event states and relationship constraints are represented consistently in the migration and TypeScript contracts.",
+      "required": true,
+      "evidence": [
+        { "kind": "contract", "path": "frontend/src/lib/kernel/phase-contracts/phase-33-reality-kernel.ts", "contains": "universal reality substrate" },
+        { "kind": "test", "path": "tests/unit/kernel-reality.test.ts", "contains": "registers every classification value present in the migration CHECK clause" },
+        { "kind": "test", "path": "tests/unit/kernel-reality.test.ts", "contains": "registers every observation kind present in the migration CHECK clause" },
+        { "kind": "test", "path": "tests/unit/kernel-reality.test.ts", "contains": "mirrors the relationship constraints" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "truth-hierarchy-and-reality-guards",
+      "area": "Reality, observation, evidence and derived values remain distinguishable",
+      "requirement": "Invalid classifications/kinds/states/confidence/payloads and self-relationships are rejected; observations do not collapse into verified truth.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/kernel-reality.test.ts", "contains": "accepts only registered classifications, kinds, and states" },
+        { "kind": "test", "path": "tests/unit/kernel-reality.test.ts", "contains": "bounds confidence to [0, 1]" },
+        { "kind": "test", "path": "tests/unit/kernel-reality.test.ts", "contains": "builds a truth-hierarchy observation draft with no collapsed kind" },
+        { "kind": "test", "path": "tests/unit/kernel-reality.test.ts", "contains": "rejects self-relationships" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "entity-relationship-event-observation-drafts",
+      "area": "Universal reality drafts preserve tenant, temporal and provenance fields",
+      "requirement": "Entity, relationship, event and observation drafts normalize scope and reject invalid required fields while preserving event idempotency and observation evidence references.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/kernel-reality.test.ts", "contains": "builds a valid entity draft with defaults" },
+        { "kind": "test", "path": "tests/unit/kernel-reality.test.ts", "contains": "builds a versioned event draft with pending delivery state" },
+        { "kind": "test", "path": "tests/unit/kernel-reality.test.ts", "contains": "builds a valid relationship draft between distinct entities" },
+        { "kind": "test", "path": "tests/unit/kernel-reality.test.ts", "contains": "rejects invalid observation drafts" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "kernel-purity-and-domain-neutrality",
+      "area": "The kernel contains only universal primitives",
+      "requirement": "Kernel sources contain no Scholar/domain vocabulary, legacy domain-table references or runtime-named helpers, and consumer references remain opaque.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/kernel-purity.test.ts", "contains": "contains no domain vocabulary in any kernel source" },
+        { "kind": "test", "path": "tests/unit/kernel-purity.test.ts", "contains": "never references legacy domain tables" },
+        { "kind": "test", "path": "tests/unit/kernel-purity.test.ts", "contains": "records consumption by opaque reference" },
+        { "kind": "test", "path": "tests/unit/kernel-purity.test.ts", "contains": "exposes a generic consumer query instead of a runtime-named helper" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "runtime-installation-and-one-way-dependency",
+      "area": "Domain runtimes install over the kernel without reverse coupling",
+      "requirement": "Runtime consumption remains in the runtime layer, Scholar runtime modules consume kernel contracts, and kernel modules never import runtime modules.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/kernel-purity.test.ts", "contains": "keeps runtime consumption in the runtime layer" },
+        { "kind": "test", "path": "tests/unit/kernel-purity.test.ts", "contains": "keeps the dependency arrow one-way" },
+        { "kind": "test", "path": "tests/unit/kernel-runtime-registry.test.ts", "contains": "runtime" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "deny-by-default-database-boundary",
+      "area": "The universal kernel database boundary is deny-by-default",
+      "requirement": "Kernel tables enable RLS, revoke broad client grants, and avoid implicit authenticated/anonymous access.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/kernel-purity.test.ts", "contains": "is deny-by-default at the database boundary" },
+        { "kind": "test", "path": "tests/unit/kernel-reality.test.ts", "contains": "registers every classification value present in the migration CHECK clause" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "live-reality-persistence-and-observation",
+      "area": "Live reality persistence, observations and runtime operations are wired",
+      "requirement": "Kernel tables, RLS policies, runtime registration, observation writes, provenance and operational health are executed against an approved live database boundary.",
+      "required": false,
+      "evidence": [
+        { "kind": "document", "path": "architecture/phase-33-reality-intelligence-kernel.md", "contains": "provenance" }
+      ],
+      "boundary": []
+    }
+  ]
+}

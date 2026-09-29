@@ -1,0 +1,103 @@
+{
+  "$comment": "Evidence map for Phase 44. Static infrastructure and credential-gating evidence is available; live cloud deployment and planetary operations remain blocked or declared.",
+  "phase": "44",
+  "phaseName": "Planetary Distributed Infrastructure Engine",
+  "source": "architecture/phase-44-planetary-distributed-infrastructure-engine.md",
+  "contract": "frontend/src/lib/kernel/phase-contracts/phase-44-planetary-infrastructure.ts",
+  "ownership": {
+    "canonicalOwners": {
+      "planetary-topology-and-capacity": "44",
+      "cloud-fabric": "21",
+      "device-identity": "15",
+      "sovereign-deployments": "20",
+      "ai-compute": "45",
+      "domain-data": "owning-domain-phase"
+    }
+  },
+  "areas": [
+    {
+      "id": "static-infrastructure-invariants",
+      "area": "Infrastructure fabric invariants are statically verified",
+      "requirement": "Provider roots/modules, secret references, remote state, pinning, tags, namespaces, quotas, network policy, sandbox and neutrality constraints are checked.",
+      "required": true,
+      "evidence": [
+        { "kind": "script", "path": "scripts/verify-infrastructure.mjs", "contains": "64/64 fabric invariants" },
+        { "kind": "test", "path": "tests/unit/infrastructure-fabric.test.ts", "contains": "runs cleanly and reports the invariant count" },
+        { "kind": "test", "path": "tests/unit/infrastructure-fabric.test.ts", "contains": "passes every recorded invariant across all nine law categories" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "credential-and-deployment-gating",
+      "area": "Cloud-touching waves are credential-gated and read-only by default",
+      "requirement": "Preflight reports missing secret names without values, bootstrap remains dry, and deployment claims remain blocked without credentials.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/infrastructure-readiness.test.ts", "contains": "runs the preflight read-only and reports the gate state" },
+        { "kind": "test", "path": "tests/unit/infrastructure-readiness.test.ts", "contains": "keeps the bootstrap helper dry by default and secret-free" },
+        { "kind": "script", "path": "scripts/infrastructure/preflight.mjs", "contains": "Blocked waves" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "residency-and-sovereignty",
+      "area": "Region records and tenant-data residency fail closed",
+      "requirement": "Regions declare jurisdiction/sovereignty, worker/edge regions cannot hold tenant data, and referenced regions exist in the inventory.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/infrastructure-readiness.test.ts", "contains": "declares region records with jurisdiction and sovereignty" },
+        { "kind": "test", "path": "tests/unit/infrastructure-readiness.test.ts", "contains": "refuses to place tenant data on compute or edge regions" },
+        { "kind": "test", "path": "tests/unit/infrastructure-fabric.test.ts", "contains": "keeps the fabric domain-neutral" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "sandbox-and-supply-chain-containment",
+      "area": "Infrastructure sandbox and supply-chain boundaries are contained",
+      "requirement": "Sandbox networking is default-deny, time-boxed, lowest priority, credential-free and isolated from runtime namespaces; provider versions are pinned.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/infrastructure-fabric.test.ts", "contains": "contains the sandbox: isolation, TTL, no credentials, lowest priority" },
+        { "kind": "test", "path": "tests/unit/infrastructure-fabric.test.ts", "contains": "pins versions and never ships a floating image tag" },
+        { "kind": "test", "path": "tests/unit/infrastructure-fabric.test.ts", "contains": "keeps every cloud-touching wave credential-gated" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "health-cost-incident-and-change-governance",
+      "area": "Infrastructure health, SLO, incident, cost, secrets and change records are represented",
+      "requirement": "Cloud governance records cover health, SLO/error budgets, alerts/incidents/runbooks, cost, secrets, break-glass, policy, deployments, migration, kill switches and change approvals.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/cloud-governance.test.ts", "contains": "creates SLO with error budget" },
+        { "kind": "test", "path": "tests/unit/cloud-governance.test.ts", "contains": "creates incident" },
+        { "kind": "test", "path": "tests/unit/cloud-governance.test.ts", "contains": "creates secret reference" },
+        { "kind": "test", "path": "tests/unit/cloud-governance.test.ts", "contains": "creates kill switch" },
+        { "kind": "test", "path": "tests/unit/cloud-governance.test.ts", "contains": "creates change record" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "provider-neutrality-and-no-duplicate-engines",
+      "area": "Infrastructure remains provider-neutral and does not duplicate platform engines",
+      "requirement": "The fabric hosts owned capabilities without replacing identity, authorization, automation, analytics or twin engines, and optional layers remain non-critical.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/infrastructure-fabric.test.ts", "contains": "builds no duplicate engine" },
+        { "kind": "test", "path": "tests/unit/infrastructure-readiness.test.ts", "contains": "contains no required Terraform resource for n8n, Hermes or Jarvis" },
+        { "kind": "test", "path": "tests/unit/infrastructure-fabric.test.ts", "contains": "registers the fabric on the phase-21 contract and registry surface" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "live-planetary-deployment",
+      "area": "Live planetary placement, fleets and recovery are operational",
+      "requirement": "Approved credentials, deployed regions/edge/fleets, real telemetry, failover and recovery evidence prove operational planetary infrastructure.",
+      "required": false,
+      "evidence": [
+        { "kind": "document", "path": "architecture/phase-44-planetary-distributed-infrastructure-engine.md", "contains": "planetary" }
+      ],
+      "boundary": []
+    }
+  ]
+}

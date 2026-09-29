@@ -428,9 +428,18 @@ describe("registry alignment (REGISTRY.md / PROGRESS.md source of truth)", () =>
   it("keeps every contract aligned with the PROGRESS §11 phase registry row", () => {
     const progress = readFileSync(join(ROOT, "PROGRESS.md"), "utf8");
     const rows = new Map<string, string>();
-    for (const line of progress.split(/\r?\n/)) {
-      const match = line.match(/^\|\s*(\d{2})\s+([^|]+?)\s*\|/);
-      if (match) rows.set(match[1], match[2].trim());
+    const progressLines = progress.split(/\r\n|\r|\n/);
+    for (let index = 0; index < progressLines.length; index += 1) {
+      const tableMatch = progressLines[index].match(/^\|\s*(\d{2})\s+([^|]+?)\s*\|/);
+      if (tableMatch) {
+        rows.set(tableMatch[1], tableMatch[2].trim());
+        continue;
+      }
+      const phaseMatch = progressLines[index].match(/^\s*(\d{2})\s*$/);
+      const name = progressLines[index + 1]?.trim();
+      if (phaseMatch && name && !/^(Complete|Pending|PROPOSED|IMPLEMENTED|ARCHITECTURE_DEFINED|DESIGNED|IN_PROGRESS|VALIDATING|OPERATIONAL|UNKNOWN)$/i.test(name)) {
+        rows.set(phaseMatch[1], name);
+      }
     }
     expect(rows.size).toBeGreaterThanOrEqual(51);
     for (const contract of PHASE_CONTRACTS) {

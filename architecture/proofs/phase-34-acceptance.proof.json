@@ -1,0 +1,184 @@
+{
+  "artifact": "phase-acceptance",
+  "phase": "34",
+  "phaseName": "Universal Cognitive Intelligence Engine",
+  "source": "architecture/phase-34-universal-cognitive-intelligence-engine.md",
+  "generatedAt": "2026-09-28T15:12:35.580Z",
+  "classificationDefinitions": {
+    "ENFORCED": "an executable artefact proves it (test, verifier script, migration, policy or machine-checked contract match) and, where a boundary is declared, a real call site invokes it",
+    "DECLARED": "a module, document or contract mentions it, but nothing executable proves it",
+    "IMPLEMENTED_UNWIRED": "implementation and tests exist, but the declared boundary patterns match nothing — the capability protects nothing yet",
+    "MISSING": "no artefact found"
+  },
+  "summary": {
+    "areas": 7,
+    "enforced": 6,
+    "declared": 1,
+    "implementedUnwired": 0,
+    "implementedUnwiredAreas": [],
+    "missing": 0,
+    "missingRequired": [],
+    "unresolvedEvidencePaths": []
+  },
+  "ownership": {
+    "canonicalOwners": {
+      "reasoning-and-explanations": "34",
+      "world-models-and-derived-beliefs": "34",
+      "model-provider-access": "26",
+      "reality-substrate": "33",
+      "agent-lifecycle": "07",
+      "knowledge-graph": "48",
+      "canonical-truth": "owning-phase"
+    }
+  },
+  "areas": [
+    {
+      "id": "reasoning-trace-and-explanation",
+      "area": "Cognitive reasoning produces traceable explanations without exposing chain of thought",
+      "requirement": "Reasoning traces identify operations and outputs, while explanations identify evidence and rationale.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/kernel/phase-contracts/phase-34-cognitive-engine.ts",
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/kernel/phase-contracts/phase-34-cognitive-engine.ts",
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "uncertainty-and-calibration",
+      "area": "Cognitive confidence and uncertainty remain measurable",
+      "requirement": "Cognitive outputs expose uncertainty and calibration error rather than treating confidence as truth or authority.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "claim-verification-and-hallucination",
+      "area": "Claims require evidence and unsupported outputs are detected",
+      "requirement": "Supported claims are verifiable, unsupported claims fail verification, and uncited outputs are flagged as hallucination risk.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "consensus-and-escalation",
+      "area": "Disagreement and high-risk cognition escalate",
+      "requirement": "Model disagreement escalates, multi-model verification follows its declared policy, and high-risk cognition requires verification or approval.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "policy-budget-and-derived-output-safety",
+      "area": "Cognitive actions remain policy, budget and output governed",
+      "requirement": "Risk classification, policy precedence, budgets, quotas, output evaluation, release stages, canary limits and kill switches constrain derived intelligence.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "supervised-self-improvement",
+      "area": "Cognitive learning and self-improvement remain supervised",
+      "requirement": "Unsupervised self-modification is prohibited and learning deployment requires evaluation, validation, approval and controlled deployment.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "live-world-model-and-cognitive-runtime",
+      "area": "World models and cognitive runtime execution are durable and observable",
+      "requirement": "World models, beliefs, goals, explanations and cognitive traces persist with provenance and are executed through authorized runtime boundaries.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "architecture/phase-34-universal-cognitive-intelligence-engine.md"
+      ],
+      "matchedEvidence": [
+        "architecture/phase-34-universal-cognitive-intelligence-engine.md"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    }
+  ],
+  "ok": true,
+  "limitations": [
+    "Classification measures the presence of executable evidence, not the correctness or completeness of that evidence.",
+    "A DECLARED area is unfinished work, never a false claim — it is reported as such.",
+    "An IMPLEMENTED_UNWIRED area has a tested implementation that no boundary calls; it is reported, never counted as enforcement.",
+    "Evidence patterns are declared per phase in architecture/phase-acceptance/phase-<id>-*.json and must be reviewed when a phase is re-audited."
+  ]
+}

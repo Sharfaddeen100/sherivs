@@ -1,0 +1,109 @@
+{
+  "$comment": "Evidence map for Phase 27. This records current artefacts; it does not claim deployment, persistence, or production completion.",
+  "phase": "27",
+  "phaseName": "Marketplace",
+  "source": "architecture/phase-27-marketplace.md",
+  "contract": "frontend/src/lib/kernel/phase-contracts/phase-27-marketplace.ts",
+  "ownership": {
+    "canonicalOwners": {
+      "package-catalog": "27",
+      "vendor-records": "27",
+      "entitlement-records": "27",
+      "financial-ledger": "13",
+      "identity": "02",
+      "tenancy": "03",
+      "installation-behaviour": "consuming-runtime"
+    }
+  },
+  "areas": [
+    {
+      "id": "product-and-listing-model",
+      "area": "Products, versions and listings are explicit",
+      "requirement": "Marketplace products require vendor identity, versions remain linked to packages, and listings are discoverable records.",
+      "required": true,
+      "evidence": [
+        { "kind": "contract", "path": "frontend/src/lib/kernel/phase-contracts/phase-27-marketplace.ts", "contains": "package catalog" },
+        { "kind": "test", "path": "tests/unit/marketplace.test.ts", "contains": "creates version and listing" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "tenant-scoped-discovery",
+      "area": "Discovery respects distribution scope",
+      "requirement": "Inactive products and private products outside the target tenant are excluded from discovery.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/marketplace.test.ts", "contains": "respects private distribution" },
+        { "kind": "test", "path": "tests/unit/marketplace.test.ts", "contains": "excludes inactive products" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "vendor-governance",
+      "area": "Vendor verification and publishing authority are governed",
+      "requirement": "Vendor verification is monotonic and publishing authority cannot be granted by an unauthorized member.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/marketplace.test.ts", "contains": "promotes verification monotonically" },
+        { "kind": "test", "path": "tests/unit/marketplace.test.ts", "contains": "owner can grant publishing authority" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "package-security",
+      "area": "Package security and compatibility are evaluated before installation",
+      "requirement": "Malware, invalid signatures, excessive data access, missing APIs and permission conflicts block or flag packages.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/marketplace.test.ts", "contains": "security scan blocks malware" },
+        { "kind": "test", "path": "tests/unit/marketplace.test.ts", "contains": "signature verification required" },
+        { "kind": "test", "path": "tests/unit/marketplace.test.ts", "contains": "detects permission conflicts" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "entitlement-lifecycle",
+      "area": "Entitlements expire and installations advance safely",
+      "requirement": "Expired or suspended entitlements fail closed and installation transitions cannot skip authorization.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/marketplace.test.ts", "contains": "entitlement expires and suspends" },
+        { "kind": "test", "path": "tests/unit/marketplace.test.ts", "contains": "installation advances one stage at a time" },
+        { "kind": "contract", "path": "frontend/src/lib/kernel/phase-contracts/phase-27-marketplace.ts", "contains": "expired entitlement fails closed" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "policy-and-incident-governance",
+      "area": "Marketplace policy, incidents and audit events are explicit",
+      "requirement": "Recommendations require approval, malicious products can be removed, incidents advance through controlled stages, and audit events are recorded.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/marketplace.test.ts", "contains": "recommendations never auto-install" },
+        { "kind": "test", "path": "tests/unit/marketplace.test.ts", "contains": "emergency removal for malicious product" },
+        { "kind": "test", "path": "tests/unit/marketplace.test.ts", "contains": "records audit event" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "webhook-security",
+      "area": "Vendor webhook delivery is authenticated and replay-limited",
+      "requirement": "Webhook delivery requires valid signatures, acceptable event age and rate limits.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/marketplace.test.ts", "contains": "webhook delivery requires signature" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "persistent-marketplace-enforcement",
+      "area": "Marketplace records are persisted and enforced at a live boundary",
+      "requirement": "Tenant-isolated persistence and a live authorized installation boundary store and enforce marketplace records.",
+      "required": false,
+      "evidence": [
+        { "kind": "document", "path": "architecture/phase-27-marketplace.md", "contains": "tenant" }
+      ],
+      "boundary": []
+    }
+  ]
+}

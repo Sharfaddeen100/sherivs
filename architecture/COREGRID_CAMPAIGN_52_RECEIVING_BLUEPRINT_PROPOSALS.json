@@ -1,0 +1,903 @@
+{
+  "mission": "COREGRID-MISSION-0001",
+  "campaign": "CAMPAIGN-52",
+  "workPackage": "CAMPAIGN-52-WP-01",
+  "artifact": "COREGRID_CAMPAIGN_52_RECEIVING_BLUEPRINT_PROPOSALS",
+  "status": "PROPOSAL_ONLY_GATE_3_REMAINS_BLOCKED",
+  "generatedAt": "2026-09-28T19:54:55.762Z",
+  "source": [
+    "architecture/COREGRID_CAMPAIGN_52_CANDIDATE_MATCHES.json",
+    "architecture/COREGRID_PHASE_52_UNRESOLVED_GAP_REGISTER.json"
+  ],
+  "proposals": [
+    {
+      "proposalId": "CAMPAIGN-52-WP-01-P-CG-P52-GAP-001",
+      "gapId": "CG-P52-GAP-001",
+      "sourceTitle": "COREGRID CIVILIZATION KERNEL",
+      "status": "PROPOSAL_ONLY_REQUIRES_AUTHORITY",
+      "proposedDisposition": "REVIEW_EXISTING_PHASE_CANDIDATES",
+      "candidateReceivingPhases": [
+        {
+          "phase": "33",
+          "name": "Reality Intelligence Kernel (URIK)",
+          "registryStatus": "ARCHITECTURE_DEFINED",
+          "score": 1,
+          "overlappingTokens": [
+            "kernel"
+          ],
+          "evidence": {
+            "registry": "architecture/registry.json",
+            "phase": "33",
+            "capabilityText": "universal-reality-ontology"
+          }
+        },
+        {
+          "phase": "35",
+          "name": "Autonomous Agent Civilization OS",
+          "registryStatus": "ARCHITECTURE_DEFINED",
+          "score": 1,
+          "overlappingTokens": [
+            "civilization"
+          ],
+          "evidence": {
+            "registry": "architecture/registry.json",
+            "phase": "35",
+            "capabilityText": "multi-agent-society-governance"
+          }
+        },
+        {
+          "phase": "36",
+          "name": "Universal Memory & Knowledge Engine",
+          "registryStatus": "ARCHITECTURE_DEFINED",
+          "score": 1,
+          "overlappingTokens": [
+            "civilization"
+          ],
+          "evidence": {
+            "registry": "architecture/registry.json",
+            "phase": "36",
+            "capabilityText": "memory-knowledge-civilization"
+          }
+        }
+      ],
+      "affectedMother": null,
+      "receivingBlueprintWork": [
+        "Confirm canonical owner and non-purpose.",
+        "Merge unique source content with provenance and supersession links.",
+        "Define receiving capability boundaries, dependencies and consumers.",
+        "Define contracts, schemas, security, failure, evidence and verification.",
+        "Update acceptance criteria and scope-lock record only after approval."
+      ],
+      "implementationStatus": "BLOCKED",
+      "registryMutation": "NOT_AUTHORIZED",
+      "infrastructureChange": "NOT_AUTHORIZED",
+      "rationale": "Candidate matches are deterministic discovery evidence, not architectural authority."
+    },
+    {
+      "proposalId": "CAMPAIGN-52-WP-01-P-CG-P52-GAP-002",
+      "gapId": "CG-P52-GAP-002",
+      "sourceTitle": "THE COREGRID \"OVERLAY INTELLIGENCE\" MODEL",
+      "status": "PROPOSAL_ONLY_REQUIRES_AUTHORITY",
+      "proposedDisposition": "REVIEW_EXISTING_PHASE_CANDIDATES",
+      "candidateReceivingPhases": [
+        {
+          "phase": "11",
+          "name": "Academic Intelligence",
+          "registryStatus": "COMPLETE",
+          "score": 1,
+          "overlappingTokens": [
+            "intelligence"
+          ],
+          "evidence": {
+            "registry": "architecture/registry.json",
+            "phase": "11",
+            "capabilityText": "academic-intelligence"
+          }
+        },
+        {
+          "phase": "12",
+          "name": "Scheduling Intelligence",
+          "registryStatus": "COMPLETE",
+          "score": 1,
+          "overlappingTokens": [
+            "intelligence"
+          ],
+          "evidence": {
+            "registry": "architecture/registry.json",
+            "phase": "12",
+            "capabilityText": "scheduling"
+          }
+        },
+        {
+          "phase": "18",
+          "name": "Analytics Intelligence",
+          "registryStatus": "IMPLEMENTING",
+          "score": 1,
+          "overlappingTokens": [
+            "intelligence"
+          ],
+          "evidence": {
+            "registry": "architecture/registry.json",
+            "phase": "18",
+            "capabilityText": "analytics-decision-intelligence"
+          }
+        }
+      ],
+      "affectedMother": "ARCHITECTURE.md",
+      "receivingBlueprintWork": [
+        "Confirm canonical owner and non-purpose.",
+        "Merge unique source content with provenance and supersession links.",
+        "Define receiving capability boundaries, dependencies and consumers.",
+        "Define contracts, schemas, security, failure, evidence and verification.",
+        "Update acceptance criteria and scope-lock record only after approval."
+      ],
+      "implementationStatus": "BLOCKED",
+      "registryMutation": "NOT_AUTHORIZED",
+      "infrastructureChange": "NOT_AUTHORIZED",
+      "rationale": "Candidate matches are deterministic discovery evidence, not architectural authority."
+    },
+    {
+      "proposalId": "CAMPAIGN-52-WP-01-P-CG-P52-GAP-003",
+      "gapId": "CG-P52-GAP-003",
+      "sourceTitle": "COREGRID DEVELOPER MARKETPLACE",
+      "status": "PROPOSAL_ONLY_REQUIRES_AUTHORITY",
+      "proposedDisposition": "REVIEW_EXISTING_PHASE_CANDIDATES",
+      "candidateReceivingPhases": [
+        {
+          "phase": "27",
+          "name": "Marketplace",
+          "registryStatus": "IMPLEMENTED",
+          "score": 1,
+          "overlappingTokens": [
+            "marketplace"
+          ],
+          "evidence": {
+            "registry": "architecture/registry.json",
+            "phase": "27",
+            "capabilityText": "marketplace"
+          }
+        },
+        {
+          "phase": "28",
+          "name": "Developer Platform",
+          "registryStatus": "IMPLEMENTING",
+          "score": 1,
+          "overlappingTokens": [
+            "developer"
+          ],
+          "evidence": {
+            "registry": "architecture/registry.json",
+            "phase": "28",
+            "capabilityText": "developer-platform"
+          }
+        }
+      ],
+      "affectedMother": null,
+      "receivingBlueprintWork": [
+        "Confirm canonical owner and non-purpose.",
+        "Merge unique source content with provenance and supersession links.",
+        "Define receiving capability boundaries, dependencies and consumers.",
+        "Define contracts, schemas, security, failure, evidence and verification.",
+        "Update acceptance criteria and scope-lock record only after approval."
+      ],
+      "implementationStatus": "BLOCKED",
+      "registryMutation": "NOT_AUTHORIZED",
+      "infrastructureChange": "NOT_AUTHORIZED",
+      "rationale": "Candidate matches are deterministic discovery evidence, not architectural authority."
+    },
+    {
+      "proposalId": "CAMPAIGN-52-WP-01-P-CG-P52-GAP-004",
+      "gapId": "CG-P52-GAP-004",
+      "sourceTitle": "COREGRID SDK ARCHITECTURE",
+      "status": "PROPOSAL_ONLY_REQUIRES_AUTHORITY",
+      "proposedDisposition": "REVIEW_MOTHER_RESEARCH_OR_EXISTING_BOUNDARY",
+      "candidateReceivingPhases": [],
+      "affectedMother": null,
+      "receivingBlueprintWork": [
+        "Confirm canonical owner and non-purpose.",
+        "Merge unique source content with provenance and supersession links.",
+        "Define receiving capability boundaries, dependencies and consumers.",
+        "Define contracts, schemas, security, failure, evidence and verification.",
+        "Update acceptance criteria and scope-lock record only after approval."
+      ],
+      "implementationStatus": "BLOCKED",
+      "registryMutation": "NOT_AUTHORIZED",
+      "infrastructureChange": "NOT_AUTHORIZED",
+      "rationale": "Candidate matches are deterministic discovery evidence, not architectural authority."
+    },
+    {
+      "proposalId": "CAMPAIGN-52-WP-01-P-CG-P52-GAP-005",
+      "gapId": "CG-P52-GAP-005",
+      "sourceTitle": "USER-GENERATED SOFTWARE",
+      "status": "PROPOSAL_ONLY_REQUIRES_AUTHORITY",
+      "proposedDisposition": "REVIEW_MOTHER_RESEARCH_OR_EXISTING_BOUNDARY",
+      "candidateReceivingPhases": [],
+      "affectedMother": null,
+      "receivingBlueprintWork": [
+        "Confirm canonical owner and non-purpose.",
+        "Merge unique source content with provenance and supersession links.",
+        "Define receiving capability boundaries, dependencies and consumers.",
+        "Define contracts, schemas, security, failure, evidence and verification.",
+        "Update acceptance criteria and scope-lock record only after approval."
+      ],
+      "implementationStatus": "BLOCKED",
+      "registryMutation": "NOT_AUTHORIZED",
+      "infrastructureChange": "NOT_AUTHORIZED",
+      "rationale": "Candidate matches are deterministic discovery evidence, not architectural authority."
+    },
+    {
+      "proposalId": "CAMPAIGN-52-WP-01-P-CG-P52-GAP-006",
+      "gapId": "CG-P52-GAP-006",
+      "sourceTitle": "BLUEPRINT-TO-REALITY COMPILER",
+      "status": "PROPOSAL_ONLY_REQUIRES_AUTHORITY",
+      "proposedDisposition": "REVIEW_EXISTING_PHASE_CANDIDATES",
+      "candidateReceivingPhases": [
+        {
+          "phase": "04",
+          "name": "Education Reality Engine",
+          "registryStatus": "COMPLETE",
+          "score": 1,
+          "overlappingTokens": [
+            "reality"
+          ],
+          "evidence": {
+            "registry": "architecture/registry.json",
+            "phase": "04",
+            "capabilityText": "education-reality-ontology"
+          }
+        },
+        {
+          "phase": "33",
+          "name": "Reality Intelligence Kernel (URIK)",
+          "registryStatus": "ARCHITECTURE_DEFINED",
+          "score": 1,
+          "overlappingTokens": [
+            "reality"
+          ],
+          "evidence": {
+            "registry": "architecture/registry.json",
+            "phase": "33",
+            "capabilityText": "universal-reality-ontology"
+          }
+        },
+        {
+          "phase": "41",
+          "name": "Reality Simulation & Autonomous Sandbox Engine",
+          "registryStatus": "ARCHITECTURE_DEFINED",
+          "score": 1,
+          "overlappingTokens": [
+            "reality"
+          ],
+          "evidence": {
+            "registry": "architecture/registry.json",
+            "phase": "41",
+            "capabilityText": "sandbox-runtime"
+          }
+        }
+      ],
+      "affectedMother": null,
+      "receivingBlueprintWork": [
+        "Confirm canonical owner and non-purpose.",
+        "Merge unique source content with provenance and supersession links.",
+        "Define receiving capability boundaries, dependencies and consumers.",
+        "Define contracts, schemas, security, failure, evidence and verification.",
+        "Update acceptance criteria and scope-lock record only after approval."
+      ],
+      "implementationStatus": "BLOCKED",
+      "registryMutation": "NOT_AUTHORIZED",
+      "infrastructureChange": "NOT_AUTHORIZED",
+      "rationale": "Candidate matches are deterministic discovery evidence, not architectural authority."
+    },
+    {
+      "proposalId": "CAMPAIGN-52-WP-01-P-CG-P52-GAP-007",
+      "gapId": "CG-P52-GAP-007",
+      "sourceTitle": "THE MAIN COREGRID APPLICATION COMES FIRST",
+      "status": "PROPOSAL_ONLY_REQUIRES_AUTHORITY",
+      "proposedDisposition": "REVIEW_EXISTING_PHASE_CANDIDATES",
+      "candidateReceivingPhases": [
+        {
+          "phase": "05",
+          "name": "Core Application Runtime",
+          "registryStatus": "COMPLETE",
+          "score": 1,
+          "overlappingTokens": [
+            "application"
+          ],
+          "evidence": {
+            "registry": "architecture/registry.json",
+            "phase": "05",
+            "capabilityText": "runtime-primitives"
+          }
+        }
+      ],
+      "affectedMother": null,
+      "receivingBlueprintWork": [
+        "Confirm canonical owner and non-purpose.",
+        "Merge unique source content with provenance and supersession links.",
+        "Define receiving capability boundaries, dependencies and consumers.",
+        "Define contracts, schemas, security, failure, evidence and verification.",
+        "Update acceptance criteria and scope-lock record only after approval."
+      ],
+      "implementationStatus": "BLOCKED",
+      "registryMutation": "NOT_AUTHORIZED",
+      "infrastructureChange": "NOT_AUTHORIZED",
+      "rationale": "Candidate matches are deterministic discovery evidence, not architectural authority."
+    },
+    {
+      "proposalId": "CAMPAIGN-52-WP-01-P-CG-P52-GAP-008",
+      "gapId": "CG-P52-GAP-008",
+      "sourceTitle": "COREGRID GLOBAL SHELL",
+      "status": "PROPOSAL_ONLY_REQUIRES_AUTHORITY",
+      "proposedDisposition": "REVIEW_EXISTING_PHASE_CANDIDATES",
+      "candidateReceivingPhases": [
+        {
+          "phase": "21",
+          "name": "Global Cloud Fabric",
+          "registryStatus": "IMPLEMENTING",
+          "score": 1,
+          "overlappingTokens": [
+            "global"
+          ],
+          "evidence": {
+            "registry": "architecture/registry.json",
+            "phase": "21",
+            "capabilityText": "cloud-fabric-byoc"
+          }
+        }
+      ],
+      "affectedMother": null,
+      "receivingBlueprintWork": [
+        "Confirm canonical owner and non-purpose.",
+        "Merge unique source content with provenance and supersession links.",
+        "Define receiving capability boundaries, dependencies and consumers.",
+        "Define contracts, schemas, security, failure, evidence and verification.",
+        "Update acceptance criteria and scope-lock record only after approval."
+      ],
+      "implementationStatus": "BLOCKED",
+      "registryMutation": "NOT_AUTHORIZED",
+      "infrastructureChange": "NOT_AUTHORIZED",
+      "rationale": "Candidate matches are deterministic discovery evidence, not architectural authority."
+    },
+    {
+      "proposalId": "CAMPAIGN-52-WP-01-P-CG-P52-GAP-009",
+      "gapId": "CG-P52-GAP-009",
+      "sourceTitle": "ONE USER, MANY REALITIES",
+      "status": "PROPOSAL_ONLY_REQUIRES_AUTHORITY",
+      "proposedDisposition": "REVIEW_MOTHER_RESEARCH_OR_EXISTING_BOUNDARY",
+      "candidateReceivingPhases": [],
+      "affectedMother": null,
+      "receivingBlueprintWork": [
+        "Confirm canonical owner and non-purpose.",
+        "Merge unique source content with provenance and supersession links.",
+        "Define receiving capability boundaries, dependencies and consumers.",
+        "Define contracts, schemas, security, failure, evidence and verification.",
+        "Update acceptance criteria and scope-lock record only after approval."
+      ],
+      "implementationStatus": "BLOCKED",
+      "registryMutation": "NOT_AUTHORIZED",
+      "infrastructureChange": "NOT_AUTHORIZED",
+      "rationale": "Candidate matches are deterministic discovery evidence, not architectural authority."
+    },
+    {
+      "proposalId": "CAMPAIGN-52-WP-01-P-CG-P52-GAP-010",
+      "gapId": "CG-P52-GAP-010",
+      "sourceTitle": "CONTEXT SWITCHING MUST BE EXTREMELY SAFE",
+      "status": "PROPOSAL_ONLY_REQUIRES_AUTHORITY",
+      "proposedDisposition": "REVIEW_MOTHER_RESEARCH_OR_EXISTING_BOUNDARY",
+      "candidateReceivingPhases": [],
+      "affectedMother": null,
+      "receivingBlueprintWork": [
+        "Confirm canonical owner and non-purpose.",
+        "Merge unique source content with provenance and supersession links.",
+        "Define receiving capability boundaries, dependencies and consumers.",
+        "Define contracts, schemas, security, failure, evidence and verification.",
+        "Update acceptance criteria and scope-lock record only after approval."
+      ],
+      "implementationStatus": "BLOCKED",
+      "registryMutation": "NOT_AUTHORIZED",
+      "infrastructureChange": "NOT_AUTHORIZED",
+      "rationale": "Candidate matches are deterministic discovery evidence, not architectural authority."
+    },
+    {
+      "proposalId": "CAMPAIGN-52-WP-01-P-CG-P52-GAP-011",
+      "gapId": "CG-P52-GAP-011",
+      "sourceTitle": "PERSONAL VS ORGANIZATIONAL DATA",
+      "status": "PROPOSAL_ONLY_REQUIRES_AUTHORITY",
+      "proposedDisposition": "REVIEW_EXISTING_PHASE_CANDIDATES",
+      "candidateReceivingPhases": [
+        {
+          "phase": "14",
+          "name": "Data Platform",
+          "registryStatus": "IMPLEMENTING",
+          "score": 1,
+          "overlappingTokens": [
+            "data"
+          ],
+          "evidence": {
+            "registry": "architecture/registry.json",
+            "phase": "14",
+            "capabilityText": "data-platform"
+          }
+        }
+      ],
+      "affectedMother": null,
+      "receivingBlueprintWork": [
+        "Confirm canonical owner and non-purpose.",
+        "Merge unique source content with provenance and supersession links.",
+        "Define receiving capability boundaries, dependencies and consumers.",
+        "Define contracts, schemas, security, failure, evidence and verification.",
+        "Update acceptance criteria and scope-lock record only after approval."
+      ],
+      "implementationStatus": "BLOCKED",
+      "registryMutation": "NOT_AUTHORIZED",
+      "infrastructureChange": "NOT_AUTHORIZED",
+      "rationale": "Candidate matches are deterministic discovery evidence, not architectural authority."
+    },
+    {
+      "proposalId": "CAMPAIGN-52-WP-01-P-CG-P52-GAP-012",
+      "gapId": "CG-P52-GAP-012",
+      "sourceTitle": "COREGRID APPLICATION ARCHITECTURE",
+      "status": "PROPOSAL_ONLY_REQUIRES_AUTHORITY",
+      "proposedDisposition": "REVIEW_EXISTING_PHASE_CANDIDATES",
+      "candidateReceivingPhases": [
+        {
+          "phase": "05",
+          "name": "Core Application Runtime",
+          "registryStatus": "COMPLETE",
+          "score": 1,
+          "overlappingTokens": [
+            "application"
+          ],
+          "evidence": {
+            "registry": "architecture/registry.json",
+            "phase": "05",
+            "capabilityText": "runtime-primitives"
+          }
+        }
+      ],
+      "affectedMother": null,
+      "receivingBlueprintWork": [
+        "Confirm canonical owner and non-purpose.",
+        "Merge unique source content with provenance and supersession links.",
+        "Define receiving capability boundaries, dependencies and consumers.",
+        "Define contracts, schemas, security, failure, evidence and verification.",
+        "Update acceptance criteria and scope-lock record only after approval."
+      ],
+      "implementationStatus": "BLOCKED",
+      "registryMutation": "NOT_AUTHORIZED",
+      "infrastructureChange": "NOT_AUTHORIZED",
+      "rationale": "Candidate matches are deterministic discovery evidence, not architectural authority."
+    },
+    {
+      "proposalId": "CAMPAIGN-52-WP-01-P-CG-P52-GAP-013",
+      "gapId": "CG-P52-GAP-013",
+      "sourceTitle": "WEB + IOS + ANDROID",
+      "status": "PROPOSAL_ONLY_REQUIRES_AUTHORITY",
+      "proposedDisposition": "REVIEW_EXISTING_PHASE_CANDIDATES",
+      "candidateReceivingPhases": [
+        {
+          "phase": "23",
+          "name": "Web Platform",
+          "registryStatus": "IMPLEMENTING",
+          "score": 1,
+          "overlappingTokens": [
+            "web"
+          ],
+          "evidence": {
+            "registry": "architecture/registry.json",
+            "phase": "23",
+            "capabilityText": "web-client-platform"
+          }
+        }
+      ],
+      "affectedMother": null,
+      "receivingBlueprintWork": [
+        "Confirm canonical owner and non-purpose.",
+        "Merge unique source content with provenance and supersession links.",
+        "Define receiving capability boundaries, dependencies and consumers.",
+        "Define contracts, schemas, security, failure, evidence and verification.",
+        "Update acceptance criteria and scope-lock record only after approval."
+      ],
+      "implementationStatus": "BLOCKED",
+      "registryMutation": "NOT_AUTHORIZED",
+      "infrastructureChange": "NOT_AUTHORIZED",
+      "rationale": "Candidate matches are deterministic discovery evidence, not architectural authority."
+    },
+    {
+      "proposalId": "CAMPAIGN-52-WP-01-P-CG-P52-GAP-014",
+      "gapId": "CG-P52-GAP-014",
+      "sourceTitle": "DO NOT BUILD THE ENGINES FIRST",
+      "status": "PROPOSAL_ONLY_REQUIRES_AUTHORITY",
+      "proposedDisposition": "REVIEW_MOTHER_RESEARCH_OR_EXISTING_BOUNDARY",
+      "candidateReceivingPhases": [],
+      "affectedMother": null,
+      "receivingBlueprintWork": [
+        "Confirm canonical owner and non-purpose.",
+        "Merge unique source content with provenance and supersession links.",
+        "Define receiving capability boundaries, dependencies and consumers.",
+        "Define contracts, schemas, security, failure, evidence and verification.",
+        "Update acceptance criteria and scope-lock record only after approval."
+      ],
+      "implementationStatus": "BLOCKED",
+      "registryMutation": "NOT_AUTHORIZED",
+      "infrastructureChange": "NOT_AUTHORIZED",
+      "rationale": "Candidate matches are deterministic discovery evidence, not architectural authority."
+    },
+    {
+      "proposalId": "CAMPAIGN-52-WP-01-P-CG-P52-GAP-015",
+      "gapId": "CG-P52-GAP-015",
+      "sourceTitle": "THE COREGRID DOMAIN PACKAGE",
+      "status": "PROPOSAL_ONLY_REQUIRES_AUTHORITY",
+      "proposedDisposition": "REVIEW_MOTHER_RESEARCH_OR_EXISTING_BOUNDARY",
+      "candidateReceivingPhases": [],
+      "affectedMother": null,
+      "receivingBlueprintWork": [
+        "Confirm canonical owner and non-purpose.",
+        "Merge unique source content with provenance and supersession links.",
+        "Define receiving capability boundaries, dependencies and consumers.",
+        "Define contracts, schemas, security, failure, evidence and verification.",
+        "Update acceptance criteria and scope-lock record only after approval."
+      ],
+      "implementationStatus": "BLOCKED",
+      "registryMutation": "NOT_AUTHORIZED",
+      "infrastructureChange": "NOT_AUTHORIZED",
+      "rationale": "Candidate matches are deterministic discovery evidence, not architectural authority."
+    },
+    {
+      "proposalId": "CAMPAIGN-52-WP-01-P-CG-P52-GAP-016",
+      "gapId": "CG-P52-GAP-016",
+      "sourceTitle": "COREGRID DOES NOT NEED TO KNOW EVERY DOMAIN IN ADVANCE",
+      "status": "PROPOSAL_ONLY_REQUIRES_AUTHORITY",
+      "proposedDisposition": "REVIEW_MOTHER_RESEARCH_OR_EXISTING_BOUNDARY",
+      "candidateReceivingPhases": [],
+      "affectedMother": null,
+      "receivingBlueprintWork": [
+        "Confirm canonical owner and non-purpose.",
+        "Merge unique source content with provenance and supersession links.",
+        "Define receiving capability boundaries, dependencies and consumers.",
+        "Define contracts, schemas, security, failure, evidence and verification.",
+        "Update acceptance criteria and scope-lock record only after approval."
+      ],
+      "implementationStatus": "BLOCKED",
+      "registryMutation": "NOT_AUTHORIZED",
+      "infrastructureChange": "NOT_AUTHORIZED",
+      "rationale": "Candidate matches are deterministic discovery evidence, not architectural authority."
+    },
+    {
+      "proposalId": "CAMPAIGN-52-WP-01-P-CG-P52-GAP-017",
+      "gapId": "CG-P52-GAP-017",
+      "sourceTitle": "COREGRID SDK ECONOMY",
+      "status": "PROPOSAL_ONLY_REQUIRES_AUTHORITY",
+      "proposedDisposition": "REVIEW_EXISTING_PHASE_CANDIDATES",
+      "candidateReceivingPhases": [
+        {
+          "phase": "49",
+          "name": "Autonomous Economy Engine",
+          "registryStatus": "ARCHITECTURE_DEFINED",
+          "score": 1,
+          "overlappingTokens": [
+            "economy"
+          ],
+          "evidence": {
+            "registry": "architecture/registry.json",
+            "phase": "49",
+            "capabilityText": "autonomous-economy"
+          }
+        }
+      ],
+      "affectedMother": null,
+      "receivingBlueprintWork": [
+        "Confirm canonical owner and non-purpose.",
+        "Merge unique source content with provenance and supersession links.",
+        "Define receiving capability boundaries, dependencies and consumers.",
+        "Define contracts, schemas, security, failure, evidence and verification.",
+        "Update acceptance criteria and scope-lock record only after approval."
+      ],
+      "implementationStatus": "BLOCKED",
+      "registryMutation": "NOT_AUTHORIZED",
+      "infrastructureChange": "NOT_AUTHORIZED",
+      "rationale": "Candidate matches are deterministic discovery evidence, not architectural authority."
+    },
+    {
+      "proposalId": "CAMPAIGN-52-WP-01-P-CG-P52-GAP-018",
+      "gapId": "CG-P52-GAP-018",
+      "sourceTitle": "THE COREGRID APP STORE MODEL",
+      "status": "PROPOSAL_ONLY_REQUIRES_AUTHORITY",
+      "proposedDisposition": "REVIEW_MOTHER_RESEARCH_OR_EXISTING_BOUNDARY",
+      "candidateReceivingPhases": [],
+      "affectedMother": null,
+      "receivingBlueprintWork": [
+        "Confirm canonical owner and non-purpose.",
+        "Merge unique source content with provenance and supersession links.",
+        "Define receiving capability boundaries, dependencies and consumers.",
+        "Define contracts, schemas, security, failure, evidence and verification.",
+        "Update acceptance criteria and scope-lock record only after approval."
+      ],
+      "implementationStatus": "BLOCKED",
+      "registryMutation": "NOT_AUTHORIZED",
+      "infrastructureChange": "NOT_AUTHORIZED",
+      "rationale": "Candidate matches are deterministic discovery evidence, not architectural authority."
+    },
+    {
+      "proposalId": "CAMPAIGN-52-WP-01-P-CG-P52-GAP-019",
+      "gapId": "CG-P52-GAP-019",
+      "sourceTitle": "COREGRID AGENT MARKETPLACE",
+      "status": "PROPOSAL_ONLY_REQUIRES_AUTHORITY",
+      "proposedDisposition": "REVIEW_EXISTING_PHASE_CANDIDATES",
+      "candidateReceivingPhases": [
+        {
+          "phase": "07",
+          "name": "AI Agent System",
+          "registryStatus": "COMPLETE",
+          "score": 1,
+          "overlappingTokens": [
+            "agent"
+          ],
+          "evidence": {
+            "registry": "architecture/registry.json",
+            "phase": "07",
+            "capabilityText": "agent-runtime"
+          }
+        },
+        {
+          "phase": "27",
+          "name": "Marketplace",
+          "registryStatus": "IMPLEMENTED",
+          "score": 1,
+          "overlappingTokens": [
+            "marketplace"
+          ],
+          "evidence": {
+            "registry": "architecture/registry.json",
+            "phase": "27",
+            "capabilityText": "marketplace"
+          }
+        },
+        {
+          "phase": "35",
+          "name": "Autonomous Agent Civilization OS",
+          "registryStatus": "ARCHITECTURE_DEFINED",
+          "score": 1,
+          "overlappingTokens": [
+            "agent"
+          ],
+          "evidence": {
+            "registry": "architecture/registry.json",
+            "phase": "35",
+            "capabilityText": "multi-agent-society-governance"
+          }
+        }
+      ],
+      "affectedMother": null,
+      "receivingBlueprintWork": [
+        "Confirm canonical owner and non-purpose.",
+        "Merge unique source content with provenance and supersession links.",
+        "Define receiving capability boundaries, dependencies and consumers.",
+        "Define contracts, schemas, security, failure, evidence and verification.",
+        "Update acceptance criteria and scope-lock record only after approval."
+      ],
+      "implementationStatus": "BLOCKED",
+      "registryMutation": "NOT_AUTHORIZED",
+      "infrastructureChange": "NOT_AUTHORIZED",
+      "rationale": "Candidate matches are deterministic discovery evidence, not architectural authority."
+    },
+    {
+      "proposalId": "CAMPAIGN-52-WP-01-P-CG-P52-GAP-020",
+      "gapId": "CG-P52-GAP-020",
+      "sourceTitle": "THE REAL BLUE-OCEAN MOAT",
+      "status": "PROPOSAL_ONLY_REQUIRES_AUTHORITY",
+      "proposedDisposition": "REVIEW_MOTHER_RESEARCH_OR_EXISTING_BOUNDARY",
+      "candidateReceivingPhases": [],
+      "affectedMother": null,
+      "receivingBlueprintWork": [
+        "Confirm canonical owner and non-purpose.",
+        "Merge unique source content with provenance and supersession links.",
+        "Define receiving capability boundaries, dependencies and consumers.",
+        "Define contracts, schemas, security, failure, evidence and verification.",
+        "Update acceptance criteria and scope-lock record only after approval."
+      ],
+      "implementationStatus": "BLOCKED",
+      "registryMutation": "NOT_AUTHORIZED",
+      "infrastructureChange": "NOT_AUTHORIZED",
+      "rationale": "Candidate matches are deterministic discovery evidence, not architectural authority."
+    },
+    {
+      "proposalId": "CAMPAIGN-52-WP-01-P-CG-P52-GAP-021",
+      "gapId": "CG-P52-GAP-021",
+      "sourceTitle": "THE FINAL COREGRID EXPERIENCE FORMULA",
+      "status": "PROPOSAL_ONLY_REQUIRES_AUTHORITY",
+      "proposedDisposition": "REVIEW_EXISTING_PHASE_CANDIDATES",
+      "candidateReceivingPhases": [
+        {
+          "phase": "24",
+          "name": "Experience & Design Intelligence",
+          "registryStatus": "IMPLEMENTING",
+          "score": 1,
+          "overlappingTokens": [
+            "experience"
+          ],
+          "evidence": {
+            "registry": "architecture/registry.json",
+            "phase": "24",
+            "capabilityText": "experience-design"
+          }
+        }
+      ],
+      "affectedMother": null,
+      "receivingBlueprintWork": [
+        "Confirm canonical owner and non-purpose.",
+        "Merge unique source content with provenance and supersession links.",
+        "Define receiving capability boundaries, dependencies and consumers.",
+        "Define contracts, schemas, security, failure, evidence and verification.",
+        "Update acceptance criteria and scope-lock record only after approval."
+      ],
+      "implementationStatus": "BLOCKED",
+      "registryMutation": "NOT_AUTHORIZED",
+      "infrastructureChange": "NOT_AUTHORIZED",
+      "rationale": "Candidate matches are deterministic discovery evidence, not architectural authority."
+    },
+    {
+      "proposalId": "CAMPAIGN-52-WP-01-P-CG-P52-GAP-022",
+      "gapId": "CG-P52-GAP-022",
+      "sourceTitle": "THE COMPLETE COREGRID REALITY LOOP",
+      "status": "PROPOSAL_ONLY_REQUIRES_AUTHORITY",
+      "proposedDisposition": "REVIEW_EXISTING_PHASE_CANDIDATES",
+      "candidateReceivingPhases": [
+        {
+          "phase": "04",
+          "name": "Education Reality Engine",
+          "registryStatus": "COMPLETE",
+          "score": 1,
+          "overlappingTokens": [
+            "reality"
+          ],
+          "evidence": {
+            "registry": "architecture/registry.json",
+            "phase": "04",
+            "capabilityText": "education-reality-ontology"
+          }
+        },
+        {
+          "phase": "33",
+          "name": "Reality Intelligence Kernel (URIK)",
+          "registryStatus": "ARCHITECTURE_DEFINED",
+          "score": 1,
+          "overlappingTokens": [
+            "reality"
+          ],
+          "evidence": {
+            "registry": "architecture/registry.json",
+            "phase": "33",
+            "capabilityText": "universal-reality-ontology"
+          }
+        },
+        {
+          "phase": "41",
+          "name": "Reality Simulation & Autonomous Sandbox Engine",
+          "registryStatus": "ARCHITECTURE_DEFINED",
+          "score": 1,
+          "overlappingTokens": [
+            "reality"
+          ],
+          "evidence": {
+            "registry": "architecture/registry.json",
+            "phase": "41",
+            "capabilityText": "sandbox-runtime"
+          }
+        }
+      ],
+      "affectedMother": null,
+      "receivingBlueprintWork": [
+        "Confirm canonical owner and non-purpose.",
+        "Merge unique source content with provenance and supersession links.",
+        "Define receiving capability boundaries, dependencies and consumers.",
+        "Define contracts, schemas, security, failure, evidence and verification.",
+        "Update acceptance criteria and scope-lock record only after approval."
+      ],
+      "implementationStatus": "BLOCKED",
+      "registryMutation": "NOT_AUTHORIZED",
+      "infrastructureChange": "NOT_AUTHORIZED",
+      "rationale": "Candidate matches are deterministic discovery evidence, not architectural authority."
+    },
+    {
+      "proposalId": "CAMPAIGN-52-WP-01-P-CG-P52-GAP-023",
+      "gapId": "CG-P52-GAP-023",
+      "sourceTitle": "IMPLEMENTATION ORDER",
+      "status": "PROPOSAL_ONLY_REQUIRES_AUTHORITY",
+      "proposedDisposition": "REVIEW_MOTHER_RESEARCH_OR_EXISTING_BOUNDARY",
+      "candidateReceivingPhases": [],
+      "affectedMother": null,
+      "receivingBlueprintWork": [
+        "Confirm canonical owner and non-purpose.",
+        "Merge unique source content with provenance and supersession links.",
+        "Define receiving capability boundaries, dependencies and consumers.",
+        "Define contracts, schemas, security, failure, evidence and verification.",
+        "Update acceptance criteria and scope-lock record only after approval."
+      ],
+      "implementationStatus": "BLOCKED",
+      "registryMutation": "NOT_AUTHORIZED",
+      "infrastructureChange": "NOT_AUTHORIZED",
+      "rationale": "Candidate matches are deterministic discovery evidence, not architectural authority."
+    },
+    {
+      "proposalId": "CAMPAIGN-52-WP-01-P-CG-P52-GAP-024",
+      "gapId": "CG-P52-GAP-024",
+      "sourceTitle": "THE ACTUAL PRODUCT WE SHOULD BUILD FIRST",
+      "status": "PROPOSAL_ONLY_REQUIRES_AUTHORITY",
+      "proposedDisposition": "REVIEW_MOTHER_RESEARCH_OR_EXISTING_BOUNDARY",
+      "candidateReceivingPhases": [],
+      "affectedMother": null,
+      "receivingBlueprintWork": [
+        "Confirm canonical owner and non-purpose.",
+        "Merge unique source content with provenance and supersession links.",
+        "Define receiving capability boundaries, dependencies and consumers.",
+        "Define contracts, schemas, security, failure, evidence and verification.",
+        "Update acceptance criteria and scope-lock record only after approval."
+      ],
+      "implementationStatus": "BLOCKED",
+      "registryMutation": "NOT_AUTHORIZED",
+      "infrastructureChange": "NOT_AUTHORIZED",
+      "rationale": "Candidate matches are deterministic discovery evidence, not architectural authority."
+    },
+    {
+      "proposalId": "CAMPAIGN-52-WP-01-P-CG-P52-GAP-025",
+      "gapId": "CG-P52-GAP-025",
+      "sourceTitle": "55-Phase Architectural Binding",
+      "status": "PROPOSAL_ONLY_REQUIRES_AUTHORITY",
+      "proposedDisposition": "REVIEW_MOTHER_RESEARCH_OR_EXISTING_BOUNDARY",
+      "candidateReceivingPhases": [],
+      "affectedMother": "ARCHITECTURE.md",
+      "receivingBlueprintWork": [
+        "Confirm canonical owner and non-purpose.",
+        "Merge unique source content with provenance and supersession links.",
+        "Define receiving capability boundaries, dependencies and consumers.",
+        "Define contracts, schemas, security, failure, evidence and verification.",
+        "Update acceptance criteria and scope-lock record only after approval."
+      ],
+      "implementationStatus": "BLOCKED",
+      "registryMutation": "NOT_AUTHORIZED",
+      "infrastructureChange": "NOT_AUTHORIZED",
+      "rationale": "Candidate matches are deterministic discovery evidence, not architectural authority."
+    },
+    {
+      "proposalId": "CAMPAIGN-52-WP-01-P-CG-P52-GAP-026",
+      "gapId": "CG-P52-GAP-026",
+      "sourceTitle": "55-Phase Architectural Binding",
+      "status": "PROPOSAL_ONLY_REQUIRES_AUTHORITY",
+      "proposedDisposition": "REVIEW_MOTHER_RESEARCH_OR_EXISTING_BOUNDARY",
+      "candidateReceivingPhases": [],
+      "affectedMother": "ARCHITECTURE.md",
+      "receivingBlueprintWork": [
+        "Confirm canonical owner and non-purpose.",
+        "Merge unique source content with provenance and supersession links.",
+        "Define receiving capability boundaries, dependencies and consumers.",
+        "Define contracts, schemas, security, failure, evidence and verification.",
+        "Update acceptance criteria and scope-lock record only after approval."
+      ],
+      "implementationStatus": "BLOCKED",
+      "registryMutation": "NOT_AUTHORIZED",
+      "infrastructureChange": "NOT_AUTHORIZED",
+      "rationale": "Candidate matches are deterministic discovery evidence, not architectural authority."
+    },
+    {
+      "proposalId": "CAMPAIGN-52-WP-01-P-CG-P52-GAP-027",
+      "gapId": "CG-P52-GAP-027",
+      "sourceTitle": "55-Phase Architectural Binding",
+      "status": "PROPOSAL_ONLY_REQUIRES_AUTHORITY",
+      "proposedDisposition": "REVIEW_MOTHER_RESEARCH_OR_EXISTING_BOUNDARY",
+      "candidateReceivingPhases": [],
+      "affectedMother": "ARCHITECTURE.md",
+      "receivingBlueprintWork": [
+        "Confirm canonical owner and non-purpose.",
+        "Merge unique source content with provenance and supersession links.",
+        "Define receiving capability boundaries, dependencies and consumers.",
+        "Define contracts, schemas, security, failure, evidence and verification.",
+        "Update acceptance criteria and scope-lock record only after approval."
+      ],
+      "implementationStatus": "BLOCKED",
+      "registryMutation": "NOT_AUTHORIZED",
+      "infrastructureChange": "NOT_AUTHORIZED",
+      "rationale": "Candidate matches are deterministic discovery evidence, not architectural authority."
+    }
+  ]
+}

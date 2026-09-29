@@ -1,0 +1,32 @@
+{
+  "mission": "COREGRID-MISSION-0001",
+  "artifact": "COREGRID_MOTHER_SURFACE_RECONCILIATION",
+  "status": "DESIGNED",
+  "evidenceDate": "2026-09-27",
+  "authorityConflict": {
+    "classification": "CONFLICTING",
+    "models": [
+      "seven legacy governance roots",
+      "ten-surface model declared in some mother documents",
+      "thirteen-surface model declared by the Luna operating contract",
+      "three-mother model declared in ASSURANCE.md"
+    ],
+    "decision": "Preserve all existing artifacts; treat the 13 surfaces as the current conceptual map pending an explicit governance decision. Do not create duplicates."
+  },
+  "surfaces": [
+    {"name": "COREGRID.md", "status": "CANONICAL_LIVING", "legacyOwners": ["README.md", "CONSTITUTION.md"], "machineOwners": ["architecture/registry.json"], "classification": "OVERLAPPING_CANONICAL"},
+    {"name": "GOVERNANCE.md", "status": "CANONICAL_LIVING", "legacyOwners": ["CONSTITUTION.md", "DECISIONS.md", "AGENTS.md"], "machineOwners": ["architecture/registry.json", "architecture/duplication-map.md"], "classification": "OVERLAPPING_CANONICAL"},
+    {"name": "ARCHITECTURE.md", "status": "CANONICAL", "legacyOwners": ["REGISTRY.md", "BOUNDARIES.md", "DEPENDENCY.md", "architecture-map.md"], "machineOwners": ["architecture/registry.json", "architecture/capability-ownership-graph.md"], "classification": "OVERLAPPING_CANONICAL"},
+    {"name": "REALITY.md", "status": "CANONICAL", "legacyOwners": ["CONSTITUTION.md", "BOUNDARIES.md"], "machineOwners": ["frontend/src/lib/kernel/reality.ts", "database/supabase/migrations/20260903000000_coregrid_universal_kernel_substrate.sql"], "classification": "SPECIALIZED_PLUS_MACHINE_SUBSTRATE"},
+    {"name": "ENGINEERING.md", "status": "CANONICAL", "legacyOwners": ["PRINCIPLES.md", "CONSTITUTION.md"], "machineOwners": ["frontend/src/lib/kernel/engineering-sections.ts", "scripts/verification/engineering-sections.mjs"], "classification": "OVERLAPPING_CANONICAL"},
+    {"name": "WORKFORCE.md", "status": "CANONICAL", "legacyOwners": ["CONSTITUTION.md", "AGENTS.md"], "machineOwners": ["frontend/src/lib/workforce-*", "database/supabase/migrations/20260907000000_coregrid_workforce_kind_substrate.sql"], "classification": "SPECIALIZED_PLUS_MACHINE_SUBSTRATE"},
+    {"name": "MISSIONS.md", "status": "CANONICAL_DESIGNED", "legacyOwners": ["PROGRESS.md", "architecture/execution-plan.md"], "machineOwners": [], "classification": "MISSING_RUNTIME_OWNER"},
+    {"name": "BLUEPRINTS.md", "status": "CANONICAL", "legacyOwners": ["REGISTRY.md", "DEPENDENCY.md"], "machineOwners": ["architecture/phase-*.md", "frontend/src/lib/kernel/phase-contracts"], "classification": "SPECIALIZED_PLUS_MACHINE_SUBSTRATE"},
+    {"name": "PROGRESS.md", "status": "CANONICAL_LIVING", "legacyOwners": ["PROGRESS.md"], "machineOwners": ["architecture/phase-completion-status.md", "architecture/proofs/phase-completion.proof.json"], "classification": "CANONICAL"},
+    {"name": "ECOSYSTEM.md", "status": "CANONICAL", "legacyOwners": ["REGISTRY.md", "DEPENDENCY.md"], "machineOwners": ["architecture/registry.json", "frontend/src/lib/marketplace-*"], "classification": "SPECIALIZED_PLUS_MACHINE_SUBSTRATE"},
+    {"name": "IMPLEMENTATION.md", "status": "DESIGNED_NOT_IMPLEMENTED", "legacyOwners": ["README.md", "docs/architecture"], "machineOwners": ["frontend/src", "database", "scripts"], "classification": "DESIGN_OVER_CODE"},
+    {"name": "RUNTIME.md", "status": "DESIGNED_NOT_OPERATIONAL", "legacyOwners": ["DEPENDENCY.md", "REGISTRY.md"], "machineOwners": ["frontend/src/lib/runtime-*", "frontend/src/server.ts", "frontend/src/start.ts"], "classification": "DESIGN_OVER_RUNTIME"},
+    {"name": "ASSURANCE.md", "status": "DESIGNED_NOT_OPERATIONAL", "legacyOwners": ["PROGRESS.md", "DECISIONS.md"], "machineOwners": ["scripts/verification", "tests", ".github/workflows"], "classification": "DESIGN_OVER_ASSURANCE_TOOLING"}
+  ],
+  "requiredDecision": "Resolve the authority model before rewriting mother surfaces or changing canonical filenames."
+}

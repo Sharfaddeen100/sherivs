@@ -1,0 +1,181 @@
+{
+  "artifact": "phase-acceptance",
+  "phase": "24",
+  "phaseName": "Experience & Design Intelligence",
+  "source": "architecture/phase-24-coregrid-experience-design-intelligence.md",
+  "generatedAt": "2026-09-28T13:22:44.444Z",
+  "classificationDefinitions": {
+    "ENFORCED": "an executable artefact proves it (test, verifier script, migration, policy or machine-checked contract match) and, where a boundary is declared, a real call site invokes it",
+    "DECLARED": "a module, document or contract mentions it, but nothing executable proves it",
+    "IMPLEMENTED_UNWIRED": "implementation and tests exist, but the declared boundary patterns match nothing — the capability protects nothing yet",
+    "MISSING": "no artefact found"
+  },
+  "summary": {
+    "areas": 6,
+    "enforced": 5,
+    "declared": 0,
+    "implementedUnwired": 1,
+    "implementedUnwiredAreas": [
+      "experience-surface-consumption"
+    ],
+    "missing": 0,
+    "missingRequired": [],
+    "unresolvedEvidencePaths": []
+  },
+  "ownership": {
+    "note": "Phase 24 owns tokens, component contracts, accessibility standards, personalization and experience governance. Domain content, authorization and the human interface layer remain owned by consuming or adjacent phases.",
+    "canonicalOwners": {
+      "tokens-components-accessibility": "24",
+      "personalization-and-governance": "24",
+      "domain-content": "consuming runtimes",
+      "authorization": "08",
+      "human-interface": "50",
+      "web-delivery": "23"
+    }
+  },
+  "areas": [
+    {
+      "id": "tokens-theming-and-density",
+      "area": "Design tokens, themes and density are coherent",
+      "requirement": "Tokens can be created and deprecated with replacements; light/dark/high-contrast palettes and density modes resolve from governed inputs.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/experience-core.ts",
+        "tests/unit/experience.test.ts",
+        "tests/unit/experience-platform.test.ts",
+        "tests/unit/experience-platform.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/experience-core.ts",
+        "tests/unit/experience.test.ts",
+        "tests/unit/experience-platform.test.ts",
+        "tests/unit/experience-platform.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "accessibility-and-empty-states",
+      "area": "Accessibility, motion and honest empty states are explicit",
+      "requirement": "AA/AAA systems, contrast checks, reduced motion, visible focus/touch defaults and actionable or explicit empty states are represented.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/experience-accessibility.ts",
+        "tests/unit/experience.test.ts",
+        "tests/unit/experience.test.ts",
+        "tests/unit/experience-platform.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/experience-accessibility.ts",
+        "tests/unit/experience.test.ts",
+        "tests/unit/experience.test.ts",
+        "tests/unit/experience-platform.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "personalization-is-policy-bounded",
+      "area": "Personalization cannot widen authorization",
+      "requirement": "Role, device and experience-level personalization changes presentation only, filters unauthorized commands and reports denied dimensions instead of widening access.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/experience-personalization.ts",
+        "tests/unit/experience.test.ts",
+        "tests/unit/experience-platform.test.ts",
+        "tests/unit/experience-platform.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/experience-personalization.ts",
+        "tests/unit/experience.test.ts",
+        "tests/unit/experience-platform.test.ts",
+        "tests/unit/experience-platform.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "ai-and-interaction-safety",
+      "area": "AI and interaction states are attributable and safe",
+      "requirement": "AI messages and approvals, notifications, onboarding, loading, error and offline experience states are explicit and do not present generated content as an official record.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/experience-personalization.ts",
+        "frontend/src/lib/experience-accessibility.ts",
+        "tests/unit/experience.test.ts",
+        "tests/unit/experience.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/experience-personalization.ts",
+        "frontend/src/lib/experience-accessibility.ts",
+        "tests/unit/experience.test.ts",
+        "tests/unit/experience.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "experience-governance-and-release",
+      "area": "Experience quality, telemetry and release gates are governed",
+      "requirement": "Telemetry is anonymized, experiments validate weights, SLOs distinguish healthy/breached, required release checks block failures and visual QA reports blockers.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/experience-governance.ts",
+        "tests/unit/experience.test.ts",
+        "tests/unit/experience.test.ts",
+        "tests/unit/experience.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/experience-governance.ts",
+        "tests/unit/experience.test.ts",
+        "tests/unit/experience.test.ts",
+        "tests/unit/experience.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "experience-surface-consumption",
+      "area": "Shared experience contracts remain partly unwired",
+      "requirement": "Consuming runtime surfaces must resolve these contracts without owning authorization or domain content; current evidence proves the engines and tests, not universal consumption.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "IMPLEMENTED_UNWIRED",
+      "declaredEvidence": [
+        "frontend/src/lib/kernel/phase-contracts/phase-24-experience-design.ts",
+        "frontend/src/lib/experience-governance.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/kernel/phase-contracts/phase-24-experience-design.ts",
+        "frontend/src/lib/experience-governance.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "frontend/src/routes/**/*.tsx"
+      ],
+      "boundaryEvidence": []
+    }
+  ],
+  "ok": true,
+  "limitations": [
+    "Classification measures the presence of executable evidence, not the correctness or completeness of that evidence.",
+    "A DECLARED area is unfinished work, never a false claim — it is reported as such.",
+    "An IMPLEMENTED_UNWIRED area has a tested implementation that no boundary calls; it is reported, never counted as enforcement.",
+    "Evidence patterns are declared per phase in architecture/phase-acceptance/phase-<id>-*.json and must be reviewed when a phase is re-audited."
+  ]
+}

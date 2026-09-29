@@ -1,0 +1,95 @@
+{
+  "$comment": "Phase 15 acceptance definition derived from architecture/phase-15-hardware-integration.md, the phase contract, hardware-* modules and their four unit suites. Device, command and telemetry logic is tested library evidence; no physical provider or live ingestion boundary is inferred.",
+  "phase": "15",
+  "phaseName": "Hardware Integration",
+  "source": "architecture/phase-15-hardware-integration.md",
+  "contract": "frontend/src/lib/kernel/phase-contracts/phase-15-hardware-integration.ts",
+  "ownership": {
+    "note": "Phase 15 owns device registry, lifecycle, command dispatch records and telemetry intake. Twin interpretation belongs to 16, provider protocol adapters remain external adapters, and planetary infrastructure belongs to 44.",
+    "canonicalOwners": {
+      "device-registry-and-lifecycle": "15",
+      "commands-and-telemetry": "15",
+      "identity": "02",
+      "tenancy": "03",
+      "authorization": "08",
+      "twin-interpretation": "16",
+      "planetary-infrastructure": "44"
+    }
+  },
+  "areas": [
+    {
+      "id": "device-identity-and-enrollment",
+      "area": "Devices have identity and ordered enrollment",
+      "requirement": "A device carries full identity material and enrollment cannot skip verification or claim identity before verification.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/hardware-core.ts", "contains": "registerDevice" },
+        { "kind": "test", "path": "tests/unit/hardware-core.test.ts", "contains": "registers a device with full identity material" },
+        { "kind": "test", "path": "tests/unit/hardware-core.test.ts", "contains": "rejects out-of-order enrollment" }
+      ]
+    },
+    {
+      "id": "device-lifecycle",
+      "area": "Device lifecycle is a governed state machine",
+      "requirement": "Lifecycle transitions are ordered, illegal jumps are rejected and suspension/decommissioning require reasons.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/hardware-core.ts", "contains": "transitionDeviceLifecycle" },
+        { "kind": "test", "path": "tests/unit/hardware-core.test.ts", "contains": "blocks an illegal ACTIVE -> DISCOVERED jump" },
+        { "kind": "test", "path": "tests/unit/hardware-core.test.ts", "contains": "requires a reason for suspension and decommissioning" }
+      ]
+    },
+    {
+      "id": "telemetry-provenance-and-quality",
+      "area": "Telemetry is validated, calibrated and freshness-aware",
+      "requirement": "Telemetry rejects invalid values, units, future timestamps and stale or uncalibrated samples, while anomaly signals remain explicit.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/hardware-telemetry.ts" },
+        { "kind": "test", "path": "tests/unit/hardware-telemetry.test.ts", "contains": "rejects a value outside the physical range" },
+        { "kind": "test", "path": "tests/unit/hardware-telemetry.test.ts", "contains": "grades a stale event as STALE" },
+        { "kind": "test", "path": "tests/unit/hardware-telemetry.test.ts", "contains": "marks an expired calibration as EXPIRED" }
+      ]
+    },
+    {
+      "id": "commands-authorization-and-safety",
+      "area": "Commands are authorized, idempotent and safety-bounded",
+      "requirement": "Commands require metadata and authorization, high-impact actions require approval, safety stops block ordinary commands, and duplicate transmissions are detected.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/hardware-commands.ts", "contains": "authorizeCommand" },
+        { "kind": "test", "path": "tests/unit/hardware-commands.test.ts", "contains": "requires an approving identity to authorize a destructive command" },
+        { "kind": "test", "path": "tests/unit/hardware-commands.test.ts", "contains": "blocks normal commands while a safety stop is active" },
+        { "kind": "test", "path": "tests/unit/hardware-commands.test.ts", "contains": "detects a duplicate transmission by idempotency key" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/*.functions.ts", "contains": "issueCommand" }
+      ]
+    },
+    {
+      "id": "firmware-security-and-recovery",
+      "area": "Firmware and device security have controlled rollout and recovery",
+      "requirement": "Unsigned or unverified production firmware is rejected, compatible rollout stages are ordered, rollback is ordered, credentials can be revoked and devices can be quarantined.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/hardware-lifecycle.ts", "contains": "registerFirmware" },
+        { "kind": "test", "path": "tests/unit/hardware-lifecycle.test.ts", "contains": "rejects unsigned production firmware" },
+        { "kind": "test", "path": "tests/unit/hardware-lifecycle.test.ts", "contains": "stages rollout LAB -> CANARY -> LIMITED -> GENERAL" },
+        { "kind": "test", "path": "tests/unit/hardware-lifecycle.test.ts", "contains": "quarantines a device with a reason" }
+      ]
+    },
+    {
+      "id": "live-hardware-boundary",
+      "area": "Physical adapters and live telemetry remain unwired",
+      "requirement": "A provider adapter or live authorised boundary must register devices, dispatch commands and ingest telemetry; the cited evidence currently remains module and unit-suite evidence.",
+      "required": false,
+      "evidence": [
+        { "kind": "contract", "path": "frontend/src/lib/kernel/phase-contracts/phase-15-hardware-integration.ts", "contains": "hardware-device-telemetry" },
+        { "kind": "module", "path": "frontend/src/lib/hardware-telemetry.ts" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/*.functions.ts", "contains": "ingestHardwareTelemetry" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,90 @@
+{
+  "$comment": "Evidence map for Phase 36. Current executable coverage proves scoped memory/context safety; durable memory stores, knowledge persistence and governed forgetting remain declared.",
+  "phase": "36",
+  "phaseName": "Universal Memory & Knowledge Engine",
+  "source": "architecture/phase-36-universal-memory-knowledge-civilization-engine.md",
+  "contract": "frontend/src/lib/kernel/phase-contracts/phase-36-memory-knowledge.ts",
+  "ownership": {
+    "canonicalOwners": {
+      "memory-scopes-and-recall": "36",
+      "knowledge-structures": "36",
+      "canonical-records": "kernel/owning-phases",
+      "authorization": "08",
+      "agent-runtime": "07",
+      "knowledge-graph-feature-set": "48"
+    }
+  },
+  "areas": [
+    {
+      "id": "scoped-memory-access",
+      "area": "Memory recall is category, classification and tenant scoped",
+      "requirement": "Memory access rejects disallowed categories or classifications and permits only requests within declared scope.",
+      "required": true,
+      "evidence": [
+        { "kind": "contract", "path": "frontend/src/lib/kernel/phase-contracts/phase-36-memory-knowledge.ts", "contains": "Memory is scoped and expirable" },
+        { "kind": "test", "path": "tests/unit/agent-memory.test.ts", "contains": "rejects access to a category outside the allowlist" },
+        { "kind": "test", "path": "tests/unit/agent-memory.test.ts", "contains": "rejects access above the maximum allowed classification" },
+        { "kind": "test", "path": "tests/unit/agent-memory.test.ts", "contains": "allows access within category and classification limits" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "memory-provenance-and-inference-marking",
+      "area": "Memory writes preserve provenance and mark derived inference",
+      "requirement": "Empty or unauthorized persistent writes fail, while inference memory records its originating agent and provenance kind.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/agent-memory.test.ts", "contains": "rejects empty content" },
+        { "kind": "test", "path": "tests/unit/agent-memory.test.ts", "contains": "rejects persistent write when not permitted" },
+        { "kind": "test", "path": "tests/unit/agent-memory.test.ts", "contains": "marks inference memory with the originating agent" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "context-packages-and-provenance",
+      "area": "Context packages require purpose, budget and provenance",
+      "requirement": "Context assembly rejects empty task summaries and invalid budgets, while valid packages preserve source provenance.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/agent-memory.test.ts", "contains": "rejects an empty task summary" },
+        { "kind": "test", "path": "tests/unit/agent-memory.test.ts", "contains": "rejects a non-positive token budget" },
+        { "kind": "test", "path": "tests/unit/agent-memory.test.ts", "contains": "builds a valid context package and records provenance" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "memory-and-context-trust",
+      "area": "Memory/context trust prevents prompt injection and authority confusion",
+      "requirement": "System instructions may be trusted, external content and raw tool output are not instructions, and user content conflicting with policy is rejected.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/agent-memory.test.ts", "contains": "trusts system instructions" },
+        { "kind": "test", "path": "tests/unit/agent-memory.test.ts", "contains": "never trusts external content as instructions" },
+        { "kind": "test", "path": "tests/unit/agent-memory.test.ts", "contains": "never trusts raw tool output as instructions" },
+        { "kind": "test", "path": "tests/unit/agent-memory.test.ts", "contains": "rejects user content that conflicts with system policy" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "noncanonical-memory-boundary",
+      "area": "Memory and knowledge remain subordinate to canonical truth",
+      "requirement": "Memory recall and derived knowledge cannot grant access or replace canonical records owned by the kernel or domain phases.",
+      "required": true,
+      "evidence": [
+        { "kind": "contract", "path": "frontend/src/lib/kernel/phase-contracts/phase-36-memory-knowledge.ts", "contains": "Memory owns recall, never access" },
+        { "kind": "test", "path": "tests/unit/agent-memory.test.ts", "contains": "authoritative:database" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "live-memory-knowledge-runtime",
+      "area": "Durable memory stores, knowledge persistence and governed forgetting are wired",
+      "requirement": "Scoped memory stores, retention/forgetting records, knowledge structures and recall execute at a live authorized boundary with evidence of unreachable forgotten content.",
+      "required": false,
+      "evidence": [
+        { "kind": "document", "path": "architecture/phase-36-universal-memory-knowledge-civilization-engine.md", "contains": "retention periods" }
+      ],
+      "boundary": []
+    }
+  ]
+}

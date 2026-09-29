@@ -1,0 +1,149 @@
+{
+  "artifact": "phase-acceptance",
+  "phase": "43",
+  "phaseName": "Universal Interface & Connectivity Intelligence",
+  "source": "architecture/phase-43-universal-interface-connectivity-intelligence.md",
+  "generatedAt": "2026-09-28T15:12:57.736Z",
+  "classificationDefinitions": {
+    "ENFORCED": "an executable artefact proves it (test, verifier script, migration, policy or machine-checked contract match) and, where a boundary is declared, a real call site invokes it",
+    "DECLARED": "a module, document or contract mentions it, but nothing executable proves it",
+    "IMPLEMENTED_UNWIRED": "implementation and tests exist, but the declared boundary patterns match nothing — the capability protects nothing yet",
+    "MISSING": "no artefact found"
+  },
+  "summary": {
+    "areas": 5,
+    "enforced": 4,
+    "declared": 1,
+    "implementedUnwired": 0,
+    "implementedUnwiredAreas": [],
+    "missing": 0,
+    "missingRequired": [],
+    "unresolvedEvidencePaths": []
+  },
+  "ownership": {
+    "canonicalOwners": {
+      "protocol-and-interface-registry": "43",
+      "connectivity-governance": "43",
+      "integration-transform": "29",
+      "device-telemetry": "15",
+      "human-interface": "50",
+      "authorization": "08"
+    }
+  },
+  "areas": [
+    {
+      "id": "protocol-and-translation-boundary",
+      "area": "Protocol adapters and translation remain explicit",
+      "requirement": "Protocol adapters identify lossless/lossy translation and AI mapping proposals cannot silently change production mappings.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/kernel/phase-contracts/phase-43-interface-connectivity.ts",
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/kernel/phase-contracts/phase-43-interface-connectivity.ts",
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "authenticated-connectivity-security",
+      "area": "Interface traffic is authenticated, authorized and network constrained",
+      "requirement": "Webhook and network connectivity require signature, freshness, replay, authentication, authorization, TLS, certificate validation and allowlists.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "connectivity-health-and-observability",
+      "area": "Connectivity health, certificates, metrics and audit are observable",
+      "requirement": "Interface/provider health, sanitized logs, traces, metrics, alerts, certificate expiry and audit events are recorded.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "connectivity-governance-and-resilience",
+      "area": "Connectivity changes, drift and unreliable networks remain governed",
+      "requirement": "High-risk exchanges require approval, schema drift responds by risk, critical connections can disconnect, and limited connectivity supports store-and-forward.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "live-interface-registry-and-connectivity",
+      "area": "Universal interface registry and live connectivity paths are wired",
+      "requirement": "Protocols, device/interface classes and access paths persist, resolve authorization and tenant context, and operate with live external connections.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "architecture/phase-43-universal-interface-connectivity-intelligence.md"
+      ],
+      "matchedEvidence": [
+        "architecture/phase-43-universal-interface-connectivity-intelligence.md"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    }
+  ],
+  "ok": true,
+  "limitations": [
+    "Classification measures the presence of executable evidence, not the correctness or completeness of that evidence.",
+    "A DECLARED area is unfinished work, never a false claim — it is reported as such.",
+    "An IMPLEMENTED_UNWIRED area has a tested implementation that no boundary calls; it is reported, never counted as enforcement.",
+    "Evidence patterns are declared per phase in architecture/phase-acceptance/phase-<id>-*.json and must be reviewed when a phase is re-audited."
+  ]
+}

@@ -1,0 +1,181 @@
+{
+  "artifact": "phase-acceptance",
+  "phase": "19",
+  "phaseName": "Command Centre",
+  "source": "architecture/phase-19-command-centre.md",
+  "generatedAt": "2026-09-28T13:22:37.202Z",
+  "classificationDefinitions": {
+    "ENFORCED": "an executable artefact proves it (test, verifier script, migration, policy or machine-checked contract match) and, where a boundary is declared, a real call site invokes it",
+    "DECLARED": "a module, document or contract mentions it, but nothing executable proves it",
+    "IMPLEMENTED_UNWIRED": "implementation and tests exist, but the declared boundary patterns match nothing — the capability protects nothing yet",
+    "MISSING": "no artefact found"
+  },
+  "summary": {
+    "areas": 6,
+    "enforced": 5,
+    "declared": 0,
+    "implementedUnwired": 1,
+    "implementedUnwiredAreas": [
+      "operational-surface-wiring"
+    ],
+    "missing": 0,
+    "missingRequired": [],
+    "unresolvedEvidencePaths": []
+  },
+  "ownership": {
+    "note": "Phase 19 owns alert definitions/state, incident records/lifecycle and the operational composition contract. It does not own canonical state, design language or the human interface layer.",
+    "canonicalOwners": {
+      "alerts-and-incidents": "19",
+      "operational-composition": "19",
+      "canonical-state": "owning phases",
+      "workspace-composition": "06",
+      "design-system": "24",
+      "human-interface": "50"
+    }
+  },
+  "areas": [
+    {
+      "id": "health-is-fresh-and-honest",
+      "area": "Health state is scoped, fresh and never fabricated",
+      "requirement": "Unknown or stale state is not healthy, command context is complete and cross-tenant command access requires an explicit grant.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/command-core.ts",
+        "tests/unit/command-core.test.ts",
+        "tests/unit/command-core.test.ts",
+        "tests/unit/command-core.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/command-core.ts",
+        "tests/unit/command-core.test.ts",
+        "tests/unit/command-core.test.ts",
+        "tests/unit/command-core.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "alerts-have-provenance-and-control",
+      "area": "Alerts preserve source, priority, escalation and flood control",
+      "requirement": "Alerts require source provenance, carry explainable priority, escalate only under policy, correlate related alerts and suppress floods.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/command-alerts.ts",
+        "tests/unit/command-alerts.test.ts",
+        "tests/unit/command-alerts.test.ts",
+        "tests/unit/command-alerts.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/command-alerts.ts",
+        "tests/unit/command-alerts.test.ts",
+        "tests/unit/command-alerts.test.ts",
+        "tests/unit/command-alerts.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "incident-and-decision-lifecycle",
+      "area": "Incidents and decisions require ordered, attributable handling",
+      "requirement": "Incidents transition legally, retain commanders/responders/evidence and postmortems, while decisions have owners, approval, expiry and a minimum option set.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/command-incidents.ts",
+        "tests/unit/command-incidents.test.ts",
+        "tests/unit/command-incidents.test.ts",
+        "tests/unit/command-incidents.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/command-incidents.ts",
+        "tests/unit/command-incidents.test.ts",
+        "tests/unit/command-incidents.test.ts",
+        "tests/unit/command-incidents.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "command-events-cache-and-audit",
+      "area": "Operational read models are ordered, fresh and audited",
+      "requirement": "Events preserve sequence and correlation, duplicate delivery is rejected, caches expire or invalidate, sensitive views are authorized and high-impact actions receive enhanced audit treatment.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/command-governance.ts",
+        "tests/unit/command-governance.test.ts",
+        "tests/unit/command-governance.test.ts",
+        "tests/unit/command-governance.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/command-governance.ts",
+        "tests/unit/command-governance.test.ts",
+        "tests/unit/command-governance.test.ts",
+        "tests/unit/command-governance.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "unknown-actions-and-break-glass",
+      "area": "Unknown actions, break-glass and recovery remain controlled",
+      "requirement": "Unverified actions are never displayed as success, rollback is offered only for failed or unknown states, break-glass access is justified and time-boxed, and degraded mode is read-only.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/command-governance.ts",
+        "tests/unit/command-governance.test.ts",
+        "tests/unit/command-governance.test.ts",
+        "tests/unit/command-incidents.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/command-governance.ts",
+        "tests/unit/command-governance.test.ts",
+        "tests/unit/command-governance.test.ts",
+        "tests/unit/command-incidents.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "operational-surface-wiring",
+      "area": "Operational engines are not yet projected by the visible surface",
+      "requirement": "A real operational surface must consume command health, alert and incident state; the existing governance-surface tests do not prove that the visible Command Centre renders these engines.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "IMPLEMENTED_UNWIRED",
+      "declaredEvidence": [
+        "frontend/src/lib/command-core.ts",
+        "tests/unit/command-centre-contract-governance.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/command-core.ts",
+        "tests/unit/command-centre-contract-governance.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "frontend/src/routes/**/*.tsx"
+      ],
+      "boundaryEvidence": []
+    }
+  ],
+  "ok": true,
+  "limitations": [
+    "Classification measures the presence of executable evidence, not the correctness or completeness of that evidence.",
+    "A DECLARED area is unfinished work, never a false claim — it is reported as such.",
+    "An IMPLEMENTED_UNWIRED area has a tested implementation that no boundary calls; it is reported, never counted as enforcement.",
+    "Evidence patterns are declared per phase in architecture/phase-acceptance/phase-<id>-*.json and must be reviewed when a phase is re-audited."
+  ]
+}

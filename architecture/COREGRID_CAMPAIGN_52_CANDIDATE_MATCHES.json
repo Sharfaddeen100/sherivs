@@ -1,0 +1,554 @@
+{
+  "mission": "COREGRID-MISSION-0001",
+  "campaign": "CAMPAIGN-52",
+  "workPackage": "CAMPAIGN-52-WP-01",
+  "artifact": "COREGRID_CAMPAIGN_52_CANDIDATE_MATCHES",
+  "status": "NON_AUTHORITATIVE_CANDIDATE_ANALYSIS",
+  "generatedAt": "2026-09-28T19:48:10.954Z",
+  "method": "Deterministic token overlap between unresolved extract titles and existing registry phase/capability names.",
+  "matches": [
+    {
+      "gapId": "CG-P52-GAP-001",
+      "title": "COREGRID CIVILIZATION KERNEL",
+      "candidateMatches": [
+        {
+          "phase": "33",
+          "name": "Reality Intelligence Kernel (URIK)",
+          "status": "ARCHITECTURE_DEFINED",
+          "overlap": [
+            "kernel"
+          ],
+          "score": 1,
+          "evidence": {
+            "registry": "architecture/registry.json",
+            "phase": "33",
+            "capabilityText": "universal-reality-ontology"
+          }
+        },
+        {
+          "phase": "35",
+          "name": "Autonomous Agent Civilization OS",
+          "status": "ARCHITECTURE_DEFINED",
+          "overlap": [
+            "civilization"
+          ],
+          "score": 1,
+          "evidence": {
+            "registry": "architecture/registry.json",
+            "phase": "35",
+            "capabilityText": "multi-agent-society-governance"
+          }
+        },
+        {
+          "phase": "36",
+          "name": "Universal Memory & Knowledge Engine",
+          "status": "ARCHITECTURE_DEFINED",
+          "overlap": [
+            "civilization"
+          ],
+          "score": 1,
+          "evidence": {
+            "registry": "architecture/registry.json",
+            "phase": "36",
+            "capabilityText": "memory-knowledge-civilization"
+          }
+        }
+      ],
+      "status": "PROPOSAL_REQUIRES_HUMAN_OR_GOVERNANCE_REVIEW",
+      "rule": "Token overlap is discovery evidence, not ownership authority."
+    },
+    {
+      "gapId": "CG-P52-GAP-002",
+      "title": "THE COREGRID \"OVERLAY INTELLIGENCE\" MODEL",
+      "candidateMatches": [
+        {
+          "phase": "11",
+          "name": "Academic Intelligence",
+          "status": "COMPLETE",
+          "overlap": [
+            "intelligence"
+          ],
+          "score": 1,
+          "evidence": {
+            "registry": "architecture/registry.json",
+            "phase": "11",
+            "capabilityText": "academic-intelligence"
+          }
+        },
+        {
+          "phase": "12",
+          "name": "Scheduling Intelligence",
+          "status": "COMPLETE",
+          "overlap": [
+            "intelligence"
+          ],
+          "score": 1,
+          "evidence": {
+            "registry": "architecture/registry.json",
+            "phase": "12",
+            "capabilityText": "scheduling"
+          }
+        },
+        {
+          "phase": "18",
+          "name": "Analytics Intelligence",
+          "status": "IMPLEMENTING",
+          "overlap": [
+            "intelligence"
+          ],
+          "score": 1,
+          "evidence": {
+            "registry": "architecture/registry.json",
+            "phase": "18",
+            "capabilityText": "analytics-decision-intelligence"
+          }
+        }
+      ],
+      "status": "PROPOSAL_REQUIRES_HUMAN_OR_GOVERNANCE_REVIEW",
+      "rule": "Token overlap is discovery evidence, not ownership authority."
+    },
+    {
+      "gapId": "CG-P52-GAP-003",
+      "title": "COREGRID DEVELOPER MARKETPLACE",
+      "candidateMatches": [
+        {
+          "phase": "27",
+          "name": "Marketplace",
+          "status": "IMPLEMENTED",
+          "overlap": [
+            "marketplace"
+          ],
+          "score": 1,
+          "evidence": {
+            "registry": "architecture/registry.json",
+            "phase": "27",
+            "capabilityText": "marketplace"
+          }
+        },
+        {
+          "phase": "28",
+          "name": "Developer Platform",
+          "status": "IMPLEMENTING",
+          "overlap": [
+            "developer"
+          ],
+          "score": 1,
+          "evidence": {
+            "registry": "architecture/registry.json",
+            "phase": "28",
+            "capabilityText": "developer-platform"
+          }
+        }
+      ],
+      "status": "PROPOSAL_REQUIRES_HUMAN_OR_GOVERNANCE_REVIEW",
+      "rule": "Token overlap is discovery evidence, not ownership authority."
+    },
+    {
+      "gapId": "CG-P52-GAP-004",
+      "title": "COREGRID SDK ARCHITECTURE",
+      "candidateMatches": [],
+      "status": "PROPOSAL_REQUIRES_HUMAN_OR_GOVERNANCE_REVIEW",
+      "rule": "Token overlap is discovery evidence, not ownership authority."
+    },
+    {
+      "gapId": "CG-P52-GAP-005",
+      "title": "USER-GENERATED SOFTWARE",
+      "candidateMatches": [],
+      "status": "PROPOSAL_REQUIRES_HUMAN_OR_GOVERNANCE_REVIEW",
+      "rule": "Token overlap is discovery evidence, not ownership authority."
+    },
+    {
+      "gapId": "CG-P52-GAP-006",
+      "title": "BLUEPRINT-TO-REALITY COMPILER",
+      "candidateMatches": [
+        {
+          "phase": "04",
+          "name": "Education Reality Engine",
+          "status": "COMPLETE",
+          "overlap": [
+            "reality"
+          ],
+          "score": 1,
+          "evidence": {
+            "registry": "architecture/registry.json",
+            "phase": "04",
+            "capabilityText": "education-reality-ontology"
+          }
+        },
+        {
+          "phase": "33",
+          "name": "Reality Intelligence Kernel (URIK)",
+          "status": "ARCHITECTURE_DEFINED",
+          "overlap": [
+            "reality"
+          ],
+          "score": 1,
+          "evidence": {
+            "registry": "architecture/registry.json",
+            "phase": "33",
+            "capabilityText": "universal-reality-ontology"
+          }
+        },
+        {
+          "phase": "41",
+          "name": "Reality Simulation & Autonomous Sandbox Engine",
+          "status": "ARCHITECTURE_DEFINED",
+          "overlap": [
+            "reality"
+          ],
+          "score": 1,
+          "evidence": {
+            "registry": "architecture/registry.json",
+            "phase": "41",
+            "capabilityText": "sandbox-runtime"
+          }
+        }
+      ],
+      "status": "PROPOSAL_REQUIRES_HUMAN_OR_GOVERNANCE_REVIEW",
+      "rule": "Token overlap is discovery evidence, not ownership authority."
+    },
+    {
+      "gapId": "CG-P52-GAP-007",
+      "title": "THE MAIN COREGRID APPLICATION COMES FIRST",
+      "candidateMatches": [
+        {
+          "phase": "05",
+          "name": "Core Application Runtime",
+          "status": "COMPLETE",
+          "overlap": [
+            "application"
+          ],
+          "score": 1,
+          "evidence": {
+            "registry": "architecture/registry.json",
+            "phase": "05",
+            "capabilityText": "runtime-primitives"
+          }
+        }
+      ],
+      "status": "PROPOSAL_REQUIRES_HUMAN_OR_GOVERNANCE_REVIEW",
+      "rule": "Token overlap is discovery evidence, not ownership authority."
+    },
+    {
+      "gapId": "CG-P52-GAP-008",
+      "title": "COREGRID GLOBAL SHELL",
+      "candidateMatches": [
+        {
+          "phase": "21",
+          "name": "Global Cloud Fabric",
+          "status": "IMPLEMENTING",
+          "overlap": [
+            "global"
+          ],
+          "score": 1,
+          "evidence": {
+            "registry": "architecture/registry.json",
+            "phase": "21",
+            "capabilityText": "cloud-fabric-byoc"
+          }
+        }
+      ],
+      "status": "PROPOSAL_REQUIRES_HUMAN_OR_GOVERNANCE_REVIEW",
+      "rule": "Token overlap is discovery evidence, not ownership authority."
+    },
+    {
+      "gapId": "CG-P52-GAP-009",
+      "title": "ONE USER, MANY REALITIES",
+      "candidateMatches": [],
+      "status": "PROPOSAL_REQUIRES_HUMAN_OR_GOVERNANCE_REVIEW",
+      "rule": "Token overlap is discovery evidence, not ownership authority."
+    },
+    {
+      "gapId": "CG-P52-GAP-010",
+      "title": "CONTEXT SWITCHING MUST BE EXTREMELY SAFE",
+      "candidateMatches": [],
+      "status": "PROPOSAL_REQUIRES_HUMAN_OR_GOVERNANCE_REVIEW",
+      "rule": "Token overlap is discovery evidence, not ownership authority."
+    },
+    {
+      "gapId": "CG-P52-GAP-011",
+      "title": "PERSONAL VS ORGANIZATIONAL DATA",
+      "candidateMatches": [
+        {
+          "phase": "14",
+          "name": "Data Platform",
+          "status": "IMPLEMENTING",
+          "overlap": [
+            "data"
+          ],
+          "score": 1,
+          "evidence": {
+            "registry": "architecture/registry.json",
+            "phase": "14",
+            "capabilityText": "data-platform"
+          }
+        }
+      ],
+      "status": "PROPOSAL_REQUIRES_HUMAN_OR_GOVERNANCE_REVIEW",
+      "rule": "Token overlap is discovery evidence, not ownership authority."
+    },
+    {
+      "gapId": "CG-P52-GAP-012",
+      "title": "COREGRID APPLICATION ARCHITECTURE",
+      "candidateMatches": [
+        {
+          "phase": "05",
+          "name": "Core Application Runtime",
+          "status": "COMPLETE",
+          "overlap": [
+            "application"
+          ],
+          "score": 1,
+          "evidence": {
+            "registry": "architecture/registry.json",
+            "phase": "05",
+            "capabilityText": "runtime-primitives"
+          }
+        }
+      ],
+      "status": "PROPOSAL_REQUIRES_HUMAN_OR_GOVERNANCE_REVIEW",
+      "rule": "Token overlap is discovery evidence, not ownership authority."
+    },
+    {
+      "gapId": "CG-P52-GAP-013",
+      "title": "WEB + IOS + ANDROID",
+      "candidateMatches": [
+        {
+          "phase": "23",
+          "name": "Web Platform",
+          "status": "IMPLEMENTING",
+          "overlap": [
+            "web"
+          ],
+          "score": 1,
+          "evidence": {
+            "registry": "architecture/registry.json",
+            "phase": "23",
+            "capabilityText": "web-client-platform"
+          }
+        }
+      ],
+      "status": "PROPOSAL_REQUIRES_HUMAN_OR_GOVERNANCE_REVIEW",
+      "rule": "Token overlap is discovery evidence, not ownership authority."
+    },
+    {
+      "gapId": "CG-P52-GAP-014",
+      "title": "DO NOT BUILD THE ENGINES FIRST",
+      "candidateMatches": [],
+      "status": "PROPOSAL_REQUIRES_HUMAN_OR_GOVERNANCE_REVIEW",
+      "rule": "Token overlap is discovery evidence, not ownership authority."
+    },
+    {
+      "gapId": "CG-P52-GAP-015",
+      "title": "THE COREGRID DOMAIN PACKAGE",
+      "candidateMatches": [],
+      "status": "PROPOSAL_REQUIRES_HUMAN_OR_GOVERNANCE_REVIEW",
+      "rule": "Token overlap is discovery evidence, not ownership authority."
+    },
+    {
+      "gapId": "CG-P52-GAP-016",
+      "title": "COREGRID DOES NOT NEED TO KNOW EVERY DOMAIN IN ADVANCE",
+      "candidateMatches": [],
+      "status": "PROPOSAL_REQUIRES_HUMAN_OR_GOVERNANCE_REVIEW",
+      "rule": "Token overlap is discovery evidence, not ownership authority."
+    },
+    {
+      "gapId": "CG-P52-GAP-017",
+      "title": "COREGRID SDK ECONOMY",
+      "candidateMatches": [
+        {
+          "phase": "49",
+          "name": "Autonomous Economy Engine",
+          "status": "ARCHITECTURE_DEFINED",
+          "overlap": [
+            "economy"
+          ],
+          "score": 1,
+          "evidence": {
+            "registry": "architecture/registry.json",
+            "phase": "49",
+            "capabilityText": "autonomous-economy"
+          }
+        }
+      ],
+      "status": "PROPOSAL_REQUIRES_HUMAN_OR_GOVERNANCE_REVIEW",
+      "rule": "Token overlap is discovery evidence, not ownership authority."
+    },
+    {
+      "gapId": "CG-P52-GAP-018",
+      "title": "THE COREGRID APP STORE MODEL",
+      "candidateMatches": [],
+      "status": "PROPOSAL_REQUIRES_HUMAN_OR_GOVERNANCE_REVIEW",
+      "rule": "Token overlap is discovery evidence, not ownership authority."
+    },
+    {
+      "gapId": "CG-P52-GAP-019",
+      "title": "COREGRID AGENT MARKETPLACE",
+      "candidateMatches": [
+        {
+          "phase": "07",
+          "name": "AI Agent System",
+          "status": "COMPLETE",
+          "overlap": [
+            "agent"
+          ],
+          "score": 1,
+          "evidence": {
+            "registry": "architecture/registry.json",
+            "phase": "07",
+            "capabilityText": "agent-runtime"
+          }
+        },
+        {
+          "phase": "27",
+          "name": "Marketplace",
+          "status": "IMPLEMENTED",
+          "overlap": [
+            "marketplace"
+          ],
+          "score": 1,
+          "evidence": {
+            "registry": "architecture/registry.json",
+            "phase": "27",
+            "capabilityText": "marketplace"
+          }
+        },
+        {
+          "phase": "35",
+          "name": "Autonomous Agent Civilization OS",
+          "status": "ARCHITECTURE_DEFINED",
+          "overlap": [
+            "agent"
+          ],
+          "score": 1,
+          "evidence": {
+            "registry": "architecture/registry.json",
+            "phase": "35",
+            "capabilityText": "multi-agent-society-governance"
+          }
+        }
+      ],
+      "status": "PROPOSAL_REQUIRES_HUMAN_OR_GOVERNANCE_REVIEW",
+      "rule": "Token overlap is discovery evidence, not ownership authority."
+    },
+    {
+      "gapId": "CG-P52-GAP-020",
+      "title": "THE REAL BLUE-OCEAN MOAT",
+      "candidateMatches": [],
+      "status": "PROPOSAL_REQUIRES_HUMAN_OR_GOVERNANCE_REVIEW",
+      "rule": "Token overlap is discovery evidence, not ownership authority."
+    },
+    {
+      "gapId": "CG-P52-GAP-021",
+      "title": "THE FINAL COREGRID EXPERIENCE FORMULA",
+      "candidateMatches": [
+        {
+          "phase": "24",
+          "name": "Experience & Design Intelligence",
+          "status": "IMPLEMENTING",
+          "overlap": [
+            "experience"
+          ],
+          "score": 1,
+          "evidence": {
+            "registry": "architecture/registry.json",
+            "phase": "24",
+            "capabilityText": "experience-design"
+          }
+        }
+      ],
+      "status": "PROPOSAL_REQUIRES_HUMAN_OR_GOVERNANCE_REVIEW",
+      "rule": "Token overlap is discovery evidence, not ownership authority."
+    },
+    {
+      "gapId": "CG-P52-GAP-022",
+      "title": "THE COMPLETE COREGRID REALITY LOOP",
+      "candidateMatches": [
+        {
+          "phase": "04",
+          "name": "Education Reality Engine",
+          "status": "COMPLETE",
+          "overlap": [
+            "reality"
+          ],
+          "score": 1,
+          "evidence": {
+            "registry": "architecture/registry.json",
+            "phase": "04",
+            "capabilityText": "education-reality-ontology"
+          }
+        },
+        {
+          "phase": "33",
+          "name": "Reality Intelligence Kernel (URIK)",
+          "status": "ARCHITECTURE_DEFINED",
+          "overlap": [
+            "reality"
+          ],
+          "score": 1,
+          "evidence": {
+            "registry": "architecture/registry.json",
+            "phase": "33",
+            "capabilityText": "universal-reality-ontology"
+          }
+        },
+        {
+          "phase": "41",
+          "name": "Reality Simulation & Autonomous Sandbox Engine",
+          "status": "ARCHITECTURE_DEFINED",
+          "overlap": [
+            "reality"
+          ],
+          "score": 1,
+          "evidence": {
+            "registry": "architecture/registry.json",
+            "phase": "41",
+            "capabilityText": "sandbox-runtime"
+          }
+        }
+      ],
+      "status": "PROPOSAL_REQUIRES_HUMAN_OR_GOVERNANCE_REVIEW",
+      "rule": "Token overlap is discovery evidence, not ownership authority."
+    },
+    {
+      "gapId": "CG-P52-GAP-023",
+      "title": "IMPLEMENTATION ORDER",
+      "candidateMatches": [],
+      "status": "PROPOSAL_REQUIRES_HUMAN_OR_GOVERNANCE_REVIEW",
+      "rule": "Token overlap is discovery evidence, not ownership authority."
+    },
+    {
+      "gapId": "CG-P52-GAP-024",
+      "title": "THE ACTUAL PRODUCT WE SHOULD BUILD FIRST",
+      "candidateMatches": [],
+      "status": "PROPOSAL_REQUIRES_HUMAN_OR_GOVERNANCE_REVIEW",
+      "rule": "Token overlap is discovery evidence, not ownership authority."
+    },
+    {
+      "gapId": "CG-P52-GAP-025",
+      "title": "55-Phase Architectural Binding",
+      "candidateMatches": [],
+      "status": "PROPOSAL_REQUIRES_HUMAN_OR_GOVERNANCE_REVIEW",
+      "rule": "Token overlap is discovery evidence, not ownership authority."
+    },
+    {
+      "gapId": "CG-P52-GAP-026",
+      "title": "55-Phase Architectural Binding",
+      "candidateMatches": [],
+      "status": "PROPOSAL_REQUIRES_HUMAN_OR_GOVERNANCE_REVIEW",
+      "rule": "Token overlap is discovery evidence, not ownership authority."
+    },
+    {
+      "gapId": "CG-P52-GAP-027",
+      "title": "55-Phase Architectural Binding",
+      "candidateMatches": [],
+      "status": "PROPOSAL_REQUIRES_HUMAN_OR_GOVERNANCE_REVIEW",
+      "rule": "Token overlap is discovery evidence, not ownership authority."
+    }
+  ],
+  "prohibitedUse": [
+    "Do not update phase ownership from this artifact alone.",
+    "Do not register a new phase from this artifact.",
+    "Do not implement a candidate match without governance and contract evidence."
+  ]
+}

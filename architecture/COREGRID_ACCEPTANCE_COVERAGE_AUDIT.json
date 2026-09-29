@@ -1,0 +1,1028 @@
+{
+  "mission": "COREGRID-MISSION-0001",
+  "artifact": "COREGRID_ACCEPTANCE_COVERAGE_AUDIT",
+  "capturedAt": "2026-09-28T19:04:17.664Z",
+  "policy": "Missing acceptance definitions remain UNKNOWN; this audit never fabricates definitions or proofs.",
+  "summary": {
+    "registeredPhases": 51,
+    "definitionsPresent": 51,
+    "proofsPresent": 51,
+    "unknownAcceptance": [],
+    "blockedProofs": [],
+    "passWithGaps": [
+      "01",
+      "02",
+      "03",
+      "05",
+      "06",
+      "08",
+      "09",
+      "10",
+      "11",
+      "12",
+      "13",
+      "14",
+      "15",
+      "16",
+      "17",
+      "18",
+      "19",
+      "20",
+      "22",
+      "23",
+      "24",
+      "25",
+      "26",
+      "27",
+      "28",
+      "29",
+      "30",
+      "31",
+      "32",
+      "33",
+      "34",
+      "35",
+      "36",
+      "37",
+      "38",
+      "39",
+      "40",
+      "41",
+      "42",
+      "43",
+      "44",
+      "45",
+      "46",
+      "47",
+      "48",
+      "49",
+      "50",
+      "51"
+    ],
+    "pass": [
+      "04",
+      "07",
+      "21"
+    ]
+  },
+  "phases": [
+    {
+      "phaseId": "01",
+      "phaseName": "Foundation",
+      "registryStatus": "COMPLETE",
+      "acceptanceDefinition": "architecture\\phase-acceptance\\phase-01-foundation.json",
+      "proof": "architecture\\proofs\\phase-01-acceptance.proof.json",
+      "coverage": "PASS_WITH_DECLARED_OR_UNWIRED_GAP",
+      "summary": {
+        "areas": 45,
+        "enforced": 42,
+        "declared": 0,
+        "implementedUnwired": 3,
+        "implementedUnwiredAreas": [
+          "observability",
+          "rate-limiting",
+          "resource-budgets"
+        ],
+        "missing": 0,
+        "missingRequired": [],
+        "unresolvedEvidencePaths": []
+      }
+    },
+    {
+      "phaseId": "02",
+      "phaseName": "Identity",
+      "registryStatus": "COMPLETE",
+      "acceptanceDefinition": "architecture\\phase-acceptance\\phase-02-identity.json",
+      "proof": "architecture\\proofs\\phase-02-acceptance.proof.json",
+      "coverage": "PASS_WITH_DECLARED_OR_UNWIRED_GAP",
+      "summary": {
+        "areas": 12,
+        "enforced": 11,
+        "declared": 1,
+        "implementedUnwired": 0,
+        "implementedUnwiredAreas": [],
+        "missing": 0,
+        "missingRequired": [],
+        "unresolvedEvidencePaths": []
+      }
+    },
+    {
+      "phaseId": "03",
+      "phaseName": "Multi-Tenancy",
+      "registryStatus": "COMPLETE",
+      "acceptanceDefinition": "architecture\\phase-acceptance\\phase-03-multi-tenancy.json",
+      "proof": "architecture\\proofs\\phase-03-acceptance.proof.json",
+      "coverage": "PASS_WITH_DECLARED_OR_UNWIRED_GAP",
+      "summary": {
+        "areas": 19,
+        "enforced": 16,
+        "declared": 2,
+        "implementedUnwired": 1,
+        "implementedUnwiredAreas": [
+          "tenant-observability"
+        ],
+        "missing": 0,
+        "missingRequired": [],
+        "unresolvedEvidencePaths": []
+      }
+    },
+    {
+      "phaseId": "04",
+      "phaseName": "Education Reality Engine",
+      "registryStatus": "COMPLETE",
+      "acceptanceDefinition": "architecture\\phase-acceptance\\phase-04-reality-engine.json",
+      "proof": "architecture\\proofs\\phase-04-acceptance.proof.json",
+      "coverage": "PASS",
+      "summary": {
+        "areas": 16,
+        "enforced": 16,
+        "declared": 0,
+        "implementedUnwired": 0,
+        "implementedUnwiredAreas": [],
+        "missing": 0,
+        "missingRequired": [],
+        "unresolvedEvidencePaths": []
+      }
+    },
+    {
+      "phaseId": "05",
+      "phaseName": "Core Application Runtime",
+      "registryStatus": "COMPLETE",
+      "acceptanceDefinition": "architecture\\phase-acceptance\\phase-05-application-runtime.json",
+      "proof": "architecture\\proofs\\phase-05-acceptance.proof.json",
+      "coverage": "PASS_WITH_DECLARED_OR_UNWIRED_GAP",
+      "summary": {
+        "areas": 13,
+        "enforced": 12,
+        "declared": 0,
+        "implementedUnwired": 1,
+        "implementedUnwiredAreas": [
+          "observability"
+        ],
+        "missing": 0,
+        "missingRequired": [],
+        "unresolvedEvidencePaths": []
+      }
+    },
+    {
+      "phaseId": "06",
+      "phaseName": "Workspace Engine",
+      "registryStatus": "COMPLETE",
+      "acceptanceDefinition": "architecture\\phase-acceptance\\phase-06-workspace-engine.json",
+      "proof": "architecture\\proofs\\phase-06-acceptance.proof.json",
+      "coverage": "PASS_WITH_DECLARED_OR_UNWIRED_GAP",
+      "summary": {
+        "areas": 18,
+        "enforced": 16,
+        "declared": 2,
+        "implementedUnwired": 0,
+        "implementedUnwiredAreas": [],
+        "missing": 0,
+        "missingRequired": [],
+        "unresolvedEvidencePaths": []
+      }
+    },
+    {
+      "phaseId": "07",
+      "phaseName": "AI Agent System",
+      "registryStatus": "COMPLETE",
+      "acceptanceDefinition": "architecture\\phase-acceptance\\phase-07-ai-agent-system.json",
+      "proof": "architecture\\proofs\\phase-07-acceptance.proof.json",
+      "coverage": "PASS",
+      "summary": {
+        "areas": 14,
+        "enforced": 14,
+        "declared": 0,
+        "implementedUnwired": 0,
+        "implementedUnwiredAreas": [],
+        "missing": 0,
+        "missingRequired": [],
+        "unresolvedEvidencePaths": []
+      }
+    },
+    {
+      "phaseId": "08",
+      "phaseName": "Security Engine",
+      "registryStatus": "COMPLETE",
+      "acceptanceDefinition": "architecture\\phase-acceptance\\phase-08-security-engine.json",
+      "proof": "architecture\\proofs\\phase-08-acceptance.proof.json",
+      "coverage": "PASS_WITH_DECLARED_OR_UNWIRED_GAP",
+      "summary": {
+        "areas": 45,
+        "enforced": 22,
+        "declared": 14,
+        "implementedUnwired": 9,
+        "implementedUnwiredAreas": [
+          "risk-evaluation",
+          "session-security",
+          "agent-security",
+          "tool-security",
+          "security-events",
+          "alerts-and-severity",
+          "incidents",
+          "evidence-records",
+          "observability"
+        ],
+        "missing": 0,
+        "missingRequired": [],
+        "unresolvedEvidencePaths": []
+      }
+    },
+    {
+      "phaseId": "09",
+      "phaseName": "Security Trust Fabric",
+      "registryStatus": "COMPLETE",
+      "acceptanceDefinition": "architecture\\phase-acceptance\\phase-09-security-trust-fabric.json",
+      "proof": "architecture\\proofs\\phase-09-acceptance.proof.json",
+      "coverage": "PASS_WITH_DECLARED_OR_UNWIRED_GAP",
+      "summary": {
+        "areas": 49,
+        "enforced": 34,
+        "declared": 13,
+        "implementedUnwired": 2,
+        "implementedUnwiredAreas": [
+          "phase08-consumption",
+          "observability"
+        ],
+        "missing": 0,
+        "missingRequired": [],
+        "unresolvedEvidencePaths": []
+      }
+    },
+    {
+      "phaseId": "10",
+      "phaseName": "Communication Platform",
+      "registryStatus": "COMPLETE",
+      "acceptanceDefinition": "architecture\\phase-acceptance\\phase-10-communication-platform.json",
+      "proof": "architecture\\proofs\\phase-10-acceptance.proof.json",
+      "coverage": "PASS_WITH_DECLARED_OR_UNWIRED_GAP",
+      "summary": {
+        "areas": 38,
+        "enforced": 31,
+        "declared": 7,
+        "implementedUnwired": 0,
+        "implementedUnwiredAreas": [],
+        "missing": 0,
+        "missingRequired": [],
+        "unresolvedEvidencePaths": []
+      }
+    },
+    {
+      "phaseId": "11",
+      "phaseName": "Academic Intelligence",
+      "registryStatus": "COMPLETE",
+      "acceptanceDefinition": "architecture\\phase-acceptance\\phase-11-academic-intelligence.json",
+      "proof": "architecture\\proofs\\phase-11-acceptance.proof.json",
+      "coverage": "PASS_WITH_DECLARED_OR_UNWIRED_GAP",
+      "summary": {
+        "areas": 17,
+        "enforced": 12,
+        "declared": 5,
+        "implementedUnwired": 0,
+        "implementedUnwiredAreas": [],
+        "missing": 0,
+        "missingRequired": [],
+        "unresolvedEvidencePaths": []
+      }
+    },
+    {
+      "phaseId": "12",
+      "phaseName": "Scheduling Intelligence",
+      "registryStatus": "COMPLETE",
+      "acceptanceDefinition": "architecture\\phase-acceptance\\phase-12-scheduling-intelligence.json",
+      "proof": "architecture\\proofs\\phase-12-acceptance.proof.json",
+      "coverage": "PASS_WITH_DECLARED_OR_UNWIRED_GAP",
+      "summary": {
+        "areas": 20,
+        "enforced": 13,
+        "declared": 7,
+        "implementedUnwired": 0,
+        "implementedUnwiredAreas": [],
+        "missing": 0,
+        "missingRequired": [],
+        "unresolvedEvidencePaths": []
+      }
+    },
+    {
+      "phaseId": "13",
+      "phaseName": "Financial System",
+      "registryStatus": "COMPLETE",
+      "acceptanceDefinition": "architecture\\phase-acceptance\\phase-13-financial-system.json",
+      "proof": "architecture\\proofs\\phase-13-acceptance.proof.json",
+      "coverage": "PASS_WITH_DECLARED_OR_UNWIRED_GAP",
+      "summary": {
+        "areas": 24,
+        "enforced": 16,
+        "declared": 8,
+        "implementedUnwired": 0,
+        "implementedUnwiredAreas": [],
+        "missing": 0,
+        "missingRequired": [],
+        "unresolvedEvidencePaths": []
+      }
+    },
+    {
+      "phaseId": "14",
+      "phaseName": "Data Platform",
+      "registryStatus": "IMPLEMENTING",
+      "acceptanceDefinition": "architecture\\phase-acceptance\\phase-14-data-platform.json",
+      "proof": "architecture\\proofs\\phase-14-acceptance.proof.json",
+      "coverage": "PASS_WITH_DECLARED_OR_UNWIRED_GAP",
+      "summary": {
+        "areas": 7,
+        "enforced": 5,
+        "declared": 2,
+        "implementedUnwired": 0,
+        "implementedUnwiredAreas": [],
+        "missing": 0,
+        "missingRequired": [],
+        "unresolvedEvidencePaths": []
+      }
+    },
+    {
+      "phaseId": "15",
+      "phaseName": "Hardware Integration",
+      "registryStatus": "IMPLEMENTING",
+      "acceptanceDefinition": "architecture\\phase-acceptance\\phase-15-hardware-integration.json",
+      "proof": "architecture\\proofs\\phase-15-acceptance.proof.json",
+      "coverage": "PASS_WITH_DECLARED_OR_UNWIRED_GAP",
+      "summary": {
+        "areas": 6,
+        "enforced": 4,
+        "declared": 0,
+        "implementedUnwired": 2,
+        "implementedUnwiredAreas": [
+          "commands-authorization-and-safety",
+          "live-hardware-boundary"
+        ],
+        "missing": 0,
+        "missingRequired": [],
+        "unresolvedEvidencePaths": []
+      }
+    },
+    {
+      "phaseId": "16",
+      "phaseName": "Digital Twin",
+      "registryStatus": "IMPLEMENTING",
+      "acceptanceDefinition": "architecture\\phase-acceptance\\phase-16-digital-twin.json",
+      "proof": "architecture\\proofs\\phase-16-acceptance.proof.json",
+      "coverage": "PASS_WITH_DECLARED_OR_UNWIRED_GAP",
+      "summary": {
+        "areas": 6,
+        "enforced": 5,
+        "declared": 0,
+        "implementedUnwired": 1,
+        "implementedUnwiredAreas": [
+          "twin-runtime-projection"
+        ],
+        "missing": 0,
+        "missingRequired": [],
+        "unresolvedEvidencePaths": []
+      }
+    },
+    {
+      "phaseId": "17",
+      "phaseName": "Automation Engine",
+      "registryStatus": "IMPLEMENTING",
+      "acceptanceDefinition": "architecture\\phase-acceptance\\phase-17-automation-engine.json",
+      "proof": "architecture\\proofs\\phase-17-acceptance.proof.json",
+      "coverage": "PASS_WITH_DECLARED_OR_UNWIRED_GAP",
+      "summary": {
+        "areas": 6,
+        "enforced": 5,
+        "declared": 0,
+        "implementedUnwired": 1,
+        "implementedUnwiredAreas": [
+          "automation-boundary"
+        ],
+        "missing": 0,
+        "missingRequired": [],
+        "unresolvedEvidencePaths": []
+      }
+    },
+    {
+      "phaseId": "18",
+      "phaseName": "Analytics Intelligence",
+      "registryStatus": "IMPLEMENTING",
+      "acceptanceDefinition": "architecture\\phase-acceptance\\phase-18-analytics-intelligence.json",
+      "proof": "architecture\\proofs\\phase-18-acceptance.proof.json",
+      "coverage": "PASS_WITH_DECLARED_OR_UNWIRED_GAP",
+      "summary": {
+        "areas": 6,
+        "enforced": 5,
+        "declared": 0,
+        "implementedUnwired": 1,
+        "implementedUnwiredAreas": [
+          "analytics-runtime-boundary"
+        ],
+        "missing": 0,
+        "missingRequired": [],
+        "unresolvedEvidencePaths": []
+      }
+    },
+    {
+      "phaseId": "19",
+      "phaseName": "Command Centre",
+      "registryStatus": "IMPLEMENTING",
+      "acceptanceDefinition": "architecture\\phase-acceptance\\phase-19-command-centre.json",
+      "proof": "architecture\\proofs\\phase-19-acceptance.proof.json",
+      "coverage": "PASS_WITH_DECLARED_OR_UNWIRED_GAP",
+      "summary": {
+        "areas": 6,
+        "enforced": 5,
+        "declared": 0,
+        "implementedUnwired": 1,
+        "implementedUnwiredAreas": [
+          "operational-surface-wiring"
+        ],
+        "missing": 0,
+        "missingRequired": [],
+        "unresolvedEvidencePaths": []
+      }
+    },
+    {
+      "phaseId": "20",
+      "phaseName": "Government Education Cloud",
+      "registryStatus": "IMPLEMENTING",
+      "acceptanceDefinition": "architecture\\phase-acceptance\\phase-20-government-education-cloud.json",
+      "proof": "architecture\\proofs\\phase-20-acceptance.proof.json",
+      "coverage": "PASS_WITH_DECLARED_OR_UNWIRED_GAP",
+      "summary": {
+        "areas": 5,
+        "enforced": 4,
+        "declared": 0,
+        "implementedUnwired": 1,
+        "implementedUnwiredAreas": [
+          "sovereign-runtime-boundary"
+        ],
+        "missing": 0,
+        "missingRequired": [],
+        "unresolvedEvidencePaths": []
+      }
+    },
+    {
+      "phaseId": "21",
+      "phaseName": "Global Cloud Fabric",
+      "registryStatus": "IMPLEMENTING",
+      "acceptanceDefinition": "architecture\\phase-acceptance\\phase-21-global-cloud-fabric.json",
+      "proof": "architecture\\proofs\\phase-21-acceptance.proof.json",
+      "coverage": "PASS",
+      "summary": {
+        "areas": 5,
+        "enforced": 5,
+        "declared": 0,
+        "implementedUnwired": 0,
+        "implementedUnwiredAreas": [],
+        "missing": 0,
+        "missingRequired": [],
+        "unresolvedEvidencePaths": []
+      }
+    },
+    {
+      "phaseId": "22",
+      "phaseName": "Mobile Platform",
+      "registryStatus": "IMPLEMENTING",
+      "acceptanceDefinition": "architecture\\phase-acceptance\\phase-22-mobile-platform.json",
+      "proof": "architecture\\proofs\\phase-22-acceptance.proof.json",
+      "coverage": "PASS_WITH_DECLARED_OR_UNWIRED_GAP",
+      "summary": {
+        "areas": 6,
+        "enforced": 5,
+        "declared": 0,
+        "implementedUnwired": 1,
+        "implementedUnwiredAreas": [
+          "server-reauthorization-and-release"
+        ],
+        "missing": 0,
+        "missingRequired": [],
+        "unresolvedEvidencePaths": []
+      }
+    },
+    {
+      "phaseId": "23",
+      "phaseName": "Web Platform",
+      "registryStatus": "IMPLEMENTING",
+      "acceptanceDefinition": "architecture\\phase-acceptance\\phase-23-web-platform.json",
+      "proof": "architecture\\proofs\\phase-23-acceptance.proof.json",
+      "coverage": "PASS_WITH_DECLARED_OR_UNWIRED_GAP",
+      "summary": {
+        "areas": 6,
+        "enforced": 5,
+        "declared": 0,
+        "implementedUnwired": 1,
+        "implementedUnwiredAreas": [
+          "deployed-web-boundary"
+        ],
+        "missing": 0,
+        "missingRequired": [],
+        "unresolvedEvidencePaths": []
+      }
+    },
+    {
+      "phaseId": "24",
+      "phaseName": "Experience & Design Intelligence",
+      "registryStatus": "IMPLEMENTING",
+      "acceptanceDefinition": "architecture\\phase-acceptance\\phase-24-experience-design-intelligence.json",
+      "proof": "architecture\\proofs\\phase-24-acceptance.proof.json",
+      "coverage": "PASS_WITH_DECLARED_OR_UNWIRED_GAP",
+      "summary": {
+        "areas": 6,
+        "enforced": 5,
+        "declared": 0,
+        "implementedUnwired": 1,
+        "implementedUnwiredAreas": [
+          "experience-surface-consumption"
+        ],
+        "missing": 0,
+        "missingRequired": [],
+        "unresolvedEvidencePaths": []
+      }
+    },
+    {
+      "phaseId": "25",
+      "phaseName": "Institutional Onboarding & Workforce",
+      "registryStatus": "COMPLETE",
+      "acceptanceDefinition": "architecture\\phase-acceptance\\phase-25-institutional-onboarding.json",
+      "proof": "architecture\\proofs\\phase-25-acceptance.proof.json",
+      "coverage": "PASS_WITH_DECLARED_OR_UNWIRED_GAP",
+      "summary": {
+        "areas": 7,
+        "enforced": 6,
+        "declared": 1,
+        "implementedUnwired": 0,
+        "implementedUnwiredAreas": [],
+        "missing": 0,
+        "missingRequired": [],
+        "unresolvedEvidencePaths": []
+      }
+    },
+    {
+      "phaseId": "26",
+      "phaseName": "AI Intelligence Layer",
+      "registryStatus": "IMPLEMENTING",
+      "acceptanceDefinition": "architecture\\phase-acceptance\\phase-26-ai-intelligence.json",
+      "proof": "architecture\\proofs\\phase-26-acceptance.proof.json",
+      "coverage": "PASS_WITH_DECLARED_OR_UNWIRED_GAP",
+      "summary": {
+        "areas": 8,
+        "enforced": 7,
+        "declared": 1,
+        "implementedUnwired": 0,
+        "implementedUnwiredAreas": [],
+        "missing": 0,
+        "missingRequired": [],
+        "unresolvedEvidencePaths": []
+      }
+    },
+    {
+      "phaseId": "27",
+      "phaseName": "Marketplace",
+      "registryStatus": "IMPLEMENTED",
+      "acceptanceDefinition": "architecture\\phase-acceptance\\phase-27-marketplace.json",
+      "proof": "architecture\\proofs\\phase-27-acceptance.proof.json",
+      "coverage": "PASS_WITH_DECLARED_OR_UNWIRED_GAP",
+      "summary": {
+        "areas": 8,
+        "enforced": 7,
+        "declared": 1,
+        "implementedUnwired": 0,
+        "implementedUnwiredAreas": [],
+        "missing": 0,
+        "missingRequired": [],
+        "unresolvedEvidencePaths": []
+      }
+    },
+    {
+      "phaseId": "28",
+      "phaseName": "Developer Platform",
+      "registryStatus": "IMPLEMENTING",
+      "acceptanceDefinition": "architecture\\phase-acceptance\\phase-28-developer-platform.json",
+      "proof": "architecture\\proofs\\phase-28-acceptance.proof.json",
+      "coverage": "PASS_WITH_DECLARED_OR_UNWIRED_GAP",
+      "summary": {
+        "areas": 9,
+        "enforced": 8,
+        "declared": 1,
+        "implementedUnwired": 0,
+        "implementedUnwiredAreas": [],
+        "missing": 0,
+        "missingRequired": [],
+        "unresolvedEvidencePaths": []
+      }
+    },
+    {
+      "phaseId": "29",
+      "phaseName": "CoreGrid Integration",
+      "registryStatus": "IMPLEMENTING",
+      "acceptanceDefinition": "architecture\\phase-acceptance\\phase-29-coregrid-integration.json",
+      "proof": "architecture\\proofs\\phase-29-acceptance.proof.json",
+      "coverage": "PASS_WITH_DECLARED_OR_UNWIRED_GAP",
+      "summary": {
+        "areas": 9,
+        "enforced": 8,
+        "declared": 1,
+        "implementedUnwired": 0,
+        "implementedUnwiredAreas": [],
+        "missing": 0,
+        "missingRequired": [],
+        "unresolvedEvidencePaths": []
+      }
+    },
+    {
+      "phaseId": "30",
+      "phaseName": "Globalization",
+      "registryStatus": "IMPLEMENTING",
+      "acceptanceDefinition": "architecture\\phase-acceptance\\phase-30-globalization.json",
+      "proof": "architecture\\proofs\\phase-30-acceptance.proof.json",
+      "coverage": "PASS_WITH_DECLARED_OR_UNWIRED_GAP",
+      "summary": {
+        "areas": 8,
+        "enforced": 7,
+        "declared": 1,
+        "implementedUnwired": 0,
+        "implementedUnwiredAreas": [],
+        "missing": 0,
+        "missingRequired": [],
+        "unresolvedEvidencePaths": []
+      }
+    },
+    {
+      "phaseId": "31",
+      "phaseName": "Enterprise Scale",
+      "registryStatus": "IMPLEMENTING",
+      "acceptanceDefinition": "architecture\\phase-acceptance\\phase-31-enterprise-scale.json",
+      "proof": "architecture\\proofs\\phase-31-acceptance.proof.json",
+      "coverage": "PASS_WITH_DECLARED_OR_UNWIRED_GAP",
+      "summary": {
+        "areas": 10,
+        "enforced": 9,
+        "declared": 1,
+        "implementedUnwired": 0,
+        "implementedUnwiredAreas": [],
+        "missing": 0,
+        "missingRequired": [],
+        "unresolvedEvidencePaths": []
+      }
+    },
+    {
+      "phaseId": "32",
+      "phaseName": "Future Evolution",
+      "registryStatus": "IMPLEMENTING",
+      "acceptanceDefinition": "architecture\\phase-acceptance\\phase-32-future-evolution.json",
+      "proof": "architecture\\proofs\\phase-32-acceptance.proof.json",
+      "coverage": "PASS_WITH_DECLARED_OR_UNWIRED_GAP",
+      "summary": {
+        "areas": 10,
+        "enforced": 9,
+        "declared": 1,
+        "implementedUnwired": 0,
+        "implementedUnwiredAreas": [],
+        "missing": 0,
+        "missingRequired": [],
+        "unresolvedEvidencePaths": []
+      }
+    },
+    {
+      "phaseId": "33",
+      "phaseName": "Reality Intelligence Kernel (URIK)",
+      "registryStatus": "ARCHITECTURE_DEFINED",
+      "acceptanceDefinition": "architecture\\phase-acceptance\\phase-33-reality-intelligence-kernel.json",
+      "proof": "architecture\\proofs\\phase-33-acceptance.proof.json",
+      "coverage": "PASS_WITH_DECLARED_OR_UNWIRED_GAP",
+      "summary": {
+        "areas": 7,
+        "enforced": 6,
+        "declared": 1,
+        "implementedUnwired": 0,
+        "implementedUnwiredAreas": [],
+        "missing": 0,
+        "missingRequired": [],
+        "unresolvedEvidencePaths": []
+      }
+    },
+    {
+      "phaseId": "34",
+      "phaseName": "Universal Cognitive Intelligence Engine",
+      "registryStatus": "ARCHITECTURE_DEFINED",
+      "acceptanceDefinition": "architecture\\phase-acceptance\\phase-34-universal-cognitive-intelligence-engine.json",
+      "proof": "architecture\\proofs\\phase-34-acceptance.proof.json",
+      "coverage": "PASS_WITH_DECLARED_OR_UNWIRED_GAP",
+      "summary": {
+        "areas": 7,
+        "enforced": 6,
+        "declared": 1,
+        "implementedUnwired": 0,
+        "implementedUnwiredAreas": [],
+        "missing": 0,
+        "missingRequired": [],
+        "unresolvedEvidencePaths": []
+      }
+    },
+    {
+      "phaseId": "35",
+      "phaseName": "Autonomous Agent Civilization OS",
+      "registryStatus": "ARCHITECTURE_DEFINED",
+      "acceptanceDefinition": "architecture\\phase-acceptance\\phase-35-autonomous-agent-civilization-os.json",
+      "proof": "architecture\\proofs\\phase-35-acceptance.proof.json",
+      "coverage": "PASS_WITH_DECLARED_OR_UNWIRED_GAP",
+      "summary": {
+        "areas": 6,
+        "enforced": 5,
+        "declared": 1,
+        "implementedUnwired": 0,
+        "implementedUnwiredAreas": [],
+        "missing": 0,
+        "missingRequired": [],
+        "unresolvedEvidencePaths": []
+      }
+    },
+    {
+      "phaseId": "36",
+      "phaseName": "Universal Memory & Knowledge Engine",
+      "registryStatus": "ARCHITECTURE_DEFINED",
+      "acceptanceDefinition": "architecture\\phase-acceptance\\phase-36-universal-memory-knowledge-civilization-engine.json",
+      "proof": "architecture\\proofs\\phase-36-acceptance.proof.json",
+      "coverage": "PASS_WITH_DECLARED_OR_UNWIRED_GAP",
+      "summary": {
+        "areas": 6,
+        "enforced": 5,
+        "declared": 1,
+        "implementedUnwired": 0,
+        "implementedUnwiredAreas": [],
+        "missing": 0,
+        "missingRequired": [],
+        "unresolvedEvidencePaths": []
+      }
+    },
+    {
+      "phaseId": "37",
+      "phaseName": "Simulation & Future Intelligence Engine",
+      "registryStatus": "ARCHITECTURE_DEFINED",
+      "acceptanceDefinition": "architecture\\phase-acceptance\\phase-37-simulation-future-intelligence-engine.json",
+      "proof": "architecture\\proofs\\phase-37-acceptance.proof.json",
+      "coverage": "PASS_WITH_DECLARED_OR_UNWIRED_GAP",
+      "summary": {
+        "areas": 3,
+        "enforced": 0,
+        "declared": 3,
+        "implementedUnwired": 0,
+        "implementedUnwiredAreas": [],
+        "missing": 0,
+        "missingRequired": [],
+        "unresolvedEvidencePaths": []
+      }
+    },
+    {
+      "phaseId": "38",
+      "phaseName": "Evolution Engine",
+      "registryStatus": "ARCHITECTURE_DEFINED",
+      "acceptanceDefinition": "architecture\\phase-acceptance\\phase-38-evolution-engine.json",
+      "proof": "architecture\\proofs\\phase-38-acceptance.proof.json",
+      "coverage": "PASS_WITH_DECLARED_OR_UNWIRED_GAP",
+      "summary": {
+        "areas": 3,
+        "enforced": 0,
+        "declared": 3,
+        "implementedUnwired": 0,
+        "implementedUnwiredAreas": [],
+        "missing": 0,
+        "missingRequired": [],
+        "unresolvedEvidencePaths": []
+      }
+    },
+    {
+      "phaseId": "39",
+      "phaseName": "Governance & Alignment Engine",
+      "registryStatus": "ARCHITECTURE_DEFINED",
+      "acceptanceDefinition": "architecture\\phase-acceptance\\phase-39-governance-alignment-engine.json",
+      "proof": "architecture\\proofs\\phase-39-acceptance.proof.json",
+      "coverage": "PASS_WITH_DECLARED_OR_UNWIRED_GAP",
+      "summary": {
+        "areas": 4,
+        "enforced": 3,
+        "declared": 1,
+        "implementedUnwired": 0,
+        "implementedUnwiredAreas": [],
+        "missing": 0,
+        "missingRequired": [],
+        "unresolvedEvidencePaths": []
+      }
+    },
+    {
+      "phaseId": "40",
+      "phaseName": "Universal Runtime Fabric",
+      "registryStatus": "ARCHITECTURE_DEFINED",
+      "acceptanceDefinition": "architecture\\phase-acceptance\\phase-40-universal-runtime-fabric.json",
+      "proof": "architecture\\proofs\\phase-40-acceptance.proof.json",
+      "coverage": "PASS_WITH_DECLARED_OR_UNWIRED_GAP",
+      "summary": {
+        "areas": 6,
+        "enforced": 5,
+        "declared": 1,
+        "implementedUnwired": 0,
+        "implementedUnwiredAreas": [],
+        "missing": 0,
+        "missingRequired": [],
+        "unresolvedEvidencePaths": []
+      }
+    },
+    {
+      "phaseId": "41",
+      "phaseName": "Reality Simulation & Autonomous Sandbox Engine",
+      "registryStatus": "ARCHITECTURE_DEFINED",
+      "acceptanceDefinition": "architecture\\phase-acceptance\\phase-41-reality-simulation-autonomous-sandbox-civilization-engine.json",
+      "proof": "architecture\\proofs\\phase-41-acceptance.proof.json",
+      "coverage": "PASS_WITH_DECLARED_OR_UNWIRED_GAP",
+      "summary": {
+        "areas": 3,
+        "enforced": 0,
+        "declared": 3,
+        "implementedUnwired": 0,
+        "implementedUnwiredAreas": [],
+        "missing": 0,
+        "missingRequired": [],
+        "unresolvedEvidencePaths": []
+      }
+    },
+    {
+      "phaseId": "42",
+      "phaseName": "Zero Trust & Adversarial Defense Engine",
+      "registryStatus": "ARCHITECTURE_DEFINED",
+      "acceptanceDefinition": "architecture\\phase-acceptance\\phase-42-zero-trust-security-adversarial-defense-civilization-engine.json",
+      "proof": "architecture\\proofs\\phase-42-acceptance.proof.json",
+      "coverage": "PASS_WITH_DECLARED_OR_UNWIRED_GAP",
+      "summary": {
+        "areas": 6,
+        "enforced": 5,
+        "declared": 1,
+        "implementedUnwired": 0,
+        "implementedUnwiredAreas": [],
+        "missing": 0,
+        "missingRequired": [],
+        "unresolvedEvidencePaths": []
+      }
+    },
+    {
+      "phaseId": "43",
+      "phaseName": "Universal Interface & Connectivity Intelligence",
+      "registryStatus": "ARCHITECTURE_DEFINED",
+      "acceptanceDefinition": "architecture\\phase-acceptance\\phase-43-universal-interface-connectivity-intelligence.json",
+      "proof": "architecture\\proofs\\phase-43-acceptance.proof.json",
+      "coverage": "PASS_WITH_DECLARED_OR_UNWIRED_GAP",
+      "summary": {
+        "areas": 5,
+        "enforced": 4,
+        "declared": 1,
+        "implementedUnwired": 0,
+        "implementedUnwiredAreas": [],
+        "missing": 0,
+        "missingRequired": [],
+        "unresolvedEvidencePaths": []
+      }
+    },
+    {
+      "phaseId": "44",
+      "phaseName": "Planetary Distributed Infrastructure Engine",
+      "registryStatus": "ARCHITECTURE_DEFINED",
+      "acceptanceDefinition": "architecture\\phase-acceptance\\phase-44-planetary-distributed-infrastructure-engine.json",
+      "proof": "architecture\\proofs\\phase-44-acceptance.proof.json",
+      "coverage": "PASS_WITH_DECLARED_OR_UNWIRED_GAP",
+      "summary": {
+        "areas": 7,
+        "enforced": 6,
+        "declared": 1,
+        "implementedUnwired": 0,
+        "implementedUnwiredAreas": [],
+        "missing": 0,
+        "missingRequired": [],
+        "unresolvedEvidencePaths": []
+      }
+    },
+    {
+      "phaseId": "45",
+      "phaseName": "AI Compute Civilization Engine",
+      "registryStatus": "ARCHITECTURE_DEFINED",
+      "acceptanceDefinition": "architecture\\phase-acceptance\\phase-45-ai-compute-civilization-engine.json",
+      "proof": "architecture\\proofs\\phase-45-acceptance.proof.json",
+      "coverage": "PASS_WITH_DECLARED_OR_UNWIRED_GAP",
+      "summary": {
+        "areas": 2,
+        "enforced": 0,
+        "declared": 1,
+        "implementedUnwired": 0,
+        "implementedUnwiredAreas": [],
+        "missing": 1,
+        "missingRequired": [],
+        "unresolvedEvidencePaths": []
+      }
+    },
+    {
+      "phaseId": "46",
+      "phaseName": "Universal Digital Twin Civilization Layer",
+      "registryStatus": "ARCHITECTURE_DEFINED",
+      "acceptanceDefinition": "architecture\\phase-acceptance\\phase-46-universal-digital-twin-civilization-layer.json",
+      "proof": "architecture\\proofs\\phase-46-acceptance.proof.json",
+      "coverage": "PASS_WITH_DECLARED_OR_UNWIRED_GAP",
+      "summary": {
+        "areas": 2,
+        "enforced": 0,
+        "declared": 1,
+        "implementedUnwired": 0,
+        "implementedUnwiredAreas": [],
+        "missing": 1,
+        "missingRequired": [],
+        "unresolvedEvidencePaths": []
+      }
+    },
+    {
+      "phaseId": "47",
+      "phaseName": "Autonomous Engineering Self-Improvement Engine",
+      "registryStatus": "ARCHITECTURE_DEFINED",
+      "acceptanceDefinition": "architecture\\phase-acceptance\\phase-47-autonomous-engineering-self-improvement-engine.json",
+      "proof": "architecture\\proofs\\phase-47-acceptance.proof.json",
+      "coverage": "PASS_WITH_DECLARED_OR_UNWIRED_GAP",
+      "summary": {
+        "areas": 2,
+        "enforced": 0,
+        "declared": 1,
+        "implementedUnwired": 0,
+        "implementedUnwiredAreas": [],
+        "missing": 1,
+        "missingRequired": [],
+        "unresolvedEvidencePaths": []
+      }
+    },
+    {
+      "phaseId": "48",
+      "phaseName": "Civilization Knowledge Graph",
+      "registryStatus": "ARCHITECTURE_DEFINED",
+      "acceptanceDefinition": "architecture\\phase-acceptance\\phase-48-civilization-knowledge-graph.json",
+      "proof": "architecture\\proofs\\phase-48-acceptance.proof.json",
+      "coverage": "PASS_WITH_DECLARED_OR_UNWIRED_GAP",
+      "summary": {
+        "areas": 2,
+        "enforced": 0,
+        "declared": 1,
+        "implementedUnwired": 0,
+        "implementedUnwiredAreas": [],
+        "missing": 1,
+        "missingRequired": [],
+        "unresolvedEvidencePaths": []
+      }
+    },
+    {
+      "phaseId": "49",
+      "phaseName": "Autonomous Economy Engine",
+      "registryStatus": "ARCHITECTURE_DEFINED",
+      "acceptanceDefinition": "architecture\\phase-acceptance\\phase-49-autonomous-economy-engine.json",
+      "proof": "architecture\\proofs\\phase-49-acceptance.proof.json",
+      "coverage": "PASS_WITH_DECLARED_OR_UNWIRED_GAP",
+      "summary": {
+        "areas": 2,
+        "enforced": 0,
+        "declared": 1,
+        "implementedUnwired": 0,
+        "implementedUnwiredAreas": [],
+        "missing": 1,
+        "missingRequired": [],
+        "unresolvedEvidencePaths": []
+      }
+    },
+    {
+      "phaseId": "50",
+      "phaseName": "Human Civilization Interface Layer",
+      "registryStatus": "ARCHITECTURE_DEFINED",
+      "acceptanceDefinition": "architecture\\phase-acceptance\\phase-50-human-civilization-interface-layer.json",
+      "proof": "architecture\\proofs\\phase-50-acceptance.proof.json",
+      "coverage": "PASS_WITH_DECLARED_OR_UNWIRED_GAP",
+      "summary": {
+        "areas": 2,
+        "enforced": 0,
+        "declared": 1,
+        "implementedUnwired": 0,
+        "implementedUnwiredAreas": [],
+        "missing": 1,
+        "missingRequired": [],
+        "unresolvedEvidencePaths": []
+      }
+    },
+    {
+      "phaseId": "51",
+      "phaseName": "Universal Reality OS Kernel",
+      "registryStatus": "ARCHITECTURE_DEFINED",
+      "acceptanceDefinition": "architecture\\phase-acceptance\\phase-51-universal-reality-operating-system-kernel.json",
+      "proof": "architecture\\proofs\\phase-51-acceptance.proof.json",
+      "coverage": "PASS_WITH_DECLARED_OR_UNWIRED_GAP",
+      "summary": {
+        "areas": 2,
+        "enforced": 0,
+        "declared": 2,
+        "implementedUnwired": 0,
+        "implementedUnwiredAreas": [],
+        "missing": 0,
+        "missingRequired": [],
+        "unresolvedEvidencePaths": []
+      }
+    }
+  ]
+}

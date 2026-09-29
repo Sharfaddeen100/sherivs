@@ -1,0 +1,16 @@
+{
+  "mission": "COREGRID-MISSION-0001",
+  "campaign": "CAMPAIGN-52",
+  "workPackage": "CAMPAIGN-52-WP-01",
+  "artifact": "COREGRID_CAMPAIGN_52_RECEIVING_PROPOSALS_VERIFICATION",
+  "status": "PASS_PROPOSALS_COMPLETE_NOT_AUTHORIZED",
+  "counts": {
+    "registeredGaps": 27,
+    "proposals": 27,
+    "missing": [],
+    "unexpected": [],
+    "nonProposalStatuses": [],
+    "unauthorized": []
+  },
+  "rule": "Proposal completeness does not create ownership or implementation authority."
+}

@@ -1,0 +1,93 @@
+{
+  "$comment": "Phase 19 acceptance definition derived from architecture/phase-19-command-centre.md, the phase contract, command-core/alerts/incidents/governance modules and the command unit suites. The registry audit records that the visible Command Centre currently composes provisioning/governance rather than these operational engines; this definition preserves that boundary gap.",
+  "phase": "19",
+  "phaseName": "Command Centre",
+  "source": "architecture/phase-19-command-centre.md",
+  "contract": "frontend/src/lib/kernel/phase-contracts/phase-19-command-centre.ts",
+  "ownership": {
+    "note": "Phase 19 owns alert definitions/state, incident records/lifecycle and the operational composition contract. It does not own canonical state, design language or the human interface layer.",
+    "canonicalOwners": {
+      "alerts-and-incidents": "19",
+      "operational-composition": "19",
+      "canonical-state": "owning phases",
+      "workspace-composition": "06",
+      "design-system": "24",
+      "human-interface": "50"
+    }
+  },
+  "areas": [
+    {
+      "id": "health-is-fresh-and-honest",
+      "area": "Health state is scoped, fresh and never fabricated",
+      "requirement": "Unknown or stale state is not healthy, command context is complete and cross-tenant command access requires an explicit grant.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/command-core.ts", "contains": "isCommandAccessWithinTenant" },
+        { "kind": "test", "path": "tests/unit/command-core.test.ts", "contains": "treats UNKNOWN as never healthy" },
+        { "kind": "test", "path": "tests/unit/command-core.test.ts", "contains": "denies cross-tenant command access without an explicit grant" },
+        { "kind": "test", "path": "tests/unit/command-core.test.ts", "contains": "grades live, stale and unknown views" }
+      ]
+    },
+    {
+      "id": "alerts-have-provenance-and-control",
+      "area": "Alerts preserve source, priority, escalation and flood control",
+      "requirement": "Alerts require source provenance, carry explainable priority, escalate only under policy, correlate related alerts and suppress floods.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/command-alerts.ts", "contains": "createCommandAlert" },
+        { "kind": "test", "path": "tests/unit/command-alerts.test.ts", "contains": "rejects an alert without source provenance" },
+        { "kind": "test", "path": "tests/unit/command-alerts.test.ts", "contains": "computes explainable priority from stated factors" },
+        { "kind": "test", "path": "tests/unit/command-alerts.test.ts", "contains": "deduplicates source floods" }
+      ]
+    },
+    {
+      "id": "incident-and-decision-lifecycle",
+      "area": "Incidents and decisions require ordered, attributable handling",
+      "requirement": "Incidents transition legally, retain commanders/responders/evidence and postmortems, while decisions have owners, approval, expiry and a minimum option set.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/command-incidents.ts", "contains": "createIncident" },
+        { "kind": "test", "path": "tests/unit/command-incidents.test.ts", "contains": "creates a DETECTED incident and walks legal transitions" },
+        { "kind": "test", "path": "tests/unit/command-incidents.test.ts", "contains": "assigns commanders, responders, notes and evidence" },
+        { "kind": "test", "path": "tests/unit/command-incidents.test.ts", "contains": "rejects a decision with fewer than two options" }
+      ]
+    },
+    {
+      "id": "command-events-cache-and-audit",
+      "area": "Operational read models are ordered, fresh and audited",
+      "requirement": "Events preserve sequence and correlation, duplicate delivery is rejected, caches expire or invalidate, sensitive views are authorized and high-impact actions receive enhanced audit treatment.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/command-governance.ts", "contains": "isCommandEventSequenceInOrder" },
+        { "kind": "test", "path": "tests/unit/command-governance.test.ts", "contains": "deduplicates duplicate events" },
+        { "kind": "test", "path": "tests/unit/command-governance.test.ts", "contains": "invalidates caches by key and TTL" },
+        { "kind": "test", "path": "tests/unit/command-governance.test.ts", "contains": "flags high-impact audit records" }
+      ]
+    },
+    {
+      "id": "unknown-actions-and-break-glass",
+      "area": "Unknown actions, break-glass and recovery remain controlled",
+      "requirement": "Unverified actions are never displayed as success, rollback is offered only for failed or unknown states, break-glass access is justified and time-boxed, and degraded mode is read-only.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/command-governance.ts", "contains": "isRollbackDisplayable" },
+        { "kind": "test", "path": "tests/unit/command-governance.test.ts", "contains": "never presents unverified actions as success" },
+        { "kind": "test", "path": "tests/unit/command-governance.test.ts", "contains": "validates break-glass access" },
+        { "kind": "test", "path": "tests/unit/command-incidents.test.ts", "contains": "requires justification and policy permission" }
+      ]
+    },
+    {
+      "id": "operational-surface-wiring",
+      "area": "Operational engines are not yet projected by the visible surface",
+      "requirement": "A real operational surface must consume command health, alert and incident state; the existing governance-surface tests do not prove that the visible Command Centre renders these engines.",
+      "required": false,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/command-core.ts" },
+        { "kind": "test", "path": "tests/unit/command-centre-contract-governance.test.ts", "contains": "renders the kernel projector" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/routes/**/*.tsx", "contains": "command-alerts" }
+      ]
+    }
+  ]
+}

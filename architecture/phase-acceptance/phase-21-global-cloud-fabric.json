@@ -1,0 +1,79 @@
+{
+  "$comment": "Phase 21 acceptance definition derived from architecture/phase-21-global-cloud-fabric.md, the phase contract, cloud-core/cloud-byoc/cloud-governance modules, infrastructure definitions and the cloud/infrastructure unit suites. Infrastructure verifier evidence proves repository invariants and credential gating, not a provisioned environment.",
+  "phase": "21",
+  "phaseName": "Global Cloud Fabric",
+  "source": "architecture/phase-21-global-cloud-fabric.md",
+  "contract": "frontend/src/lib/kernel/phase-contracts/phase-21-cloud-fabric.ts",
+  "ownership": {
+    "note": "Phase 21 owns region/environment topology, BYOC registrations, placement policy and cloud governance. It does not own domain data, sovereign policy packs or planetary infrastructure.",
+    "canonicalOwners": {
+      "regions-environments-placement": "21",
+      "byoc-and-cloud-governance": "21",
+      "domain-data": "owning phases",
+      "tenancy": "03",
+      "security": "08",
+      "sovereign-policy": "20",
+      "planetary-infrastructure": "44"
+    }
+  },
+  "areas": [
+    {
+      "id": "provider-neutral-placement",
+      "area": "Infrastructure plans and placement are provider-neutral",
+      "requirement": "Regions, providers, deployments and placement plans carry declared capabilities and zones, and plans require explicit approval before application.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/cloud-core.ts", "contains": "createInfrastructurePlan" },
+        { "kind": "test", "path": "tests/unit/cloud-core.test.ts", "contains": "creates pending plan" },
+        { "kind": "test", "path": "tests/unit/cloud-core.test.ts", "contains": "approves pending plan" },
+        { "kind": "test", "path": "tests/unit/cloud-core.test.ts", "contains": "registers provider with capabilities" }
+      ]
+    },
+    {
+      "id": "byoc-trust-and-revocation",
+      "area": "BYOC registration has trust, permissions, health and revocation",
+      "requirement": "BYOC environments require an issuer and trust establishment, explicit permission manifests, health state and reasoned revocation.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/cloud-byoc.ts", "contains": "registerBYOC" },
+        { "kind": "test", "path": "tests/unit/cloud-byoc.test.ts", "contains": "establishes active trust" },
+        { "kind": "test", "path": "tests/unit/cloud-byoc.test.ts", "contains": "rejects empty permissions" },
+        { "kind": "test", "path": "tests/unit/cloud-byoc.test.ts", "contains": "returns unknown when control plane disconnected" }
+      ]
+    },
+    {
+      "id": "fabric-health-and-recovery",
+      "area": "Cloud governance models health, incidents, cost and recovery",
+      "requirement": "Health, SLO, alert, incident, runbook, cost, break-glass, migration, exit and kill-switch records are explicit governance objects.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/cloud-governance.ts" },
+        { "kind": "test", "path": "tests/unit/cloud-governance.test.ts", "contains": "creates SLO with error budget" },
+        { "kind": "test", "path": "tests/unit/cloud-governance.test.ts", "contains": "creates cloud exit plan" },
+        { "kind": "test", "path": "tests/unit/cloud-governance.test.ts", "contains": "creates kill switch" }
+      ]
+    },
+    {
+      "id": "infrastructure-invariants-and-neutrality",
+      "area": "Infrastructure-as-code is verified for containment and neutrality",
+      "requirement": "The fabric verifier checks infrastructure digests, secrets, remote state, pinned versions, cluster baseline, sandbox containment, neutrality and ownership without duplicating domain engines.",
+      "required": true,
+      "evidence": [
+        { "kind": "script", "path": "scripts/verify-infrastructure.mjs" },
+        { "kind": "test", "path": "tests/unit/infrastructure-fabric.test.ts", "contains": "passes every recorded invariant across all nine law categories" },
+        { "kind": "test", "path": "tests/unit/infrastructure-fabric.test.ts", "contains": "keeps every cloud-touching wave credential-gated" },
+        { "kind": "test", "path": "tests/unit/infrastructure-fabric.test.ts", "contains": "builds no duplicate engine" }
+      ]
+    },
+    {
+      "id": "deployment-is-credential-gated",
+      "area": "No cloud environment is claimed as deployed",
+      "requirement": "Provisioning remains behind reviewed IaC and owner credentials; verifier evidence records the gate and does not prove that apply has occurred.",
+      "required": false,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/infrastructure-fabric.test.ts", "contains": "states its own limitations and what remains credential-gated" },
+        { "kind": "module", "path": "frontend/src/lib/cloud-core.ts" }
+      ]
+    }
+  ]
+}

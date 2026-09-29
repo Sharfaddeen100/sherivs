@@ -1,913 +1,956 @@
-COREGRID — PLATFORM INFRASTRUCTURE ARCHITECTURE DEPENDENCY MAP
+COREGRID — UNIVERSAL ARCHITECTURE DEPENDENCY MAP
 Document:ARCHITECTURE-DEPENDENCY-MAP.md
-System: CoreGrid Platform Infrastructure
-Reference Runtime: CoreGrid Scholar
-Architecture: CoreGrid ASI Infrastructure Architecture
-Status: Normative / Canonical
-Scope: Phase 01–Phase 51
+Canonical Name: CoreGrid Universal Architecture Dependency & Causal Topology
+System: CoreGrid Platform
+Architecture: CoreGrid Universal Reality Intelligence Architecture
+Status:NORMATIVE / CANONICAL
+Scope: CoreGrid Architecture, 51 Registered Phases, Runtime Fabric, Domain Runtimes, Infrastructure, Intelligence, Reality, Governance, Extensions, and Future Capability Evolution
 Authority: CoreGrid Architecture Governance Layer
-Classification: Platform Architecture / Dependency Topology / Infrastructure Governance
-Version: 1.0
-Primary Principle: CoreGrid is the infrastructure; Scholar is the first working runtime.
+Classification: Architecture / Dependency Topology / Capability Graph / Ownership Graph / Runtime Graph / Governance Infrastructure
+Reference Runtime: CoreGrid Scholar
+Primary Principle:CoreGrid is the substrate. Scholar is a runtime. No runtime becomes the dependency root of CoreGrid.
 
 ───
 
-1. Purpose
-This document defines the canonical dependency topology of the CoreGrid Platform Infrastructure.
-It does not define CoreGrid as a school-management product.
-It defines the architecture required for CoreGrid to function as a:
-Universal intelligence infrastructure capable of hosting multiple autonomous, adaptive, domain-aware runtimes across institutions, industries, governments, enterprises, physical environments and future machine-native domains.
-CoreGrid Scholar is the first working runtime instantiated on this infrastructure.
-Therefore:
-text
-COREGRID PLATFORM
-        │
-        ├── Core Infrastructure
-        ├── Intelligence Infrastructure
-        ├── Agent Infrastructure
-        ├── Data Infrastructure
-        ├── Reality Infrastructure
-        ├── Security & Trust Infrastructure
-        ├── Automation Infrastructure
-        ├── Developer Infrastructure
-        ├── Integration Infrastructure
-        ├── Cloud Infrastructure
-        └── Runtime Composition Infrastructure
-                    │
-                    ▼
-          COREGRID SCHOLAR
-          First Working Runtime
-
-The dependency map answers:
-How can 51+ architectural capabilities interact without creating architectural entanglement, circular ownership, hidden authority, duplicated infrastructure or unsafe autonomous behavior?
+1. PURPOSE
+This document defines the canonical dependency topology of CoreGrid.
+It establishes how:
+• phases
+• capabilities
+• runtimes
+• actors
+• agents
+• domains
+• data
+• knowledge
+• memory
+• policies
+• contracts
+• events
+• commands
+• infrastructure
+• intelligence
+• physical systems
+• external systems
+• governance mechanisms
+may depend upon, communicate with, compose, observe, govern, or extend one another.
+This document does not define the complete implementation architecture of every phase.
+Instead:
+The Architecture Registry defines what exists and where it belongs.
+The Dependency Map defines how architectural entities may relate without violating ownership, authority, isolation, security, composability, or evolvability.
 
 ───
 
-2. CoreGrid Architectural Reframing
-The previous architecture was centered around Scholar.
-The new architecture is centered around CoreGrid itself.
-The relationship is:
+2. COREGRID DEPENDENCY DOCTRINE
+CoreGrid does not interpret dependency as merely:
 text
-COREGRID
-               UNIVERSAL PLATFORM
-                       │
-       ┌───────────────┼────────────────┐
-       │               │                │
-       ▼               ▼                ▼
-   PLATFORM        INTELLIGENCE      REALITY
- INFRASTRUCTURE    INFRASTRUCTURE   INFRASTRUCTURE
-       │               │                │
-       └───────────────┼────────────────┘
-                       ▼
-               RUNTIME FABRIC
-                       │
-          ┌────────────┼────────────┐
-          ▼            ▼            ▼
-      SCHOLAR       FUTURE       EXTERNAL
-      RUNTIME       RUNTIMES     RUNTIMES
+Service A
+    ↓
+Service B
 
-Scholar is therefore:
-• not the owner of CoreGrid infrastructure
-• not the canonical architecture
-• not the universal data model
-• not the universal intelligence layer
-• not the universal agent system
-• not the universal cloud
-• not the universal command centre
-Scholar is the first complete reference implementation of the CoreGrid runtime model.
+CoreGrid interprets dependency as:
+text
+ACTOR / RUNTIME / CAPABILITY
+          ↓
+      INTENT
+          ↓
+       CONTEXT
+          ↓
+      AUTHORITY
+          ↓
+       POLICY
+          ↓
+      CONTRACT
+          ↓
+     CAPABILITY
+          ↓
+     PROVIDER
+          ↓
+       EFFECT
+          ↓
+      OUTCOME
+
+A dependency therefore answers:
+Who requires what, from whom, under which authority, through which contract, with which consequences, and what happens if the dependency disappears?
 
 ───
 
-3. The ASI-Era Architectural Principle
-CoreGrid must not be designed around today's software assumptions.
-Traditional software architecture assumes:
-text
-User
- ↓
-Application
- ↓
-Backend
- ↓
-Database
+3. DEPENDENCY IS A MULTI-DIMENSIONAL RELATION
+A dependency is not necessarily:
+• ownership
+• implementation coupling
+• runtime invocation
+• data ownership
+• event communication
+• authority
+• trust
+• orchestration
+• deployment
+These are different relations.
+Therefore CoreGrid MUST NOT collapse them into a single dependency concept.
 
-CoreGrid assumes:
+───
+
+4. COREGRID ARCHITECTURAL REFRAMING
+Traditional architecture frequently begins with:
+text
+USER
+ ↓
+APPLICATION
+ ↓
+BACKEND
+ ↓
+DATABASE
+
+CoreGrid begins from:
 text
 REALITY
-   ↓
-SENSING
-   ↓
-IDENTITY
-   ↓
-CONTEXT
-   ↓
-KNOWLEDGE
-   ↓
-MEMORY
-   ↓
-REASONING
-   ↓
-PLANNING
-   ↓
-POLICY
-   ↓
-CAPABILITY
-   ↓
-AGENT
-   ↓
-ACTION
-   ↓
+ ↓
 OBSERVATION
-   ↓
-VERIFICATION
-   ↓
+ ↓
+REPRESENTATION
+ ↓
+IDENTITY
+ ↓
+CONTEXT
+ ↓
+KNOWLEDGE
+ ↓
+MEMORY
+ ↓
+REASONING
+ ↓
+POLICY
+ ↓
+CAPABILITY
+ ↓
+AUTHORIZED ACTION
+ ↓
+OUTCOME
+ ↓
+OBSERVATION
+ ↓
 LEARNING
-   ↓
+ ↓
 EVOLUTION
 
-The architecture must therefore support systems that continuously:
-• perceive
-• understand
-• remember
-• reason
-• plan
-• act
-• observe
-• evaluate
-• learn
-• adapt
-• coordinate
-• recover
-• improve
-without allowing intelligence to silently become uncontrolled authority.
+Dependency architecture must therefore model causal and operational relationships, not merely software imports.
 
 ───
 
-4. CoreGrid Definition
-CoreGrid is defined as:
-A universal infrastructure layer for representing reality, identity, knowledge, memory, intelligence, capabilities, agents, policies, actions, outcomes and evolution across multiple autonomous runtimes.
-CoreGrid is therefore larger than Scholar.
-Scholar is one runtime operating on CoreGrid.
-Future runtimes may include:
+5. COREGRID PLATFORM POSITION
+CoreGrid is the universal computational substrate upon which multiple runtimes may operate.
+Conceptually:
 text
-CoreGrid Scholar
-CoreGrid Enterprise
-CoreGrid Government
-CoreGrid Healthcare
-CoreGrid Industrial
-CoreGrid Finance
-CoreGrid Logistics
-CoreGrid Energy
-CoreGrid Agriculture
-CoreGrid Research
-CoreGrid Developer
-CoreGrid Autonomous Operations
-...
+COREGRID
+                            │
+       ┌────────────────────┼────────────────────┐
+       │                    │                    │
+       ▼                    ▼                    ▼
+   FOUNDATION          INTELLIGENCE           REALITY
+   FABRICS               FABRICS              FABRICS
+       │                    │                    │
+       └────────────────────┼────────────────────┘
+                            ▼
+                    RUNTIME COMPOSITION
+                            │
+          ┌─────────────────┼─────────────────┐
+          ▼                 ▼                 ▼
+       SCHOLAR          ENTERPRISE        GOVERNMENT
+       RUNTIME            RUNTIME           RUNTIME
 
-The platform must not require architectural duplication for each runtime.
+Scholar is therefore:
+• a runtime
+• a reference implementation
+• a domain composition
+• a consumer of CoreGrid capabilities
+Scholar is not:
+• CoreGrid itself
+• the platform dependency root
+• universal authority
+• universal identity
+• universal security
+• universal intelligence
+• universal agent infrastructure
+• universal cloud infrastructure
 
 ───
 
-5. First Architectural Invariant
-The following invariant is absolute:
-Domain runtimes consume CoreGrid capabilities; CoreGrid infrastructure does not become dependent upon one particular domain runtime.
-Therefore:
+6. THE SCHOLAR INDEPENDENCE INVARIANT
+The following must always remain true:
 text
-CoreGrid Infrastructure
-        ↓
-CoreGrid Runtime Fabric
-        ↓
-Scholar Runtime
+COREGRID
+   ↓
+SCHOLAR
 
 is valid.
 But:
 text
-Scholar
+SCHOLAR
    ↓
-CoreGrid Foundation
+COREGRID FOUNDATION
 
-must not become a structural dependency that makes CoreGrid Scholar's domain assumptions foundational to CoreGrid itself.
+is invalid when it means CoreGrid structurally depends upon Scholar-specific assumptions.
+The strongest test is:
+If Scholar disappeared, could CoreGrid continue to exist and instantiate another runtime?
+The required architectural answer is:
+text
+YES
 
-───
-
-6. Dependency Philosophy
-CoreGrid does not use a single linear dependency hierarchy.
-Instead it uses a:
-typed directed capability graph.
-A dependency must identify:
-• provider
-• consumer
-• capability
-• contract
-• dependency type
-• direction
-• authority
-• runtime criticality
-• latency requirement
-• failure behavior
-• security classification
-• tenant scope
-• data classification
-• lifecycle
-• version
 
 ───
 
-7. Dependency Direction
-The default rule is:
+7. DEPENDENCY AS A TYPED GRAPH
+CoreGrid dependency architecture is a:
+typed, directed, multi-graph with multiple relationship dimensions.
+It is not a single DAG.
+The architecture must support distinct graphs for:
+text
+Structural Graph
+Runtime Graph
+Capability Graph
+Contract Graph
+Data Graph
+Event Graph
+Command Graph
+Policy Graph
+Authority Graph
+Trust Graph
+Security Graph
+Deployment Graph
+Ownership Graph
+Causal Graph
+Observability Graph
+Evolution Graph
+
+
+───
+
+8. GRAPH SEPARATION PRINCIPLE
+No single graph should be forced to encode every relationship.
+For example:
+text
+A → B
+
+may mean:
+• A structurally depends on B
+• A calls B
+• A observes B
+• A consumes B's events
+• A consumes B's data
+• A is governed by B
+• A is deployed on B
+• A is composed with B
+These are architecturally different.
+
+───
+
+9. DEPENDENCY AXES
+Every material dependency SHOULD be evaluated across at least these dimensions:
+text
+STRUCTURE
+RUNTIME
+DATA
+EVENT
+COMMAND
+CAPABILITY
+AUTHORITY
+POLICY
+SECURITY
+TRUST
+DEPLOYMENT
+OBSERVABILITY
+CAUSALITY
+LIFECYCLE
+EVOLUTION
+
+
+───
+
+10. DEPENDENCY RECORD
+Every material dependency should conceptually contain:
+yaml
+dependency:
+  id:
+  provider:
+  consumer:
+  relation:
+  capability:
+  contract:
+  version:
+  authority:
+  structural:
+  runtime:
+  data:
+  event:
+  command:
+  policy:
+  security:
+  tenant_scope:
+  runtime_scope:
+  latency:
+  reliability:
+  risk:
+  blast_radius:
+  failure_policy:
+  observability:
+  lifecycle:
+  approval:
+
+
+───
+
+11. DEPENDENCY DIRECTION
+The default dependency relationship is:
 text
 CONSUMER
    ↓
 CONTRACT
    ↓
+CAPABILITY
+   ↓
 PROVIDER
 
-Not:
+Never:
 text
 CONSUMER
    ↓
-PROVIDER INTERNAL IMPLEMENTATION
+PROVIDER PRIVATE IMPLEMENTATION
 
-A phase may consume another phase's:
+The consumer depends upon the architectural promise, not the provider's internal construction.
+
+───
+
+12. CONTRACT OVER IMPLEMENTATION
+A dependency MUST cross an explicit contract wherever a boundary exists.
+Contracts may include:
 • API
-• event
-• command
-• query
-• capability
-• policy
-• identity assertion
+• SDK
+• event schema
+• command schema
+• query contract
+• capability contract
 • data product
-• telemetry
+• policy contract
+• identity assertion
 • attestation
-• runtime service
-but must not consume its private implementation.
+• protocol
+• integration adapter
 
 ───
 
-8. Dependency Graph Model
-CoreGrid consists of multiple graph dimensions.
-text
-COREGRID ARCHITECTURE GRAPH
-                         │
-       ┌─────────────────┼──────────────────┐
-       │                 │                  │
-       ▼                 ▼                  ▼
-  STRUCTURAL          RUNTIME             DATA
-     GRAPH              GRAPH             GRAPH
-       │                 │                  │
-       ├─────────────────┼──────────────────┤
-       │                 │                  │
-       ▼                 ▼                  ▼
-   CONTRACT           EVENT              POLICY
-     GRAPH             GRAPH              GRAPH
-       │                 │                  │
-       └─────────────────┼──────────────────┘
-                         ▼
-                    TRUST GRAPH
-                         │
-                         ▼
-                  CAPABILITY GRAPH
-                         │
-                         ▼
-                    ACTION GRAPH
-
-No single graph should be forced to represent every relationship.
-
-───
-
-9. Canonical Dependency Relation Types
-Every cross-phase relationship must use one or more explicit relation types.
-DEP-01 — STRUCTURAL_DEPENDS_ON
-The consumer cannot exist correctly without the provider capability.
-
-───
-
-DEP-02 — RUNTIME_CALLS
-The consumer synchronously invokes the provider during execution.
-
-───
-
-DEP-03 — PUBLISHES_EVENT_TO
-The provider publishes an event consumed by another subsystem.
-
-───
-
-DEP-04 — SUBSCRIBES_TO
-A subsystem asynchronously consumes an event stream.
-
-───
-
-DEP-05 — READS_DATA_FROM
-A subsystem consumes authoritative or derived data.
-
-───
-
-DEP-06 — WRITES_DATA_TO
-A subsystem publishes or writes data through an approved ownership boundary.
-
-───
-
-DEP-07 — CONSUMES_CONTRACT
-A subsystem consumes an API, SDK, schema, protocol or capability contract.
-
-───
-
-DEP-08 — CONSUMES_POLICY
-A subsystem uses policy defined by another authoritative subsystem.
-
-───
-
-DEP-09 — CONSUMES_IDENTITY_CONTEXT
-A subsystem consumes identity or actor context.
-
-───
-
-DEP-10 — CONSUMES_TRUST_SIGNAL
-A subsystem consumes security/trust information.
-
-───
-
-DEP-11 — OPTIONAL_SIGNAL_FROM
-A subsystem can improve its operation using another subsystem's signal but remains functional without it.
-
-───
-
-DEP-12 — DEPLOYED_ON
-A workload executes on an infrastructure substrate.
-
-───
-
-DEP-13 — COMPOSES
-A higher-level runtime composes multiple capabilities.
-Composition does not transfer ownership.
-
-───
-
-DEP-14 — EXTENDS
-A subsystem extends a stable CoreGrid contract.
-
-───
-
-DEP-15 — GOVERNS
-A governance subsystem establishes constraints for another capability.
-Governance does not imply implementation ownership.
-
-───
-
-DEP-16 — ATTESTS
-One subsystem provides verifiable evidence regarding another subsystem's state.
-
-───
-
-DEP-17 — OBSERVES
-A subsystem consumes telemetry from another subsystem.
-
-───
-
-DEP-18 — ORCHESTRATES
-An orchestration subsystem coordinates capabilities without owning their domain state.
-
-───
-
-DEP-19 — ROUTES_TO
-A routing subsystem selects an appropriate provider or capability.
-
-───
-
-DEP-20 — ADAPTER_FOR
-A subsystem translates between incompatible external/internal representations.
-
-───
-
-10. Authority Model
-Every important piece of canonical state must have exactly one authoritative owner.
-Examples:
-text
-Identity State
-    → Identity Authority
-
-Tenant State
-    → Tenancy Authority
-
-Financial Truth
-    → Financial Authority
-
-Educational Reality
-    → Education Authority
-
-Security Policy
-    → Security Authority
-
-Agent Lifecycle
-    → Agent Authority
-
-Infrastructure State
-    → Infrastructure Authority
-
-Other phases may:
-• consume
-• derive
-• cache
-• summarize
-• analyze
-• predict
-but must not silently become authoritative owners.
-
-───
-
-11. Truth Hierarchy
-CoreGrid distinguishes:
-text
-OBSERVED FACT
-     ↓
-CANONICAL STATE
-     ↓
-DERIVED STATE
-     ↓
-ANALYTICAL STATE
-     ↓
-MODEL OUTPUT
-     ↓
-RECOMMENDATION
-     ↓
-DECISION
-     ↓
-ACTION
-     ↓
-OBSERVED OUTCOME
-
-These categories must never be silently conflated.
-
-───
-
-12. Intelligence Does Not Equal Truth
-AI output is not automatically truth.
+13. CAPABILITY OVER SERVICE
+CoreGrid's primary dependency abstraction is the capability, not the service.
+A service is an implementation form.
+A capability is an architectural function.
 Therefore:
 text
-AI Prediction
-      ≠
-Canonical State
+SERVICE
+   ≠
+CAPABILITY
 
-and:
-text
-AI Recommendation
-      ≠
-Authorized Action
-
-and:
-text
-Agent Decision
-      ≠
-Institutional Authority
-
-AI operates within the authority graph.
+Multiple services may implement one capability.
+One service may expose multiple capabilities.
 
 ───
 
-13. Intelligence Does Not Equal Ownership
-The most intelligent subsystem must not automatically become the owner of:
+14. AUTHORITY OVER LOCATION
+A capability's authority is not determined by:
+• database location
+• deployment location
+• code repository
+• service name
+• AI model
+• runtime process
+Authority exists because CoreGrid architecture assigns it.
+Therefore:
+text
+LOCATION ≠ AUTHORITY
+IMPLEMENTATION ≠ AUTHORITY
+INTELLIGENCE ≠ AUTHORITY
+
+
+───
+
+15. CANONICAL OWNERSHIP
+Every canonical state MUST have one authoritative owner.
+Conceptually:
+text
+ONE CANONICAL STATE
+        ↓
+ONE AUTHORITY
+        ↓
+MANY CONTROLLED CONSUMERS
+
+Not:
+text
+ONE STATE
+ ↓
+MULTIPLE COMPETING AUTHORITIES
+
+
+───
+
+16. OWNERSHIP VS CONSUMPTION
+A subsystem may:
+• read
+• derive
+• cache
+• analyze
+• summarize
+• predict
+• simulate
+• transform
+without owning the underlying canonical state.
+Consumption does not transfer ownership.
+
+───
+
+17. AUTHORITY GRAPH
+CoreGrid therefore maintains an authority relationship:
+text
+CANONICAL STATE
+      ↓
+AUTHORITATIVE OWNER
+      ↓
+AUTHORIZED CAPABILITY
+      ↓
+CONTROLLED CONSUMERS
+
+This graph is distinct from the runtime call graph.
+
+───
+
+18. TRUTH HIERARCHY
+CoreGrid distinguishes:
+text
+OBSERVATION
+   ↓
+EVIDENCE
+   ↓
+CANONICAL STATE
+   ↓
+DERIVED STATE
+   ↓
+ANALYSIS
+   ↓
+MODEL OUTPUT
+   ↓
+RECOMMENDATION
+   ↓
+DECISION
+   ↓
+ACTION
+   ↓
+OUTCOME
+
+These categories MUST NOT be silently conflated.
+
+───
+
+19. INTELLIGENCE DOES NOT EQUAL TRUTH
+text
+AI OUTPUT
+   ≠
+CANONICAL REALITY
+
+A model may produce:
+• hypothesis
+• prediction
+• recommendation
+• plan
+• classification
+• interpretation
+without automatically changing canonical state.
+
+───
+
+20. INTELLIGENCE DOES NOT EQUAL AUTHORITY
+The most intelligent component does not automatically receive ownership of:
 • identity
 • finance
-• institutional reality
 • security
-• infrastructure
 • legal authority
+• infrastructure
+• institutional truth
 • tenant state
-• canonical records
-CoreGrid explicitly separates:
+• physical systems
+Intelligence and authority remain separate architectural dimensions.
+
+───
+
+21. AGENTS ARE ACTORS, NOT UNIVERSAL OWNERS
+Agents are computational actors.
+They may:
+• observe
+• reason
+• plan
+• invoke capabilities
+• coordinate
+• communicate
+• execute governed actions
+• monitor systems
+• recover systems
+• propose evolution
+They do not automatically own the state they manipulate.
+
+───
+
+22. AGENT DEPENDENCY MODEL
+Preferred:
 text
-INTELLIGENCE
-from
+AGENT
+  ↓
+CAPABILITY DISCOVERY
+  ↓
+POLICY
+  ↓
+AUTHORIZATION
+  ↓
+CAPABILITY
+  ↓
+EFFECT
+
+Forbidden:
+text
+AGENT
+  ↓
+PRIVATE DATABASE
+
+
+───
+
+23. AUTONOMOUS ACTION MODEL
+Consequential autonomous execution follows:
+text
+INTENT
+ ↓
+IDENTITY
+ ↓
+CONTEXT
+ ↓
+TRUST
+ ↓
+POLICY
+ ↓
+CAPABILITY
+ ↓
+AUTHORIZATION
+ ↓
+RISK
+ ↓
+EXECUTION
+ ↓
+VERIFICATION
+ ↓
+AUDIT
+ ↓
+OUTCOME
+
+Not every low-risk operation requires human approval, but every consequential operation remains within explicit authority and policy boundaries.
+
+───
+
+24. HUMAN AUTHORITY
+Human participation is a governance capability.
+It may include:
+• approval
+• escalation
+• intervention
+• override
+• review
+• authorization
+• accountability
+Human oversight MUST NOT be hardcoded into every workflow indiscriminately.
+The correct architecture is:
+text
+CONSEQUENCE
++
+RISK
++
+POLICY
++
+AUTHORITY
+      ↓
+OVERSIGHT REQUIREMENT
+
+
+───
+
+25. RUNTIME DEPENDENCY
+A runtime is a composed operational environment.
+Conceptually:
+text
+PLATFORM CAPABILITIES
++
+DOMAIN CAPABILITIES
++
+POLICIES
++
+KNOWLEDGE
++
+MEMORY
++
+AGENTS
++
+WORKSPACES
++
+INTEGRATIONS
+      ↓
+DOMAIN RUNTIME
+
+Runtime composition does not transfer ownership of platform capabilities.
+
+───
+
+26. MULTI-RUNTIME PRINCIPLE
+CoreGrid MUST support multiple runtimes simultaneously.
+text
+COREGRID
+                            │
+         ┌──────────────────┼──────────────────┐
+         ▼                  ▼                  ▼
+      SCHOLAR          ENTERPRISE         GOVERNMENT
+         │                  │                  │
+         ▼                  ▼                  ▼
+     RUNTIME A          RUNTIME B          RUNTIME C
+
+Shared infrastructure may be reused.
+Domain semantics remain scoped.
+
+───
+
+27. RUNTIME ISOLATION
+Each runtime SHOULD have explicit:
+text
+runtime_id
+tenant_context
+identity_context
+policy_context
+security_context
+capability_context
+knowledge_context
+memory_context
+data_context
+observability_context
+
+Runtime isolation MUST prevent accidental access to another runtime's private state.
+
+───
+
+28. CROSS-RUNTIME COMMUNICATION
+Cross-runtime interaction requires explicit:
+• identity
+• authorization
+• tenant/security context
+• policy
+• provenance
+• contract
+• audit
+• versioning
+• rate controls where applicable
+No implicit private-state access is permitted.
+
+───
+
+29. DOMAIN AGNOSTICISM
+CoreGrid foundation MUST NOT depend upon domain-specific assumptions such as:
+text
+if school
+if hospital
+if bank
+if government
+if factory
+
+Domain semantics belong inside domain runtimes or domain capabilities.
+
+───
+
+30. DOMAIN CONTAMINATION PREVENTION
+A domain runtime MUST NOT leak its domain ontology into universal infrastructure unless that concept is genuinely universal.
+For example:
+text
+Student
+Teacher
+Course
+Exam
+
+must not become universal primitives merely because Scholar requires them.
+
+───
+
+31. FOUNDATION PRINCIPLE
+Foundation provides universal primitives.
+Examples include:
+• identifiers
+• clocks
+• lifecycle
+• context envelopes
+• contract primitives
+• common metadata
+• configuration primitives
+• error models
+Foundation MUST remain domain-independent.
+
+───
+
+32. IDENTITY FABRIC
+Identity establishes actor identity.
+Actors may include:
+text
+HUMAN
+ORGANIZATION
+AGENT
+SERVICE
+DEVICE
+WORKLOAD
+SYSTEM
+EXTERNAL PRINCIPAL
+
+Identity does not automatically determine:
+text
+TRUST
+AUTHORIZATION
+PERMISSION
 AUTHORITY
 
 
 ───
 
-14. Autonomous Action Boundary
-Every autonomous action follows:
-text
-Intent
- ↓
-Identity
- ↓
-Context
- ↓
-Trust
- ↓
-Policy
- ↓
-Capability
- ↓
-Authorization
- ↓
-Risk Evaluation
- ↓
-Action
- ↓
-Verification
- ↓
-Audit
- ↓
-Learning
-
-No autonomous agent may bypass this sequence where the action is security-, financial-, legal- or institutionally-sensitive.
-
-───
-
-15. CoreGrid Platform Layers
-The canonical logical architecture is:
-text
-L00 — Architecture Governance
-
-L01 — Foundation Primitives
-
-L02 — Identity & Actor Fabric
-
-L03 — Tenancy & Sovereignty Fabric
-
-L04 — Reality Representation Fabric
-
-L05 — Core Runtime Fabric
-
-L06 — Workspace & Experience Composition
-
-L07 — Security Fabric
-
-L08 — Trust & Risk Fabric
-
-L09 — Knowledge Fabric
-
-L10 — Memory Fabric
-
-L11 — Data Fabric
-
-L12 — Digital Twin / State Fabric
-
-L13 — Agent Runtime Fabric
-
-L14 — Capability Fabric
-
-L15 — Planning & Reasoning Fabric
-
-L16 — Automation Fabric
-
-L17 — Analytics & Decision Fabric
-
-L18 — Command & Governance Fabric
-
-L19 — Communication Fabric
-
-L20 — Financial / Transaction Fabric
-
-L21 — Physical / Hardware Fabric
-
-L22 — Cloud & Compute Fabric
-
-L23 — Integration Fabric
-
-L24 — API / Developer Fabric
-
-L25 — Marketplace / Extension Fabric
-
-L26 — Client Runtime Fabric
-
-L27 — AI Model / Intelligence Fabric
-
-L28 — Simulation / World Modeling Fabric
-
-L29 — Research / Experimentation Fabric
-
-L30 — Observability Fabric
-
-L31 — Reliability / Resilience Fabric
-
-L32 — Compliance / Sovereignty Fabric
-
-L33 — Globalization Fabric
-
-L34 — Enterprise Scale Fabric
-
-L35 — Runtime Composition Fabric
-
-L36 — Autonomous Operations Fabric
-
-L37 — Evolution / Learning Fabric
-
-L38 — Future Capability Fabric
-
-The 51 architectural phases are mapped onto these logical capability layers through the authoritative phase registry.
-A phase is an organizational boundary.
-A layer is a capability boundary.
-They are not the same thing.
-
-───
-
-16. Phase Registry Authority
-The authoritative phase inventory must exist in:
-text
-ARCHITECTURE-REGISTRY.md
-
-The dependency map must never invent a competing phase numbering system.
-The machine-readable representation should exist as:
-text
-architecture/
-    registry/
-        phases.yaml
-        dependencies.yaml
-        ownership.yaml
-        contracts.yaml
-        events.yaml
-
-The 51-phase registry is authoritative.
-This document defines how those phases may connect.
-
-───
-
-17. CoreGrid 51-Phase Requirement
-CoreGrid must support at least:
-text
-P01 → P51
-
-without requiring:
-text
-P01 → P02 → P03 → ... → P51
-
-A 51-phase architecture must not become a 51-level dependency chain.
-Instead:
-text
-COREGRID FOUNDATION
-                         │
-          ┌──────────────┼──────────────┐
-          │              │              │
-       Identity       Security       Runtime
-          │              │              │
-          └──────────────┼──────────────┘
-                         │
-              Shared Capability Fabric
-                         │
-       ┌─────────────────┼─────────────────┐
-       │                 │                 │
-   Domain A          Domain B          Domain C
-       │                 │                 │
-       └─────────────────┼─────────────────┘
-                         │
-                  Runtime Fabric
-                         │
-                    Applications
-
-
-───
-
-18. Known CoreGrid Scholar Reference Phases
-The first working Scholar architecture currently establishes the following known phase contracts:
-text
-P01 — Foundation
-
-P02 — Identity
-
-P03 — Multi-Tenancy
-
-P04 — Education Reality Engine
-
-P05 — Core Application Runtime
-
-P06 — Workspace Engine
-
-P07 — AI Agent System
-
-P08 — Security Engine
-
-P09 — Security Trust Fabric
-
-P10 — Communication Platform
-
-P11 — Academic Learning Intelligence
-
-P12 — Scheduling & Timetable Intelligence
-
-P13 — Payment, Billing & Financial Operating System
-
-P14 — Data Platform
-
-P15 — Hardware Integration
-
-P16 — Digital Twin
-
-P17 — Automation Engine
-
-P18 — Analytics & Decision Intelligence
-
-P19 — Institutional Command Centre
-
-P20 — Government Education Cloud
-
-P21 — Global Cloud Fabric
-
-P22 — Mobile Platform
-
-P23 — Web Platform
-
-P24 — AI Intelligence Layer
-
-P25 — Marketplace
-
-P26 — Developer Platform
-
-P27 — CoreGrid Integration
-
-P28 — Globalization
-
-P29 — Enterprise Scale
-
-P30 — Future Evolution
-
-P31 — Institutional Identity & Educational Runtime
-
-P32 — Adaptive Institutional Administration & Workforce Runtime
-
-These phases represent the known Scholar reference runtime architecture.
-They must be mapped into the larger 51-phase CoreGrid registry rather than treated as the complete universal platform.
-
-───
-
-19. Phase 33–51 Registry Rule
-Until the authoritative 51-phase registry is present, no phase names or responsibilities for:
-text
-P33–P51
-
-may be invented in this document.
-Their canonical definitions must be imported from:
-text
-ARCHITECTURE-REGISTRY.md
-
-This protects the architecture against:
-• accidental phase duplication
-• phase-number drift
-• invented responsibilities
-• hidden ownership
-• architectural conflicts
-
-───
-
-20. Foundation Principle
-Foundation provides primitives.
-It must remain independent of:
-• Scholar
-• domain applications
-• marketplace extensions
-• individual AI providers
-• individual agents
-• specific clients
-• individual customers
-Foundation may provide:
-• identifiers
-• clocks
-• configuration primitives
-• lifecycle primitives
-• error models
-• contract primitives
-• common metadata
-• context envelopes
-
-───
-
-21. Identity Fabric
-Identity provides actor truth.
-Actors may include:
-text
-human
-organization
-service
-agent
-device
-workload
-system
-external principal
-
-Identity does not determine trust.
-Identity does not automatically grant authorization.
-
-───
-
-22. Tenancy & Sovereignty Fabric
+33. TENANCY AND SOVEREIGNTY
 Tenant context is mandatory wherever tenant-scoped state exists.
-Tenant context must propagate through:
+Tenant context MUST propagate across relevant:
 text
-request
-event
-command
-query
-workflow
-agent
+requests
+events
+commands
+queries
+workflows
+agents
 memory
 data
 audit
-integration
 telemetry
-digital twin
+integrations
+digital twins
 
 Tenant isolation is a platform invariant.
 
 ───
 
-23. Reality Fabric
-CoreGrid must distinguish:
+34. CONTEXT AS DEPENDENCY INFRASTRUCTURE
+CoreGrid requires a composable context model:
 text
-REAL WORLD
-    ↓
+CORE CONTEXT
++
+IDENTITY CONTEXT
++
+TENANT CONTEXT
++
+RUNTIME CONTEXT
++
+SECURITY CONTEXT
++
+POLICY CONTEXT
++
+DOMAIN CONTEXT
++
+TASK CONTEXT
+
+Context MUST NOT silently disappear across boundaries.
+
+───
+
+35. REALITY FABRIC
+CoreGrid distinguishes:
+text
+REALITY
+   ↓
 OBSERVATION
-    ↓
+   ↓
 REPRESENTATION
-    ↓
+   ↓
 CANONICAL STATE
+   ↓
+INTERPRETATION
 
-A domain runtime may interpret reality.
-It must not create contradictory canonical reality without an explicit reconciliation mechanism.
-
-───
-
-24. Runtime Fabric
-The Core Runtime provides:
-• lifecycle
-• request execution
-• service execution
-• context propagation
-• contract execution
-• capability invocation
-• error handling
-• transactional boundaries
-• runtime policy enforcement
-Domain runtimes consume these primitives.
+A representation is not reality itself.
 
 ───
 
-25. Workspace Fabric
-Workspaces are compositions of capabilities.
-A workspace may be:
-• institutional
-• departmental
-• personal
-• agent-operated
-• administrative
-• analytical
-• operational
-• command-oriented
-Workspace composition must remain separate from canonical domain ownership.
+36. REALITY AUTHORITY
+A runtime may interpret reality.
+It MUST NOT silently establish contradictory canonical reality.
+Where competing observations exist, CoreGrid requires explicit:
+• reconciliation
+• provenance
+• confidence
+• temporal context
+• authority rules
+• uncertainty representation
 
 ───
 
-26. Security Fabric
-Security provides:
-• authentication integration
-• authorization enforcement integration
-• security controls
-• security events
-• security policy
-• security monitoring
-• security evidence
-Security must remain independent of individual applications.
-
-───
-
-27. Trust Fabric
-Trust provides contextual security evaluation.
-Trust may consider:
+37. STATE TRANSITION PRINCIPLE
+Consequential operations can be modeled as:
 text
-identity
-device
-session
-behavior
-resource
-action
-environment
-threat signals
-history
-policy
+STATE(t)
++
+INTENT
++
+CONTEXT
++
+AUTHORITY
++
+CAPABILITY
++
+POLICY
+        ↓
+STATE(t+1)
 
-Trust is contextual.
-Trust does not equal authorization.
+The transition must be:
+• attributable
+• authorized
+• observable
+• auditable
+• policy-compliant
+• reproducible where practical
 
 ───
 
-28. Knowledge Fabric
-Knowledge represents relationships between entities, concepts and facts.
-It may contain:
+38. EVENT VS COMMAND
+CoreGrid distinguishes:
+text
+COMMAND
+=
+request for an action/state transition
+
+from:
+text
+EVENT
+=
+record that something occurred
+
+A command asks.
+An event reports.
+
+───
+
+39. EVENT DEPENDENCY
+Canonical event envelope:
+yaml
+event:
+  event_id:
+  event_type:
+  event_version:
+  occurred_at:
+  producer:
+  tenant_context:
+  actor_context:
+  correlation_id:
+  causation_id:
+  security_context:
+  data_classification:
+  payload:
+  provenance:
+
+
+───
+
+40. EVENT OWNERSHIP
+The producer owns the meaning of the event.
+Consumers own their interpretation.
+An event does not transfer ownership of canonical state.
+
+───
+
+41. COMMAND ARCHITECTURE
+Commands SHOULD include:
+text
+command_id
+command_type
+command_version
+issuer
+tenant_context
+actor_context
+authorization_context
+correlation_id
+payload
+
+Commands MUST pass applicable policy and authorization controls.
+
+───
+
+42. QUERY ARCHITECTURE
+Queries:
+• retrieve information
+• preserve tenant scope
+• preserve authorization
+• expose provenance where material
+• avoid hidden side effects
+Queries MUST NOT secretly mutate canonical state.
+
+───
+
+43. DATA PRODUCT PRINCIPLE
+Instead of unrestricted database sharing:
+text
+DOMAIN AUTHORITY
+      ↓
+DATA PRODUCT
+      ↓
+AUTHORIZED CONSUMERS
+
+A data product SHOULD define:
+• owner
+• schema
+• freshness
+• provenance
+• classification
+• retention
+• access policy
+• version
+
+───
+
+44. DATABASE ≠ AUTHORITY
+The fact that a subsystem stores a record does not make it authoritative.
+text
+DATABASE
+   ≠
+AUTHORITY
+
+Authority is an architectural property.
+
+───
+
+45. KNOWLEDGE FABRIC
+Knowledge may contain:
 text
 entities
 relationships
 facts
 claims
-provenance
-dependencies
 constraints
+dependencies
+provenance
 causal hypotheses
 semantic representations
 
-Knowledge must preserve provenance.
+Knowledge MUST preserve sufficient provenance to distinguish:
+text
+known
+observed
+inferred
+hypothesized
+predicted
+simulated
+
 
 ───
 
-29. Memory Fabric
-CoreGrid memory must support:
+46. MEMORY FABRIC
+CoreGrid memory may contain:
 text
 working memory
 short-term memory
@@ -924,191 +967,217 @@ Memory is not automatically canonical truth.
 
 ───
 
-30. Data Fabric
-Data infrastructure provides:
-• storage
-• data products
-• pipelines
-• indexing
-• retrieval
-• analytical datasets
-• event streams
-• telemetry
-• data governance
-Data infrastructure must not become an unrestricted dumping ground.
-
-───
-
-31. Digital Reality Fabric
-Digital Twins represent continuously evolving entities and states.
-Examples:
+47. MEMORY ACCESS
+Preferred:
 text
-person
-device
-building
-room
-vehicle
-resource
-environment
-organization
-workload
-service
+AGENT
+ ↓
+MEMORY CAPABILITY
+ ↓
+POLICY
+ ↓
+MEMORY AUTHORITY
+ ↓
+MEMORY STORE
 
-Twins must preserve:
-• identity
-• state
-• temporal history
-• relationships
-• provenance
-• uncertainty
-• observations
-
-───
-
-32. Agent Runtime Fabric
-Agents are autonomous computational actors.
-Agent infrastructure owns:
-• lifecycle
-• execution
-• tools
-• permissions
-• memory integration
-• communication
-• orchestration
-• runtime state
-• audit
-Agents do not own universal institutional truth.
-
-───
-
-33. Capability Fabric
-Capabilities are the atomic units through which agents and runtimes act.
-A capability should expose:
+Forbidden:
 text
-capability_id
-version
-description
-input_contract
-output_contract
-authorization_requirements
-risk_class
-tenant_scope
-side_effects
-observability
+AGENT
+ ↓
+RAW MEMORY DATABASE
 
-Agents consume capabilities rather than internal services.
 
 ───
 
-34. Reasoning Fabric
-Reasoning infrastructure may include:
+48. KNOWLEDGE ACCESS
+Knowledge consumers SHOULD receive:
+text
+source
+authority
+freshness
+confidence
+provenance
+scope
+
+where material to the decision.
+
+───
+
+49. INTELLIGENCE FABRIC
+CoreGrid intelligence may include:
 • symbolic reasoning
 • probabilistic reasoning
 • neural reasoning
 • retrieval
 • planning
+• prediction
 • simulation
 • model ensembles
-• specialized models
+• domain models
 • external model providers
-Reasoning providers must remain replaceable.
+• human expertise
+No intelligence provider becomes the architectural authority.
 
 ───
 
-35. Model Gateway Principle
-CoreGrid must not structurally depend on a single AI provider.
-External providers are:
+50. MODEL PROVIDER NEUTRALITY
+The architectural dependency is:
 text
 MODEL PROVIDERS
-       ↓
-MODEL GATEWAY
-       ↓
+      ↓
+MODEL / INTELLIGENCE ADAPTER
+      ↓
 COREGRID INTELLIGENCE CONTRACT
-       ↓
-RUNTIME / AGENT / RESEARCH SYSTEM
+      ↓
+RUNTIME / AGENT / RESEARCH
 
-Providers may include future or current models.
-No individual model becomes CoreGrid's architectural authority.
+CoreGrid MUST remain replaceable across intelligence providers where technically practical.
 
 ───
 
-36. Intelligence Routing
-CoreGrid may dynamically select models according to:
+51. MODEL ROUTING
+Model selection MAY consider:
+• capability
 • task
 • cost
 • latency
-• reliability
-• capability
 • privacy
 • sovereignty
-• context
-• confidence
+• reliability
+• context requirements
 • availability
-Model selection is infrastructure behavior, not domain ownership.
+• confidence requirements
+Routing is infrastructure behavior, not domain ownership.
 
 ───
 
-37. Planning Fabric
-Planning decomposes goals into executable capability graphs.
-Example:
+52. INTELLIGENCE FAILURE IS NOT PLATFORM FAILURE
+Basic deterministic platform functions SHOULD NOT unnecessarily depend upon advanced AI.
+For example:
 text
-Goal
- ↓
-Plan
- ↓
-Subtasks
- ↓
-Capabilities
- ↓
-Policy Checks
- ↓
-Execution
- ↓
-Verification
+IDENTITY CREATION
 
-Plans must remain inspectable and auditable.
-
-───
-
-38. Automation Fabric
-Automation coordinates deterministic and autonomous workflows.
-Automation must pass:
+should not fail simply because:
 text
-Trigger
- ↓
-Context
- ↓
-Policy
- ↓
-Risk
- ↓
-Authorization
- ↓
-Execution
- ↓
-Verification
- ↓
-Audit
+AI REASONING
 
-Automation must not bypass security.
+is unavailable.
+Unless AI itself is the explicit capability being delivered.
 
 ───
 
-39. Analytics & Decision Fabric
-Analytics produces:
+53. PLANNING FABRIC
+Planning converts goals into executable capability structures:
+text
+GOAL
+ ↓
+PLAN
+ ↓
+SUBTASKS
+ ↓
+CAPABILITIES
+ ↓
+POLICY CHECKS
+ ↓
+EXECUTION
+ ↓
+VERIFICATION
+
+Plans should remain inspectable and auditable.
+
+───
+
+54. CAPABILITY FABRIC
+Capabilities are the principal executable abstraction of CoreGrid.
+A capability SHOULD expose:
+yaml
+capability:
+  capability_id:
+  version:
+  description:
+  input_contract:
+  output_contract:
+  authorization_requirements:
+  risk_class:
+  tenant_scope:
+  side_effects:
+  observability:
+
+
+───
+
+55. CAPABILITY DISCOVERY
+Actors and runtimes MAY discover permitted capabilities.
+Discovery must respect:
+• identity
+• tenant
+• policy
+• trust
+• risk
+• scope
+• version
+• authorization
+
+───
+
+56. DYNAMIC CAPABILITY ROUTING
+CoreGrid may support:
+text
+REQUEST
+ ↓
+CAPABILITY DISCOVERY
+ ↓
+POLICY
+ ↓
+PROVIDER SELECTION
+ ↓
+EXECUTION
+ ↓
+VERIFICATION
+
+This permits provider substitution without changing consumer architecture.
+
+───
+
+57. AUTOMATION FABRIC
+Automation combines deterministic and intelligent execution.
+Canonical pattern:
+text
+TRIGGER
+ ↓
+CONTEXT
+ ↓
+POLICY
+ ↓
+RISK
+ ↓
+AUTHORIZATION
+ ↓
+EXECUTION
+ ↓
+VERIFICATION
+ ↓
+AUDIT
+
+Automation cannot bypass security or authority boundaries.
+
+───
+
+58. ANALYTICS FABRIC
+Analytics may produce:
 • measurements
 • forecasts
-• models
 • scenarios
+• models
 • recommendations
 • decision support
-Analytics cannot silently become canonical operational truth.
+Analytics does not automatically become operational truth.
 
 ───
 
-40. Command Fabric
+59. COMMAND FABRIC
 The Command Centre is a control-plane consumer.
-It aggregates:
+It may aggregate:
 text
 state
 analytics
@@ -1120,274 +1189,158 @@ financial information
 AI recommendations
 automation state
 
-Command interfaces must invoke domain capabilities through governed contracts.
-They must not directly mutate arbitrary domain storage.
+It must invoke governed capabilities rather than mutate arbitrary domain storage.
 
 ───
 
-41. Financial Authority
-Financial systems maintain canonical financial truth.
-The flow is:
+60. FINANCIAL AUTHORITY
+Financial truth belongs to the authoritative financial capability.
+Conceptually:
 text
-Intent
+INTENT
  ↓
-Authorization
+AUTHORIZATION
  ↓
-Financial Command
+FINANCIAL COMMAND
  ↓
-Validation
+VALIDATION
  ↓
-Transaction
+TRANSACTION
  ↓
-Canonical Financial State
+CANONICAL FINANCIAL STATE
  ↓
-Reconciliation
+RECONCILIATION
  ↓
-Analytics
+ANALYTICS
 
-Analytics and AI cannot become the financial ledger.
+AI and analytics cannot silently become the financial ledger.
 
 ───
 
-42. Physical Reality
-Physical infrastructure follows:
+61. PHYSICAL REALITY DEPENDENCY
+Physical systems follow:
 text
-Physical Entity
+PHYSICAL ENTITY
  ↓
-Hardware Adapter
+HARDWARE ADAPTER
  ↓
-Telemetry
+TELEMETRY
  ↓
-Digital Twin
+DIGITAL REPRESENTATION / TWIN
  ↓
-Knowledge / Data
+KNOWLEDGE / DATA
  ↓
-Analytics / Intelligence
+INTELLIGENCE
  ↓
-Automation
+GOVERNED AUTOMATION
  ↓
-Governed Action
+PHYSICAL ACTION
  ↓
-Physical Effect
+PHYSICAL EFFECT
+ ↓
+OBSERVATION
 
-The physical world becomes an observable execution environment.
+The physical world is therefore an execution environment and source of observations.
 
 ───
 
-43. Integration Fabric
-External systems must communicate through adapters.
-Canonical pattern:
+62. DIGITAL TWIN DEPENDENCY
+Digital Twins may represent:
+• people
+• devices
+• buildings
+• rooms
+• vehicles
+• resources
+• environments
+• organizations
+• workloads
+• services
+A twin should preserve:
 text
-External System
-       ↓
-Integration Adapter
-       ↓
-Validation
-       ↓
-CoreGrid Contract
-       ↓
-Domain Capability
+identity
+state
+temporal history
+relationships
+provenance
+uncertainty
+observations
 
-Never:
+
+───
+
+63. SIMULATION / REALITY SEPARATION
+CoreGrid MUST distinguish:
 text
-External System
-       ↓
-CoreGrid Database
+OBSERVED REALITY
 
-
-───
-
-44. Developer Fabric
-Developers consume:
-• APIs
-• SDKs
-• events
-• webhooks
-• capability contracts
-• test environments
-• observability
-• extension interfaces
-Developers must not need knowledge of internal implementation.
-
-───
-
-45. Marketplace Fabric
-Marketplace extensions consume stable extension contracts.
-They must not receive unrestricted access to:
-• internal databases
-• private queues
-• internal agent memory
-• security internals
-• cloud credentials
-• financial ledgers
-
-───
-
-46. Client Fabric
-Mobile, web, desktop, device and future clients consume application contracts.
-Clients must not directly depend on:
+from:
 text
-private databases
-internal queues
-internal agent memory
-model infrastructure
-private service implementations
-
-
-───
-
-47. Cloud Fabric
-Cloud infrastructure is a substrate.
-Domain systems must remain cloud-provider-independent where practical.
-The cloud fabric may provide:
-• compute
-• networking
-• storage
-• orchestration
-• regional deployment
-• resilience
-• observability
-• backup
-• disaster recovery
-
-───
-
-48. BYOC / Sovereign Deployment
-CoreGrid must support:
-text
-CoreGrid Control Plane
-        ↓
-Secure Deployment Contract
-        ↓
-Customer Cloud / Private Cloud
-        ↓
-CoreGrid Runtime
-
-The customer environment may be:
-• public cloud
-• private cloud
-• hybrid
-• on-premises
-• sovereign cloud
-• air-gapped
-Deployment topology must not alter CoreGrid's logical ownership model.
-
-───
-
-49. Government / Sovereignty Boundary
-Government environments may impose:
-• jurisdiction
-• residency
-• sovereignty
-• retention
-• access
-• audit
-• interoperability
-• security requirements
-These become policy constraints.
-They do not require CoreGrid to create an entirely separate architecture.
-
-───
-
-50. Globalization Fabric
-Globalization provides:
-• language
-• locale
-• currency
-• calendar
-• jurisdiction
-• regulatory configuration
-• regional behavior
-Globalization must not fork CoreGrid's architecture per country.
-
-───
-
-51. Enterprise Scale Fabric
-Enterprise scale provides:
-• capacity
-• resilience
-• isolation
-• governance
-• observability
-• multi-region operation
-• disaster recovery
-• tenant scaling
-Enterprise scale strengthens the architecture.
-It does not redefine domain authority.
-
-───
-
-52. Simulation / World Modeling
-ASI-era CoreGrid requires a separation between:
-text
-OBSERVED WORLD
-and
-SIMULATED WORLD
+SIMULATED REALITY
 
 Simulation may explore:
 • possible futures
-• scenarios
 • interventions
 • resource allocation
-• policy outcomes
+• policies
 • operational consequences
-Simulation output is not automatically real-world state.
+• alternative scenarios
+Simulation output does not automatically become real-world state.
 
 ───
 
-53. Research Fabric
-Research infrastructure supports:
+64. RESEARCH FABRIC
+Research follows:
 text
-Hypothesis
+HYPOTHESIS
  ↓
-Experiment
+EXPERIMENT
  ↓
-Dataset
+DATASET
  ↓
-Model
+MODEL
  ↓
-Evaluation
+EVALUATION
  ↓
-Validation
+VALIDATION
  ↓
-Promotion
+PROMOTION
 
-Research artifacts must remain distinguishable from production truth.
+Research artifacts remain distinguishable from production truth.
 
 ───
 
-54. Evolution Fabric
-CoreGrid must support controlled evolution.
-The evolution loop is:
+65. EVOLUTION FABRIC
+CoreGrid supports controlled evolution:
 text
-Observe
+OBSERVE
  ↓
-Measure
+MEASURE
  ↓
-Hypothesize
+HYPOTHESIZE
  ↓
-Experiment
+EXPERIMENT
  ↓
-Evaluate
+EVALUATE
  ↓
-Validate
+VALIDATE
  ↓
-Approve
+APPROVE
  ↓
-Deploy
+DEPLOY
  ↓
-Observe
+OBSERVE
 
-Production systems must not silently self-modify foundational architecture.
+Foundational architecture MUST NOT silently self-rewrite.
 
 ───
 
-55. Autonomous Operations Fabric
-Autonomous operations may monitor and coordinate:
+66. AUTONOMOUS OPERATIONS
+Autonomous operations may monitor:
 • infrastructure
+• workloads
 • applications
 • agents
-• workloads
 • data pipelines
 • security
 • capacity
@@ -1396,400 +1349,848 @@ Autonomy remains policy-bounded.
 
 ───
 
-56. Dependency Graph for Scholar
-Scholar should be represented as:
+67. SELF-HEALING
+Self-healing MAY be permitted.
+The action path is:
 text
-COREGRID PLATFORM
-                         │
-        ┌────────────────┼────────────────┐
-        │                │                │
-        ▼                ▼                ▼
-     Identity         Security         Runtime
-        │                │                │
-        └────────────────┼────────────────┘
-                         ▼
-                 Scholar Runtime Fabric
-                         │
-       ┌─────────────────┼─────────────────┐
-       ▼                 ▼                 ▼
- Education          Administration      Intelligence
- Reality              Runtime             Runtime
-       │                 │                 │
-       └─────────────────┼─────────────────┘
-                         ▼
-                  Scholar Workspace
-                         │
-                         ▼
-                    End Users
+OBSERVE
+ ↓
+CLASSIFY
+ ↓
+POLICY
+ ↓
+RISK
+ ↓
+BOUND
+ ↓
+EXECUTE
+ ↓
+VERIFY
+ ↓
+AUDIT
 
-Scholar is therefore a consumer/composer of CoreGrid infrastructure.
-
-───
-57. Scholar Must Not Become Platform Authority
-The following are prohibited:
-text
-Scholar
-   ↓
-CoreGrid Foundation ownership
-
-text
-Scholar
-   ↓
-Universal Identity ownership
-
-text
-Scholar
-   ↓
-Universal Security ownership
-
-text
-Scholar
-   ↓
-Universal Agent ownership
-
-text
-Scholar
-   ↓
-Universal Cloud ownership
-
-Scholar may provide domain-specific implementations.
-It must not redefine platform-wide authority.
+Self-healing does not imply unrestricted self-modification.
 
 ───
 
-58. Runtime Isolation
-Each CoreGrid runtime must have:
+68. SELF-MODIFICATION BOUNDARY
+CoreGrid distinguishes:
 text
-runtime_id
-tenant_context
-identity_context
-policy_context
-capability_context
-knowledge_context
-memory_context
-security_context
-data_context
-observability_context
+RUNTIME ADAPTATION
 
-A runtime must not accidentally access another runtime's private state.
+from:
+text
+ARCHITECTURAL SELF-MODIFICATION
+
+Runtime adaptation may occur within approved bounds.
+Foundational architecture requires explicit governance.
 
 ───
 
-59. Runtime Composition
-A runtime is assembled from:
+69. EVOLUTION PROMOTION
+New autonomous capabilities SHOULD pass through:
 text
-Platform Capabilities
-        +
-Domain Capabilities
-        +
-Policies
-        +
-Knowledge
-        +
-Memory
-        +
-Agents
-        +
-Workspaces
-        +
-Integrations
+RESEARCH
+ ↓
+SIMULATION
+ ↓
+TESTING
+ ↓
+EVALUATION
+ ↓
+SECURITY REVIEW
+ ↓
+POLICY REVIEW
+ ↓
+AUTHORITY APPROVAL
+ ↓
+STAGED DEPLOYMENT
+ ↓
+MONITORING
 
-The runtime composition layer binds these capabilities together.
 
 ───
 
-60. Multi-Runtime Principle
-CoreGrid must support multiple runtimes simultaneously.
-Example:
+70. SECURITY DEPENDENCY RULE
+Every sensitive capability must connect to applicable:
 text
-COREGRID
-                     │
-      ┌──────────────┼──────────────┐
-      ▼              ▼              ▼
-   SCHOLAR       ENTERPRISE     GOVERNMENT
-      │              │              │
-      ▼              ▼              ▼
-   Runtime A      Runtime B      Runtime C
+IDENTITY
++
+TENANT
++
+TRUST
++
+POLICY
++
+AUTHORIZATION
++
+AUDIT
 
-Shared infrastructure may be reused.
-Runtime-specific domain semantics remain isolated.
+Security is architectural infrastructure, not an application feature.
 
 ───
 
-61. Dependency Isolation
-A runtime must not create:
+71. TRUST IS NOT AUTHORIZATION
+Trust may evaluate:
 text
-Runtime A
-    ↓
-Runtime B private implementation
+identity
+device
+session
+behavior
+resource
+action
+environment
+threat
+history
+policy
+
+But:
+text
+TRUST ≠ AUTHORIZATION
+
+Trust may inform authorization decisions without replacing authorization.
+
+───
+
+72. ZERO-TRUST DEPENDENCY MODEL
+No dependency is automatically trusted merely because it is internal.
+Sensitive interaction should answer:
+text
+WHO?
+WHAT?
+WHY?
+UNDER WHICH POLICY?
+WITH WHAT AUTHORITY?
+FOR WHICH TENANT?
+USING WHICH CAPABILITY?
+WITH WHAT RISK?
+
+
+───
+
+73. EXTENSION FABRIC
+Extensions consume:
+text
+Developer Contract
++
+Capability Contract
++
+Security Contract
++
+Integration Contract
+
+They do not receive unrestricted internal access.
+
+───
+
+74. MARKETPLACE BOUNDARY
+Marketplace extensions MUST NOT receive unrestricted access to:
+• internal databases
+• private queues
+• agent memory
+• cloud credentials
+• security internals
+• financial ledgers
+
+───
+
+75. CLIENT BOUNDARY
+Clients consume public application contracts.
+Clients MUST NOT directly depend upon:
+text
+private databases
+internal queues
+private agent memory
+model infrastructure
+private service implementations
+
+
+───
+
+76. INTEGRATION FABRIC
+External systems use:
+text
+EXTERNAL SYSTEM
+ ↓
+ADAPTER
+ ↓
+VALIDATION
+ ↓
+COREGRID CONTRACT
+ ↓
+CAPABILITY
+ ↓
+DOMAIN AUTHORITY
+
+Never:
+text
+EXTERNAL SYSTEM
+ ↓
+COREGRID DATABASE
+
+
+───
+
+77. DEVELOPER FABRIC
+Developers consume:
+• APIs
+• SDKs
+• events
+• webhooks
+• capability contracts
+• test environments
+• observability interfaces
+• extension contracts
+Developers should not need private implementation knowledge.
+
+───
+
+78. CLOUD FABRIC
+Cloud is infrastructure substrate.
+It may provide:
+• compute
+• networking
+• storage
+• orchestration
+• regional deployment
+• backup
+• disaster recovery
+• resilience
+• observability
+Cloud topology must not redefine domain ownership.
+
+───
+
+79. SOVEREIGN DEPLOYMENT
+CoreGrid SHOULD support:
+text
+COREGRID CONTROL PLANE
+        ↓
+SECURE DEPLOYMENT CONTRACT
+        ↓
+CUSTOMER / PRIVATE / SOVEREIGN ENVIRONMENT
+        ↓
+COREGRID RUNTIME
+
+Potential environments include:
+• public cloud
+• private cloud
+• hybrid
+• on-premises
+• sovereign cloud
+• air-gapped environments
+Logical ownership remains consistent across deployment topologies.
+
+───
+
+80. GLOBALIZATION
+Globalization provides:
+• language
+• locale
+• currency
+• calendar
+• jurisdiction
+• regulatory configuration
+• regional behavior
+CoreGrid MUST NOT fork its fundamental architecture per country.
+
+───
+
+81. GOVERNMENT AND SOVEREIGNTY
+Government environments may impose:
+• residency
+• jurisdiction
+• retention
+• interoperability
+• security
+• audit
+• sovereignty
+• access controls
+These become policy and deployment constraints rather than reasons to duplicate CoreGrid architecture.
+
+───
+
+82. ENTERPRISE SCALE
+Enterprise scale addresses:
+• capacity
+• isolation
+• resilience
+• multi-region operation
+• observability
+• disaster recovery
+• tenant scaling
+• governance
+Scale does not redefine domain authority.
+
+───
+
+83. LOGICAL CAPABILITY LAYERS
+CoreGrid may organize dependency topology across logical layers such as:
+text
+L00 Architecture Governance
+L01 Foundation Primitives
+L02 Identity & Actor Fabric
+L03 Tenancy & Sovereignty
+L04 Reality Representation
+L05 Core Runtime
+L06 Workspace & Experience
+L07 Security
+L08 Trust & Risk
+L09 Knowledge
+L10 Memory
+L11 Data
+L12 Digital Reality / State
+L13 Agent Runtime
+L14 Capability
+L15 Planning & Reasoning
+L16 Automation
+L17 Analytics & Decision
+L18 Command & Governance
+L19 Communication
+L20 Financial / Transaction
+L21 Physical / Hardware
+L22 Cloud & Compute
+L23 Integration
+L24 API / Developer
+L25 Marketplace / Extension
+L26 Client Runtime
+L27 AI / Intelligence
+L28 Simulation / World Modeling
+L29 Research
+L30 Observability
+L31 Reliability / Resilience
+L32 Compliance / Sovereignty
+L33 Globalization
+L34 Enterprise Scale
+L35 Runtime Composition
+L36 Autonomous Operations
+L37 Evolution / Learning
+L38 Future Capability
+
+These are logical capability layers, not replacements for the authoritative phase registry.
+
+───
+
+84. PHASES ARE NOT LAYERS
+A phase is an architectural ownership boundary.
+A layer is a capability boundary.
+Therefore:
+text
+PHASE ≠ LAYER
+
+One phase may participate across multiple logical layers.
+One logical layer may contain capabilities implemented across multiple phases.
+
+───
+
+85. PHASE REGISTRY AUTHORITY
+The authoritative phase inventory belongs to:
+text
+ARCHITECTURE-REGISTRY.md
+
+The dependency map MUST NOT create a competing phase inventory.
+Machine-readable representations may include:
+text
+architecture/
+    registry/
+        phases.yaml
+        dependencies.yaml
+        ownership.yaml
+        contracts.yaml
+        events.yaml
+        policies.yaml
+
+
+───
+
+86. 51-PHASE TOPOLOGY
+The 51-phase architecture MUST NOT become:
+text
+P01
+ ↓
+P02
+ ↓
+P03
+ ↓
+...
+ ↓
+P51
 
 Instead:
 text
-Runtime A
-    ↓
-CoreGrid Contract
-    ↓
-Runtime B Capability
+COREGRID
+                    │
+        ┌───────────┼───────────┐
+        ▼           ▼           ▼
+     IDENTITY    SECURITY    RUNTIME
+        │           │           │
+        └───────────┼───────────┘
+                    ▼
+             CAPABILITY FABRIC
+                    │
+       ┌────────────┼────────────┐
+       ▼            ▼            ▼
+    DOMAIN A     DOMAIN B     DOMAIN C
 
-where explicitly authorized.
-
-───
-
-62. Cross-Runtime Communication
-Cross-runtime interaction requires:
-• explicit contracts
-• identity
-• tenant/security context
-• policy
-• authorization
-• provenance
-• audit
-• rate limits
-• versioning
-No implicit cross-runtime access.
+The 51 phases form a capability civilization, not a 51-level call stack.
 
 ───
 
-63. Event Architecture
-Events provide asynchronous decoupling.
-Canonical event envelope:
+87. KNOWN SCHOLAR REFERENCE PHASES
+Scholar contains a reference architecture including the known phases established by its current architecture.
+These include, where applicable:
 text
-event_id
-event_type
-event_version
-occurred_at
-producer
-tenant_context
-actor_context
-correlation_id
-causation_id
-security_context
-data_classification
-payload
-provenance
+P01 Foundation
+P02 Identity
+P03 Multi-Tenancy
+P04 Education Reality Engine
+P05 Core Application Runtime
+P06 Workspace Engine
+P07 AI Agent System
+P08 Security Engine
+P09 Security Trust Fabric
+P10 Communication Platform
+P11 Academic Learning Intelligence
+P12 Scheduling & Timetable Intelligence
+P13 Payment, Billing & Financial Operating System
+P14 Data Platform
+P15 Hardware Integration
+P16 Digital Twin
+P17 Automation Engine
+P18 Analytics & Decision Intelligence
+P19 Institutional Command Centre
+P20 Government Education Cloud
+P21 Global Cloud Fabric
+P22 Mobile Platform
+P23 Web Platform
+P24 AI Intelligence Layer
+P25 Marketplace
+P26 Developer Platform
+P27 CoreGrid Integration
+P28 Globalization
+P29 Enterprise Scale
+P30 Future Evolution
+P31 Institutional Identity & Educational Runtime
+P32 Adaptive Institutional Administration & Workforce Runtime
 
+These MUST be reconciled with the authoritative 51-phase registry.
+They MUST NOT automatically be treated as the final universal CoreGrid phase inventory.
 
 ───
 
-64. Event Ownership
-The producer owns the meaning of an event.
-Consumers own their interpretation.
-An event does not transfer canonical state ownership.
+88. PHASES 33–51
+Where authoritative definitions are not available in the current dependency document, this document MUST NOT invent them.
+Canonical definitions MUST come from the authoritative registry.
+This prevents:
+• phase-number drift
+• duplicate architecture
+• invented ownership
+• accidental overlap
+• hidden dependencies
 
 ───
 
-65. Command Architecture
-Commands represent requests for state change.
-A command must include:
+89. COREGRID DEPENDENCY RELATION TYPES
+CoreGrid defines explicit relation types.
 text
-command_id
-command_type
-command_version
-issuer
-tenant_context
-actor_context
-authorization_context
-correlation_id
-payload
+DEP-01 STRUCTURAL_DEPENDS_ON
+DEP-02 RUNTIME_CALLS
+DEP-03 PUBLISHES_EVENT_TO
+DEP-04 SUBSCRIBES_TO
+DEP-05 READS_DATA_FROM
+DEP-06 WRITES_DATA_TO
+DEP-07 CONSUMES_CONTRACT
+DEP-08 CONSUMES_POLICY
+DEP-09 CONSUMES_IDENTITY_CONTEXT
+DEP-10 CONSUMES_TRUST_SIGNAL
+DEP-11 OPTIONAL_SIGNAL_FROM
+DEP-12 DEPLOYED_ON
+DEP-13 COMPOSES
+DEP-14 EXTENDS
+DEP-15 GOVERNS
+DEP-16 ATTESTS
+DEP-17 OBSERVES
+DEP-18 ORCHESTRATES
+DEP-19 ROUTES_TO
+DEP-20 ADAPTER_FOR
 
-Commands must be policy-checked.
+Additional relation types may be introduced only through governance.
 
 ───
 
-66. Query Architecture
-Queries retrieve state or derived information.
-Queries must:
-• be authorized
-• preserve tenant scope
-• avoid hidden side effects
-• expose provenance where relevant
+90. STRUCTURAL DEPENDENCY
+STRUCTURAL_DEPENDS_ON means:
+The consumer cannot correctly exist within the architecture without the provider's capability.
+Structural dependencies require the highest architectural scrutiny.
 
 ───
 
-67. Data Product Architecture
-Instead of unrestricted database sharing:
+91. RUNTIME INTERACTION
+Runtime interaction does not automatically create structural dependency.
+For example:
 text
-Domain Authority
+COMMAND CENTRE
+      ↕
+AUTOMATION
+
+may be runtime interaction without creating:
+text
+COMMAND CENTRE
+   STRUCTURALLY_DEPENDS_ON
+AUTOMATION
+
+
+───
+
+92. EVENT DECOUPLING
+Events may provide reverse communication without creating structural cycles.
+Example:
+text
+COMMAND
+ ↓
+AUTOMATION
+ ↓
+EVENT
+ ↓
+COMMAND CENTRE
+
+This is valid feedback topology.
+
+───
+
+93. CIRCULAR STRUCTURAL DEPENDENCY
+Structural cycles are prohibited by default.
+Example:
+text
+A → B
+B → C
+C → A
+
+When detected, architecture MUST determine whether the relationship should instead become:
+• event communication
+• orchestration
+• capability abstraction
+• interface inversion
+• data product
+• policy relationship
+• asynchronous workflow
+
+───
+
+94. AI / AGENT CYCLE
+Avoid:
+text
+AGENT
+ ↓
+INTELLIGENCE
+ ↓
+AGENT
+
+as a structural cycle.
+Prefer:
+text
+INTELLIGENCE CONTRACT
+        ↓
+AGENT RUNTIME
+
+with results returning through:
+• capability results
+• events
+• telemetry
+• workflow state
+
+───
+
+95. AUTOMATION / COMMAND FEEDBACK
+Valid:
+text
+COMMAND
+ ↓
+AUTOMATION
+ ↓
+EVENT
+ ↓
+COMMAND CENTRE
+
+This is runtime feedback, not necessarily structural recursion.
+
+───
+
+96. DATA PLATFORM BOUNDARY
+The Data Platform is a shared substrate.
+It MUST NOT become universal authority.
+Correct:
+text
+DOMAIN AUTHORITY
       ↓
-Data Product
+PUBLISHED DATA
       ↓
-Data Consumers
+DATA PLATFORM
+      ↓
+CONSUMERS
 
-A data product should define:
-• owner
-• schema
-• freshness
-• provenance
-• classification
-• retention
-• access policy
-• version
-
-───
-
-68. Canonical Data Rule
-No subsystem may become canonical merely because it stores data.
-Authority comes from architecture.
-Therefore:
+Incorrect:
 text
-Database
-   ≠
-Authority
+EVERYTHING
+ ↓
+DATA PLATFORM
+ ↓
+DATA PLATFORM OWNS EVERYTHING
 
 
 ───
 
-69. Memory Access Rule
-Agents must access memory through governed interfaces.
-Forbidden:
+97. OBSERVABILITY BOUNDARY
+Observability observes.
+It MUST NOT become a hidden correctness dependency.
+Example:
 text
-Agent
- ↓
-Memory database directly
+ATTENDANCE
 
-Preferred:
+should not fail merely because:
 text
-Agent
- ↓
-Memory Capability
- ↓
-Policy
- ↓
-Memory Store
+ANALYTICS
 
+is unavailable.
 
 ───
 
-70. Knowledge Access Rule
-Agents consume knowledge through governed retrieval/capability interfaces.
-Knowledge must preserve:
-• provenance
-• confidence
-• freshness
-• authority
-• source
+98. COMMAND CENTRE BOUNDARY
+The Command Centre is a control-plane consumer.
+It is not:
+• universal database
+• universal domain owner
+• universal workflow owner
+• universal intelligence authority
 
 ───
 
-71. AI Access Rule
-AI systems receive:
+99. GOD-SERVICE PREVENTION
+CoreGrid MUST resist universal intermediary patterns such as:
 text
-authorized context
-+
-authorized data
-+
-authorized tools
+EVERYTHING
+ ↓
+DATA PLATFORM
 
-They must not receive unrestricted platform state by default.
+or:
+text
+EVERYTHING
+ ↓
+AI
 
-───
+or:
+text
+EVERYTHING
+ ↓
+COMMAND CENTRE
 
-72. Model Independence
-CoreGrid must remain operationally independent of any single:
-• LLM
-• model vendor
-• inference provider
-• embedding provider
-• vector database
-• agent framework
-where abstraction is technically reasonable.
+Convenience does not establish authority.
 
 ───
 
-73. Agent Framework Independence
-Agent runtime architecture must not depend irreversibly on one orchestration framework.
-CoreGrid owns the agent contract.
-Implementations remain replaceable.
-
-───
-
-74. Security Dependency Rule
-Every sensitive capability must be connected to:
+100. CAPABILITY MESH
+CoreGrid should evolve toward a capability mesh:
 text
 Identity
-+
-Tenant
-+
+Security
 Trust
-+
-Policy
-+
-Authorization
-+
-Audit
+Knowledge
+Memory
+Reasoning
+Planning
+Data
+Communication
+Financial
+Physical
+Simulation
+Automation
+Analytics
 
-Security cannot be an optional application feature.
+Runtimes and agents compose these capabilities through contracts.
 
 ───
 
-75. Risk Classification
-Every capability must declare:
+101. INTELLIGENCE MESH
+Multiple intelligence mechanisms may coexist:
 text
-R0 — informational
-R1 — low-impact
-R2 — operational
-R3 — sensitive
-R4 — critical
-R5 — existential / platform-critical
+MODEL A
+MODEL B
+MODEL C
+SYMBOLIC ENGINE
+PREDICTION ENGINE
+SIMULATION ENGINE
+DOMAIN MODEL
+HUMAN EXPERTISE
 
-Higher-risk capabilities require stronger controls.
+The intelligence fabric arbitrates access according to policy and capability requirements.
 
 ───
 
-76. Autonomous Capability Classification
-Autonomous capabilities must declare:
+102. HUMAN + AI + AGENT
+CoreGrid supports:
 text
-A0 — no autonomy
-A1 — recommendation
-A2 — assisted execution
-A3 — bounded autonomy
-A4 — high-autonomy execution
-A5 — platform-critical autonomy
+HUMAN
+  ↕
+AI
+  ↕
+AGENT
+  ↕
+CAPABILITY
+  ↕
+REALITY
 
-Promotion requires evidence.
-
-───
-
-77. Human Oversight
-Human approval may be mandatory for:
-• irreversible actions
-• high-impact financial operations
-• legal commitments
-• sensitive institutional decisions
-• destructive infrastructure actions
-• security containment actions where policy requires it
-Human oversight is a policy capability, not a hardcoded application assumption.
-
-───
-
-78. Dependency Latency Classes
+All actors remain subject to applicable:
 text
-L0 — in-process
-L1 — ultra-low latency
-L2 — synchronous service
-L3 — asynchronous
-L4 — batch
-L5 — human approval
+IDENTITY
+POLICY
+TRUST
+AUTHORIZATION
+AUDIT
 
-Every critical dependency must declare its latency class.
 
 ───
 
-79. Dependency Reliability Classes
+103. COLLECTIVE INTELLIGENCE
+Multiple agents may collaborate through:
+• task contracts
+• events
+• shared authorized context
+• controlled memory
+• capability calls
+• explicit permissions
+They MUST NOT rely upon uncontrolled shared mutable state.
+
+───
+
+104. AGENT-TO-AGENT DEPENDENCY
+Preferred:
 text
-R0 — optional
-R1 — non-critical
-R2 — important
-R3 — critical
-R4 — mission-critical
-R5 — platform-critical
+AGENT A
+ ↓
+AGENT CAPABILITY CONTRACT
+ ↓
+AGENT B
 
-Mission-critical relationships require resilience.
+Forbidden:
+text
+AGENT A
+ ↓
+AGENT B PRIVATE MEMORY
+
 
 ───
 
-80. Dependency Failure Contract
-Every important dependency must define:
+105. AGENT SWARM GOVERNANCE
+Agent collectives require:
+text
+membership
+roles
+permissions
+communication rules
+task boundaries
+resource limits
+escalation
+termination
+audit
+
+
+───
+
+106. AUTONOMOUS RESOURCE GOVERNANCE
+Autonomous actors must have bounded access to:
+• compute
+• storage
+• network
+• APIs
+• financial resources
+• physical systems
+• communications
+
+───
+
+107. AUTONOMOUS BUDGETING
+Where resources are metered, capabilities SHOULD expose:
+text
+budget
+quota
+rate
+limit
+approval
+
+Production autonomy without resource bounds is prohibited.
+
+───
+
+108. RISK CLASSIFICATION
+Capabilities may be classified:
+text
+R0 Informational
+R1 Low Impact
+R2 Operational
+R3 Sensitive
+R4 Critical
+R5 Platform-Critical
+
+Risk classification determines required controls.
+
+───
+
+109. AUTONOMY CLASSIFICATION
+Capabilities may be classified:
+text
+A0 No Autonomy
+A1 Recommendation
+A2 Assisted Execution
+A3 Bounded Autonomy
+A4 High-Autonomy Execution
+A5 Platform-Critical Autonomy
+
+Promotion requires evidence and governance.
+
+───
+
+110. LATENCY CLASSIFICATION
+Dependencies may use:
+text
+L0 In-Process
+L1 Ultra-Low Latency
+L2 Synchronous Service
+L3 Asynchronous
+L4 Batch
+L5 Human Approval
+
+Critical dependencies MUST declare expected latency behavior.
+
+───
+
+111. RELIABILITY CLASSIFICATION
+text
+R0 Optional
+R1 Non-Critical
+R2 Important
+R3 Critical
+R4 Mission-Critical
+R5 Platform-Critical
+
+Criticality is distinct from risk.
+
+───
+
+112. BLAST-RADIUS CLASSIFICATION
+text
+B0 Component
+B1 Service
+B2 Domain
+B3 Tenant
+B4 Region
+B5 Platform
+
+Platform-wide dependencies require exceptional scrutiny.
+
+───
+
+113. DEPENDENCY FAILURE CONTRACT
+Important dependencies MUST define:
 text
 timeout
 retry
@@ -1805,22 +2206,8 @@ observability
 
 ───
 
-81. Dependency Blast Radius
-Each dependency must declare its blast radius:
-text
-B0 — component
-B1 — service
-B2 — domain
-B3 — tenant
-B4 — regional
-B5 — platform-wide
-
-Platform-wide dependencies require exceptional review.
-
-───
-
-82. Dependency Criticality Matrix
-Every dependency should be evaluated against:
+114. DEPENDENCY CRITICALITY
+Dependencies should be evaluated across:
 text
 Security
 Availability
@@ -1837,358 +2224,352 @@ Blast Radius
 
 ───
 
-83. Forbidden Dependency — Database Coupling
+115. DATABASE COUPLING PROHIBITION
 Forbidden:
 text
-Phase A
-   ↓
-Phase B database
+PHASE A
+ ↓
+PHASE B DATABASE
 
 Preferred:
 text
-Phase A
-   ↓
-Phase B contract
-   ↓
-Phase B
+PHASE A
+ ↓
+PHASE B CONTRACT
+ ↓
+PHASE B CAPABILITY
 
 
 ───
 
-84. Forbidden Dependency — Client Coupling
+116. CLIENT COUPLING PROHIBITION
 Forbidden:
 text
-Mobile
+CLIENT
  ↓
-Database
+DATABASE
 
 Preferred:
 text
-Mobile
+CLIENT
  ↓
-Public API
+PUBLIC CONTRACT
  ↓
-Capability
+CAPABILITY
 
 
 ───
 
-85. Forbidden Dependency — Agent Coupling
+117. AGENT COUPLING PROHIBITION
 Forbidden:
 text
-Agent
+AGENT
  ↓
-Internal database
+INTERNAL DATABASE
 
 Preferred:
 text
-Agent
+AGENT
  ↓
-Capability
+CAPABILITY
  ↓
-Policy
+POLICY
  ↓
-Domain
+DOMAIN AUTHORITY
 
 
 ───
 
-86. Forbidden Dependency — AI Authority
+118. AI AUTHORITY PROHIBITION
 Forbidden:
 text
 AI
  ↓
-Canonical truth mutation
+CANONICAL STATE
 
-without an explicit governed capability.
+without an explicitly governed capability.
 Preferred:
 text
 AI
  ↓
-Recommendation / Plan
+RECOMMENDATION / PLAN
  ↓
-Policy
+POLICY
  ↓
-Authorization
+AUTHORIZATION
  ↓
-Domain Capability
+DOMAIN CAPABILITY
  ↓
-Canonical State
+CANONICAL STATE
 
 
 ───
 
-87. Forbidden Dependency — Security Bypass
+119. SECURITY BYPASS PROHIBITION
 Forbidden:
 text
-Application
+APPLICATION
  ↓
-Security bypass
+SECURITY BYPASS
  ↓
-Sensitive capability
+SENSITIVE CAPABILITY
 
 
 ───
 
-88. Forbidden Dependency — Hidden Provider
+120. PRIVATE IMPLEMENTATION DEPENDENCY
 Forbidden:
 text
-Consumer
+CONSUMER
  ↓
-Provider private implementation
+PRIVATE PROVIDER IMPLEMENTATION
 
+Consumers depend on contracts.
 
 ───
 
-89. Forbidden Dependency — Circular Ownership
+121. CIRCULAR OWNERSHIP
 Forbidden:
 text
 A owns X
 B owns X
 
-There must be one canonical owner.
+Canonical state must have one authoritative owner.
 
 ───
 
-90. Circular Dependency Rule
-A structural cycle is prohibited by default.
-Example:
+122. DEPENDENCY BUDGET
+Every phase SHOULD maintain budgets for:
 text
-A → B
-B → C
-C → A
+structural dependencies
+runtime dependencies
+event subscriptions
+external dependencies
+platform-critical dependencies
 
-When a cycle appears, determine whether it should become:
-• event communication
-• shared contract
-• interface inversion
-• capability abstraction
-• orchestration
-• asynchronous workflow
-• data product
-• policy relationship
+Excessive dependency density requires review.
 
 ───
 
-91. Runtime Interaction Does Not Equal Structural Dependency
-This is critical.
-For example:
+123. DEPENDENCY ENTROPY
+CoreGrid should monitor architectural entropy.
+Conceptually:
 text
-Automation
-      ↔
-Command Centre
-
-may be a legitimate runtime interaction.
-It does not mean:
-text
-Automation STRUCTURALLY_DEPENDS_ON Command Centre
-
-The dependency registry must distinguish these.
-
-───
-
-92. AI / Agent Dependency Cycle Prevention
-AI and Agent systems must not create:
-text
-Agent System
-   ↓
-AI Intelligence
-   ↓
-Agent System
-
-as a structural cycle.
-Preferred:
-text
-AI Intelligence
+HIDDEN COUPLING
       ↓
-AI Contract
+HIGHER ENTROPY
       ↓
-Agent Runtime
-
-Agent results may return through:
-text
-events
-telemetry
-results
-capability contracts
-
-rather than structural reverse coupling.
-
-───
-
-93. Automation / Command Cycle Prevention
-Automation may receive commands from the Command Centre and emit execution events back to it.
-This is:
-text
-Command
- ↓
-Automation
- ↓
-Event
- ↓
-Command Centre
-
-not a structural circular dependency.
-
-───
-
-94. Data Platform Rule
-The Data Platform is a shared substrate.
-It must not become the owner of every domain's canonical truth.
-Correct:
-text
-Domain Authority
+LOWER PREDICTABILITY
       ↓
-Published Data
-      ↓
-Data Platform
-      ↓
-Consumers
+LOWER EVOLVABILITY
 
-Incorrect:
-text
-Everything
-   ↓
-Data Platform
-   ↓
-Data Platform becomes universal authority
-
+CoreGrid continuously reduces:
+• hidden coupling
+• duplicated capabilities
+• ambiguous ownership
+• unnecessary dependencies
+• provider concentration
 
 ───
 
-95. Observability Rule
-Observability observes systems.
-It must not become a hidden correctness dependency.
-For example:
-text
-Attendance
-
-must not fail merely because:
-text
-Analytics
-
-is unavailable.
+124. DEPENDENCY DENSITY
+High dependency density may indicate:
+• incorrect ownership
+• missing abstraction
+• god-service architecture
+• over-centralization
+• duplicated responsibility
+• poor phase boundaries
+Dependency density is therefore an architectural signal.
 
 ───
 
-96. AI Availability Rule
-Deterministic workflows should remain functional when AI is unavailable unless AI is explicitly the capability being provided.
-
-───
-
-97. Command Centre Rule
-The Command Centre is a consumer and control-plane interface.
-It does not become the universal domain database.
-
-───
-
-98. Marketplace Rule
-Marketplace extensions use:
+125. DEPENDENCY MINIMIZATION
+Every dependency introduces:
 text
-Developer Contract
+complexity
 +
-Capability Contract
+failure surface
 +
-Security Contract
+security surface
 +
-Integration Contract
+operational cost
++
+migration cost
++
+vendor exposure
 
-not internal database access.
+CoreGrid therefore seeks minimum necessary coupling, not minimum dependency count at any cost.
 
 ───
-99. Integration Rule
-External systems use:
+
+126. DEPENDENCY SUBSTITUTABILITY
+Where practical:
 text
-Adapter
- ↓
-Validation
- ↓
-Contract
- ↓
-Capability
+CAPABILITY CONTRACT
+   ├── Provider A
+   ├── Provider B
+   └── Provider C
 
-Never direct database mutation.
+Consumers depend on the capability contract rather than a single provider.
 
 ───
 
-100. Dependency Governance
-Every major dependency must have:
+127. GRACEFUL DEGRADATION
+A non-critical intelligence provider may follow:
 text
-provider
-consumer
-relation_type
-capability
-contract
-version
-owner
-security_class
-risk_class
-latency_class
-reliability_class
-blast_radius
-tenant_scope
-failure_policy
-observability
-lifecycle
+PRIMARY
+ ↓
+FALLBACK
+ ↓
+REDUCED CAPABILITY
+ ↓
+ESCALATION
 
+Fallback behavior must be policy-defined.
+
+───
+128. FAILURE IS A DEPENDENCY PROPERTY
+A dependency is incomplete architecturally until CoreGrid knows:
+What happens when it fails?
+Therefore failure behavior belongs in the dependency definition.
 
 ───
 
-101. Machine-Readable Dependency Registry
-Example:
-yaml
-dependency:
-  id: DEP-P07-P24-001
-  provider: P24
-  consumer: P07
-  relation: CONSUMES_CONTRACT
-  capability: intelligence.reasoning
-  contract: coregrid.intelligence.v1
-  version: v1
-  structural: true
-  runtime: true
-  latency_class: L2
-  reliability_class: R3
-  risk_class: R3
-  blast_radius: B3
-  tenant_scoped: true
-  failure_policy: degraded_mode
-  owner: P24
-
-The registry becomes the machine-verifiable architecture.
-
-───
-
-102. Dependency Schema
-Each dependency should conform conceptually to:
+129. FAILURE DOMAIN
+Dependency review MUST identify:
 text
-Dependency
- ├── id
- ├── provider
- ├── consumer
- ├── relation
- ├── capability
- ├── contract
- ├── version
- ├── authority
- ├── structural
- ├── runtime
- ├── data
- ├── security
- ├── tenant_scope
- ├── latency
- ├── reliability
- ├── blast_radius
- ├── failure_policy
- ├── observability
- ├── lifecycle
- └── approval
+What fails?
+Who notices?
+Who is affected?
+What state becomes unavailable?
+What remains operational?
+What degrades?
+What recovers?
+What must be reconciled?
 
 
 ───
 
-103. Contract Registry
-Every important cross-phase capability must have a contract.
+130. BLAST-RADIUS GOVERNANCE
+Each dependency must declare its potential blast radius.
+Platform-wide dependencies receive stronger:
+• review
+• redundancy
+• observability
+• isolation
+• rollback
+• recovery
+
+───
+
+131. RESILIENCE
+Critical dependencies require appropriate:
+• redundancy
+• timeouts
+• retries
+• circuit breaking
+• graceful degradation
+• recovery
+• disaster recovery
+Not every dependency requires identical resilience.
+
+───
+
+132. VENDOR INDEPENDENCE
+CoreGrid should remain operationally independent of any single:
+• cloud provider
+• model provider
+• database
+• inference engine
+• embedding provider
+• agent framework
+• hardware vendor
+where technically reasonable.
+
+───
+
+133. SOVEREIGNTY THROUGH ABSTRACTION
+Sovereignty should be achieved through:
+text
+data locality
+deployment control
+provider abstraction
+encryption
+policy
+jurisdiction-aware routing
+auditability
+
+not by duplicating the entire CoreGrid architecture for every jurisdiction.
+
+───
+
+134. SUPPLY-CHAIN GOVERNANCE
+Production dependencies SHOULD support:
+• version control
+• integrity verification
+• vulnerability scanning
+• provenance
+• dependency inventory
+• reproducible builds where practical
+• license review
+
+───
+
+135. DEPENDENCY SECURITY
+Dependencies must be evaluated for:
+text
+vulnerability
+provenance
+licensing
+supply-chain risk
+privilege
+data access
+network exposure
+maintenance
+vendor concentration
+
+
+───
+
+136. DEPENDENCY LIFECYCLE
+text
+PROPOSED
+ ↓
+ANALYZED
+ ↓
+REVIEWED
+ ↓
+APPROVED
+ ↓
+IMPLEMENTED
+ ↓
+OBSERVED
+ ↓
+MAINTAINED
+ ↓
+DEPRECATED
+ ↓
+REMOVED
+
+
+───
+
+137. CONTRACT VERSIONING
+Cross-boundary contracts MUST be versioned.
+Breaking changes require:
+text
+compatibility strategy
+migration plan
+consumer notification
+deprecation period
+rollback strategy
+
+
+───
+
+138. CONTRACT REGISTRY
+Important contracts should be registered under domains such as:
 text
 contracts/
     identity/
@@ -2211,26 +2592,23 @@ contracts/
 
 ───
 
-104. Event Registry
-Events must be registered.
-Example:
+139. EVENT REGISTRY
+Events MUST be registered.
+Conceptually:
 yaml
 event:
-  type: agent.execution.completed
-  version: v1
-  producer: P07
+  type:
+  version:
+  producer:
   consumers:
-    - P18
-    - P19
-    - P30
-  tenant_scoped: true
-  security_class: internal
+  tenant_scoped:
+  security_class:
 
 
 ───
 
-105. Policy Registry
-Policies must identify:
+140. POLICY REGISTRY
+Policies should identify:
 text
 policy_id
 owner
@@ -2246,8 +2624,8 @@ expires_at
 
 ───
 
-106. Capability Registry
-Every executable capability must declare:
+141. CAPABILITY REGISTRY
+Every executable capability should declare:
 text
 capability_id
 provider
@@ -2263,57 +2641,54 @@ audit_requirements
 
 ───
 
-107. Ownership Registry
-The architecture must maintain an explicit ownership matrix.
-Example:
-
-State / Capability
-Canonical Owner
-
+142. OWNERSHIP REGISTRY
+CoreGrid should maintain an explicit ownership matrix.
+Examples:
+text
 Identity
-Identity Phase
+→ Identity Authority
 
-Tenant
-Tenancy Phase
+Tenant State
+→ Tenancy Authority
 
 Security Policy
-Security Phase
+→ Security Authority
 
 Trust Assessment
-Trust Phase
+→ Trust Authority
 
 Educational Reality
-Education Phase
+→ Education Domain Authority
 
 Financial Truth
-Financial Phase
+→ Financial Authority
 
 Agent Lifecycle
-Agent Phase
+→ Agent Authority
 
 Infrastructure State
-Cloud/Infrastructure Phase
+→ Infrastructure Authority
 
 Digital Twin State
-Digital Twin Phase
+→ Digital Twin Authority
 
 Analytics
-Analytics Phase
+→ Analytics Capability
 
-AI Model Routing
-Intelligence Infrastructure
+Model Routing
+→ Intelligence Infrastructure
 
 Workspace Composition
-Workspace Phase
+→ Workspace Capability
 
 Runtime Composition
-Runtime Fabric
+→ Runtime Fabric
 
-
+Exact phase ownership is determined by the authoritative registry.
 
 ───
 
-108. Ownership Invariant
+143. OWNERSHIP INVARIANT
 For every canonical state:
 text
 ONE AUTHORITATIVE OWNER
@@ -2327,30 +2702,8 @@ MANY COMPETING OWNERS
 
 ───
 
-109. Tenant Context Envelope
-All tenant-sensitive interactions should propagate a canonical context envelope.
-Conceptually:
-yaml
-context:
-  tenant_id:
-  runtime_id:
-  actor_id:
-  session_id:
-  authorization_context:
-  trust_context:
-  correlation_id:
-  causation_id:
-  data_classification:
-  jurisdiction:
-  policy_context:
-
-The exact implementation belongs to the relevant platform contracts.
-
-───
-
-110. Provenance
-Data, knowledge, intelligence and decisions must preserve provenance where material.
-Provenance should identify:
+144. PROVENANCE
+Material data, knowledge, intelligence, decisions, and actions SHOULD preserve:
 text
 source
 producer
@@ -2363,45 +2716,45 @@ authority
 
 ───
 
-111. Decision Provenance
-A consequential decision should be traceable through:
+145. DECISION PROVENANCE
+Consequential decisions should be traceable through:
 text
-Input
+INPUT
  ↓
-Context
+CONTEXT
  ↓
-Evidence
+EVIDENCE
  ↓
-Model / Rule
+MODEL / RULE
  ↓
-Policy
+POLICY
  ↓
-Decision
+DECISION
  ↓
-Action
+ACTION
  ↓
-Outcome
+OUTCOME
 
 
 ───
 
-112. AI Decision Provenance
-AI-assisted decisions should record:
-• model/provider
+146. AI DECISION PROVENANCE
+Where material, AI-assisted decisions should record:
+• provider/model
 • model version
 • input references
-• retrieved evidence
+• evidence references
 • policy context
-• confidence
+• confidence where meaningful
 • recommendation
 • resulting action
 • outcome
-Do not require unrestricted internal chain-of-thought storage.
+CoreGrid does not require unrestricted storage of private internal model reasoning.
 
 ───
 
-113. Dependency Observability
-Important dependency interactions must expose:
+147. OBSERVABILITY
+Important dependencies should expose:
 text
 latency
 success
@@ -2416,526 +2769,143 @@ tenant context
 
 ───
 
-114. Dependency Security
-Dependencies must be evaluated for:
-• vulnerability
-• provenance
-• licensing
-• supply-chain risk
-• privilege
-• data access
-• network exposure
-• maintenance
-• vendor concentration
-
-───
-
-115. Supply-Chain Rule
-Production dependencies should support:
-• version control
-• integrity verification
-• vulnerability scanning
-• provenance
-• reproducible builds where practical
-• dependency inventory
-
-───
-
-116. Dependency Lifecycle
+148. ARCHITECTURAL OBSERVABILITY
+CoreGrid should eventually answer:
 text
-PROPOSED
-   ↓
-ANALYZED
-   ↓
-REVIEWED
-   ↓
-APPROVED
-   ↓
-IMPLEMENTED
-   ↓
-OBSERVED
-   ↓
-MAINTAINED
-   ↓
-DEPRECATED
-   ↓
-REMOVED
+Which phases depend on this capability?
+
+Which runtimes consume this contract?
+
+Which tenants are affected?
+
+Which agents can invoke it?
+
+Which policies govern it?
+
+What is its blast radius?
+
+Which external providers does it use?
+
+Which dependencies are bottlenecks?
+
+Which contracts change most frequently?
 
 
 ───
 
-117. Dependency Versioning
-Contracts must be versioned.
-Breaking changes require:
-text
-compatibility strategy
-migration plan
-consumer notification
-deprecation window
-rollback strategy
-
-
-───
-
-118. Dependency Reliability
-Critical dependencies require:
-• redundancy where appropriate
-• timeouts
-• retries
-• circuit breakers
-• graceful degradation
-• recovery
-• disaster recovery
+149. DEPENDENCY INTELLIGENCE
+AI may analyze:
+• topology
+• ownership conflicts
+• cycles
+• architecture drift
+• excessive coupling
+• provider concentration
+• risk concentration
+• contract instability
+• blast radius
+AI recommendations remain recommendations.
+Governance remains authoritative.
 
 ───
 
-119. Dependency Cost
-Every dependency increases:
-text
-complexity
-+
-failure surface
-+
-security surface
-+
-operational cost
-+
-migration cost
-+
-vendor exposure
-
-Dependency minimization is therefore an architectural objective.
-
-───
-
-120. Dependency Budget
-Each phase should maintain a dependency budget.
-A phase that accumulates excessive dependencies should trigger architecture review.
-
-───
-
-121. Phase Blast Radius
-A phase must identify whether failure can affect:
-text
-component
-service
-domain
-tenant
-region
-platform
-all runtimes
-
-Platform-wide dependencies require the highest scrutiny.
-
-───
-
-122. CoreGrid Platform Critical Path
-The platform-critical path should remain small.
-Conceptually:
-text
-Foundation
- ↓
-Identity / Context
- ↓
-Security / Trust
- ↓
-Core Runtime
- ↓
-Capability Fabric
-
-Everything else should be connected through appropriate contracts rather than becoming mandatory for all platform execution.
-
-───
-
-123. Non-Critical Intelligence Principle
-AI, analytics, simulation and advanced reasoning should not unnecessarily become dependencies of basic platform correctness.
-For example:
-text
-Identity creation
-
-must not require:
-text
-AI reasoning
-
-unless identity intelligence is explicitly the capability.
-
-───
-
-124. Intelligence as a Service
-CoreGrid intelligence should be consumed through capability contracts.
+150. MACHINE-VERIFIABLE DEPENDENCY REGISTRY
 Example:
+yaml
+dependency:
+  id: DEP-P07-P24-001
+  provider: P24
+  consumer: P07
+  relation: CONSUMES_CONTRACT
+  capability: intelligence.reasoning
+  contract: coregrid.intelligence.v1
+  version: v1
+  structural: true
+  runtime: true
+  latency_class: L2
+  reliability_class: R3
+  risk_class: R3
+  blast_radius: B3
+  tenant_scoped: true
+  failure_policy: degraded_mode
+  owner: P24
+
+This registry becomes machine-verifiable architecture.
+
+───
+
+151. DEPENDENCY SCHEMA
+Conceptual schema:
 text
-Request Intelligence
-       ↓
-Intelligence Router
-       ↓
-Model / Reasoning Provider
-       ↓
-Validated Output
-       ↓
-Consumer
+Dependency
+ ├── id
+ ├── provider
+ ├── consumer
+ ├── relation
+ ├── capability
+ ├── contract
+ ├── version
+ ├── authority
+ ├── structural
+ ├── runtime
+ ├── data
+ ├── event
+ ├── command
+ ├── policy
+ ├── security
+ ├── tenant_scope
+ ├── runtime_scope
+ ├── latency
+ ├── reliability
+ ├── risk
+ ├── blast_radius
+ ├── failure_policy
+ ├── observability
+ ├── lifecycle
+ └── approval
 
 
 ───
 
-125. Agent as a Service
-Agents should expose governed capabilities.
-Example:
+152. ARCHITECTURE CI
+Architecture CI SHOULD validate:
 text
-Runtime
- ↓
-Agent Capability
- ↓
-Agent Runtime
- ↓
-Tool
- ↓
-Policy
- ↓
-Execution
+Phase Registry
+Ownership
+Dependencies
+Contracts
+Events
+Policies
+Cycles
+Security
+Tenancy
+Versions
+Forbidden Edges
+Provider Dependencies
+Autonomy Bounds
 
 
 ───
 
-126. Capability Mesh
-CoreGrid should evolve toward a capability mesh:
+153. COMPILE-TIME RULES
+Static code dependencies must follow:
 text
-Identity Capability
-Security Capability
-Knowledge Capability
-Memory Capability
-Reasoning Capability
-Planning Capability
-Data Capability
-Communication Capability
-Financial Capability
-Physical Capability
-Simulation Capability
-Automation Capability
-
-Agents and runtimes compose capabilities through contracts.
-
-───
-
-127. Intelligence Mesh
-Multiple intelligence providers may coexist:
-text
-Reasoning Model A
-Reasoning Model B
-Reasoning Model C
-Symbolic Engine
-Prediction Engine
-Simulation Engine
-Domain Model
-Human Expert
-
-The intelligence fabric arbitrates access.
-
-───
-
-128. Human + AI + Agent Architecture
-CoreGrid must support:
-text
-Human
-   ↕
-AI
-   ↕
-Agent
-   ↕
-Capability
-   ↕
-Real World
-
-All actors remain subject to:
-text
-identity
-policy
-trust
-authorization
-audit
-
-
-───
-
-129. Collective Intelligence
-CoreGrid should support multiple agents collaborating.
-Collaboration must occur through:
-• task contracts
-• shared context
-• controlled memory
-• events
-• capability calls
-• explicit permissions
-Not unrestricted shared state.
-
-───
-
-130. Agent-to-Agent Dependency
-Agents must not create uncontrolled direct coupling.
-Preferred:
-text
-Agent A
-   ↓
-Agent Capability Contract
-   ↓
-Agent B
-
-rather than:
-text
-Agent A
-   ↓
-Agent B internal memory
-
-
-───
-
-131. Agent Swarm Governance
-Agent swarms must define:
-• membership
-• roles
-• permissions
-• communication
-• task boundaries
-• resource limits
-• escalation
-• termination
-• audit
-
-───
-
-132. Autonomous Resource Governance
-Autonomous systems must have bounded access to:
-• compute
-• storage
-• network
-• APIs
-• financial resources
-• physical systems
-• communication channels
-
-───
-
-133. Autonomous Budgeting
-Where agents can consume metered resources, capabilities should expose:
-text
-budget
-quota
-rate
-limit
-approval
-
-Autonomy without resource bounds is prohibited for production systems.
-
-───
-
-134. Self-Healing Boundary
-CoreGrid may support self-healing.
-Self-healing actions must be:
-text
-observed
-classified
-policy-checked
-risk-evaluated
-bounded
-executed
-verified
-audited
-
-
-───
-
-135. Self-Modification Boundary
-CoreGrid must distinguish:
-text
-runtime adaptation
-
-from:
-text
-architectural self-modification
-
-Runtime adaptation may be permitted within explicit bounds.
-Foundational architecture cannot silently rewrite itself.
-
-───
-
-136. Evolution Promotion Gate
-A new autonomous capability requires:
-text
-research
- ↓
-simulation
- ↓
-testing
- ↓
-evaluation
- ↓
-security review
- ↓
-policy review
- ↓
-human/authority approval where required
- ↓
-staged deployment
- ↓
-monitoring
-
-
-───
-
-137. Simulation Before High-Risk Autonomy
-Where practical, high-impact autonomous behavior should be evaluated in:
-text
-simulation
-or
-sandbox
-or
-shadow mode
-or
-paper mode
-
-before unrestricted production execution.
-
-───
-
-138. Reality Feedback Loop
-CoreGrid's ultimate architecture is:
-text
-REALITY
- ↓
-OBSERVATION
- ↓
-REPRESENTATION
- ↓
-KNOWLEDGE
- ↓
-MEMORY
- ↓
-REASONING
- ↓
-PLAN
- ↓
-POLICY
- ↓
-CAPABILITY
- ↓
-ACTION
- ↓
-OBSERVATION
- ↓
-OUTCOME
- ↓
-LEARNING
- ↓
-EVOLUTION
-
-This is the CoreGrid ASI-era control loop.
-
-───
-
-139. Dependency Graph Principle
-Dependencies should follow capability flow, not organizational convenience.
-text
-Authority
-   ↓
-Capability
-   ↓
-Contract
-   ↓
-Consumer
-
-A phase boundary is not a justification for a dependency.
-
-───
-
-140. Architecture Graph Invariants
-The following must remain true:
-INV-001
-Every canonical state has one owner.
-INV-002
-Every cross-phase dependency is explicit.
-INV-003
-No consumer depends on another phase's private implementation.
-INV-004
-AI does not automatically become authority.
-INV-005
-Agents do not automatically become authority.
-INV-006
-Analytics does not become operational truth.
-INV-007
-Command does not become domain ownership.
-INV-008
-Clients do not bypass contracts.
-INV-009
-External systems do not bypass integration boundaries.
-INV-010
-Tenant context cannot silently disappear.
-INV-011
-Security cannot be silently bypassed.
-INV-012
-Trust does not automatically grant authorization.
-INV-013
-Runtime interaction does not automatically create structural dependency.
-INV-014
-Events may provide controlled reverse communication without creating structural cycles.
-INV-015
-Cloud infrastructure does not become domain architecture.
-INV-016
-Scholar does not become CoreGrid's universal authority.
-INV-017
-No single AI provider becomes CoreGrid's intelligence authority.
-INV-018
-Autonomous action remains policy-bounded.
-INV-019
-Production evolution requires validation.
-INV-020
-Future phases cannot be silently absorbed by existing phases.
-
-───
-
-141. Forbidden Architecture Patterns
-CoreGrid prohibits:
-text
-DB-to-DB coupling
-Client-to-DB coupling
-Agent-to-DB coupling
-AI-to-DB mutation
-Cross-phase private imports
-Security bypass
-Tenant bypass
-Policy bypass
-Trust-as-authorization
-Unbounded autonomous execution
-Hidden external dependencies
-Provider-specific architectural coupling
-Competing canonical ownership
-Circular structural dependencies
-Unversioned contracts
-Unobservable critical dependencies
-Unbounded agent privileges
-Uncontrolled self-modification
-
-
-───
-
-142. Compile-Time Dependency Rules
-Static code dependencies must obey:
-text
-Public Contract
+PUBLIC CONTRACT
       ↓
-Consumer
+CONSUMER
 
 not:
 text
-Consumer
+CONSUMER
       ↓
-Private Internal Module
+PRIVATE INTERNAL MODULE
 
-Architecture CI must detect forbidden imports.
+Architecture CI should detect forbidden imports.
 
 ───
 
-143. Runtime Dependency Rules
-Runtime calls must be:
+154. RUNTIME RULES
+Runtime calls should be:
 • authenticated
 • authorized
 • tenant-aware
@@ -2946,20 +2916,20 @@ Runtime calls must be:
 
 ───
 
-144. Event Dependency Rules
-Events must be:
+155. EVENT RULES
+Events should be:
 • versioned
 • traceable
 • tenant-aware
-• authenticated where required
-• authorized
-• idempotency-aware
 • schema-validated
+• idempotency-aware
+• authenticated where required
+• authorized where required
 
 ───
 
-145. Data Dependency Rules
-Data consumers must know whether data is:
+156. DATA RULES
+Consumers must know whether received information represents:
 text
 canonical
 derived
@@ -2971,8 +2941,8 @@ simulation
 
 ───
 
-146. Intelligence Dependency Rules
-Intelligence consumers must know:
+157. INTELLIGENCE RULES
+Intelligence consumers should know, where material:
 text
 source
 model
@@ -2981,15 +2951,14 @@ confidence
 freshness
 provenance
 
-where material.
 
 ───
 
-147. Policy Dependency Rules
+158. POLICY RULES
 Policies must be:
 text
-versioned
 owned
+versioned
 scoped
 auditable
 testable
@@ -2997,8 +2966,8 @@ testable
 
 ───
 
-148. Security Dependency Rules
-Security-sensitive dependencies must declare:
+159. SECURITY RULES
+Sensitive dependencies must declare applicable:
 text
 identity
 authorization
@@ -3009,50 +2978,49 @@ audit
 
 ───
 
-149. Tenant Dependency Rules
-Tenant-scoped dependencies must preserve:
+160. TENANT RULES
+Tenant-sensitive interactions must preserve applicable:
 text
 tenant_id
 runtime_id
 actor_id
 correlation_id
 
-where applicable.
 
 ───
 
-150. Dependency Validation Pipeline
+161. DEPENDENCY VALIDATION PIPELINE
 Architecture CI should execute:
 text
-Phase Registry Validation
+PHASE REGISTRY VALIDATION
         ↓
-Ownership Validation
+OWNERSHIP VALIDATION
         ↓
-Dependency Schema Validation
+DEPENDENCY SCHEMA VALIDATION
         ↓
-Graph Validation
+GRAPH VALIDATION
         ↓
-Cycle Detection
+CYCLE DETECTION
         ↓
-Forbidden Edge Detection
+FORBIDDEN EDGE DETECTION
         ↓
-Contract Validation
+CONTRACT VALIDATION
         ↓
-Event Validation
+EVENT VALIDATION
         ↓
-Tenant Boundary Validation
+TENANT VALIDATION
         ↓
-Security Validation
+SECURITY VALIDATION
         ↓
-Version Validation
+VERSION VALIDATION
         ↓
-Architecture Tests
+ARCHITECTURE TESTS
 
 
 ───
 
-151. Graph Validation
-CI must detect:
+162. GRAPH VALIDATION
+CI should detect:
 • cycles
 • orphan phases
 • duplicate ownership
@@ -3067,36 +3035,35 @@ CI must detect:
 
 ───
 
-152. Dependency Cycle Detection
-Structural dependency graph:
+163. GRAPH CYCLE RULE
+The structural graph:
 text
 G_structural
 
-must remain acyclic unless an architecture decision explicitly permits an exception.
-Runtime/event graphs may contain logical feedback loops.
-These must not be confused with structural cycles.
+must remain acyclic unless an explicit architecture decision authorizes an exception.
+Runtime and event graphs may contain feedback loops.
 
 ───
 
-153. Allowed Feedback Loops
-CoreGrid intentionally supports feedback:
+164. FEEDBACK LOOPS
+Valid runtime feedback:
 text
-Action
+ACTION
  ↓
-Observation
+OBSERVATION
  ↓
-Learning
+LEARNING
  ↓
-Improvement
+IMPROVEMENT
  ↓
-Action
+ACTION
 
-This is a runtime feedback loop, not a structural architecture cycle.
+This is not necessarily a structural architecture cycle.
 
 ───
 
-154. Architecture Graph Types
-Maintain separate machine-readable graphs:
+165. ARCHITECTURE GRAPH SET
+CoreGrid should maintain distinct machine-readable graphs:
 text
 structural.graph
 runtime.graph
@@ -3106,58 +3073,60 @@ policy.graph
 security.graph
 deployment.graph
 ownership.graph
+causal.graph
+observability.graph
+evolution.graph
 
-This is preferable to forcing every relationship into one DAG.
 
 ───
 
-155. Dependency Review Gate
-Before adding a dependency, answer:
+166. DEPENDENCY REVIEW QUESTIONS
+Before adding a dependency:
 1. Why is it required?
-2. Does an existing CoreGrid capability already provide it?
+2. Does CoreGrid already provide this capability?
 3. Who owns the capability?
 4. Who owns the contract?
-5. What data crosses the boundary?
+5. What crosses the boundary?
 6. What privileges are required?
 7. What happens if it fails?
 8. What is the blast radius?
-9. Can the dependency be asynchronous?
-10. Can it be removed later?
+9. Can it be asynchronous?
+10. Can it later be removed?
 11. Does it create a cycle?
 12. Does it create vendor lock-in?
-13. Does it introduce a new authority?
+13. Does it introduce competing authority?
 14. Does it weaken tenant isolation?
 15. Does it introduce autonomous risk?
 
 ───
 
-156. Dependency Promotion
-A dependency should move through:
+167. DEPENDENCY PROMOTION
+A new dependency progresses through:
 text
-Proposal
+PROPOSAL
  ↓
-Design
+DESIGN
  ↓
-Security Review
+SECURITY REVIEW
  ↓
-Ownership Review
+OWNERSHIP REVIEW
  ↓
-Data Review
+DATA REVIEW
  ↓
-Reliability Review
+RELIABILITY REVIEW
  ↓
-Architecture Review
+ARCHITECTURE REVIEW
  ↓
-Implementation
+IMPLEMENTATION
  ↓
-Testing
+TESTING
  ↓
-Production
+PRODUCTION
 
 
 ───
 
-157. Architecture Decision Records
+168. ARCHITECTURE DECISION RECORDS
 Material dependency changes require an ADR.
 Examples:
 text
@@ -3185,67 +3154,68 @@ Simulation / Reality Boundary
 
 ───
 
-158. Reference Runtime Principle
-CoreGrid Scholar is the first working reference runtime.
-Therefore Scholar should be used to validate:
-• runtime composition
+169. SCHOLAR AS REFERENCE RUNTIME
+Scholar is the first working reference runtime.
+It can validate:
 • identity
 • tenancy
 • security
+• trust
 • agents
 • knowledge
 • memory
 • data
-• digital twins
+• digital reality
 • automation
 • analytics
 • command
 • cloud
 • clients
 • developer contracts
-• integration
-But a Scholar implementation should not automatically become a platform-wide architectural dependency.
+• integrations
+But Scholar implementation MUST NOT automatically become platform-wide architecture.
 
 ───
 
-159. Scholar as a Proof of Architecture
+170. SCHOLAR AS PROOF
 Scholar should prove:
+Can CoreGrid instantiate a complete adaptive domain runtime from universal platform capabilities?
+The answer must not become:
 text
-Can CoreGrid infrastructure host
-a complete autonomous domain runtime?
+COREGRID = SCHOLAR
 
-It should not become:
+Instead:
 text
-CoreGrid = Scholar
-
-The distinction is fundamental.
-
-───
-
-160. Future Runtime Principle
-Every future CoreGrid runtime must answer:
-text
-Which CoreGrid capabilities does this runtime consume?
-Which domain capabilities does it introduce?
-Which canonical states does it own?
-Which contracts does it publish?
-Which events does it emit?
-Which policies govern it?
-Which agents operate inside it?
-Which physical/digital reality does it represent?
+SCHOLAR ⊂ COREGRID RUNTIME ECOSYSTEM
 
 
 ───
 
-161. Runtime Certification
-A new runtime should not be considered CoreGrid-native until it satisfies:
+171. FUTURE RUNTIME CERTIFICATION
+Every future runtime must identify:
+text
+CoreGrid capabilities consumed
+Domain capabilities introduced
+Canonical states owned
+Contracts published
+Events emitted
+Policies required
+Agents operating
+Reality represented
+External systems integrated
+
+
+───
+
+172. RUNTIME CERTIFICATION REQUIREMENTS
+A runtime is CoreGrid-native when it satisfies applicable:
 • identity integration
-• tenant integration
+• tenancy integration
 • security integration
 • trust integration
 • runtime integration
 • capability contracts
-• data ownership
+• ownership
 • provenance
 • audit
 • observability
@@ -3255,77 +3225,67 @@ A new runtime should not be considered CoreGrid-native until it satisfies:
 
 ───
 
-162. Platform Independence Invariant
-CoreGrid infrastructure must remain usable even if:
-text
-Scholar
-
-is removed.
-This is the strongest proof that Scholar is a runtime rather than the platform itself.
-
-───
-
-163. Platform Survival Test
-Architecture review must ask:
-If CoreGrid Scholar disappeared tomorrow, could the CoreGrid infrastructure continue operating and host another runtime?
-The answer must be:
+173. PLATFORM SURVIVAL TEST
+Architecture review asks:
+If Scholar disappeared, could CoreGrid continue operating and host another runtime?
+Required result:
 text
 YES
 
 
 ───
 
-164. Runtime Replacement Test
-Architecture review must ask:
+174. RUNTIME REPLACEMENT TEST
+Architecture review asks:
 Could another domain runtime be instantiated without rewriting CoreGrid's foundation?
-The answer should be:
+Required result:
 text
 YES
 
 
 ───
 
-165. AI Replacement Test
-Architecture review must ask:
-Could the primary AI model provider be replaced without rewriting CoreGrid's domain architecture?
-The answer should be:
+175. AI REPLACEMENT TEST
+Architecture review asks:
+Could the primary intelligence provider be replaced without rewriting domain architecture?
+Required result:
 text
 YES
 
 
 ───
 
-166. Cloud Replacement Test
-Architecture review must ask:
-Could CoreGrid move between cloud providers or sovereign infrastructure without rewriting domain ownership?
-The answer should be:
+176. CLOUD REPLACEMENT TEST
+Architecture review asks:
+Could CoreGrid move between infrastructure providers without redefining domain ownership?
+Required result:
 text
 YES
 
 
 ───
 
-167. Agent Replacement Test
-Architecture review must ask:
-Could the agent orchestration implementation be replaced without rewriting domain logic?
-The answer should be:
+177. AGENT IMPLEMENTATION REPLACEMENT TEST
+Architecture review asks:
+Could the agent implementation or orchestration mechanism change without rewriting domain logic?
+Required result:
 text
 YES
 
 
 ───
 
-168. Dependency Graph Quality Metrics
-CoreGrid should measure:
+178. ARCHITECTURE ENTROPY TEST
+Architecture review SHOULD monitor:
 text
 dependency count
 dependency depth
-dependency fan-in
-dependency fan-out
+fan-in
+fan-out
 cycle count
-forbidden-edge count
+forbidden edges
 critical dependency count
-platform-wide dependency count
+platform-wide dependencies
 vendor concentration
 blast radius
 contract churn
@@ -3333,509 +3293,309 @@ contract churn
 
 ───
 
-169. Architecture Entropy
-CoreGrid should monitor architectural entropy.
+179. PHASE DEPENDENCY QUALITY
+A phase with excessive dependency density SHOULD trigger examination for:
+text
+incorrect ownership
+missing abstraction
+god-service behavior
+duplicated capability
+over-centralization
+poor boundary design
+
+
+───
+
+180. UNIVERSAL CONTEXT PRINCIPLE
+CoreGrid should provide a standard context envelope while permitting domain-specific extension.
 Conceptually:
 text
-More hidden coupling
-        ↓
-Higher entropy
-        ↓
-Lower predictability
-        ↓
-Lower evolvability
+CORE CONTEXT
++
+SECURITY
++
+TENANT
++
+RUNTIME
++
+DOMAIN
++
+TASK
 
-The architecture should continuously reduce:
-• hidden dependencies
-• duplicated capabilities
-• ambiguous ownership
-• unnecessary coupling
-
-───
-
-170. Dependency Density
-A phase with excessive dependencies should be investigated.
-High dependency density can indicate:
-• incorrect ownership
-• missing abstraction
-• god-service architecture
-• over-centralization
-• duplicated responsibility
 
 ───
 
-171. God-Service Prevention
-No phase or service should become a universal intermediary merely because it is convenient.
-Examples of dangerous patterns:
+181. DEPENDENCY FLOW PRINCIPLE
+Dependencies should follow capability and authority flow, not organizational convenience.
 text
-Everything
-   ↓
-Data Platform
-
-text
-Everything
-   ↓
-AI Intelligence
-
-text
-Everything
-   ↓
-Command Centre
-
-text
-Everything
-   ↓
-Integration Platform
-
-Convenience does not establish architectural authority.
-
-───
-
-172. Universal Context Rule
-CoreGrid should provide a standard context model while allowing domain-specific extensions.
-Conceptually:
-text
-Core Context
-   +
-Security Context
-   +
-Tenant Context
-   +
-Runtime Context
-   +
-Domain Context
-   +
-Task Context
-
-
-───
-
-173. Capability Discovery
-Agents and runtimes should be able to discover permitted capabilities.
-Discovery must respect:
-• identity
-• tenant
-• policy
-• trust
-• capability scope
-• version
-• risk
-
-───
-
-174. Dynamic Capability Routing
-CoreGrid may dynamically route:
-text
-Request
- ↓
-Capability Discovery
- ↓
-Policy
- ↓
-Provider Selection
- ↓
-Execution
-
-This allows the infrastructure to evolve without hardcoded provider dependencies.
-
-───
-
-175. Resilience Through Substitutability
-Where technically possible, critical capabilities should support multiple implementations.
-Example:
-text
-Intelligence Contract
-   ├── Provider A
-   ├── Provider B
-   └── Provider C
-
-The consumer should depend on the contract.
-
-───
-
-176. Graceful Degradation
-When a non-critical intelligence provider fails:
-text
-Primary Provider
-      ↓
-Fallback Provider
-      ↓
-Reduced Capability
-      ↓
-Human Escalation
-
-The fallback strategy must be policy-defined.
-
-───
-
-177. Sovereignty Through Abstraction
-Sovereignty must be achieved through:
-• data locality
-• deployment control
-• provider abstraction
-• encryption
-• policy
-• jurisdiction-aware routing
-• auditability
-not by duplicating the entire CoreGrid architecture for every jurisdiction.
-
-───
-
-178. Security Through Architecture
-Security should not depend solely on runtime vigilance.
-The architecture itself should make dangerous behavior difficult.
-Examples:
-text
-No database credentials in agents
-No cross-tenant query without context
-No capability without authorization
-No autonomous action without policy
-No external integration without adapter
-No canonical mutation without owner
-
-
-───
-
-179. Zero-Trust Dependency Principle
-No dependency should be trusted merely because it is internal.
-Every sensitive interaction must establish:
-text
-Who?
-What?
-Why?
-Under which policy?
-With what authority?
-For which tenant?
-Using which capability?
-With what risk?
-
-
-───
-
-180. Final CoreGrid Dependency Model
-The canonical ASI-era dependency relationship is:
-text
-REALITY
-                            │
-                            ▼
-                        OBSERVATION
-                            │
-                            ▼
-                         IDENTITY
-                            │
-                            ▼
-                          CONTEXT
-                            │
-             ┌──────────────┼──────────────┐
-             ▼              ▼              ▼
-          SECURITY        TRUST          POLICY
-             │              │              │
-             └──────────────┼──────────────┘
-                            ▼
-                       CAPABILITIES
-                            │
-            ┌───────────────┼────────────────┐
-            ▼               ▼                ▼
-        KNOWLEDGE         MEMORY          INTELLIGENCE
-            │               │                │
-            └───────────────┼────────────────┘
-                            ▼
-                         PLANNING
-                            │
-                            ▼
-                           AGENTS
-                            │
-                            ▼
-                        AUTHORIZATION
-                            │
-                            ▼
-                         AUTOMATION
-                            │
-                            ▼
-                          ACTION
-                            │
-                            ▼
-                        OBSERVATION
-                            │
-                            ▼
-                         OUTCOME
-                            │
-                            ▼
-                         AUDIT
-                            │
-                            ▼
-                         LEARNING
-                            │
-                            ▼
-                         EVOLUTION
-
-
-───
-
-181. CoreGrid Runtime Model
-Every runtime should fit this model:
-text
-COREGRID PLATFORM
-       │
-       ▼
-RUNTIME COMPOSITION
-       │
-       ├── Identity
-       ├── Tenancy
-       ├── Security
-       ├── Trust
-       ├── Knowledge
-       ├── Memory
-       ├── Data
-       ├── Intelligence
-       ├── Agents
-       ├── Capabilities
-       ├── Automation
-       ├── Analytics
-       ├── Communication
-       ├── Digital Reality
-       └── Workspace
-              │
-              ▼
-         DOMAIN RUNTIME
-              │
-              ▼
-          REAL-WORLD
-          OPERATIONS
-
-
-───
-
-182. CoreGrid Scholar Position
-Scholar occupies this position:
-text
-COREGRID
-                     │
-                     ▼
-             PLATFORM FABRICS
-                     │
-                     ▼
-            RUNTIME COMPOSITION
-                     │
-                     ▼
-             SCHOLAR RUNTIME
-                     │
-          ┌──────────┼──────────┐
-          ▼          ▼          ▼
-      Education   Admin      Learning
-       Reality   Runtime   Intelligence
-          │          │          │
-          └──────────┼──────────┘
-                     ▼
-              Scholar Workspace
-                     │
-                     ▼
-                  Users
-
-Scholar is the first working runtime.
-It is not the dependency root.
-
-───
-
-183. The Alien Perspective
-CoreGrid should be designed as though its architecture were being observed by an intelligence that does not think in terms of:
-• web applications
-• dashboards
-• CRUD
-• isolated microservices
-• school software
-• individual AI chatbots
-• today's model providers
-Such an observer would see:
-text
-ENTITIES
-RELATIONSHIPS
-STATE
-OBSERVATIONS
-KNOWLEDGE
-MEMORY
-INTELLIGENCE
-CAPABILITIES
-AGENTS
-POLICIES
-ACTIONS
-OUTCOMES
-FEEDBACK
-
-Therefore the architecture should be optimized around state, capability, authority and feedback, rather than around screens and services.
-
-───
-
-184. Alien-Scale Architecture Principle
-The fundamental question is no longer:
-"Which service calls which service?"
-It becomes:
-"Which intelligence, actor or runtime is permitted to cause which state transition, through which capability, under which authority, using which evidence, with which consequences?"
-This becomes the fundamental CoreGrid architectural question.
-
-───
-
-185. State Transition Principle
-Every consequential operation can be represented as:
-text
-STATE(t)
-   +
-INTENT
-   +
-CONTEXT
-   +
 AUTHORITY
-   +
+   ↓
+POLICY
+   ↓
 CAPABILITY
    ↓
-STATE(t+1)
-
-The transition must be:
-• authorized
-• observable
-• attributable
-• reproducible where possible
-• auditable
-• policy compliant
-
-───
-
-186. Reality-to-Action Principle
-CoreGrid should ultimately represent:
-text
-Reality
- ↓
-Representation
- ↓
-Understanding
- ↓
-Decision
- ↓
-Action
- ↓
-Changed Reality
-
-This is the platform's universal abstraction.
-
-───
-
-187. Architecture Evolution Principle
-CoreGrid must be able to add new capabilities without destabilizing the existing platform.
-Therefore:
-text
-NEW CAPABILITY
-      ↓
 CONTRACT
-      ↓
-REGISTRY
-      ↓
-POLICY
-      ↓
-CAPABILITY DISCOVERY
-      ↓
-RUNTIME COMPOSITION
+   ↓
+CONSUMER
 
-not:
+A phase boundary alone is never sufficient justification for dependency.
+
+───
+
+182. REALITY-TO-ACTION DEPENDENCY LOOP
+The complete CoreGrid dependency cycle is:
 text
-NEW CAPABILITY
-      ↓
-REWRITE COREGRID
+REALITY
+   ↓
+OBSERVATION
+   ↓
+REPRESENTATION
+   ↓
+KNOWLEDGE
+   ↓
+MEMORY
+   ↓
+REASONING
+   ↓
+PLAN
+   ↓
+POLICY
+   ↓
+CAPABILITY
+   ↓
+AUTHORIZED ACTION
+   ↓
+OUTCOME
+   ↓
+OBSERVATION
+   ↓
+LEARNING
+   ↓
+EVOLUTION
+
+This is a runtime causal loop, not a structural dependency cycle.
+
+───
+
+183. ARCHITECTURAL INVARIANTS
+CoreGrid MUST preserve:
+text
+INV-001  Every canonical state has one owner.
+INV-002  Every material cross-boundary dependency is explicit.
+INV-003  Consumers do not depend on private implementations.
+INV-004  Intelligence does not automatically become authority.
+INV-005  Agents do not automatically become authority.
+INV-006  Analytics does not become operational truth.
+INV-007  Command does not become domain ownership.
+INV-008  Clients do not bypass contracts.
+INV-009  External systems do not bypass adapters.
+INV-010  Tenant context cannot silently disappear.
+INV-011  Security cannot silently disappear.
+INV-012  Trust does not equal authorization.
+INV-013  Runtime interaction does not automatically equal structural dependency.
+INV-014  Events may provide controlled reverse communication.
+INV-015  Cloud does not define domain authority.
+INV-016  Scholar does not become CoreGrid authority.
+INV-017  No single AI provider becomes intelligence authority.
+INV-018  Autonomous action remains policy-bounded.
+INV-019  Production evolution requires validation.
+INV-020  Future phases cannot be silently absorbed by existing phases.
+INV-021  Canonical state cannot have competing owners.
+INV-022  Simulation cannot silently become reality.
+INV-023  Research output cannot silently become production truth.
+INV-024  Observability cannot become hidden correctness dependency.
+INV-025  Dependency contracts must remain versionable.
 
 
 ───
 
-188. 51-Phase Scaling Principle
-The 51-phase architecture must remain understandable even as the platform grows.
+184. FORBIDDEN ARCHITECTURAL PATTERNS
+CoreGrid prohibits:
+text
+DB-to-DB coupling
+Client-to-DB coupling
+Agent-to-DB coupling
+AI-to-DB mutation
+Cross-phase private imports
+Security bypass
+Tenant bypass
+Policy bypass
+Trust-as-authorization
+Unbounded autonomy
+Hidden external dependencies
+Provider-specific architectural coupling
+Competing canonical ownership
+Structural cycles
+Unversioned contracts
+Unobservable critical dependencies
+Unbounded agent privileges
+Uncontrolled architectural self-modification
+Simulation-to-reality leakage
+Domain contamination of foundation
+
+
+───
+
+185. PLATFORM CRITICAL PATH
+The platform-critical path should remain intentionally small.
+Conceptually:
+text
+FOUNDATION
+ ↓
+IDENTITY / CONTEXT
+ ↓
+SECURITY / TRUST
+ ↓
+CORE RUNTIME
+ ↓
+CAPABILITY FABRIC
+
+Advanced systems should connect through appropriate contracts rather than becoming mandatory dependencies of every operation.
+
+───
+
+186. NON-CRITICAL INTELLIGENCE PRINCIPLE
+Advanced:
+• AI
+• analytics
+• simulation
+• research
+• optimization
+should not unnecessarily become prerequisites for basic platform correctness.
+
+───
+
+187. INTELLIGENCE AS A SERVICE
+CoreGrid intelligence should be consumed through contracts:
+text
+INTELLIGENCE REQUEST
+ ↓
+INTELLIGENCE ROUTER
+ ↓
+MODEL / REASONING PROVIDER
+ ↓
+VALIDATION
+ ↓
+INTELLIGENCE RESULT
+ ↓
+CONSUMER
+
+
+───
+
+188. AGENT AS A SERVICE
+Agent capabilities should follow:
+text
+RUNTIME
+ ↓
+AGENT CAPABILITY
+ ↓
+AGENT RUNTIME
+ ↓
+TOOL / CAPABILITY
+ ↓
+POLICY
+ ↓
+EXECUTION
+
+
+───
+
+189. AUTONOMOUS EVOLUTION BOUNDARY
+Autonomous systems may optimize runtime behavior within explicit bounds.
+They MUST NOT silently redefine:
+• foundational authority
+• ownership
+• security boundaries
+• tenancy boundaries
+• canonical truth
+• constitutional constraints
+
+───
+
+190. 51-PHASE SCALING PRINCIPLE
 Adding a phase should primarily add:
 text
-capability
+CAPABILITIES
 +
-contracts
+CONTRACTS
 +
-events
+EVENTS
 +
-policies
+POLICIES
 +
-data products
+DATA PRODUCTS
++
+OWNERSHIP
 
-rather than creating uncontrolled direct dependencies on dozens of existing phases.
+rather than dozens of uncontrolled direct dependencies.
 
 ───
 
-189. Phase Dependency Budget
-Every phase should define:
-text
-structural dependency budget
-runtime dependency budget
-event subscription budget
-external dependency budget
-platform-critical dependency budget
-
-Exceeding the budget requires architecture review.
-
-───
-
-190. Dependency Topology Review
+191. PHASE APPROVAL TOPOLOGY
 Before approving a phase:
 text
-Phase Scope
+PHASE SCOPE
  ↓
-Ownership
+ONTOLOGY
  ↓
-Capabilities
+OWNERSHIP
  ↓
-Contracts
+CAPABILITIES
  ↓
-Dependencies
+CONTRACTS
  ↓
-Graph Analysis
+DEPENDENCIES
  ↓
-Cycle Analysis
+GRAPH ANALYSIS
  ↓
-Security Analysis
+CYCLE ANALYSIS
  ↓
-Data Analysis
+SECURITY ANALYSIS
  ↓
-Failure Analysis
+DATA ANALYSIS
  ↓
-Scalability Analysis
+FAILURE ANALYSIS
  ↓
-Approval
+SCALABILITY ANALYSIS
+ ↓
+GOVERNANCE APPROVAL
 
 
 ───
 
-191. Architecture Conformance
-Every implementation must conform to:
+192. ARCHITECTURE CONFORMANCE CHAIN
+Every implementation conforms to:
 text
-Constitution
-      ↓
-Architecture
-      ↓
-Architecture Registry
-      ↓
-Dependency Map
-      ↓
-Phase Specification
-      ↓
-Contracts
-      ↓
-Implementation
-      ↓
-Tests
+COREGRID CONSTITUTION
+        ↓
+ARCHITECTURE PRINCIPLES
+        ↓
+ARCHITECTURE REGISTRY
+        ↓
+DEPENDENCY MAP
+        ↓
+PHASE SPECIFICATION
+        ↓
+CONTRACTS
+        ↓
+IMPLEMENTATION
+        ↓
+TESTS
 
 Implementation does not redefine architecture.
 
 ───
 
-192. Repository Enforcement
-The repository should contain:
+193. REPOSITORY AUTHORITY
+The architecture repository SHOULD contain structures similar to:
 text
 /coregrid
     /architecture
         architecture.md
         ARCHITECTURE-REGISTRY.md
         ARCHITECTURE-DEPENDENCY-MAP.md
+
         /registry
             phases.yaml
             dependencies.yaml
@@ -3843,17 +3603,19 @@ text
             contracts.yaml
             events.yaml
             policies.yaml
+
         /decisions
         /specifications
         /governance
         /progress
 
-The exact repository layout may evolve, but architectural authority must remain singular.
+The exact repository layout may evolve.
+Architectural authority must remain singular.
 
 ───
 
-193. Architecture CI
-Architecture CI should fail builds when it detects:
+194. ARCHITECTURE CI FAILURE CONDITIONS
+Architecture CI SHOULD fail when detecting:
 text
 undefined phase
 duplicate phase
@@ -3868,95 +3630,60 @@ unapproved external provider
 unbounded autonomy
 private cross-phase import
 direct database coupling
+unregistered event
+unregistered capability
+unapproved authority
+simulation/reality contamination
 
 
 ───
 
-194. Architecture Tests
-CoreGrid should have automated architecture tests for:
+195. ARCHITECTURE TEST SUITE
+CoreGrid should maintain automated tests for:
 Ownership
 No duplicate canonical owners.
 Dependencies
-All dependencies are registered.
+All material dependencies registered.
 Cycles
 No forbidden structural cycles.
 Contracts
-All cross-phase contracts are versioned.
+Cross-boundary contracts are versioned.
 Tenancy
 Tenant context cannot disappear.
 Security
-Sensitive capabilities require security context.
+Sensitive capabilities require appropriate security context.
 AI
 AI cannot bypass authority boundaries.
 Agents
 Agents cannot obtain unrestricted capabilities.
 Clients
 Clients cannot bypass public contracts.
-Integration
+Integrations
 External systems cannot bypass adapters.
 Runtime
 Domain runtimes cannot mutate platform internals.
+Simulation
+Simulated state cannot silently become canonical state.
 
 ───
 
-195. Architecture Observability
-The architecture itself should be observable.
-CoreGrid should be able to answer:
+196. ARCHITECTURE DRIFT DETECTION
+CoreGrid should continuously compare:
 text
-Which phases depend on this capability?
+ARCHITECTURE REGISTRY
+        ↓
+DEPENDENCY REGISTRY
+        ↓
+CONTRACT REGISTRY
+        ↓
+ACTUAL REPOSITORY
 
-Which runtimes consume this contract?
-
-Which tenants are affected by this dependency?
-
-Which agents can invoke this capability?
-
-Which policies govern this action?
-
-What is the blast radius of this failure?
-
-Which external providers does this capability depend on?
-
-Which dependencies are becoming bottlenecks?
-
-Which contracts are changing most frequently?
-
+to identify architectural drift.
 
 ───
 
-196. Dependency Intelligence
-The architecture registry should eventually support AI-assisted architecture analysis.
-AI may analyze:
-• dependency topology
-• ownership conflicts
-• cycles
-• architecture drift
-• excessive coupling
-• risk concentration
-• provider concentration
-• contract instability
-• blast radius
-But AI recommendations remain recommendations.
-Architecture authority remains governed.
-
-───
-
-197. Architecture Drift Detection
-The implemented repository must continuously be compared against:
-text
-Architecture Registry
-        ↓
-Dependency Registry
-        ↓
-Contracts
-        ↓
-Actual Code
-
-Drift must be detected automatically where practical.
-
-───
-
-198. Drift Categories
+197. DRIFT CATEGORIES
+Examples:
 text
 ADDED_UNAPPROVED_DEPENDENCY
 REMOVED_REQUIRED_DEPENDENCY
@@ -3964,68 +3691,125 @@ OWNER_MISMATCH
 CONTRACT_MISMATCH
 PRIVATE_IMPORT
 UNREGISTERED_EVENT
+UNREGISTERED_CAPABILITY
 UNREGISTERED_EXTERNAL_PROVIDER
 TENANT_CONTEXT_LOSS
 SECURITY_BOUNDARY_VIOLATION
+AUTHORITY_COLLISION
+SIMULATION_REALITY_LEAK
+DOMAIN_FOUNDATION_CONTAMINATION
 
 
 ───
 
-199. Final Ownership Rule
-The most important rule is:
-No component owns a capability merely because it implements it. It owns that capability because CoreGrid architecture explicitly assigns it authority.
-
-───
-
-200. Final CoreGrid ASI-Era Principle
-The final architectural principle is:
+198. ARCHITECTURE INTELLIGENCE
+CoreGrid may eventually use its own intelligence capabilities to continuously analyze its dependency topology.
+The system may identify:
 text
-COREGRID
-                       │
-             ┌─────────┴─────────┐
-             │                   │
-          REALITY            INTELLIGENCE
-             │                   │
-             └─────────┬─────────┘
-                       │
-                    CONTEXT
-                       │
-                 AUTHORITY
-                       │
-                    POLICY
-                       │
-                  CAPABILITY
-                       │
-                     AGENT
-                       │
-                    ACTION
-                       │
-                   OUTCOME
-                       │
-                    AUDIT
-                       │
-                   LEARNING
-                       │
-                  EVOLUTION
-                       │
-                  NEW CAPABILITY
-                       │
-                       └──────────→ COREGRID
+hidden coupling
+ownership conflicts
+cycles
+dependency concentration
+architecture drift
+provider concentration
+blast-radius growth
+contract instability
+phase overload
+capability duplication
 
-CoreGrid is therefore not architected as a static collection of applications.
-It is architected as a governed computational substrate for continuously evolving intelligence and reality-aware runtimes.
-Scholar is the first working proof of that substrate.
-The architecture must remain capable of hosting the remaining CoreGrid phases and future runtimes without requiring the platform to be rebuilt around any single domain.
-The dependency architecture therefore exists to preserve:
+The intelligence system may recommend changes.
+Governance remains the authority for approving them.
+
+───
+
+199. ALIEN-SCALE DEPENDENCY QUESTION
+The ordinary software question is:
+Which service calls which service?
+The CoreGrid question is:
+Which actor, runtime, intelligence, or process is permitted to cause which state transition, through which capability, under which authority, using which evidence, within which context, producing which consequence, and with what recovery path?
+This is the deeper dependency abstraction.
+
+───
+
+200. FINAL COREGRID DEPENDENCY MODEL
+The canonical CoreGrid topology is:
+text
+REALITY
+                            │
+                            ▼
+                       OBSERVATION
+                            │
+                            ▼
+                         IDENTITY
+                            │
+                            ▼
+                         CONTEXT
+                            │
+          ┌─────────────────┼─────────────────┐
+          ▼                 ▼                 ▼
+       SECURITY           TRUST             POLICY
+          │                 │                 │
+          └─────────────────┼─────────────────┘
+                            ▼
+                       CAPABILITIES
+                            │
+             ┌──────────────┼──────────────┐
+             ▼              ▼              ▼
+         KNOWLEDGE        MEMORY      INTELLIGENCE
+             │              │              │
+             └──────────────┼──────────────┘
+                            ▼
+                         PLANNING
+                            │
+                            ▼
+                           AGENTS
+                            │
+                            ▼
+                      AUTHORIZATION
+                            │
+                            ▼
+                        AUTOMATION
+                            │
+                            ▼
+                          ACTION
+                            │
+                            ▼
+                         OUTCOME
+                            │
+                            ▼
+                          AUDIT
+                            │
+                            ▼
+                         LEARNING
+                            │
+                            ▼
+                        EVOLUTION
+                            │
+                            ▼
+                    NEW CAPABILITIES
+                            │
+                            └──────────→ COREGRID
+
+This is not a simple service dependency chain.
+It is a governed reality-to-capability-to-action-to-evolution topology.
+
+───
+
+201. CANONICAL COREGRID DEFINITION
+CoreGrid Platform Dependency Architecture
+CoreGrid's dependency architecture is:
+A universal, governed, observable, multi-dimensional dependency topology through which CoreGrid's realities, actors, runtimes, capabilities, knowledge, memory, intelligence, policies, actions, outcomes, infrastructure and evolution mechanisms interact without collapsing authority, ownership, security, sovereignty, or domain boundaries.
+The architecture preserves the following fundamental laws:
 text
 AUTHORITY
 SECURITY
 SOVEREIGNTY
 CORRECTNESS
-OBSERVABILITY
 PROVENANCE
-REPLACEABILITY
+OBSERVABILITY
 COMPOSABILITY
+REPLACEABILITY
+RESILIENCE
 SCALABILITY
 AUTONOMY
 EVOLVABILITY
@@ -4034,34 +3818,68 @@ while preventing:
 text
 HIDDEN COUPLING
 DUPLICATED AUTHORITY
-ARCHITECTURAL CYCLES
+STRUCTURAL CYCLES
 UNBOUNDED AUTONOMY
 VENDOR LOCK-IN
 TENANT LEAKAGE
 SECURITY BYPASS
 DOMAIN CONTAMINATION
 PLATFORM ENTANGLEMENT
+UNCONTROLLED SELF-MODIFICATION
+SIMULATION / REALITY CONFUSION
 
+The canonical relationship is:
+text
+COREGRID
+                            │
+                 UNIVERSAL SUBSTRATE
+                            │
+              ┌─────────────┼─────────────┐
+              │             │             │
+           REALITY      INTELLIGENCE    GOVERNANCE
+              │             │             │
+              └─────────────┼─────────────┘
+                            │
+                     CAPABILITY FABRIC
+                            │
+                   RUNTIME COMPOSITION
+                            │
+             ┌──────────────┼──────────────┐
+             ▼              ▼              ▼
+          SCHOLAR       FUTURE          EXTERNAL
+          RUNTIME       RUNTIMES        RUNTIMES
+             │              │              │
+             └──────────────┼──────────────┘
+                            │
+                         OUTCOMES
+                            │
+                         FEEDBACK
+                            │
+                        EVOLUTION
+                            │
+                      COREGRID GROWS
 
-───
-
-201. Canonical Definition
-CoreGrid Platform Infrastructure is:
-A universal, governed, observable and evolvable infrastructure substrate that represents reality, identity, context, knowledge, memory, intelligence, capabilities, agents, policies, actions and outcomes, while allowing multiple autonomous domain runtimes to operate on top of the same underlying architecture.
-CoreGrid Scholar is:
-The first complete working runtime proving that the CoreGrid infrastructure can instantiate an adaptive institutional intelligence system.
 Therefore:
 text
 COREGRID ≠ SCHOLAR
 
+text
 SCHOLAR ⊂ COREGRID RUNTIME ECOSYSTEM
 
+text
 COREGRID INFRASTRUCTURE
         ↓
-RUNTIME FABRIC
+CAPABILITY FABRIC
+        ↓
+RUNTIME COMPOSITION
         ↓
 SCHOLAR
-        ↓
-FUTURE RUNTIMES
 
-This is the canonical dependency philosophy for the ASI-era CoreGrid platform.
+Scholar is the first working proof that CoreGrid can instantiate a complete domain runtime.
+It is not the dependency root.
+The dependency architecture exists to guarantee that CoreGrid can continuously introduce new capabilities, domains, runtimes, intelligence mechanisms, physical integrations, institutions, ecosystems and future computational forms without rebuilding the platform around any single one of them.
+The deepest dependency law is therefore:
+No component becomes foundational merely because it is powerful, intelligent, early, convenient, widely used, or operationally central. A component becomes foundational only when CoreGrid explicitly assigns it foundational authority.
+And the deepest topology law is:
+CoreGrid dependencies MUST follow capability, authority, context, causality and governed contracts—not accidental implementation convenience.
+This document is the canonical dependency doctrine for the CoreGrid architecture.

@@ -1,0 +1,48 @@
+{
+  "$comment": "Evidence map for Phase 37. The current repository contains simulation architecture text but no dedicated universal simulation-engine acceptance suite; all criteria remain declared.",
+  "phase": "37",
+  "phaseName": "Simulation & Future Intelligence Engine",
+  "source": "architecture/phase-37-simulation-future-intelligence-engine.md",
+  "contract": "frontend/src/lib/kernel/phase-contracts/phase-37-simulation-engine.ts",
+  "ownership": {
+    "canonicalOwners": {
+      "simulation-and-foresight": "37",
+      "sandbox-execution": "41",
+      "twin-state": "16",
+      "canonical-reality": "33/owning-domain-phase",
+      "decision-execution": "17"
+    }
+  },
+  "areas": [
+    {
+      "id": "simulation-contract-and-lifecycle",
+      "area": "Scenario and simulation lifecycle is defined",
+      "requirement": "Simulation environments, scenarios, assumptions, parameters, runs and outcomes have explicit contracts and lifecycle.",
+      "required": false,
+      "evidence": [
+        { "kind": "document", "path": "architecture/phase-37-simulation-future-intelligence-engine.md", "contains": "Defines simulation engine identity, purpose, boundaries, and lifecycle" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "simulation-truth-boundary",
+      "area": "Simulation remains distinct from canonical reality",
+      "requirement": "Simulated outcomes remain derived, labelled and bounded; no simulation output writes canonical reality or is presented as observation without policy and approval.",
+      "required": false,
+      "evidence": [
+        { "kind": "document", "path": "architecture/phase-37-simulation-future-intelligence-engine.md", "contains": "Runs controlled simulations" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "live-simulation-verification",
+      "area": "Universal simulation execution and verification are implemented",
+      "requirement": "Simulation runs execute in an isolated runtime with reproducible evidence, uncertainty, comparison against reality and governed promotion.",
+      "required": false,
+      "evidence": [
+        { "kind": "document", "path": "architecture/phase-37-simulation-future-intelligence-engine.md", "contains": "Measures simulation fidelity" }
+      ],
+      "boundary": []
+    }
+  ]
+}

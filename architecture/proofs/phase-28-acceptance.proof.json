@@ -1,0 +1,242 @@
+{
+  "artifact": "phase-acceptance",
+  "phase": "28",
+  "phaseName": "Developer Platform",
+  "source": "architecture/phase-28-developer-platform.md",
+  "generatedAt": "2026-09-28T13:22:57.668Z",
+  "classificationDefinitions": {
+    "ENFORCED": "an executable artefact proves it (test, verifier script, migration, policy or machine-checked contract match) and, where a boundary is declared, a real call site invokes it",
+    "DECLARED": "a module, document or contract mentions it, but nothing executable proves it",
+    "IMPLEMENTED_UNWIRED": "implementation and tests exist, but the declared boundary patterns match nothing — the capability protects nothing yet",
+    "MISSING": "no artefact found"
+  },
+  "summary": {
+    "areas": 9,
+    "enforced": 8,
+    "declared": 1,
+    "implementedUnwired": 0,
+    "implementedUnwiredAreas": [],
+    "missing": 0,
+    "missingRequired": [],
+    "unresolvedEvidencePaths": []
+  },
+  "ownership": {
+    "canonicalOwners": {
+      "developer-organizations-and-projects": "28",
+      "api-and-schema-catalog": "28",
+      "developer-environments-and-sandboxes": "28",
+      "build-and-release-governance": "28",
+      "production-authorization": "08",
+      "marketplace-distribution": "27",
+      "production-domain-state": "owning-domain-phase"
+    }
+  },
+  "areas": [
+    {
+      "id": "organization-project-isolation",
+      "area": "Developer organizations and projects are owner-bound and isolated",
+      "requirement": "Organizations require an owner, projects default to private visibility, and organization visibility boundaries are explicit.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/kernel/phase-contracts/phase-28-developer-platform.ts",
+        "tests/unit/dev-platform.test.ts",
+        "tests/unit/dev-platform.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/kernel/phase-contracts/phase-28-developer-platform.ts",
+        "tests/unit/dev-platform.test.ts",
+        "tests/unit/dev-platform.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "manifest-sdk-compatibility",
+      "area": "Project manifests and SDKs declare compatibility",
+      "requirement": "Projects expose typed manifests with environments and CoreGrid compatibility, and SDK registrations preserve supported abstractions.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/dev-platform.test.ts",
+        "tests/unit/dev-platform.test.ts",
+        "tests/unit/dev-platform.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/dev-platform.test.ts",
+        "tests/unit/dev-platform.test.ts",
+        "tests/unit/dev-platform.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "production-and-break-glass-access",
+      "area": "Production developer access is strongly controlled",
+      "requirement": "Production access requires authentication, role, explicit authorization, auditability and risk controls; break-glass access requires a reason and expiry.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/dev-platform.test.ts",
+        "tests/unit/dev-platform.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/dev-platform.test.ts",
+        "tests/unit/dev-platform.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "api-schema-and-contract-governance",
+      "area": "API and schema evolution is documented and compatibility-controlled",
+      "requirement": "API endpoints require purpose/version, breaking changes require migration support, explorers remain sandboxed, and schema compatibility is evaluated.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/dev-platform.test.ts",
+        "tests/unit/dev-platform.test.ts",
+        "tests/unit/dev-platform.test.ts",
+        "tests/unit/dev-platform.test.ts",
+        "tests/unit/dev-platform.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/dev-platform.test.ts",
+        "tests/unit/dev-platform.test.ts",
+        "tests/unit/dev-platform.test.ts",
+        "tests/unit/dev-platform.test.ts",
+        "tests/unit/dev-platform.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "environment-secret-and-sandbox-isolation",
+      "area": "Developer environments, secrets, and sandboxes remain non-production",
+      "requirement": "Development secrets cannot be registered as production secrets, committed secrets are detected, and sandboxes cannot disable production isolation.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/dev-platform.test.ts",
+        "tests/unit/dev-platform.test.ts",
+        "tests/unit/dev-platform.test.ts",
+        "tests/unit/dev-platform.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/dev-platform.test.ts",
+        "tests/unit/dev-platform.test.ts",
+        "tests/unit/dev-platform.test.ts",
+        "tests/unit/dev-platform.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "simulation-and-webhook-safety",
+      "area": "Developer simulations and webhooks are bounded",
+      "requirement": "Synthetic identities/events cannot target production, tenant isolation is respected, and webhook signature/replay/idempotency checks are enforced.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/dev-platform.test.ts",
+        "tests/unit/dev-platform.test.ts",
+        "tests/unit/dev-platform.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/dev-platform.test.ts",
+        "tests/unit/dev-platform.test.ts",
+        "tests/unit/dev-platform.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "package-build-and-release-security",
+      "area": "Packages and releases pass build, dependency, security and compatibility gates",
+      "requirement": "Static analysis, manifest/dependency/schema/API/security checks, signing, SBOM, CI sequencing, semantic versioning, channels and canary limits govern release.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/dev-platform.test.ts",
+        "tests/unit/dev-platform.test.ts",
+        "tests/unit/dev-platform.test.ts",
+        "tests/unit/dev-platform.test.ts",
+        "tests/unit/dev-platform.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/dev-platform.test.ts",
+        "tests/unit/dev-platform.test.ts",
+        "tests/unit/dev-platform.test.ts",
+        "tests/unit/dev-platform.test.ts",
+        "tests/unit/dev-platform.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "developer-governance-and-ai-controls",
+      "area": "Developer quotas, audit, AI, dependencies and exit are governed",
+      "requirement": "Quotas/rate limits, failure injection, audit, release approvals, AI deployment, dependency approval, generated-code compliance, artifact scans, ownership exit and compatibility are explicit.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/dev-platform.test.ts",
+        "tests/unit/dev-platform.test.ts",
+        "tests/unit/dev-platform.test.ts",
+        "tests/unit/dev-platform.test.ts",
+        "tests/unit/dev-platform.test.ts",
+        "tests/unit/dev-platform.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/dev-platform.test.ts",
+        "tests/unit/dev-platform.test.ts",
+        "tests/unit/dev-platform.test.ts",
+        "tests/unit/dev-platform.test.ts",
+        "tests/unit/dev-platform.test.ts",
+        "tests/unit/dev-platform.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "live-developer-platform-wiring",
+      "area": "Durable developer services and live platform boundaries are wired",
+      "requirement": "Developer organizations, projects, grants, API surfaces, environments and release records persist and enforce their contracts at live authorized boundaries.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "architecture/phase-28-developer-platform.md"
+      ],
+      "matchedEvidence": [
+        "architecture/phase-28-developer-platform.md"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    }
+  ],
+  "ok": true,
+  "limitations": [
+    "Classification measures the presence of executable evidence, not the correctness or completeness of that evidence.",
+    "A DECLARED area is unfinished work, never a false claim — it is reported as such.",
+    "An IMPLEMENTED_UNWIRED area has a tested implementation that no boundary calls; it is reported, never counted as enforcement.",
+    "Evidence patterns are declared per phase in architecture/phase-acceptance/phase-<id>-*.json and must be reviewed when a phase is re-audited."
+  ]
+}

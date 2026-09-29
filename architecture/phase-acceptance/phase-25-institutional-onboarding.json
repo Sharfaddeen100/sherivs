@@ -1,0 +1,97 @@
+{
+  "$comment": "Evidence map for Phase 25. This records current artefacts; it does not claim runtime, persistence, or production completion.",
+  "phase": "25",
+  "phaseName": "Institutional Onboarding & Workforce",
+  "source": "architecture/phase-25-institutional-onboarding-administration-workforce-identity-platform.md",
+  "contract": "frontend/src/lib/kernel/phase-contracts/phase-25-onboarding-workforce.ts",
+  "ownership": {
+    "canonicalOwners": {
+      "workforce-kinds": "25",
+      "positions": "25",
+      "onboarding-and-invitation-records": "25",
+      "identity": "02",
+      "tenancy": "03",
+      "authorization": "08",
+      "workspace-composition": "06"
+    }
+  },
+  "areas": [
+    {
+      "id": "domain-neutral-onboarding",
+      "area": "Organizations use one onboarding pipeline",
+      "requirement": "School, university, company, government agency, community institution and non-profit inputs use the same governed onboarding flow.",
+      "required": true,
+      "evidence": [
+        { "kind": "contract", "path": "frontend/src/lib/kernel/phase-contracts/phase-25-onboarding-workforce.ts", "contains": "onboard a tenant's structures" },
+        { "kind": "test", "path": "tests/unit/onboarding-flow.test.ts", "contains": "accepts every organization class through ONE pipeline" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "ordered-lifecycle",
+      "area": "Onboarding progresses through required stages",
+      "requirement": "The lifecycle requires ordered transitions and artifacts for tenant, administrator, policy, workspace and runtime activation.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/onboarding-flow.test.ts", "contains": "advances sequentially with required artifacts" },
+        { "kind": "test", "path": "tests/unit/onboarding-flow.test.ts", "contains": "never jumps stages" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "identity-boundary",
+      "area": "Institution identity does not become its administrator",
+      "requirement": "The organization identity and initial administrator remain distinct identities.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/onboarding-flow.test.ts", "contains": "never makes the organization identity the initial administrator" },
+        { "kind": "contract", "path": "frontend/src/lib/kernel/phase-contracts/phase-25-onboarding-workforce.ts", "contains": "identity-registry-ownership (phase 02)" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "workforce-structure",
+      "area": "Workforce kinds and positions remain governed structure",
+      "requirement": "Workforce catalogs and position records describe institutional structure without implying authorization.",
+      "required": true,
+      "evidence": [
+        { "kind": "contract", "path": "frontend/src/lib/kernel/phase-contracts/phase-25-onboarding-workforce.ts", "contains": "no kind implies privilege" },
+        { "kind": "test", "path": "tests/unit/workforce-kinds.test.ts", "contains": "kind" },
+        { "kind": "test", "path": "tests/unit/workforce-positions.test.ts", "contains": "position" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "invitation-lifecycle",
+      "area": "Invitation lifecycle is explicit",
+      "requirement": "Invitations have governed creation and lifecycle behavior.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/onboarding-invitations.test.ts", "contains": "invitation" },
+        { "kind": "contract", "path": "frontend/src/lib/kernel/phase-contracts/phase-25-onboarding-workforce.ts", "contains": "onboarding:invite" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "runtime-workspace-handoff",
+      "area": "Activated organizations receive derived runtime context",
+      "requirement": "Workspace and runtime context are exposed only after onboarding activation.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/onboarding-flow.test.ts", "contains": "exposes the derived surface context only after activation" },
+        { "kind": "contract", "path": "frontend/src/lib/kernel/phase-contracts/phase-25-onboarding-workforce.ts", "contains": "workspace-composition" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "persistent-runtime-enforcement",
+      "area": "Onboarding records are persisted and enforced at a live boundary",
+      "requirement": "A tenant-isolated persistence schema and live authorized boundary store and enforce onboarding records.",
+      "required": false,
+      "evidence": [
+        { "kind": "document", "path": "architecture/phase-25-institutional-onboarding-administration-workforce-identity-platform.md", "contains": "tenant" }
+      ],
+      "boundary": []
+    }
+  ]
+}

@@ -1,0 +1,92 @@
+{
+  "$comment": "Phase 18 acceptance definition derived from architecture/phase-18-analytics-intelligence.md, the phase contract, analytics-core/models/decisions/governance modules and their four unit suites. Analytical outputs remain derived and governed; no autonomous action or durable analytics store is inferred.",
+  "phase": "18",
+  "phaseName": "Analytics Intelligence",
+  "source": "architecture/phase-18-analytics-intelligence.md",
+  "contract": "frontend/src/lib/kernel/phase-contracts/phase-18-analytics-intelligence.ts",
+  "ownership": {
+    "note": "Phase 18 owns analytical models, metric definitions, decision records and analytics governance. Canonical records, workflow execution and cognitive architecture remain outside this phase.",
+    "canonicalOwners": {
+      "models-metrics-decisions": "18",
+      "derived-outputs": "18",
+      "governed-data-lineage": "14",
+      "canonical-records": "owning phases",
+      "workflow-execution": "17",
+      "cognitive-architecture": "34"
+    }
+  },
+  "areas": [
+    {
+      "id": "metric-provenance-and-unknowns",
+      "area": "Metrics carry ownership, provenance and honest unknowns",
+      "requirement": "Metrics require an owner and formula, analytical outputs carry provenance and version, and missing previous or source data is not converted into zero or success.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/analytics-core.ts", "contains": "createMetric" },
+        { "kind": "test", "path": "tests/unit/analytics-core.test.ts", "contains": "rejects a metric without an owner or formula" },
+        { "kind": "test", "path": "tests/unit/analytics-core.test.ts", "contains": "never treats a missing previous value as zero" },
+        { "kind": "test", "path": "tests/unit/analytics-core.test.ts", "contains": "requires provenance and version on every analytical output" }
+      ]
+    },
+    {
+      "id": "models-are-validated-and-drift-aware",
+      "area": "Analytical models have lifecycle and drift governance",
+      "requirement": "Models require metadata and ownership, cannot be promoted before validation, and drift is detectable against declared thresholds.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/analytics-models.ts", "contains": "promoteModelToProduction" },
+        { "kind": "test", "path": "tests/unit/analytics-models.test.ts", "contains": "never promotes an unvalidated model" },
+        { "kind": "test", "path": "tests/unit/analytics-models.test.ts", "contains": "detects model drift beyond the threshold" }
+      ]
+    },
+    {
+      "id": "forecast-and-anomaly-honesty",
+      "area": "Forecasts and anomalies state assumptions and limits",
+      "requirement": "Descriptive statistics do not fabricate empty samples, correlations do not claim causation, anomalies carry evidence and forecasts carry bounds and non-guarantee language.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/analytics-models.ts", "contains": "createForecast" },
+        { "kind": "test", "path": "tests/unit/analytics-models.test.ts", "contains": "never fabricates statistics for an empty sample" },
+        { "kind": "test", "path": "tests/unit/analytics-models.test.ts", "contains": "explicitly never claims causation" },
+        { "kind": "test", "path": "tests/unit/analytics-models.test.ts", "contains": "creates a forecast with bounds" }
+      ]
+    },
+    {
+      "id": "decision-constraints-and-evidence",
+      "area": "Recommendations and decisions are constrained and evidenced",
+      "requirement": "Unknown feasibility is infeasible, policy-violating optimization is rejected, recommendations require evidence and uncertainty, and decisions record selected options and outcomes.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/analytics-decisions.ts", "contains": "guardOptimizationResult" },
+        { "kind": "test", "path": "tests/unit/analytics-decisions.test.ts", "contains": "treats unknown feasibility as infeasible" },
+        { "kind": "test", "path": "tests/unit/analytics-decisions.test.ts", "contains": "rejects recommendations without evidence or uncertainty" },
+        { "kind": "test", "path": "tests/unit/analytics-decisions.test.ts", "contains": "records an audited decision" }
+      ]
+    },
+    {
+      "id": "privacy-and-reproducibility-governance",
+      "area": "Reporting is tenant, privacy and version governed",
+      "requirement": "Metric/report changes are versioned, reproducibility requires a matching snapshot and analytics access protects tenant, role, classification and small-cell privacy.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/analytics-governance.ts" },
+        { "kind": "test", "path": "tests/unit/analytics-governance.test.ts", "contains": "versions a metric definition change instead of rewriting" },
+        { "kind": "test", "path": "tests/unit/analytics-governance.test.ts", "contains": "requires a matching snapshot for reproducibility" },
+        { "kind": "test", "path": "tests/unit/analytics-governance.test.ts", "contains": "enforces tenant, role and classification" }
+      ]
+    },
+    {
+      "id": "analytics-runtime-boundary",
+      "area": "Analytics remains a tested library pending a consuming boundary",
+      "requirement": "A governed surface or server boundary must read analytics from real data and route actions through policy; current evidence does not prove such invocation.",
+      "required": false,
+      "evidence": [
+        { "kind": "contract", "path": "frontend/src/lib/kernel/phase-contracts/phase-18-analytics-intelligence.ts", "contains": "analytics-decision-intelligence" },
+        { "kind": "module", "path": "frontend/src/lib/analytics-decisions.ts" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/*.functions.ts", "contains": "evaluateAnalytics" }
+      ]
+    }
+  ]
+}

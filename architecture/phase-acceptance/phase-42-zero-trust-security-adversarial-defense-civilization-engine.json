@@ -1,0 +1,89 @@
+{
+  "$comment": "Evidence map for Phase 42. Current executable coverage proves fail-closed security and incident contracts; live adversarial exercises and defense posture operations remain declared.",
+  "phase": "42",
+  "phaseName": "Zero Trust & Adversarial Defense Engine",
+  "source": "architecture/phase-42-zero-trust-security-adversarial-defense-civilization-engine.md",
+  "contract": "frontend/src/lib/kernel/phase-contracts/phase-42-adversarial-defense.ts",
+  "ownership": {
+    "canonicalOwners": {
+      "adversarial-verification-and-defense-posture": "42",
+      "authorization-enforcement": "08",
+      "trust-evidence": "09",
+      "agent/tool-security": "08/07",
+      "security-events-and-incidents": "08"
+    }
+  },
+  "areas": [
+    {
+      "id": "agent-and-tool-fail-closed",
+      "area": "Agent and tool actions fail closed or require review",
+      "requirement": "Undeployed/suspended agents, denied tools and dangerous tool categories are denied or routed to human review; acting-as-user requires explicit grant.",
+      "required": true,
+      "evidence": [
+        { "kind": "contract", "path": "frontend/src/lib/kernel/phase-contracts/phase-42-adversarial-defense.ts", "contains": "Assume breach, verify continuously" },
+        { "kind": "test", "path": "tests/unit/security-agent-controls.test.ts", "contains": "denies an agent that is not deployed/monitoring" },
+        { "kind": "test", "path": "tests/unit/security-agent-controls.test.ts", "contains": "denies a tool on the agent's explicit deny list even if requested" },
+        { "kind": "test", "path": "tests/unit/security-agent-controls.test.ts", "contains": "sends a dangerous tool category to REVIEW without approval" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "risk-and-sensitive-operation-escalation",
+      "area": "Risk signals and sensitive operations escalate appropriately",
+      "requirement": "Risk levels derive from evidence signals, critical signals quarantine, and high/critical sensitive operations require human review.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/security-risk.test.ts", "contains": "returns CRITICAL when any single signal has weight >= 70" },
+        { "kind": "test", "path": "tests/unit/security-risk.test.ts", "contains": "maps CRITICAL to quarantine" },
+        { "kind": "test", "path": "tests/unit/security-risk.test.ts", "contains": "escalates HIGH risk on a sensitive operation to human_review" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "immutable-security-events-and-evidence",
+      "area": "Security events and evidence are attributable and immutable",
+      "requirement": "Security events retain tenant/actor/evidence context, cannot be deleted, and evidence records are access-controlled.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/security-events.test.ts", "contains": "creates an event with all contract fields and deleted=false" },
+        { "kind": "test", "path": "tests/unit/security-events.test.ts", "contains": "never allows a deleted event" },
+        { "kind": "test", "path": "tests/unit/security-events.test.ts", "contains": "creates an access-controlled evidence record" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "alert-and-incident-lifecycle",
+      "area": "Alerts and security incidents follow ordered closure requirements",
+      "requirement": "Alerts and incidents transition through ordered states, require owners/evidence, and cannot close without resolution.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/security-events.test.ts", "contains": "rejects resolved -> open (terminal state)" },
+        { "kind": "test", "path": "tests/unit/security-events.test.ts", "contains": "requires an owner to create an incident" },
+        { "kind": "test", "path": "tests/unit/security-events.test.ts", "contains": "follows the ordered lifecycle detected" },
+        { "kind": "test", "path": "tests/unit/security-events.test.ts", "contains": "requires a resolution before closing" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "defense-boundary-and-recommendation-only",
+      "area": "Defense measures and recommends without owning enforcement",
+      "requirement": "Adversarial defense does not grant/revoke access, weaken controls or replace Phase 08/09 enforcement and trust authority.",
+      "required": true,
+      "evidence": [
+        { "kind": "contract", "path": "frontend/src/lib/kernel/phase-contracts/phase-42-adversarial-defense.ts", "contains": "it never grants, revokes or overrides access" },
+        { "kind": "contract", "path": "frontend/src/lib/kernel/phase-contracts/phase-42-adversarial-defense.ts", "contains": "findings are proposals" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "live-adversarial-exercises-and-posture",
+      "area": "Live adversarial exercises, anomaly posture and hardening operations are wired",
+      "requirement": "Controlled exercises run with declared scope, findings persist with evidence, anomaly thresholds are governed, and hardening remains approval-gated.",
+      "required": false,
+      "evidence": [
+        { "kind": "document", "path": "architecture/phase-42-zero-trust-security-adversarial-defense-civilization-engine.md", "contains": "adversarial" }
+      ],
+      "boundary": []
+    }
+  ]
+}

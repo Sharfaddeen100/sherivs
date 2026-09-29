@@ -1,71 +1,126 @@
-COREGRID PLATFORM — ARCHITECTURE BOUNDARIES
+COREGRID — PLATFORM ARCHITECTURE BOUNDARIES
 Document:ARCHITECTURE-BOUNDARIES.md
+Canonical Name: CoreGrid Universal Architecture Boundary & Sovereignty Model
 System: CoreGrid Platform
-Architecture: CoreGrid Ecosystem / Universal Platform Infrastructure
+Architecture: CoreGrid Ecosystem / Universal Reality Intelligence Infrastructure
 Status:NORMATIVE / CANONICAL
 Authority: CoreGrid Architecture Governance Layer
-Scope: Entire CoreGrid ecosystem, including all registered phases, platform services, domains, agents, intelligence systems, workspaces, data systems, infrastructure, integrations, extensions, deployments, and future capabilities
+Scope: Entire CoreGrid ecosystem
+Phase Scope: All phases registered by ARCHITECTURE-REGISTRY.md
 Phase Registry:ARCHITECTURE-REGISTRY.md
-Dependency Registry:ARCHITECTURE-DEPENDENCY-MAP.md
+Dependency Authority:ARCHITECTURE-DEPENDENCY-MAP.md
 Constitution:CONSTITUTION.md
 Architecture Master:architecture.md
+Classification: Architecture Governance / Ownership / Authority / Sovereignty / Security / Runtime Containment
+Primary Principle:
+One canonical capability or authoritative state → one explicit owner → explicit boundary → governed contract → controlled authority.
 
 ───
 
-1. Purpose
-This document defines the architectural boundaries of the entire CoreGrid ecosystem.
-CoreGrid is not merely an educational application.
-CoreGrid is a universal institutional intelligence and execution platform capable of hosting multiple domains, organizations, workloads, intelligence systems, agents, digital twins, workflows, applications, and external integrations.
-CoreGrid Scholar is therefore treated as:
-A production runtime/domain implemented on the CoreGrid platform, not the owner of the CoreGrid architecture.
-This document prevents:
+1. PURPOSE
+This document defines the canonical architectural boundaries of the CoreGrid ecosystem.
+CoreGrid is not merely an educational application, enterprise application, collection of microservices, AI platform, agent framework, or cloud application.
+CoreGrid is a universal governed computational substrate for representing, understanding, reasoning about, coordinating, and acting upon complex realities across multiple domains and runtimes.
+CoreGrid may contain:
+• domains
+• institutions
+• organizations
+• applications
+• workspaces
+• entities
+• relationships
+• states
+• observations
+• events
+• knowledge
+• memory
+• intelligence
+• capabilities
+• agents
+• workflows
+• digital twins
+• simulations
+• infrastructure
+• external integrations
+• physical-world interfaces
+• future autonomous systems
+The purpose of this document is to prevent complexity from becoming architectural ambiguity.
+It prevents, among other things:
 • architectural drift
-• ownership duplication
+• duplicated ownership
 • domain contamination
-• uncontrolled coupling
-• data ownership ambiguity
-• tenant boundary violations
-• security boundary violations
-• agent privilege expansion
+• hidden coupling
+• authority leakage
+• tenant leakage
+• security bypass
+• trust escalation
 • AI authority expansion
+• agent privilege expansion
+• uncontrolled autonomy
+• data ownership ambiguity
 • infrastructure leakage
 • vendor lock-in
-• accidental dependency cycles
-• uncontrolled autonomous behavior
-• future-phase scope contamination
+• dependency cycles
+• future-phase contamination
+• simulation/reality confusion
+• derived-state/truth confusion
+• unauthorized cross-runtime access
+• uncontrolled self-modification
 The objective is not to eliminate complexity.
-The objective is to make complexity containable, observable, composable, governable, and evolvable.
+The objective is to make complexity:
+containable → explicit → observable → composable → governable → evolvable.
 
 ───
 
-2. Core Boundary Law
+2. CORE BOUNDARY LAW
 The fundamental CoreGrid boundary law is:
-Every canonical capability and every authoritative state must have one clearly defined owner. Other systems may consume, derive, observe, coordinate, or represent it, but they must not silently become its owner.
+No component acquires canonical authority merely because it possesses information, intelligence, connectivity, computation, memory, visibility, or execution capability.
+Every canonical capability and every authoritative state MUST have one clearly defined owner.
+Other systems MAY:
+• consume
+• observe
+• represent
+• derive
+• cache
+• index
+• coordinate
+• recommend
+• simulate
+• orchestrate
+• transform
+• audit
+but they MUST NOT silently become the owner.
 Therefore:
 text
-OWNERSHIP ≠ CONSUMPTION
-OWNERSHIP ≠ REPRESENTATION
-OWNERSHIP ≠ OBSERVATION
-OWNERSHIP ≠ ORCHESTRATION
-OWNERSHIP ≠ RECOMMENDATION
-OWNERSHIP ≠ CACHING
-OWNERSHIP ≠ INDEXING
-OWNERSHIP ≠ MEMORY
+OWNERSHIP
+≠ CONSUMPTION
+≠ REPRESENTATION
+≠ OBSERVATION
+≠ ORCHESTRATION
+≠ RECOMMENDATION
+≠ CACHING
+≠ INDEXING
+≠ MEMORY
+≠ INTELLIGENCE
+≠ EXECUTION
+≠ VISIBILITY
 
-A system displaying information does not own that information.
 A model reasoning over information does not own that information.
-An agent operating on information does not own that information.
+An agent acting on information does not own that information.
+A dashboard displaying information does not own that information.
 A digital twin representing an entity does not automatically own the entity's canonical state.
 
 ───
 
-3. CoreGrid Boundary Philosophy
-CoreGrid must be designed as a system of bounded capabilities rather than a giant application.
-Each capability must answer:
+3. COREGRID BOUNDARY PHILOSOPHY
+CoreGrid MUST be designed as a system of bounded realities and capabilities, not as one enormous application.
+Every significant capability MUST be able to answer:
 text
 What do I own?
 
-What do I not own?
+What do I explicitly NOT own?
+
+What authoritative state do I control?
 
 What do I consume?
 
@@ -75,7 +130,7 @@ Who may call me?
 
 Who may I call?
 
-What state is authoritative?
+Under whose authority do I operate?
 
 What policy governs me?
 
@@ -83,17 +138,153 @@ What security boundary do I cross?
 
 What tenant boundary do I cross?
 
-What happens if my dependencies fail?
+What trust boundary do I cross?
 
-How can I evolve without breaking others?
+What temporal boundary do I cross?
+
+What dependencies do I have?
+
+What happens when those dependencies fail?
+
+What is my blast radius?
+
+How can I be replaced?
+
+How can I evolve without breaking unrelated systems?
 
 If these questions cannot be answered, the capability is architecturally incomplete.
 
 ───
 
-4. Alien / Non-Human Observer Boundary Principle
-CoreGrid should be designed from a non-human systems perspective.
-An external observer should be able to inspect CoreGrid and determine:
+4. COREGRID-NATIVE BOUNDARY MODEL
+A CoreGrid boundary is not merely a software boundary.
+It may separate:
+• ownership
+• authority
+• identity
+• tenancy
+• domain meaning
+• canonical state
+• derived state
+• knowledge
+• memory
+• capability
+• policy
+• trust
+• execution
+• causality
+• time
+• physical reality
+• simulation
+• deployment
+• sovereignty
+• responsibility
+• evidence
+The boundary system therefore operates across multiple dimensions simultaneously.
+Conceptually:
+text
+REALITY
+   ↓
+ENTITY
+   ↓
+RELATIONSHIP
+   ↓
+STATE
+   ↓
+OBSERVATION
+   ↓
+CONTEXT
+   ↓
+AUTHORITY
+   ↓
+POLICY
+   ↓
+CAPABILITY
+   ↓
+INTELLIGENCE
+   ↓
+DECISION
+   ↓
+ACTION
+   ↓
+OUTCOME
+   ↓
+EVIDENCE
+   ↓
+LEARNING
+   ↓
+EVOLUTION
+
+A boundary violation can occur at any transition in this chain.
+
+───
+
+5. BOUNDARY VS DEPENDENCY
+The two concepts MUST remain distinct.
+A dependency describes how one capability relies upon another.
+A boundary defines what that capability is allowed to own, access, mutate, influence, or control.
+Therefore:
+text
+DEPENDENCY MAP
+    =
+Relationship / topology authority
+
+BOUNDARY MAP
+    =
+Containment / ownership / authority authority
+
+A system may depend on another system without owning anything within it.
+A system may communicate with another system without crossing an ownership boundary.
+A system may observe another system without receiving authority over it.
+
+───
+
+6. BOUNDARY VS RELATIONSHIP
+Not every relationship is a dependency.
+CoreGrid distinguishes:
+text
+DEPENDENCY
+RELATIONSHIP
+REFERENCE
+COMPOSITION
+OBSERVATION
+INFLUENCE
+CAUSATION
+AUTHORITY
+OWNERSHIP
+EXECUTION
+
+These MUST NOT be collapsed into one graph.
+For example:
+text
+Analytics
+   ──observes──>
+Finance
+
+does not mean:
+text
+Analytics
+   ──owns──>
+Finance
+
+Similarly:
+text
+Agent
+   ──uses──>
+Financial Capability
+
+does not mean:
+text
+Agent
+   ──owns──>
+Financial Ledger
+
+
+───
+
+7. ALIEN / NON-HUMAN OBSERVER PRINCIPLE
+CoreGrid SHOULD be understandable to an external observer without relying upon undocumented organizational assumptions.
+An observer should be able to determine:
 text
 ENTITY
    ↓
@@ -103,11 +294,15 @@ RELATIONSHIP
    ↓
 STATE
    ↓
-EVENT
+OBSERVATION
    ↓
 CONTEXT
    ↓
+AUTHORITY
+   ↓
 POLICY
+   ↓
+CAPABILITY
    ↓
 INTELLIGENCE
    ↓
@@ -115,43 +310,40 @@ DECISION
    ↓
 ACTION
    ↓
-OBSERVATION
+OUTCOME
    ↓
-LEARNING
+EVIDENCE
 
-No subsystem should require undocumented assumptions to understand where authority resides.
-CoreGrid must therefore behave less like a collection of screens and more like a computational civilization of bounded systems.
+The architecture should therefore behave less like a collection of screens and more like a bounded computational civilization.
 
 ───
 
-5. Boundary Hierarchy
+8. BOUNDARY HIERARCHY
 CoreGrid boundaries exist at multiple levels:
 text
 COREGRID ECOSYSTEM
         ↓
 PLATFORM
         ↓
-CAPABILITY
-        ↓
 PHASE
         ↓
+CAPABILITY
+        ↓
 DOMAIN
+        ↓
+RUNTIME
         ↓
 SERVICE
         ↓
 MODULE
         ↓
-DATA
+CONTRACT
         ↓
-API
+DATA / STATE
         ↓
-EVENT
+API / EVENT / COMMAND
         ↓
-COMMAND
-        ↓
-AGENT
-        ↓
-WORKFLOW
+AGENT / WORKFLOW
         ↓
 CLIENT
         ↓
@@ -159,51 +351,67 @@ INFRASTRUCTURE
         ↓
 EXTERNAL WORLD
 
-Higher-level boundaries constrain lower-level boundaries.
-A lower-level implementation must never silently override a higher-level ownership rule.
+A lower-level implementation MUST NOT silently override a higher-level architectural ownership rule.
 
 ───
 
-6. Boundary Dimensions
-Every major CoreGrid subsystem must define at minimum:
+9. BOUNDARY DIMENSIONS
+Every major CoreGrid subsystem MUST define, where applicable:
 1. Capability boundary
 2. Ownership boundary
-3. Domain boundary
-4. Data boundary
-5. Identity boundary
-6. Tenant boundary
-7. Security boundary
-8. Trust boundary
-9. Policy boundary
-10. Agent boundary
-11. AI boundary
-12. Automation boundary
-13. Infrastructure boundary
-14. Deployment boundary
-15. API boundary
-16. Event boundary
-17. Operational boundary
-18. Failure boundary
-19. Privacy boundary
-20. Compliance boundary
-21. Vendor boundary
-22. Extension boundary
-23. Evolution boundary
+3. Authority boundary
+4. Domain boundary
+5. State boundary
+6. Data boundary
+7. Identity boundary
+8. Tenant boundary
+9. Security boundary
+10. Trust boundary
+11. Policy boundary
+12. Agent boundary
+13. AI boundary
+14. Automation boundary
+15. Temporal boundary
+16. Causal boundary
+17. Evidence boundary
+18. Provenance boundary
+19. Infrastructure boundary
+20. Deployment boundary
+21. API boundary
+22. Event boundary
+23. Command boundary
+24. Operational boundary
+25. Failure boundary
+26. Blast-radius boundary
+27. Privacy boundary
+28. Compliance boundary
+29. Sovereignty boundary
+30. Vendor boundary
+31. Extension boundary
+32. Research boundary
+33. Simulation boundary
+34. Evolution boundary
+35. Human-oversight boundary
+36. Physical-world boundary
+37. Economic/transaction boundary
+38. Environmental boundary
+Not every boundary must be implemented as a separate service.
+A boundary is an architectural property before it is an implementation artifact.
 
 ───
 
-7. Phase Boundary
+10. PHASE BOUNDARY
 Every registered CoreGrid phase represents an architectural capability boundary.
 The authoritative phase inventory is maintained by:
 ARCHITECTURE-REGISTRY.md
-This document governs all registered phases, including the current CoreGrid 51-phase architecture, without redefining individual phase names or responsibilities.
-Phase ownership must therefore always be resolved through the canonical registry.
-No agent may invent a new phase responsibility because a capability "feels related."
+This document MUST NOT redefine the authoritative phase inventory.
+Phase numbering, ownership, and canonical phase identity MUST be resolved through the registry.
+No agent, developer, runtime, or implementation may create an architectural phase merely because a capability appears conceptually related.
 
 ───
 
-8. Phase Ownership Rule
-Each phase must have:
+11. PHASE OWNERSHIP RULE
+Every phase specification SHOULD explicitly define:
 text
 Phase ID
 Phase Name
@@ -217,30 +425,32 @@ Contracts
 Data Authority
 Security Boundary
 Trust Boundary
+Tenant Boundary
 Failure Boundary
 Deployment Requirements
 Extension Rules
+Evolution Rules
 
-A phase may internally contain:
+A phase may contain:
 • services
 • modules
 • databases
-• agents
-• workflows
 • queues
 • APIs
 • workers
+• agents
+• workflows
 • models
 • caches
 • indexes
-• infrastructure components
+• infrastructure
 Internal complexity does not expand external ownership.
 
 ───
 
-9. Internal Complexity Boundary
-A phase may contain hundreds or thousands of implementation components.
-Externally it should expose only governed contracts.
+12. INTERNAL COMPLEXITY BOUNDARY
+A phase may contain thousands of implementation components.
+Externally:
 text
 INTERNAL COMPLEXITY
         ↓
@@ -250,12 +460,12 @@ GOVERNED CONTRACT
         ↓
 CONSUMER
 
-Consumers must not depend upon private implementation details.
+Consumers MUST NOT depend on private implementation details.
 
 ───
 
-10. Public Contract Boundary
-Cross-boundary communication must use approved mechanisms:
+13. PUBLIC CONTRACT BOUNDARY
+Cross-boundary communication MUST use approved mechanisms such as:
 • APIs
 • commands
 • queries
@@ -265,12 +475,12 @@ Cross-boundary communication must use approved mechanisms:
 • capability interfaces
 • webhooks
 • approved shared contracts
-Private implementation details must remain private.
+Private classes, private tables, private queues, private memory stores, and private infrastructure MUST remain private unless explicitly promoted through governance.
 
 ───
 
-11. Forbidden Boundary Crossing
-The following is prohibited unless explicitly governed:
+14. FORBIDDEN BOUNDARY CROSSINGS
+The following are prohibited unless explicitly governed:
 text
 Phase A
    ↓
@@ -284,7 +494,7 @@ Phase B private database
 text
 Phase A
    ↓
-Phase B internal queue
+Phase B private queue
 
 text
 Phase A
@@ -309,23 +519,27 @@ CoreGrid internal database
 
 ───
 
-12. Structural vs Runtime Boundaries
-CoreGrid must distinguish:
+15. STRUCTURAL VS RUNTIME BOUNDARY
+CoreGrid MUST distinguish:
 Structural dependency
-A dependency required by architecture or implementation.
+ A dependency represented in architecture or implementation topology.
 Runtime interaction
-A dynamic interaction occurring through contracts, events, commands, or workflows.
+ A dynamic interaction occurring through a governed contract.
 Informational relationship
-A system consuming information without owning the source.
+ A system consuming information without owning the source.
 Deployment relationship
-A workload being deployed on infrastructure.
-These must not be confused.
+ A workload executing on infrastructure.
+Causal relationship
+ A modeled relationship between state transitions.
+Temporal relationship
+ A dependency on ordering, timing, expiry, or synchronization.
 A runtime event does not automatically create a structural dependency.
 
 ───
 
-13. Dependency Boundary Semantics
-The dependency registry must distinguish:
+16. DEPENDENCY SEMANTICS
+Dependency relationships MUST be resolved through the Dependency Map.
+Supported relationships may include:
 text
 STRUCTURAL_DEPENDS_ON
 RUNTIME_CALLS
@@ -333,45 +547,63 @@ PUBLISHES_EVENT_TO
 SUBSCRIBES_TO
 READS_DATA_FROM
 WRITES_DATA_TO
-POLICY_CONSUMES
+CONSUMES_POLICY
+CONSUMES_IDENTITY_CONTEXT
+CONSUMES_TRUST_SIGNAL
 DEPLOYED_ON
-OPTIONAL_SIGNAL_FROM
 COMPOSES
+EXTENDS
+ADAPTER_FOR
+OBSERVES
+ORCHESTRATES
+ROUTES_TO
+ATTESTS
 
-A reverse event flow does not automatically create a forbidden architectural cycle.
+Boundary authority remains separate from dependency topology.
 
 ───
 
-14. Capability Ownership Boundary
-Every significant capability must have exactly one canonical owner.
+17. CAPABILITY OWNERSHIP BOUNDARY
+Every significant canonical capability MUST have exactly one canonical owner.
 Examples:
 text
-Identity → Identity subsystem
+Identity
+→ Identity Authority
 
-Tenant isolation → Multi-Tenancy subsystem
+Tenant Isolation
+→ Multi-Tenancy Authority
 
-Financial ledger → Financial subsystem
+Financial Ledger
+→ Financial Authority
 
-Academic truth → Academic domain
+Academic Truth
+→ Academic Domain Authority
 
-Security policy → Security subsystem
+Security Policy
+→ Security Authority
 
-Trust assessment → Trust subsystem
+Trust Assessment
+→ Trust Authority
 
-AI inference → AI Intelligence subsystem
+AI Inference
+→ Intelligence Authority
 
-Agent lifecycle → Agent subsystem
+Agent Lifecycle
+→ Agent Runtime Authority
 
-Infrastructure → Cloud Fabric
+Infrastructure
+→ Infrastructure / Cloud Authority
 
-Other systems consume these capabilities through contracts.
+Consumers use these capabilities through governed interfaces.
 
 ───
 
-15. Canonical Truth Boundary
-CoreGrid must distinguish:
+18. CANONICAL TRUTH BOUNDARY
+CoreGrid distinguishes:
 text
 REALITY
+   ↓
+OBSERVATION
    ↓
 CANONICAL STATE
    ↓
@@ -387,15 +619,17 @@ DECISION
    ↓
 ACTION
    ↓
-AUDIT
+OUTCOME
+   ↓
+AUDIT / EVIDENCE
 
-These layers must not be collapsed.
+These layers MUST NOT be silently collapsed.
 
 ───
 
-16. Canonical State Boundary
-Canonical state is authoritative operational truth.
-Examples:
+19. CANONICAL STATE BOUNDARY
+Canonical state is authoritative operational truth within a defined authority domain.
+Examples include:
 • identity state
 • tenant state
 • institutional state
@@ -403,11 +637,13 @@ Examples:
 • academic state
 • workflow state
 • policy state
-Only the owning subsystem may mutate its canonical state.
+• capability registration state
+• security state
+Only the authoritative owner may mutate canonical state.
 
 ───
 
-17. Derived State Boundary
+20. DERIVED STATE BOUNDARY
 Derived state includes:
 • analytics
 • indexes
@@ -417,52 +653,50 @@ Derived state includes:
 • summaries
 • forecasts
 • recommendations
-• digital representations
-Derived state may be regenerated.
-It must not silently replace canonical state.
+• materialized views
+• derived digital representations
+Derived state SHOULD be regenerable where practical.
+It MUST NOT silently replace canonical state.
 
 ───
 
-18. Event Boundary
-An event means:
-Something happened.
+21. EVENT BOUNDARY
+An event represents an occurrence or accepted fact about something that happened.
 An event is not automatically current state.
-Events must contain appropriate:
+Events SHOULD carry:
 • event ID
-• type
-• timestamp
+• event type
+• event time
 • source
-• tenant context where applicable
-• correlation ID
 • schema version
+• correlation ID
 • provenance
+• tenant context where applicable
+• actor context where applicable
+• causation metadata where applicable
 
 ───
 
-19. Command Boundary
-A command means:
-Request that an authorized action be performed.
-Commands are not facts.
+22. COMMAND BOUNDARY
+A command represents an authorized request or proposal to perform an action.
 Therefore:
 text
-COMMAND
-    ≠
-EVENT
+COMMAND ≠ EVENT
 
 A command may fail.
-An event represents an accepted fact about something that happened.
+An event represents an accepted occurrence.
 
 ───
 
-20. Query Boundary
+23. QUERY BOUNDARY
 Queries retrieve information.
-Queries must not silently mutate canonical state.
-Where exceptional read-side effects exist, they must be explicitly documented.
+Queries MUST NOT silently mutate canonical state.
+Any intentional side effect associated with a query MUST be explicitly governed and documented.
 
 ───
 
-21. Data Ownership Boundary
-Each canonical dataset must identify:
+24. DATA OWNERSHIP BOUNDARY
+Every canonical dataset MUST identify:
 text
 Owner
 Schema
@@ -473,22 +707,25 @@ Retention
 Classification
 Tenant Scope
 Provenance
+Lifecycle
 
-A consumer cannot become the owner merely because it stores a copy.
+A consumer does not become the owner merely because it stores a copy.
 
 ───
 
-22. Database Boundary
-A subsystem must not directly mutate another subsystem's private database.
-Preferred model:
+25. DATABASE BOUNDARY
+A subsystem MUST NOT directly mutate another subsystem's private database.
+Preferred:
 text
 Domain Owner
+      ↓
+Contract
       ↓
 API / Command / Event
       ↓
 Consumer
 
-Not:
+Forbidden:
 text
 Consumer
       ↓
@@ -497,45 +734,61 @@ Other Domain Database
 
 ───
 
-23. Shared Database Boundary
-If multiple capabilities temporarily share a database for operational reasons, logical ownership must still remain explicit.
-Physical co-location does not imply domain ownership.
+26. SHARED DATABASE BOUNDARY
+Physical co-location does not imply logical ownership.
+If multiple capabilities temporarily share infrastructure:
+text
+Physical Storage
+      ↓
+Logical Ownership
+      ↓
+Explicit Access Contracts
+
+Logical authority MUST remain explicit.
 
 ───
 
-24. Cache Boundary
-Caches are not authoritative.
-They may be:
-• deleted
+27. CACHE BOUNDARY
+Caches are never canonical merely because they are fast or widely consumed.
+Caches may be:
+• stale
 • rebuilt
 • invalidated
-• stale
+• deleted
 • unavailable
-The platform must always know the authoritative source.
+The authoritative source MUST remain identifiable.
 
 ───
 
-25. Search Boundary
+28. SEARCH BOUNDARY
 Search indexes are retrieval projections.
-Search must not become:
+Search MUST NOT become:
 • authorization
 • canonical state
 • policy authority
-Search results must still be filtered through authorization and tenant scope.
+• ownership authority
+Search results remain subject to authorization and tenant controls.
 
 ───
 
-26. Vector / Embedding Boundary
+29. VECTOR / EMBEDDING BOUNDARY
 Vector stores are retrieval infrastructure.
-Embeddings do not become canonical truth simply because AI retrieves them.
-Every vectorized artifact must retain appropriate provenance and authorization context.
+An embedding is not canonical truth.
+Every vectorized artifact SHOULD retain sufficient:
+• provenance
+• source identity
+• tenant scope
+• authorization context
+• version
+• freshness
+• deletion linkage
 
 ───
 
-27. Knowledge Graph Boundary
-The Knowledge Graph represents relationships and knowledge.
-It does not automatically replace operational databases.
-The graph may represent:
+30. KNOWLEDGE GRAPH BOUNDARY
+The Knowledge Graph represents entities, relationships, facts, claims, dependencies, concepts, and other knowledge structures.
+It does not automatically replace operational systems.
+For example:
 text
 Person
 Organization
@@ -548,28 +801,30 @@ Event
 Relationship
 Concept
 
-but canonical ownership remains with the relevant domain.
+may be represented in the graph while canonical operational ownership remains elsewhere.
 
 ───
 
-28. Memory Boundary
+31. MEMORY BOUNDARY
 Memory is contextual persistence.
-Memory may include:
+CoreGrid may support:
 • personal memory
 • workspace memory
 • institutional memory
 • operational memory
 • episodic memory
+• semantic memory
+• procedural memory
 • agent memory
 • research memory
 • system memory
-Memory is not automatically canonical truth.
+Memory is not automatically truth.
 
 ───
 
-29. AI Memory Boundary
-AI-generated memories must be distinguishable from verified facts.
-AI memory must track where appropriate:
+32. AI MEMORY BOUNDARY
+AI-generated memories MUST remain distinguishable from verified facts.
+Where applicable, AI memory SHOULD preserve:
 text
 Source
 Timestamp
@@ -579,30 +834,30 @@ Scope
 Retention
 Owner
 Verification State
+Authority
 
-AI memory must never silently overwrite canonical state.
+AI memory MUST NOT silently overwrite canonical state.
 
 ───
 
-30. Identity Boundary
+33. IDENTITY BOUNDARY
 Identity answers:
-Who is this entity?
-Identity classes may include:
-text
-Human
-Organization
-Institution
-Service
-Agent
-Device
-Workload
-System
-
-Each identity must have appropriate ownership and lifecycle rules.
+Who or what is this actor/entity?
+Possible identity classes include:
+• human
+• organization
+• institution
+• service
+• agent
+• device
+• workload
+• system
+• external principal
+Identity lifecycle MUST be governed independently from authorization.
 
 ───
 
-31. Identity vs Membership
+34. IDENTITY VS MEMBERSHIP
 These are distinct:
 text
 IDENTITY
@@ -618,24 +873,27 @@ PERMISSION
 What may you do?
 
 POLICY
-Under what conditions may you do it?
+Under what conditions?
 
 CONTEXT
-What situation are you operating within?
+In what situation?
 
-These must not be collapsed.
+AUTHORITY
+Under whose governance?
+
+They MUST NOT be collapsed.
 
 ───
 
-32. Identity vs Tenant Boundary
+35. IDENTITY VS TENANT
 Identity does not equal tenancy.
-A human may have relationships with multiple organizations or tenants.
-Tenant isolation must therefore be enforced independently from identity representation.
+One actor may legitimately participate in multiple organizational contexts.
+Tenant isolation MUST therefore be independently enforced.
 
 ───
 
-33. Tenant Boundary
-Tenant isolation must extend across every relevant layer:
+36. TENANT BOUNDARY
+Tenant context MUST propagate through every relevant layer:
 text
 Identity
 Authorization
@@ -652,28 +910,34 @@ Memory
 AI Context
 Backups
 Integrations
+Agents
+Workflows
+Digital Twins
 
-A tenant boundary must not depend on a single database filter alone.
+Tenant isolation MUST NOT depend on a single database filter.
 
 ───
 
-34. Cross-Tenant Boundary
+37. CROSS-TENANT BOUNDARY
 Cross-tenant operations require explicit authorization.
-Accidental cross-tenant access must be prevented through:
+Controls MUST cover:
 • cache isolation
 • search filtering
-• analytics controls
+• analytics
 • background jobs
 • event routing
-• agent memory isolation
-• storage isolation
-• API authorization
-• AI context filtering
+• agent memory
+• storage
+• APIs
+• AI context
+• exports
+• backups
+• observability
 
 ───
 
-35. Sovereignty Boundary
-CoreGrid must distinguish:
+38. SOVEREIGNTY BOUNDARY
+CoreGrid MUST distinguish:
 text
 COREGRID PLATFORM AUTHORITY
 
@@ -682,18 +946,24 @@ text
 CUSTOMER / INSTITUTIONAL AUTHORITY
 
 CoreGrid provides infrastructure and governed capabilities.
-Customers retain defined control over their institutional operations, data, policies, users, and workflows.
+Customers retain defined authority over their institutional:
+• data
+• policies
+• users
+• workflows
+• operations
+• decisions
 
 ───
 
-36. Security Boundary
-Security is a platform-wide control boundary.
-No domain may bypass required security controls.
-Security enforcement must remain independent enough to prevent application-level logic from silently disabling security.
+39. SECURITY BOUNDARY
+Security is a platform-wide architectural boundary.
+No domain, agent, workflow, model, plugin, client, or integration may bypass mandatory security controls merely because doing so is convenient.
+Security enforcement SHOULD maintain sufficient independence from application logic to prevent self-authorized bypass.
 
 ───
 
-37. Trust Boundary
+40. TRUST BOUNDARY
 Trust evaluates contextual confidence and risk.
 Trust does not equal authorization.
 text
@@ -707,7 +977,9 @@ Risk
    ↓
 Trust Assessment
    ↓
-Authorization / Policy
+Policy
+   ↓
+Authorization
    ↓
 Decision
 
@@ -720,29 +992,31 @@ Unlimited Permission
 
 ───
 
-38. Authentication Boundary
-Authentication establishes identity confidence.
-It does not determine all authorization.
-Authentication and authorization remain distinct capabilities.
+41. AUTHENTICATION BOUNDARY
+Authentication establishes confidence about identity.
+It does not determine complete authorization.
+Authentication and authorization MUST remain separate architectural concerns.
 
 ───
 
-39. Authorization Boundary
-Authorization evaluates:
+42. AUTHORIZATION BOUNDARY
+Authorization evaluates at minimum:
 text
 Subject
 Resource
 Action
 Context
 Policy
+Scope
+Tenant
 
-No AI recommendation, agent claim, or UI state may silently bypass authorization.
+AI recommendations, agent claims, UI state, or workflow state MUST NOT bypass authorization.
 
 ───
 
-40. Policy Boundary
-Policies define rules governing permitted or required behavior.
-Every important policy should identify:
+43. POLICY BOUNDARY
+Policies define permitted, prohibited, required, or conditional behavior.
+Important policies SHOULD identify:
 • owner
 • scope
 • priority
@@ -751,121 +1025,135 @@ Every important policy should identify:
 • evaluation mechanism
 • enforcement point
 • audit requirements
+• jurisdiction
+• exceptions
 
 ───
 
-41. Configuration Boundary
+44. CONFIGURATION BOUNDARY
 Configuration describes how a capability operates.
-Policy describes what is permitted or required.
+Policy describes what behavior is permitted or required.
 Therefore:
 text
 CONFIGURATION ≠ POLICY
 
-Configuration must not become a hidden authorization mechanism.
+Configuration MUST NOT silently become an authorization mechanism.
 
 ───
 
-42. Agent Boundary
+45. AGENT BOUNDARY
 Agents are autonomous or semi-autonomous actors.
-An agent must have:
+Every governed agent MUST have:
 text
 Identity
+Authority Scope
 Permissions
-Scope
+Tenant Scope
 Tools
 Memory Scope
-Tenant Scope
 Risk Tier
 Execution Limits
 Audit Identity
-Policy
+Applicable Policies
+Lifecycle State
 
-Agents are not automatically equivalent to humans.
+Agents are actors, not automatic owners of the domains they operate upon.
 
 ───
 
-43. Agent Ownership Boundary
-The Agent Operating System owns:
-• agent lifecycle
-• execution runtime
-• agent registration
-• agent tool interfaces
-• agent permissions
-• agent coordination
-• agent execution state
+46. AGENT OWNERSHIP BOUNDARY
+The Agent Runtime owns agent lifecycle concerns such as:
+• registration
+• execution
+• coordination
+• tool interfaces
+• permissions
+• execution state
+• runtime controls
 A domain agent does not automatically own the domain it operates upon.
 
 ───
 
-44. Agent Delegation Boundary
+47. AGENT DELEGATION BOUNDARY
 An agent cannot delegate authority it does not possess.
+Formally:
 text
-Agent A
-   ↓
-Delegates only
-   ↓
-Authority ≤ Authority(A)
+Delegated Authority
+≤
+Delegator Authority
 
-Agent-to-agent trust must be explicit.
+Agent-to-agent delegation MUST preserve:
+• identity
+• provenance
+• scope
+• tenant
+• policy
+• risk
+• expiration
+• auditability
 
 ───
 
-45. Agent Memory Boundary
-Agents must not automatically share private memory.
-Memory sharing requires:
+48. AGENT MEMORY BOUNDARY
+Agents MUST NOT automatically share private memory.
+Memory sharing requires appropriate:
 • permission
 • scope
 • provenance
 • tenant compatibility
 • policy validation
+• purpose
+• retention
 
 ───
 
-46. Agent-to-Service Boundary
-Agents must access services through governed identities and capabilities.
-Services must not blindly trust agent-provided claims.
+49. AGENT-TO-SERVICE BOUNDARY
+Agents access services through governed identities and capabilities.
+Services MUST NOT blindly trust claims supplied by an agent.
+The service independently evaluates authorization.
 
 ───
 
-47. AI Boundary
-AI Intelligence provides:
+50. AI BOUNDARY
+AI Intelligence may provide:
 • inference
 • reasoning
-• model routing
 • retrieval
+• model routing
 • contextualization
-• model evaluation
-• intelligence services
+• prediction
+• simulation
+• evaluation
+• decision support
 AI does not automatically own:
 • identity
 • canonical domain state
 • financial truth
 • authorization
 • policy authority
-• institutional decisions
+• institutional authority
 
 ───
 
-48. Model Vendor Boundary
-CoreGrid must remain model-provider neutral.
-Preferred architecture:
+51. MODEL PROVIDER BOUNDARY
+CoreGrid SHOULD remain model-provider neutral.
+Preferred:
 text
-CoreGrid AI Contract
-        ↓
+CoreGrid Intelligence Contract
+          ↓
 Model Gateway
-        ↓
-Model Adapter
-        ↓
-Provider
+          ↓
+Provider Adapter
+          ↓
+Model Provider
 
-External models are replaceable reasoning infrastructure.
-Provider-specific concepts should not leak into CoreGrid domain models unless explicitly required.
+Provider-specific implementation details MUST NOT leak into CoreGrid domain semantics unless explicitly justified.
 
 ───
 
-49. Model Promotion Boundary
-A model must not enter production simply because benchmark accuracy improved.
-Promotion must evaluate:
+52. MODEL PROMOTION BOUNDARY
+Model promotion MUST consider more than benchmark performance.
+Evaluation SHOULD include:
 • accuracy
 • robustness
 • safety
@@ -876,32 +1164,32 @@ Promotion must evaluate:
 • cost
 • reliability
 • regression
-• explainability
 • operational impact
+• compatibility
+• failure behavior
 
 ───
 
-50. AI Output Boundary
-AI output must be classified.
-Possible levels:
+53. AI OUTPUT BOUNDARY
+AI outputs SHOULD be classified:
 text
 INFORMATION
-      ↓
+   ↓
 RECOMMENDATION
-      ↓
+   ↓
 PREDICTION
-      ↓
+   ↓
 DECISION SUPPORT
-      ↓
-COMMAND PROPOSAL
-      ↓
-EXECUTABLE ACTION
+   ↓
+ACTION PROPOSAL
+   ↓
+AUTHORIZED EXECUTION
 
-Risk increases as the system moves downward.
+Moving downward requires progressively stronger governance.
 
 ───
 
-51. Recommendation Boundary
+54. RECOMMENDATION BOUNDARY
 Recommendations are not decisions.
 text
 AI Recommendation
@@ -910,37 +1198,38 @@ Governed Decision
        ↓
 Authorized Action
 
-AI must not silently transform advice into execution.
+AI MUST NOT silently transform advice into execution.
 
 ───
 
-52. Autonomous Action Boundary
-Autonomous actions require:
+55. AUTONOMOUS ACTION BOUNDARY
+Autonomous action requires:
 • identity
 • authorization
 • policy
-• risk assessment
 • scope
+• risk evaluation
+• capability authorization
 • audit
 • execution controls
-• rollback or compensation where feasible
+• compensation or rollback where feasible
 High-impact actions require stronger controls.
 
 ───
 
-53. Human Authority Boundary
-Where policy requires human approval:
+56. HUMAN AUTHORITY BOUNDARY
+Where human approval is required:
 text
 AI cannot simulate approval.
 Agent cannot simulate approval.
 Workflow cannot simulate approval.
 
-A real authorized human approval must remain distinguishable from machine-generated approval.
+A genuine authorized human approval MUST remain distinguishable from machine-generated output.
 
 ───
 
-54. Automation Boundary
-Automation owns execution coordination.
+57. AUTOMATION BOUNDARY
+Automation coordinates execution.
 It does not own the domains it orchestrates.
 text
 Automation
@@ -951,35 +1240,41 @@ Domain Owner
    ↓
 Canonical State
 
-Automation must respect domain authorization.
+Automation MUST respect domain authorization.
 
 ───
 
-55. Workflow Boundary
+58. WORKFLOW BOUNDARY
 A workflow may coordinate multiple capabilities.
-A workflow does not become the owner of those capabilities.
-Cross-domain workflows should use appropriate orchestration, saga, event, or compensation patterns.
+It does not become the owner of those capabilities.
+Cross-domain workflows SHOULD use:
+• orchestration
+• events
+• sagas
+• compensation
+• explicit transaction mechanisms where justified
 
 ───
 
-56. Digital Twin Boundary
-A Digital Twin is a computational representation.
+59. DIGITAL TWIN BOUNDARY
+A Digital Twin is a computational representation of some real or conceptual entity, process, environment, or system.
 It may represent:
 • people
 • organizations
-• devices
 • buildings
-• rooms
+• devices
 • vehicles
-• environments
 • resources
+• environments
 • processes
-A twin does not automatically become the canonical owner of the represented entity.
+• institutions
+• operational systems
+The twin does not automatically become canonical ownership.
 
 ───
 
-57. Digital Twin Synchronization Boundary
-Twin synchronization must define:
+60. DIGITAL TWIN SYNCHRONIZATION BOUNDARY
+Every synchronization relationship SHOULD define:
 text
 Source of Truth
 Direction
@@ -989,56 +1284,59 @@ Conflict Resolution
 Temporal Model
 Uncertainty
 Provenance
+Reconciliation
 
-The twin must remain distinguishable from physical reality.
+The twin MUST remain distinguishable from the represented reality.
 
 ───
 
-58. Physical World Boundary
-CoreGrid must distinguish:
+61. PHYSICAL WORLD BOUNDARY
+CoreGrid MUST distinguish:
 text
 PHYSICAL REALITY
        ↓
-SENSORS / INPUTS
+SENSING
        ↓
-OBSERVATIONS
+OBSERVATION
        ↓
-DIGITAL REPRESENTATION
+REPRESENTATION
        ↓
-INSTITUTIONAL INTERPRETATION
+INTERPRETATION
        ↓
 DECISION
        ↓
 AUTHORIZED ACTION
        ↓
 PHYSICAL EFFECT
+       ↓
+OBSERVATION
 
-No digital representation should be treated as reality without uncertainty and provenance.
+Digital representation is never automatically identical to physical reality.
 
 ───
 
-59. Hardware Boundary
-Hardware integration owns:
-• device connectivity
-• hardware protocols
+62. HARDWARE BOUNDARY
+Hardware integration governs:
+• connectivity
+• protocols
 • adapters
-• device telemetry
-• hardware commands
+• telemetry
+• device commands
 Hardware does not independently determine institutional policy.
 
 ───
 
-60. Device Identity Boundary
-Devices have identities distinct from:
-• human users
-• services
-• agents
-• organizations
-Device identity must be governed independently.
+63. DEVICE IDENTITY BOUNDARY
+Device identity is distinct from:
+• human identity
+• service identity
+• agent identity
+• organizational identity
+Devices require independent lifecycle and trust management.
 
 ───
 
-61. Infrastructure Boundary
+64. INFRASTRUCTURE BOUNDARY
 Infrastructure provides:
 • compute
 • networking
@@ -1051,12 +1349,12 @@ Infrastructure does not own business-domain meaning.
 
 ───
 
-62. Cloud Boundary
-The relationship is:
+65. CLOUD BOUNDARY
+Preferred dependency direction:
 text
 Domain Capability
        ↓
-Platform Contract
+CoreGrid Contract
        ↓
 Runtime
        ↓
@@ -1068,13 +1366,13 @@ Never:
 text
 Cloud Provider
        ↓
-Business Logic
+Business Semantics
 
 
 ───
 
-63. Deployment Boundary
-CoreGrid must support appropriate deployment models without changing domain ownership:
+66. DEPLOYMENT BOUNDARY
+CoreGrid SHOULD support:
 • CoreGrid-managed cloud
 • customer cloud
 • BYOC
@@ -1083,13 +1381,13 @@ CoreGrid must support appropriate deployment models without changing domain owne
 • on-premises
 • hybrid
 • edge
-• air-gapped environments
-Deployment topology must not redefine business semantics.
+• air-gapped deployment
+Deployment topology MUST NOT redefine business semantics.
 
 ───
 
-64. BYOC Boundary
-Bring Your Own Cloud must preserve:
+67. BYOC BOUNDARY
+Bring Your Own Cloud preserves:
 text
 CoreGrid Governance
        ↓
@@ -1097,24 +1395,25 @@ Customer Infrastructure Boundary
        ↓
 Customer Runtime
 
-CoreGrid must not assume unrestricted control over customer infrastructure.
+CoreGrid MUST NOT assume unrestricted control over customer infrastructure.
 
 ───
 
-65. Edge Boundary
-Edge deployments may operate with intermittent connectivity.
-Offline or degraded operation must define:
+68. EDGE BOUNDARY
+Edge environments may experience intermittent connectivity.
+Edge operation MUST define:
 • cached state
-• allowed actions
+• permitted actions
 • synchronization
-• conflict handling
+• conflict resolution
 • security behavior
+• expiry
 • recovery
-Offline mode must never become an implicit policy bypass.
+Offline operation MUST NOT become an implicit policy bypass.
 
 ───
 
-66. Client Boundary
+69. CLIENT BOUNDARY
 Clients may:
 • render
 • collect input
@@ -1122,12 +1421,12 @@ Clients may:
 • display state
 • invoke authorized commands
 • use approved device capabilities
-Clients must not become canonical owners of backend state.
+Clients MUST NOT become canonical owners of backend state.
 
 ───
 
-67. Dynamic Workspace Boundary
-The CoreGrid workspace layer should compose experience from:
+70. DYNAMIC WORKSPACE BOUNDARY
+CoreGrid workspaces SHOULD compose experience from:
 text
 Identity
 +
@@ -1149,18 +1448,21 @@ Device
 +
 State
 
-The workspace must not hard-code every possible organizational role.
+The workspace SHOULD remain dynamic rather than hard-coding every possible organizational structure.
 
 ───
 
-68. UI Authorization Boundary
+71. UI AUTHORIZATION BOUNDARY
 UI visibility is not authorization.
-Hiding a button does not grant or revoke backend permission.
-Backend enforcement remains authoritative.
+text
+Hidden Button ≠ Denied Permission
+Visible Button ≠ Granted Permission
+
+Backend authorization remains authoritative.
 
 ───
 
-69. Personalization Boundary
+72. PERSONALIZATION BOUNDARY
 Personalization may modify:
 • presentation
 • recommendations
@@ -1168,7 +1470,7 @@ Personalization may modify:
 • explanations
 • shortcuts
 • workspace composition
-Personalization must not silently modify:
+It MUST NOT silently modify:
 • authorization
 • policy
 • canonical truth
@@ -1177,9 +1479,9 @@ Personalization must not silently modify:
 
 ───
 
-70. Integration Boundary
-External systems must terminate at controlled integration boundaries.
-Preferred model:
+73. INTEGRATION BOUNDARY
+External systems MUST terminate at controlled integration boundaries.
+Preferred:
 text
 External System
        ↓
@@ -1193,44 +1495,47 @@ CoreGrid Contract
        ↓
 Domain Owner
 
-External systems must not directly write internal stores.
+External systems MUST NOT directly mutate private internal stores.
 
 ───
 
-71. External Data Boundary
-External data must remain distinguishable from CoreGrid-originated canonical data.
-External data should retain:
+74. EXTERNAL DATA BOUNDARY
+External data MUST remain distinguishable from CoreGrid-originated canonical state.
+External data SHOULD retain:
 • source
 • timestamp
 • provenance
 • licensing
 • confidence
 • transformation history
+• freshness
+• jurisdiction
 
 ───
 
-72. External AI Boundary
-External AI providers must receive only explicitly authorized data.
-They must not automatically receive:
+75. EXTERNAL AI BOUNDARY
+External AI providers receive only explicitly authorized data.
+They MUST NOT automatically receive:
 • unrestricted tenant data
 • credentials
 • secrets
 • private memory
-• privileged system prompts
+• privileged system instructions
 • unnecessary personal information
 
 ───
-73. Vendor Boundary
-Major third-party dependencies should be replaceable where reasonably practical.
-CoreGrid should isolate vendor-specific implementations behind adapters.
-Vendor failure must not automatically become CoreGrid failure.
+
+76. VENDOR BOUNDARY
+Major third-party dependencies SHOULD be isolated behind adapters where practical.
+Vendor failure SHOULD degrade only the capabilities dependent upon that vendor.
+Vendor implementation MUST NOT silently become CoreGrid architecture.
 
 ───
 
-74. Payment Boundary
-Payment providers are external mechanisms.
-The payment provider does not own the CoreGrid financial ledger.
-Preferred model:
+77. PAYMENT BOUNDARY
+Payment providers are external transaction mechanisms.
+They do not own the CoreGrid financial ledger.
+Preferred:
 text
 CoreGrid Financial Contract
        ↓
@@ -1238,29 +1543,30 @@ Payment Abstraction
        ↓
 Provider
 
+Payment confirmation MUST be reconciled against canonical financial state.
 
 ───
 
-75. Communication Vendor Boundary
-Email, SMS, push, voice, and messaging providers must operate behind communication contracts.
-Provider-specific APIs must not leak throughout the platform.
+78. COMMUNICATION VENDOR BOUNDARY
+Email, SMS, push, voice, and messaging providers operate behind communication contracts.
+Provider-specific APIs MUST NOT leak throughout domain logic.
 
 ───
 
-76. Marketplace Boundary
-Marketplace extensions must operate through controlled:
+79. MARKETPLACE BOUNDARY
+Marketplace extensions operate through controlled:
 • APIs
 • SDKs
 • events
 • capabilities
 • permissions
 • webhooks
-Marketplace software must not receive unrestricted internal access.
+Marketplace software MUST NOT receive unrestricted internal access.
 
 ───
 
-77. Plugin Boundary
-Plugins must have:
+80. PLUGIN BOUNDARY
+Plugins MUST have:
 text
 Identity
 Version
@@ -1270,34 +1576,42 @@ Tenant Scope
 Resource Scope
 Audit
 Revocation
+Lifecycle
 
-No plugin is trusted merely because it was installed.
+Installation does not imply trust.
 
 ───
 
-78. Developer Platform Boundary
-Developers receive capabilities, not unrestricted internals.
-Developer interfaces should expose:
-• stable APIs
+81. DEVELOPER PLATFORM BOUNDARY
+Developers receive capabilities rather than unrestricted internals.
+Developer surfaces SHOULD expose:
+• APIs
 • SDKs
 • documentation
-• webhooks
 • events
+• webhooks
 • extension contracts
 • sandbox environments
-Internal architecture remains protected.
+Private architecture remains protected.
 
 ───
 
-79. Sandbox Boundary
-Developer and experimental environments must be isolated from production.
-Experimental code, agents, models, credentials, and datasets must not silently cross into production.
+82. SANDBOX BOUNDARY
+Experimental environments MUST remain isolated from production.
+Experimental:
+• agents
+• models
+• credentials
+• datasets
+• code
+• integrations
+MUST NOT silently cross into production.
 
 ───
 
-80. Research Boundary
+83. RESEARCH BOUNDARY
 Research systems are not production systems.
-The promotion path is:
+Promotion follows:
 text
 Research
    ↓
@@ -1313,11 +1627,12 @@ Controlled Deployment
    ↓
 Monitoring
 
+Research output is evidence for evaluation, not automatically production truth.
 
 ───
 
-81. Production Boundary
-Production must be protected from:
+84. PRODUCTION BOUNDARY
+Production MUST be protected from:
 • experimental agents
 • unapproved models
 • development credentials
@@ -1328,40 +1643,40 @@ Production must be protected from:
 
 ───
 
-82. CI/CD Boundary
+85. CI/CD BOUNDARY
 CI/CD may deploy approved software.
-CI/CD must not automatically become unrestricted production authority.
-Production deployments require appropriate:
-• authentication
+CI/CD MUST NOT automatically become unrestricted production authority.
+Production deployment requires appropriate:
+• identity
 • authorization
+• environment controls
 • approval
 • audit
 • rollback
-• environment controls
 
 ───
 
-83. Secrets Boundary
-Secrets must remain inside approved secret-management mechanisms.
-Secrets must never be:
-• committed to source control
+86. SECRETS BOUNDARY
+Secrets MUST remain inside approved secret-management mechanisms.
+Secrets MUST NOT be:
+• committed to source
 • embedded in source code
-• placed in ordinary logs
 • exposed to clients
+• placed in ordinary logs
 • transmitted through ordinary events
-• unnecessarily placed into AI prompts
+• unnecessarily included in AI prompts
 • stored in unrestricted agent memory
 
 ───
 
-84. Credential Boundary
+87. CREDENTIAL BOUNDARY
 Credentials belong to appropriate identity/security systems.
-Applications and agents should receive only the credential material necessary for their authorized operation.
+Applications and agents SHOULD receive only the credential material necessary for authorized operation.
 
 ───
 
-85. API Boundary
-Every externally consumable API must define:
+88. API BOUNDARY
+Every externally consumable API MUST define:
 • identity
 • authentication
 • authorization
@@ -1375,15 +1690,15 @@ Every externally consumable API must define:
 
 ───
 
-86. Event Bus Boundary
-The event infrastructure transports events.
-It does not own the semantic meaning of those events.
-The domain that produced the event remains authoritative for the underlying state.
+89. EVENT BUS BOUNDARY
+The event bus transports events.
+It does not own the meaning of those events.
+The producer remains authoritative for the underlying domain state.
 
 ───
 
-87. Message Boundary
-Messages should be:
+90. MESSAGE BOUNDARY
+Messages SHOULD be:
 • authenticated
 • validated
 • versioned
@@ -1394,19 +1709,20 @@ Messages should be:
 
 ───
 
-88. Data Residency Boundary
-Data residency requirements must be explicit.
-Regional deployment must respect:
-• applicable jurisdiction
-• contractual requirements
+91. DATA RESIDENCY BOUNDARY
+Data residency requirements MUST be explicit.
+Regional deployment must respect applicable:
+• jurisdiction
+• contracts
 • institutional policy
-• network constraints
+• network restrictions
 • retention requirements
+• sovereignty requirements
 
 ───
 
-89. Privacy Boundary
-Privacy controls apply across the entire ecosystem:
+92. PRIVACY BOUNDARY
+Privacy controls apply across:
 text
 Applications
 Data
@@ -1419,13 +1735,14 @@ Logs
 Events
 Integrations
 Backups
+Observability
 
-Security monitoring must not become unrestricted surveillance.
+Security monitoring MUST NOT become unrestricted surveillance.
 
 ───
 
-90. Data Classification Boundary
-CoreGrid should classify sensitive information according to platform policy.
+93. DATA CLASSIFICATION BOUNDARY
+CoreGrid SHOULD classify information according to governance policy.
 Example:
 text
 PUBLIC
@@ -1438,7 +1755,7 @@ Classification may evolve through governance.
 
 ───
 
-91. Data Sharing Boundary
+94. DATA SHARING BOUNDARY
 Data sharing requires:
 text
 Source Owner
@@ -1450,12 +1767,12 @@ Retention
 Jurisdiction
 Audit
 
-Existence of technical connectivity does not imply permission to share data.
+Technical connectivity does not imply permission.
 
 ───
 
-92. Import Boundary
-Imported data must pass through:
+95. IMPORT BOUNDARY
+Imported data MUST pass through:
 text
 Validation
    ↓
@@ -1468,13 +1785,15 @@ Tenant Assignment
 Authorization
    ↓
 Domain Contract
+   ↓
+Canonicalization
 
-Unvalidated external data must not become canonical truth.
+Unvalidated external data MUST NOT become canonical truth.
 
 ───
 
-93. Export Boundary
-Exports must respect:
+96. EXPORT BOUNDARY
+Exports MUST respect:
 • identity
 • authorization
 • tenant scope
@@ -1483,11 +1802,12 @@ Exports must respect:
 • retention
 • audit
 • jurisdiction
+• purpose
 
 ───
 
-94. Synchronization Boundary
-Every synchronization relationship must define:
+97. SYNCHRONIZATION BOUNDARY
+Every synchronization relationship MUST define:
 text
 Source of Truth
 Direction
@@ -1496,76 +1816,99 @@ Conflict Strategy
 Failure Strategy
 Provenance
 Ownership
+Temporal Semantics
 
 Replication does not transfer ownership.
 
 ───
 
-95. Transaction Boundary
-Transactions should remain within appropriate domain boundaries.
-Cross-domain operations should prefer:
+98. TRANSACTION BOUNDARY
+Transactions SHOULD remain within appropriate domain boundaries.
+Cross-domain operations SHOULD prefer:
 • orchestration
 • events
 • sagas
 • compensation
-• explicit distributed transaction mechanisms only when justified
+• explicitly justified distributed transactions
 
 ───
 
-96. Saga Boundary
-A saga coordinates multiple operations.
-It does not own the domains involved.
+99. SAGA BOUNDARY
+A saga coordinates multiple domain operations.
+It does not own the domains participating in the saga.
 
 ───
 
-97. Idempotency Boundary
-Retryable commands must define idempotency where duplicate execution could cause harm.
-Particularly important for:
+100. IDEMPOTENCY BOUNDARY
+Retryable commands MUST define idempotency where duplicate execution could cause harm.
+Especially:
 • payments
 • notifications
-• external integrations
 • provisioning
+• external integrations
 • autonomous actions
 • administrative operations
 
 ───
 
-98. Temporal Boundary
-CoreGrid must distinguish:
+101. TEMPORAL BOUNDARY
+CoreGrid MUST distinguish:
 text
 Event Time
+Observation Time
 Processing Time
 Effective Time
-Expiration Time
-Observation Time
 Decision Time
 Execution Time
+Expiration Time
+Validity Window
+Version Time
 
-Time must not be treated as a single universal timestamp.
+Time is not one universal timestamp.
 
 ───
 
-99. Consistency Boundary
-Each domain must explicitly define its consistency requirements.
-Not every operation requires global strong consistency.
+102. CAUSAL BOUNDARY
+Causality MUST remain distinct from structural dependency.
+A causal relationship may describe:
+text
+ENABLES
+CAUSES
+CONDITIONS
+BLOCKS
+COMPENSATES
+DERIVES
+INVALIDATES
+TRIGGERS
+
+A causal relationship does not automatically grant ownership or software dependency.
+
+───
+
+103. CONSISTENCY BOUNDARY
+Each domain MUST explicitly define its consistency requirements.
+CoreGrid MUST NOT impose global strong consistency where unnecessary.
 Consistency models must be intentional.
 
 ───
 
-100. Failure Boundary
-A subsystem must not assume all dependencies are permanently available.
-Critical dependencies require appropriate:
+104. FAILURE BOUNDARY
+A subsystem MUST NOT assume permanent dependency availability.
+Critical dependencies SHOULD define:
 • timeout
 • retry
 • fallback
 • circuit breaking
 • backpressure
+• queueing
+• degradation
 • recovery
+• compensation
 
 ───
 
-101. Blast Radius Boundary
-Every major subsystem should minimize:
+105. BLAST-RADIUS BOUNDARY
+Every major subsystem SHOULD minimize:
 text
 Failure Blast Radius
 Security Blast Radius
@@ -1580,38 +1923,40 @@ A local failure should remain local whenever architecture permits.
 
 ───
 
-102. Availability Boundary
-High-availability capabilities must not silently depend on low-availability capabilities in critical paths.
-Dependencies must have explicit availability requirements.
+106. AVAILABILITY BOUNDARY
+High-availability capabilities MUST NOT silently depend on low-availability components in critical paths.
+Availability requirements MUST be explicit.
 
 ───
 
-103. Disaster Recovery Boundary
-Recovery systems must preserve:
+107. DISASTER RECOVERY BOUNDARY
+Recovery systems MUST preserve:
 • tenant isolation
 • encryption
 • authorization
 • provenance
-• data integrity
+• integrity
 • regional restrictions
-Disaster recovery must not become a security bypass.
+• deletion requirements
+Disaster recovery MUST NOT become a security bypass.
 
 ───
 
-104. Backup Boundary
+108. BACKUP BOUNDARY
 Backups require:
 • ownership
 • encryption
 • retention
+• access control
 • restoration procedures
-• access controls
 • integrity verification
-Backups remain subject to applicable data governance.
+• jurisdictional handling
+Backups remain governed data.
 
 ───
 
-105. Deletion Boundary
-Deletion must consider derived systems where legally and technically required:
+109. DELETION BOUNDARY
+Deletion semantics MUST consider relevant derived systems:
 text
 Canonical Data
       ↓
@@ -1625,15 +1970,17 @@ Analytics
       ↓
 Memory
       ↓
-Backups / Replicas
+Replicas
+      ↓
+Backups
 
-Deletion semantics must be explicitly governed.
+Not every layer necessarily deletes identically, but every layer MUST have defined deletion semantics.
 
 ───
 
-106. Audit Boundary
-Important actions must be auditable.
-Audit should capture where appropriate:
+110. AUDIT BOUNDARY
+Important actions SHOULD be auditable.
+Audit may capture:
 text
 WHO
 WHAT
@@ -1647,14 +1994,14 @@ RESOURCE
 CORRELATION
 EVIDENCE
 
-Audit records must receive appropriate integrity protection.
+Audit integrity MUST be appropriately protected.
 
 ───
 
-107. Provenance Boundary
-Important knowledge, data, decisions, and AI outputs should retain provenance sufficient to answer:
+111. PROVENANCE BOUNDARY
+Important data, knowledge, decisions, and AI outputs SHOULD retain enough provenance to answer:
 text
-Where did this come from?
+Where did this originate?
 
 When was it obtained?
 
@@ -1662,39 +2009,45 @@ Who or what produced it?
 
 What transformations occurred?
 
+What evidence supports it?
+
+What authority applies?
+
+What scope does it have?
+
 How reliable is it?
 
-What scope does it apply to?
-
 
 ───
 
-108. Observability Boundary
-Observability may observe systems.
+112. OBSERVABILITY BOUNDARY
+Observability observes systems.
 Observability does not become business-domain ownership.
-Telemetry must be privacy-aware and appropriately scoped.
+Telemetry MUST remain privacy-aware, tenant-aware, and appropriately scoped.
 
 ───
 
-109. Trace Boundary
-Cross-service operations should preserve appropriate:
+113. TRACE BOUNDARY
+Cross-system operations SHOULD preserve appropriate:
 • correlation IDs
 • trace IDs
 • request IDs
 • tenant context
 • actor context
-Sensitive information must not be unnecessarily propagated through traces.
+Sensitive information MUST NOT be unnecessarily propagated through traces.
 
 ───
 
-110. Compliance Boundary
-Compliance responsibilities must map to explicit technical and organizational owners.
-Compliance must not become an undefined "CoreGrid owns everything" responsibility.
+114. COMPLIANCE BOUNDARY
+Compliance responsibilities MUST map to explicit technical and organizational owners.
+Compliance MUST NOT become an undefined:
+“CoreGrid owns everything”
+responsibility.
 
 ───
 
-111. Regulatory Boundary
-Regulatory requirements should be represented through:
+115. REGULATORY BOUNDARY
+Regulatory requirements SHOULD be represented as:
 text
 Policy
 +
@@ -1706,13 +2059,12 @@ Owner
 +
 Verification
 
-rather than scattered hard-coded logic.
+rather than scattered hard-coded assumptions.
 
 ───
 
-112. Institutional Domain Boundary
-CoreGrid may host multiple domains.
-Examples may include:
+116. INSTITUTIONAL DOMAIN BOUNDARY
+CoreGrid may host multiple domains, including:
 • education
 • workforce
 • finance
@@ -1723,48 +2075,49 @@ Examples may include:
 • commerce
 • research
 • enterprise operations
-The domain registry remains authoritative.
-One domain must not silently absorb another domain's canonical truth.
+• agriculture
+• energy
+• industrial systems
+Domain ownership MUST remain explicit.
 
 ───
 
-113. Education Domain Boundary
-Educational systems may own educational meaning such as:
-• academic structures
+117. EDUCATION DOMAIN BOUNDARY
+Educational runtimes may own educational meaning such as:
 • curriculum
 • assessment
 • enrollment
 • learning
 • attendance
+• academic structures
 • educational workflows
-They must consume foundational platform capabilities rather than recreate them.
+They consume platform primitives rather than recreating universal infrastructure.
 
 ───
 
-114. Workforce Boundary
+118. WORKFORCE BOUNDARY
 Workforce systems may own:
 • workforce records
 • assignments
 • employment semantics
 • staff workflows
-They do not become the identity authority.
+They do not automatically become the universal identity authority.
 
 ───
 
-115. Financial Boundary
-Financial systems own:
-• financial accounts
+119. FINANCIAL BOUNDARY
+Financial systems own canonical:
+• accounts
 • transactions
 • invoices
 • payments
 • ledger state
 • reconciliation
-No other subsystem may directly mutate canonical financial state.
+Other systems MUST NOT directly mutate canonical financial state.
 
 ───
-
-116. Government Boundary
-Government capabilities must define:
+120. GOVERNMENT BOUNDARY
+Government capabilities MUST define:
 • jurisdiction
 • legal basis
 • data scope
@@ -1776,7 +2129,7 @@ Government visibility does not automatically imply universal platform visibility
 
 ───
 
-117. Institutional Sovereignty Boundary
+121. INSTITUTIONAL SOVEREIGNTY BOUNDARY
 Institutions retain defined authority over:
 • institutional configuration
 • authorized users
@@ -1784,63 +2137,64 @@ Institutions retain defined authority over:
 • institutional workflows
 • institution-owned data
 • operational decisions
-CoreGrid provides infrastructure and governed capabilities.
+CoreGrid supplies governed infrastructure.
 
 ───
 
-118. Executive Boundary
+122. EXECUTIVE BOUNDARY
 Executive visibility does not automatically grant unrestricted technical access.
 Executive capabilities remain policy-governed.
 
 ───
 
-119. Support Boundary
-CoreGrid support access must be:
+123. SUPPORT BOUNDARY
+Support access MUST be:
 • scoped
 • authorized
 • auditable
 • revocable
 • time-limited where appropriate
-Support personnel must not silently bypass tenant security.
+Support personnel MUST NOT silently bypass tenant security.
 
 ───
 
-120. Break-Glass Boundary
-Emergency access must:
-• be explicit
-• be strongly audited
-• have limited scope
-• trigger appropriate alerts
-• expire
-• remain reviewable
+124. BREAK-GLASS BOUNDARY
+Emergency access MUST be:
+• explicit
+• strongly audited
+• limited in scope
+• alert-generating
+• temporary
+• reviewable
+Break-glass access is an exception, not a normal operating path.
 
 ───
 
-121. Delegation Boundary
-Delegated authority must be:
+125. DELEGATION BOUNDARY
+Delegated authority MUST be:
 • explicit
 • scoped
 • time-bound where appropriate
 • auditable
 • revocable
-Delegation cannot exceed the delegator's authority.
+Delegation MUST NOT exceed delegator authority.
 
 ───
 
-122. Impersonation Boundary
-Impersonation must preserve the distinction between:
+126. IMPERSONATION BOUNDARY
+Impersonation MUST preserve:
 text
 Actual Actor
-      +
++
 Impersonated Subject
 
-Both must be auditable.
+Both MUST remain auditable.
 
 ───
 
-123. Dynamic Role Boundary
-Roles must not become permanent hard-coded UI architectures.
-Preferred model:
+127. DYNAMIC ROLE BOUNDARY
+Roles MUST NOT become permanent UI architectures.
+Preferred:
 text
 Identity
 +
@@ -1861,53 +2215,66 @@ Dynamic Experience
 
 ───
 
-124. Multi-Role Boundary
+128. MULTI-ROLE BOUNDARY
 A user may have multiple authorized roles.
-The platform must evaluate the complete applicable context.
-The assumption of one user = one role is prohibited at the platform architecture level.
+The architecture MUST NOT assume:
+text
+One User = One Role
+
+Authorization must evaluate the applicable context.
 
 ───
 
-125. Temporary Authority Boundary
-Temporary assignments must define:
+129. TEMPORARY AUTHORITY BOUNDARY
+Temporary assignments MUST define:
 • start
 • end
 • scope
 • permissions
 • policy
 • audit
-Expired authority must not remain active accidentally.
+Expired authority MUST NOT remain active accidentally.
 
 ───
 
-126. Client Offline Boundary
-Offline operation must define:
+130. CLIENT OFFLINE BOUNDARY
+Offline operation MUST define:
 • permitted cached data
 • permitted commands
-• expiration
+• expiry
 • synchronization
 • conflict resolution
 • security behavior
-Offline mode cannot silently bypass policy.
+Offline operation MUST NOT silently bypass governance.
 
 ───
 
-127. AI Context Boundary
-AI context must be assembled only from authorized sources.
-The model must not receive information merely because that information exists somewhere inside CoreGrid.
-Context assembly is itself a security boundary.
+131. AI CONTEXT BOUNDARY
+AI context assembly is itself a security boundary.
+The model MUST receive only information the invoking actor/capability is authorized to use.
+The fact that information exists somewhere inside CoreGrid does not make it eligible for model context.
 
 ───
 
-128. Prompt Boundary
-System governance instructions and privileged context must remain protected from ordinary untrusted content.
-Prompt injection must be treated as an untrusted-input and authority-boundary problem.
-User-controlled content must never silently become system authority.
+132. PROMPT BOUNDARY
+Privileged instructions and governance context MUST remain distinguishable from untrusted content.
+Prompt injection is therefore treated as an:
+text
+INPUT TRUST
++
+AUTHORITY
++
+CONTEXT
++
+EXECUTION
+
+boundary problem.
+User-controlled content MUST NOT silently become system authority.
 
 ───
 
-129. Tool Boundary
-Every AI tool must define:
+133. TOOL BOUNDARY
+Every AI tool MUST define:
 text
 Tool Identity
 Permission
@@ -1918,12 +2285,13 @@ Output Validation
 Tenant Scope
 Audit
 Revocation
+Lifecycle
 
 
 ───
 
-130. AI-to-Action Boundary
-The following transformation requires explicit governance:
+134. AI-TO-ACTION BOUNDARY
+High-impact transformations MUST follow:
 text
 AI Output
     ↓
@@ -1937,54 +2305,51 @@ Risk Evaluation
     ↓
 Execution
     ↓
+Observation
+    ↓
 Audit
 
 No shortcut is permitted for high-impact operations.
 
 ───
 
-131. Autonomous Risk Boundary
-Autonomy should be risk-tiered.
-Example:
+135. AUTONOMOUS RISK BOUNDARY
+Autonomy MUST be risk-tiered.
+A conceptual model:
 text
-TIER 0
-Informational
+TIER 0 — INFORMATIONAL
 
-TIER 1
-Low-risk reversible
+TIER 1 — LOW-RISK / REVERSIBLE
 
-TIER 2
-Moderate-risk
+TIER 2 — MODERATE-RISK
 
-TIER 3
-High-impact
+TIER 3 — HIGH-IMPACT
 
-TIER 4
-Critical / Human Approval
+TIER 4 — CRITICAL / HUMAN APPROVAL
 
-The exact taxonomy is governed centrally.
+The canonical taxonomy remains governed centrally.
 
 ───
 
-132. Safety Boundary
-Safety mechanisms must have sufficient independence to stop unsafe behavior.
-An AI component must not be the sole authority determining whether its own action is safe.
+136. SAFETY BOUNDARY
+Safety mechanisms MUST have sufficient independence to prevent an autonomous component from being the sole authority determining whether its own action is safe.
 
 ───
 
-133. Kill-Switch Boundary
-Critical autonomous capabilities must support controlled disablement.
-Kill switches must themselves be:
+137. KILL-SWITCH BOUNDARY
+Critical autonomous capabilities MUST support controlled disablement.
+Kill switches MUST be:
 • authenticated
 • authorized
 • audited
 • tested
-• protected from accidental activation
+• protected against accidental activation
+• protected against unauthorized activation
 
 ───
 
-134. Rollback Boundary
-Reversible automated operations should define:
+138. ROLLBACK BOUNDARY
+Reversible automated operations SHOULD define:
 • rollback
 • compensation
 • retry
@@ -1993,8 +2358,8 @@ where technically feasible.
 
 ───
 
-135. Cost Boundary
-Expensive operations must expose sufficient metadata for:
+139. COST BOUNDARY
+Expensive operations SHOULD expose:
 text
 Tenant
 Capability
@@ -2005,28 +2370,30 @@ Usage
 Cost
 Time
 
-Cost attribution must remain distinct from financial ownership.
+Cost attribution MUST remain distinct from financial ownership.
 
 ───
 
-136. Performance Boundary
-Performance optimization must never violate:
+140. PERFORMANCE BOUNDARY
+Performance optimization MUST NOT violate:
 • authorization
 • tenant isolation
-• data ownership
+• ownership
 • policy
 • auditability
+• security
+• correctness
 
 ───
 
-137. Scalability Boundary
-Scaling one capability should not require unnecessary scaling of unrelated capabilities.
-CoreGrid should support independent scaling where architecture permits.
+141. SCALABILITY BOUNDARY
+Scaling one capability SHOULD NOT unnecessarily require scaling unrelated capabilities.
+Independent scaling SHOULD be preserved where architecture permits.
 
 ───
 
-138. Extension Boundary
-Extensions must operate through governed:
+142. EXTENSION BOUNDARY
+Extensions operate through governed:
 text
 API
 SDK
@@ -2039,8 +2406,8 @@ No extension may silently acquire internal platform privileges.
 
 ───
 
-139. Architecture Exception Boundary
-An architectural exception requires:
+143. ARCHITECTURE EXCEPTION BOUNDARY
+Every material exception SHOULD record:
 text
 Reason
 Scope
@@ -2048,126 +2415,124 @@ Owner
 Risk
 Affected Boundaries
 Mitigation
-Expiry / Review Date
 Approval
+Expiry / Review Date
 
-Exceptions must not become permanent through neglect.
+Exceptions MUST NOT become permanent through neglect.
 
 ───
 
-140. Boundary Violation Classification
-CoreGrid should classify boundary violations:
+144. BOUNDARY VIOLATION CLASSIFICATION
+Boundary violations may be classified:
 text
-B0 — Cosmetic
+B0 — Cosmetic / Documentation
 B1 — Low
 B2 — Moderate
 B3 — High
 B4 — Critical
 
-Examples of B4 violations:
+Examples of critical violations include:
 • tenant isolation failure
 • unauthorized financial mutation
 • identity bypass
 • security bypass
 • unrestricted agent execution
 • unauthorized privileged access
-• cross-tenant data leakage
+• cross-tenant leakage
 • unauthorized production mutation
+• unauthorized authority escalation
 
 ───
-141. Boundary Review Gate
-Every major architectural change must answer:
-text
-1. Who owns this capability?
 
+145. BOUNDARY REVIEW GATE
+Every major architectural change MUST answer:
+1. Who owns the capability?
 2. Which registered phase owns it?
-
 3. Does another capability already own it?
-
 4. Is this component consuming or owning?
-
 5. What is the public contract?
-
 6. What state is authoritative?
-
-7. What data is derived?
-
+7. What state is derived?
 8. Which security boundary is crossed?
-
 9. Which tenant boundary is crossed?
-
 10. Which trust boundary is crossed?
-
-11. Does this create a dependency cycle?
-
-12. Does this create duplicate truth?
-
-13. Does this introduce vendor coupling?
-
-14. What happens when the dependency fails?
-
-15. What is the blast radius?
-
-16. How is the boundary tested?
-
-17. How is the boundary observed?
-
-18. How is the boundary audited?
-
-19. How is the capability replaced or evolved?
-
-20. Does the design preserve future CoreGrid evolution?
-
+11. Which authority boundary is crossed?
+12. Does this create a dependency cycle?
+13. Does this create duplicate truth?
+14. Does this create vendor coupling?
+15. What happens when dependencies fail?
+16. What is the blast radius?
+17. How is the boundary tested?
+18. How is it observed?
+19. How is it audited?
+20. How can it be replaced or evolved?
 
 ───
 
-142. Automated Boundary Enforcement
-Where practical, architectural rules must become machine-enforced.
+146. AUTOMATED BOUNDARY ENFORCEMENT
+Where practical, boundaries MUST become machine-enforced.
 Examples:
 • dependency-cycle detection
 • forbidden imports
 • forbidden database access
-• API contract validation
+• contract validation
 • tenant-isolation tests
 • authorization tests
 • agent permission tests
 • secret scanning
-• production environment protection
-• schema compatibility checks
+• environment protection
+• schema compatibility
 • architecture linting
-Architecture must not rely exclusively on developer memory.
+• deployment-policy checks
+• AI-context authorization checks
+Architecture MUST NOT rely exclusively on developer memory.
 
 ───
 
-143. Boundary Testing
-CoreGrid must test:
+147. BOUNDARY TESTING
+CoreGrid SHOULD test:
+text
 Unit
-Boundary logic.
+→ Boundary logic
+
 Integration
-Cross-capability contracts.
+→ Cross-capability behavior
+
 Contract
-API/event compatibility.
+→ API/event compatibility
+
 Security
-Authorization and isolation.
+→ Authorization/isolation
+
 Tenant
-Cross-tenant leakage.
+→ Cross-tenant leakage
+
 Agent
-Delegation and tool restrictions.
+→ Delegation/tool restrictions
+
 AI
-Context authorization and model behavior.
+→ Context authorization/output controls
+
 Resilience
-Dependency failures.
+→ Dependency failures
+
 Chaos
-Blast-radius containment.
+→ Blast-radius containment
+
 Replay
-Event and decision reproducibility.
+→ Historical reproducibility
+
 Migration
-Compatibility during architectural evolution.
+→ Compatibility during evolution
+
+Governance
+→ Ownership and authority rules
+
 
 ───
 
-144. Boundary Observability
-Important boundary crossings should expose appropriate telemetry:
+148. BOUNDARY OBSERVABILITY
+Important boundary crossings SHOULD expose:
 text
 Caller
 Target
@@ -2175,19 +2540,20 @@ Capability
 Action
 Tenant
 Resource
-Decision
+Authority
 Policy
+Decision
 Correlation
 Result
 Latency
 Failure
 
-Sensitive data must be minimized.
+Sensitive information MUST be minimized.
 
 ───
 
-145. Boundary Documentation
-Every major subsystem must document:
+149. BOUNDARY DOCUMENTATION
+Every major subsystem MUST document:
 text
 OWNS
 DOES NOT OWN
@@ -2195,20 +2561,23 @@ CONSUMES
 PRODUCES
 CALLS
 CALLED BY
+AUTHORITATIVE STATE
 DATA AUTHORITY
 SECURITY BOUNDARY
 TRUST BOUNDARY
 TENANT BOUNDARY
+AUTHORITY BOUNDARY
 FAILURE BOUNDARY
 DEPLOYMENT BOUNDARY
 EXTENSION BOUNDARY
+EVOLUTION BOUNDARY
 
 
 ───
 
-146. Boundary Evolution
-A boundary may evolve, but changing ownership is an architectural change.
-Required process:
+150. BOUNDARY EVOLUTION
+Changing a boundary is an architectural change.
+Preferred process:
 text
 Proposal
    ↓
@@ -2224,6 +2593,8 @@ Data Review
    ↓
 Tenant Review
    ↓
+Authority Review
+   ↓
 Decision
    ↓
 Migration
@@ -2235,9 +2606,9 @@ Documentation
 
 ───
 
-147. Migration Boundary
-Existing functioning systems should be treated as assets.
-The preferred migration sequence is:
+151. MIGRATION BOUNDARY
+Existing functioning systems are assets.
+Preferred sequence:
 text
 Inspect
    ↓
@@ -2253,13 +2624,12 @@ Refactor
    ↓
 Replace Only When Justified
 
-Architecture modernization must not become an excuse for unnecessary destruction.
+Architecture modernization MUST NOT become an excuse for unnecessary destruction.
 
 ───
 
-148. No-Rebuild Boundary
-A new architecture must not automatically require rebuilding working infrastructure.
-Before introducing a new subsystem, determine:
+152. NO-REBUILD BOUNDARY
+Before creating a new subsystem:
 text
 Does this already exist?
 
@@ -2269,28 +2639,30 @@ Can it be adapted?
 
 Can it be wrapped?
 
+Can ownership be corrected without replacement?
+
 Does replacement provide measurable architectural benefit?
 
 
 ───
 
-149. Future Capability Boundary
-When a capability cannot confidently be assigned to an existing owner:
+153. FUTURE CAPABILITY BOUNDARY
+If ownership cannot confidently be assigned:
 text
 RESERVED / UNASSIGNED
 
-must be preferred over silently absorbing it.
-The architecture registry must then determine the appropriate owner.
+is preferred over silently absorbing the capability.
+The Architecture Registry MUST determine eventual ownership.
 
 ───
 
-150. Future-Phase Boundary
-Future phases must remain protected from scope contamination.
-No current phase may silently implement another phase's future responsibilities merely because the capability is technically convenient.
+154. FUTURE-PHASE BOUNDARY
+Future phases MUST remain protected from scope contamination.
+A current phase MUST NOT silently absorb another phase's future responsibility merely because implementation is convenient.
 
 ───
 
-151. CoreGrid Platform Control Plane Boundary
+155. PLATFORM CONTROL-PLANE BOUNDARY
 CoreGrid's platform control plane may govern:
 • platform configuration
 • infrastructure orchestration
@@ -2302,19 +2674,19 @@ CoreGrid's platform control plane may govern:
 • agent governance
 • observability
 • platform lifecycle
-It must not automatically become the owner of customer domain truth.
+It does NOT automatically own customer-domain truth.
 
 ───
 
-152. CoreGrid Data Plane Boundary
+156. DATA-PLANE BOUNDARY
 The data plane executes domain and platform operations.
-Control-plane authority and data-plane execution must remain distinguishable.
+Control-plane authority and data-plane execution MUST remain distinguishable.
 
 ───
 
-153. Command Centre Boundary
+157. COMMAND CENTRE BOUNDARY
 The Command Centre is a control and experience surface.
-It does not become the owner of:
+It does not become owner of:
 • identity
 • finance
 • education
@@ -2327,14 +2699,14 @@ It composes visibility and authorized action from underlying capabilities.
 
 ───
 
-154. Workspace vs Command Centre Boundary
+158. WORKSPACE VS COMMAND CENTRE BOUNDARY
 A workspace provides contextual experience.
-The Command Centre provides platform/institutional operational visibility and coordination.
-Neither becomes canonical domain ownership merely by presenting information.
+A Command Centre provides broader operational visibility and coordination.
+Neither becomes canonical ownership merely by presenting information.
 
 ───
 
-155. Analytics Boundary
+159. ANALYTICS BOUNDARY
 Analytics produces:
 • metrics
 • forecasts
@@ -2342,36 +2714,39 @@ Analytics produces:
 • dashboards
 • decision intelligence
 Analytics is derived intelligence.
-It must not silently mutate operational truth.
+It MUST NOT silently mutate operational truth.
 
 ───
 
-156. Decision Intelligence Boundary
+160. DECISION INTELLIGENCE BOUNDARY
 Decision intelligence may answer:
-What is likely to happen?
+text
+What is happening?
+What is likely?
 What options exist?
-What are the consequences?
+What consequences are possible?
+
 It does not automatically answer:
-Who has authority to execute this?
+text
+Who has authority to execute?
+
 Authorization remains separate.
 
 ───
 
-157. Knowledge vs Intelligence Boundary
+161. KNOWLEDGE VS INTELLIGENCE BOUNDARY
 Knowledge represents information and relationships.
 Intelligence reasons over information.
 Therefore:
 text
-KNOWLEDGE
-   ≠
-INTELLIGENCE
+KNOWLEDGE ≠ INTELLIGENCE
 
-AI reasoning must not silently rewrite verified knowledge.
+AI reasoning MUST NOT silently rewrite verified knowledge.
 
 ───
 
-158. Intelligence vs Execution Boundary
-Reasoning and execution are separate boundaries.
+162. INTELLIGENCE VS EXECUTION BOUNDARY
+Reasoning and execution remain separate:
 text
 INTELLIGENCE
       ↓
@@ -2383,12 +2758,12 @@ AUTHORIZATION
       ↓
 EXECUTION
 
-This is mandatory for high-impact operations.
+This separation is mandatory for high-impact operations.
 
 ───
 
-159. Reality vs Representation Boundary
-CoreGrid must distinguish:
+163. REALITY VS REPRESENTATION BOUNDARY
+CoreGrid MUST distinguish:
 text
 REAL WORLD
    ↓
@@ -2398,44 +2773,44 @@ DIGITAL REPRESENTATION
    ↓
 INTERPRETATION
 
-A model's interpretation is not automatically reality.
+A model interpretation is not automatically reality.
 A digital twin is not automatically reality.
 An AI prediction is not automatically fact.
 
 ───
 
-160. Evidence Boundary
-Important decisions must be supported by evidence where appropriate.
-Evidence should remain distinguishable from:
+164. EVIDENCE BOUNDARY
+Important decisions SHOULD be supported by appropriate evidence.
+Evidence MUST remain distinguishable from:
 • assumptions
 • predictions
 • recommendations
 • generated explanations
 • hypotheses
+• simulations
 
 ───
 
-161. Confidence Boundary
-Confidence must remain separate from truth.
-For example:
+165. CONFIDENCE BOUNDARY
+Confidence is not truth.
 text
 High Confidence ≠ Guaranteed Truth
 Low Confidence ≠ Guaranteed Falsehood
 
-Confidence describes epistemic certainty under the current evidence and model.
+Confidence describes epistemic certainty under available evidence and models.
 
 ───
 
-162. Uncertainty Boundary
-Systems operating under incomplete information must preserve uncertainty.
-AI should not be forced to produce false precision merely to satisfy an interface.
+166. UNCERTAINTY BOUNDARY
+Systems operating under incomplete information MUST preserve uncertainty.
+CoreGrid MUST NOT force false precision merely because an interface expects a single answer.
 
 ───
 
-163. Learning Boundary
+167. LEARNING BOUNDARY
 Learning systems may improve future behavior.
-They must not automatically mutate production truth or governance.
-Preferred model:
+They MUST NOT automatically mutate production truth or governance.
+Preferred:
 text
 Observation
    ↓
@@ -2452,8 +2827,8 @@ Governed Promotion
 
 ───
 
-164. Self-Modification Boundary
-CoreGrid must not allow autonomous systems to silently modify:
+168. SELF-MODIFICATION BOUNDARY
+Autonomous systems MUST NOT silently modify:
 • constitution
 • ownership
 • security policy
@@ -2461,12 +2836,12 @@ CoreGrid must not allow autonomous systems to silently modify:
 • production architecture
 • critical infrastructure
 • financial controls
-without the appropriate governance process.
+without appropriate governance.
 
 ───
 
-165. Self-Improvement Boundary
-Future superintelligent or highly autonomous systems may propose architectural improvements.
+169. SELF-IMPROVEMENT BOUNDARY
+Future highly autonomous systems may propose improvements.
 They remain subject to:
 text
 Proposal
@@ -2483,95 +2858,111 @@ Approval
    ↓
 Controlled Deployment
 
-Intelligence does not eliminate governance.
+Greater intelligence does not eliminate governance.
 
 ───
 
-166. Model Gateway Boundary
+170. MODEL GATEWAY BOUNDARY
 The Model Gateway isolates CoreGrid from model providers.
-It should normalize where appropriate:
-• model invocation
+It may normalize:
+• invocation
 • routing
-• token usage
+• usage
 • cost
 • latency
 • safety metadata
 • provider errors
 • model identity
 • model version
-The gateway must not become the owner of domain truth.
+It MUST NOT become domain-truth authority.
 
 ───
 
-167. External Provider Failure Boundary
-If an external model, cloud, payment, communication, or data provider fails, CoreGrid should degrade according to the capability's defined criticality.
-Provider failure must not automatically cascade across unrelated domains.
+171. EXTERNAL PROVIDER FAILURE BOUNDARY
+If an external:
+• model
+• cloud
+• payment provider
+• communication provider
+• data provider
+fails, CoreGrid SHOULD degrade according to the affected capability's defined criticality.
+Provider failure MUST NOT automatically cascade into unrelated domains.
 
 ───
 
-168. Graceful Degradation Boundary
-Every critical subsystem should define:
+172. GRACEFUL DEGRADATION BOUNDARY
+Critical capabilities SHOULD define:
 text
-Normal
+NORMAL
    ↓
-Degraded
+DEGRADED
    ↓
-Restricted
+RESTRICTED
    ↓
-Recovery
+RECOVERY
 
-The appropriate behavior must be capability-specific.
+Degradation behavior must be capability-specific.
 
 ───
 
-169. Data Residency and Sovereignty Boundary
-CoreGrid must support architectures where institutional data remains within required geographic or sovereign boundaries.
-Global orchestration must not erase local data sovereignty.
+173. DATA SOVEREIGNTY BOUNDARY
+CoreGrid MUST support architectures in which institutional data remains inside required geographic or sovereign boundaries.
+Global intelligence does not erase local sovereignty.
 
 ───
 
-170. Globalization Boundary
-Localization may alter:
+174. GLOBALIZATION BOUNDARY
+Localization may change:
 • language
 • currency representation
 • calendar
-• jurisdiction-specific configuration
 • formatting
-It must not create a separate architectural universe for every country.
+• jurisdiction-specific configuration
+It MUST NOT create an independent architectural universe for every country.
 
 ───
 
-171. Enterprise Boundary
-Enterprise scale may introduce:
-• higher availability
+175. ENTERPRISE BOUNDARY
+Enterprise deployment may introduce:
 • stronger governance
+• higher availability
 • multi-region operation
 • capacity controls
 • enterprise support
 • advanced security
-It must not redefine domain ownership.
+It MUST NOT redefine domain ownership.
 
 ───
 
-172. Government Deployment Boundary
-Government deployment may require additional:
+176. GOVERNMENT DEPLOYMENT BOUNDARY
+Government deployments may require additional:
 • sovereignty
 • compliance
 • isolation
 • reporting
 • jurisdiction controls
-These are deployment and governance constraints, not permission to erase institutional boundaries.
+These are deployment/governance constraints, not permission to erase institutional boundaries.
 
 ───
 
-173. Education Runtime Boundary
-CoreGrid Scholar must remain a runtime implemented through CoreGrid capabilities.
-Scholar-specific functionality must not become the definition of the CoreGrid platform.
-The same principle applies to every future CoreGrid runtime.
+177. SCHOLAR RUNTIME BOUNDARY
+CoreGrid Scholar MUST remain a runtime implemented through CoreGrid capabilities.
+Scholar-specific functionality MUST NOT become the definition of CoreGrid.
+The same rule applies to every future runtime.
+text
+COREGRID
+   ├── SCHOLAR RUNTIME
+   ├── ENTERPRISE RUNTIME
+   ├── GOVERNMENT RUNTIME
+   ├── HEALTHCARE RUNTIME
+   ├── INDUSTRIAL RUNTIME
+   └── FUTURE RUNTIMES
+
+A runtime is a consumer/composer of CoreGrid infrastructure, not its architectural root.
 
 ───
 
-174. Universal Runtime Boundary
+178. UNIVERSAL RUNTIME BOUNDARY
 A CoreGrid runtime may compose:
 text
 Identity
@@ -2582,6 +2973,8 @@ AI
 Agents
 Automation
 Data
+Knowledge
+Memory
 Digital Twin
 Analytics
 Security
@@ -2593,7 +2986,7 @@ without owning every underlying capability.
 
 ───
 
-175. Runtime Composition Boundary
+179. RUNTIME COMPOSITION BOUNDARY
 Runtime composition is not ownership.
 text
 Runtime
@@ -2609,7 +3002,7 @@ Absorbs Capabilities
 
 ───
 
-176. Ecosystem Boundary
+180. ECOSYSTEM BOUNDARY
 CoreGrid may eventually contain:
 text
 Platform
@@ -2624,115 +3017,117 @@ Developer Ecosystem
 Government Integrations
 Enterprise Deployments
 External Providers
+Physical Interfaces
 
 These remain bounded components of one ecosystem.
 
 ───
 
-177. External World Boundary
-The entire external world is outside CoreGrid's canonical authority.
+181. EXTERNAL WORLD BOUNDARY
+The external world is outside CoreGrid's canonical authority.
 CoreGrid may:
 • observe
 • integrate
 • represent
 • reason
 • coordinate
+• simulate
 • act through authorized interfaces
 but external reality remains external reality.
 
 ───
 
-178. Trustworthy Observation Boundary
-External observations must carry provenance.
-CoreGrid must distinguish:
+182. TRUSTWORTHY OBSERVATION BOUNDARY
+CoreGrid MUST distinguish:
 text
-Observed
-Inferred
-Predicted
-Simulated
-Generated
-Verified
-Unverified
+OBSERVED
+INFERRED
+PREDICTED
+SIMULATED
+GENERATED
+VERIFIED
+UNVERIFIED
 
-These categories must not be silently merged.
-
-───
-
-179. Simulation Boundary
-Simulation environments must remain distinguishable from production reality.
-A simulated action must never be mistaken for an executed action.
+These categories MUST NOT be silently merged.
 
 ───
 
-180. Replay Boundary
-Event replay and historical simulation must not mutate production state unless explicitly authorized.
-Replay systems should operate against controlled environments.
+183. SIMULATION BOUNDARY
+Simulation environments MUST remain distinguishable from production reality.
+A simulated action MUST NOT be mistaken for an executed action.
 
 ───
 
-181. Scenario Boundary
+184. REPLAY BOUNDARY
+Historical replay and event reconstruction MUST NOT mutate production state unless explicitly authorized.
+Replay SHOULD operate against controlled environments.
+
+───
+
+185. SCENARIO BOUNDARY
 Scenario analysis produces possible futures.
-It does not become canonical historical truth.
+It does not become canonical historical or operational truth.
 
 ───
 
-182. Security and AI Independence Boundary
-AI must not become the sole security authority.
-Security systems may use AI as an analytical capability, but critical enforcement must retain deterministic or explicitly governed controls.
+186. SECURITY AND AI INDEPENDENCE BOUNDARY
+AI may assist security analysis.
+AI MUST NOT automatically become the sole security authority.
+Critical enforcement SHOULD retain deterministic or explicitly governed controls.
 
 ───
 
-183. AI and Policy Independence Boundary
+187. AI AND POLICY INDEPENDENCE BOUNDARY
 AI may interpret policy.
-AI must not silently rewrite policy.
+AI MUST NOT silently rewrite policy.
 Policy remains governed state.
 
 ───
 
-184. Agent and Governance Independence Boundary
+188. AGENT AND GOVERNANCE INDEPENDENCE BOUNDARY
 Agents may execute governed capabilities.
-Agents must not redefine their own authority.
+Agents MUST NOT redefine their own authority.
 
 ───
 
-185. Automation and Authorization Independence Boundary
+189. AUTOMATION AND AUTHORIZATION INDEPENDENCE BOUNDARY
 Automation executes authorized actions.
-Automation must not manufacture authorization merely because a workflow requires it.
+Automation MUST NOT manufacture authorization merely because a workflow requires it.
 
 ───
 
-186. Analytics and Operational Independence Boundary
+190. ANALYTICS AND OPERATIONAL INDEPENDENCE BOUNDARY
 Analytics observes and derives.
-Analytics must not silently become operational authority.
+Analytics MUST NOT silently become operational authority.
 
 ───
 
-187. Memory and Truth Independence Boundary
+191. MEMORY AND TRUTH INDEPENDENCE BOUNDARY
 Memory recalls.
-Canonical systems establish truth.
+Canonical authorities establish truth.
 
 ───
 
-188. Search and Authorization Independence Boundary
+192. SEARCH AND AUTHORIZATION INDEPENDENCE BOUNDARY
 Search retrieves.
 Authorization decides access.
 
 ───
 
-189. Workspace and Authorization Independence Boundary
+193. WORKSPACE AND AUTHORIZATION INDEPENDENCE BOUNDARY
 Workspace presents.
 Authorization decides permission.
 
 ───
 
-190. Digital Twin and Reality Independence Boundary
+194. DIGITAL TWIN AND REALITY INDEPENDENCE BOUNDARY
 Twin represents.
 Reality exists independently.
 
 ───
 
-191. Boundary Invariants
-The following invariants are mandatory across the entire CoreGrid ecosystem:
+195. BOUNDARY INVARIANTS
+The following invariants are mandatory:
 text
 IDENTITY
 has one canonical authority.
@@ -2780,22 +3175,28 @@ CLIENTS
 cannot bypass backend enforcement.
 
 EXTERNAL SYSTEMS
-cannot directly mutate private CoreGrid domain stores.
+cannot directly mutate private CoreGrid stores.
 
 MARKETPLACE EXTENSIONS
 cannot bypass platform security.
 
 CLOUD INFRASTRUCTURE
-cannot become business-domain ownership.
+cannot become domain ownership.
 
 DIGITAL TWINS
-cannot silently replace their source of truth.
+cannot silently replace source of truth.
 
 RECOMMENDATIONS
 cannot silently become commands.
 
 SIMULATIONS
 cannot silently become production reality.
+
+OBSERVATIONS
+cannot silently become verified truth.
+
+PREDICTIONS
+cannot silently become facts.
 
 INSTITUTIONS
 retain defined operational sovereignty.
@@ -2804,7 +3205,7 @@ FUTURE CAPABILITIES
 must receive explicit ownership.
 
 GOVERNANCE
-cannot be bypassed by convenience.
+cannot be bypassed for convenience.
 
 INTELLIGENCE
 does not equal authority.
@@ -2812,133 +3213,156 @@ does not equal authority.
 
 ───
 
-192. Boundary Decision Algorithm
+196. BOUNDARY DECISION ALGORITHM
 Whenever a new capability is proposed:
 text
 1. Identify the capability.
 
-2. Identify the canonical owner.
+2. Identify its canonical owner.
 
-3. Search the architecture registry.
+3. Search the Architecture Registry.
 
 4. Determine whether another phase already owns it.
 
 5. Determine whether the component is:
-   - owner
-   - consumer
-   - representation
-   - coordinator
-   - observer
-   - adapter
-   - infrastructure
+   owner
+   consumer
+   representation
+   coordinator
+   observer
+   adapter
+   infrastructure
+   simulator
+   intelligence provider
+   execution actor
 
 6. Identify authoritative state.
 
-7. Define public contract.
+7. Identify derived state.
 
-8. Define security boundary.
+8. Define public contract.
 
-9. Define tenant boundary.
+9. Define authority boundary.
 
-10. Define trust boundary.
+10. Define security boundary.
 
-11. Define data boundary.
+11. Define tenant boundary.
 
-12. Define failure boundary.
+12. Define trust boundary.
 
-13. Define dependency semantics.
+13. Define data boundary.
 
-14. Evaluate blast radius.
+14. Define temporal boundary.
 
-15. Evaluate vendor coupling.
+15. Define causal implications.
 
-16. Evaluate autonomous authority.
+16. Define failure boundary.
 
-17. Define observability.
+17. Define dependency semantics.
 
-18. Define auditability.
+18. Evaluate blast radius.
 
-19. Define migration path.
+19. Evaluate vendor coupling.
 
-20. Register the decision.
+20. Evaluate autonomous authority.
+
+21. Define observability.
+
+22. Define auditability.
+
+23. Define evidence/provenance.
+
+24. Define migration path.
+
+25. Register the decision.
 
 
 ───
 
-193. Boundary Enforcement Model
-CoreGrid should enforce boundaries at multiple layers:
+197. BOUNDARY ENFORCEMENT MODEL
+CoreGrid SHOULD enforce boundaries across multiple layers:
 text
+CONSTITUTION
+      ↓
 ARCHITECTURE
-     ↓
+      ↓
 REGISTRY
-     ↓
+      ↓
+BOUNDARY RULES
+      ↓
 DEPENDENCY VALIDATION
-     ↓
-API CONTRACTS
-     ↓
+      ↓
+CONTRACTS
+      ↓
 IDENTITY
-     ↓
+      ↓
 AUTHORIZATION
-     ↓
+      ↓
 POLICY
-     ↓
+      ↓
 RUNTIME
-     ↓
+      ↓
 DATABASE
-     ↓
+      ↓
 INFRASTRUCTURE
-     ↓
+      ↓
 OBSERVABILITY
-     ↓
+      ↓
 AUDIT
 
-No single boundary mechanism should be trusted as the only protection.
+No single mechanism should be treated as the only protection.
 
 ───
 
-194. Architecture-as-Code
-Where practical, boundary rules should become machine-readable.
-The platform should eventually validate:
+198. ARCHITECTURE-AS-CODE
+Where practical, boundary rules SHOULD become machine-readable.
+The architecture should eventually validate:
 text
 Phase Ownership
 Dependency Graph
 Forbidden Dependencies
 Data Ownership
+Authority Ownership
 API Contracts
 Tenant Rules
 Security Rules
 Agent Permissions
 Deployment Rules
 Environment Boundaries
+AI Context Rules
+Extension Permissions
 
-Architecture must become partially executable governance.
-
-───
-
-195. Boundary Registry
-The architecture registry should maintain, for each major capability:
-text
-owner
-phase
-domain
-data_authority
-contracts
-consumers
-dependencies
-security_class
-tenant_scope
-deployment_scope
-failure_mode
-risk_tier
-version
-status
-
+Architecture therefore becomes partially executable governance.
 
 ───
 
-196. Boundary Governance
+199. BOUNDARY REGISTRY
+The architecture registry SHOULD maintain, for each major capability:
+yaml
+owner:
+phase:
+domain:
+capability:
+authority:
+data_authority:
+contracts:
+consumers:
+dependencies:
+security_class:
+tenant_scope:
+deployment_scope:
+failure_mode:
+risk_tier:
+version:
+status:
+
+The Boundary Registry MUST remain consistent with the Phase Registry and Dependency Map.
+
+───
+
+200. BOUNDARY GOVERNANCE
 Changes to major boundaries require architectural governance.
-Governance should maintain:
+Governance SHOULD maintain:
 • decisions
 • exceptions
 • ownership records
@@ -2946,11 +3370,12 @@ Governance should maintain:
 • migration records
 • architectural invariants
 • progress records
+• conformance evidence
 
 ───
 
-197. Boundary Documentation Hierarchy
-The authoritative hierarchy is:
+201. BOUNDARY DOCUMENTATION HIERARCHY
+The canonical governance hierarchy is:
 text
 CONSTITUTION
      ↓
@@ -2964,29 +3389,28 @@ BOUNDARIES
      ↓
 PHASE SPECIFICATIONS
      ↓
-SERVICE CONTRACTS
+CONTRACTS
      ↓
 IMPLEMENTATION
 
-Lower-level documents must not contradict higher-level governance.
+Lower-level artifacts MUST NOT contradict higher-level governance.
 
 ───
 
-198. Conflict Resolution
-If documents disagree:
+202. CONFLICT RESOLUTION
+When documents disagree:
 text
 Higher Authority
        ↓
 Lower Authority
 
-The conflict must be recorded and resolved.
-No implementation should silently choose whichever document is convenient.
+The conflict MUST be recorded and resolved.
+Implementation MUST NOT silently choose whichever interpretation is convenient.
 
 ───
 
-199. Existing System Boundary
-When CoreGrid is modernizing an existing implementation, existing components must first be mapped to architectural ownership.
-The correct process is:
+203. EXISTING SYSTEM BOUNDARY
+When modernizing an existing implementation:
 text
 Existing Component
       ↓
@@ -2998,12 +3422,12 @@ Compare With Canonical Architecture
       ↓
 Reuse / Refactor / Move / Replace
 
-The existence of an imperfect implementation does not automatically justify deleting it.
+An imperfect implementation does not automatically justify deletion.
 
 ───
 
-200. Architecture Drift Detection
-CoreGrid should continuously detect:
+204. ARCHITECTURE DRIFT DETECTION
+CoreGrid SHOULD continuously detect:
 • duplicate ownership
 • unauthorized dependencies
 • scope expansion
@@ -3011,15 +3435,17 @@ CoreGrid should continuously detect:
 • undocumented services
 • undocumented databases
 • unregistered agents
-• unregistered external providers
+• unregistered providers
 • policy bypasses
 • tenant leakage
-• unauthorized direct database access
+• direct private-store access
+• undocumented authority escalation
+• architecture-to-code divergence
 
 ───
 
-201. Boundary Health
-A healthy CoreGrid boundary should be:
+205. BOUNDARY HEALTH
+A healthy CoreGrid boundary is:
 text
 Explicit
 Stable
@@ -3029,40 +3455,46 @@ Versioned
 Auditable
 Replaceable
 Recoverable
+Composable
+Governable
 
 
 ───
 
-202. Complexity Resistance
-CoreGrid must not attempt to become simple by eliminating capabilities.
+206. COMPLEXITY RESISTANCE
+CoreGrid MUST NOT attempt to become simple by eliminating necessary capabilities.
 Instead:
 text
-Complexity
+COMPLEXITY
    ↓
-Model
+MODEL
    ↓
-Partition
+PARTITION
    ↓
-Assign Ownership
+ASSIGN OWNERSHIP
    ↓
-Define Boundary
+DEFINE BOUNDARY
    ↓
-Expose Contract
+DEFINE AUTHORITY
    ↓
-Compose
+EXPOSE CONTRACT
    ↓
-Govern
+COMPOSE
    ↓
-Observe
+GOVERN
    ↓
-Evolve
+OBSERVE
+   ↓
+AUDIT
+   ↓
+EVOLVE
 
-The architecture must be capable of becoming extraordinarily sophisticated internally while remaining predictable externally.
+CoreGrid may become extraordinarily sophisticated internally while remaining predictable at its boundaries.
 
 ───
 
-203. Universal CoreGrid Boundary Model
-The entire ecosystem should conceptually behave as:
+207. UNIVERSAL COREGRID BOUNDARY MODEL
+Conceptually:
 text
 COREGRID
                             │
@@ -3085,7 +3517,8 @@ COREGRID
                             │
                     ┌───────▼───────┐
                     │ CONTEXT       │
-                    │ + RELATIONSHIP│
+                    │ RELATIONSHIPS │
+                    │ AUTHORITY      │
                     └───────┬───────┘
                             │
         ┌───────────────────┼───────────────────┐
@@ -3094,11 +3527,11 @@ COREGRID
         │                   │                   │
         └───────────────────┼───────────────────┘
                             │
-             ┌──────────────┼──────────────┐
-             ▼              ▼              ▼
-          DOMAINS         AGENTS           AI
-             │              │              │
-             └──────────────┼──────────────┘
+        ┌───────────────────┼───────────────────┐
+        ▼                   ▼                   ▼
+     DOMAINS              AGENTS                AI
+        │                   │                   │
+        └───────────────────┼───────────────────┘
                             │
                     ┌───────▼───────┐
                     │ DATA / STATE  │
@@ -3128,21 +3561,26 @@ COREGRID
                     ┌───────▼───────┐
                     │ CLOUD / EDGE  │
                     │ INFRASTRUCTURE│
+                    └───────┬───────┘
+                            │
+                    ┌───────▼───────┐
+                    │ EXTERNAL      │
+                    │ REALITY       │
                     └───────────────┘
 
 
 ───
 
-204. CoreGrid as a Bounded Ecosystem
-CoreGrid must be understood as:
-A network of bounded capabilities connected through explicit contracts, governed by identity, policy, security, trust, provenance, and authority.
-Not:
-one enormous application containing every feature.
+208. COREGRID AS A BOUNDED ECOSYSTEM
+CoreGrid MUST be understood as:
+A network of bounded capabilities, realities, runtimes, authorities, and representations connected through explicit contracts and governed by identity, policy, security, trust, provenance, evidence, and ownership.
+It is not:
+One enormous application containing every feature.
 
 ───
 
-205. Final Architectural Law
-CoreGrid must never solve complexity by destroying boundaries.
+209. FINAL ARCHITECTURAL LAW
+CoreGrid MUST never solve complexity by destroying boundaries.
 Instead:
 text
 COMPLEXITY
@@ -3155,7 +3593,9 @@ DEFINE BOUNDARIES
     ↓
 DEFINE AUTHORITY
     ↓
-EXPOSE CONTRACTS
+DEFINE CONTEXT
+    ↓
+DEFINE CONTRACTS
     ↓
 COMPOSE CAPABILITIES
     ↓
@@ -3163,19 +3603,25 @@ GOVERN ACTION
     ↓
 OBSERVE BEHAVIOR
     ↓
+CAPTURE EVIDENCE
+    ↓
 AUDIT
     ↓
 LEARN
     ↓
 EVOLVE
 
-The platform's intelligence may become increasingly sophisticated.
+The intelligence of CoreGrid may become increasingly sophisticated.
+Its autonomy may become increasingly powerful.
+Its domains may become increasingly numerous.
+Its realities may become increasingly complex.
+Its computational substrate may become increasingly distributed.
 Its boundaries must become increasingly explicit.
 
 ───
 
-206. Non-Negotiable Engineering Questions
-Before implementing any CoreGrid component, the engineering system and its coding agents must be able to answer:
+210. NON-NEGOTIABLE ENGINEERING QUESTIONS
+Before implementing any CoreGrid component, the engineering system and its coding agents MUST be able to answer:
 text
 1. What capability is being created?
 
@@ -3199,52 +3645,65 @@ text
 
 11. What tenant is involved?
 
-12. What policy applies?
+12. What authority is being exercised?
 
-13. What authorization applies?
+13. What policy applies?
 
-14. What trust signals apply?
+14. What authorization applies?
 
-15. What security boundary is crossed?
+15. What trust signals apply?
 
-16. What agent authority is involved?
+16. What security boundary is crossed?
 
-17. What AI authority is involved?
+17. What agent authority is involved?
 
-18. What infrastructure is involved?
+18. What AI authority is involved?
 
-19. What dependency relationship exists?
+19. What infrastructure is involved?
 
-20. Could this create a dependency cycle?
+20. What dependency relationship exists?
 
-21. What is the failure mode?
+21. What temporal relationship exists?
 
-22. What is the blast radius?
+22. What causal relationship exists?
 
-23. What happens if the vendor fails?
+23. Could this create a dependency cycle?
 
-24. How is this observed?
+24. Could this create duplicate truth?
 
-25. How is this audited?
+25. What is the failure mode?
 
-26. How is this tested?
+26. What is the blast radius?
 
-27. How is this migrated?
+27. What happens if the provider fails?
 
-28. How is this versioned?
+28. How is this observed?
 
-29. Can it be replaced?
+29. How is this evidenced?
 
-30. Does it preserve CoreGrid's future evolution?
+30. How is this audited?
 
-If these questions cannot be answered, implementation must stop at the architecture gate.
+31. How is this tested?
+
+32. How is this migrated?
+
+33. How is this versioned?
+
+34. Can it be replaced?
+
+35. Does it preserve tenant sovereignty?
+
+36. Does it preserve domain sovereignty?
+
+37. Does it preserve CoreGrid's future evolution?
+
+If these questions cannot be answered, implementation SHOULD stop at the architecture gate.
 
 ───
 
-207. Final Boundary Invariant
-The deepest invariant of CoreGrid is:
-No component may acquire authority merely because it possesses information, intelligence, connectivity, computation, memory, visibility, or execution capability.
-Authority must be explicitly delegated.
+211. FINAL AUTHORITY INVARIANT
+The deepest boundary invariant of CoreGrid is:
+Possession does not imply authority.
 Therefore:
 text
 DATA
@@ -3265,13 +3724,25 @@ does not imply authority.
 PREDICTION
 does not imply authority.
 
+COMPUTATION
+does not imply authority.
+
 AGENCY
 does not imply unlimited authority.
 
 EXECUTION
 does not imply ownership.
 
-Authority comes from:
+OBSERVATION
+does not imply truth.
+
+REPRESENTATION
+does not imply reality.
+
+COORDINATION
+does not imply ownership.
+
+Authority comes from governed combinations of:
 text
 IDENTITY
 +
@@ -3288,12 +3759,12 @@ GOVERNANCE
 
 ───
 
-208. Final CoreGrid Boundary Statement
-CoreGrid is designed to support an ecosystem whose complexity may eventually exceed the conceptual scale of today's conventional enterprise software.
-The platform may contain:
-• thousands of services
-• millions of entities
-• enormous event volumes
+212. FINAL COREGRID BOUNDARY STATEMENT
+CoreGrid is designed to support an ecosystem whose complexity may eventually exceed the conceptual scale of conventional enterprise software.
+It may contain:
+• thousands or millions of computational components
+• enormous numbers of entities
+• massive event volumes
 • autonomous agents
 • multiple intelligence providers
 • digital twins
@@ -3302,10 +3773,14 @@ The platform may contain:
 • enterprise environments
 • edge systems
 • physical-world interfaces
+• simulations
 • continuously learning systems
+• evolving capabilities
+• heterogeneous infrastructure
+• future capabilities not yet conceived
 None of this changes the fundamental law:
 Complexity does not eliminate boundaries. Complexity makes boundaries more important.
-CoreGrid therefore treats architecture boundaries as first-class infrastructure.
+CoreGrid therefore treats architectural boundaries as first-class infrastructure.
 They are:
 text
 DESIGNED
@@ -3316,20 +3791,1995 @@ OBSERVED
 AUDITED
 VERSIONED
 GOVERNED
+EVOLVABLE
 
 
 ───
 
-209. Status
+213. COREGRID BOUNDARY EQUATION
+For architectural reasoning, CoreGrid may use the following conceptual model:
+text
+BOUNDARY
+=
+OWNERSHIP
++
+AUTHORITY
++
+SCOPE
++
+CONTEXT
++
+CONTRACT
++
+POLICY
++
+SECURITY
++
+TENANCY
++
+TEMPORALITY
++
+CAUSALITY
++
+FAILURE
++
+EVIDENCE
++
+EVOLUTION
+
+This is a conceptual architecture model, not a mathematical computation.
+A boundary is complete only when the relevant dimensions have been made explicit.
+
+───
+
+214. COREGRID AUTHORITY TRANSITION LAW
+Any state-changing operation SHOULD be understandable as:
+text
+PRECONDITION
+      ↓
+INTENT
+      ↓
+IDENTITY
+      ↓
+AUTHORITY
+      ↓
+POLICY
+      ↓
+CAPABILITY
+      ↓
+AUTHORIZED TRANSITION
+      ↓
+EXECUTION
+      ↓
+OBSERVATION
+      ↓
+EVIDENCE
+      ↓
+CANONICAL / DERIVED STATE UPDATE
+
+No component may jump from:
+text
+INFORMATION
+
+directly to:
+text
+UNBOUNDED AUTHORITY
+
+
+───
+
+215. COREGRID REALITY BOUNDARY LAW
+CoreGrid MUST preserve the distinction between:
+text
+REALITY
+OBSERVATION
+REPRESENTATION
+KNOWLEDGE
+HYPOTHESIS
+PREDICTION
+SIMULATION
+DECISION
+ACTION
+OUTCOME
+
+This is especially important as CoreGrid expands into:
+• physical systems
+• digital twins
+• scientific domains
+• government
+• finance
+• education
+• healthcare
+• industrial operations
+• autonomous systems
+A representation may be highly accurate and still remain a representation.
+A prediction may be highly confident and still remain a prediction.
+A simulation may be extremely detailed and still remain a simulation.
+
+───
+
+216. COREGRID RUNTIME SOVEREIGNTY LAW
+Every runtime MUST be able to operate as a bounded composition of CoreGrid capabilities.
+text
+COREGRID PLATFORM
+        ↓
+RUNTIME COMPOSITION
+        ↓
+DOMAIN CAPABILITIES
+        ↓
+DOMAIN EXPERIENCE
+        ↓
+DOMAIN OPERATIONS
+
+A runtime MUST NOT become the hidden owner of platform primitives merely because it is the first runtime to use them.
+
+───
+
+217. SCHOLAR PROTECTION LAW
+CoreGrid Scholar is a reference and production runtime.
+Therefore:
+text
+SCHOLAR ⊂ COREGRID RUNTIME ECOSYSTEM
+
+and never:
+text
+COREGRID = SCHOLAR
+
+Scholar-specific assumptions MUST NOT silently become universal platform boundaries.
+Future runtimes MUST be capable of consuming the same platform architecture without inheriting Scholar's domain semantics.
+
+───
+
+218. FUTURE CAPABILITY PROTECTION LAW
+When CoreGrid encounters a capability whose final architectural home is unknown:
+text
+UNKNOWN
+   ↓
+RESERVED
+   ↓
+ANALYZED
+   ↓
+OWNERSHIP DECISION
+   ↓
+REGISTERED
+   ↓
+BOUNDED
+
+It MUST NOT be silently absorbed into whichever existing component happens to be convenient.
+
+───
+
+219. EVOLUTION WITHOUT BOUNDARY COLLAPSE
+CoreGrid architecture must support continuous evolution without requiring continuous boundary destruction.
+Preferred evolution:
+text
+NEW CAPABILITY
+      ↓
+OWNERSHIP ANALYSIS
+      ↓
+BOUNDARY DEFINITION
+      ↓
+CONTRACT
+      ↓
+REGISTRATION
+      ↓
+DEPENDENCY ANALYSIS
+      ↓
+POLICY
+      ↓
+IMPLEMENTATION
+      ↓
+VALIDATION
+      ↓
+OBSERVATION
+      ↓
+PROMOTION
+
+Evolution MUST add governed capability rather than accidental coupling.
+
+───
+
+220. BOUNDARY SURVIVAL TESTS
+Every foundational boundary SHOULD survive these tests:
+Platform Survival Test
+If Scholar disappears, does CoreGrid remain architecturally valid?
+Required: YES.
+Runtime Replacement Test
+Can one runtime be replaced without redefining CoreGrid?
+Required: YES.
+Model Replacement Test
+Can the intelligence provider change without changing domain ownership?
+Required: YES.
+Agent Replacement Test
+Can an agent implementation be replaced without changing canonical authority?
+Required: YES.
+Cloud Replacement Test
+Can infrastructure providers change without redefining domain semantics?
+Required: YES.
+Database Replacement Test
+Can storage technology change without changing canonical ownership?
+Required: YES.
+Interface Replacement Test
+Can clients change without changing backend authority?
+Required: YES.
+Domain Expansion Test
+Can a new domain be introduced without redefining existing domain ownership?
+Required: YES.
+
+───
+
+221. FINAL STATUS
 Document:ARCHITECTURE-BOUNDARIES.md
 System: CoreGrid Platform
+Architecture: CoreGrid Universal Reality Intelligence Infrastructure
 Scope: Entire CoreGrid ecosystem
-Architecture Status:NORMATIVE / CANONICAL
-Phase Scope: All phases registered in ARCHITECTURE-REGISTRY.md, including the current 51-phase architecture
+Status:NORMATIVE / CANONICAL
+Phase Scope: All phases registered in ARCHITECTURE-REGISTRY.md
+Primary Authority: CoreGrid Architecture Governance Layer
+Relationship Authority:ARCHITECTURE-DEPENDENCY-MAP.md
+Constitutional Authority:CONSTITUTION.md
 Core Principle:
-One capability → one canonical owner → explicit boundary → governed contract → controlled authority.
-CoreGrid Scholar: First production/reference runtime; not the architectural boundary of CoreGrid.
+One capability → one canonical owner → explicit boundary → explicit authority → governed contract → controlled execution → observable outcome.
+CoreGrid Scholar: First production/reference runtime; never the architectural root.
 Implementation Rule:
 No implementation may knowingly violate a canonical CoreGrid boundary without a formally recorded architectural exception.
 Final Law:
-CoreGrid must be capable of becoming vastly more intelligent, autonomous, distributed, and complex without becoming architecturally ambiguous.
+CoreGrid must be capable of becoming vastly more intelligent, autonomous, distributed, physical-world aware, domain-expansive, and computationally complex without becoming architecturally ambiguous.
+Boundary Doctrine:
+The larger CoreGrid becomes, the more explicit its boundaries must become.
+Canonical Identity:
+CoreGrid boundaries are not walls that restrict intelligence. They are the structural laws that allow intelligence, reality, authority, autonomy, and evolution to coexist without collapsing into ambiguity.
+102. DECISION-099 — REPLAYABILITY IS A CORE CAPABILITY
+Important workflows SHOULD be replayable against historical state where practical.
+Replay supports:
+• debugging;
+• incident investigation;
+• AI evaluation;
+• regression;
+• simulation;
+• learning;
+• forensic reconstruction.
+
+───
+
+103. DECISION-100 — HISTORICAL STATE MATTERS
+CoreGrid must preserve sufficient temporal information to answer:
+What did the system know, believe, permit, observe and execute at that point in time?
+This is essential for serious institutional and reality intelligence.
+
+───
+
+104. DECISION-101 — TEMPORAL REALITY IS FIRST-CLASS
+Important entities and relationships may change over time.
+CoreGrid should distinguish:
+text
+Current State
+Historical State
+Effective State
+Observed State
+Predicted State
+Simulated State
+Proposed State
+
+Temporal semantics MUST NOT be casually collapsed.
+
+───
+
+105. DECISION-102 — UNCERTAINTY IS FIRST-CLASS
+Where information is uncertain, CoreGrid SHOULD preserve:
+• confidence;
+• provenance;
+• timestamp;
+• source;
+• uncertainty;
+• competing hypotheses;
+• evidence quality.
+The system MUST NOT convert uncertainty into false certainty merely for interface simplicity.
+
+───
+
+106. DECISION-103 — EVIDENCE HAS PROVENANCE
+Important information SHOULD preserve:
+• source;
+• collector;
+• timestamp;
+• transformation;
+• version;
+• lineage;
+• confidence where relevant;
+• authority level;
+• observation conditions.
+
+───
+
+107. DECISION-104 — SECURITY, AI AND DATA GOVERNANCE CONVERGE AT THE ACTION BOUNDARY
+Before consequential actions, the platform SHOULD evaluate:
+text
+WHO?
++
+WHAT?
++
+AGAINST WHICH RESOURCE?
++
+UNDER WHICH CONTEXT?
++
+USING WHICH AUTHORITY?
++
+UNDER WHICH POLICY?
++
+WITH WHICH EVIDENCE?
++
+AT WHAT RISK?
++
+WITH WHAT EXPECTED CONSEQUENCE?
++
+WITH WHAT REVERSIBILITY?
+
+Only then should governed execution occur.
+
+───
+
+108. DECISION-105 — CONSEQUENCE IS AN ARCHITECTURAL CONCEPT
+CoreGrid should classify actions according to consequence.
+Potential dimensions include:
+• reversibility;
+• financial impact;
+• security impact;
+• privacy impact;
+• institutional impact;
+• legal impact;
+• physical impact;
+• external-world impact;
+• cascading impact.
+Higher-consequence actions require stronger controls.
+
+───
+
+109. DECISION-106 — IRREVERSIBILITY REQUIRES STRONGER GOVERNANCE
+As an action becomes less reversible:
+text
+Observation
+ ↓
+Interpretation
+ ↓
+Recommendation
+ ↓
+Simulation
+ ↓
+Approval
+ ↓
+Bounded Execution
+ ↓
+Verification
+
+Governance requirements increase proportionally to consequence.
+
+───
+
+110. DECISION-107 — NO AUTONOMOUS POWER WITHOUT OBSERVABILITY
+An autonomous subsystem MUST NOT receive increasing authority without corresponding increases in:
+• observability;
+• policy control;
+• testing;
+• rollback;
+• incident response;
+• evaluation;
+• auditability.
+
+───
+
+111. DECISION-108 — SECURITY AND SAFETY MUST SURVIVE AI FAILURE
+If an AI model:
+• hallucinates;
+• becomes unavailable;
+• returns malformed output;
+• produces unsafe recommendations;
+• misinterprets context;
+• becomes inconsistent;
+CoreGrid's deterministic security and authorization boundaries MUST remain intact.
+
+───
+
+112. DECISION-109 — HUMAN EXPERIENCE MUST REMAIN ADAPTIVE
+Different users may legitimately receive different interfaces.
+The platform should optimize experience around:
+• responsibility;
+• context;
+• expertise;
+• device;
+• accessibility;
+• preferences;
+• current task;
+• risk.
+Uniformity is not always usability.
+
+───
+
+113. DECISION-110 — PROGRESSIVE COMPLEXITY
+CoreGrid should expose capability progressively:
+text
+Safe Defaults
+ ↓
+Guided Understanding
+ ↓
+Contextual Intelligence
+ ↓
+Recommendations
+ ↓
+Advanced Controls
+ ↓
+Expert Operations
+
+Power should not require overwhelming every user.
+
+───
+
+114. DECISION-111 — ACCESSIBILITY IS ARCHITECTURAL
+Accessibility must be incorporated into the platform rather than added at the end.
+Interfaces should support appropriate:
+• keyboard navigation;
+• screen readers;
+• contrast;
+• text scaling;
+• localization;
+• reduced motion;
+• assistive technologies;
+• alternative interaction modes.
+
+───
+
+115. DECISION-112 — INSTITUTIONAL DIVERSITY IS A CORE DESIGN INPUT
+CoreGrid must support different organizational realities without forcing every institution into one rigid template.
+Configuration should handle variations in:
+• structure;
+• governance;
+• education;
+• workforce;
+• scheduling;
+• operations;
+• language;
+• policy;
+• geography;
+• authority structures.
+
+───
+
+116. DECISION-113 — GLOBALIZATION IS NOT FORKING
+Regional adaptation should occur through:
+• configuration;
+• policy;
+• localization;
+• jurisdictional adapters;
+• deployment configuration;
+• domain configuration.
+Country-specific forks are prohibited unless explicitly justified and governed.
+
+───
+
+117. DECISION-114 — MIGRATION IS A FIRST-CLASS ENGINEERING CAPABILITY
+Migrations require:
+• planning;
+• compatibility;
+• validation;
+• observability;
+• recovery;
+• rollback where possible;
+• historical integrity.
+
+───
+
+118. DECISION-115 — NO BIG-BANG REWRITE BY DEFAULT
+CoreGrid should evolve incrementally.
+Existing working infrastructure should be:
+text
+Inspect
+ ↓
+Understand
+ ↓
+Map
+ ↓
+Evaluate
+ ↓
+Reuse
+ ↓
+Refactor
+ ↓
+Replace Only When Justified
+
+The objective is architectural evolution, not architectural destruction.
+
+───
+
+119. DECISION-116 — EXISTING SYSTEMS ARE EVIDENCE
+Before creating a new capability, engineering agents MUST inspect existing implementation.
+The question is not:
+"How would I build this from scratch?"
+It is:
+"What already exists, what is authoritative, what is reusable, what is incomplete, what conflicts with the architecture, and what must change?"
+
+───
+
+120. DECISION-117 — ARCHITECTURE DOCUMENTS OUTRANK GENERATED CODE
+Code does not redefine architectural authority merely because it exists.
+Architectural truth remains governed through:
+text
+Constitution
+ ↓
+Architecture Principles
+ ↓
+Registry
+ ↓
+Dependency Map
+ ↓
+Boundaries
+ ↓
+Decisions
+ ↓
+Phase Specifications
+ ↓
+Contracts
+ ↓
+Implementation
+
+
+───
+
+121. DECISION-118 — ENGINEERING AGENTS ARE ARCHITECTURE-CONSTRAINED
+Before major implementation, engineering agents MUST inspect:
+1. Constitution;
+2. Architecture Principles;
+3. Registry;
+4. Dependency Map;
+5. Boundaries;
+6. Decisions;
+7. Relevant phase;
+8. Existing implementation;
+9. Tests;
+10. Operational constraints.
+
+───
+
+122. DECISION-119 — AGENTS MUST NOT INVENT ARCHITECTURE
+Engineering agents MUST NOT silently:
+• create phases;
+• move ownership;
+• duplicate systems;
+• bypass security;
+• introduce hidden dependencies;
+• redefine canonical truth;
+• convert recommendations into authority;
+• change architectural boundaries.
+If architecture is insufficient:
+text
+STOP
+ ↓
+Identify Ambiguity
+ ↓
+Analyze Alternatives
+ ↓
+Determine Impact
+ ↓
+Propose Decision
+ ↓
+Approve / Record
+ ↓
+Update Architecture
+ ↓
+Implement
+
+
+───
+
+123. DECISION-120 — ARCHITECTURAL CONFLICTS MUST BE EXPLICIT
+Conflicts must be classified as:
+• ownership conflict;
+• dependency conflict;
+• terminology conflict;
+• policy conflict;
+• implementation conflict;
+• data conflict;
+• security conflict;
+• authority conflict;
+• temporal conflict;
+• architectural conflict.
+The smallest correct architectural change should normally be preferred.
+
+───
+
+124. DECISION-121 — DEPENDENCY SEMANTICS MUST BE EXPLICIT
+CoreGrid dependencies distinguish at minimum:
+text
+STRUCTURAL_DEPENDS_ON
+RUNTIME_CALLS
+PUBLISHES_EVENT_TO
+SUBSCRIBES_TO
+READS_FROM
+WRITES_TO
+CONSUMES_POLICY
+CONSUMES_IDENTITY_CONTEXT
+CONSUMES_TRUST_SIGNAL
+COMPOSES
+EXTENDS
+GOVERNS
+ATTESTS
+OBSERVES
+ROUTES_TO
+ADAPTER_FOR
+
+Additional dependency dimensions may exist in the Dependency Map.
+A runtime interaction does not automatically create a structural dependency.
+
+───
+
+125. DECISION-122 — CAUSAL RELATIONSHIPS ARE NOT SOFTWARE DEPENDENCIES
+CoreGrid distinguishes:
+text
+Structural Dependency
+≠
+Runtime Dependency
+≠
+Data Relationship
+≠
+Causal Relationship
+≠
+Authority Relationship
+
+A real-world causal relationship may exist without either subsystem directly depending on the other in software.
+Causality belongs to the Reality Intelligence model.
+Dependency belongs to architectural topology.
+The two MAY intersect but MUST NOT be conflated.
+
+───
+
+126. DECISION-123 — ARCHITECTURE MUST REMAIN ACYCLIC WHERE REQUIRED
+Structural dependency cycles are architectural defects unless explicitly justified.
+Runtime and event flows may contain feedback loops without creating structural ownership cycles.
+text
+Structural Graph → normally acyclic
+
+Runtime/Event Graph → may contain governed feedback
+
+
+───
+
+127. DECISION-124 — BLAST RADIUS MUST BE CONSIDERED
+Every major architecture change should consider:
+• affected phases;
+• affected tenants;
+• affected contracts;
+• affected data;
+• affected agents;
+• affected workflows;
+• affected infrastructure;
+• affected deployments;
+• rollback complexity;
+• potential cascading failure.
+
+───
+
+128. DECISION-125 — CRITICAL PATHS ARE EXPLICIT
+Important operations must identify:
+• dependencies;
+• failure points;
+• fallback paths;
+• recovery;
+• authorization;
+• audit requirements;
+• expected latency;
+• consequence.
+
+───
+
+129. DECISION-126 — SHARED INFRASTRUCTURE IS GOVERNED
+Shared:
+• databases;
+• queues;
+• caches;
+• object storage;
+• observability;
+• AI infrastructure;
+• identity;
+• event infrastructure;
+• networking;
+MUST have explicit ownership and usage rules.
+Shared infrastructure is not ownerless infrastructure.
+
+───
+
+130. DECISION-127 — COREGRID MUST REMAIN COMPOSABLE
+Institutions and organizations may activate capabilities progressively.
+Not every deployment requires every capability.
+A CoreGrid deployment may therefore be a governed composition of capabilities rather than a mandatory installation of the entire platform.
+
+───
+
+131. DECISION-128 — COMPOSABILITY MUST NOT BREAK INTEGRITY
+Optional modules must not create inconsistent versions of canonical truth.
+Capability activation changes availability.
+It does not change ownership.
+
+───
+
+132. DECISION-129 — SECURITY EXCEPTIONS ARE TEMPORARY
+Every material security exception requires:
+• reason;
+• owner;
+• scope;
+• expiration or review date;
+• compensating controls;
+• monitoring.
+No exception becomes permanent merely because nobody revisits it.
+
+───
+
+133. DECISION-130 — RELIABILITY IS MEASURABLE
+Critical capabilities should eventually define:
+• availability;
+• latency;
+• error rate;
+• RPO;
+• RTO;
+• recovery objectives;
+• error budgets where appropriate;
+• dependency reliability requirements.
+
+───
+
+134. DECISION-131 — DISASTER RECOVERY MUST BE TESTED
+Backups are insufficient.
+CoreGrid must test:
+• restore;
+• failover;
+• recovery;
+• degraded operation;
+• data integrity;
+• dependency failure;
+• operational recovery.
+
+───
+
+135. DECISION-132 — NO SILENT DATA LOSS
+Destructive operations require appropriate:
+• authorization;
+• validation;
+• audit;
+• recovery mechanisms;
+• retention controls;
+• confirmation where required.
+
+───
+
+136. DECISION-133 — FINANCIAL INTEGRITY IS TRANSACTIONAL
+Financial capabilities must prioritize:
+• correctness;
+• idempotency;
+• reconciliation;
+• authorization;
+• traceability;
+• auditability;
+• transaction integrity.
+Financial truth MUST NOT depend merely upon mutable presentation-layer balances.
+
+───
+
+137. DECISION-134 — RESOURCE SCHEDULING IS CONSTRAINT-BASED
+Scheduling and resource allocation should account for:
+• capacity;
+• conflicts;
+• availability;
+• policies;
+• time;
+• location;
+• dependencies;
+• exceptions;
+• priorities.
+
+───
+
+138. DECISION-135 — DOMAIN CAPABILITIES REMAIN DOMAIN OWNED
+CoreGrid platform infrastructure must not absorb every domain's responsibilities.
+Domain-specific truth belongs to the appropriate domain owner.
+CoreGrid provides the substrate through which that domain may operate.
+
+───
+
+139. DECISION-136 — COMMAND DOES NOT EQUAL OWNERSHIP
+A command centre may coordinate an action without becoming the owner of the underlying state.
+
+───
+
+140. DECISION-137 — INTELLIGENCE DOES NOT EQUAL AUTHORITY
+An AI may understand a situation while still lacking authority to act.
+This distinction is permanent.
+
+───
+
+141. DECISION-138 — KNOWLEDGE DOES NOT EQUAL PERMISSION
+Knowing that an operation is possible does not grant the ability to execute it.
+
+───
+
+142. DECISION-139 — ACCESS DOES NOT EQUAL PURPOSE
+Having technical access to data does not establish that a system or agent is authorized to use that data for every purpose.
+Purpose remains governed.
+
+───
+
+143. DECISION-140 — OBSERVATION DOES NOT EQUAL INTERVENTION
+A system may observe an event without automatically acting upon it.
+text
+Observation
+≠ Recommendation
+≠ Decision
+≠ Intervention
+
+These remain separate capabilities.
+
+───
+
+144. DECISION-141 — SIMULATION DOES NOT EQUAL EXECUTION
+A simulated action MUST never silently become a real action.
+The boundary between:
+text
+Possible World
+
+and:
+text
+Actual World
+
+MUST remain explicit.
+
+───
+
+145. DECISION-142 — RECOMMENDATION DOES NOT EQUAL DECISION
+AI recommendations remain recommendations until an authorized decision mechanism accepts them.
+
+───
+
+146. DECISION-143 — DECISION DOES NOT EQUAL EXECUTION
+A decision must still pass through appropriate execution controls.
+This permits final enforcement checks immediately before consequential action.
+
+───
+
+147. DECISION-144 — EXECUTION DOES NOT EQUAL SUCCESS
+An action being accepted or executed does not prove that the intended outcome occurred.
+Outcome verification is a separate concern.
+
+───
+
+148. DECISION-145 — OUTCOME FEEDS LEARNING
+Where appropriate:
+text
+Decision
+ ↓
+Action
+ ↓
+Outcome
+ ↓
+Evaluation
+ ↓
+Learning
+
+This creates the basis for continuous improvement.
+
+───
+
+149. DECISION-146 — COREGRID IS A CLOSED-LOOP INTELLIGENCE SYSTEM
+The long-term architecture supports:
+text
+Observe
+ ↓
+Understand
+ ↓
+Remember
+ ↓
+Reason
+ ↓
+Predict
+ ↓
+Plan
+ ↓
+Simulate
+ ↓
+Decide
+ ↓
+Act
+ ↓
+Observe Consequences
+ ↓
+Learn
+ ↓
+Adapt
+
+The loop remains governed.
+
+───
+
+150. DECISION-147 — SELF-IMPROVEMENT MUST REMAIN CONSTRAINED
+CoreGrid may eventually support increasingly autonomous optimization of:
+• workflows;
+• resource allocation;
+• model routing;
+• agent coordination;
+• operational policies;
+• system configuration;
+• capability composition.
+Self-improvement MUST remain bounded by:
+• constitutional rules;
+• security;
+• authorization;
+• validation;
+• observability;
+• rollback;
+• testing;
+• human governance where required.
+
+───
+
+151. DECISION-148 — THE CONSTITUTION CANNOT BE SELF-MODIFIED BY DEFAULT
+No AI agent may silently rewrite CoreGrid's constitutional architecture.
+Constitutional changes require explicit governance.
+The system may propose constitutional evolution.
+It does not unilaterally authorize it.
+
+───
+
+152. DECISION-149 — DECISIONS ARE MACHINE-RELEVANT
+Architecture decisions SHOULD eventually be represented in machine-readable form where practical.
+This permits:
+• architecture linting;
+• dependency validation;
+• policy validation;
+• CI enforcement;
+• agent reasoning;
+• automated contradiction detection;
+• impact analysis;
+• change propagation.
+
+───
+
+153. DECISION-150 — ARCHITECTURE SHOULD BE MACHINE-VALIDATABLE
+Where possible, architecture should be expressed in structures machines can validate:
+text
+Phase Registry
+Dependency Registry
+Ownership Matrix
+Contract Registry
+Policy Registry
+Decision Registry
+Capability Registry
+Event Registry
+Context Schema
+Boundary Registry
+
+Human-readable documentation remains authoritative for human interpretation.
+Machine-readable representations enable enforcement.
+
+───
+
+154. DECISION-151 — ARCHITECTURE IS A GRAPH
+CoreGrid should be understood as a graph of:
+text
+Entities
+Relationships
+States
+Events
+Capabilities
+Dependencies
+Policies
+Agents
+Resources
+Authority
+Evidence
+Contexts
+
+The architecture itself should therefore be graph-aware.
+
+───
+
+155. DECISION-152 — COREGRID SHOULD BE CAPABLE OF SELF-DESCRIPTION
+A mature CoreGrid installation should be able to answer:
+• What exists?
+• Who owns it?
+• What depends on it?
+• What policies govern it?
+• What is its current state?
+• What changed?
+• What is failing?
+• What is allowed?
+• What agents can act?
+• What evidence supports the current state?
+• What dependencies would be affected by a change?
+• What capabilities are available in this context?
+Self-description is a prerequisite for serious autonomous operation.
+
+───
+
+156. DECISION-153 — COREGRID SHOULD BE OBSERVABLE TO ITSELF
+The platform should maintain sufficient metadata to understand its own:
+• topology;
+• capabilities;
+• dependencies;
+• agents;
+• workloads;
+• policies;
+• health;
+• configuration;
+• events;
+• changes;
+• authority relationships;
+• evidence.
+This creates platform self-observability.
+
+───
+
+157. DECISION-154 — SELF-AWARENESS DOES NOT MEAN UNCONTROLLED SELF-AUTHORITY
+text
+Self-Observation
+      ≠
+Self-Modification
+      ≠
+Self-Authorization
+
+A system may understand itself without receiving unrestricted permission to alter itself.
+
+───
+
+158. DECISION-155 — COREGRID SHOULD SUPPORT MULTIPLE DEPLOYMENT WORLDS
+CoreGrid should conceptually support:
+text
+Cloud World
+Private World
+Customer World
+Sovereign World
+Edge World
+Air-Gapped World
+Hybrid World
+On-Prem World
+
+Logical architecture remains consistent while deployment topology varies.
+
+───
+
+159. DECISION-156 — DEPLOYMENT TOPOLOGY MUST NOT REDEFINE DOMAIN TRUTH
+Moving a subsystem between:
+• CoreGrid cloud;
+• customer cloud;
+• edge;
+• on-premises;
+• sovereign infrastructure;
+must not redefine its canonical semantics.
+
+───
+
+160. DECISION-157 — INTEROPERABILITY IS STRATEGIC
+CoreGrid must communicate with external systems through stable contracts.
+Integration should prefer:
+• standards;
+• APIs;
+• events;
+• schemas;
+• adapters;
+• explicit mappings.
+
+───
+
+161. DECISION-158 — EXTERNAL FAILURE IS EXPECTED
+External providers may fail.
+CoreGrid integrations must define appropriate:
+• timeout;
+• retry;
+• fallback;
+• reconciliation;
+• status;
+• user communication;
+• recovery.
+
+───
+
+162. DECISION-159 — ARCHITECTURAL COMPLETENESS IS MULTIDIMENSIONAL
+A capability is not complete merely because it has code.
+Completion may require:
+text
+Identity
+Purpose
+Ownership
+Authority
+Boundaries
+Dependencies
+Contracts
+Data
+Events
+Security
+Agents
+Operations
+Testing
+Observability
+Documentation
+Migration
+Evolution
+Recovery
+Provenance
+
+
+───
+
+163. DECISION-160 — DOCUMENTATION IS ENGINEERING INFRASTRUCTURE
+Architecture documentation is not administrative overhead.
+It is required for:
+• human understanding;
+• AI agent reasoning;
+• onboarding;
+• auditing;
+• debugging;
+• evolution;
+• automated architectural validation;
+• continuity across engineering generations.
+
+───
+
+164. DECISION-161 — PROGRESS IS PART OF ARCHITECTURAL STATE
+Implementation progress should identify:
+• completed capabilities;
+• incomplete capabilities;
+• known defects;
+• architecture debt;
+• blocked dependencies;
+• decisions required;
+• validation status.
+Progress MUST NOT falsely represent documentation as implementation.
+
+───
+
+165. DECISION-162 — ARCHITECTURE DECISIONS MUST BE PROPAGATED
+A material decision may require updates to:
+• architecture;
+• registry;
+• dependency map;
+• boundaries;
+• phase specifications;
+• APIs;
+• schemas;
+• tests;
+• documentation;
+• implementation;
+• deployment;
+• operational runbooks.
+A decision is incomplete until affected artifacts are reconciled.
+
+───
+
+166. DECISION-163 — NO DUPLICATE SYSTEMS
+Before introducing a new subsystem, engineering agents must ask:
+text
+Does this already exist?
+Who owns it?
+Can it be reused?
+Can it be extended?
+Does it belong to another phase?
+Why is replacement necessary?
+What happens to the old authority?
+
+Duplicate systems require explicit architectural justification.
+
+───
+
+167. DECISION-164 — REPLACEABILITY IS STRATEGIC
+Where practical, CoreGrid should preserve replacement paths for:
+• AI providers;
+• cloud providers;
+• payment providers;
+• communication providers;
+• storage;
+• search;
+• observability;
+• integration providers.
+Replaceability MUST be balanced against unnecessary abstraction complexity.
+
+───
+
+168. DECISION-165 — ABSTRACTIONS MUST EARN THEIR EXISTENCE
+An abstraction is justified when it materially improves:
+• replaceability;
+• testability;
+• security;
+• portability;
+• scalability;
+• maintainability;
+• strategic flexibility.
+Abstraction for abstraction's sake is prohibited.
+
+───
+
+169. DECISION-166 — TECHNOLOGY IS SUBORDINATE TO ARCHITECTURE
+Frameworks, languages, databases, cloud providers and AI models are implementation mechanisms.
+They must not become the definition of CoreGrid.
+
+───
+
+170. DECISION-167 — EMERGING TECHNOLOGY INTEGRATES THROUGH CONTRACTS
+Future technologies, including increasingly capable AI systems, should connect through stable CoreGrid contracts.
+The architecture should not require complete reconstruction whenever technology changes.
+
+───
+
+171. DECISION-168 — ASI-ERA READINESS IS ARCHITECTURAL, NOT HYPE
+CoreGrid MUST NOT assume that artificial superintelligence currently exists.
+Instead, the architecture should be capable of safely incorporating increasingly capable intelligence systems.
+Future intelligence may become:
+• more capable;
+• more autonomous;
+• more multimodal;
+• more persistent;
+• more context-aware;
+• more effective at planning;
+• more capable of software creation;
+• more capable of operating tools;
+• more capable of reasoning across long temporal horizons.
+The architectural response is stronger governance and composability, not unrestricted authority.
+
+───
+
+172. DECISION-169 — GREATER INTELLIGENCE REQUIRES GREATER STRUCTURAL CONTROL
+The architectural rule is:
+text
+More Intelligence
+      ↓
+More Capability
+      ↓
+More Potential Consequence
+      ↓
+Stronger Governance
+
+CoreGrid MUST NEVER use:
+"The AI is intelligent"
+as justification for:
+• unrestricted access;
+• unrestricted memory;
+• unrestricted tools;
+• unrestricted data;
+• unrestricted execution;
+• unrestricted self-modification.
+
+───
+
+173. DECISION-170 — INTELLIGENCE SHOULD BE COMPOSABLE
+Future CoreGrid intelligence may combine:
+• language reasoning;
+• vision;
+• speech;
+• planning;
+• simulation;
+• retrieval;
+• symbolic reasoning;
+• statistical models;
+• specialized models;
+• external intelligence services;
+• human expertise.
+No single intelligence mechanism should become mandatory for every task.
+
+───
+
+174. DECISION-171 — MULTI-AGENT SYSTEMS REQUIRE SHARED GOVERNANCE
+Multiple agents must share appropriate:
+• identity;
+• policy;
+• context;
+• authority;
+• audit;
+• security;
+• tenant boundaries;
+• provenance.
+A swarm of agents must not become a swarm of independent security domains.
+
+───
+
+175. DECISION-172 — AGENT COMMUNICATION IS A GOVERNED INTERFACE
+Agent-to-agent communication should preserve:
+• identity;
+• task provenance;
+• authority;
+• context;
+• tenant;
+• correlation;
+• data classification;
+• delegated scope.
+Agents must not silently escalate authority through communication.
+
+───
+
+176. DECISION-173 — DELEGATION DOES NOT TRANSFER AUTHORITY AUTOMATICALLY
+If Agent A delegates to Agent B:
+text
+Agent A Authority
+       ↓
+Delegated Task
+       ↓
+Agent B
+
+Agent B receives only explicitly permitted authority.
+Delegation MUST NOT become an authorization bypass.
+
+───
+
+177. DECISION-174 — COREGRID SHOULD SUPPORT INTELLIGENCE CONTINUITY
+A future highly capable intelligence should be able to understand CoreGrid through:
+• machine-readable architecture;
+• policies;
+• contracts;
+• knowledge;
+• memory;
+• provenance;
+• system state;
+• decision history;
+• dependency topology.
+This is essential for long-lived autonomous operation.
+
+───
+
+178. DECISION-175 — INTELLIGENCE MUST BE GROUNDED IN COREGRID REALITY
+AI systems should reason from:
+text
+Current State
++
+Historical State
++
+Policies
++
+Knowledge
++
+Evidence
++
+Context
++
+Available Capabilities
++
+Authority
+
+rather than generic assumptions.
+
+───
+
+179. DECISION-176 — AI MUST BE ABLE TO SAY "UNKNOWN"
+Unknown state is valid.
+The system must not force:
+text
+Unknown → False Certainty
+
+Instead:
+text
+Unknown
++
+Evidence Request
++
+Uncertainty
+
+may be the correct result.
+
+───
+
+180. DECISION-177 — CONTRADICTIONS MUST BE REPRESENTABLE
+CoreGrid should represent situations where sources disagree.
+For example:
+text
+Source A → State X
+Source B → State Y
+
+The system should preserve:
+• both claims;
+• provenance;
+• timestamps;
+• authority;
+• confidence;
+• reconciliation status.
+It MUST NOT silently select one merely because the data model cannot represent contradiction.
+
+───
+
+181. DECISION-178 — HYPOTHESES ARE NOT FACTS
+AI and research systems may maintain competing hypotheses.
+Hypotheses MUST remain explicitly labelled until sufficient evidence supports stronger classification.
+
+───
+
+182. DECISION-179 — COREGRID SHOULD SUPPORT COUNTERFACTUAL REASONING
+Where appropriate, intelligence systems may evaluate:
+What would happen if this action were not taken?
+and:
+What would happen under alternative actions?
+Counterfactual reasoning supports strategic decision-making without automatically executing the scenario.
+
+───
+
+183. DECISION-180 — DECISION QUALITY MATTERS MORE THAN DECISION SPEED
+Low-latency execution is valuable where required.
+CoreGrid must not sacrifice correctness, evidence, authority or safety merely to produce faster decisions.
+Latency requirements should be consequence-aware.
+
+───
+
+184. DECISION-181 — FAST PATHS AND DEEP PATHS ARE BOTH VALID
+CoreGrid should support:
+text
+FAST PATH
+→ deterministic / low-latency / routine operations
+
+DEEP PATH
+→ research / reasoning / simulation / deliberation
+
+Tasks should be routed according to:
+• complexity;
+• consequence;
+• urgency;
+• evidence requirements;
+• available intelligence;
+• risk.
+
+───
+
+185. DECISION-182 — ARCHITECTURAL GOVERNANCE IS CONTINUOUS
+This document is not a one-time specification.
+It evolves through:
+text
+Observe
+ ↓
+Identify Architectural Pressure
+ ↓
+Analyze
+ ↓
+Propose
+ ↓
+Decide
+ ↓
+Implement
+ ↓
+Validate
+ ↓
+Observe
+
+Governance itself is a feedback system.
+
+───
+
+186. DECISION-183 — DECISION LIFECYCLE IS EXPLICIT
+Every material architectural decision SHOULD move through:
+text
+PROPOSED
+   ↓
+ANALYZED
+   ↓
+REVIEWED
+   ↓
+ACCEPTED
+   ↓
+IMPLEMENTED
+   ↓
+VALIDATED
+   ↓
+ACTIVE
+   ↓
+SUPERSEDED / RETIRED
+
+A decision MUST NOT be considered active merely because it was written down.
+
+───
+
+187. DECISION-184 — EVERY MATERIAL DECISION REQUIRES EVIDENCE
+Where practical, a decision should identify:
+• problem;
+• context;
+• evidence;
+• constraints;
+• alternatives;
+• consequences;
+• dependencies;
+• risks;
+• selected architecture;
+• rejected alternatives;
+• validation requirements.
+The decision record is therefore not merely a conclusion.
+It is the durable reasoning artifact behind the conclusion.
+
+───
+
+188. DECISION-185 — DECISION CONSEQUENCES MUST BE TRACKED
+A decision should identify its expected effects on:
+• ownership;
+• dependencies;
+• contracts;
+• data;
+• security;
+• tenants;
+• runtime composition;
+• infrastructure;
+• agents;
+• operations;
+• cost;
+• migration;
+• future extensibility.
+Material consequences must propagate to affected governance artifacts.
+
+───
+
+189. DECISION-186 — DECISION CONFLICT RESOLUTION
+When decisions conflict:
+Step 1
+Identify affected capabilities.
+Step 2
+Identify authoritative ownership.
+Step 3
+Inspect:
+• Constitution;
+• Architecture Principles;
+• Registry;
+• Dependency Map;
+• Boundaries;
+• Decisions;
+• Phase specifications.
+Step 4
+Classify the conflict.
+Step 5
+Determine whether it is:
+• actual;
+• apparent;
+• implementation-specific;
+• ownership-related;
+• dependency-related;
+• policy-related;
+• temporal;
+• terminology-related.
+Step 6
+Determine the highest-authority applicable rule.
+Step 7
+Choose the smallest correct architectural change.
+Step 8
+Record the resolution.
+Step 9
+Propagate it through affected artifacts.
+
+───
+
+190. DECISION-187 — CODEX / ENGINEERING AGENT ENFORCEMENT
+Before a significant architectural change, engineering agents MUST ask:
+1. What capability is being changed?
+2. Who owns it?
+3. Does another system already own it?
+4. Does this duplicate functionality?
+5. Does this change a dependency?
+6. Does this create a cycle?
+7. Does this alter canonical truth?
+8. Does this affect tenant isolation?
+9. Does this affect security?
+10. Does this affect AI authority?
+11. Does this affect memory?
+12. Does this affect data ownership?
+13. Does this affect APIs?
+14. Does this affect events?
+15. Does this affect observability?
+16. Does this affect historical data?
+17. Does this require migration?
+18. Does this affect deployment topology?
+19. Does this affect future extensibility?
+20. Does this alter causality or state-transition semantics?
+21. Does this change an authority boundary?
+22. Does this require a new decision?
+23. Does this supersede an existing decision?
+If architectural impact exists, the architecture MUST be updated before or together with implementation.
+
+───
+
+191. DECISION-188 — PROHIBITED ARCHITECTURAL BEHAVIOR
+CoreGrid engineering agents MUST NOT:
+• invent phases silently;
+• move ownership silently;
+• duplicate canonical systems;
+• bypass authorization;
+• bypass tenant isolation;
+• hard-code institutional truth unnecessarily;
+• treat AI output as authority;
+• allow unrestricted agent tools;
+• introduce hidden dependencies;
+• expose private database contracts;
+• silently break APIs;
+• delete historical architectural decisions;
+• deploy unvalidated high-impact self-modification;
+• create unrestricted autonomous actions;
+• allow external providers to redefine CoreGrid's domain model;
+• confuse simulation with execution;
+• confuse memory with truth;
+• confuse observation with intervention;
+• convert uncertainty into false certainty.
+
+───
+
+192. DECISION-189 — ARCHITECTURAL CHANGE REQUIREMENTS
+Material architectural changes require appropriate:
+• decision record;
+• rationale;
+• evidence;
+• alternatives;
+• impact analysis;
+• dependency analysis;
+• security review;
+• authority review;
+• migration plan;
+• validation;
+• documentation;
+• propagation.
+Not every implementation change requires a new decision.
+The threshold is architectural consequence, not code size.
+
+───
+
+193. DECISION-190 — ARCHITECTURE DECISION EXCEPTIONS ARE EXPLICIT
+When an implementation cannot immediately conform to a canonical decision, the exception MUST be recorded.
+An exception SHOULD include:
+text
+Exception ID
+Decision Affected
+Reason
+Scope
+Risk
+Compensating Controls
+Owner
+Start Date
+Review Date
+Expiration / Exit Condition
+Migration Plan
+
+Exceptions do not silently modify the underlying decision.
+
+───
+
+194. DECISION-191 — ARCHITECTURE DECISION PROPAGATION IS MANDATORY
+When a decision changes a canonical architectural rule, affected artifacts MUST be identified.
+Potential propagation targets include:
+text
+Constitution
+Architecture Principles
+Registry
+Dependency Map
+Boundaries
+Policies
+Phase Specifications
+Contracts
+Schemas
+Events
+Tests
+Implementation
+Operations
+Documentation
+Progress
+
+A decision that is not propagated creates architectural drift.
+
+───
+
+195. DECISION-192 — ARCHITECTURE DRIFT IS A GOVERNANCE FAILURE
+Architecture drift occurs when:
+• implementation diverges from decisions;
+• dependencies diverge from the Dependency Map;
+• ownership diverges from the Registry;
+• contracts diverge from specifications;
+• policies diverge from enforcement;
+• runtime behavior diverges from declared authority;
+• documentation diverges from actual architecture.
+Drift SHOULD be detectable automatically where practical.
+
+───
+
+196. DECISION-193 — ARCHITECTURAL CONFORMANCE MUST BE TESTABLE
+CoreGrid should progressively implement architecture conformance tests covering:
+• phase ownership;
+• dependency validity;
+• forbidden dependencies;
+• contract compatibility;
+• tenant propagation;
+• authorization;
+• security boundaries;
+• event contracts;
+• policy enforcement;
+• data ownership;
+• architecture drift;
+• decision applicability.
+Architecture therefore becomes partially executable governance.
+
+───
+
+197. DECISION-194 — MACHINE-READABLE DECISIONS REQUIRE STABLE IDENTITIES
+Each canonical decision SHOULD have:
+yaml
+decision:
+  id: AD-001
+  status: ACTIVE
+  title: CoreGrid Is the Platform, Not Scholar
+  authority: CoreGrid Architecture Governance Layer
+  scope: coregrid
+  rationale: ...
+  consequences:
+    - ...
+  affected_artifacts:
+    - ...
+  supersedes: null
+  superseded_by: null
+
+Decision IDs MUST remain stable.
+Renaming a decision does not create a new decision unless its semantic authority changes.
+
+───
+
+198. DECISION-195 — DECISION STATUS MUST BE MACHINE-VALIDATABLE
+Recommended statuses:
+text
+PROPOSED
+UNDER_REVIEW
+ACCEPTED
+ACTIVE
+CONDITIONAL
+EXCEPTION
+SUPERSEDED
+RETIRED
+REJECTED
+
+Only appropriate statuses may impose architectural constraints.
+
+───
+
+199. DECISION-196 — ARCHITECTURAL AUTHORITY IS NOT IMPLEMENTATION LOCATION
+A capability does not belong to a subsystem merely because that subsystem currently implements it.
+Likewise:
+text
+Code Location
+≠
+Canonical Ownership
+
+Ownership is explicitly declared by architecture.
+Implementation may move without transferring authority unless the governing architecture changes.
+
+───
+
+200. DECISION-197 — DEPENDENCY PROXIMITY DOES NOT CREATE AUTHORITY
+The following do not establish ownership by themselves:
+• same repository;
+• same database;
+• same service;
+• same team;
+• same deployment;
+• same runtime;
+• same programming language;
+• same cloud;
+• same agent;
+• same UI.
+Architectural ownership remains explicit.
+
+───
+
+201. DECISION-198 — NO TRANSITIVE AUTHORITY
+If:
+text
+A → consumes B
+B → owns Capability X
+
+then:
+text
+A ≠ owner of Capability X
+
+Likewise, consuming a capability does not automatically grant the consumer:
+• the provider's permissions;
+• the provider's authority;
+• the provider's tenant scope;
+• the provider's credentials;
+• the provider's trust level.
+Authority does not propagate merely because dependencies do.
+
+───
+
+202. DECISION-199 — DECISIONS MUST PRESERVE THE DEPENDENCY MAP
+Every material architectural decision MUST remain compatible with the Dependency Map.
+Where a decision creates:
+• a new dependency;
+• a removed dependency;
+• an ownership change;
+• a new boundary;
+• a new contract;
+• a new feedback loop;
+the Dependency Map MUST be updated.
+
+───
+
+203. DECISION-200 — DECISIONS MUST PRESERVE THE REGISTRY
+No decision in this document may silently create a new registered phase or redefine a phase's ownership.
+The authoritative phase inventory remains the Architecture Registry.
+Where a decision identifies a missing capability, the capability must first be analyzed against existing registered phases before any new phase is proposed.
+
+───
+
+204. DECISION-201 — SCHOLAR REMAINS A REFERENCE RUNTIME
+Scholar is a major validation environment for CoreGrid architecture.
+However:
+text
+CoreGrid
+  ├── Scholar
+  ├── Future Domain Runtimes
+  ├── Institutional Runtimes
+  ├── Enterprise Runtimes
+  ├── Government Runtimes
+  ├── Research Runtimes
+  └── Other Governed Runtimes
+
+Scholar MUST demonstrate the platform's capabilities without becoming their universal owner.
+
+───
+
+205. DECISION-202 — COREGRID MUST SURVIVE SCHOLAR REMOVAL
+The platform architecture must remain coherent if Scholar is removed.
+This is the Runtime Independence Test:
+text
+Remove Scholar
+      ↓
+Does CoreGrid architecture still make sense?
+      ↓
+YES
+
+If the answer becomes NO, Scholar-specific assumptions have leaked into the platform.
+
+───
+
+206. DECISION-203 — COREGRID MUST SURVIVE MODEL REPLACEMENT
+Replace the primary intelligence provider.
+The platform MUST remain architecturally coherent.
+text
+Model A
+   ↓ remove
+Model B
+   ↓
+CoreGrid continues
+
+This is the Intelligence Replaceability Test.
+
+───
+
+207. DECISION-204 — COREGRID MUST SURVIVE AGENT REPLACEMENT
+Agents are replaceable actors.
+Replacing an agent MUST NOT require reconstructing:
+• canonical truth;
+• identity;
+• ownership;
+• policy;
+• domain state;
+• memory architecture;
+• contracts.
+Agent replacement should be a runtime change, not a constitutional rewrite.
+
+───
+
+208. DECISION-205 — COREGRID MUST SURVIVE CLOUD REPLACEMENT
+Moving between supported deployment environments SHOULD preserve:
+• canonical semantics;
+• ownership;
+• contracts;
+• identity;
+• security;
+• policy;
+• data meaning.
+Infrastructure changes should not redefine reality.
+
+───
+
+209. DECISION-206 — COREGRID MUST SUPPORT CAPABILITY SUBSTITUTION
+Where practical:
+text
+Capability Contract
+        ↓
+Implementation A
+        ↓
+Implementation B
+        ↓
+Implementation C
+
+The capability contract remains stable while implementation evolves.
+
+───
+
+210. DECISION-207 — THE PLATFORM MUST DISTINGUISH POSSIBILITY FROM AUTHORITY
+CoreGrid must distinguish:
+text
+Can Do
+≠
+May Do
+≠
+Should Do
+≠
+Did Do
+
+A capability establishes technical possibility.
+Authorization establishes permitted action.
+Policy and context establish whether the action is appropriate within the governed system.
+Execution records what actually happened.
+
+───
+
+211. DECISION-208 — THE PLATFORM MUST DISTINGUISH INTENT FROM ACTION
+CoreGrid must distinguish:
+text
+Intent
+↓
+Plan
+↓
+Authorization
+↓
+Execution
+↓
+Outcome
+
+An intention does not imply authorization.
+A plan does not imply execution.
+Execution does not imply successful outcome.
+
+───
+
+212. DECISION-209 — STATE TRANSITIONS ARE THE CORE UNIT OF CONSEQUENCE
+A consequential operation may be modeled as:
+text
+STATE(t)
++
+INTENT
++
+CONTEXT
++
+AUTHORITY
++
+CAPABILITY
++
+POLICY
++
+PRECONDITIONS
+        ↓
+AUTHORIZED TRANSITION
+        ↓
+STATE(t+1)
+        ↓
+OBSERVATION
+        ↓
+EVIDENCE
+
+This provides a deeper architectural model than treating operations as isolated API calls.
+
+───
+
+213. DECISION-210 — CAUSAL REASONING MUST REMAIN DISTINCT FROM CONTROL
+CoreGrid may model:
+• causes;
+• conditions;
+• correlations;
+• effects;
+• interventions;
+• counterfactuals;
+• feedback loops.
+But a causal relationship MUST NOT automatically grant operational authority.
+Knowing that A influences B does not grant permission to manipulate B.
+
+───
+
+214. DECISION-211 — REALITY FEEDBACK IS PART OF ARCHITECTURE
+CoreGrid's long-term intelligence loop is:
+text
+REALITY
+ ↓
+OBSERVATION
+ ↓
+REPRESENTATION
+ ↓
+UNDERSTANDING
+ ↓
+DECISION
+ ↓
+ACTION
+ ↓
+CHANGED REALITY
+ ↓
+NEW OBSERVATION
+
+The architecture therefore cannot terminate at "action executed."
+It must support observing what actually happe

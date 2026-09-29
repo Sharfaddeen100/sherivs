@@ -1,0 +1,92 @@
+{
+  "$comment": "Evidence map for Phase 35. Current evidence covers governed individual-agent primitives consumed by society governance; live society formation and collective execution remain declared.",
+  "phase": "35",
+  "phaseName": "Autonomous Agent Civilization OS",
+  "source": "architecture/phase-35-autonomous-agent-civilization-os.md",
+  "contract": "frontend/src/lib/kernel/phase-contracts/phase-35-agent-civilization.ts",
+  "ownership": {
+    "canonicalOwners": {
+      "society-structure-and-coordination": "35",
+      "agent-identity-and-grants": "07",
+      "authorization": "08",
+      "cognitive-reasoning": "34",
+      "agent-memory": "07/36",
+      "society-audit": "35"
+    }
+  },
+  "areas": [
+    {
+      "id": "agent-identity-lifecycle-and-risk",
+      "area": "Agent identities, owners, lifecycle and risk controls are explicit",
+      "requirement": "Agents require tenant, owner, purpose, version and scope; lifecycle transitions and risk profiles control deployment and autonomy.",
+      "required": true,
+      "evidence": [
+        { "kind": "contract", "path": "frontend/src/lib/kernel/phase-contracts/phase-35-agent-civilization.ts", "contains": "every society action is attributable" },
+        { "kind": "test", "path": "tests/unit/agent-core.test.ts", "contains": "creates a valid agent definition in proposed state" },
+        { "kind": "test", "path": "tests/unit/agent-core.test.ts", "contains": "requires approval for approved -> deployed" },
+        { "kind": "test", "path": "tests/unit/agent-core.test.ts", "contains": "requires human-in-loop and sandbox for high/critical risk" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "tenant-scoped-agent-execution",
+      "area": "Agent execution context is tenant-bound and cross-tenant action fails closed",
+      "requirement": "Agent execution validates tenant scope, rejects cross-tenant operations and keeps context attributable to actor/session/execution.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/agent-core.test.ts", "contains": "creates a valid tenant-scoped execution context" },
+        { "kind": "test", "path": "tests/unit/agent-core.test.ts", "contains": "rejects cross-tenant agent execution" },
+        { "kind": "test", "path": "tests/unit/agent-core.test.ts", "contains": "rejects execution when agent tenant scope does not match execution tenant context" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "agent-task-state-and-recovery",
+      "area": "Agent tasks are ordered, bounded, checkpointed and cancellable",
+      "requirement": "Tasks reject skipped transitions, enforce deadlines/retry ceilings, support checkpoints/resume and preserve cancellation authority and metadata.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/agent-tasks.test.ts", "contains": "rejects succeeded -> running (terminal state)" },
+        { "kind": "test", "path": "tests/unit/agent-tasks.test.ts", "contains": "rejects scheduled -> succeeded (skipping states)" },
+        { "kind": "test", "path": "tests/unit/agent-tasks.test.ts", "contains": "rejects max retries outside 0-5 range" },
+        { "kind": "test", "path": "tests/unit/agent-tasks.test.ts", "contains": "allows resume only from a paused task matching the checkpoint" },
+        { "kind": "test", "path": "tests/unit/agent-tasks.test.ts", "contains": "allows a supervisor to cancel regardless of original canceller" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "agent-governance-and-loop-safety",
+      "area": "Agent governance rules are tied to executable checks",
+      "requirement": "Governance reports derive task state, memory trust, plan validation, loop safety and tenant-scoped agent checks from enforcing modules and tests.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/agent-governance-report.test.ts", "contains": "ties every claimed rule to an enforcing module and a proving suite" },
+        { "kind": "test", "path": "tests/unit/agent-governance-report.test.ts", "contains": "passes on the current agent system" },
+        { "kind": "test", "path": "tests/unit/agent-governance-report.test.ts", "contains": "proves that runaway reasoning stops at the step ceiling" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "agent-memory-and-authority-boundary",
+      "area": "Agent memory and model intelligence do not become authority",
+      "requirement": "Agent governance preserves trust/classification boundaries and keeps permissions, canonical architecture and human approval outside model preference.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/agent-memory.test.ts", "contains": "memory" },
+        { "kind": "test", "path": "tests/unit/agent-governance-report.test.ts", "contains": "memory-category-and-classification" },
+        { "kind": "test", "path": "tests/unit/agent-governance-report.test.ts", "contains": "memory-trust" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "live-society-coordination-and-audit",
+      "area": "Agent societies coordinate collectively with durable audit and suspension",
+      "requirement": "Society formation, collective actions, inter-agent negotiation, individual attribution, suspension and society-level audit execute at a live authorized boundary.",
+      "required": false,
+      "evidence": [
+        { "kind": "document", "path": "architecture/phase-35-autonomous-agent-civilization-os.md", "contains": "societies" }
+      ],
+      "boundary": []
+    }
+  ]
+}

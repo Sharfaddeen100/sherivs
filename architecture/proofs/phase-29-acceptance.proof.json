@@ -1,0 +1,244 @@
+{
+  "artifact": "phase-acceptance",
+  "phase": "29",
+  "phaseName": "CoreGrid Integration",
+  "source": "architecture/phase-29-coregrid-integration.md",
+  "generatedAt": "2026-09-28T13:22:58.137Z",
+  "classificationDefinitions": {
+    "ENFORCED": "an executable artefact proves it (test, verifier script, migration, policy or machine-checked contract match) and, where a boundary is declared, a real call site invokes it",
+    "DECLARED": "a module, document or contract mentions it, but nothing executable proves it",
+    "IMPLEMENTED_UNWIRED": "implementation and tests exist, but the declared boundary patterns match nothing — the capability protects nothing yet",
+    "MISSING": "no artefact found"
+  },
+  "summary": {
+    "areas": 9,
+    "enforced": 8,
+    "declared": 1,
+    "implementedUnwired": 0,
+    "implementedUnwiredAreas": [],
+    "missing": 0,
+    "missingRequired": [],
+    "unresolvedEvidencePaths": []
+  },
+  "ownership": {
+    "canonicalOwners": {
+      "adapters-and-connections": "29",
+      "transformations-and-reconciliation": "29",
+      "integration-security-and-operations": "29",
+      "integration-governance": "29",
+      "domain-truth": "owning-domain-phase",
+      "authorization": "08",
+      "universal-interface-connectivity": "43"
+    }
+  },
+  "areas": [
+    {
+      "id": "connector-tenant-credential-boundary",
+      "area": "Connectors and credentials are tenant-scoped and least-privilege",
+      "requirement": "Connector lifecycle, integration scope, credential expiry/isolation and least-privilege needs are explicit.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/kernel/phase-contracts/phase-29-integration.ts",
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/kernel/phase-contracts/phase-29-integration.ts",
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "mapping-validation-and-idempotency",
+      "area": "Inbound mapping, validation, idempotency and dead-letter handling are explicit",
+      "requirement": "Unknown or invalid payloads are quarantined/dead-lettered, mappings are declared, and duplicate events are not processed twice.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "retry-rate-limit-and-reconciliation",
+      "area": "Integration retries, rate limits, synchronization and reconciliation preserve truth",
+      "requirement": "Retry classes are bounded, provider rate limits are respected, field authority is unambiguous, conflicts are policy-resolved, and reconciliation gaps are surfaced.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "protocol-ai-and-provider-certification",
+      "area": "Protocol translation and AI mapping proposals are governed",
+      "requirement": "Lossy translations are visible, AI mapping changes require approval in production, mock providers support tests, and production certification requires all gates.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "webhook-and-network-security",
+      "area": "Webhook and network security checks fail closed",
+      "requirement": "Webhook signature, freshness, replay, authentication and authorization are required; network TLS, certificate and allowlist checks are enforced.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "health-observability-and-audit",
+      "area": "Integration health, logs, traces, metrics, alerts and audit are attributable",
+      "requirement": "Provider health, sanitized logs, trace spans, metrics, alerts, certificates and audit events remain observable.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "risk-approval-drift-and-resilience",
+      "area": "Integration governance responds to risk, drift and connectivity failure",
+      "requirement": "High-risk production entry requires the approval chain, schema drift quarantines according to risk, integrations can pause/disconnect, and store-and-forward handles unreliable connectivity.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "normalization-and-traceable-events",
+      "area": "External normalization, identifiers and integration events preserve lineage",
+      "requirement": "Timezone/currency normalization preserves context, external IDs remain traceable, and integration events are typed and attributable.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts",
+        "tests/unit/integration.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "live-provider-boundary",
+      "area": "Live external exchange and durable integration state are wired",
+      "requirement": "Provider credentials, connections, sync jobs, reconciliation records and integration events persist and operate at an authorized live boundary.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "architecture/phase-29-coregrid-integration.md"
+      ],
+      "matchedEvidence": [
+        "architecture/phase-29-coregrid-integration.md"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    }
+  ],
+  "ok": true,
+  "limitations": [
+    "Classification measures the presence of executable evidence, not the correctness or completeness of that evidence.",
+    "A DECLARED area is unfinished work, never a false claim — it is reported as such.",
+    "An IMPLEMENTED_UNWIRED area has a tested implementation that no boundary calls; it is reported, never counted as enforcement.",
+    "Evidence patterns are declared per phase in architecture/phase-acceptance/phase-<id>-*.json and must be reviewed when a phase is re-audited."
+  ]
+}

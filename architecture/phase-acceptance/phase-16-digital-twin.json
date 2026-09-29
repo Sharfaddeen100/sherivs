@@ -1,0 +1,91 @@
+{
+  "$comment": "Phase 16 acceptance definition derived from architecture/phase-16-digital-twin.md, the phase contract, twin-core/state/graph/governance modules and their four unit suites. Twin state is treated as a governed projection; no production twin store or autonomous write-back is inferred.",
+  "phase": "16",
+  "phaseName": "Digital Twin",
+  "source": "architecture/phase-16-digital-twin.md",
+  "contract": "frontend/src/lib/kernel/phase-contracts/phase-16-digital-twin.ts",
+  "ownership": {
+    "note": "Phase 16 owns twin identity, state, relationships, observations and governance. Canonical records, authorization decisions and civilization federation remain outside this phase.",
+    "canonicalOwners": {
+      "twin-identity-state-graph-governance": "16",
+      "canonical-records": "owning phases",
+      "identity": "02",
+      "tenancy": "03",
+      "authorization": "08",
+      "hardware-telemetry": "15",
+      "twin-civilization-federation": "46"
+    }
+  },
+  "areas": [
+    {
+      "id": "twin-identity-and-lifecycle",
+      "area": "Twins have stable identity and governed lifecycle",
+      "requirement": "Twin creation requires identity, tenant and source material; lifecycle transitions are ordered and terminal retirement/deletion rules are enforced.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/twin-core.ts", "contains": "createTwin" },
+        { "kind": "test", "path": "tests/unit/twin-core.test.ts", "contains": "creates a twin with stable identity material" },
+        { "kind": "test", "path": "tests/unit/twin-core.test.ts", "contains": "blocks an illegal ACTIVE -> DISCOVERED jump" }
+      ]
+    },
+    {
+      "id": "observations-and-state-history",
+      "area": "Observations preserve provenance and state history",
+      "requirement": "Observations retain source and timing, invalid or future observations fail closed, and current or historical state is reconstructed without overwriting history.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/twin-state.ts" },
+        { "kind": "test", "path": "tests/unit/twin-state.test.ts", "contains": "records an observation with provenance" },
+        { "kind": "test", "path": "tests/unit/twin-state.test.ts", "contains": "reconstructs state at a historical timestamp without overwriting" },
+        { "kind": "test", "path": "tests/unit/twin-state.test.ts", "contains": "fails closed on invalid observations" }
+      ]
+    },
+    {
+      "id": "graph-integrity-and-tenant-boundary",
+      "area": "Twin relationships are explicit, acyclic where required and tenant-governed",
+      "requirement": "Relationships preserve identity, reject self-links and cycles, detect dangling references and deny cross-tenant links without governance.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/twin-graph.ts", "contains": "wouldCreateCycle" },
+        { "kind": "test", "path": "tests/unit/twin-graph.test.ts", "contains": "rejects a contains relationship that would create a cycle" },
+        { "kind": "test", "path": "tests/unit/twin-graph.test.ts", "contains": "rejects a cross-tenant relationship without explicit governance" }
+      ]
+    },
+    {
+      "id": "prediction-simulation-and-drift",
+      "area": "Derived state, simulation and drift remain distinguishable",
+      "requirement": "Simulation is isolated, predictions remain distinct from actuals, health and fidelity are explainable, and drift resolution follows ordered steps.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/twin-governance.ts", "contains": "runIsolatedSimulation" },
+        { "kind": "test", "path": "tests/unit/twin-governance.test.ts", "contains": "runs an isolated simulation that never touches production" },
+        { "kind": "test", "path": "tests/unit/twin-governance.test.ts", "contains": "keeps PREDICTED and ACTUAL distinguishable" },
+        { "kind": "test", "path": "tests/unit/twin-governance.test.ts", "contains": "requires ordered drift resolution steps" }
+      ]
+    },
+    {
+      "id": "twin-access-and-overrides",
+      "area": "Twin access and manual overrides are attributable",
+      "requirement": "Access is tenant and relationship scoped; sensitive data and overrides require policy, actor, reason and evidence, with expiry and reconciliation.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/twin-governance.ts", "contains": "authorizeTwinAccess" },
+        { "kind": "test", "path": "tests/unit/twin-governance.test.ts", "contains": "grants same-tenant access and denies cross-tenant without a grant" },
+        { "kind": "test", "path": "tests/unit/twin-governance.test.ts", "contains": "records an audited override with actor, reason, evidence" }
+      ]
+    },
+    {
+      "id": "twin-runtime-projection",
+      "area": "Twin engines are not yet invoked by a live boundary",
+      "requirement": "A runtime or authorised server boundary must consume telemetry and project governed twin state; current evidence proves the libraries and tests only.",
+      "required": false,
+      "evidence": [
+        { "kind": "contract", "path": "frontend/src/lib/kernel/phase-contracts/phase-16-digital-twin.ts", "contains": "live-digital-twin" },
+        { "kind": "module", "path": "frontend/src/lib/twin-state.ts" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/*.functions.ts", "contains": "createTwin" }
+      ]
+    }
+  ]
+}

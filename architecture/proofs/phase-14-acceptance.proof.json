@@ -1,0 +1,194 @@
+{
+  "artifact": "phase-acceptance",
+  "phase": "14",
+  "phaseName": "Data Platform",
+  "source": "architecture/phase-14-data-platform.md",
+  "generatedAt": "2026-09-28T13:22:24.799Z",
+  "classificationDefinitions": {
+    "ENFORCED": "an executable artefact proves it (test, verifier script, migration, policy or machine-checked contract match) and, where a boundary is declared, a real call site invokes it",
+    "DECLARED": "a module, document or contract mentions it, but nothing executable proves it",
+    "IMPLEMENTED_UNWIRED": "implementation and tests exist, but the declared boundary patterns match nothing — the capability protects nothing yet",
+    "MISSING": "no artefact found"
+  },
+  "summary": {
+    "areas": 7,
+    "enforced": 5,
+    "declared": 2,
+    "implementedUnwired": 0,
+    "implementedUnwiredAreas": [],
+    "missing": 0,
+    "missingRequired": [],
+    "unresolvedEvidencePaths": []
+  },
+  "ownership": {
+    "note": "Phase 14 owns catalog metadata, classification, quality, lineage and governed data-access contracts. Domain tables, universal memory/knowledge graphs and authorization decisions remain owned by their respective phases.",
+    "canonicalOwners": {
+      "catalog-and-classification": "14",
+      "quality-and-lineage": "14",
+      "domain-records": "owning phases",
+      "tenancy": "03",
+      "authorization": "08",
+      "memory-and-knowledge": "36/48"
+    }
+  },
+  "areas": [
+    {
+      "id": "data-ownership-and-classification",
+      "area": "Datasets declare ownership and sensitivity",
+      "requirement": "A dataset has an owning phase/domain and an explicit classification; invalid ownership or classification input is refused.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/data-core.ts",
+        "tests/unit/data-core.test.ts",
+        "tests/unit/data-core.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/data-core.ts",
+        "tests/unit/data-core.test.ts",
+        "tests/unit/data-core.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "catalog-discovery-is-tenant-scoped",
+      "area": "The catalog discovers datasets without crossing tenants",
+      "requirement": "Catalog registration and search preserve dataset metadata and never return another tenant's dataset.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/data-catalog.ts",
+        "tests/unit/data-catalog.test.ts",
+        "tests/unit/data-catalog.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/data-catalog.ts",
+        "tests/unit/data-catalog.test.ts",
+        "tests/unit/data-catalog.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "quality-quarantine-and-replay",
+      "area": "Invalid data is measured, quarantined and replay-safe",
+      "requirement": "Quality rules reject invalid records, quarantine preserves a reason, and replay with the same key does not duplicate effects.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/data-quality.ts",
+        "tests/unit/data-quality.test.ts",
+        "tests/unit/data-quality.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/data-quality.ts",
+        "tests/unit/data-quality.test.ts",
+        "tests/unit/data-quality.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "lineage-and-governed-query",
+      "area": "Lineage and query policy are explicit",
+      "requirement": "Lineage stays within the tenant and governed queries require tenant, bound and classification constraints.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/data-governance.ts",
+        "tests/unit/data-governance.test.ts",
+        "tests/unit/data-governance.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/data-governance.ts",
+        "tests/unit/data-governance.test.ts",
+        "tests/unit/data-governance.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "retention-and-residency-policy",
+      "area": "Retention, legal hold and residency are governed",
+      "requirement": "Retention and transfer decisions are represented as policy decisions, including legal holds and prohibited cross-border transfer.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/data-governance.ts",
+        "tests/unit/data-governance.test.ts",
+        "tests/unit/data-governance.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/data-governance.ts",
+        "tests/unit/data-governance.test.ts",
+        "tests/unit/data-governance.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "governed-batch-and-ingestion-contracts",
+      "area": "Migration, job and ingestion contracts are declared",
+      "requirement": "Forward-only migration, restartable job, authorised ingestion and reconciliation contracts exist as libraries; their live callers are not implied.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "frontend/src/lib/data-migration.ts",
+        "frontend/src/lib/data-jobs.ts",
+        "frontend/src/lib/data-ingestion.ts",
+        "frontend/src/lib/data-reconciliation.ts",
+        "frontend/src/lib/data-platform-report.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/data-migration.ts",
+        "frontend/src/lib/data-jobs.ts",
+        "frontend/src/lib/data-ingestion.ts",
+        "frontend/src/lib/data-reconciliation.ts",
+        "frontend/src/lib/data-platform-report.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "physical-storage-and-runtime-wiring",
+      "area": "Physical storage and runtime enforcement remain open",
+      "requirement": "A real storage layer and database, scheduler or gateway boundary must enforce these contracts; the current report records that they are absent.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "frontend/src/lib/data-platform-report.ts",
+        "frontend/src/lib/data-platform-report.ts",
+        "architecture/phase-14-data-platform.md"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/data-platform-report.ts",
+        "frontend/src/lib/data-platform-report.ts",
+        "architecture/phase-14-data-platform.md"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    }
+  ],
+  "ok": true,
+  "limitations": [
+    "Classification measures the presence of executable evidence, not the correctness or completeness of that evidence.",
+    "A DECLARED area is unfinished work, never a false claim — it is reported as such.",
+    "An IMPLEMENTED_UNWIRED area has a tested implementation that no boundary calls; it is reported, never counted as enforcement.",
+    "Evidence patterns are declared per phase in architecture/phase-acceptance/phase-<id>-*.json and must be reviewed when a phase is re-audited."
+  ]
+}

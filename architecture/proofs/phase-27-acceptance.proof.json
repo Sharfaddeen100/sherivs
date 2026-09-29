@@ -1,0 +1,197 @@
+{
+  "artifact": "phase-acceptance",
+  "phase": "27",
+  "phaseName": "Marketplace",
+  "source": "architecture/phase-27-marketplace.md",
+  "generatedAt": "2026-09-28T13:22:57.209Z",
+  "classificationDefinitions": {
+    "ENFORCED": "an executable artefact proves it (test, verifier script, migration, policy or machine-checked contract match) and, where a boundary is declared, a real call site invokes it",
+    "DECLARED": "a module, document or contract mentions it, but nothing executable proves it",
+    "IMPLEMENTED_UNWIRED": "implementation and tests exist, but the declared boundary patterns match nothing — the capability protects nothing yet",
+    "MISSING": "no artefact found"
+  },
+  "summary": {
+    "areas": 8,
+    "enforced": 7,
+    "declared": 1,
+    "implementedUnwired": 0,
+    "implementedUnwiredAreas": [],
+    "missing": 0,
+    "missingRequired": [],
+    "unresolvedEvidencePaths": []
+  },
+  "ownership": {
+    "canonicalOwners": {
+      "package-catalog": "27",
+      "vendor-records": "27",
+      "entitlement-records": "27",
+      "financial-ledger": "13",
+      "identity": "02",
+      "tenancy": "03",
+      "installation-behaviour": "consuming-runtime"
+    }
+  },
+  "areas": [
+    {
+      "id": "product-and-listing-model",
+      "area": "Products, versions and listings are explicit",
+      "requirement": "Marketplace products require vendor identity, versions remain linked to packages, and listings are discoverable records.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/kernel/phase-contracts/phase-27-marketplace.ts",
+        "tests/unit/marketplace.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/kernel/phase-contracts/phase-27-marketplace.ts",
+        "tests/unit/marketplace.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "tenant-scoped-discovery",
+      "area": "Discovery respects distribution scope",
+      "requirement": "Inactive products and private products outside the target tenant are excluded from discovery.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/marketplace.test.ts",
+        "tests/unit/marketplace.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/marketplace.test.ts",
+        "tests/unit/marketplace.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "vendor-governance",
+      "area": "Vendor verification and publishing authority are governed",
+      "requirement": "Vendor verification is monotonic and publishing authority cannot be granted by an unauthorized member.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/marketplace.test.ts",
+        "tests/unit/marketplace.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/marketplace.test.ts",
+        "tests/unit/marketplace.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "package-security",
+      "area": "Package security and compatibility are evaluated before installation",
+      "requirement": "Malware, invalid signatures, excessive data access, missing APIs and permission conflicts block or flag packages.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/marketplace.test.ts",
+        "tests/unit/marketplace.test.ts",
+        "tests/unit/marketplace.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/marketplace.test.ts",
+        "tests/unit/marketplace.test.ts",
+        "tests/unit/marketplace.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "entitlement-lifecycle",
+      "area": "Entitlements expire and installations advance safely",
+      "requirement": "Expired or suspended entitlements fail closed and installation transitions cannot skip authorization.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/marketplace.test.ts",
+        "tests/unit/marketplace.test.ts",
+        "frontend/src/lib/kernel/phase-contracts/phase-27-marketplace.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/marketplace.test.ts",
+        "tests/unit/marketplace.test.ts",
+        "frontend/src/lib/kernel/phase-contracts/phase-27-marketplace.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "policy-and-incident-governance",
+      "area": "Marketplace policy, incidents and audit events are explicit",
+      "requirement": "Recommendations require approval, malicious products can be removed, incidents advance through controlled stages, and audit events are recorded.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/marketplace.test.ts",
+        "tests/unit/marketplace.test.ts",
+        "tests/unit/marketplace.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/marketplace.test.ts",
+        "tests/unit/marketplace.test.ts",
+        "tests/unit/marketplace.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "webhook-security",
+      "area": "Vendor webhook delivery is authenticated and replay-limited",
+      "requirement": "Webhook delivery requires valid signatures, acceptable event age and rate limits.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/marketplace.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/marketplace.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "persistent-marketplace-enforcement",
+      "area": "Marketplace records are persisted and enforced at a live boundary",
+      "requirement": "Tenant-isolated persistence and a live authorized installation boundary store and enforce marketplace records.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "architecture/phase-27-marketplace.md"
+      ],
+      "matchedEvidence": [
+        "architecture/phase-27-marketplace.md"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    }
+  ],
+  "ok": true,
+  "limitations": [
+    "Classification measures the presence of executable evidence, not the correctness or completeness of that evidence.",
+    "A DECLARED area is unfinished work, never a false claim — it is reported as such.",
+    "An IMPLEMENTED_UNWIRED area has a tested implementation that no boundary calls; it is reported, never counted as enforcement.",
+    "Evidence patterns are declared per phase in architecture/phase-acceptance/phase-<id>-*.json and must be reviewed when a phase is re-audited."
+  ]
+}

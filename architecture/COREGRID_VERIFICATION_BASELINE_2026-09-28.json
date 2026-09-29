@@ -1,0 +1,96 @@
+{
+  "mission": "COREGRID-MISSION-0001",
+  "artifact": "COREGRID_VERIFICATION_BASELINE",
+  "version": "2026-09-28.1",
+  "capturedAt": "2026-09-28",
+  "policy": "Claims are limited to the evidence recorded here; static verification is not runtime or deployment proof.",
+  "checks": [
+    {
+      "id": "phase-registry",
+      "command": "node scripts/verification/registry-validate.mjs",
+      "status": "PASS",
+      "evidence": "51 phases, 50 capabilities, 15 duplication records, 2 runtimes"
+    },
+    {
+      "id": "reconciliation",
+      "command": "npm run verify:reconciliation",
+      "status": "PASS_WITH_REPORTED_CONFLICTS",
+      "evidence": "13 mothers, 51 phases, 12 reconciliation artifacts; Phase 27 and Phase 33 status conflicts remain explicit"
+    },
+    {
+      "id": "phase52-inventory",
+      "command": "npm run inventory:phase52",
+      "status": "PASS",
+      "evidence": "313 block occurrences, 299 unique bodies, 13 exact duplicate groups, 4785 numbered sections, 134 lettered sections; source hash A69A3E74FAA88B78B6FB33C36A499E764F7DE04A2C4B33B20C5795D1084CE286"
+    },
+    {
+      "id": "acceptance-coverage",
+      "command": "npm run audit:acceptance-coverage",
+      "status": "PASS_WITH_DECLARED_GAPS",
+      "evidence": "51 definitions and 51 proofs present; no unknown acceptance phases; phases with declared or unwired gaps remain classified"
+    },
+    {
+      "id": "infrastructure-static",
+      "command": "node scripts/verify-infrastructure.mjs",
+      "status": "PASS_STATIC_ONLY",
+      "evidence": "64/64 static fabric invariants; credentials, deployment and live operation remain unverified"
+    },
+    {
+      "id": "phase-consumption",
+      "command": "node scripts/verify-phase-consumption.mjs",
+      "status": "STATIC_RESULT_RECORDED",
+      "evidence": "26 consumed/built phases and 0 consumed gaps; non-consumed phases are not completion evidence"
+    },
+    {
+      "id": "typecheck",
+      "command": "npm run typecheck",
+      "status": "PASS",
+      "evidence": "tsc --noEmit completed with exit code 0"
+    },
+    {
+      "id": "unit-tests",
+      "command": "npm run test:unit",
+      "status": "PASS",
+      "evidence": "Vitest completed with exit code 0; all discovered unit files passed"
+    },
+    {
+      "id": "production-build",
+      "command": "npm run build",
+      "status": "PASS_WITH_WARNING",
+      "evidence": "Client and SSR bundles built successfully; TanStack route export AdminDashboard emitted a code-splitting warning"
+    },
+    {
+      "id": "live-kernel",
+      "command": "node scripts/verify-kernel-wiring.mjs",
+      "status": "BLOCKED_NOT_RUN",
+      "evidence": "Approved Supabase credentials and controlled cleanup are not established"
+    },
+    {
+      "id": "e2e",
+      "command": "npm run test:e2e",
+      "status": "UNKNOWN_NOT_RUN_IN_THIS_BASELINE",
+      "evidence": "Browser execution is not required to establish this static architecture baseline"
+    }
+  ],
+  "statusDimensions": {
+    "architecture": "RECONCILED_WITH_EXPLICIT_CONFLICTS",
+    "implementation": "PARTIAL",
+    "execution": "STATIC_ONLY",
+    "observation": "UNVERIFIED_RUNTIME",
+    "evidence": "PARTIAL_BUT_ACCEPTANCE_COVERED",
+    "verification": "STATIC_CHECKS_VERIFIED",
+    "conformance": "PARTIAL",
+    "deployment": "UNVERIFIED",
+    "operational": "UNVERIFIED",
+    "evolution": "BLOCKED_BY_OWNERSHIP_CONFLICTS"
+  },
+  "blockingDecisions": [
+    "Mission intent/lifecycle ownership",
+    "Universal evidence lifecycle ownership",
+    "Durable execution and rollback ownership",
+    "Independent verification/conformance ownership",
+    "Meaning of COMPLETE versus VERIFIED, CONFORMANT, DEPLOYED and OPERATIONAL"
+  ],
+  "implementationDecision": "BOUNDARY_SLICE_NOT_AUTHORIZED",
+  "rollback": "No destructive migration, registry mutation, Phase 52 registration or production side effect was performed."
+}

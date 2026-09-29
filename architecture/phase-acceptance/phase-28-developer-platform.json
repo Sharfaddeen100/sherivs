@@ -1,0 +1,133 @@
+{
+  "$comment": "Evidence map for Phase 28. Current executable coverage proves domain-neutral developer contracts and safety gates; durable developer-service wiring remains declared.",
+  "phase": "28",
+  "phaseName": "Developer Platform",
+  "source": "architecture/phase-28-developer-platform.md",
+  "contract": "frontend/src/lib/kernel/phase-contracts/phase-28-developer-platform.ts",
+  "ownership": {
+    "canonicalOwners": {
+      "developer-organizations-and-projects": "28",
+      "api-and-schema-catalog": "28",
+      "developer-environments-and-sandboxes": "28",
+      "build-and-release-governance": "28",
+      "production-authorization": "08",
+      "marketplace-distribution": "27",
+      "production-domain-state": "owning-domain-phase"
+    }
+  },
+  "areas": [
+    {
+      "id": "organization-project-isolation",
+      "area": "Developer organizations and projects are owner-bound and isolated",
+      "requirement": "Organizations require an owner, projects default to private visibility, and organization visibility boundaries are explicit.",
+      "required": true,
+      "evidence": [
+        { "kind": "contract", "path": "frontend/src/lib/kernel/phase-contracts/phase-28-developer-platform.ts", "contains": "developer identities and grants" },
+        { "kind": "test", "path": "tests/unit/dev-platform.test.ts", "contains": "creates organization requiring owner" },
+        { "kind": "test", "path": "tests/unit/dev-platform.test.ts", "contains": "enforces organization isolation" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "manifest-sdk-compatibility",
+      "area": "Project manifests and SDKs declare compatibility",
+      "requirement": "Projects expose typed manifests with environments and CoreGrid compatibility, and SDK registrations preserve supported abstractions.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/dev-platform.test.ts", "contains": "creates manifest" },
+        { "kind": "test", "path": "tests/unit/dev-platform.test.ts", "contains": "rejects production manifest without compatibility" },
+        { "kind": "test", "path": "tests/unit/dev-platform.test.ts", "contains": "registers SDK" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "production-and-break-glass-access",
+      "area": "Production developer access is strongly controlled",
+      "requirement": "Production access requires authentication, role, explicit authorization, auditability and risk controls; break-glass access requires a reason and expiry.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/dev-platform.test.ts", "contains": "production access requires all controls" },
+        { "kind": "test", "path": "tests/unit/dev-platform.test.ts", "contains": "break-glass requires reason and limited duration" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "api-schema-and-contract-governance",
+      "area": "API and schema evolution is documented and compatibility-controlled",
+      "requirement": "API endpoints require purpose/version, breaking changes require migration support, explorers remain sandboxed, and schema compatibility is evaluated.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/dev-platform.test.ts", "contains": "registers API endpoint" },
+        { "kind": "test", "path": "tests/unit/dev-platform.test.ts", "contains": "breaking change requires migration plan" },
+        { "kind": "test", "path": "tests/unit/dev-platform.test.ts", "contains": "API explorer restricted to sandbox" },
+        { "kind": "test", "path": "tests/unit/dev-platform.test.ts", "contains": "schema compatibility detects breaking change" },
+        { "kind": "test", "path": "tests/unit/dev-platform.test.ts", "contains": "creates data contract" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "environment-secret-and-sandbox-isolation",
+      "area": "Developer environments, secrets, and sandboxes remain non-production",
+      "requirement": "Development secrets cannot be registered as production secrets, committed secrets are detected, and sandboxes cannot disable production isolation.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/dev-platform.test.ts", "contains": "production environment requires controls" },
+        { "kind": "test", "path": "tests/unit/dev-platform.test.ts", "contains": "development secrets only" },
+        { "kind": "test", "path": "tests/unit/dev-platform.test.ts", "contains": "detects committed secrets" },
+        { "kind": "test", "path": "tests/unit/dev-platform.test.ts", "contains": "sandbox isolated from production" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "simulation-and-webhook-safety",
+      "area": "Developer simulations and webhooks are bounded",
+      "requirement": "Synthetic identities/events cannot target production, tenant isolation is respected, and webhook signature/replay/idempotency checks are enforced.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/dev-platform.test.ts", "contains": "enforces tenant isolation in tests" },
+        { "kind": "test", "path": "tests/unit/dev-platform.test.ts", "contains": "synthetic events never target production" },
+        { "kind": "test", "path": "tests/unit/dev-platform.test.ts", "contains": "webhook delivery validates signature/replay/idempotency" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "package-build-and-release-security",
+      "area": "Packages and releases pass build, dependency, security and compatibility gates",
+      "requirement": "Static analysis, manifest/dependency/schema/API/security checks, signing, SBOM, CI sequencing, semantic versioning, channels and canary limits govern release.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/dev-platform.test.ts", "contains": "evaluates static analysis" },
+        { "kind": "test", "path": "tests/unit/dev-platform.test.ts", "contains": "validates package" },
+        { "kind": "test", "path": "tests/unit/dev-platform.test.ts", "contains": "builds package" },
+        { "kind": "test", "path": "tests/unit/dev-platform.test.ts", "contains": "CI run advances one stage at a time" },
+        { "kind": "test", "path": "tests/unit/dev-platform.test.ts", "contains": "canary respects traffic limits" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "developer-governance-and-ai-controls",
+      "area": "Developer quotas, audit, AI, dependencies and exit are governed",
+      "requirement": "Quotas/rate limits, failure injection, audit, release approvals, AI deployment, dependency approval, generated-code compliance, artifact scans, ownership exit and compatibility are explicit.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/dev-platform.test.ts", "contains": "consumes developer quotas" },
+        { "kind": "test", "path": "tests/unit/dev-platform.test.ts", "contains": "failure injection restricted to non-production" },
+        { "kind": "test", "path": "tests/unit/dev-platform.test.ts", "contains": "governance gates gate releases" },
+        { "kind": "test", "path": "tests/unit/dev-platform.test.ts", "contains": "AI cannot auto-deploy destructive production changes" },
+        { "kind": "test", "path": "tests/unit/dev-platform.test.ts", "contains": "dependency policy restricts dependencies" },
+        { "kind": "test", "path": "tests/unit/dev-platform.test.ts", "contains": "developer exit requires ownership retention" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "live-developer-platform-wiring",
+      "area": "Durable developer services and live platform boundaries are wired",
+      "requirement": "Developer organizations, projects, grants, API surfaces, environments and release records persist and enforce their contracts at live authorized boundaries.",
+      "required": false,
+      "evidence": [
+        { "kind": "document", "path": "architecture/phase-28-developer-platform.md", "contains": "developer accounts and developer organizations" }
+      ],
+      "boundary": []
+    }
+  ]
+}

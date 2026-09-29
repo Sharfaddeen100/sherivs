@@ -1,0 +1,177 @@
+{
+  "artifact": "phase-acceptance",
+  "phase": "40",
+  "phaseName": "Universal Runtime Fabric",
+  "source": "architecture/phase-40-universal-runtime-fabric.md",
+  "generatedAt": "2026-09-28T15:12:52.068Z",
+  "classificationDefinitions": {
+    "ENFORCED": "an executable artefact proves it (test, verifier script, migration, policy or machine-checked contract match) and, where a boundary is declared, a real call site invokes it",
+    "DECLARED": "a module, document or contract mentions it, but nothing executable proves it",
+    "IMPLEMENTED_UNWIRED": "implementation and tests exist, but the declared boundary patterns match nothing — the capability protects nothing yet",
+    "MISSING": "no artefact found"
+  },
+  "summary": {
+    "areas": 6,
+    "enforced": 5,
+    "declared": 1,
+    "implementedUnwired": 0,
+    "implementedUnwiredAreas": [],
+    "missing": 0,
+    "missingRequired": [],
+    "unresolvedEvidencePaths": []
+  },
+  "ownership": {
+    "canonicalOwners": {
+      "runtime-composition-and-isolation": "40",
+      "runtime-lifecycle": "40",
+      "runtime-health-and-quota": "40",
+      "domain-runtime-ontology": "installed-runtime",
+      "kernel-substrate": "33",
+      "orchestration-closure": "51"
+    }
+  },
+  "areas": [
+    {
+      "id": "webhook-delivery-and-retry",
+      "area": "Runtime webhook delivery is signed, replay-resistant and retry bounded",
+      "requirement": "Webhook signatures, versions, timestamp skew, delivery attempts, retries and dead-letter outcomes are explicit.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/kernel/phase-contracts/phase-40-runtime-fabric.ts",
+        "tests/unit/runtime-extended.test.ts",
+        "tests/unit/runtime-extended.test.ts",
+        "tests/unit/runtime-extended.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/kernel/phase-contracts/phase-40-runtime-fabric.ts",
+        "tests/unit/runtime-extended.test.ts",
+        "tests/unit/runtime-extended.test.ts",
+        "tests/unit/runtime-extended.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "tenant-aware-integrations-and-anticorruption",
+      "area": "Runtime integration adapters preserve tenant context and canonical boundaries",
+      "requirement": "Adapters require tenant context when declared and external/canonical transformations remain explicit anti-corruption mappings.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/runtime-extended.test.ts",
+        "tests/unit/runtime-extended.test.ts",
+        "tests/unit/runtime-extended.test.ts",
+        "tests/unit/runtime-extended.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/runtime-extended.test.ts",
+        "tests/unit/runtime-extended.test.ts",
+        "tests/unit/runtime-extended.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "resilience-and-resource-bounds",
+      "area": "Runtime resilience uses circuit breakers, limits, timeouts and bulkheads",
+      "requirement": "Failures open circuits, rate limits reset and reject excess traffic, timeouts are capped, and bulkheads bound concurrency.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/runtime-extended.test.ts",
+        "tests/unit/runtime-extended.test.ts",
+        "tests/unit/runtime-extended.test.ts",
+        "tests/unit/runtime-extended.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/runtime-extended.test.ts",
+        "tests/unit/runtime-extended.test.ts",
+        "tests/unit/runtime-extended.test.ts",
+        "tests/unit/runtime-extended.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "feature-approval-and-bulk-operations",
+      "area": "Runtime features, approvals and bulk operations remain governed",
+      "requirement": "Feature flags honor tenant overrides and kill switches, approval requests expire and cannot be double-approved, and bulk operations track partial failures/transfers.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/runtime-extended.test.ts",
+        "tests/unit/runtime-extended.test.ts",
+        "tests/unit/runtime-extended.test.ts",
+        "tests/unit/runtime-extended.test.ts",
+        "tests/unit/runtime-extended.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/runtime-extended.test.ts",
+        "tests/unit/runtime-extended.test.ts",
+        "tests/unit/runtime-extended.test.ts",
+        "tests/unit/runtime-extended.test.ts",
+        "tests/unit/runtime-extended.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "capability-health-observability",
+      "area": "Runtime capabilities and health signals are scoped and observable",
+      "requirement": "Capabilities enforce tenant/platform isolation and deprecation, logs redact sensitive fields, metrics expose percentiles, and health reflects degradation/unhealthy dependencies.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/runtime.test.ts",
+        "tests/unit/runtime.test.ts",
+        "tests/unit/runtime.test.ts",
+        "tests/unit/runtime.test.ts",
+        "tests/unit/runtime.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/runtime.test.ts",
+        "tests/unit/runtime.test.ts",
+        "tests/unit/runtime.test.ts",
+        "tests/unit/runtime.test.ts",
+        "tests/unit/runtime.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "live-runtime-fabric-operation",
+      "area": "Runtime installation, suspension, quotas and health operate at a live boundary",
+      "requirement": "Domain runtime manifests install/suspend/retire without kernel rewrites, with durable isolation, policy, quota and health evidence.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "architecture/phase-40-universal-runtime-fabric.md"
+      ],
+      "matchedEvidence": [
+        "architecture/phase-40-universal-runtime-fabric.md"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    }
+  ],
+  "ok": true,
+  "limitations": [
+    "Classification measures the presence of executable evidence, not the correctness or completeness of that evidence.",
+    "A DECLARED area is unfinished work, never a false claim — it is reported as such.",
+    "An IMPLEMENTED_UNWIRED area has a tested implementation that no boundary calls; it is reported, never counted as enforcement.",
+    "Evidence patterns are declared per phase in architecture/phase-acceptance/phase-<id>-*.json and must be reviewed when a phase is re-audited."
+  ]
+}

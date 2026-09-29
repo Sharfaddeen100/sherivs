@@ -1,0 +1,223 @@
+{
+  "artifact": "phase-acceptance",
+  "phase": "26",
+  "phaseName": "AI Intelligence Layer",
+  "source": "architecture/phase-26-ai-intelligence-layer.md",
+  "generatedAt": "2026-09-28T13:22:56.766Z",
+  "classificationDefinitions": {
+    "ENFORCED": "an executable artefact proves it (test, verifier script, migration, policy or machine-checked contract match) and, where a boundary is declared, a real call site invokes it",
+    "DECLARED": "a module, document or contract mentions it, but nothing executable proves it",
+    "IMPLEMENTED_UNWIRED": "implementation and tests exist, but the declared boundary patterns match nothing — the capability protects nothing yet",
+    "MISSING": "no artefact found"
+  },
+  "summary": {
+    "areas": 8,
+    "enforced": 7,
+    "declared": 1,
+    "implementedUnwired": 0,
+    "implementedUnwiredAreas": [],
+    "missing": 0,
+    "missingRequired": [],
+    "unresolvedEvidencePaths": []
+  },
+  "ownership": {
+    "canonicalOwners": {
+      "model-registry-and-routing": "26",
+      "context-assembly-and-retrieval": "26",
+      "ai-governance-and-evaluation": "26",
+      "agent-lifecycle": "07",
+      "domain-intelligence": "11/18/34",
+      "authorization": "08",
+      "data-classification": "14"
+    }
+  },
+  "areas": [
+    {
+      "id": "request-tenant-purpose-boundary",
+      "area": "AI requests carry explicit tenant, purpose, permissions, and requester context",
+      "requirement": "AI request construction fails closed without tenant, purpose, or permissions, and context cannot grant permission or cross tenant boundaries.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/kernel/phase-contracts/phase-26-ai-intelligence.ts",
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/kernel/phase-contracts/phase-26-ai-intelligence.ts",
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "provider-neutral-model-routing",
+      "area": "Models are registered, versioned, routed, and safely replaced",
+      "requirement": "Models require identity/version/capability metadata, high-risk routing requires approved verified models, and fallback/cascade behavior is explicit.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "context-trust-and-retrieval",
+      "area": "Context trust, retrieval, freshness, and grounding are enforced",
+      "requirement": "Untrusted content is not treated as system instruction, retrieval is tenant/domain authorized, stale/conflicting sources are visible, and responses require grounding.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "reasoning-evidence-and-hallucination",
+      "area": "Reasoning outputs preserve evidence, uncertainty, and verification distinctions",
+      "requirement": "Reasoning traces avoid chain-of-thought exposure, claims require evidence, uncertainty is estimated, and unsupported outputs are detected.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "risk-approval-and-escalation",
+      "area": "AI risk, approval, escalation, and human authority are explicit",
+      "requirement": "High-risk and critical AI operations require verification and appropriate approval; low confidence, policy ambiguity, and unknown operations escalate.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts",
+        "tests/unit/scholar-ai-operations.test.ts",
+        "tests/unit/scholar-ai-operations.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts",
+        "tests/unit/scholar-ai-operations.test.ts",
+        "tests/unit/scholar-ai-operations.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "budget-quota-and-resilience",
+      "area": "AI usage budgets, quotas, caching, and circuit protection are bounded",
+      "requirement": "AI consumption respects budget/quota limits, cache reuse preserves tenant scope, and repeated provider failures open a circuit.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "output-safety-and-promotion",
+      "area": "AI outputs and learning promotion remain validated and supervised",
+      "requirement": "Structured output, moderation, age-aware protection, consent, learning gates, release stages, canary limits, kill switches, and telemetry sanitization are enforced.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts",
+        "tests/unit/ai.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "live-provider-gateway-boundary",
+      "area": "Live provider gateway execution and call audit are wired",
+      "requirement": "Production model calls traverse the governed gateway, persist call/cost/audit records, and remain operationally observable.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "architecture/phase-26-ai-intelligence-layer.md"
+      ],
+      "matchedEvidence": [
+        "architecture/phase-26-ai-intelligence-layer.md"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    }
+  ],
+  "ok": true,
+  "limitations": [
+    "Classification measures the presence of executable evidence, not the correctness or completeness of that evidence.",
+    "A DECLARED area is unfinished work, never a false claim — it is reported as such.",
+    "An IMPLEMENTED_UNWIRED area has a tested implementation that no boundary calls; it is reported, never counted as enforcement.",
+    "Evidence patterns are declared per phase in architecture/phase-acceptance/phase-<id>-*.json and must be reviewed when a phase is re-audited."
+  ]
+}

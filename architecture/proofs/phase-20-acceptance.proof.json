@@ -1,0 +1,159 @@
+{
+  "artifact": "phase-acceptance",
+  "phase": "20",
+  "phaseName": "Government Education Cloud",
+  "source": "architecture/phase-20-government-education-cloud.md",
+  "generatedAt": "2026-09-28T13:22:40.071Z",
+  "classificationDefinitions": {
+    "ENFORCED": "an executable artefact proves it (test, verifier script, migration, policy or machine-checked contract match) and, where a boundary is declared, a real call site invokes it",
+    "DECLARED": "a module, document or contract mentions it, but nothing executable proves it",
+    "IMPLEMENTED_UNWIRED": "implementation and tests exist, but the declared boundary patterns match nothing — the capability protects nothing yet",
+    "MISSING": "no artefact found"
+  },
+  "summary": {
+    "areas": 5,
+    "enforced": 4,
+    "declared": 0,
+    "implementedUnwired": 1,
+    "implementedUnwiredAreas": [
+      "sovereign-runtime-boundary"
+    ],
+    "missing": 0,
+    "missingRequired": [],
+    "unresolvedEvidencePaths": []
+  },
+  "ownership": {
+    "note": "Phase 20 owns residency configuration, jurisdiction policy packs and statutory report definitions. It never owns domain data, planetary infrastructure or globalization content.",
+    "canonicalOwners": {
+      "residency-and-policy-packs": "20",
+      "statutory-reports": "20",
+      "domain-records": "owning phases",
+      "tenancy": "03",
+      "authorization": "08",
+      "planetary-infrastructure": "44",
+      "globalization": "30"
+    }
+  },
+  "areas": [
+    {
+      "id": "sovereign-tenant-and-jurisdiction",
+      "area": "Government tenants and jurisdictions are explicit",
+      "requirement": "Government tenants, configurable jurisdiction hierarchies, federations and education networks require valid identity, scope and expiry data.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/government-core.ts",
+        "tests/unit/government-core.test.ts",
+        "tests/unit/government-core.test.ts",
+        "tests/unit/government-core.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/government-core.ts",
+        "tests/unit/government-core.test.ts",
+        "tests/unit/government-core.test.ts",
+        "tests/unit/government-core.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "policy-and-programme-lifecycle",
+      "area": "Policy, programme and emergency lifecycles are ordered",
+      "requirement": "Policies and programmes move only through legal states, funding is positive, approvals cannot repeat and emergency declarations require coherent affected-region data.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/government-policy.ts",
+        "tests/unit/government-policy.test.ts",
+        "tests/unit/government-policy.test.ts",
+        "tests/unit/government-policy.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/government-policy.ts",
+        "tests/unit/government-policy.test.ts",
+        "tests/unit/government-policy.test.ts",
+        "tests/unit/government-policy.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "data-sharing-and-residency",
+      "area": "Government data exchange preserves purpose and residency",
+      "requirement": "Reports, data-sharing agreements, external systems, catalogs and residency policies carry purpose, stewards, approval and location controls; de-identification modes are explicit.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/government-data.ts",
+        "tests/unit/government-data.test.ts",
+        "tests/unit/government-data.test.ts",
+        "tests/unit/government-data.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/government-data.ts",
+        "tests/unit/government-data.test.ts",
+        "tests/unit/government-data.test.ts",
+        "tests/unit/government-data.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "governance-evidence-and-outcomes",
+      "area": "Government operations retain compliance and outcome evidence",
+      "requirement": "Dashboards, SLOs, legal holds, compliance evidence, supplier risk, KPIs, warnings and AI registry entries have typed records and explicit acceptance/invariant structures.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/government-governance.ts",
+        "tests/unit/government-governance.test.ts",
+        "tests/unit/government-governance.test.ts",
+        "tests/unit/government-governance.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/government-governance.ts",
+        "tests/unit/government-governance.test.ts",
+        "tests/unit/government-governance.test.ts",
+        "tests/unit/government-governance.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "sovereign-runtime-boundary",
+      "area": "Sovereign placement and reporting remain unwired",
+      "requirement": "A tenant-authorized deployment and statutory reporting boundary must enforce residency and policy packs; current evidence proves only typed government libraries and tests.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "IMPLEMENTED_UNWIRED",
+      "declaredEvidence": [
+        "frontend/src/lib/kernel/phase-contracts/phase-20-government-cloud.ts",
+        "frontend/src/lib/government-data.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/kernel/phase-contracts/phase-20-government-cloud.ts",
+        "frontend/src/lib/government-data.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [
+        "frontend/src/lib/*.functions.ts"
+      ],
+      "boundaryEvidence": []
+    }
+  ],
+  "ok": true,
+  "limitations": [
+    "Classification measures the presence of executable evidence, not the correctness or completeness of that evidence.",
+    "A DECLARED area is unfinished work, never a false claim — it is reported as such.",
+    "An IMPLEMENTED_UNWIRED area has a tested implementation that no boundary calls; it is reported, never counted as enforcement.",
+    "Evidence patterns are declared per phase in architecture/phase-acceptance/phase-<id>-*.json and must be reviewed when a phase is re-audited."
+  ]
+}

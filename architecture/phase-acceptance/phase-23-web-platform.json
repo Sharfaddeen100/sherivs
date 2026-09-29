@@ -1,0 +1,92 @@
+{
+  "$comment": "Phase 23 acceptance definition derived from architecture/phase-23-web-platform.md, the phase contract, web-core/storage/performance/platform modules and web/platform/client target suites. Browser security, accessibility, storage and budget logic are tested libraries; no deployed edge/CDN or complete route boundary is inferred.",
+  "phase": "23",
+  "phaseName": "Web Platform",
+  "source": "architecture/phase-23-web-platform.md",
+  "contract": "frontend/src/lib/kernel/phase-contracts/phase-23-web-platform.ts",
+  "ownership": {
+    "note": "Phase 23 owns browser storage policy, performance budgets, routing conventions and web delivery mechanics. Domain presentation, design system and mobile-native behaviour remain outside this phase.",
+    "canonicalOwners": {
+      "web-routing-storage-performance": "23",
+      "tenancy": "03",
+      "workspace": "06",
+      "mobile-platform": "22",
+      "experience-design": "24",
+      "domain-surfaces": "consuming runtimes"
+    }
+  },
+  "areas": [
+    {
+      "id": "route-url-and-browser-security",
+      "area": "Routes and URLs are validated and browser-safe",
+      "requirement": "Route definitions require a path, URLs are validated for secure schemes, HTML is sanitized and a default CSP is explicit.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/web-core.ts", "contains": "createWebRouteDefinition" },
+        { "kind": "test", "path": "tests/unit/web-core.test.ts", "contains": "rejects missing path" },
+        { "kind": "test", "path": "tests/unit/web-core.test.ts", "contains": "rejects HTTP for non-localhost" },
+        { "kind": "test", "path": "tests/unit/web-core.test.ts", "contains": "escapes HTML" }
+      ]
+    },
+    {
+      "id": "offline-storage-and-conflict",
+      "area": "Browser storage, offline queue and conflicts are explicit",
+      "requirement": "Service-worker/PWA configuration, offline actions, conflict resolution and file upload constraints are represented with invalid inputs rejected.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/web-storage.ts" },
+        { "kind": "test", "path": "tests/unit/web-platform.test.ts", "contains": "creates SW config" },
+        { "kind": "test", "path": "tests/unit/web-platform.test.ts", "contains": "resolves conflict" },
+        { "kind": "test", "path": "tests/unit/web-platform.test.ts", "contains": "validates file size" }
+      ]
+    },
+    {
+      "id": "accessibility-and-error-recovery",
+      "area": "Web accessibility and error recovery are modeled",
+      "requirement": "WCAG configuration, ARIA compliance, error boundaries and appropriate 403/404/500 pages are explicit and stack traces are not exposed by default.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/web-platform.ts", "contains": "checkARIACompliance" },
+        { "kind": "test", "path": "tests/unit/web-platform.test.ts", "contains": "reports violations when roles missing" },
+        { "kind": "test", "path": "tests/unit/web-platform.test.ts", "contains": "creates 500 page with retry" },
+        { "kind": "test", "path": "tests/unit/web-platform.test.ts", "contains": "showStackTrace" }
+      ]
+    },
+    {
+      "id": "performance-and-delivery-budgets",
+      "area": "Web performance is measured against budgets",
+      "requirement": "Core Web Vitals are rated, bundle/initial-load budgets can fail, and SEO, compression and CDN configuration are represented.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/web-performance.ts", "contains": "checkPerformanceBudget" },
+        { "kind": "test", "path": "tests/unit/web-platform.test.ts", "contains": "evaluates good LCP" },
+        { "kind": "test", "path": "tests/unit/web-platform.test.ts", "contains": "fails when over budget" },
+        { "kind": "test", "path": "tests/unit/web-platform.test.ts", "contains": "creates CDN config" }
+      ]
+    },
+    {
+      "id": "cross-platform-vocabulary",
+      "area": "Browser and client platform vocabularies interoperate",
+      "requirement": "Browser families, support/PWA capability and device/runtime classification share the declared cross-platform vocabulary and fail closed for unsupported combinations.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/client-platform.ts", "contains": "classifyRuntime" },
+        { "kind": "test", "path": "tests/unit/platform-targets.test.ts", "contains": "covers every browser family in the P23 vocabulary" },
+        { "kind": "test", "path": "tests/unit/client-platform.test.ts", "contains": "returns browser info + device platform together" }
+      ]
+    },
+    {
+      "id": "deployed-web-boundary",
+      "area": "Edge, CDN and complete route enforcement remain unwired",
+      "requirement": "A deployed web boundary must apply storage, route-security and performance contracts; current evidence proves only the typed web libraries and unit suites.",
+      "required": false,
+      "evidence": [
+        { "kind": "contract", "path": "frontend/src/lib/kernel/phase-contracts/phase-23-web-platform.ts", "contains": "web-client-platform" },
+        { "kind": "module", "path": "frontend/src/lib/web-performance.ts" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/routes/**/*.tsx", "contains": "checkPerformanceBudget" }
+      ]
+    }
+  ]
+}

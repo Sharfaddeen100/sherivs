@@ -1,0 +1,59 @@
+{
+  "mission": "COREGRID-FOUNDATION-MISSION-001",
+  "parentMission": "COREGRID-MISSION-0001",
+  "artifact": "COREGRID_FOUNDATION_MISSION_001_AUTHORITY_DECISION",
+  "status": "RECORDED",
+  "decidedAt": "2026-09-29T13:35:00.000Z",
+  "authorizedBy": "human-delegated-session-2026-09-29",
+  "authorityReference": "V5.1 Parts 54-56 and 106; V5.2 Gates 11-12; existing control-plane mechanisms 04, 06, 08, 09, and 10",
+  "rule": "Decisions assign existing control-plane owners. They do not create a phase, a mother, a service, or a persistence schema.",
+  "decisions": [
+    {
+      "id": "FM001-D1",
+      "question": "Whether mission orchestration is a CoreGrid product mechanism.",
+      "decision": "Yes. Mission orchestration is control-plane mechanism 06. It coordinates an approved mission lifecycle. It is not a workflow engine, execution engine, verification engine, or architecture authority.",
+      "owner": "CONTROL-PLANE-06-MISSION-ORCHESTRATION.md",
+      "conceptualAuthority": "MISSIONS.md"
+    },
+    {
+      "id": "FM001-D2",
+      "question": "Who owns mission intent and lifecycle.",
+      "decision": "MISSIONS.md owns mission intent. Mechanism 06 owns lifecycle coordination from proposed through authorized, revoked, and closed. Persistence of that lifecycle is not established by this decision.",
+      "owner": "MISSIONS.md / CONTROL-PLANE-06-MISSION-ORCHESTRATION.md"
+    },
+    {
+      "id": "FM001-D3",
+      "question": "Who owns universal evidence identity and lifecycle.",
+      "decision": "Mechanism 04 owns evidence identity, provenance, integrity, and lifecycle. ASSURANCE.md is the mother. Evidence does not decide truth, verification, or conformance.",
+      "owner": "CONTROL-PLANE-04-EVIDENCE.md / ASSURANCE.md"
+    },
+    {
+      "id": "FM001-D4",
+      "question": "Who owns durable execution records and rollback.",
+      "decision": "Mechanism 08 owns execution records and the distinction between request, attempt, result, and external effect. Phase 05 remains the application-runtime consumer. This decision authorizes an in-memory contract only. No migration or durable store is approved. Rollback appends history and marks compensation required; it does not perform an external effect.",
+      "owner": "CONTROL-PLANE-08-CURSOR-EXECUTION.md"
+    },
+    {
+      "id": "FM001-D5",
+      "question": "Who owns independent verification and conformance.",
+      "decision": "Mechanism 09 owns verification. Mechanism 10 owns conformance. Both sit under ASSURANCE.md. Verification cannot be inferred from execution success. Conformance cannot be inferred from verification when the declared contract or version differs.",
+      "owner": "CONTROL-PLANE-09-VERIFICATION.md / CONTROL-PLANE-10-CONFORMANCE.md / ASSURANCE.md"
+    },
+    {
+      "id": "FM001-D6",
+      "question": "What COMPLETE, VERIFIED, CONFORMANT, DEPLOYED, and OPERATIONAL mean.",
+      "decision": "COMPLETE means an approved scope has an evidenced outcome for that scope only. VERIFIED means an independent verification decision with evidence. CONFORMANT means an independent assessment matched the declared contract and version. DEPLOYED means installed in a named environment. OPERATIONAL means named-environment runtime evidence shows executing, observable, recoverable behavior. Tests and documents do not establish DEPLOYED or OPERATIONAL.",
+      "owner": "ASSURANCE.md"
+    }
+  ],
+  "implementationBoundary": {
+    "authorized": "frontend/src/lib/control-plane/foundation-mission.ts",
+    "denied": [
+      "database migration",
+      "new phase",
+      "new infrastructure",
+      "production side effect",
+      "live runtime claim"
+    ]
+  }
+}

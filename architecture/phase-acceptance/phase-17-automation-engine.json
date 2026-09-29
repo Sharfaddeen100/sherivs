@@ -1,0 +1,93 @@
+{
+  "$comment": "Phase 17 acceptance definition derived from architecture/phase-17-automation-engine.md, the phase contract, automation-core/workflow/actions/governance modules and their four unit suites. Workflow safety is evaluated from executable libraries; no autonomous production execution is inferred.",
+  "phase": "17",
+  "phaseName": "Automation Engine",
+  "source": "architecture/phase-17-automation-engine.md",
+  "contract": "frontend/src/lib/kernel/phase-contracts/phase-17-automation-engine.ts",
+  "ownership": {
+    "note": "Phase 17 owns workflow definitions, trigger bindings, run history, action governance and escalation. Transport, domain rules and autonomous self-improvement remain owned elsewhere.",
+    "canonicalOwners": {
+      "workflow-and-run-history": "17",
+      "action-governance": "17",
+      "runtime-transport": "05",
+      "domain-rules": "owning phases",
+      "authorization": "08",
+      "digital-twin": "16",
+      "self-improvement": "47"
+    }
+  },
+  "areas": [
+    {
+      "id": "fail-closed-condition-and-policy",
+      "area": "Unknown conditions and policy conflicts fail closed",
+      "requirement": "Automation never treats UNKNOWN or ERROR as permission to proceed, and the highest-priority policy decision controls conflicting rules.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/automation-core.ts", "contains": "applyFailClosed" },
+        { "kind": "test", "path": "tests/unit/automation-core.test.ts", "contains": "never treats UNKNOWN as TRUE for any automation" },
+        { "kind": "test", "path": "tests/unit/automation-core.test.ts", "contains": "lets the highest-priority policy win on conflict" }
+      ]
+    },
+    {
+      "id": "authorization-and-human-approval",
+      "area": "Automation requires explicit authorization and approval",
+      "requirement": "Operations are authorized for the actor and tenant; high-risk or privileged actions wait for approval and rejected or expired approvals cannot proceed.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/automation-core.ts", "contains": "authorizeExecution" },
+        { "kind": "test", "path": "tests/unit/automation-core.test.ts", "contains": "denies AI actors without an explicit role" },
+        { "kind": "test", "path": "tests/unit/automation-core.test.ts", "contains": "blocks a required approval until approved" },
+        { "kind": "test", "path": "tests/unit/automation-governance.test.ts", "contains": "prohibits cross-tenant execution without explicit authorization" }
+      ]
+    },
+    {
+      "id": "workflow-dag-and-lifecycle",
+      "area": "Workflow definitions and runs are ordered state machines",
+      "requirement": "Workflow graphs are non-empty DAGs with known dependencies, execution states follow legal transitions and ready steps are resolved topologically.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/automation-workflow.ts", "contains": "validateWorkflowGraph" },
+        { "kind": "test", "path": "tests/unit/automation-workflow.test.ts", "contains": "rejects a dependency cycle" },
+        { "kind": "test", "path": "tests/unit/automation-workflow.test.ts", "contains": "blocks an illegal CREATED -> COMPLETED jump" },
+        { "kind": "test", "path": "tests/unit/automation-governance.test.ts", "contains": "walks the canonical lifecycle" }
+      ]
+    },
+    {
+      "id": "retry-compensation-and-locks",
+      "area": "Failures are retry-safe and recoverable",
+      "requirement": "Non-idempotent steps do not replay, irreversible actions are not blindly retried, compensation is explicit, resource locks recover and deadlocks are detected.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/automation-workflow.ts", "contains": "mayReExecuteStep" },
+        { "kind": "test", "path": "tests/unit/automation-workflow.test.ts", "contains": "never re-executes non-idempotent completed steps on replay" },
+        { "kind": "test", "path": "tests/unit/automation-workflow.test.ts", "contains": "never blindly retries irreversible actions" },
+        { "kind": "test", "path": "tests/unit/automation-workflow.test.ts", "contains": "detects a deadlock cycle" }
+      ]
+    },
+    {
+      "id": "action-verification-and-kill-switches",
+      "area": "Actions verify outcomes and can be stopped",
+      "requirement": "Validation, authorization, preconditions and postconditions precede execution; failed verification is not success, and kill switches and dry-run modes prevent unsafe side effects.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/automation-actions.ts" },
+        { "kind": "test", "path": "tests/unit/automation-actions.test.ts", "contains": "never reaches execution on authorization failure" },
+        { "kind": "test", "path": "tests/unit/automation-actions.test.ts", "contains": "never reports failed verification as success" },
+        { "kind": "test", "path": "tests/unit/automation-actions.test.ts", "contains": "dry-run/simulation/shadow never produce production side effects" }
+      ]
+    },
+    {
+      "id": "automation-boundary",
+      "area": "Workflow activation and production execution remain unwired",
+      "requirement": "An authorised runtime boundary must invoke activation and action execution; current evidence is limited to the tested automation libraries.",
+      "required": false,
+      "evidence": [
+        { "kind": "contract", "path": "frontend/src/lib/kernel/phase-contracts/phase-17-automation-engine.ts", "contains": "automation-workflow-runtime" },
+        { "kind": "module", "path": "frontend/src/lib/automation-governance.ts" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/*.functions.ts", "contains": "executeAutomation" }
+      ]
+    }
+  ]
+}

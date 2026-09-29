@@ -1,0 +1,188 @@
+{
+  "artifact": "phase-acceptance",
+  "phase": "44",
+  "phaseName": "Planetary Distributed Infrastructure Engine",
+  "source": "architecture/phase-44-planetary-distributed-infrastructure-engine.md",
+  "generatedAt": "2026-09-28T15:16:33.387Z",
+  "classificationDefinitions": {
+    "ENFORCED": "an executable artefact proves it (test, verifier script, migration, policy or machine-checked contract match) and, where a boundary is declared, a real call site invokes it",
+    "DECLARED": "a module, document or contract mentions it, but nothing executable proves it",
+    "IMPLEMENTED_UNWIRED": "implementation and tests exist, but the declared boundary patterns match nothing — the capability protects nothing yet",
+    "MISSING": "no artefact found"
+  },
+  "summary": {
+    "areas": 7,
+    "enforced": 6,
+    "declared": 1,
+    "implementedUnwired": 0,
+    "implementedUnwiredAreas": [],
+    "missing": 0,
+    "missingRequired": [],
+    "unresolvedEvidencePaths": []
+  },
+  "ownership": {
+    "canonicalOwners": {
+      "planetary-topology-and-capacity": "44",
+      "cloud-fabric": "21",
+      "device-identity": "15",
+      "sovereign-deployments": "20",
+      "ai-compute": "45",
+      "domain-data": "owning-domain-phase"
+    }
+  },
+  "areas": [
+    {
+      "id": "static-infrastructure-invariants",
+      "area": "Infrastructure fabric invariants are statically verified",
+      "requirement": "Provider roots/modules, secret references, remote state, pinning, tags, namespaces, quotas, network policy, sandbox and neutrality constraints are checked.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "scripts/verify-infrastructure.mjs",
+        "tests/unit/infrastructure-fabric.test.ts",
+        "tests/unit/infrastructure-fabric.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/infrastructure-fabric.test.ts",
+        "tests/unit/infrastructure-fabric.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "credential-and-deployment-gating",
+      "area": "Cloud-touching waves are credential-gated and read-only by default",
+      "requirement": "Preflight reports missing secret names without values, bootstrap remains dry, and deployment claims remain blocked without credentials.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/infrastructure-readiness.test.ts",
+        "tests/unit/infrastructure-readiness.test.ts",
+        "scripts/infrastructure/preflight.mjs"
+      ],
+      "matchedEvidence": [
+        "tests/unit/infrastructure-readiness.test.ts",
+        "tests/unit/infrastructure-readiness.test.ts",
+        "scripts/infrastructure/preflight.mjs"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "residency-and-sovereignty",
+      "area": "Region records and tenant-data residency fail closed",
+      "requirement": "Regions declare jurisdiction/sovereignty, worker/edge regions cannot hold tenant data, and referenced regions exist in the inventory.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/infrastructure-readiness.test.ts",
+        "tests/unit/infrastructure-readiness.test.ts",
+        "tests/unit/infrastructure-fabric.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/infrastructure-readiness.test.ts",
+        "tests/unit/infrastructure-readiness.test.ts",
+        "tests/unit/infrastructure-fabric.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "sandbox-and-supply-chain-containment",
+      "area": "Infrastructure sandbox and supply-chain boundaries are contained",
+      "requirement": "Sandbox networking is default-deny, time-boxed, lowest priority, credential-free and isolated from runtime namespaces; provider versions are pinned.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/infrastructure-fabric.test.ts",
+        "tests/unit/infrastructure-fabric.test.ts",
+        "tests/unit/infrastructure-fabric.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/infrastructure-fabric.test.ts",
+        "tests/unit/infrastructure-fabric.test.ts",
+        "tests/unit/infrastructure-fabric.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "health-cost-incident-and-change-governance",
+      "area": "Infrastructure health, SLO, incident, cost, secrets and change records are represented",
+      "requirement": "Cloud governance records cover health, SLO/error budgets, alerts/incidents/runbooks, cost, secrets, break-glass, policy, deployments, migration, kill switches and change approvals.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/cloud-governance.test.ts",
+        "tests/unit/cloud-governance.test.ts",
+        "tests/unit/cloud-governance.test.ts",
+        "tests/unit/cloud-governance.test.ts",
+        "tests/unit/cloud-governance.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/cloud-governance.test.ts",
+        "tests/unit/cloud-governance.test.ts",
+        "tests/unit/cloud-governance.test.ts",
+        "tests/unit/cloud-governance.test.ts",
+        "tests/unit/cloud-governance.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "provider-neutrality-and-no-duplicate-engines",
+      "area": "Infrastructure remains provider-neutral and does not duplicate platform engines",
+      "requirement": "The fabric hosts owned capabilities without replacing identity, authorization, automation, analytics or twin engines, and optional layers remain non-critical.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/infrastructure-fabric.test.ts",
+        "tests/unit/infrastructure-readiness.test.ts",
+        "tests/unit/infrastructure-fabric.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/infrastructure-fabric.test.ts",
+        "tests/unit/infrastructure-readiness.test.ts",
+        "tests/unit/infrastructure-fabric.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "live-planetary-deployment",
+      "area": "Live planetary placement, fleets and recovery are operational",
+      "requirement": "Approved credentials, deployed regions/edge/fleets, real telemetry, failover and recovery evidence prove operational planetary infrastructure.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "architecture/phase-44-planetary-distributed-infrastructure-engine.md"
+      ],
+      "matchedEvidence": [
+        "architecture/phase-44-planetary-distributed-infrastructure-engine.md"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    }
+  ],
+  "ok": true,
+  "limitations": [
+    "Classification measures the presence of executable evidence, not the correctness or completeness of that evidence.",
+    "A DECLARED area is unfinished work, never a false claim — it is reported as such.",
+    "An IMPLEMENTED_UNWIRED area has a tested implementation that no boundary calls; it is reported, never counted as enforcement.",
+    "Evidence patterns are declared per phase in architecture/phase-acceptance/phase-<id>-*.json and must be reviewed when a phase is re-audited."
+  ]
+}

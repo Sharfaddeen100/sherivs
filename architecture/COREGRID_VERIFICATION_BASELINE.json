@@ -1,0 +1,331 @@
+{
+  "mission": "COREGRID-MISSION-0001",
+  "artifact": "COREGRID_VERIFICATION_BASELINE",
+  "status": "PARTIAL_EVIDENCE_BASELINE",
+  "capturedAt": "2026-09-28",
+  "policy": "All prior completion claims are treated as unverified unless current evidence below proves them.",
+  "environment": {
+    "node": "v24.19.0",
+    "npmRegistry": "https://registry.npmjs.org/",
+    "registryReachability": "VERIFIED_HTTP_200",
+    "npmCache": "EMPTY",
+    "nodeModules": "RESTORED",
+    "dependencyRestore": "VERIFIED_LOCKED_INSTALL"
+  },
+  "checks": [
+    {
+      "id": "reconciliation",
+      "command": "node scripts/verify-reconciliation-artifacts.mjs",
+      "status": "PASS_WITH_REPORTED_CONFLICTS",
+      "evidence": "13 mothers, 51 phases, 12 reconciliation JSON artifacts; Phase 27 and Phase 33 conflicts reported"
+    },
+    {
+      "id": "registry",
+      "command": "node scripts/verification/registry-validate.mjs",
+      "status": "PASS",
+      "evidence": "51 phases, 50 capabilities, 15 duplication records, 2 runtimes"
+    },
+    {
+      "id": "secret-scan",
+      "command": "node scripts/verification/secret-scan.mjs",
+      "status": "PASS",
+      "evidence": "No high-risk secret patterns in tracked files"
+    },
+    {
+      "id": "infrastructure-static",
+      "command": "node scripts/verify-infrastructure.mjs",
+      "status": "PASS_STATIC_ONLY",
+      "evidence": "64/64 fabric invariants; credentials and deployment remain unverified"
+    },
+    {
+      "id": "phase-consumption",
+      "command": "node scripts/verify-phase-consumption.mjs",
+      "status": "STATIC_RESULT_RECORDED",
+      "evidence": "Consumed/built and not-consumed phase classifications emitted; not-consumed is not completion"
+    },
+    {
+      "id": "phase52-contract-gate",
+      "command": "node scripts/verify-reconciliation-artifacts.mjs",
+      "status": "PASS",
+      "evidence": "Phase 52 catalog requires classifications and forbids unauthorized IMPLEMENTED/VERIFIED/OPERATIONAL claims"
+    },
+    {
+      "id": "acceptance-phase14",
+      "command": "node scripts/audit-phase-acceptance.mjs --phase=14",
+      "status": "PASS_WITH_DECLARED_GAP",
+      "evidence": "5 enforced, 2 declared, 0 missing required areas; proof written to architecture/proofs/phase-14-acceptance.proof.json"
+    },
+    {
+      "id": "phase14-data-platform-tests",
+      "command": "npx vitest run tests/unit/data-core.test.ts tests/unit/data-quality.test.ts tests/unit/data-governance.test.ts tests/unit/data-catalog.test.ts",
+      "status": "PASS",
+      "evidence": "4 test files and 43 tests passed; physical persistence and live wiring remain declared rather than inferred."
+    },
+    {
+      "id": "acceptance-phase26",
+      "command": "node scripts/audit-phase-acceptance.mjs --phase=26",
+      "status": "PASS_WITH_DECLARED_GAP",
+      "evidence": "7 enforced, 1 declared, 0 missing required areas; proof written to architecture/proofs/phase-26-acceptance.proof.json"
+    },
+    {
+      "id": "phase26-ai-tests",
+      "command": "npx vitest run tests/unit/ai.test.ts tests/unit/scholar-ai-operations.test.ts",
+      "status": "PASS",
+      "evidence": "2 test files and 71 tests passed; live provider gateway execution remains declared rather than inferred."
+    },
+    {
+      "id": "acceptance-phase28",
+      "command": "node scripts/audit-phase-acceptance.mjs --phase=28",
+      "status": "PASS_WITH_DECLARED_GAP",
+      "evidence": "8 enforced, 1 declared, 0 missing required areas; proof written to architecture/proofs/phase-28-acceptance.proof.json"
+    },
+    {
+      "id": "phase28-developer-tests",
+      "command": "npx vitest run tests/unit/dev-platform.test.ts",
+      "status": "PASS",
+      "evidence": "1 test file and 47 tests passed; durable developer-service wiring remains declared rather than inferred."
+    },
+    {
+      "id": "acceptance-phase29",
+      "command": "node scripts/audit-phase-acceptance.mjs --phase=29",
+      "status": "PASS_WITH_DECLARED_GAP",
+      "evidence": "8 enforced, 1 declared, 0 missing required areas; proof written to architecture/proofs/phase-29-acceptance.proof.json"
+    },
+    {
+      "id": "phase29-integration-tests",
+      "command": "npx vitest run tests/unit/integration.test.ts",
+      "status": "PASS",
+      "evidence": "1 test file and 52 tests passed; live external exchange remains declared rather than inferred."
+    },
+    {
+      "id": "acceptance-phase30",
+      "command": "node scripts/audit-phase-acceptance.mjs --phase=30",
+      "status": "PASS_WITH_DECLARED_GAP",
+      "evidence": "7 enforced, 1 declared, 0 missing required areas; proof written to architecture/proofs/phase-30-acceptance.proof.json"
+    },
+    {
+      "id": "phase30-globalization-tests",
+      "command": "npx vitest run tests/unit/globalization.test.ts",
+      "status": "PASS",
+      "evidence": "1 test file and 93 tests passed; durable globalization runtime wiring remains declared rather than inferred."
+    },
+    {
+      "id": "acceptance-phase31",
+      "command": "node scripts/audit-phase-acceptance.mjs --phase=31",
+      "status": "PASS_WITH_DECLARED_GAP",
+      "evidence": "9 enforced, 1 declared, 0 missing required areas; proof written to architecture/proofs/phase-31-acceptance.proof.json"
+    },
+    {
+      "id": "phase31-enterprise-tests",
+      "command": "npx vitest run tests/unit/enterprise-scale.test.ts",
+      "status": "PASS",
+      "evidence": "1 test file and 58 tests passed; live scale telemetry and operational execution remain declared rather than inferred."
+    },
+    {
+      "id": "acceptance-phase32",
+      "command": "node scripts/audit-phase-acceptance.mjs --phase=32",
+      "status": "PASS_WITH_DECLARED_GAP",
+      "evidence": "9 enforced, 1 declared, 0 missing required areas; proof written to architecture/proofs/phase-32-acceptance.proof.json"
+    },
+    {
+      "id": "phase32-evolution-tests",
+      "command": "npx vitest run tests/unit/evolution.test.ts",
+      "status": "PASS",
+      "evidence": "1 test file and 49 tests passed; live evolution incident/recovery execution remains declared rather than inferred."
+    },
+    {
+      "id": "acceptance-phase33",
+      "command": "node scripts/audit-phase-acceptance.mjs --phase=33",
+      "status": "PASS_WITH_DECLARED_GAP",
+      "evidence": "6 enforced, 1 declared, 0 missing required areas; proof written to architecture/proofs/phase-33-acceptance.proof.json"
+    },
+    {
+      "id": "phase33-reality-kernel-tests",
+      "command": "npx vitest run tests/unit/kernel-reality.test.ts tests/unit/kernel-purity.test.ts tests/unit/kernel-runtime-registry.test.ts",
+      "status": "PASS",
+      "evidence": "3 test files and 40 tests passed; live reality persistence and observation remain declared rather than inferred."
+    },
+    {
+      "id": "acceptance-phase34",
+      "command": "node scripts/audit-phase-acceptance.mjs --phase=34",
+      "status": "PASS_WITH_DECLARED_GAP",
+      "evidence": "6 enforced, 1 declared, 0 missing required areas; proof written to architecture/proofs/phase-34-acceptance.proof.json"
+    },
+    {
+      "id": "phase34-cognitive-tests",
+      "command": "npx vitest run tests/unit/ai.test.ts",
+      "status": "PASS",
+      "evidence": "1 test file and 66 tests passed; live world-model persistence and cognitive runtime execution remain declared rather than inferred."
+    },
+    {
+      "id": "acceptance-phase35",
+      "command": "node scripts/audit-phase-acceptance.mjs --phase=35",
+      "status": "PASS_WITH_DECLARED_GAP",
+      "evidence": "5 enforced, 1 declared, 0 missing required areas; proof written to architecture/proofs/phase-35-acceptance.proof.json"
+    },
+    {
+      "id": "phase35-agent-tests",
+      "command": "npx vitest run tests/unit/agent-core.test.ts tests/unit/agent-tasks.test.ts tests/unit/agent-governance-report.test.ts tests/unit/agent-memory.test.ts",
+      "status": "PASS",
+      "evidence": "4 test files and 53 tests passed; live society coordination and collective audit remain declared rather than inferred."
+    },
+    {
+      "id": "acceptance-phase36",
+      "command": "node scripts/audit-phase-acceptance.mjs --phase=36",
+      "status": "PASS_WITH_DECLARED_GAP",
+      "evidence": "5 enforced, 1 declared, 0 missing required areas; proof written to architecture/proofs/phase-36-acceptance.proof.json"
+    },
+    {
+      "id": "phase36-memory-tests",
+      "command": "npx vitest run tests/unit/agent-memory.test.ts",
+      "status": "PASS",
+      "evidence": "1 test file and 14 tests passed; durable memory stores and governed forgetting remain declared rather than inferred."
+    },
+    {
+      "id": "acceptance-phase38",
+      "command": "node scripts/audit-phase-acceptance.mjs --phase=38",
+      "status": "DECLARED_ONLY",
+      "evidence": "0 enforced, 3 declared, 0 missing required areas; Phase 38 composes Phase 32 and has no dedicated executable acceptance suite."
+    },
+    {
+      "id": "acceptance-phase39",
+      "command": "node scripts/audit-phase-acceptance.mjs --phase=39",
+      "status": "PASS_WITH_DECLARED_GAP",
+      "evidence": "3 enforced, 1 declared, 0 missing required areas; proof written to architecture/proofs/phase-39-acceptance.proof.json"
+    },
+    {
+      "id": "phase39-governance-tests",
+      "command": "npx vitest run tests/unit/command-centre-contract-governance.test.ts",
+      "status": "PASS",
+      "evidence": "1 test file and 10 tests passed; live alignment drift records and escalation remain declared rather than inferred."
+    },
+    {
+      "id": "acceptance-phase40",
+      "command": "node scripts/audit-phase-acceptance.mjs --phase=40",
+      "status": "PASS_WITH_DECLARED_GAP",
+      "evidence": "5 enforced, 1 declared, 0 missing required areas; proof written to architecture/proofs/phase-40-acceptance.proof.json"
+    },
+    {
+      "id": "phase40-runtime-tests",
+      "command": "npx vitest run tests/unit/runtime-extended.test.ts tests/unit/runtime.test.ts",
+      "status": "PASS",
+      "evidence": "2 test files and 87 tests passed; live runtime installation and deployment remain declared rather than inferred."
+    },
+    {
+      "id": "acceptance-phase41",
+      "command": "node scripts/audit-phase-acceptance.mjs --phase=41",
+      "status": "DECLARED_ONLY",
+      "evidence": "0 enforced, 3 declared, 0 missing required areas; no dedicated universal sandbox acceptance suite exists."
+    },
+    {
+      "id": "acceptance-phase42",
+      "command": "node scripts/audit-phase-acceptance.mjs --phase=42",
+      "status": "PASS_WITH_DECLARED_GAP",
+      "evidence": "5 enforced, 1 declared, 0 missing required areas; proof written to architecture/proofs/phase-42-acceptance.proof.json"
+    },
+    {
+      "id": "phase42-defense-tests",
+      "command": "npx vitest run tests/unit/security-agent-controls.test.ts tests/unit/security-risk.test.ts tests/unit/security-events.test.ts",
+      "status": "PASS",
+      "evidence": "3 test files and 36 tests passed; live adversarial exercises and hardening operations remain declared rather than inferred."
+    },
+    {
+      "id": "acceptance-phase43",
+      "command": "node scripts/audit-phase-acceptance.mjs --phase=43",
+      "status": "PASS_WITH_DECLARED_GAP",
+      "evidence": "4 enforced, 1 declared, 0 missing required areas; proof written to architecture/proofs/phase-43-acceptance.proof.json"
+    },
+    {
+      "id": "acceptance-phase44",
+      "command": "node scripts/audit-phase-acceptance.mjs --phase=44",
+      "status": "PASS_WITH_DECLARED_GAP",
+      "evidence": "6 enforced, 1 declared, 0 missing required areas; proof written to architecture/proofs/phase-44-acceptance.proof.json"
+    },
+    {
+      "id": "acceptance-phase37",
+      "command": "node scripts/audit-phase-acceptance.mjs --phase=37",
+      "status": "DECLARED_ONLY",
+      "evidence": "0 enforced, 3 declared, 0 missing required areas; no dedicated universal simulation-engine executable suite exists."
+    },
+    {
+      "id": "acceptance-phase25",
+      "command": "node scripts/audit-phase-acceptance.mjs --phase=25",
+      "status": "PASS_WITH_DECLARED_GAP",
+      "evidence": "6 enforced, 1 declared, 0 missing required areas; proof written to architecture/proofs/phase-25-acceptance.proof.json"
+    },
+    {
+      "id": "acceptance-phase27",
+      "command": "node scripts/audit-phase-acceptance.mjs --phase=27",
+      "status": "PASS_WITH_DECLARED_GAP",
+      "evidence": "7 enforced, 1 declared, 0 missing required areas; proof written to architecture/proofs/phase-27-acceptance.proof.json"
+    },
+    {
+      "id": "typecheck",
+      "command": "npm run typecheck",
+      "status": "PASS",
+      "evidence": "Current full verification run completed tsc --noEmit without errors"
+    },
+    {
+      "id": "unit-tests",
+      "command": "npm run test:unit",
+      "status": "PASS",
+      "evidence": "Current full verification run: 192 test files and 3015 tests passed."
+    },
+    {
+      "id": "production-build",
+      "command": "npm run build",
+      "status": "PASS",
+      "evidence": "Isolated current npm run build passed: 3750 client modules and 669 server modules transformed; client and server bundles generated."
+    },
+    {
+      "id": "e2e",
+      "command": "npm run test:e2e",
+      "status": "BLOCKED_ENVIRONMENT_MISSING_BROWSER",
+      "evidence": "19 tests attempted; all failed before execution because Playwright Chromium headless shell was absent. npx playwright install chromium downloaded Chrome/FFmpeg but headless-shell retrieval failed with ECONNRESET, ETIMEDOUT, and DNS resolution errors."
+    },
+    {
+      "id": "live-kernel",
+      "command": "node scripts/verify-kernel-wiring.mjs",
+      "status": "BLOCKED_NOT_RUN",
+      "evidence": "Requires approved SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, and SUPABASE_ANON_KEY"
+    },
+    {
+      "id": "acceptance-coverage",
+      "command": "npm run audit:acceptance-coverage",
+      "status": "PASS_WITH_UNKNOWN_COVERAGE",
+      "evidence": "51 registered phases; 51 acceptance definitions and proofs; all phases have explicit acceptance status, including declared and missing optional evidence."
+    },
+    {
+      "id": "full-verify-wrapper",
+      "command": "npm run verify",
+      "status": "ABORTED_AFTER_BUILD_INVOCATION",
+      "evidence": "Typecheck, 192/192 unit files, registry, and secret scan passed; wrapper exited 1 at vite build without an emitted build error. Isolated npm run build subsequently passed."
+    },
+    {
+      "id": "lint",
+      "command": "npm run lint",
+      "status": "UNVERIFIED_INTERRUPTED",
+      "evidence": "The repository lint invocation was interrupted before producing a result; no lint pass or failure is claimed. Edited-file diagnostics remain clear."
+    }
+  ],
+  "statusDimensions": {
+    "architecture": "PARTIAL_CONFLICTING",
+    "implementation": "PARTIAL",
+    "execution": "UNVERIFIED",
+    "observation": "UNVERIFIED",
+    "evidence": "PARTIAL",
+    "verification": "STATIC_CHECKS_VERIFIED",
+    "conformance": "PARTIAL_UNVERIFIED_RUNTIME",
+    "deployment": "UNVERIFIED",
+    "operational": "UNVERIFIED",
+    "evolution": "BLOCKED_BY_OWNERSHIP_CONFLICTS"
+  },
+  "nextRequiredActions": [
+    "Run E2E verification when the local runtime is available",
+    "Run controlled live Supabase checks only with approved credentials and cleanup",
+    "Resolve Phase 27 and Phase 33 status conflicts",
+    "Define and audit acceptance criteria for Phases 14-24, 26, and 28-51 without fabricating proofs",
+    "Resolve mission, evidence, and execution ownership before Foundation Mission 001 implementation",
+    "Reconcile the control-plane master surface status conflict"
+  ]
+}

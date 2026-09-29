@@ -1,83 +1,116 @@
 COREGRID ENGINEERING CONSTITUTION
 Document:CONSTITUTION.md
+Canonical Name: CoreGrid Engineering Constitution
 Platform: CoreGrid Universal Intelligence Infrastructure
-Current Runtime: CoreGrid Scholar
-Architecture: CoreGrid ASI Era Architecture
+Architecture Era: CoreGrid ASI-Era Architecture
 Status:NORMATIVE / CANONICAL / PLATFORM-WIDE
-Scope: CoreGrid Platform — Phases 01–51
+Scope: Entire CoreGrid Platform Phases 
 Authority: CoreGrid Architecture Governance Layer
-Applies To: CoreGrid infrastructure, runtimes, domains, agents, intelligence systems, applications, APIs, data systems, integrations, cloud environments, developer ecosystem, marketplace, and future platform evolution.
+Applies To: CoreGrid infrastructure, runtimes, domains, agents, intelligence systems, applications, APIs, data systems, integrations, cloud environments, developer ecosystem, marketplace, engineering systems, autonomous engineering systems, and future platform evolution.
+Reference Runtime: CoreGrid Scholar
+Constitutional Position of Scholar: First/reference runtime; never the architectural boundary of CoreGrid.
 
 ───
 
+PART I — CONSTITUTIONAL IDENTITY
 1. Constitutional Declaration
 CoreGrid is not a school application.
 CoreGrid is not an ERP.
 CoreGrid is not a collection of AI agents.
 CoreGrid is not a chatbot.
+CoreGrid is not a dashboard system.
+CoreGrid is not merely a database platform.
+CoreGrid is not merely an automation platform.
+CoreGrid is not a single runtime.
 CoreGrid is not a single product.
-CoreGrid is a universal intelligence infrastructure platform capable of instantiating domain-specific operational realities, intelligence systems, autonomous agents, digital representations, decision systems, and governed execution environments.
-The first working manifestation of this infrastructure is:
+CoreGrid is a universal intelligence infrastructure platform capable of representing, understanding, connecting, observing, reasoning about, simulating, governing, executing, and continuously evolving computational representations of complex realities.
+CoreGrid provides the substrate upon which domain-specific realities and runtimes may be instantiated.
+Its first working manifestation is:
 CoreGrid Scholar.
-Scholar is therefore treated as the first production runtime of CoreGrid, not the boundary of CoreGrid's architecture.
-The Constitution governs the platform beneath Scholar and every future CoreGrid runtime.
+Scholar demonstrates the platform in an educational/institutional reality.
+Scholar does not define the ontology, limits, ownership, or future of CoreGrid.
+The Constitution governs the substrate beneath Scholar and every present or future CoreGrid runtime.
 
 ───
 
 2. CoreGrid Mission
-CoreGrid exists to provide a universal computational substrate through which complex real-world systems can be:
+CoreGrid exists to provide a universal computational substrate through which complex realities can be:
 • represented
-• understood
+• identified
 • connected
 • observed
+• contextualized
+• understood
+• remembered
 • reasoned about
 • simulated
 • governed
-• automated
+• decided upon
+• acted upon
+• measured
+• learned from
 • optimized
 • extended
 • evolved
-CoreGrid should allow a new domain to be instantiated without rebuilding the fundamental platform.
-Conceptually:
-text
-COREGRID
-                       │
-        ┌──────────────┼──────────────┐
-        ↓              ↓              ↓
-     Reality        Intelligence    Execution
-        │              │              │
-        ↓              ↓              ↓
-      Data          Reasoning       Automation
-        │              │              │
-        └──────────────┼──────────────┘
-                       ↓
-                    RUNTIME
-                       ↓
-                 GOVERNED ACTION
-                       ↓
-                    REALITY
-
-
-───
-
-3. The CoreGrid Principle
-The platform shall be designed around one fundamental relationship:
+CoreGrid shall enable new domains to be instantiated primarily through configuration, domain models, policies, capabilities, contracts, and runtime composition rather than repeated reconstruction of foundational infrastructure.
+The constitutional objective is:
 text
 REALITY
    ↓
 REPRESENTATION
    ↓
-DATA
+CONTEXT
+   ↓
+INTELLIGENCE
+   ↓
+GOVERNANCE
+   ↓
+ACTION
+   ↓
+OBSERVED CONSEQUENCE
+   ↓
+LEARNING
+   ↓
+EVOLUTION
+
+CoreGrid is therefore infrastructure for governed intelligence operating upon representations of reality.
+
+───
+
+3. The CoreGrid Principle
+The fundamental relationship is:
+text
+REALITY
+   ↓
+OBSERVATION
+   ↓
+REPRESENTATION
+   ↓
+STATE
+   ↓
+EVENTS
    ↓
 CONTEXT
    ↓
 KNOWLEDGE
    ↓
+MEMORY
+   ↓
 INTELLIGENCE
+   ↓
+HYPOTHESIS
+   ↓
+PREDICTION
+   ↓
+RECOMMENDATION
    ↓
 DECISION
    ↓
+AUTHORIZATION
+   ↓
 ACTION
+   ↓
+CONSEQUENCE
    ↓
 OBSERVATION
    ↓
@@ -85,96 +118,131 @@ LEARNING
    ↓
 EVOLUTION
 
-This cycle must remain governed.
-AI does not become reality merely because AI generated a conclusion.
-A prediction does not become truth merely because a model is confident.
-An agent does not become authorized merely because it can execute.
-Automation does not become legitimate merely because it is technically possible.
+This cycle is constitutional.
+The stages are related but not interchangeable.
+AI output does not automatically become reality.
+Prediction does not automatically become fact.
+Capability does not automatically become authorization.
+Authorization does not automatically guarantee successful execution.
+Execution does not automatically imply desired outcome.
+A recorded event does not automatically establish that the event occurred in physical reality.
+Every transition requiring authority, evidence, or governance must remain explicit.
 
 ───
 
 4. The ASI-Era Design Perspective
-CoreGrid shall be engineered for an environment in which intelligence is abundant, heterogeneous, autonomous, continuously improving, and increasingly capable.
-The architecture must therefore assume:
-• models will change
-• agents will multiply
-• reasoning capabilities will improve
-• inference costs will change
-• hardware will evolve
-• interfaces will evolve
-• data volumes will increase
-• autonomous workflows will become normal
-• domains will become increasingly interconnected
-• humans will increasingly supervise systems rather than manually operate every workflow
-CoreGrid must therefore optimize for:
-capability without uncontrolled authority.
+CoreGrid shall be architected for an environment in which intelligence becomes increasingly:
+• capable
+• heterogeneous
+• multimodal
+• persistent
+• contextual
+• autonomous
+• distributed
+• tool-using
+• planning-capable
+• economically significant
+• continuously evaluated
+The Constitution must therefore survive changes in:
+• models
+• providers
+• inference architectures
+• agents
+• hardware
+• interfaces
+• deployment models
+• computation economics
+• data volumes
+• domain complexity
+• autonomy capabilities
+CoreGrid must optimize for:
+Capability without uncontrolled authority.
+Increasing intelligence must increase the need for structural governance rather than eliminate it.
 
 ───
 
 5. The Alien-Systems Principle
-CoreGrid shall be designed as though an intelligence unfamiliar with today's software conventions were asked:
-"What is the simplest architecture capable of representing reality, intelligence, agency, governance, and evolution at planetary or institutional scale?"
-The answer must not be:
-text
-more dashboards
-more CRUD APIs
-more microservices
-more agents
-more databases
-more prompts
-
-Instead, CoreGrid should be organized around fundamental primitives:
+CoreGrid shall not be designed primarily around historical software conventions.
+It shall instead ask:
+What is the smallest coherent computational architecture capable of representing reality, agency, intelligence, governance, execution, uncertainty, consequence, and evolution at institutional or planetary scale?
+The answer shall not be:
+• more dashboards
+• more CRUD
+• more microservices
+• more databases
+• more prompts
+• more agents
+• more APIs
+CoreGrid shall instead organize around fundamental primitives including:
 text
 ENTITY
 RELATIONSHIP
+IDENTITY
 STATE
 EVENT
+PROCESS
 OBSERVATION
 CONTEXT
+TIME
+SPACE
 POLICY
 CAPABILITY
+RESOURCE
 MEMORY
 KNOWLEDGE
 INTELLIGENCE
 AGENT
 WORKFLOW
 DECISION
+AUTHORIZATION
 ACTION
+CONSEQUENCE
 PROVENANCE
 TRUST
+RISK
+UNCERTAINTY
 AUDIT
+SIMULATION
 EVOLUTION
 
-These primitives form the deeper vocabulary of CoreGrid.
+These primitives constitute the deeper vocabulary of the platform.
 
 ───
 
 6. Reality-First Principle
-CoreGrid must remain grounded in the systems it represents.
-The platform must distinguish:
+CoreGrid must remain grounded in the reality it represents.
+At minimum it must distinguish:
 text
-REAL-WORLD FACT
+REAL-WORLD CONDITION
        ↓
 OBSERVATION
        ↓
-RECORDED STATE
+RECORDED REPRESENTATION
+       ↓
+CANONICAL STATE
        ↓
 DERIVED INTERPRETATION
        ↓
 MODEL PREDICTION
        ↓
+RECOMMENDATION
+       ↓
 DECISION
+       ↓
+AUTHORIZED ACTION
 
-These are not interchangeable.
+No stage may silently impersonate another.
 A prediction must never silently become a fact.
 A generated interpretation must never silently become canonical state.
-An AI recommendation must never silently become an authorized action.
+A recommendation must never silently become a decision.
+A decision must never silently become authorization.
+Authorization must never silently become execution.
 
 ───
 
 7. CoreGrid Is a Platform, Not a Runtime
-CoreGrid must be capable of hosting multiple runtimes.
-Examples may include:
+CoreGrid shall support multiple runtimes.
+Potential manifestations include:
 text
 CoreGrid Scholar
 CoreGrid Health
@@ -186,108 +254,206 @@ CoreGrid Industrial
 CoreGrid Financial
 CoreGrid Infrastructure
 
-These are potential runtime manifestations.
-They share the CoreGrid substrate.
-They must not independently rebuild:
+These are runtime manifestations, not separate definitions of CoreGrid.
+They should reuse platform capabilities where appropriate rather than independently reconstruct:
 • identity
 • tenancy
 • security
+• trust
 • intelligence infrastructure
 • agent infrastructure
+• memory
 • data infrastructure
-• cloud infrastructure
 • integration infrastructure
-• governance infrastructure
-unless explicitly justified by architectural sovereignty requirements.
+• observability
+• governance
+• deployment infrastructure
+Sovereign duplication is permitted only where explicitly justified by architectural, legal, security, or operational requirements.
 
 ───
 
-8. Scholar's Position
+8. Scholar's Constitutional Position
 CoreGrid Scholar is:
-The first working reference runtime demonstrating the CoreGrid architecture.
-Scholar therefore validates the platform.
-Scholar does not define the limits of the platform.
-The architecture must remain:
+The first working reference runtime through which CoreGrid demonstrates its universal architecture in an educational/institutional domain.
+Scholar may:
+• validate platform abstractions
+• expose missing capabilities
+• generate architectural evidence
+• influence platform evolution
+Scholar may not:
+• redefine CoreGrid's identity
+• become the canonical owner of universal capabilities
+• determine the architecture of unrelated domains
+• absorb reserved platform capabilities
+• convert educational assumptions into universal assumptions
+The constitutional relationship is:
 text
-CoreGrid Infrastructure
+COREGRID PLATFORM
         ↓
-CoreGrid Runtime Framework
+COREGRID RUNTIME FABRIC
         ↓
-Scholar Runtime
+SCHOLAR RUNTIME
         ↓
-Educational / Institutional Capabilities
+EDUCATIONAL DOMAIN REALITY
+        ↓
+EDUCATIONAL CAPABILITIES
 
-Future runtimes use the same infrastructure.
 
 ───
 
+PART II — CONSTITUTIONAL AUTHORITY
 9. Constitutional Supremacy
-The constitutional hierarchy is:
+The canonical governance hierarchy is:
 text
 CONSTITUTION
       ↓
-PLATFORM ARCHITECTURE
+ARCHITECTURE PRINCIPLES
       ↓
-PHASE ARCHITECTURE
+ARCHITECTURE REGISTRY
       ↓
-SYSTEM SPECIFICATIONS
+ARCHITECTURE DEPENDENCY MAP
+      ↓
+BOUNDARIES
+      ↓
+POLICIES
+      ↓
+DECISIONS / ADRs
+      ↓
+PHASE SPECIFICATIONS
+      ↓
+CONTRACTS / SCHEMAS
       ↓
 IMPLEMENTATION
       ↓
-RUNTIME CONFIGURATION
+TESTS / EVIDENCE
+      ↓
+RUNTIME STATE
 
-No implementation detail may silently override the Constitution.
-No individual phase may redefine platform-wide principles.
-No AI agent may redefine constitutional authority.
-
-───
-
-10. Architectural Authority
-CoreGrid maintains explicit authority boundaries.
-Each canonical capability must have:
-• an owner
-• a contract
-• a lifecycle
-• a source of truth
-• a security boundary
-• an operational owner
-• defined consumers
-No capability may have multiple competing canonical owners without an explicit architectural decision.
+Lower layers must conform to higher layers.
+No implementation detail may silently override constitutional authority.
+A decision may refine architecture but cannot silently repeal a constitutional rule.
+Constitutional changes require constitutional governance.
 
 ───
 
-11. The 51-Phase Principle
-CoreGrid's architecture is composed of 51 governed phases.
-The phases are capabilities of one platform.
-They are not 51 independent applications.
-They must therefore share:
-• constitutional rules
-• architectural principles
-• dependency governance
-• security standards
-• identity foundations
-• tenancy semantics
-• observability standards
-• contract standards
-• lifecycle standards
-• provenance standards
-• governance mechanisms
-The authoritative phase registry remains:
+10. Constitutional Authority
+The Constitution establishes platform-wide invariants.
+Architecture Principles explain how those invariants should influence architecture.
+The Registry establishes what architectural phases exist.
+The Dependency Map establishes how those phases relate.
+Boundaries define sovereignty and permitted interaction.
+Policies define operational constraints.
+Decisions resolve architectural ambiguity.
+Specifications define phase-level realization.
+Contracts define machine-level interaction.
+Implementation realizes the architecture.
+Evidence establishes whether implementation actually conforms.
+
+───
+
+11. Constitutional Non-Delegation
+Constitutional authority cannot be delegated implicitly.
+The following cannot independently redefine CoreGrid's constitutional identity:
+• AI models
+• agents
+• plugins
+• marketplace applications
+• cloud providers
+• infrastructure vendors
+• runtime administrators
+• customer configurations
+• generated code
+• automated architecture tools
+They may propose changes.
+They may provide evidence.
+They may execute approved changes.
+They may not silently become constitutional authorities.
+
+───
+
+12. Constitutional Interpretation
+When a lower-level artifact conflicts with this Constitution:
+1. identify the conflict
+2. preserve the constitutional rule
+3. stop unauthorized propagation
+4. record the conflict
+5. determine whether the lower artifact or Constitution requires change
+6. use formal governance to resolve it
+Implementation convenience is not sufficient justification for constitutional violation.
+
+───
+
+13. Constitutional Change Authority
+The Constitution may evolve.
+However, constitutional change requires:
+• explicit proposal
+• current-state analysis
+• rationale
+• impact analysis
+• affected-phase analysis
+• security analysis
+• compatibility analysis
+• migration analysis where applicable
+• decision record
+• approval through CoreGrid governance
+• version increment
+• propagation
+• validation
+No agent may silently rewrite constitutional rules.
+
+───
+
+14. Constitutional Immutability of History
+Historical constitutional versions must remain recoverable.
+A superseded Constitution must never be silently deleted.
+Constitutional history must preserve:
 text
-ARCHITECTURE-REGISTRY.md
+VERSION
+EFFECTIVE DATE
+CHANGE
+RATIONALE
+AUTHORITY
+AFFECTED ARCHITECTURE
+MIGRATION IMPLICATIONS
+SUPERSEDING VERSION
 
-The Constitution does not duplicate the detailed responsibilities of the 51 phases.
 
 ───
 
-12. No Phase May Become the Platform by Accident
+15. Constitutional Invariants vs Decisions
+A constitutional invariant defines a condition that lower architecture must preserve.
+An architectural decision selects among permissible implementations.
+A decision may change.
+A constitutional invariant may change only through constitutional amendment.
+Therefore:
+text
+INVARIANT
+   >
+ARCHITECTURAL DECISION
+   >
+IMPLEMENTATION CHOICE
+
+
+───
+
+PART III — ARCHITECTURAL IDENTITY
+16. The 51-Phase Principle
+CoreGrid consists of 51 governed architectural phases as defined by the authoritative Architecture Registry.
+The phases are:
+capability domains of one platform, not 51 independent applications.
+The Constitution does not duplicate their detailed responsibilities.
+The authoritative Registry remains responsible for phase identity, registration, and ownership.
+
+───
+
+17. No Phase May Become the Platform by Accident
 A phase must not silently absorb responsibilities belonging to:
 • another phase
-• the CoreGrid substrate
+• the platform substrate
+• a shared capability
 • a future phase
-• a platform-wide capability
-Novel functionality must be classified before implementation.
-Possible classifications:
+• an external authority
+Novel functionality must be classified before implementation:
 text
 OWNED
 SHARED PLATFORM CAPABILITY
@@ -300,9 +466,30 @@ FUTURE PHASE
 
 ───
 
-13. Existing-System-First Principle
-CoreGrid evolves from reality.
-Where a working implementation already exists:
+18. Phase Ownership
+Every canonical capability must have one authoritative architectural owner.
+Consumers may:
+• read
+• invoke
+• subscribe
+• compose
+• extend
+• derive
+They may not silently acquire ownership.
+Ownership includes responsibility for:
+• canonical state
+• contracts
+• lifecycle
+• security boundary
+• compatibility
+• operational behavior
+• evolution
+
+───
+
+19. Existing-System-First Principle
+CoreGrid evolves from actual system reality.
+Where implementation already exists:
 text
 INSPECT
    ↓
@@ -318,40 +505,39 @@ EXTEND
    ↓
 REFACTOR
    ↓
-REPLACE ONLY IF JUSTIFIED
+REPLACE IF JUSTIFIED
 
-Rebuilding is not an architectural virtue.
-A rewrite requires evidence.
+Rebuilding is not automatically superior to preserving existing capability.
 
 ───
 
-14. No Destructive Evolution Without Evidence
-Agents and engineers must not casually:
+20. No Destructive Evolution Without Evidence
+Engineers and agents must not casually:
 • delete working systems
 • discard migrations
 • destroy historical records
-• replace frameworks
+• remove security controls
 • replace databases
 • replace authentication
-• remove security controls
 • remove tests
 • remove integrations
+• regenerate repositories
 • reset production architecture
-• regenerate repositories from templates
-A destructive migration requires:
+Destructive evolution requires:
 1. current-state analysis
 2. reason for change
 3. impact analysis
-4. migration strategy
-5. rollback strategy
+4. migration plan
+5. rollback or recovery strategy
 6. validation strategy
 7. ownership approval
+8. evidence of necessity
 
 ───
 
-15. Repository as Institutional Memory
-CoreGrid must be self-describing.
-The repository must progressively contain:
+PART IV — INSTITUTIONAL MEMORY
+21. Repository as Institutional Memory
+The repository must progressively encode:
 text
 WHY
 WHAT
@@ -360,44 +546,37 @@ WHO OWNS IT
 WHERE STATE LIVES
 HOW SYSTEMS CONNECT
 HOW SECURITY WORKS
-HOW AI WORKS
+HOW INTELLIGENCE WORKS
 HOW AGENTS WORK
 HOW DATA FLOWS
-HOW SYSTEMS ARE OPERATED
-WHAT IS COMPLETE
+HOW SYSTEMS OPERATE
+WHAT EXISTS
 WHAT IS INCOMPLETE
-WHAT HAS BEEN DECIDED
-WHAT HAS BEEN REJECTED
+WHAT WAS DECIDED
+WHAT WAS REJECTED
+WHAT WAS SUPERSEDED
 
 Conversation history must never be the sole source of architectural truth.
 
 ───
 
-16. Architectural Memory
-CoreGrid maintains four forms of institutional engineering memory:
+22. Architectural Memory
+CoreGrid maintains at least four forms of engineering memory:
 Constitutional Memory
-Non-negotiable principles.
+What cannot be changed without constitutional governance.
 Architectural Memory
-Current intended architecture.
+What the intended architecture currently is.
 Decision Memory
-Why architectural decisions were made.
+Why important architectural choices were made.
 Progress Memory
-What has actually been implemented.
-Historical decisions remain valuable even when superseded.
-They should be marked:
-text
-ACTIVE
-SUPERSEDED
-REJECTED
-DEPRECATED
-
-rather than silently deleted.
+What has actually been implemented and verified.
+Historical information remains valuable after supersession.
 
 ───
 
-17. Canonical State Principle
+23. Canonical State Principle
 Every important state must have a canonical owner.
-For example:
+Examples:
 text
 Identity State
 → Identity Authority
@@ -414,80 +593,86 @@ Educational State
 Security State
 → Security Authority
 
-Derived systems may consume this state.
-They must not silently become its owner.
+Derived systems may consume canonical state.
+They may not silently become canonical owners.
 
 ───
 
-18. Data Is Not Truth by Default
+24. Data Is Not Truth by Default
 CoreGrid distinguishes:
 text
 CANONICAL
-DERIVED
 OBSERVED
+DERIVED
 INFERRED
 PREDICTED
 SIMULATED
 RECOMMENDED
 HYPOTHETICAL
+UNKNOWN
+CONTRADICTED
 
-Every important data artifact should be classifiable.
-AI-generated information must not automatically enter the canonical layer.
+Every important artifact should carry an epistemic classification where relevant.
+AI-generated information does not automatically enter the canonical layer.
 
 ───
 
-19. Provenance Is a First-Class Primitive
-Important information should answer:
-text
-Where did this come from?
-When was it observed?
-Who produced it?
-Which system produced it?
-Which model produced it?
-Which version produced it?
-What transformations occurred?
-What confidence exists?
-What evidence supports it?
-
+25. Provenance Is Constitutional
+Important information should be traceable to:
+• source
+• observation time
+• recording time
+• producer
+• system
+• model
+• model version
+• transformation
+• policy context
+• confidence
+• assumptions
+• supporting evidence
 Unknown provenance must remain explicitly unknown.
+Provenance must never be fabricated.
 
 ───
 
-20. Context Is First-Class Infrastructure
-CoreGrid operations must be contextual.
+26. Context Is First-Class Infrastructure
 Context may include:
 • identity
 • tenant
 • organization
 • jurisdiction
 • time
-• device
 • location
+• device
 • session
-• permissions
+• permission
 • trust
 • workload
 • environment
 • resource
 • domain
 • policy
-Context must propagate through appropriate:
+• risk
+• purpose
+Relevant context must propagate through:
 text
-requests
-events
-commands
-queries
-workflows
-agents
-memory
-data
-audit records
-integrations
+REQUESTS
+EVENTS
+COMMANDS
+QUERIES
+WORKFLOWS
+AGENTS
+MEMORY
+DATA
+AUDIT
+INTEGRATIONS
 
 
 ───
 
-21. Identity Principle
+PART V — IDENTITY, TRUST, AUTHORITY
+27. Identity Principle
 Identity answers:
 Who or what is this?
 Identity may represent:
@@ -499,38 +684,32 @@ Identity may represent:
 • workloads
 • applications
 • external systems
-Identity must remain distinct from:
-• trust
-• authorization
-• intelligence
-• reputation
+Identity is distinct from trust, authorization, reputation, and intelligence.
 
 ───
 
-22. Trust Principle
+28. Trust Principle
 Trust answers:
-Given current evidence and context, how trustworthy is this entity or action?
+Given available evidence and context, what level of trust is appropriate for this entity, source, capability, or action?
 Trust is contextual and dynamic.
 text
-Identity ≠ Trust
-Trust ≠ Authorization
-Authorization ≠ Capability
-Capability ≠ Action
+IDENTITY ≠ TRUST
+TRUST ≠ AUTHORIZATION
+AUTHORIZATION ≠ CAPABILITY
+CAPABILITY ≠ ACTION
 
-These boundaries must remain explicit.
 
 ───
 
-23. Authorization Principle
+29. Authorization Principle
 Authorization answers:
 Is this actor permitted to perform this action on this resource under this context?
-No AI system, agent, workflow, or UI may bypass authorization merely because it is internal.
+No internal service, agent, workflow, model, or UI may bypass authorization because it is considered internal.
 
 ───
 
-24. Capability Principle
+30. Capability Principle
 Capabilities must be explicit.
-An actor should not receive unrestricted power simply because it can technically reach an API.
 Capabilities should be:
 • scoped
 • permissioned
@@ -538,35 +717,36 @@ Capabilities should be:
 • revocable
 • versioned
 • auditable
+• attributable
+Technical reachability must never be interpreted as permission.
 
 ───
 
-25. Security Is a Platform Property
-Security must not be implemented only inside one phase.
-Security controls must exist across:
+31. Security Is a Platform Property
+Security exists across:
 text
-identity
-data
-network
-runtime
-agents
+IDENTITY
+DATA
+NETWORK
+RUNTIME
+AGENTS
 AI
 APIs
-devices
-workloads
-integrations
-storage
-clients
-cloud
-operations
+DEVICES
+WORKLOADS
+INTEGRATIONS
+STORAGE
+CLIENTS
+CLOUD
+OPERATIONS
 
-The security architecture must remain centralized in policy while enforcement remains distributed to the appropriate owners.
+Security policy may be centrally governed while enforcement remains distributed to the appropriate owners.
 
 ───
 
-26. Defense in Depth
-No single security mechanism should be trusted as the sole boundary.
-CoreGrid should combine:
+32. Defense in Depth
+CoreGrid shall not depend upon one security boundary.
+The security model should combine:
 text
 Identity
 +
@@ -591,22 +771,24 @@ Response
 
 ───
 
-27. Zero Implicit Trust
+33. Zero Implicit Trust
 Internal does not mean trusted.
-An internal:
-• service
-• agent
-• workflow
-• model
-• device
-• plugin
-• integration
-must still operate within explicit trust and authorization boundaries.
+The following remain governed actors:
+• services
+• agents
+• workflows
+• models
+• devices
+• plugins
+• integrations
+• administrators
+• automation
+Every actor operates under explicit boundaries.
 
 ───
 
-28. AI Is a Capability, Not a Sovereign
-AI systems may:
+34. AI Is a Capability, Not a Sovereign
+AI may:
 • reason
 • classify
 • predict
@@ -615,33 +797,35 @@ AI systems may:
 • plan
 • recommend
 • simulate
-But AI must not automatically become:
+• assist execution
+AI does not automatically become:
 • canonical truth
 • constitutional authority
 • unrestricted administrator
-• financial authority
 • identity authority
+• financial authority
 • security authority
-AI power must remain governed.
+Intelligence does not create sovereignty.
 
 ───
 
-29. Model Independence
-CoreGrid must not be architecturally dependent on one AI provider.
-Models should be replaceable through abstraction layers such as:
+35. Model Independence
+CoreGrid shall not become architecturally dependent on one AI provider.
+The preferred abstraction is:
 text
-Model Gateway
-     ↓
-Provider Adapter
-     ↓
-Model
+COREGRID INTELLIGENCE INTERFACE
+            ↓
+MODEL / INTELLIGENCE GATEWAY
+            ↓
+PROVIDER ADAPTER
+            ↓
+MODEL
 
-Potential providers may change over time.
-CoreGrid architecture must survive those changes.
+Providers and models remain replaceable implementation resources.
 
 ───
 
-30. Intelligence Independence
+36. Intelligence Independence
 CoreGrid must distinguish:
 text
 MODEL
@@ -651,98 +835,109 @@ MEMORY
 KNOWLEDGE
 POLICY
 WORKFLOW
+CAPABILITY
 ACTION
 
-These are different capabilities.
-Replacing a model must not require rebuilding the agent system.
-Replacing an agent must not require rebuilding the data platform.
+Replacing one must not unnecessarily require reconstruction of the others.
 
 ───
 
-31. Agent Constitutional Boundary
+PART VI — AGENTS AND AUTONOMY
+37. Agent Constitutional Boundary
 Agents are authorized actors.
-An agent must have:
+An agent must have, where applicable:
 • identity
 • purpose
 • capabilities
 • permissions
 • context
-• memory
 • tools
+• memory
 • limits
-• audit trail
-• lifecycle
 • owner
+• lifecycle
+• audit trail
 No agent receives unrestricted authority by default.
 
 ───
 
-32. Autonomous Agent Principle
-Autonomy must be bounded.
-An autonomous agent may:
+38. Autonomous Agent Principle
+The canonical agent cycle is:
 text
-Observe
-→ Reason
-→ Plan
-→ Request Capability
-→ Validate
-→ Act
-→ Observe Outcome
-→ Learn
+OBSERVE
+   ↓
+UNDERSTAND
+   ↓
+REASON
+   ↓
+PLAN
+   ↓
+REQUEST CAPABILITY
+   ↓
+VALIDATE
+   ↓
+ACT
+   ↓
+OBSERVE OUTCOME
+   ↓
+LEARN
 
-Critical actions require appropriate policy and authorization.
+Autonomy remains bounded by policy.
 
 ───
 
-33. Agent-to-Database Prohibition
-Agents must not casually manipulate canonical databases directly.
-Preferred model:
+39. Agent-to-Database Prohibition
+Agents must not casually manipulate canonical databases.
+Preferred:
 text
-Agent
+AGENT
  ↓
-Capability
+CAPABILITY
  ↓
-Contract
+CONTRACT
  ↓
-Policy
+POLICY
  ↓
-Authorization
+AUTHORIZATION
  ↓
-Domain Owner
+DOMAIN OWNER
  ↓
-Canonical State
+CANONICAL STATE
 
 
 ───
 
-34. Human Oversight Principle
-Human oversight is required where:
-• law requires it
-• institutional policy requires it
-• action is high impact
-• uncertainty is material
-• irreversible consequences exist
-• safety requires escalation
-Human oversight should be configurable rather than hard-coded into every workflow.
+40. Human Oversight Principle
+Human oversight is required where appropriate due to:
+• law
+• institutional policy
+• impact
+• uncertainty
+• irreversibility
+• safety
+• ethical or governance requirements
+Oversight should be policy-driven rather than unnecessarily hard-coded into every workflow.
 
 ───
 
-35. Automation Principle
+41. Automation Principle
 Automation is not authority.
-Every automated action must have:
-• trigger
-• context
-• policy
-• authorization
-• execution
-• verification
-• audit
-• failure handling
+Automated actions require appropriate:
+text
+TRIGGER
+CONTEXT
+POLICY
+AUTHORIZATION
+EXECUTION
+VERIFICATION
+AUDIT
+FAILURE HANDLING
+
 
 ───
 
-36. Reversibility Principle
-Where possible, autonomous actions should be:
+42. Reversibility Principle
+Where possible, actions should be:
 • reversible
 • compensatable
 • bounded
@@ -751,35 +946,46 @@ Irreversible actions require stronger governance.
 
 ───
 
-37. Observability Principle
-A system that cannot explain its operational state cannot be reliably operated.
-CoreGrid should progressively provide:
+PART VII — OBSERVABILITY, EXPLANATION, VERIFICATION
+43. Observability Principle
+CoreGrid must progressively observe:
 • logs
 • metrics
 • traces
 • events
 • audit records
-• health state
-• dependency telemetry
-• security telemetry
-• AI telemetry
-• agent telemetry
+• health
+• dependencies
+• security
+• AI
+• agents
+• cost
+• performance
+A system that cannot establish its operational state cannot be reliably governed.
 
 ───
 
-38. Explainability Principle
-CoreGrid must distinguish between:
+44. Explainability Principle
+CoreGrid must distinguish:
 Decision Explanation
-Why the system produced a particular decision.
+Evidence and rationale sufficient to understand why an outcome was produced.
 Internal Model Reasoning
-Private internal model reasoning that need not be exposed or permanently stored.
-CoreGrid should preserve sufficient evidence, inputs, outputs, model/version metadata, policy context, and decision rationale for auditability without requiring unrestricted storage of private chain-of-thought.
+Private internal reasoning that need not be exposed or permanently stored.
+Auditability must be achieved through:
+• inputs
+• outputs
+• evidence
+• policy context
+• model/version metadata
+• tool usage
+• decision rationale
+• authorization context
+without requiring unrestricted storage of private chain-of-thought.
 
 ───
 
-39. Continuous Verification
-Important system properties must be continuously or periodically verified.
-Examples:
+45. Continuous Verification
+Important properties must be periodically or continuously verified:
 • security
 • tenant isolation
 • policy correctness
@@ -788,15 +994,15 @@ Examples:
 • data integrity
 • model behavior
 • agent permissions
-• infrastructure health
-• backup integrity
+• infrastructure
+• backups
 • disaster recovery
+• architectural conformance
 
 ───
 
-40. Failure Is a State
-Failure must never silently become success.
-CoreGrid should represent:
+46. Failure Is a State
+CoreGrid must represent:
 text
 SUCCESS
 PARTIAL
@@ -804,12 +1010,12 @@ DEGRADED
 FAILED
 UNKNOWN
 
-Unknown must not silently become healthy.
+Unknown must never silently become success.
 
 ───
 
-41. Graceful Degradation
-When a non-critical subsystem fails, the platform should degrade rather than collapse unnecessarily.
+47. Graceful Degradation
+Non-critical failures should degrade the system rather than unnecessarily collapse it.
 Examples:
 text
 AI unavailable
@@ -819,81 +1025,82 @@ Analytics unavailable
 → operational transaction continues
 
 Recommendation unavailable
-→ user receives reduced capability
+→ reduced capability remains available
 
 External integration unavailable
-→ queue/retry where appropriate
+→ queue/retry/fallback where appropriate
 
 
 ───
 
-42. Reliability Principle
-Every critical dependency requires:
+48. Reliability Principle
+Critical dependencies require appropriate:
 • timeout
-• retry policy
-• circuit breaker where appropriate
+• retry
+• circuit breaking
 • fallback
-• recovery strategy
+• recovery
 • observability
-• owner
+• ownership
 
 ───
 
-43. Dependency Minimalism
+PART VIII — DEPENDENCIES, CONTRACTS, EVENTS
+49. Dependency Minimalism
 Every dependency introduces:
 text
-complexity
+COMPLEXITY
 +
-failure surface
+FAILURE SURFACE
 +
-security surface
+SECURITY SURFACE
 +
-cost
+COST
 +
-maintenance
+MAINTENANCE
 +
-vendor risk
+VENDOR RISK
 
-Therefore:
-The smallest sufficient dependency graph is preferred.
+CoreGrid prefers the smallest sufficient dependency graph.
 
 ───
 
-44. Dependency Inversion
-Higher-level capabilities should depend on contracts rather than implementation details.
+50. Dependency Inversion
+Higher-level architecture should depend upon contracts:
 text
-Capability
+CAPABILITY
    ↓
-Contract
+CONTRACT
    ↓
-Implementation
+IMPLEMENTATION
 
-Cross-phase internal implementation imports are prohibited.
+Cross-phase private implementation coupling is prohibited.
 
 ───
 
-45. Event-Driven Decoupling
+51. Event-Driven Decoupling
 Where direct coupling is unnecessary:
 text
-Producer
+PRODUCER
    ↓
-Event
+EVENT
    ↓
-Event Infrastructure
-   ├── Consumer A
-   ├── Consumer B
-   └── Consumer C
+EVENT INFRASTRUCTURE
+   ├── CONSUMER A
+   ├── CONSUMER B
+   └── CONSUMER C
 
-Events represent facts.
-Commands represent requests.
-Queries retrieve information.
-These semantics must remain distinct.
+Semantics remain distinct:
+text
+EVENT     = statement of occurrence
+COMMAND   = request for action
+QUERY     = request for information
+
 
 ───
 
-46. API Principle
-All important platform boundaries should expose stable contracts.
-Contracts should define:
+52. API Principle
+Important boundaries require stable contracts defining, where relevant:
 • inputs
 • outputs
 • errors
@@ -902,94 +1109,100 @@ Contracts should define:
 • ownership
 • lifecycle
 • compatibility
+• provenance
+• rate limits
 
 ───
 
-47. Database Boundary
-Databases are implementation boundaries unless explicitly exposed through a governed data contract.
-Prohibited:
+53. Database Boundary
+Databases are implementation boundaries unless explicitly exposed through a governed contract.
+Prohibited by default:
 text
-Client → Database
-Agent → Database
-Phase A → Phase B Database
-External System → CoreGrid Database
+CLIENT → DATABASE
+AGENT → DATABASE
+PHASE A → PHASE B DATABASE
+EXTERNAL SYSTEM → COREGRID DATABASE
 
 Preferred:
 text
-Consumer
+CONSUMER
  ↓
-Contract
+CONTRACT
  ↓
-Owning Service
+OWNER
  ↓
-Canonical Data
+CANONICAL DATA
 
 
 ───
 
-48. Schema Evolution
+54. Schema Evolution
 Schema changes must be:
-• migration-based
 • versioned
+• migration-based
 • tested
 • observable
+• backward-compatible where practical
 • reversible where practical
 Historical migrations must not be casually rewritten.
 
 ───
 
-49. Multi-Tenancy
-Tenant isolation is a constitutional invariant.
+PART IX — TENANCY AND SOVEREIGNTY
+55. Multi-Tenancy
+Tenant isolation is constitutional.
 Tenant context must be explicit wherever relevant.
 CoreGrid must support:
 • logical isolation
-• physical isolation where required
+• physical isolation
 • regional isolation
 • sovereign deployment
 • tenant-specific policy
+• tenant-specific retention
 • tenant-specific data controls
-Cross-tenant access must be explicit and authorized.
+Cross-tenant access requires explicit authorization.
 
 ───
 
-50. Institutional Sovereignty
-Organizations must retain appropriate control over:
-• their data
-• their policies
-• their deployments
-• their integrations
-• their identities
-• their operational configuration
-• their retention policies
-CoreGrid must support sovereign deployments where required.
+56. Institutional Sovereignty
+Organizations retain appropriate control over:
+• data
+• policies
+• identities
+• integrations
+• deployment
+• retention
+• operational configuration
+CoreGrid must support sovereignty requirements without compromising universal architectural coherence.
 
 ───
-51. Deployment Sovereignty
-CoreGrid must support multiple deployment models:
+
+57. Deployment Sovereignty
+CoreGrid shall support multiple deployment worlds:
 text
-CoreGrid Cloud
-Customer Cloud
+COREGRID CLOUD
+CUSTOMER CLOUD
 BYOC
-Private Cloud
-On-Premises
-Sovereign Cloud
-Air-Gapped
-Hybrid
-Edge
+PRIVATE CLOUD
+ON-PREMISES
+SOVEREIGN CLOUD
+AIR-GAPPED
+HYBRID
+EDGE
 
-The architecture must not assume one hosting model.
-
-───
-
-52. Cloud Independence
-Domain logic must not become inseparable from a specific cloud provider.
-Cloud-specific implementation belongs behind infrastructure abstractions.
+Deployment topology must not redefine domain truth.
 
 ───
 
-53. Infrastructure Principle
-Infrastructure exists to provide reliable execution.
-Infrastructure should support:
+58. Cloud Independence
+Domain architecture must not become inseparable from a particular cloud provider.
+Cloud-specific behavior belongs behind governed infrastructure abstractions.
+
+───
+
+59. Infrastructure Principle
+Infrastructure exists to provide reliable execution for higher-level architecture.
+It provides capabilities including:
 • compute
 • networking
 • storage
@@ -999,27 +1212,28 @@ Infrastructure should support:
 • scaling
 • recovery
 • regionalization
-Infrastructure must remain replaceable where practical.
+Infrastructure choices remain replaceable where practical.
 
 ───
 
-54. Edge and Physical Reality
-CoreGrid must be capable of representing physical-world systems.
+60. Edge and Physical Reality
+CoreGrid must represent physical-world systems through governed integration.
 Examples:
 • devices
 • buildings
 • rooms
 • vehicles
-• sensors
 • machines
+• sensors
 • environments
-Physical reality must connect through governed integration boundaries.
+Physical-world state requires provenance and temporal context.
 
 ───
 
-55. Digital Twin Principle
-A digital twin is not merely a UI avatar.
-It is a computational representation of an entity's:
+PART X — DIGITAL REALITY, KNOWLEDGE, MEMORY
+61. Digital Twin Principle
+A digital twin is not a UI avatar.
+It is a computational representation of relevant aspects of an entity, including:
 • identity
 • state
 • relationships
@@ -1029,26 +1243,28 @@ It is a computational representation of an entity's:
 • capabilities
 • constraints
 • uncertainty
-The twin must remain connected to provenance.
+• provenance
+A digital twin is a representation, not the physical entity itself.
 
 ───
 
-56. Knowledge Graph Principle
+62. Knowledge Graph Principle
 CoreGrid should represent meaningful relationships between entities.
-The knowledge graph must distinguish:
+The graph must distinguish:
 text
 FACT
 RELATIONSHIP
 INFERENCE
 HYPOTHESIS
 PREDICTION
+CONTRADICTION
 
-The graph must not become an ungoverned dumping ground.
+The knowledge graph must remain governed rather than becoming an unverified information dump.
 
 ───
 
-57. Memory Principle
-CoreGrid memory may contain:
+63. Memory Principle
+CoreGrid may contain:
 • episodic memory
 • semantic memory
 • operational memory
@@ -1063,11 +1279,12 @@ Memory must respect:
 • privacy
 • authorization
 • tenant isolation
+• temporal validity
 
 ───
 
-58. Learning Principle
-CoreGrid should continuously improve through controlled learning cycles.
+64. Learning Principle
+Controlled learning follows:
 text
 OBSERVE
  ↓
@@ -1085,13 +1302,12 @@ MONITOR
  ↓
 REASSESS
 
-Learning must not silently modify critical production behavior.
+Learning cannot silently modify critical production behavior.
 
 ───
 
-59. Scientific Integrity
-AI-generated conclusions must be challenged.
-Systems should actively detect:
+65. Scientific Integrity
+CoreGrid intelligence must actively account for:
 • confirmation bias
 • data leakage
 • overfitting
@@ -1102,32 +1318,32 @@ Systems should actively detect:
 • false correlation
 • measurement error
 • unsupported causal claims
-Confidence must not replace evidence.
+Confidence is not evidence.
 
 ───
 
-60. Simulation Before High-Impact Action
+66. Simulation Before High-Impact Action
 Where practical:
 text
-Observe
+OBSERVE
  ↓
-Simulate
+SIMULATE
  ↓
-Estimate
+ESTIMATE
  ↓
-Evaluate Risk
+EVALUATE RISK
  ↓
-Authorize
+AUTHORIZE
  ↓
-Execute
+EXECUTE
 
-Simulation does not guarantee correctness.
-It reduces avoidable uncertainty.
+Simulation reduces uncertainty; it does not guarantee correctness.
 
 ───
 
-61. Decision Principle
-CoreGrid should separate:
+PART XI — DECISION, POLICY, COMMAND
+67. Decision Principle
+CoreGrid separates:
 text
 OBSERVATION
    ↓
@@ -1141,14 +1357,14 @@ AUTHORIZATION
    ↓
 ACTION
 
-No stage should silently impersonate another.
+No stage may silently impersonate another.
 
 ───
 
-62. Command Principle
-Command systems coordinate.
-They do not automatically own the state of the systems they command.
-A command centre should consume:
+68. Command Principle
+A command centre coordinates.
+It does not automatically become owner of every state it displays.
+It consumes:
 • operational state
 • analytics
 • alerts
@@ -1157,12 +1373,12 @@ A command centre should consume:
 • security state
 • financial state
 • domain state
-and issue governed commands through owning subsystems.
+and issues governed commands through owning systems.
 
 ───
 
-63. Policy as Executable Governance
-Policies should progressively become machine-readable where appropriate.
+69. Policy as Executable Governance
+Policies should progressively become machine-readable.
 A policy may define:
 text
 WHO
@@ -1172,87 +1388,92 @@ UNDER WHICH CONDITIONS
 WITH WHICH LIMITS
 REQUIRING WHICH APPROVAL
 FOR HOW LONG
+UNDER WHICH JURISDICTION
 
 Policies must be versioned.
 
 ───
 
-64. Policy Before Power
-No capability should be granted merely because implementation makes it technically possible.
+70. Policy Before Power
 Preferred relationship:
 text
-Capability
+CAPABILITY
  ↓
-Policy
+POLICY
  ↓
-Authorization
+AUTHORIZATION
  ↓
-Execution
+EXECUTION
 
+Technical possibility does not create legitimate authority.
 
 ───
 
-65. Configuration Is Not Policy
-Configuration controls system behavior.
-Policy governs what is permitted.
-These must not be conflated.
+71. Configuration Is Not Policy
+Configuration changes how a system operates.
+Policy defines what is permitted.
+They must remain conceptually and operationally distinct.
 
 ───
 
-66. Security and AI Boundary
-AI must operate inside security boundaries.
+PART XII — EXTENSIONS, MARKETPLACE, INTEGRATION
+72. Security and AI Boundary
+The action path is:
 text
-Identity
+IDENTITY
  ↓
-Trust
+TRUST
  ↓
-Authorization
+AUTHORIZATION
  ↓
-Capability
+CAPABILITY
  ↓
-AI / Agent
+AI / AGENT
  ↓
-Action
+ACTION
  ↓
-Audit
+VERIFICATION
+ ↓
+AUDIT
 
 AI must never become a security bypass.
 
 ───
 
-67. Agent and AI Replacement
-The platform must permit:
-• model replacement
-• agent replacement
-• workflow replacement
-• policy replacement
-• integration replacement
-• infrastructure replacement
+73. Agent and AI Replacement
+CoreGrid should permit replacement of:
+• models
+• providers
+• agents
+• workflows
+• policies
+• integrations
+• infrastructure
 without unnecessary platform reconstruction.
 
 ───
 
-68. Plugin and Extension Principle
+74. Plugin and Extension Principle
 Extensions must use governed contracts.
-Extensions must not receive unrestricted internal access.
 Preferred:
 text
-Extension
+EXTENSION
  ↓
-Developer Contract
+DEVELOPER CONTRACT
  ↓
-Capability
+CAPABILITY
  ↓
-Policy
+POLICY
  ↓
-Platform
+PLATFORM
 
+Extensions do not receive unrestricted internal access.
 
 ───
 
-69. Marketplace Principle
-Marketplace components are untrusted extensions until evaluated.
-They require:
+75. Marketplace Principle
+Marketplace components are untrusted until evaluated.
+They require appropriate:
 • identity
 • provenance
 • permissions
@@ -1260,71 +1481,66 @@ They require:
 • security assessment
 • compatibility
 • lifecycle
-• revocation capability
+• revocation
 
 ───
 
-70. Developer Platform Principle
-Developers should interact with CoreGrid through stable abstractions.
-They should not need knowledge of:
-• internal database layout
-• private queues
-• internal agent memory
-• private model infrastructure
-• internal service implementation
-unless explicitly authorized for platform development.
+76. Developer Platform Principle
+Developers interact with stable abstractions rather than private internals.
+Private database layouts, queues, memory systems, model infrastructure, and internal service implementations are not public contracts unless explicitly exposed.
 
 ───
 
-71. Integration Principle
-External systems must enter CoreGrid through governed integration boundaries.
+77. Integration Principle
+External systems enter through governed boundaries:
 text
-External System
+EXTERNAL SYSTEM
  ↓
-Adapter
+ADAPTER
  ↓
-Validation
+VALIDATION
  ↓
-Identity
+IDENTITY
  ↓
-Policy
+POLICY
  ↓
-CoreGrid Contract
+COREGRID CONTRACT
  ↓
-Owning Domain
+DOMAIN OWNER
 
 External systems must not directly mutate CoreGrid internal databases.
 
 ───
 
-72. Data Minimization
-CoreGrid should collect only information justified by:
+PART XIII — DATA, PRIVACY, HIGH-IMPACT SYSTEMS
+78. Data Minimization
+CoreGrid should collect information justified by:
 • purpose
 • operational necessity
-• legal requirements
+• law
 • safety
 • authorized intelligence use
-More data does not automatically produce more intelligence.
+More data does not automatically create more intelligence.
 
 ───
 
-73. Privacy by Architecture
+79. Privacy by Architecture
 Privacy must be structural.
 CoreGrid should support:
-• data minimization
+• minimization
 • purpose limitation
 • access control
 • retention
-• deletion where legally required
+• deletion where required
 • tenant isolation
-• consent/authority models where appropriate
-• privacy-preserving analytics where practical
+• consent/authority models where applicable
+• privacy-preserving computation where practical
 
 ───
 
-74. High-Impact Intelligence
-Systems influencing consequential decisions require stronger controls.
-Examples include:
+80. High-Impact Intelligence
+Consequential systems require controls proportional to impact.
+Potential domains include:
 • education
 • employment
 • finance
@@ -1332,51 +1548,52 @@ Examples include:
 • government
 • security
 • access control
-Such systems require appropriate:
+Appropriate controls may include:
 • evidence
-• human oversight
-• auditability
 • validation
-• appeals or review mechanisms where applicable
+• human review
+• auditability
+• appeal/review mechanisms
+• uncertainty representation
 
 ───
 
-75. Financial Integrity
-Financial systems must prioritize:
+81. Financial Integrity
+Financial state requires:
 • correctness
 • reconciliation
-• immutability where appropriate
-• auditability
 • authorization
+• auditability
+• appropriate immutability
 • segregation of duties
-Analytics and AI must never silently become financial truth.
+AI and analytics must not silently become financial truth.
 
 ───
 
-76. Institutional Integrity
+82. Institutional Integrity
 Institutional data must remain:
 • traceable
 • consistent
 • auditable
 • tenant-aware
 • recoverable
-Historical truth must not be rewritten merely to make the system look cleaner.
+Historical truth must not be rewritten merely to produce a cleaner interface.
 
 ───
 
-77. API and Event Security
-All externally reachable APIs, commands, events, and webhooks must have appropriate:
+83. API and Event Security
+Externally reachable interfaces require appropriate:
 • authentication
 • authorization
 • validation
-• replay protection where relevant
+• replay protection
 • rate limiting
 • provenance
-• auditability
+• auditing
 
 ───
 
-78. Secrets Principle
+84. Secrets Principle
 Secrets must:
 • never be committed
 • never be exposed to clients
@@ -1387,8 +1604,8 @@ Secrets must:
 
 ───
 
-79. Software Supply Chain
-Production dependencies must be evaluated for:
+85. Software Supply Chain
+Production dependencies require evaluation for:
 • provenance
 • vulnerabilities
 • licensing
@@ -1398,22 +1615,22 @@ Production dependencies must be evaluated for:
 • supply-chain risk
 Where practical:
 text
-Pinned versions
+PINNED VERSIONS
 +
-Integrity verification
+INTEGRITY VERIFICATION
 +
-Reproducible builds
+REPRODUCIBLE BUILDS
 +
-Security scanning
+SECURITY SCANNING
 +
-Provenance
+PROVENANCE
 
 
 ───
 
-80. Technology Neutrality
-CoreGrid should prefer capabilities over fashionable technologies.
-Technology selection must be based on:
+PART XIV — TECHNOLOGY AND PERFORMANCE
+86. Technology Neutrality
+CoreGrid selects technology based on:
 • correctness
 • maturity
 • security
@@ -1423,123 +1640,114 @@ Technology selection must be based on:
 • cost
 • portability
 • ecosystem strength
-A technology must not be adopted merely because it is new.
+Novelty is not sufficient justification.
 
 ───
 
-81. Existing Technology Preservation
-Existing technology should remain unless evidence justifies change.
-Technology replacement requires:
+87. Existing Technology Preservation
+Existing technology remains unless evidence justifies change.
+Replacement requires:
 • architectural rationale
 • migration analysis
 • performance analysis
 • security analysis
 • compatibility analysis
 • cost analysis
-• rollback plan
+• rollback/recovery plan
 
 ───
 
-82. Performance Principle
-Performance must be measured rather than guessed.
-Optimize:
-text
-latency
-throughput
-resource utilization
-database efficiency
-network efficiency
-inference cost
-memory utilization
-concurrency
-
-Avoid premature optimization.
-Avoid architecturally expensive optimizations without evidence.
+88. Performance Principle
+Performance must be measured.
+Relevant dimensions include:
+• latency
+• throughput
+• resource utilization
+• database efficiency
+• network efficiency
+• inference cost
+• memory utilization
+• concurrency
+Premature optimization is discouraged.
+Architecturally expensive optimization requires evidence.
 
 ───
 
-83. Scalability Principle
+89. Scalability Principle
 CoreGrid must scale across:
-text
-users
-organizations
-tenants
-agents
-devices
-events
-data
-workloads
-models
-regions
-integrations
-
-Scale should not require architectural fragmentation.
+• users
+• organizations
+• tenants
+• agents
+• devices
+• events
+• data
+• workloads
+• models
+• regions
+• integrations
+Scale should not automatically require fragmentation.
 
 ───
 
-84. Horizontal Expansion
-CoreGrid should prefer scalable primitives:
+90. Horizontal Expansion
+Scalable primitives may include:
 • partitioning
 • queues
 • event streams
 • caching
-• stateless services where appropriate
 • asynchronous processing
 • workload isolation
+• stateless components where appropriate
 • regional deployment
+The selected mechanism must follow measured requirements.
 
 ───
 
-85. Cost Awareness
-Every architectural decision has an economic consequence.
-Engineering must consider:
-text
-compute
-storage
-network
-inference
-database
-operations
-licensing
-support
-human intervention
-
-The cheapest architecture is not necessarily the best.
-The most expensive architecture is not necessarily the most intelligent.
+91. Cost Awareness
+Architectural decisions affect:
+• compute
+• storage
+• network
+• inference
+• databases
+• licensing
+• operations
+• support
+• human intervention
+Cost is an architectural variable, not an afterthought.
 
 ───
 
-86. Operational Simplicity
+92. Operational Simplicity
 Complexity must earn its existence.
-A distributed architecture should be introduced because distribution provides a measurable benefit.
-Not because:
-"Enterprise systems use microservices."
+Distributed architecture is justified by measurable requirements, not by the appearance of enterprise sophistication.
 
 ───
 
-87. Testing as a Constitutional Requirement
-Testing is part of architecture.
+PART XV — TESTING, MIGRATION, DOCUMENTATION
+93. Testing as a Constitutional Requirement
 CoreGrid should employ:
 text
-Unit
-Integration
-Contract
-Security
-Tenant Isolation
+UNIT
+INTEGRATION
+CONTRACT
+SECURITY
+TENANT ISOLATION
 E2E
-Performance
-Chaos
-Recovery
-AI Evaluation
-Agent Evaluation
-Regression
+PERFORMANCE
+CHAOS
+RECOVERY
+AI EVALUATION
+AGENT EVALUATION
+REGRESSION
 
 Critical behavior requires automated validation where practical.
 
 ───
 
-88. AI Evaluation
-AI components must be evaluated against:
+94. AI Evaluation
+AI components must be evaluated for:
 • accuracy
 • reliability
 • hallucination
@@ -1549,218 +1757,234 @@ AI components must be evaluated against:
 • robustness
 • adversarial behavior
 • distribution shift
-Models must not be promoted based solely on benchmark performance.
+• policy compliance
+Benchmark performance alone is insufficient.
 
 ───
 
-89. Agent Evaluation
+95. Agent Evaluation
 Agents should be evaluated for:
 • task completion
 • policy compliance
-• tool usage
+• tool use
 • hallucination
 • unauthorized actions
-• recovery behavior
-• reasoning reliability
+• recovery
+• reliability
 • cost
 • latency
 • failure containment
 
 ───
 
-90. Autonomous System Evaluation
-Autonomous workflows should be evaluated in progressively stronger environments:
+96. Autonomous System Evaluation
+Progressively stronger environments may include:
 text
-Simulation
+SIMULATION
  ↓
-Sandbox
+SANDBOX
  ↓
-Replay
+REPLAY
  ↓
-Shadow
+SHADOW
  ↓
-Paper / Dry Run
+DRY RUN
  ↓
-Limited Production
+LIMITED PRODUCTION
  ↓
-Expanded Production
+EXPANDED PRODUCTION
 
-The appropriate path depends on risk.
+Risk determines the appropriate path.
 
 ───
 
-91. Change Discipline
+97. Change Discipline
 Changes should be:
 • scoped
 • observable
 • testable
-• reversible where practical
 • documented
-Unrelated changes should not be bundled into one migration without reason.
+• reversible where practical
+Unrelated changes should not be bundled without reason.
 
 ───
 
-92. Migration Discipline
-Major migrations require:
+98. Migration Discipline
+Major migrations follow:
 text
-Current State
+CURRENT STATE
  ↓
-Target State
+TARGET STATE
  ↓
-Gap Analysis
+GAP ANALYSIS
  ↓
-Dependency Analysis
+DEPENDENCY ANALYSIS
  ↓
-Migration Plan
+MIGRATION PLAN
  ↓
-Incremental Implementation
+INCREMENTAL IMPLEMENTATION
  ↓
-Validation
+VALIDATION
  ↓
-Cutover
+CUTOVER
  ↓
-Monitoring
+MONITORING
  ↓
-Rollback Readiness
+RECOVERY READINESS
 
 
 ───
 
-93. Backward Compatibility
-CoreGrid should preserve compatibility where practical.
+99. Backward Compatibility
 Breaking changes require:
 • explicit versioning
-• migration strategy
 • consumer analysis
-• deprecation period where appropriate
+• migration strategy
+• deprecation where appropriate
 • documentation
+Compatibility is preferred unless it creates unacceptable architectural cost or risk.
 
 ───
 
-94. Documentation as Infrastructure
-Documentation is not decoration.
-Architecture documentation is part of the operational system.
-Required documentation includes:
+100. Documentation as Infrastructure
+Documentation is part of CoreGrid's engineering infrastructure.
+Required categories include:
 • architecture
 • dependencies
 • contracts
 • decisions
 • security
 • operations
-• data ownership
+• ownership
 • deployment
 • recovery
 • AI behavior
 • agent behavior
 • integrations
+• progress
 
 ───
 
-95. Architecture Decision Records
-Material architectural decisions must have ADRs.
-An ADR should record:
+PART XVI — ENGINEERING GOVERNANCE
+101. Architecture Decision Records
+Material architectural decisions require ADRs containing:
 text
-Context
-Problem
-Options
-Decision
-Consequences
-Rejected Alternatives
-Migration Implications
+CONTEXT
+PROBLEM
+CONSTRAINTS
+ALTERNATIVES
+DECISION
+RATIONALE
+CONSEQUENCES
+REJECTED ALTERNATIVES
+DEPENDENCY IMPACT
+SECURITY IMPACT
+DATA IMPACT
+MIGRATION IMPACT
+VALIDATION
+OWNER
+AUTHORITY
 
+The canonical decision governance is defined by DECISION.md.
 
 ───
 
-96. No Hidden Dependencies
+102. No Hidden Dependencies
 Every material dependency must be discoverable.
 Dependencies should declare:
 • provider
 • consumer
+• relation
 • contract
-• type
 • criticality
 • latency
-• security requirements
+• security
 • failure behavior
 • owner
+• tenant requirements
 Architecture CI should detect undeclared dependencies where practical.
 
 ───
 
-97. Machine-Verifiable Architecture
-CoreGrid architecture must progressively become machine-verifiable.
-Architecture metadata should be representable in machine-readable form.
-For example:
+103. Machine-Verifiable Architecture
+CoreGrid architecture must progressively become machine-readable.
+Example:
 yaml
 dependency:
   provider: phase-14
   consumer: phase-18
-  relation: READS_DERIVED_DATA
+  relation: READS_DERIVED_DATA_FROM
   contract: analytics-data-v1
   criticality: R2
   latency: L3
   tenant_context: required
   owner: phase-14
 
-This allows CI to detect:
+Machine validation should detect:
 • forbidden dependencies
 • cycles
 • missing ownership
 • missing tenant context
 • contract violations
-• unauthorized infrastructure coupling
+• unauthorized coupling
+• invalid phase references
 
 ───
 
-98. Constitutional CI
+104. Constitutional CI
 Architecture CI should progressively validate:
 text
-Phase Registry
-Dependency Graph
-Ownership
-API Contracts
-Schema Contracts
-Tenant Boundaries
-Security Policies
-Forbidden Imports
-Secrets
-Supply Chain
-Test Coverage
-Migration Integrity
-Deployment Configuration
+PHASE REGISTRY
+OWNERSHIP
+DEPENDENCY GRAPH
+BOUNDARIES
+API CONTRACTS
+SCHEMA CONTRACTS
+TENANT BOUNDARIES
+SECURITY POLICIES
+FORBIDDEN IMPORTS
+SECRETS
+SUPPLY CHAIN
+MIGRATIONS
+TESTS
+DEPLOYMENT CONFIGURATION
+DECISION CONFORMANCE
 
-Architecture violations should fail CI where appropriate.
+Violations should fail appropriate gates.
 
 ───
 
-99. Autonomous Engineering Governance
-AI coding agents are authorized engineering actors, not constitutional authorities.
-Agents may:
+105. Autonomous Engineering Governance
+AI engineering agents are authorized engineering actors, not constitutional authorities.
+They may:
 • inspect
 • analyze
+• plan
 • implement
 • test
 • refactor
 • document
 • propose architecture
-Agents must not silently:
+They must not silently:
 • redefine ownership
 • redefine phase boundaries
 • disable security
-• delete historical architecture
-• bypass testing
+• delete architectural history
+• bypass tests
 • introduce uncontrolled infrastructure
 • change production policy
 • rewrite the Constitution
 
 ───
 
-100. Agent Operating Contract
-Every engineering agent should operate under:
+106. Agent Operating Contract
+Every engineering agent should follow:
 text
 READ
  ↓
 UNDERSTAND
+ ↓
+INSPECT EXISTING SYSTEM
  ↓
 PLAN
  ↓
@@ -1776,7 +2000,7 @@ DOCUMENT
  ↓
 REPORT
 
-If uncertainty is material:
+When material uncertainty exists:
 text
 STOP
  ↓
@@ -1787,46 +2011,36 @@ REQUEST GOVERNED DECISION
 
 ───
 
-101. No Fabrication Principle
+107. No Fabrication Principle
 Agents must never fabricate:
 • implementation status
 • test results
 • deployment status
-• security status
+• security state
 • data
 • credentials
 • integrations
 • model capabilities
 • performance results
-Unknown must be reported as unknown.
+• architectural conformance
+Unknown must remain unknown.
 
 ───
 
-102. Evidence Before Confidence
-CoreGrid must prefer:
+108. Evidence Before Confidence
+CoreGrid prefers:
 text
-Evidence
-   >
-Assumption
-
-and:
-text
-Measured
-   >
-Guessed
-
-and:
-text
-Validated
-   >
-Generated
+EVIDENCE > ASSUMPTION
+MEASURED > GUESSED
+VALIDATED > GENERATED
+OBSERVED > CLAIMED
+REPRODUCED > REMEMBERED
 
 
 ───
 
-103. Reproducibility
-Important outputs should be reproducible where practical.
-Systems should preserve:
+109. Reproducibility
+Important outputs should preserve, where practical:
 • input versions
 • model versions
 • policy versions
@@ -1837,23 +2051,23 @@ Systems should preserve:
 
 ───
 
-104. Temporal Integrity
-CoreGrid must understand that reality changes.
-Important state should support temporal reasoning where required:
+PART XVII — TIME, UNCERTAINTY, CONTRADICTION
+110. Temporal Integrity
+Reality changes.
+Important state may require:
 text
 VALID_FROM
 VALID_UNTIL
 OBSERVED_AT
 RECORDED_AT
 EFFECTIVE_AT
+SUPERSEDED_AT
 
 Historical state must not be confused with current state.
 
 ───
-
-105. Uncertainty Is Data
-CoreGrid must be capable of representing uncertainty.
-For relevant information:
+111. Uncertainty Is Data
+Relevant information may carry:
 text
 VALUE
 +
@@ -1864,65 +2078,70 @@ PROVENANCE
 TIME
 +
 ASSUMPTIONS
++
+UNCERTAINTY
 
-Unknown is a legitimate state.
+Unknown is legitimate.
 
 ───
 
-106. Contradiction Principle
-CoreGrid must be able to represent contradictory evidence without immediately destroying one side.
-Where two sources disagree:
+112. Contradiction Principle
+CoreGrid must represent contradictory evidence without immediately destroying one side.
 text
-Source A
+SOURCE A
    +
-Source B
+SOURCE B
    ↓
-Conflict
+CONFLICT
    ↓
-Resolution Process
+RESOLUTION PROCESS
    ↓
-Canonical Interpretation
+CANONICAL INTERPRETATION
 
-The conflict itself may be valuable evidence.
+The contradiction itself may constitute evidence about reality.
 
 ───
 
-107. Reality-Model Separation
-CoreGrid should maintain distinction between:
+113. Reality-Model Separation
+CoreGrid shall preserve:
 text
 REALITY
+≠
 REPRESENTATION
+≠
 MODEL
+≠
 SIMULATION
+≠
 PREDICTION
 
-A simulation is not reality.
 A digital twin is not the physical entity.
 A model is not the world.
+A simulation is not execution.
 
 ───
 
-108. Self-Description Principle
-CoreGrid should eventually be able to describe itself computationally:
-text
-What capabilities exist?
-Who owns them?
-Which systems depend on them?
-Which policies govern them?
-What state exists?
-What is healthy?
-What is failing?
-What changed?
-What is uncertain?
-What agents are operating?
-What intelligence is active?
-
-This becomes the foundation for machine-assisted governance.
+PART XVIII — SELF-DESCRIBING AND SELF-OBSERVING COREGRID
+114. Self-Description Principle
+CoreGrid should progressively describe itself computationally.
+It should be able to answer:
+• What capabilities exist?
+• Who owns them?
+• What depends on them?
+• Which policies govern them?
+• What state exists?
+• What is healthy?
+• What is failing?
+• What changed?
+• What is uncertain?
+• Which agents operate?
+• Which intelligence is active?
+• Which decisions govern current behavior?
 
 ───
 
-109. Self-Observation Principle
-CoreGrid should observe its own:
+115. Self-Observation Principle
+CoreGrid should observe:
 • architecture
 • dependencies
 • workloads
@@ -1930,218 +2149,226 @@ CoreGrid should observe its own:
 • models
 • policies
 • data flows
-• security posture
+• security
 • performance
 • cost
 • failures
-The platform should progressively become capable of observing itself without granting itself unrestricted authority.
+• configuration drift
+Self-observation does not imply self-authority.
 
 ───
 
-110. Self-Healing Principle
-Where safe and justified, CoreGrid may automatically recover from known failures.
-Examples:
-• restart failed workloads
+116. Self-Healing Principle
+Where safe and justified, CoreGrid may automatically recover from known failures:
+• restart workloads
 • retry transient operations
 • reroute traffic
 • rebuild derived indexes
 • restore healthy replicas
 • rotate compromised credentials through approved mechanisms
-Self-healing must remain policy-bounded and auditable.
+Self-healing must remain policy-bounded, observable, and auditable.
 
 ───
 
-111. Self-Optimization Principle
+117. Self-Optimization Principle
 CoreGrid may optimize:
 • resource allocation
 • workload placement
 • caching
 • inference routing
 • queue scheduling
-• cost
 • latency
-Optimization must not silently violate:
+• cost
+It must not silently violate:
 • security
-• policy
 • correctness
+• policy
 • sovereignty
 • data ownership
 
 ───
 
-112. Self-Evolution Principle
-CoreGrid may propose architectural evolution.
-It must distinguish:
+118. Self-Evolution Principle
+CoreGrid may discover and propose architectural improvements.
+Every evolutionary state must remain distinguishable:
 text
 PROPOSED
 SIMULATED
 VALIDATED
 APPROVED
 DEPLOYED
+OBSERVED
 
-The system must never treat its own proposal as authorization.
+The system's own proposal is never its own authorization.
 
 ───
 
-113. Evolution Without Self-Destruction
-Future evolution must preserve:
+119. Evolution Without Self-Destruction
+Evolution must preserve:
 • constitutional integrity
-• data integrity
 • identity
+• data integrity
 • security
 • auditability
 • compatibility
 • recovery
-The platform must be capable of evolving without repeatedly destroying its institutional memory.
+• institutional memory
+CoreGrid must be able to become different without becoming unrecognizable or losing its historical continuity.
 
 ───
 
-114. Capability Discovery
-CoreGrid should progressively support machine-readable capability discovery.
-An agent should be able to determine:
+PART XIX — CAPABILITY AND RESOURCE GOVERNANCE
+120. Capability Discovery
+CoreGrid should expose machine-readable capability metadata.
+An actor should be able to determine:
 text
-What can I do?
-What may I do?
-What must I not do?
-Which policy applies?
-Which capability should I invoke?
-What will it cost?
-What evidence will be generated?
+WHAT CAN I DO?
+WHAT MAY I DO?
+WHAT MUST I NOT DO?
+WHICH POLICY APPLIES?
+WHICH CAPABILITY SHOULD I USE?
+WHAT WILL IT COST?
+WHAT EVIDENCE WILL BE CREATED?
+WHAT ARE THE RISKS?
 
 
 ───
 
-115. Permission Discovery
-Authorization systems should expose enough metadata for agents to understand capability boundaries without exposing sensitive security internals.
+121. Permission Discovery
+Authorization systems should expose enough metadata for legitimate actors and agents to understand capability boundaries without revealing sensitive security internals.
 
 ───
 
-116. Resource Awareness
-Autonomous systems should understand resource constraints:
+122. Resource Awareness
+Autonomous systems must understand:
 text
-compute
-memory
-storage
-network
-money
-time
-latency
-human attention
+COMPUTE
+MEMORY
+STORAGE
+NETWORK
+MONEY
+TIME
+LATENCY
+HUMAN ATTENTION
 
 Autonomy without resource awareness is incomplete autonomy.
 
 ───
 
-117. Human Attention as a Resource
-CoreGrid should minimize unnecessary human escalation.
-Human attention should be allocated where:
+123. Human Attention as a Resource
+Human intervention should be allocated according to:
 text
-risk
+RISK
 +
-uncertainty
+UNCERTAINTY
 +
-impact
+IMPACT
++
+IRREVERSIBILITY
 
-justify intervention.
+The objective is not to remove humans.
+The objective is to place human attention where it provides meaningful governance value.
 
 ───
 
-118. Institutional Intelligence Principle
-CoreGrid should convert institutional complexity into structured intelligence.
+124. Institutional Intelligence Principle
+CoreGrid should transform institutional complexity into structured intelligence.
 Instead of:
 text
-Thousands of records
+THOUSANDS OF RECORDS
 
-the system should progressively provide:
+the platform should progressively expose:
 text
-State
+STATE
 +
-Context
+CONTEXT
 +
-Relationships
+RELATIONSHIPS
 +
-Signals
+SIGNALS
 +
-Risks
+RISKS
 +
-Predictions
+PREDICTIONS
 +
-Recommendations
+RECOMMENDATIONS
 +
-Actions
+ACTIONS
++
+CONSEQUENCES
 
 
 ───
 
-119. Runtime Composition
-A CoreGrid runtime should be assembled from platform capabilities rather than independently rebuilt.
-Conceptually:
+PART XX — RUNTIME COMPOSITION AND INTERFACES
+125. Runtime Composition
+A CoreGrid runtime should be composed from platform capabilities:
 text
-CoreGrid Substrate
+COREGRID SUBSTRATE
        +
-Domain Reality
+DOMAIN REALITY
        +
-Policies
+POLICIES
        +
-Capabilities
+CAPABILITIES
        +
-Intelligence
+INTELLIGENCE
        +
-Workspace
+WORKSPACE
        +
-Agents
+AGENTS
        +
-Automation
+AUTOMATION
        =
-Runtime
+RUNTIME
 
 Scholar is the first example.
 
 ───
-120. Universal Workspace Principle
-The user interface should reflect capabilities and context rather than hard-coded application assumptions.
-A workspace should dynamically compose from:
-text
-Identity
-+
-Tenant
-+
-Role
-+
-Policy
-+
-Context
-+
-Capabilities
-+
-Domain
-+
-State
-+
-Intelligence
 
+126. Universal Workspace Principle
+User experience should derive from:
+text
+IDENTITY
++
+TENANT
++
+ROLE
++
+POLICY
++
+CONTEXT
++
+CAPABILITY
++
+DOMAIN
++
+STATE
++
+INTELLIGENCE
+
+The workspace should not become the source of truth for reality.
 
 ───
 
-121. UI Is Not the Architecture
-A beautiful interface does not constitute a platform.
-The platform must remain operationally meaningful beneath the UI.
+127. UI Is Not the Architecture
+A user interface does not constitute the platform.
 Every important UI capability should correspond to:
 text
-Backend Capability
+BACKEND CAPABILITY
 +
-Data Contract
+DATA CONTRACT
 +
-Security Boundary
+SECURITY BOUNDARY
 +
-Operational Behavior
+OPERATIONAL BEHAVIOR
 
 
 ───
 
-122. API-First Capability Model
-Every reusable platform capability should be accessible through a governed machine interface where appropriate.
-This enables:
+128. API-First Capability Model
+Reusable capabilities should expose governed machine interfaces where appropriate.
+This allows shared capabilities to serve:
 • web
 • mobile
 • agents
@@ -2149,31 +2376,28 @@ This enables:
 • integrations
 • developer applications
 • future interfaces
-to share the same underlying capability.
 
 ───
 
-123. Interface Independence
-CoreGrid must not assume that the primary interface will always be:
-text
-Web browser
-
+129. Interface Independence
+CoreGrid must not assume that the web browser is the permanent interface.
 Future interfaces may include:
+• web
 • mobile
 • voice
-• agent
 • multimodal
 • spatial
 • wearable
 • embedded
 • API
-• autonomous system
-The backend capability model must remain interface-independent.
+• autonomous systems
+The capability layer must remain interface-independent.
 
 ───
 
-124. Globalization Principle
-CoreGrid must support:
+PART XXI — GLOBALIZATION AND GOVERNANCE
+130. Globalization Principle
+CoreGrid should support:
 • languages
 • currencies
 • jurisdictions
@@ -2185,8 +2409,7 @@ without creating a separate architecture for every country.
 
 ───
 
-125. Compliance Principle
-Compliance requirements must be translated into architecture where applicable.
+131. Compliance Principle
 CoreGrid must distinguish:
 text
 LAW
@@ -2195,14 +2418,16 @@ POLICY
 CONTROL
 IMPLEMENTATION
 EVIDENCE
+CERTIFICATION
 
-Certification must never be confused with legal compliance.
+Certification must not automatically be interpreted as universal legal compliance.
+Jurisdiction-specific requirements must be represented explicitly.
 
 ───
 
-126. Governance Principle
-Every consequential platform capability should have governance proportional to its risk.
-Governance may include:
+132. Governance Principle
+Governance intensity should be proportional to consequence.
+Governance mechanisms may include:
 • approval
 • review
 • audit
@@ -2210,59 +2435,69 @@ Governance may include:
 • segregation of duties
 • evidence
 • human oversight
+• simulation
+• rollback
 
 ───
 
-127. Risk-Based Engineering
-Engineering effort should be proportional to:
+133. Risk-Based Engineering
+Engineering effort should consider:
 text
-Impact
+IMPACT
 ×
-Likelihood
+LIKELIHOOD
 ×
-Exposure
+EXPOSURE
 ×
-Uncertainty
+UNCERTAINTY
+×
+IRREVERSIBILITY
 
-Low-risk components should not receive the same governance burden as mission-critical components.
-
-───
-
-128. Blast-Radius Principle
-Every major component should have a known blast radius.
-Questions:
-text
-If this fails, what breaks?
-If this is compromised, what is exposed?
-If this changes, who is affected?
-If this becomes unavailable, what degrades?
-
+The resulting risk is contextual rather than a universal numeric truth.
 
 ───
 
-129. Dependency Criticality
-Dependencies should be classified.
-Example:
+134. Blast-Radius Principle
+Every major capability should expose its blast radius.
+Questions include:
 text
-R0 — Optional
-R1 — Non-critical
-R2 — Important
-R3 — Critical
-R4 — Mission-critical
+IF IT FAILS, WHAT BREAKS?
 
-Latency may similarly be classified:
-text
-L0 — Local
-L1 — Low latency
-L2 — Synchronous service
-L3 — Asynchronous
-L4 — Batch
-L5 — Human approval
+IF IT IS COMPROMISED, WHAT IS EXPOSED?
+
+IF IT CHANGES, WHO IS AFFECTED?
+
+IF IT DISAPPEARS, WHAT DEGRADES?
+
+IF IT BECOMES CORRUPTED, WHAT CAN BE RECOVERED?
 
 
 ───
 
-130. Operational Readiness
+135. Dependency Criticality
+Dependencies may be classified:
+text
+R0 — OPTIONAL
+R1 — NON-CRITICAL
+R2 — IMPORTANT
+R3 — CRITICAL
+R4 — MISSION-CRITICAL
+
+Latency characteristics may be classified separately:
+text
+L0 — LOCAL
+L1 — LOW LATENCY
+L2 — SYNCHRONOUS
+L3 — ASYNCHRONOUS
+L4 — BATCH
+L5 — HUMAN APPROVAL
+
+Criticality and latency are independent dimensions.
+
+───
+
+PART XXII — OPERATIONAL READINESS
+136. Operational Readiness
 A capability is not production-ready until it has appropriate:
 • monitoring
 • alerting
@@ -2272,36 +2507,38 @@ A capability is not production-ready until it has appropriate:
 • security
 • testing
 • capacity understanding
+• dependency understanding
+Requirements scale with risk.
 
 ───
 
-131. Disaster Recovery
-Critical systems must have defined:
+137. Disaster Recovery
+Critical systems require:
 • backup
 • recovery
-• replication
+• replication where required
 • restoration
 • failover
 • verification
-Recovery must itself be tested.
+Recovery procedures must themselves be tested.
 
 ───
 
-132. Business Continuity
-CoreGrid must distinguish:
+138. Business Continuity
+CoreGrid distinguishes:
 text
-Technical Recovery
+TECHNICAL RECOVERY
 
 from:
 text
-Institutional Continuity
+INSTITUTIONAL CONTINUITY
 
-The infrastructure may recover while the institution still requires operational procedures.
+Infrastructure recovery does not automatically restore the institution's ability to operate.
 
 ───
 
-133. Auditability
-Consequential operations must answer:
+139. Auditability
+Consequential operations should answer:
 text
 WHO
 WHAT
@@ -2310,19 +2547,20 @@ WHERE
 WHY
 UNDER WHICH POLICY
 USING WHICH CAPABILITY
+WITH WHICH AUTHORITY
 WITH WHICH EVIDENCE
 WITH WHICH RESULT
 
 
 ───
 
-134. Audit Immutability
-Important audit evidence must be protected against unauthorized modification or deletion.
+140. Audit Immutability
+Important audit evidence must be protected from unauthorized alteration or deletion.
 
 ───
 
-135. Retention Principle
-Data and evidence retention must be:
+141. Retention Principle
+Retention must be:
 • purposeful
 • policy-driven
 • legally appropriate
@@ -2332,9 +2570,9 @@ Infinite retention is not the default.
 
 ───
 
-136. No Surveillance by Default
+142. No Surveillance by Default
 Intelligence does not justify unrestricted surveillance.
-Monitoring must have:
+Monitoring requires:
 • purpose
 • authorization
 • proportionality
@@ -2343,36 +2581,48 @@ Monitoring must have:
 
 ───
 
-137. Accessibility Principle
+PART XXIII — HUMAN EXPERIENCE AND AGENCY
+143. Accessibility Principle
 User-facing systems must support appropriate:
 • semantic structure
 • keyboard access
-• responsive layouts
+• responsive behavior
 • understandable states
-• assistive technologies
+• assistive technology
 • error recovery
+Accessibility is architectural, not cosmetic.
 
 ───
 
-138. User Agency
-CoreGrid should help users understand and control consequential actions.
-Where appropriate:
+144. User Agency
+For consequential actions, CoreGrid should progressively support:
 text
-Explain
-→ Preview
-→ Confirm
-→ Execute
+EXPLAIN
+ ↓
+PREVIEW
+ ↓
+CONFIRM
+ ↓
+EXECUTE
+ ↓
+VERIFY
 
+The appropriate level depends on risk and policy.
 
 ───
 
-139. No Dark Automation
-CoreGrid must not silently perform consequential actions without an appropriate indication, authorization, or audit trail.
+145. No Dark Automation
+CoreGrid must not silently perform consequential actions without appropriate:
+• indication
+• authorization
+• policy basis
+• audit trail
 
 ───
 
-140. Architecture Before Implementation
-Engineers should not begin large implementation work until they understand:
+PART XXIV — ARCHITECTURE-FIRST ENGINEERING
+146. Architecture Before Implementation
+Large implementation work requires understanding of:
 • ownership
 • dependencies
 • contracts
@@ -2380,13 +2630,13 @@ Engineers should not begin large implementation work until they understand:
 • data
 • failure modes
 • testing
-• operational requirements
+• operations
+• migration
 
 ───
 
-141. Inspect Before Invent
-Agents must search existing implementation before creating new infrastructure.
-This includes:
+147. Inspect Before Invent
+Engineering agents must inspect existing:
 • code
 • schemas
 • APIs
@@ -2396,34 +2646,35 @@ This includes:
 • integrations
 • configuration
 • documentation
+before creating new infrastructure where relevant.
 
 ───
 
-142. Reuse Before Rebuild
-The default priority is:
+148. Reuse Before Rebuild
+Default engineering order:
 text
-Reuse
->
-Extend
->
-Refactor
->
-Replace
->
-Rebuild
+REUSE
+ >
+EXTEND
+ >
+REFACTOR
+ >
+REPLACE
+ >
+REBUILD
 
 Rebuild requires evidence.
 
 ───
 
-143. No Duplicate Systems
-CoreGrid must avoid multiple competing implementations of:
+149. No Duplicate Systems
+CoreGrid must avoid competing implementations of:
 • identity
 • authorization
 • tenancy
 • event infrastructure
-• agent runtime
-• data platform
+• agent infrastructure
+• data platforms
 • security policy
 • model gateway
 • financial truth
@@ -2432,118 +2683,99 @@ unless explicitly justified.
 
 ───
 
-144. Source-of-Truth Discipline
-For every major capability, documentation must identify:
+150. Source-of-Truth Discipline
+Every major capability must identify:
 text
-Canonical Owner
-Canonical State
-Public Contract
-Consumers
-Dependencies
-Security Boundary
-Operational Owner
+CANONICAL OWNER
+CANONICAL STATE
+PUBLIC CONTRACT
+CONSUMERS
+DEPENDENCIES
+SECURITY BOUNDARY
+OPERATIONAL OWNER
+LIFECYCLE
 
 
 ───
 
-145. No Scope Inference
-When functionality appears useful but ownership is unclear:
+151. No Scope Inference
+When useful functionality appears but ownership is unclear:
 text
 DO NOT ABSORB IT
-
-Instead:
-text
-Classify
-→ Identify owner
-→ Record dependency
-→ Create decision if necessary
+        ↓
+CLASSIFY
+        ↓
+IDENTIFY OWNER
+        ↓
+RECORD DEPENDENCY
+        ↓
+CREATE DECISION IF REQUIRED
 
 
 ───
 
-146. Future Phase Protection
-Future phases are reserved architectural territory.
-Agents must not silently implement future capabilities merely because they seem related.
-If ownership is uncertain:
+152. Future Phase Protection
+Reserved architectural territory must remain protected.
+Agents must not silently implement capabilities belonging to future or uncertain phases.
+When ownership is uncertain:
 text
 RESERVED / FUTURE-PHASE DEPENDENCY
 
+The Architecture Registry remains authoritative for phase identity.
 
 ───
 
-147. Constitutional Change
-The Constitution itself may evolve.
-However, constitutional changes require:
-• explicit proposal
-• architectural impact analysis
-• compatibility analysis
-• review
-• decision record
-• versioning
-No AI agent may silently rewrite constitutional rules.
+PART XXV — PHASE ARCHITECTURE
+153. Phase Independence
+Phase architecture may evolve independently within constitutional constraints.
+A phase may improve implementation without modifying platform-wide constitutional rules.
 
 ───
 
-148. Constitutional Versioning
-The Constitution must have a version.
-Example:
+154. Phase Contract Discipline
+Every phase specification should define:
 text
-Constitution v1.x
-
-Material changes require a documented revision.
-
-───
-
-149. Phase Independence
-Phase architecture documents may evolve independently within constitutional constraints.
-A phase may improve its implementation without modifying platform-wide rules.
-
-───
-
-150. Phase Contract Discipline
-Each phase must define:
-text
-Purpose
-Scope
-Ownership
-Inputs
-Outputs
-Dependencies
-Contracts
-Events
-Data
-Security
-Failure Modes
-Testing
-Observability
-Operational Requirements
+PURPOSE
+SCOPE
+OWNERSHIP
+INPUTS
+OUTPUTS
+DEPENDENCIES
+CONTRACTS
+EVENTS
+DATA
+SECURITY
+FAILURE MODES
+TESTING
+OBSERVABILITY
+OPERATIONS
 
 
 ───
 
-151. Cross-Phase Communication
-Phases communicate through:
+155. Cross-Phase Communication
+Phases communicate through governed mechanisms:
 text
 API
-Event
-Command
-Query
-Shared Contract
-Policy
-Data Product
+EVENT
+COMMAND
+QUERY
+SHARED CONTRACT
+POLICY
+DATA PRODUCT
 
-They should not communicate through private implementation details.
+Private implementation details are not architectural communication contracts.
 
 ───
 
-152. Circular Dependency Prohibition
+156. Circular Dependency Prohibition
 Structural circular dependencies are prohibited by default.
 text
 A → B
 B → C
 C → A
 
-If bidirectional runtime interaction is required, use:
+Where bidirectional runtime interaction is necessary, use:
 • events
 • interfaces
 • orchestration
@@ -2552,14 +2784,19 @@ If bidirectional runtime interaction is required, use:
 
 ───
 
-153. Runtime Interaction Is Not Structural Coupling
-Two systems may exchange events without structurally depending upon each other's implementation.
-This distinction must be preserved in architecture metadata.
+157. Runtime Interaction Is Not Structural Coupling
+Runtime communication does not necessarily imply structural ownership.
+Architecture metadata must distinguish:
+text
+STRUCTURAL DEPENDENCY
+from
+RUNTIME INTERACTION
+
 
 ───
 
-154. Architecture Graph Semantics
-CoreGrid dependency maps must distinguish:
+158. Architecture Graph Semantics
+CoreGrid dependency graphs must distinguish:
 text
 STRUCTURAL_DEPENDS_ON
 RUNTIME_CALLS
@@ -2578,59 +2815,64 @@ EXTENDS
 
 ───
 
-155. Architecture as Code
-Dependency metadata should become machine-readable.
-The platform should eventually be able to validate its own architecture graph.
+159. Architecture as Code
+Architecture metadata should become machine-readable.
+The platform should progressively validate its own architecture graph.
 
 ───
 
-156. Autonomous Architecture Analysis
-AI may inspect the architecture graph and identify:
+160. Autonomous Architecture Analysis
+AI may analyze:
 • cycles
-• unnecessary dependencies
 • duplicated capabilities
 • ownership conflicts
 • security violations
 • stale contracts
 • orphaned components
 • unused infrastructure
-• excessive blast radius
-AI recommendations must remain recommendations until governed.
+• unnecessary dependencies
+• blast radius
+AI findings remain recommendations until governed.
 
 ───
 
-157. Self-Auditing Architecture
-CoreGrid should progressively answer:
-"Is the implementation still consistent with its declared architecture?"
-This may be validated through:
+161. Self-Auditing Architecture
+CoreGrid should answer:
+Is the implementation still consistent with the architecture it declares?
+Methods may include:
 • static analysis
+• repository analysis
 • dependency analysis
 • runtime telemetry
 • schema inspection
-• contract tests
-• repository analysis
-• AI-assisted architecture audits
+• contract testing
+• AI-assisted architectural analysis
 
 ───
 
-158. Architecture Drift
-CoreGrid must detect drift between:
+162. Architecture Drift
+CoreGrid must detect:
 text
-Declared Architecture
+DECLARED ARCHITECTURE
         vs
-Actual Implementation
+ACTUAL IMPLEMENTATION
 
-Drift should produce:
+Drift follows:
 text
-Detected
-→ Classified
-→ Reviewed
-→ Corrected
+DETECTED
+ ↓
+CLASSIFIED
+ ↓
+REVIEWED
+ ↓
+CORRECTED
+ ↓
+VERIFIED
 
 
 ───
 
-159. Operational Drift
+163. Operational Drift
 The same principle applies to:
 • configuration
 • security posture
@@ -2642,18 +2884,19 @@ The same principle applies to:
 
 ───
 
-160. Continuous Architecture Verification
-Architecture should not be verified only once.
-It should be continuously or periodically checked.
+164. Continuous Architecture Verification
+Architecture verification must be continuous or periodic according to risk.
+Architecture is not considered permanently valid merely because it was once approved.
 
 ───
 
-161. Constitutional Invariants
-The following are permanent CoreGrid invariants unless explicitly changed through constitutional governance:
+PART XXVI — CONSTITUTIONAL INVARIANTS
+165. Constitutional Invariants
+Unless explicitly changed through constitutional governance:
 INVARIANT-001
 No unauthorized actor may access protected capabilities.
 INVARIANT-002
-Identity, trust, authorization, and capability remain distinct concepts.
+Identity, trust, authorization, and capability remain distinct.
 INVARIANT-003
 Canonical state has a defined owner.
 INVARIANT-004
@@ -2667,11 +2910,11 @@ External systems cannot directly mutate internal databases.
 INVARIANT-008
 Security cannot be bypassed for convenience.
 INVARIANT-009
-Tenant isolation cannot be weakened silently.
+Tenant isolation cannot be silently weakened.
 INVARIANT-010
-Unknown must not silently become success or truth.
+Unknown cannot silently become success or truth.
 INVARIANT-011
-Historical architectural knowledge must not be casually destroyed.
+Historical architectural knowledge cannot be casually destroyed.
 INVARIANT-012
 Future phases cannot be silently absorbed.
 INVARIANT-013
@@ -2679,140 +2922,176 @@ Critical actions require appropriate authorization.
 INVARIANT-014
 Consequential operations must be auditable.
 INVARIANT-015
-AI model replacement must not require unnecessary platform reconstruction.
+Model replacement must not require unnecessary platform reconstruction.
 INVARIANT-016
-No phase may silently become the owner of another phase's canonical state.
+No phase may silently own another phase's canonical state.
 INVARIANT-017
 Architecture must remain machine-verifiable where practical.
 INVARIANT-018
-Autonomy must remain bounded by policy.
+Autonomy remains bounded by policy.
 INVARIANT-019
-CoreGrid must be capable of evolving without destroying its institutional memory.
+CoreGrid must evolve without destroying institutional memory.
 INVARIANT-020
-CoreGrid Scholar is a runtime of CoreGrid, not the definition of CoreGrid.
+Scholar is a runtime, not the definition of CoreGrid.
+INVARIANT-021
+Representation must never silently become reality.
+INVARIANT-022
+Capability must never silently become authority.
+INVARIANT-023
+Prediction must never silently become fact.
+INVARIANT-024
+Decision must remain distinct from execution.
+INVARIANT-025
+Execution must remain distinct from successful outcome.
+INVARIANT-026
+Provenance must not be fabricated.
+INVARIANT-027
+Material architectural decisions must be explicitly recorded.
+INVARIANT-028
+Constitutional authority cannot be delegated implicitly.
+INVARIANT-029
+Runtime-local assumptions cannot silently become universal architecture.
+INVARIANT-030
+Self-observation does not grant self-authority.
 
 ───
 
-162. Forbidden Architectural Patterns
-The following are prohibited unless explicitly approved:
+PART XXVII — FORBIDDEN ARCHITECTURAL PATTERNS
+166. Forbidden Architectural Patterns
+Unless explicitly governed and justified:
 text
-Client → Database
-Agent → Database
-External System → Database
-Phase A → Phase B private implementation
-AI → Canonical mutation without governance
-Agent → Security bypass
-Extension → Internal database
-Marketplace → Private service
-Model → Constitutional authority
-Analytics → Canonical operational truth
-Derived data → Canonical truth without promotion
-Circular structural dependencies
-Hard-coded tenant architecture
-Hard-coded runtime identity
-Undocumented production policy changes
-Unbounded autonomous execution
+CLIENT → DATABASE
+AGENT → DATABASE
+EXTERNAL SYSTEM → DATABASE
+PHASE A → PHASE B PRIVATE IMPLEMENTATION
+AI → CANONICAL MUTATION WITHOUT GOVERNANCE
+AGENT → SECURITY BYPASS
+EXTENSION → INTERNAL DATABASE
+MARKETPLACE → PRIVATE SERVICE
+MODEL → CONSTITUTIONAL AUTHORITY
+ANALYTICS → CANONICAL OPERATIONAL TRUTH
+DERIVED DATA → CANONICAL TRUTH WITHOUT PROMOTION
+CIRCULAR STRUCTURAL DEPENDENCIES
+HARD-CODED TENANT ARCHITECTURE
+HARD-CODED RUNTIME IDENTITY
+UNDOCUMENTED PRODUCTION POLICY CHANGES
+UNBOUNDED AUTONOMOUS EXECUTION
+SILENT CONSTITUTIONAL MODIFICATION
+SILENT PHASE OWNERSHIP TRANSFER
+FABRICATED EVIDENCE
+UNTRACEABLE CANONICAL STATE
 
 
 ───
 
-163. Technology Acquisition Rule
+PART XXVIII — TECHNOLOGY AND ECOSYSTEM GOVERNANCE
+167. Technology Acquisition Rule
 Before introducing a major technology:
-1. Does CoreGrid already provide this capability?
+1. Does CoreGrid already provide the capability?
 2. Is the technology necessary?
 3. What problem does it solve?
 4. Who owns it?
-5. What is its failure mode?
+5. What are its failure modes?
 6. What data does it access?
-7. What security privileges does it require?
+7. What privileges does it require?
 8. What is the migration path?
-9. What is the vendor risk?
-10. Can it be removed later?
+9. What vendor risk exists?
+10. Can it be removed?
+11. What contract isolates it?
+12. What happens if it disappears?
 
 ───
 
-164. Dependency Budget
-Every phase should minimize unnecessary dependencies.
-Dependency budgets may be established for:
+168. Dependency Budget
+Each phase should minimize unnecessary:
 • synchronous dependencies
 • external vendors
 • databases
-• critical services
 • privileged integrations
+• critical services
 • AI providers
+Dependency budgets may be defined by architecture governance.
 
 ───
 
-165. Vendor Independence
-Where practical, critical platform capabilities should have replacement paths.
-Vendor lock-in must be treated as architectural risk.
+169. Vendor Independence
+Critical capabilities should have replacement paths where practical.
+Vendor lock-in is an architectural risk.
 
 ───
 
-166. Interoperability
-CoreGrid should prefer standards and stable protocols where they materially improve:
+170. Interoperability
+CoreGrid should prefer standards and stable protocols when they materially improve:
 • portability
 • interoperability
-• ecosystem growth
 • integration
 • replacement
+• ecosystem growth
 
 ───
 
-167. Ecosystem Principle
-CoreGrid should become more valuable as more capabilities connect to it.
+171. Ecosystem Principle
+CoreGrid should become more capable as more systems connect to it.
 However:
 text
-More integrations
+MORE INTEGRATIONS
 ≠
-More architectural coupling
+MORE ARCHITECTURAL COUPLING
 
 Integration must remain governed.
 
 ───
 
-168. Network Effects of Intelligence
-CoreGrid may gain intelligence from relationships among:
+PART XXIX — CROSS-DOMAIN INTELLIGENCE
+172. Network Effects of Intelligence
+CoreGrid may derive intelligence from relationships among:
 text
-Entities
+ENTITIES
 +
-Events
+EVENTS
 +
-Knowledge
+PROCESSES
 +
-Memory
+KNOWLEDGE
 +
-Domains
+MEMORY
 +
-Agents
+DOMAINS
 +
-Models
+AGENTS
 +
-Outcomes
+MODELS
++
+OUTCOMES
 
-This intelligence must remain governed by provenance and privacy.
+Such intelligence remains constrained by:
+• provenance
+• authorization
+• privacy
+• sovereignty
+• purpose
+• domain ownership
 
 ───
 
-169. Cross-Domain Intelligence
+173. Cross-Domain Intelligence
 Cross-domain reasoning is permitted where authorized.
-However, data ownership remains with the originating domain.
+Data ownership remains with the originating domain.
 text
-Domain A
+DOMAIN A
    ↓
-Authorized Data Product
+AUTHORIZED DATA PRODUCT
    ↓
-CoreGrid Intelligence
+COREGRID INTELLIGENCE
    ↓
-Cross-Domain Insight
+CROSS-DOMAIN INSIGHT
 
-The insight does not transfer ownership of the underlying data.
+The resulting insight does not automatically transfer ownership of source data.
 
 ───
 
-170. Composability
-CoreGrid capabilities should be composable.
-A capability should ideally be usable by:
+174. Composability
+CoreGrid capabilities should be composable by:
 • applications
 • agents
 • automation
@@ -2820,40 +3099,41 @@ A capability should ideally be usable by:
 • command systems
 • integrations
 • future runtimes
-without duplicated implementation.
+without unnecessary duplicated implementation.
 
 ───
 
-171. Capability Atomicity
-Capabilities should be sufficiently granular to compose but not so fragmented that the architecture becomes unusable.
-The goal is:
-minimum sufficient capability boundary.
+175. Capability Atomicity
+Capabilities must be sufficiently granular to compose but sufficiently cohesive to remain understandable and operable.
+The target is:
+Minimum sufficient capability boundary.
+Not maximum fragmentation.
 
 ───
 
-172. Runtime Neutrality
-CoreGrid infrastructure must not assume:
+PART XXX — DOMAIN AND RUNTIME NEUTRALITY
+176. Runtime Neutrality
+CoreGrid's fundamental identity is not:
 • education
 • commerce
 • government
 • finance
 • healthcare
-as its fundamental identity.
 Those are domains.
 CoreGrid's fundamental identity is:
-Universal intelligence infrastructure.
+Universal Intelligence Infrastructure.
 
 ───
 
-173. Domain Reality Principle
-Every runtime must explicitly define its domain reality.
-Scholar defines educational/institutional reality.
-Another runtime may define another reality.
-CoreGrid provides the infrastructure to represent those realities.
+177. Domain Reality Principle
+Each runtime must explicitly define the reality it represents.
+Scholar represents educational/institutional reality.
+Another runtime may represent another domain reality.
+CoreGrid provides the substrate for representing both.
 
 ───
 
-174. Runtime Isolation
+178. Runtime Isolation
 One runtime must not silently contaminate another runtime's:
 • canonical state
 • policies
@@ -2861,12 +3141,12 @@ One runtime must not silently contaminate another runtime's:
 • identities
 • memory
 • security boundaries
-Shared intelligence must still respect authorization and provenance.
+Shared intelligence remains governed by authorization and provenance.
 
 ───
 
-175. Multi-Runtime Principle
-CoreGrid should eventually support multiple runtime instances simultaneously.
+179. Multi-Runtime Principle
+CoreGrid should support multiple simultaneous runtime instances.
 Each runtime may have:
 • domain configuration
 • capabilities
@@ -2879,7 +3159,7 @@ while sharing platform infrastructure where appropriate.
 
 ───
 
-176. Resource Isolation
+180. Resource Isolation
 Runtime workloads should be isolatable according to:
 • tenant
 • organization
@@ -2890,36 +3170,40 @@ Runtime workloads should be isolatable according to:
 
 ───
 
-177. Platform Telemetry
-CoreGrid should expose platform-level telemetry for:
+PART XXXI — TELEMETRY AND AUTONOMOUS RESOURCE GOVERNANCE
+181. Platform Telemetry
+CoreGrid should expose platform telemetry for:
 • health
 • capacity
-• dependency state
+• dependencies
 • security
 • cost
 • performance
 • intelligence usage
 • agent activity
+• architecture conformance
 
 ───
 
-178. Intelligence Telemetry
-AI systems should expose:
+182. Intelligence Telemetry
+AI systems should expose appropriate metadata including:
 • model
 • provider
 • version
 • latency
-• token/resource usage
+• resource usage
 • failure
+• evaluation status
 • confidence where meaningful
-• evaluation state
+Sensitive information must remain protected.
 
 ───
 
-179. Agent Telemetry
+183. Agent Telemetry
 Agents should expose:
 • identity
 • task
+• capability usage
 • tool calls
 • policy decisions
 • execution state
@@ -2927,68 +3211,87 @@ Agents should expose:
 • outcomes
 • cost
 • duration
-Sensitive information must remain protected.
+Sensitive content must remain protected.
 
 ───
 
-180. Autonomous Cost Governance
-Autonomous systems must not have unlimited resource consumption.
-Resource policies should govern:
+184. Autonomous Cost Governance
+Autonomous systems must not receive unlimited resource consumption.
+Policies may constrain:
 text
-compute
-tokens
-API calls
-storage
-network
-execution time
-financial expenditure
+COMPUTE
+TOKENS
+API CALLS
+STORAGE
+NETWORK
+EXECUTION TIME
+FINANCIAL EXPENDITURE
+CONCURRENCY
 
 
 ───
 
-181. Autonomous Rate Limiting
+185. Autonomous Rate Limiting
 Agents and automated systems should have appropriate:
 • quotas
 • rate limits
 • concurrency limits
 • spending limits
 • action limits
+• temporal limits
 
 ───
 
-182. Kill Switch Principle
-High-risk autonomous systems must have controlled emergency interruption mechanisms.
-Kill switches must themselves be:
+186. Kill Switch Principle
+High-risk autonomous systems require controlled interruption mechanisms.
+Kill switches must be:
 • protected
 • tested
 • observable
 • auditable
+• independently available where appropriate
 
 ───
 
-183. Safe Default Principle
-When uncertain about a high-impact action, CoreGrid should prefer:
+187. Safe Default Principle
+When uncertainty is material for a high-impact action:
 text
 PAUSE
+ ↓
 ESCALATE
+ ↓
 REQUEST VERIFICATION
 
-rather than uncontrolled execution.
+is preferred to uncontrolled execution.
 
 ───
 
-184. Security Response Principle
-Security response may be automated where appropriate, but destructive or irreversible actions require stronger authorization.
+PART XXXII — RESILIENCE AND FAILURE LEARNING
+188. Security Response Principle
+Security response may be automated where appropriate.
+Destructive or irreversible actions require stronger authorization and safeguards.
 
 ───
 
-185. Recovery Over Panic
-Failure handling should prefer controlled recovery over cascading destructive actions.
+189. Recovery Over Panic
+Failure handling should prefer:
+text
+CONTAIN
+ ↓
+STABILIZE
+ ↓
+RECOVER
+ ↓
+VERIFY
+ ↓
+LEARN
+
+rather than cascading destructive reactions.
 
 ───
 
-186. Resilience Principle
-CoreGrid should assume that:
+190. Resilience Principle
+CoreGrid assumes:
 • networks fail
 • databases fail
 • models fail
@@ -2998,72 +3301,82 @@ CoreGrid should assume that:
 • humans make mistakes
 • configurations drift
 • dependencies disappear
-The architecture must therefore expect failure rather than treat it as impossible.
+Failure is therefore an architectural condition, not an exceptional impossibility.
 
 ───
 
-187. Graceful Decomposition
-When a component fails, the system should isolate the failure where possible.
+191. Graceful Decomposition
+Where possible:
 text
-Failure
+FAILURE
  ↓
-Contain
+CONTAIN
  ↓
-Degrade
+DEGRADE
  ↓
-Recover
+RECOVER
  ↓
-Verify
+VERIFY
  ↓
-Learn
+LEARN
 
+Failure containment is preferable to platform-wide collapse.
 
 ───
 
-188. Learning From Failure
-Incidents should produce institutional knowledge.
+192. Learning From Failure
+Incidents should produce:
 text
-Incident
+INCIDENT
  ↓
-Evidence
+EVIDENCE
  ↓
-Root Cause
+ROOT CAUSE
  ↓
-Correction
+CORRECTION
  ↓
-Verification
+VERIFICATION
  ↓
-Architecture Learning
+ARCHITECTURAL LEARNING
 
 
 ───
 
-189. No Blame-Based Engineering
-The system should optimize for discovering causes rather than assigning blame.
-Technical accountability remains necessary.
-But evidence must drive conclusions.
+193. No Blame-Based Engineering
+Engineering should optimize for identifying causes and preventing recurrence.
+Accountability remains necessary.
+Blame is not a substitute for evidence.
 
 ───
 
-190. Security Incident Learning
-Security incidents should update:
+194. Security Incident Learning
+Security incidents should inform, where appropriate:
 • detections
 • controls
 • policies
 • threat intelligence
 • architecture
 • tests
-where appropriate.
+• training
+• recovery procedures
 
 ───
 
-191. Architecture Learning
+195. Architecture Learning
 Architecture should evolve from observed reality.
-Metrics, incidents, costs, failures, and usage patterns should inform future architectural decisions.
+Relevant evidence includes:
+• metrics
+• incidents
+• failures
+• costs
+• usage
+• security events
+• operational behavior
+• domain changes
 
 ───
 
-192. Continuous Improvement Loop
+196. Continuous Improvement Loop
 CoreGrid follows:
 text
 BUILD
@@ -3085,14 +3398,23 @@ BUILD AGAIN
 
 ───
 
-193. No Permanent Blind Spots
-Unknown areas should be explicitly tracked.
-A platform should know what it does not know.
+PART XXXIII — EPISTEMIC GOVERNANCE
+197. No Permanent Blind Spots
+Unknown areas must be explicitly tracked.
+CoreGrid should maintain awareness of:
+text
+KNOWN
+UNKNOWN
+ASSUMED
+UNVERIFIED
+CONTRADICTED
+
+A platform must know what it does not know.
 
 ───
 
-194. Epistemic Status
-Important outputs should support statuses such as:
+198. Epistemic Status
+Important outputs should support:
 text
 KNOWN
 OBSERVED
@@ -3102,62 +3424,66 @@ SIMULATED
 UNCERTAIN
 CONTRADICTED
 UNKNOWN
+HYPOTHETICAL
 
 
 ───
 
-195. Intelligence Confidence
-Confidence should never be displayed without context.
-Where useful:
+199. Intelligence Confidence
+Confidence should travel with:
 text
-Confidence
+CONFIDENCE
 +
-Evidence
+EVIDENCE
 +
-Provenance
+PROVENANCE
 +
-Uncertainty
+UNCERTAINTY
 +
-Time
+TIME
++
+ASSUMPTIONS
 
-should travel together.
+Confidence without context is insufficient.
 
 ───
 
-196. Decision Reproducibility
-Consequential decisions should be reconstructable from:
+200. Decision Reproducibility
+Consequential decisions should be reconstructable from appropriate:
 text
-Inputs
+INPUTS
 +
-Policy
+CONTEXT
 +
-Context
+POLICY
 +
-Model/Algorithm
+MODEL / ALGORITHM
 +
-Version
+VERSION
 +
-Authorization
+AUTHORIZATION
 +
-Outcome
+EVIDENCE
++
+OUTCOME
 
-where technically and legally appropriate.
+subject to legal, privacy, and security constraints.
 
 ───
 
-197. No Magic
-CoreGrid must not depend on undocumented magical behavior.
-If a behavior matters:
+201. No Magic
+CoreGrid must not depend on undocumented behavior that matters operationally.
+If behavior matters:
 text
-document it
-test it
-observe it
-version it
+DOCUMENT IT
+TEST IT
+OBSERVE IT
+VERSION IT
 
 
 ───
 
-198. Engineering Honesty
+202. Engineering Honesty
 If something is incomplete:
 It is incomplete.
 If something is uncertain:
@@ -3166,38 +3492,39 @@ If something failed:
 It failed.
 If evidence is missing:
 Evidence is missing.
-This principle applies equally to humans and AI agents.
+This applies equally to humans and AI systems.
 
 ───
 
-199. Production Readiness Gate
-A capability may be considered production-ready only when appropriate:
+PART XXXIV — PRODUCTION AND DEFINITION OF DONE
+203. Production Readiness Gate
+Production readiness requires appropriate:
 text
-Implementation
+IMPLEMENTATION
 +
-Testing
+TESTING
 +
-Security
+SECURITY
 +
-Observability
+OBSERVABILITY
 +
-Documentation
+DOCUMENTATION
 +
-Recovery
+RECOVERY
 +
-Ownership
+OWNERSHIP
 +
-Operational Readiness
+OPERATIONAL READINESS
 
-exist for its risk level.
+The required depth scales with risk.
 
 ───
 
-200. Definition of Done
+204. Definition of Done
 A CoreGrid engineering task is complete when:
 1. implementation exists
-2. behavior is validated
-3. types/contracts are correct
+2. intended behavior is validated
+3. contracts and types are correct
 4. relevant tests pass
 5. security remains intact
 6. tenant boundaries remain intact
@@ -3206,99 +3533,124 @@ A CoreGrid engineering task is complete when:
 9. documentation is updated
 10. architecture remains coherent
 11. failure behavior is understood
-12. no unrelated regressions were introduced
+12. unrelated regressions are absent or documented
 13. ownership remains explicit
 14. production implications are understood
 
 ───
 
-201. Autonomous Engineering Definition of Done
-For AI agents, completion additionally requires:
+205. Autonomous Engineering Definition of Done
+For AI engineering agents, completion additionally requires:
 text
-Scope Verified
+SCOPE VERIFIED
 +
-Existing System Inspected
+EXISTING SYSTEM INSPECTED
 +
-Implementation Performed
+IMPLEMENTATION PERFORMED
 +
-Tests Executed
+TESTS EXECUTED
 +
-Failures Reported
+FAILURES REPORTED
 +
-Architecture Checked
+ARCHITECTURE CHECKED
 +
-Security Checked
+SECURITY CHECKED
 +
-Documentation Updated
+DOCUMENTATION UPDATED
++
+CONFORMANCE VERIFIED
 
+An agent must not declare completion merely because code was generated.
 
 ───
 
-202. Constitutional Governance Workflow
+PART XXXV — CONSTITUTIONAL GOVERNANCE WORKFLOW
+206. Constitutional Governance Workflow
 Major platform changes follow:
 text
-Proposal
+PROPOSAL
  ↓
-Current-State Inspection
+CURRENT-STATE INSPECTION
  ↓
-Ownership Analysis
+OWNERSHIP ANALYSIS
  ↓
-Dependency Analysis
+DEPENDENCY ANALYSIS
  ↓
-Security Analysis
+SECURITY ANALYSIS
  ↓
-Data Analysis
+DATA ANALYSIS
  ↓
-Risk Analysis
+RISK ANALYSIS
  ↓
-Scalability Analysis
+SCALABILITY ANALYSIS
  ↓
-Compatibility Analysis
+COMPATIBILITY ANALYSIS
  ↓
-Decision
+ARCHITECTURAL DECISION
  ↓
-Implementation
+IMPLEMENTATION
  ↓
-Validation
+VALIDATION
  ↓
-Observation
+OBSERVATION
  ↓
-Documentation
+DOCUMENTATION
+ ↓
+CONFORMANCE VERIFICATION
 
 
 ───
 
-203. Emergency Changes
-Emergency changes may bypass portions of normal workflow only where necessary to protect:
+207. Emergency Changes
+Emergency changes may bypass portions of normal workflow only when necessary to protect:
 • life
 • data
 • security
 • availability
 • institutional integrity
-Emergency changes must be retrospectively documented and reviewed.
+Emergency changes require retrospective:
+• documentation
+• ownership review
+• architectural review
+• security review
+• reconciliation with governance
 
 ───
 
-204. Architectural Escalation
-When an engineer or AI agent encounters uncertainty involving:
+208. Architectural Escalation
+When uncertainty involves:
 • ownership
 • security
 • canonical truth
 • constitutional principles
-• irreversible actions
+• irreversible action
 • future-phase scope
+• cross-runtime sovereignty
 the issue must be escalated rather than silently resolved through assumption.
 
 ───
 
-205. CoreGrid's Fundamental Equation
-The platform can be conceptually understood as:
+PART XXXVI — COREGRID FUNDAMENTAL SYSTEM MODEL
+209. CoreGrid's Fundamental Equation
+Conceptually:
 text
 REALITY
 +
 IDENTITY
 +
 CONTEXT
++
+TIME
++
+SPACE
++
+RELATIONSHIPS
++
+STATE
++
+EVENTS
++
+PROCESS
 +
 POLICY
 +
@@ -3310,70 +3662,79 @@ INTELLIGENCE
 +
 AGENCY
 +
+AUTHORITY
++
 EXECUTION
 +
 OBSERVATION
++
+CONSEQUENCE
 +
 GOVERNANCE
 =
 COREGRID
 
+This is a conceptual model, not a literal implementation formula.
 
 ───
 
-206. CoreGrid Intelligence Loop
+210. CoreGrid Intelligence Loop
 text
-Observe
+OBSERVE
  ↓
-Understand
+UNDERSTAND
  ↓
-Remember
+REMEMBER
  ↓
-Reason
+REASON
  ↓
-Predict
+HYPOTHESIZE
  ↓
-Plan
+PREDICT
  ↓
-Simulate
+PLAN
  ↓
-Authorize
+SIMULATE
  ↓
-Act
+AUTHORIZE
  ↓
-Verify
+ACT
  ↓
-Learn
+VERIFY
  ↓
-Evolve
+OBSERVE CONSEQUENCE
+ ↓
+LEARN
+ ↓
+EVOLVE
 
-The loop is powerful because governance surrounds it.
+Governance surrounds the entire loop.
 
 ───
 
-207. CoreGrid Safety Loop
+211. CoreGrid Safety Loop
 text
-Identity
+IDENTITY
  ↓
-Trust
+TRUST
  ↓
-Policy
+POLICY
  ↓
-Authorization
+AUTHORIZATION
  ↓
-Capability
+CAPABILITY
  ↓
-Execution
+EXECUTION
  ↓
-Verification
+VERIFICATION
  ↓
-Audit
+AUDIT
 
-No autonomous subsystem should bypass this loop for consequential actions.
+Consequential autonomous systems must not bypass this chain.
 
 ───
 
-208. CoreGrid Reality Loop
+212. CoreGrid Reality Loop
 text
 REAL WORLD
  ↓
@@ -3381,30 +3742,35 @@ SENSORS / USERS / SYSTEMS
  ↓
 OBSERVATIONS
  ↓
+REPRESENTATION
+ ↓
 CANONICAL STATE
  ↓
-DIGITAL REPRESENTATION
+DIGITAL REALITY
  ↓
 INTELLIGENCE
  ↓
 DECISION
  ↓
-ACTION
+AUTHORIZED ACTION
  ↓
-REAL-WORLD OUTCOME
+REAL-WORLD CONSEQUENCE
  ↓
 OBSERVATION
 
+The consequence returns to the intelligence substrate as new evidence.
 
 ───
 
-209. CoreGrid Evolution Loop
+213. CoreGrid Evolution Loop
 text
 CURRENT SYSTEM
  ↓
 OBSERVE
  ↓
 IDENTIFY LIMITATION
+ ↓
+FORM HYPOTHESIS
  ↓
 PROPOSE CHANGE
  ↓
@@ -3417,20 +3783,21 @@ APPROVE
 MIGRATE
  ↓
 OBSERVE
+ ↓
+LEARN
 
+Evolution is therefore governed adaptation rather than uncontrolled self-rewrite.
 
 ───
 
-210. The Ultimate Architectural Principle
+PART XXXVII — ULTIMATE CONSTITUTIONAL DISTINCTIONS
+214. The Ultimate Architectural Principle
 CoreGrid must never confuse:
 text
 POWER
-with
+≠
 AUTHORITY
 
-A system may possess enormous computational power without possessing unlimited authority.
-Likewise:
-text
 INTELLIGENCE
 ≠
 TRUTH
@@ -3463,11 +3830,27 @@ CAPABILITY
 ≠
 ACTION
 
-These distinctions are foundational.
+DECISION
+≠
+AUTHORIZATION
+
+AUTHORIZATION
+≠
+SUCCESS
+
+EXECUTION
+≠
+OUTCOME
+
+REPRESENTATION
+≠
+REALITY
+
+These distinctions constitute one of CoreGrid's deepest constitutional protections.
 
 ───
 
-211. The CoreGrid Sovereignty Principle
+215. CoreGrid Sovereignty Principle
 CoreGrid must remain sovereign over its architecture.
 No:
 • model provider
@@ -3477,53 +3860,88 @@ No:
 • external integration
 • autonomous agent
 • customer runtime
+• infrastructure vendor
 may silently become the architectural authority of CoreGrid.
+External capabilities may participate in CoreGrid.
+They do not define CoreGrid.
 
 ───
 
-212. The CoreGrid Evolution Principle
-CoreGrid must be:
-stable at its foundations, adaptive at its boundaries, intelligent in its interpretation, autonomous in bounded execution, and continuously evolving through evidence.
+216. CoreGrid Evolution Principle
+CoreGrid shall be:
+text
+STABLE AT ITS FOUNDATIONS
+ADAPTIVE AT ITS BOUNDARIES
+INTELLIGENT IN ITS INTERPRETATION
+AUTONOMOUS IN BOUNDED EXECUTION
+EVIDENCE-GROUNDED IN ITS LEARNING
+OBSERVABLE IN ITS OPERATION
+AUDITABLE IN ITS ACTION
+EVOLVABLE WITHOUT SELF-DESTRUCTION
+
 
 ───
 
-213. The CoreGrid Alien Perspective
-If CoreGrid eventually reaches a level of intelligence where it can reason about its own architecture, it should not ask:
+217. CoreGrid Alien Perspective
+If CoreGrid eventually becomes capable of reasoning about its own architecture, it should not primarily ask:
 "How do I add another feature?"
 It should ask:
 text
-What capability is missing?
+WHAT CAPABILITY IS MISSING?
 
-Why is it missing?
+WHAT REALITY DOES IT REPRESENT?
 
-Who owns it?
+WHY DOES THE CAPABILITY NEED TO EXIST?
 
-What reality does it represent?
+WHO SHOULD OWN IT?
 
-What evidence establishes the need?
+WHAT EVIDENCE ESTABLISHES THE NEED?
 
-What dependencies would it create?
+DOES COREGRID ALREADY PROVIDE IT?
 
-What risks would it introduce?
+CAN EXISTING CAPABILITIES COMPOSE TO SOLVE IT?
 
-Can existing capabilities compose to solve it?
+WHAT NEW STATE DOES IT INTRODUCE?
 
-Can the capability remain replaceable?
+WHAT DEPENDENCIES DOES IT CREATE?
 
-How can it be verified?
+WHAT AUTHORITY DOES IT REQUIRE?
 
-How can it be reversed?
+WHAT RISKS DOES IT INTRODUCE?
 
-What happens if it fails?
+WHAT DATA DOES IT CONTROL?
 
-What new intelligence becomes possible afterward?
+WHAT BOUNDARIES DOES IT CROSS?
 
-This is the intended architectural mindset.
+CAN IT REMAIN REPLACEABLE?
+
+HOW CAN IT BE VERIFIED?
+
+HOW CAN IT BE SIMULATED?
+
+HOW CAN IT BE REVERSED?
+
+WHAT HAPPENS IF IT FAILS?
+
+WHAT HAPPENS IF IT IS COMPROMISED?
+
+WHAT NEW INTELLIGENCE DOES IT ENABLE?
+
+WHAT NEW BLAST RADIUS DOES IT CREATE?
+
+HOW DOES IT AFFECT THE REST OF COREGRID?
+
+DOES IT CHANGE A CONSTITUTIONAL INVARIANT?
+
+CAN THE PLATFORM REMAIN GOVERNABLE AFTER ITS INTRODUCTION?
+
+This is the intended CoreGrid architectural mindset.
 
 ───
 
-214. The CoreGrid Platform Invariant
-The platform must remain:
+PART XXXVIII — PLATFORM AND RUNTIME INVARIANTS
+218. CoreGrid Platform Invariant
+CoreGrid must remain:
 text
 UNIVERSAL
 MODULAR
@@ -3539,13 +3957,16 @@ AUTONOMOUS-BY-POLICY
 EVIDENCE-GROUNDED
 AUDITABLE
 RECOVERABLE
+REPRODUCIBLE
+TEMPORALLY-AWARE
+PROVENANCE-AWARE
 EVOLVABLE
 
 
 ───
 
-215. Scholar Runtime Invariant
-CoreGrid Scholar must remain:
+219. Scholar Runtime Invariant
+Scholar remains:
 text
 A RUNTIME
     ↓
@@ -3554,75 +3975,399 @@ ON TOP OF
 COREGRID INFRASTRUCTURE
 
 Scholar may validate the architecture.
-Scholar may influence future platform improvements.
-Scholar must not become a permanent architectural constraint on CoreGrid.
+Scholar may expose platform gaps.
+Scholar may influence platform evolution.
+Scholar must not become a permanent architectural constraint.
 
 ───
 
-216. Final Constitutional Rule
-When forced to choose between:
+PART XXXIX — FINAL CONSTITUTIONAL RULES
+220. Final Architectural Priority
+When competing architectural concerns arise, CoreGrid's default precedence is:
 text
-speed vs correctness
-novelty vs stability
-automation vs control
-power vs governance
-convenience vs security
-complexity vs simplicity
-prediction vs evidence
-short-term gain vs long-term integrity
+TRUTH
+↓
+CORRECTNESS
+↓
+SAFETY
+↓
+SECURITY
+↓
+AUTHORITY
+↓
+OWNERSHIP
+↓
+RELIABILITY
+↓
+OBSERVABILITY
+↓
+EXPLAINABILITY
+↓
+MAINTAINABILITY
+↓
+SCALABILITY
+↓
+INTEROPERABILITY
+↓
+ADAPTABILITY
+↓
+VELOCITY
+↓
+COST
 
-CoreGrid chooses:
-Correctness, evidence, security, governance, simplicity, sovereignty, observability, and long-term evolvability.
+This precedence remains subject to:
+• law
+• constitutional constraints
+• legitimate operational requirements
+• explicit architectural decisions
+• emergency requirements
 
 ───
 
-217. Final Declaration
-CoreGrid is engineered not as a static application, but as a continuously evolving computational substrate for representing reality, coordinating intelligence, governing autonomous capability, and enabling domain-specific runtimes.
+221. Constitutional Continuity
+CoreGrid must preserve continuity across:
+text
+ARCHITECTURE
+DATA
+IDENTITY
+POLICY
+DECISIONS
+MEMORY
+KNOWLEDGE
+OPERATIONS
+EVOLUTION
+
+Evolution must not erase the platform's ability to understand how it became what it is.
+
+───
+
+222. Constitutional Decision Rule
+When the correct architectural answer is unknown:
+text
+DO NOT INVENT AUTHORITY.
+DO NOT INVENT FACTS.
+DO NOT INVENT OWNERSHIP.
+DO NOT INVENT DEPENDENCIES.
+DO NOT INVENT COMPLETION.
+DO NOT INVENT CERTAINTY.
+
+Instead:
+text
+OBSERVE
+ ↓
+RESEARCH
+ ↓
+MODEL
+ ↓
+SURFACE UNCERTAINTY
+ ↓
+PROPOSE
+ ↓
+GOVERN
+ ↓
+DECIDE
+ ↓
+IMPLEMENT
+ ↓
+VERIFY
+
+
+───
+
+223. Constitutional Evolution Rule
+No evolution is considered complete merely because the new implementation works.
+Evolution is complete only when:
+text
+ARCHITECTURE
++
+IMPLEMENTATION
++
+SECURITY
++
+DATA INTEGRITY
++
+CONTRACTS
++
+OBSERVABILITY
++
+DOCUMENTATION
++
+MIGRATION
++
+RECOVERY
++
+GOVERNANCE
++
+CONFORMANCE
+
+are reconciled to the appropriate level for the change.
+
+───
+
+224. Constitutional Intelligence Rule
+CoreGrid may become increasingly intelligent.
+It may:
+• observe more
+• remember more
+• reason more deeply
+• model more domains
+• simulate more futures
+• coordinate more actors
+• automate more workflows
+• discover more relationships
+• propose more architectural improvements
+But increasing intelligence does not automatically increase authority.
+The constitutional equation remains:
+text
+MORE INTELLIGENCE
+        ↓
+MORE CAPABILITY
+        ↓
+MORE POTENTIAL IMPACT
+        ↓
+MORE NEED FOR GOVERNANCE
+
+
+───
+
+225. Constitutional Autonomy Rule
+Autonomy is not binary.
+CoreGrid shall support graduated autonomy according to:
+text
+OBSERVE
+→
+EXPLAIN
+→
+RECOMMEND
+→
+PLAN
+→
+EXECUTE WITH APPROVAL
+→
+EXECUTE WITHIN POLICY
+→
+CONTINUOUSLY EXECUTE WITHIN VERIFIED BOUNDS
+
+Higher autonomy requires stronger:
+• observability
+• authorization
+• verification
+• resource controls
+• rollback
+• incident handling
+• auditability
+
+───
+
+226. Constitutional Reality Rule
+CoreGrid exists to computationally represent and act upon reality.
+Therefore the platform must preserve distinctions between:
+text
+WHAT EXISTS
+WHAT WAS OBSERVED
+WHAT WAS RECORDED
+WHAT IS CANONICAL
+WHAT IS KNOWN
+WHAT IS INFERRED
+WHAT IS BELIEVED
+WHAT IS PREDICTED
+WHAT IS HYPOTHESIZED
+WHAT IS SIMULATED
+WHAT IS RECOMMENDED
+WHAT IS DECIDED
+WHAT IS AUTHORIZED
+WHAT WAS EXECUTED
+WHAT ACTUALLY HAPPENED
+
+This distinction is foundational to Reality Intelligence.
+
+───
+227. Final Constitutional Declaration
+CoreGrid is engineered not as a static application, but as a continuously evolving computational substrate for:
+• representing reality
+• understanding reality
+• connecting realities
+• preserving institutional memory
+• coordinating intelligence
+• governing agency
+• simulating possible futures
+• executing authorized actions
+• observing consequences
+• learning from evidence
+• evolving without destroying continuity
 Its first manifestation is CoreGrid Scholar.
 Its architecture is larger than Scholar.
 Its intelligence is not owned by a single model.
 Its autonomy is not unlimited.
-Its truth is not generated by AI.
-Its authority is not granted by capability.
-Its evolution is not allowed to destroy its foundations.
-The platform must remain capable of becoming dramatically more intelligent without becoming dramatically less governable.
+Its truth is not generated merely by AI.
+Its authority is not granted merely by capability.
+Its state is not defined merely by a database.
+Its interface is not its architecture.
+Its architecture is not its implementation.
+Its implementation is not automatically its intended architecture.
+Its predictions are not facts.
+Its simulations are not reality.
+Its decisions are not automatically execution.
+Its execution is not automatically success.
+Its evolution is not permitted to destroy its foundations.
+CoreGrid must therefore become capable of becoming dramatically more intelligent without becoming dramatically less governable.
 Therefore:
 CoreGrid shall be built as infrastructure for intelligence, not merely software containing intelligence.
 And:
-CoreGrid Scholar shall be treated as the first working runtime through which the CoreGrid platform proves itself in the real world.
+CoreGrid Scholar shall remain the first working runtime through which the universal CoreGrid platform proves, measures, and evolves itself in the real world.
 
 ───
 
 CONSTITUTIONAL STATUS
 Platform: CoreGrid Universal Intelligence Infrastructure
-Current Runtime: CoreGrid Scholar
-Architecture Era: ASI Era
+Architecture Era: ASI-Era Architecture
+Reference Runtime: CoreGrid Scholar
 Phase Scope: 01–51
-Status: NORMATIVE / CANONICAL
-Authority: CoreGrid Architecture Governance
-Primary Principle: Infrastructure before application
-Primary Reality: Evidence before assumption
-Primary Safety Rule: Capability does not imply authority
-Primary AI Rule: Intelligence does not imply truth
-Primary Autonomy Rule: Autonomy remains policy-bounded
-Primary Evolution Rule: Evolve without destroying institutional memory
-Primary Runtime Rule: Scholar is a runtime, not the platform itself
-Canonical companion documents:
+Status:NORMATIVE / CANONICAL / PLATFORM-WIDE
+Authority: CoreGrid Architecture Governance Layer
+Primary Constitutional Principles
+text
+PRIMARY IDENTITY
+Universal Intelligence Infrastructure
+
+PRIMARY ARCHITECTURAL RULE
+Infrastructure before application
+
+PRIMARY REALITY RULE
+Evidence before assumption
+
+PRIMARY TRUTH RULE
+Representation does not equal reality
+
+PRIMARY AUTHORITY RULE
+Capability does not imply authority
+
+PRIMARY AI RULE
+Intelligence does not imply truth
+
+PRIMARY AUTONOMY RULE
+Autonomy remains policy-bounded
+
+PRIMARY OWNERSHIP RULE
+Canonical state has one authoritative owner
+
+PRIMARY SECURITY RULE
+No actor is trusted merely because it is internal
+
+PRIMARY DEPENDENCY RULE
+Contracts before implementation coupling
+
+PRIMARY EVOLUTION RULE
+Evolve without destroying institutional memory
+
+PRIMARY ENGINEERING RULE
+Inspect before invent
+
+PRIMARY REUSE RULE
+Reuse before rebuild
+
+PRIMARY EVIDENCE RULE
+Measured and validated behavior outranks assumption
+
+PRIMARY GOVERNANCE RULE
+Material architecture is explicitly decided
+
+PRIMARY OBSERVABILITY RULE
+Consequential action must be reconstructable
+
+PRIMARY RUNTIME RULE
+Scholar is a runtime, not the platform
+
+PRIMARY INTELLIGENCE RULE
+More intelligence requires stronger governance
+
+PRIMARY SOVEREIGNTY RULE
+No vendor, model, runtime, or agent becomes CoreGrid's architectural authority
+
+PRIMARY CONTINUITY RULE
+Historical architecture remains recoverable
+
+PRIMARY UNKNOWN RULE
+Unknown remains unknown until evidence changes its status
+
+
+───
+
+CANONICAL COMPANION DOCUMENTS
+The Constitution operates with the following governance ecosystem:
 text
 CONSTITUTION.md
-ARCHITECTURE.md
+        ↓
+ARCHITECTURE-PRINCIPLES.md
+        ↓
 ARCHITECTURE-REGISTRY.md
+        ↓
 ARCHITECTURE-DEPENDENCY-MAP.md
-DECISIONS/
-PROGRESS/
+        ↓
+BOUNDARIES.md
+        ↓
+POLICIES.md
+        ↓
+DECISION.md
+        ↓
 SPECIFICATIONS/
-.codex/
+        ↓
+CONTRACTS/
+        ↓
+IMPLEMENTATION
+        ↓
+TESTS / EVIDENCE
+        ↓
+PROGRESS/
 
-CoreGrid Constitutional Statement:
-Build the substrate once.
-Represent reality correctly.
-Make capability composable.
-Make intelligence replaceable.
-Make autonomy governable.
-Make decisions auditable.
-Make evolution survivable.
+Supporting engineering intelligence and governance systems may include:
+text
+.codex/
+ARCHITECTURE/
+DECISIONS/
+SPECIFICATIONS/
+CONTRACTS/
+PROGRESS/
+POLICIES/
+BOUNDARIES/
+
+Exact repository paths remain subject to the authoritative repository structure.
+
+───
+
+COREGRID CONSTITUTIONAL STATEMENT
+text
+BUILD THE SUBSTRATE ONCE.
+
+REPRESENT REALITY CORRECTLY.
+
+PRESERVE DISTINCTIONS BETWEEN REALITY AND REPRESENTATION.
+
+MAKE CAPABILITY COMPOSABLE.
+
+MAKE INTELLIGENCE REPLACEABLE.
+
+MAKE AUTHORITY EXPLICIT.
+
+MAKE AUTONOMY GOVERNABLE.
+
+MAKE DECISIONS AUDITABLE.
+
+MAKE PROVENANCE TRACEABLE.
+
+MAKE ARCHITECTURE MACHINE-VERIFIABLE.
+
+MAKE FAILURE CONTAINABLE.
+
+MAKE CONSEQUENCES OBSERVABLE.
+
+MAKE EVOLUTION SURVIVABLE.
+
+MAKE INSTITUTIONAL MEMORY PERSISTENT.
+
+ALLOW INTELLIGENCE TO SCALE
+WITHOUT ALLOWING AUTHORITY TO ESCAPE GOVERNANCE.
+
+Constitutional Status: CANONICAL / NORMATIVE / PLATFORM-WIDE
+CoreGrid Constitutional Principle:
+The platform may continuously increase what it can represent, understand, remember, reason about, simulate, decide, and execute — but no increase in computational capability may silently create new constitutional authority.

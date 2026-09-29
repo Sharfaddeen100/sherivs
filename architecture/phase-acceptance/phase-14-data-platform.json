@@ -1,0 +1,99 @@
+{
+  "$comment": "Phase 14 acceptance definition derived from architecture/phase-14-data-platform.md, the phase contract, data-* modules and the cited unit suites. The data-platform report explicitly records storage, wiring, streaming, quality-feedback and retention gaps; no runtime or persistence claim is inferred.",
+  "phase": "14",
+  "phaseName": "Data Platform",
+  "source": "architecture/phase-14-data-platform.md",
+  "contract": "frontend/src/lib/kernel/phase-contracts/phase-14-data-platform.ts",
+  "ownership": {
+    "note": "Phase 14 owns catalog metadata, classification, quality, lineage and governed data-access contracts. Domain tables, universal memory/knowledge graphs and authorization decisions remain owned by their respective phases.",
+    "canonicalOwners": {
+      "catalog-and-classification": "14",
+      "quality-and-lineage": "14",
+      "domain-records": "owning phases",
+      "tenancy": "03",
+      "authorization": "08",
+      "memory-and-knowledge": "36/48"
+    }
+  },
+  "areas": [
+    {
+      "id": "data-ownership-and-classification",
+      "area": "Datasets declare ownership and sensitivity",
+      "requirement": "A dataset has an owning phase/domain and an explicit classification; invalid ownership or classification input is refused.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/data-core.ts", "contains": "declareDataOwnership" },
+        { "kind": "test", "path": "tests/unit/data-core.test.ts", "contains": "rejects a declaration without an owning phase or source" },
+        { "kind": "test", "path": "tests/unit/data-core.test.ts", "contains": "ranks stricter classifications higher" }
+      ]
+    },
+    {
+      "id": "catalog-discovery-is-tenant-scoped",
+      "area": "The catalog discovers datasets without crossing tenants",
+      "requirement": "Catalog registration and search preserve dataset metadata and never return another tenant's dataset.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/data-catalog.ts" },
+        { "kind": "test", "path": "tests/unit/data-catalog.test.ts", "contains": "never returns results across tenants" },
+        { "kind": "test", "path": "tests/unit/data-catalog.test.ts", "contains": "registers a catalog entry" }
+      ]
+    },
+    {
+      "id": "quality-quarantine-and-replay",
+      "area": "Invalid data is measured, quarantined and replay-safe",
+      "requirement": "Quality rules reject invalid records, quarantine preserves a reason, and replay with the same key does not duplicate effects.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/data-quality.ts" },
+        { "kind": "test", "path": "tests/unit/data-quality.test.ts", "contains": "quarantines invalid records" },
+        { "kind": "test", "path": "tests/unit/data-quality.test.ts", "contains": "replay is idempotent" }
+      ]
+    },
+    {
+      "id": "lineage-and-governed-query",
+      "area": "Lineage and query policy are explicit",
+      "requirement": "Lineage stays within the tenant and governed queries require tenant, bound and classification constraints.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/data-governance.ts" },
+        { "kind": "test", "path": "tests/unit/data-governance.test.ts", "contains": "traces source-to-target lineage within the tenant" },
+        { "kind": "test", "path": "tests/unit/data-governance.test.ts", "contains": "blocks a query without a tenant filter" }
+      ]
+    },
+    {
+      "id": "retention-and-residency-policy",
+      "area": "Retention, legal hold and residency are governed",
+      "requirement": "Retention and transfer decisions are represented as policy decisions, including legal holds and prohibited cross-border transfer.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/data-governance.ts" },
+        { "kind": "test", "path": "tests/unit/data-governance.test.ts", "contains": "creates a retention policy and honours legal holds" },
+        { "kind": "test", "path": "tests/unit/data-governance.test.ts", "contains": "governs all transfers when cross-border transfer is prohibited" }
+      ]
+    },
+    {
+      "id": "governed-batch-and-ingestion-contracts",
+      "area": "Migration, job and ingestion contracts are declared",
+      "requirement": "Forward-only migration, restartable job, authorised ingestion and reconciliation contracts exist as libraries; their live callers are not implied.",
+      "required": false,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/data-migration.ts" },
+        { "kind": "module", "path": "frontend/src/lib/data-jobs.ts" },
+        { "kind": "module", "path": "frontend/src/lib/data-ingestion.ts" },
+        { "kind": "module", "path": "frontend/src/lib/data-reconciliation.ts" },
+        { "kind": "module", "path": "frontend/src/lib/data-platform-report.ts", "contains": "GAP-DATA-02" }
+      ]
+    },
+    {
+      "id": "physical-storage-and-runtime-wiring",
+      "area": "Physical storage and runtime enforcement remain open",
+      "requirement": "A real storage layer and database, scheduler or gateway boundary must enforce these contracts; the current report records that they are absent.",
+      "required": false,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/data-platform-report.ts", "contains": "GAP-DATA-01" },
+        { "kind": "module", "path": "frontend/src/lib/data-platform-report.ts", "contains": "GAP-DATA-02" },
+        { "kind": "document", "path": "architecture/phase-14-data-platform.md", "contains": "storage" }
+      ]
+    }
+  ]
+}

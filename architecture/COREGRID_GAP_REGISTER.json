@@ -1,0 +1,162 @@
+{
+  "mission": "COREGRID-MISSION-0001",
+  "artifact": "COREGRID_GAP_REGISTER",
+  "status": "DESIGNED",
+  "evidenceDate": "2026-09-27",
+  "statusVocabulary": [
+    "BLOCKED",
+    "DEFERRED",
+    "FUTURE",
+    "NOT_REQUIRED",
+    "IMPLEMENTED",
+    "VERIFIED",
+    "PARTIAL",
+    "CONFLICTING",
+    "UNKNOWN",
+    "PROPOSED"
+  ],
+  "gaps": [
+    {
+      "id": "CG-GAP-001",
+      "category": "OWNERSHIP",
+      "description": "13-surface, ten-surface, three-mother, and seven-root authority models overlap.",
+      "source": ["GOVERNANCE.md", "COREGRID MASTER GOVERNANCE GPT-5.6 LUNA ENGINEERING OPERATING CONTRACT.md", "REGISTRY.md", "COREGRID_ENGINEERING_RECONCILIATION_AUDIT.md"],
+      "owner": "Governance decision required",
+      "severity": "HIGH",
+      "requiredAction": "Approve an alias and authority map without duplicating mothers.",
+      "verification": "Review signed decision against all mother headers.",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "CG-GAP-002",
+      "category": "CONTROL-PLANE",
+      "description": "The 12 control-plane mechanism documents are designed but not a unified executable plane.",
+      "source": ["CONTROL-PLANE.md", "CONTROL-PLANE-01-REGISTRY.md", "CONTROL-PLANE-12-DRIFT-EVOLUTION.md"],
+      "owner": "Control-plane architecture",
+      "severity": "HIGH",
+      "requiredAction": "Reconcile existing registries, contracts, proofs, and scripts before adding runtime components.",
+      "verification": "Mechanism-to-owner traceability plus tests and observed evidence.",
+      "status": "DEFERRED"
+    },
+    {
+      "id": "CG-GAP-003",
+      "category": "MISSION",
+      "description": "No universal durable mission/objective/mandate model with owner, policy, approval, evidence, and lifecycle.",
+      "source": ["frontend/src/lib", "database/supabase/migrations", "MISSIONS.md"],
+      "owner": "MISSIONS.md / CONTROL-PLANE-06-MISSION-ORCHESTRATION.md",
+      "severity": "HIGH",
+      "requiredAction": "Apply database/supabase/migrations/20260929000000_coregrid_foundation_mission_001.sql in an approved environment. The schema is authored and not applied.",
+      "verification": "Contract, persistence, authorization, failure, and lifecycle tests.",
+      "status": "PARTIAL"
+    },
+    {
+      "id": "CG-GAP-004",
+      "category": "EVIDENCE",
+      "description": "Evidence is distributed across files and domain models without a universal immutable evidence/artifact registry.",
+      "source": ["architecture/proofs", "architecture/phase-acceptance", "architecture/archaeology", "frontend/src/lib/scholar/evidence.ts"],
+      "owner": "CONTROL-PLANE-04-EVIDENCE.md / ASSURANCE.md",
+      "severity": "HIGH",
+      "requiredAction": "Persist evidence identity and lifecycle only through an approved migration. The in-memory contract is recorded.",
+      "verification": "Evidence lineage and revocation tests.",
+      "status": "PARTIAL"
+    },
+    {
+      "id": "CG-GAP-005",
+      "category": "RUNTIME",
+      "description": "Execution contracts and event intent exist, but no unified durable execution record links preconditions, executor, verification, and rollback.",
+      "source": ["frontend/src/lib/automation-actions.ts", "frontend/src/lib/agent-tasks.ts", "frontend/src/lib/kernel/outbox.ts"],
+      "owner": "CONTROL-PLANE-08-CURSOR-EXECUTION.md",
+      "severity": "HIGH",
+      "requiredAction": "Keep execution in-memory until a durable execution schema and rollback procedure are approved. No autonomous side effects.",
+      "verification": "Idempotency, authorization, failure, rollback, and audit tests.",
+      "status": "PARTIAL"
+    },
+    {
+      "id": "CG-GAP-006",
+      "category": "CONFORMANCE",
+      "description": "Conformance is enforced by selected tests and scripts, not a unified assessed plane.",
+      "source": ["tests/unit/kernel-purity.test.ts", "tests/unit/platform-neutrality.test.ts", ".github/workflows/verify.yml"],
+      "owner": "CONTROL-PLANE-10-CONFORMANCE.md / ASSURANCE.md",
+      "severity": "MEDIUM",
+      "requiredAction": "Keep conformance assessment in-memory until an independent conformance record is persisted.",
+      "verification": "Independent conformance report tied to versioned targets.",
+      "status": "PARTIAL"
+    },
+    {
+      "id": "CG-GAP-007",
+      "category": "EVOLUTION",
+      "description": "Evolution ownership overlaps Phase 32, Phase 38, and Phase 47; D3 remains open.",
+      "source": ["architecture/duplication-map.md", "architecture/registry.json", "frontend/src/lib/evolution-core.ts"],
+      "owner": "Phase 32 candidate",
+      "severity": "HIGH",
+      "requiredAction": "Resolve D3 before self-improvement or autonomous architectural change.",
+      "verification": "ADR and ownership graph update.",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "CG-GAP-008",
+      "category": "REALITY",
+      "description": "Temporal observation kinds and kernel primitives exist, but spatial, causal, counterfactual, and broad epistemic persistence remain incomplete.",
+      "source": ["frontend/src/lib/kernel/reality.ts", "architecture/phase-33-reality-intelligence-kernel.md", "architecture/phase-completion-status.md"],
+      "owner": "Phase 33 candidate",
+      "severity": "HIGH",
+      "requiredAction": "Do not create new phases until existing reality ownership is reconciled.",
+      "verification": "Reality contract, schema, persistence, and end-to-end evidence.",
+      "status": "FUTURE"
+    },
+    {
+      "id": "CG-GAP-009",
+      "category": "WORKFORCE",
+      "description": "Institutional HR workforce substrate is implemented, but mission/agent delegation is not established.",
+      "source": ["frontend/src/lib/workforce-*", "frontend/src/lib/agent-tasks.ts", "WORKFORCE.md"],
+      "owner": "Phase 25 for HR; mission owner unresolved for delegation",
+      "severity": "HIGH",
+      "requiredAction": "Keep HR and agent delegation as separate ownership questions.",
+      "verification": "Delegation policy, tenant scope, worker lifecycle, and audit tests.",
+      "status": "PARTIAL"
+    },
+    {
+      "id": "CG-GAP-010",
+      "category": "DOCUMENTATION",
+      "description": "The existing reconciliation audit contains stale mother-surface claims after the mother files were added.",
+      "source": ["COREGRID_ENGINEERING_RECONCILIATION_AUDIT.md"],
+      "owner": "Mission 0001",
+      "severity": "MEDIUM",
+      "requiredAction": "Update audit evidence to current tree without rewriting prior historical findings.",
+      "verification": "Root inventory and status checks.",
+      "status": "IMPLEMENTED"
+    },
+    {
+      "id": "CG-GAP-011",
+      "category": "WORKFORCE",
+      "description": "The specifically named COREGRID ENGINEERING TEAM FOUNDRY / ENGINEERING WORKFORCE MACHINERY artifact was not found. WORKFORCE.md defines the conceptual workforce, but an exact executable foundry source is not established.",
+      "source": [
+        "WORKFORCE.md",
+        "CONTROL-PLANE-07-WORKFORCE-DELEGATION.md",
+        ".cursor/",
+        "repository filename/content search for foundry and team formation"
+      ],
+      "owner": "Workforce architecture",
+      "severity": "MEDIUM",
+      "requiredAction": "Classify WORKFORCE.md and existing Cursor/agent artifacts as the current conceptual/adapter boundary, then define any executable foundry only through a separately authorized workforce mission.",
+      "verification": "Source inventory, worker capability map, delegation contract, and executable delegation evidence.",
+      "status": "BLOCKED"
+    },
+    {
+      "id": "CG-GAP-012",
+      "category": "CONTROL-PLANE",
+      "description": "CONTROL-PLANE.md declares a skeleton awaiting blueprint while COREGRID_CONTROL_PLANE_RECONCILIATION.md declares a designed partial implementation map; these are conflicting status claims for the same control-plane surface.",
+      "source": [
+        "CONTROL-PLANE.md",
+        "architecture/COREGRID_CONTROL_PLANE_RECONCILIATION.md",
+        "COREGRID MASTER GOVERNANCE GPT-5.6 LUNA ENGINEERING OPERATING CONTRACT.md"
+      ],
+      "owner": "Control-plane architecture",
+      "severity": "HIGH",
+      "requiredAction": "Preserve both claims, determine authority and status vocabulary, then reconcile the master surface without treating the reconciliation map as implementation evidence.",
+      "verification": "Status decision record, mechanism-by-mechanism evidence map, and rerun of the reconciliation validator.",
+      "status": "CONFLICTING"
+    }
+  ],
+  "rule": "A gap is not a license to install infrastructure. Each requiredAction must pass ownership, security, evidence, and verification gates."
+}

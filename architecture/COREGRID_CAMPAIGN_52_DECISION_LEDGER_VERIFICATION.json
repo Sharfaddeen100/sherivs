@@ -1,0 +1,13 @@
+{
+  "mission": "COREGRID-MISSION-0001",
+  "campaign": "CAMPAIGN-52",
+  "workPackage": "CAMPAIGN-52-WP-01",
+  "artifact": "COREGRID_CAMPAIGN_52_DECISION_LEDGER_VERIFICATION",
+  "status": "PASS_DECISIONS_RECORDED_WITH_BLOCKERS",
+  "decisionCount": 27,
+  "pendingCount": 0,
+  "blockedCount": 8,
+  "invalidPending": [],
+  "unauthorizedImplementation": [],
+  "rule": "A pending decision cannot mutate architecture, registry, mothers, infrastructure or implementation."
+}

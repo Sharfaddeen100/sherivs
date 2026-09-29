@@ -1,0 +1,47 @@
+{
+  "$comment": "Evidence map for Phase 38. Phase 38 composes Phase 32 evolution and currently has no dedicated executable acceptance suite; all criteria remain declared.",
+  "phase": "38",
+  "phaseName": "Evolution Engine",
+  "source": "architecture/phase-38-evolution-engine.md",
+  "contract": "frontend/src/lib/kernel/phase-contracts/phase-38-evolution-engine.ts",
+  "ownership": {
+    "canonicalOwners": {
+      "evolution-lifecycle": "32",
+      "evolution-programs-and-staged-migration": "38",
+      "governance-alignment": "39",
+      "self-improvement-ratification": "47"
+    }
+  },
+  "areas": [
+    {
+      "id": "evolution-engine-boundary",
+      "area": "Evolution engine ownership composes existing evolution capability",
+      "requirement": "Phase 38 stages managed transformation without creating a competing evolution-lifecycle capability or governance authority.",
+      "required": false,
+      "evidence": [
+        { "kind": "document", "path": "architecture/phase-38-evolution-engine.md", "contains": "Evolution Constraint Engine" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "staged-migration-and-invariant-verification",
+      "area": "Staged migrations and post-change invariant verification are defined",
+      "requirement": "Evolution programs provide staged migration, rollback, invariant verification and controlled retirement.",
+      "required": false,
+      "evidence": [
+        { "kind": "document", "path": "architecture/phase-38-evolution-engine.md", "contains": "Evolution Transition Engine" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "live-evolution-program-execution",
+      "area": "Live platform evolution execution is wired",
+      "requirement": "Evolution programs execute at an authorized live boundary with durable state, evidence, rollback and conformance.",
+      "required": false,
+      "evidence": [
+        { "kind": "document", "path": "architecture/phase-38-evolution-engine.md", "contains": "Evolution Runtime Environment" }
+      ],
+      "boundary": []
+    }
+  ]
+}

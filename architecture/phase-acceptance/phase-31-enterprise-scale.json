@@ -1,0 +1,150 @@
+{
+  "$comment": "Evidence map for Phase 31. Executable tests cover scale and reliability contracts; live production telemetry and operational execution remain declared.",
+  "phase": "31",
+  "phaseName": "Enterprise Scale",
+  "source": "architecture/phase-31-enterprise-scale.md",
+  "contract": "frontend/src/lib/kernel/phase-contracts/phase-31-enterprise-scale.ts",
+  "ownership": {
+    "canonicalOwners": {
+      "capacity-and-scale-models": "31",
+      "reliability-objectives": "31",
+      "operations-and-runbooks": "31",
+      "domain-performance": "owning-domain-phase",
+      "cloud-placement": "21",
+      "planetary-infrastructure": "44"
+    }
+  },
+  "areas": [
+    {
+      "id": "workload-isolation-and-boundaries",
+      "area": "Workloads, pools and service boundaries preserve isolation",
+      "requirement": "Workloads are typed, assigned only to accepting pools, expensive work is isolated from critical interactive work, and state/service ownership is explicit.",
+      "required": true,
+      "evidence": [
+        { "kind": "contract", "path": "frontend/src/lib/kernel/phase-contracts/phase-31-enterprise-scale.ts", "contains": "Scale is proven, not assumed" },
+        { "kind": "test", "path": "tests/unit/enterprise-scale.test.ts", "contains": "isolates expensive workloads from critical interactive workloads" },
+        { "kind": "test", "path": "tests/unit/enterprise-scale.test.ts", "contains": "requires all six state-management dimensions" },
+        { "kind": "test", "path": "tests/unit/enterprise-scale.test.ts", "contains": "requires service ownership at the boundary" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "quotas-rate-limits-and-backpressure",
+      "area": "Capacity quotas, rate limits, queues and event streams are bounded",
+      "requirement": "Quota hierarchy, protected capacity, adaptive limits, backpressure, queue completeness, ordering and replay retention are governed.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/enterprise-scale.test.ts", "contains": "builds a hierarchy with one quota per scope" },
+        { "kind": "test", "path": "tests/unit/enterprise-scale.test.ts", "contains": "enforces quotas while preserving protected capacity" },
+        { "kind": "test", "path": "tests/unit/enterprise-scale.test.ts", "contains": "engages explicit backpressure instead of uncontrolled overload" },
+        { "kind": "test", "path": "tests/unit/enterprise-scale.test.ts", "contains": "requires a complete queue architecture" },
+        { "kind": "test", "path": "tests/unit/enterprise-scale.test.ts", "contains": "requires governed retention for controlled replay" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "consistency-slo-and-idempotency",
+      "area": "Consistency, idempotency, SLOs and latency budgets match workload truth",
+      "requirement": "Authoritative operations use appropriate consistency, duplicate delivery requires idempotency, service tiers and error/latency budgets are measurable.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/enterprise-scale.test.ts", "contains": "keeps authoritative operations strongly consistent" },
+        { "kind": "test", "path": "tests/unit/enterprise-scale.test.ts", "contains": "requires idempotency when duplicate delivery is possible" },
+        { "kind": "test", "path": "tests/unit/enterprise-scale.test.ts", "contains": "computes and exhausts error budgets" },
+        { "kind": "test", "path": "tests/unit/enterprise-scale.test.ts", "contains": "manages tail latency across all buckets" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "recovery-failure-domains-and-resilience",
+      "area": "Recovery objectives, failure domains, cells and resilience are explicit",
+      "requirement": "RPO/RTO, replication, failure isolation, cell boundaries, regional architecture and resilience controls are complete before readiness claims.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/enterprise-scale.test.ts", "contains": "checks recovery objectives" },
+        { "kind": "test", "path": "tests/unit/enterprise-scale.test.ts", "contains": "requires complete replication contracts" },
+        { "kind": "test", "path": "tests/unit/enterprise-scale.test.ts", "contains": "isolates failure domains from the platform" },
+        { "kind": "test", "path": "tests/unit/enterprise-scale.test.ts", "contains": "requires two regions for active-active" },
+        { "kind": "test", "path": "tests/unit/enterprise-scale.test.ts", "contains": "requires circuit breakers, bulkheads, and timeouts" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "capacity-autoscale-and-chaos-evidence",
+      "area": "Capacity forecasts, autoscaling and chaos tests require evidence",
+      "requirement": "Peak demand/headroom, bounded autoscaling, scale-to-zero constraints, production-like load certification and controlled chaos experiments are explicit.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/enterprise-scale.test.ts", "contains": "projects peak demand from growth, seasonality, and AI demand" },
+        { "kind": "test", "path": "tests/unit/enterprise-scale.test.ts", "contains": "binds autoscaling with min/max and budget limits" },
+        { "kind": "test", "path": "tests/unit/enterprise-scale.test.ts", "contains": "permits scale-to-zero only for noncritical workloads" },
+        { "kind": "test", "path": "tests/unit/enterprise-scale.test.ts", "contains": "certifies capacity only with evidence" },
+        { "kind": "test", "path": "tests/unit/enterprise-scale.test.ts", "contains": "requires chaos experiments to be controlled" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "incidents-runbooks-readiness-and-cost",
+      "area": "Operations, incidents, readiness, cost and performance remain governed",
+      "requirement": "Incident progression, alert severity, runbook steps, operational readiness, abnormal cost growth, cost circuits and performance contracts are explicit.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/enterprise-scale.test.ts", "contains": "advances incidents one stage at a time with command" },
+        { "kind": "test", "path": "tests/unit/enterprise-scale.test.ts", "contains": "requires runbook steps and flags automatable runbooks" },
+        { "kind": "test", "path": "tests/unit/enterprise-scale.test.ts", "contains": "passes operational readiness gates only when complete" },
+        { "kind": "test", "path": "tests/unit/enterprise-scale.test.ts", "contains": "detects abnormal cost growth and binds cost circuit breakers" },
+        { "kind": "test", "path": "tests/unit/enterprise-scale.test.ts", "contains": "requires a documented performance contract" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "progressive-delivery-and-drift",
+      "area": "Provisioning, rollout, rollback, policy and configuration drift are controlled",
+      "requirement": "Provisioning/deprovisioning, progressive delivery, kill switches, rollback compatibility, reversible policies and configuration drift detection are explicit.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/enterprise-scale.test.ts", "contains": "advances provisioning one stage at a time" },
+        { "kind": "test", "path": "tests/unit/enterprise-scale.test.ts", "contains": "advances progressive delivery with a small canary" },
+        { "kind": "test", "path": "tests/unit/enterprise-scale.test.ts", "contains": "requires controlled kill switches" },
+        { "kind": "test", "path": "tests/unit/enterprise-scale.test.ts", "contains": "requires rollback strategies and forward-compatible database changes" },
+        { "kind": "test", "path": "tests/unit/enterprise-scale.test.ts", "contains": "detects configuration drift" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "service-readiness-mass-events-and-recovery",
+      "area": "Service ownership, readiness, bottlenecks, mass events and recovery order are explicit",
+      "requirement": "Services have owners and readiness evidence, bottlenecks are prioritized, mass events are controlled, event storms are protected, and recovery respects dependencies.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/enterprise-scale.test.ts", "contains": "registers owned services in the catalog" },
+        { "kind": "test", "path": "tests/unit/enterprise-scale.test.ts", "contains": "labels readiness levels with evidence" },
+        { "kind": "test", "path": "tests/unit/enterprise-scale.test.ts", "contains": "registers and prioritizes bottlenecks" },
+        { "kind": "test", "path": "tests/unit/enterprise-scale.test.ts", "contains": "controls mass events within thresholds" },
+        { "kind": "test", "path": "tests/unit/enterprise-scale.test.ts", "contains": "recovers dependencies before dependents" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "bounded-autonomy-and-data-ownership",
+      "area": "Autonomous scale actions and engineering contracts remain bounded",
+      "requirement": "Autonomous scale actions require bounded/observable/rollback-capable contracts, and services cannot access data they do not own.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/enterprise-scale.test.ts", "contains": "binds autonomous control loops with safety properties" },
+        { "kind": "test", "path": "tests/unit/enterprise-scale.test.ts", "contains": "never accesses data a service does not own" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "live-scale-observability-and-operations",
+      "area": "Live enterprise telemetry and operational execution are wired",
+      "requirement": "Capacity, SLO, error-budget, queue, cost and recovery records are collected from a live runtime and operational runbooks can execute with evidence.",
+      "required": false,
+      "evidence": [
+        { "kind": "document", "path": "architecture/phase-31-enterprise-scale.md", "contains": "capacity models" }
+      ],
+      "boundary": []
+    }
+  ]
+}

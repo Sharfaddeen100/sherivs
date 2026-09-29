@@ -3,23 +3,26 @@ AI-Native Institutional Computing Platform
 CoreGrid is an AI-native institutional computing platform designed to represent reality, understand complex organizations, coordinate intelligence, execute workflows, operate autonomous agents, simulate change, and continuously evolve across domains.
 CoreGrid is not fundamentally a school application.
 It is a programmable institutional intelligence runtime.
-The platform provides universal infrastructure from which domain-specific realities can be instantiated.
+The platform provides universal computational infrastructure from which domain-specific realities, organizations, workflows, intelligence systems, agents, and applications can be instantiated.
 text
 COREGRID
-                            │
-             AI-Native Institutional Platform
-                            │
-        ┌───────────────────┼───────────────────┐
-        │                   │                   │
-        ▼                   ▼                   ▼
- CoreGrid Scholar     Enterprise Runtime    Future Domains
- Education Runtime    Business Runtime      Healthcare
-                                           Government
-                                           Finance
-                                           Research
-                                           Industry
+                                  │
+              AI-NATIVE INSTITUTIONAL COMPUTING PLATFORM
+                                  │
+          ┌───────────────────────┼───────────────────────┐
+          │                       │                       │
+          ▼                       ▼                       ▼
+   COREGRID SCHOLAR        ENTERPRISE RUNTIME       FUTURE DOMAINS
+   EDUCATION RUNTIME        BUSINESS RUNTIME        HEALTHCARE
+                                                     GOVERNMENT
+                                                     FINANCE
+                                                     RESEARCH
+                                                     INDUSTRY
+                                                     SCIENCE
+                                                     INFRASTRUCTURE
 
-CoreGrid Scholar is the first major production runtime built on CoreGrid. It is not the architectural boundary of CoreGrid.
+CoreGrid Scholar is the first major production runtime built on CoreGrid.
+It is not the architectural boundary of CoreGrid.
 
 ───
 
@@ -27,31 +30,33 @@ CoreGrid Scholar is the first major production runtime built on CoreGrid. It is 
 Traditional software begins with an application.
 CoreGrid begins with reality.
 text
-Reality
+REALITY
    ↓
-Representation
+REPRESENTATION
    ↓
-Context
+CONTEXT
    ↓
-Knowledge
+KNOWLEDGE
    ↓
-Memory
+MEMORY
    ↓
-Intelligence
+INTELLIGENCE
    ↓
-Agents
+AGENTS
    ↓
-Simulation
+WORKFLOWS
    ↓
-Creation
+SIMULATION
    ↓
-Execution
+CREATION
    ↓
-Observation
+EXECUTION
    ↓
-Governance
+OBSERVATION
    ↓
-Evolution
+GOVERNANCE
+   ↓
+EVOLUTION
    ↺
 
 The objective is to create infrastructure capable of turning complex real-world organizational realities into governed computational systems.
@@ -64,6 +69,7 @@ CoreGrid therefore treats:
 • processes
 • workflows
 • knowledge
+• memory
 • agents
 • services
 • applications
@@ -71,7 +77,16 @@ CoreGrid therefore treats:
 • simulations
 • policies
 • economic systems
+• infrastructure
+• events
+• relationships
+• decisions
+• outcomes
 as components of a larger computational ecosystem.
+The fundamental question is not:
+"What application are we building?"
+It is:
+"What reality are we representing, what intelligence operates upon it, what actions can occur, and how is the entire system governed?"
 
 ───
 
@@ -80,11 +95,13 @@ CoreGrid provides universal primitives for building intelligent institutional sy
 These include:
 • universal identity
 • multi-tenancy
+• organizational identity
 • security
 • trust
-• policies
 • authorization
+• policies
 • data
+• state
 • events
 • workflows
 • automation
@@ -99,9 +116,27 @@ These include:
 • integrations
 • analytics
 • governance
+• verification
+• observability
 • human interfaces
 • ecosystem extensions
 Domain runtimes compose these capabilities into operational systems.
+The architecture therefore follows:
+text
+UNIVERSAL CORE
+      ↓
+CAPABILITIES
+      ↓
+INTELLIGENCE
+      ↓
+AGENTS
+      ↓
+WORKFLOWS
+      ↓
+DOMAIN RUNTIME
+      ↓
+APPLICATIONS / EXPERIENCES
+
 
 ───
 
@@ -118,100 +153,52 @@ CoreGrid is not fundamentally:
 • a single AI model
 • a single autonomous agent
 • a collection of dashboards
+• a collection of unrelated AI agents
+• a model wrapper
+• a conventional SaaS application
 These may exist on top of CoreGrid.
 They do not define CoreGrid.
 
 ───
 
-4. CoreGrid's Architectural Model
-The platform is organized around layered computational capabilities.
-text
-COREGRID FOUNDATION
-        │
-        ▼
-UNIVERSAL CAPABILITIES
-        │
-        ▼
-INTELLIGENCE LAYER
-        │
-        ▼
-AGENT RUNTIME
-        │
-        ▼
-WORKFLOW RUNTIME
-        │
-        ▼
-DOMAIN RUNTIME
-        │
-        ▼
-ECOSYSTEM EXTENSIONS
-        │
-        ▼
-APPLICATIONS / EXPERIENCES
-
-The same foundation can support fundamentally different domains without duplicating the platform.
-
-───
-
-5. Domain Runtime Model
-A domain runtime defines domain-specific reality.
-For example:
+4. CoreGrid's Fundamental Architectural Model
+CoreGrid is organized around reusable computational capabilities.
 text
 COREGRID
-                       │
-          ┌────────────┼────────────┐
-          ▼            ▼            ▼
-       Scholar      Enterprise    Healthcare
-       Runtime       Runtime       Runtime
-          │            │            │
-       Education     Business      Medical
-        Reality       Reality       Reality
+                            │
+                            ▼
+                  UNIVERSAL FOUNDATION
+                            │
+                            ▼
+                   UNIVERSAL CAPABILITIES
+                            │
+                            ▼
+                    INTELLIGENCE LAYER
+                            │
+                            ▼
+                      AGENT RUNTIME
+                            │
+                            ▼
+                    WORKFLOW RUNTIME
+                            │
+                            ▼
+                     DOMAIN RUNTIME
+                            │
+                            ▼
+                  ECOSYSTEM EXTENSIONS
+                            │
+                            ▼
+                 APPLICATIONS / EXPERIENCES
 
-A domain runtime may define:
-• entities
-• terminology
-• workflows
-• policies
-• regulations
-• responsibilities
-• domain rules
-• domain experiences
-The CoreGrid foundation should not need to be rewritten for every domain.
-
-───
-
-6. First Production Runtime
-CoreGrid Scholar
-CoreGrid Scholar is the first major production expression of the CoreGrid architecture.
-It provides an education runtime capable of supporting:
-• schools
-• institutions
-• districts
-• education organizations
-• government education environments
-Scholar demonstrates how CoreGrid universal capabilities can be composed into a complete domain system.
-The architectural relationship is:
-text
-CoreGrid
-   │
-   ├── Universal Infrastructure
-   │
-   ├── Universal Intelligence
-   │
-   ├── Universal Runtime
-   │
-   └── Domain Runtimes
-          │
-          └── CoreGrid Scholar
-
-Scholar must consume CoreGrid capabilities rather than redefine them.
+The same foundation can support fundamentally different domains without duplicating the platform.
+A school, enterprise, hospital, government organization, research institution, factory, or other complex organization should consume CoreGrid capabilities rather than independently rebuilding them.
 
 ───
 
-7. Reality-First Architecture
-CoreGrid follows:
+5. Reality-First Architecture
+CoreGrid follows the principle:
 Reality Before Representation.
-Software should represent real entities and processes rather than forcing reality into arbitrary application structures.
+Software should represent meaningful entities, relationships, processes, states, events, constraints, resources, and environments rather than forcing reality into arbitrary application structures.
 CoreGrid may represent:
 People
 • students
@@ -220,6 +207,7 @@ People
 • citizens
 • researchers
 • administrators
+• operators
 Organizations
 • schools
 • companies
@@ -227,6 +215,7 @@ Organizations
 • hospitals
 • institutions
 • communities
+• enterprises
 Physical Reality
 • buildings
 • campuses
@@ -235,6 +224,7 @@ Physical Reality
 • vehicles
 • devices
 • infrastructure
+• geographic environments
 Operational Reality
 • workflows
 • responsibilities
@@ -242,6 +232,9 @@ Operational Reality
 • processes
 • resources
 • events
+• decisions
+• interventions
+• outcomes
 Digital Reality
 • agents
 • services
@@ -249,12 +242,119 @@ Digital Reality
 • models
 • simulations
 • digital twins
+• computational environments
+CoreGrid is therefore designed around the computational representation of reality rather than around a predetermined application category.
 
 ───
 
-8. Intelligence-Native Architecture
+6. Reality, Observation, Knowledge and Truth
+CoreGrid explicitly distinguishes different forms of information.
+text
+REALITY
+   ↓
+OBSERVATION
+   ↓
+EVIDENCE
+   ↓
+REPRESENTATION
+   ↓
+KNOWLEDGE
+   ↓
+MEMORY
+   ↓
+INTELLIGENCE
+   ↓
+DECISION
+   ↓
+ACTION
+   ↓
+OUTCOME
+
+These layers must not be silently collapsed.
+In particular:
+text
+Agent Claim       ≠ Reality
+Observation       ≠ Complete Reality
+Simulation        ≠ Observation
+Prediction        ≠ Observation
+Memory            ≠ Truth
+Model Output      ≠ Authority
+Confidence        ≠ Permission
+Intelligence      ≠ Governance
+
+CoreGrid therefore preserves provenance, temporal validity, authority, uncertainty, scope, and evidence wherever appropriate.
+
+───
+
+7. Domain Runtime Model
+A domain runtime defines a domain-specific computational reality.
+For example:
+text
+COREGRID
+                                  │
+                 ┌────────────────┼────────────────┐
+                 │                │                │
+                 ▼                ▼                ▼
+              SCHOLAR        ENTERPRISE        HEALTHCARE
+              RUNTIME          RUNTIME           RUNTIME
+                 │                │                │
+                 ▼                ▼                ▼
+             EDUCATION         BUSINESS          MEDICAL
+              REALITY           REALITY           REALITY
+
+A domain runtime may define:
+• entities
+• terminology
+• domain ontology
+• workflows
+• policies
+• regulations
+• responsibilities
+• domain rules
+• domain capabilities
+• domain experiences
+• domain integrations
+• domain-specific intelligence
+The CoreGrid foundation should not need to be rewritten for every domain.
+
+───
+
+8. CoreGrid Scholar
+First Major Production Runtime
+CoreGrid Scholar is the first major production expression of the CoreGrid architecture.
+Scholar provides an education runtime capable of supporting:
+• schools
+• educational institutions
+• districts
+• education organizations
+• government education environments
+• other education-related institutional structures
+The architectural relationship is:
+text
+COREGRID
+   │
+   ├── Universal Infrastructure
+   │
+   ├── Universal Intelligence
+   │
+   ├── Universal Runtime
+   │
+   ├── Universal Governance
+   │
+   └── Domain Runtimes
+          │
+          └── COREGRID SCHOLAR
+
+Scholar must consume and compose CoreGrid capabilities rather than redefine them.
+Scholar is therefore both:
+1. a production domain runtime, and
+2. an architectural proving ground for CoreGrid's universal capabilities.
+
+───
+
+9. Intelligence-Native Architecture
 AI is an infrastructure capability within CoreGrid.
-The platform must support:
+CoreGrid supports:
 • reasoning
 • planning
 • retrieval
@@ -266,25 +366,65 @@ The platform must support:
 • decision support
 • model routing
 • autonomous agents
+• evaluation
+• intelligence orchestration
 External models remain replaceable.
-CoreGrid must not become architecturally dependent upon a single model provider.
+CoreGrid must not become architecturally dependent on a single model provider.
 text
-CoreGrid Intelligence Contract
-             │
-             ▼
-       Model Gateway
-             │
-      ┌──────┼──────┐
-      ▼      ▼      ▼
-    Model   Model   Model
-      A       B      C
+COREGRID
+                 INTELLIGENCE CONTRACT
+                         │
+                         ▼
+                   MODEL GATEWAY
+                         │
+          ┌──────────────┼──────────────┐
+          ▼              ▼              ▼
+       PROVIDER A     PROVIDER B     PROVIDER C
+          │              │              │
+        MODEL          MODEL          MODEL
 
 Models provide intelligence.
-CoreGrid provides the surrounding system.
+CoreGrid provides the surrounding system, governance, context, memory, tools, runtime, security, verification, and authority boundaries.
 
 ───
 
-9. Agent-Native Architecture
+10. Adaptive Intelligence
+CoreGrid treats intelligence as a governed computational resource.
+Different tasks require different levels of reasoning.
+The system should therefore support intelligent routing:
+text
+TASK
+  ↓
+CLASSIFY
+  ↓
+ASSESS COMPLEXITY
+  ↓
+ASSESS RISK
+  ↓
+ASSESS UNCERTAINTY
+  ↓
+SELECT SUFFICIENT INTELLIGENCE
+  ↓
+EXECUTE
+  ↓
+VERIFY
+  ↓
+ESCALATE IF NECESSARY
+
+A simple task should not require maximum reasoning.
+A complex architectural or security problem may require substantially deeper reasoning.
+However:
+text
+MORE REASONING
+      ≠
+MORE AUTHORITY
+
+The model remains a computational worker.
+Architecture and governance remain authoritative.
+
+───
+
+11. Agent-Native Architecture
 Agents are first-class runtime participants.
 Agents may:
 • observe
@@ -295,8 +435,10 @@ Agents may:
 • communicate
 • operate workflows
 • use tools
+• analyze data
+• monitor systems
 • learn from validated outcomes
-Agents must operate through:
+Agents operate through:
 • identity
 • permissions
 • policies
@@ -305,11 +447,29 @@ Agents must operate through:
 • memory boundaries
 • security controls
 • audit systems
+• verification boundaries
 An agent's intelligence does not automatically grant authority.
+text
+IDENTITY
+   ↓
+AUTHORIZATION
+   ↓
+POLICY
+   ↓
+CONTEXT
+   ↓
+TOOLS
+   ↓
+EXECUTION
+   ↓
+OBSERVATION
+   ↓
+VERIFICATION
+
 
 ───
 
-10. Workflow-Native Architecture
+12. Workflow-Native Architecture
 Workflows are first-class execution primitives.
 A workflow may contain:
 • intent
@@ -320,20 +480,37 @@ A workflow may contain:
 • agent participation
 • human participation
 • external integrations
+• conditions
 • outcomes
-Workflows must be:
+Workflows should be:
 • versioned
 • observable
 • resumable
 • auditable
 • configurable
 • policy-aware
+• recoverable
+• traceable
+Commands and events remain distinct.
+text
+COMMAND
+   ↓
+AUTHORIZATION
+   ↓
+POLICY
+   ↓
+EXECUTION
+   ↓
+EVENT
+   ↓
+CONSUMERS
+
 
 ───
 
-11. Capability Composition
+13. Capability Composition
 CoreGrid systems should be assembled through reusable capabilities.
-Example:
+For example:
 text
 Identity
    +
@@ -352,49 +529,56 @@ Workflows
 Analytics
    +
 Digital Twins
+   +
+Simulation
+   +
+Governance
         │
         ▼
-   Domain Runtime
+   DOMAIN RUNTIME
 
 The preferred architecture is:
 Compose capabilities before creating duplicate infrastructure.
+This is one of CoreGrid's primary mechanisms for achieving cross-domain scalability.
 
 ───
 
-12. Universal Runtime Principle
-CoreGrid is a runtime rather than a collection of isolated applications.
+14. Universal Runtime Principle
 A domain system should be expressible as:
 text
-Reality
+REALITY
    ↓
-Domain Definition
+DOMAIN DEFINITION
    ↓
-Capabilities
+DOMAIN ONTOLOGY
    ↓
-Policies
+CAPABILITIES
    ↓
-Workflows
+POLICIES
    ↓
-Agents
+WORKFLOWS
    ↓
-Workspace
+AGENTS
    ↓
-Application Experience
+WORKSPACES
+   ↓
+APPLICATION EXPERIENCE
 
-This enables CoreGrid to support new domains without rebuilding the entire platform.
+This allows new domains to be instantiated without rebuilding the entire platform.
 
 ───
 
-13. Dynamic Experience Architecture
-CoreGrid should avoid hard-coding domain experiences.
+15. Dynamic Experience Architecture
+CoreGrid should avoid hard-coding every domain's experience into independent application structures.
 Instead of assuming:
 text
 Teacher Portal
 Doctor Portal
 Employee Portal
 Citizen Portal
+Researcher Portal
 
-CoreGrid should compose experiences from:
+CoreGrid can compose experiences from:
 text
 Identity
 +
@@ -412,36 +596,62 @@ Workspace
 +
 Domain Runtime
 
-The interface becomes an expression of the underlying reality.
+The interface becomes an expression of the underlying organizational reality.
 
 ───
 
-14. Memory and Knowledge
+16. Context as Infrastructure
+Context is a first-class computational resource.
+CoreGrid should be capable of assembling the minimum sufficient context required by a mission, worker, agent, workflow, or decision.
+Context selection may consider:
+• identity
+• authorization
+• scope
+• authority
+• dependencies
+• relevance
+• freshness
+• sensitivity
+• conflicts
+• temporal validity
+• context budget
+• provenance
+Context does not grant authority.
+Context cannot silently expand permissions.
+Information retrieved into context does not automatically become truth.
+
+───
+
+17. Memory and Knowledge
 CoreGrid treats memory and knowledge as infrastructure.
 Memory may contain:
 • experience
 • context
 • history
 • observations
-• learned information
+• validated outcomes
 • operational state
+• interaction history
 Knowledge may contain:
 • facts
 • concepts
 • relationships
-• inferences
+• validated inferences
 • domain knowledge
-Both must preserve:
+• models
+Both should preserve, where applicable:
 • provenance
 • authority
 • temporal validity
 • confidence
 • scope
+• version
+• source
 AI-generated information must never silently become canonical truth.
 
 ───
 
-15. Digital Reality
+18. Digital Reality
 CoreGrid may create computational representations of:
 • people
 • organizations
@@ -450,44 +660,48 @@ CoreGrid may create computational representations of:
 • workflows
 • processes
 • systems
-Digital Twins provide dynamic representations.
+• infrastructure
+Digital twins provide dynamic computational representations.
 They do not automatically become the canonical source of truth.
+A digital representation must remain distinguishable from the reality it represents.
 
 ───
 
-16. Simulation and Sandbox
-CoreGrid must support experimentation before production deployment.
+19. Simulation and Sandbox
+CoreGrid should support experimentation before production deployment.
 Preferred lifecycle:
 text
-Idea
+IDEA
  ↓
-Specification
+SPECIFICATION
  ↓
-Architecture
+ARCHITECTURE
  ↓
-Generation
+GENERATION
  ↓
-Sandbox
+SANDBOX
  ↓
-Simulation
+SIMULATION
  ↓
-Adversarial Testing
+ADVERSARIAL TESTING
  ↓
-Validation
+VALIDATION
  ↓
-Promotion
+PROMOTION
  ↓
-Deployment
+DEPLOYMENT
  ↓
-Monitoring
+MONITORING
  ↓
-Evolution
+EVOLUTION
 
-Experimental systems must remain isolated from production until validated.
+Experimental systems must remain isolated from production until appropriately validated.
+Simulation is not reality.
+Simulation results are evidence for decisions, not automatic authorization.
 
 ───
 
-17. Autonomous Engineering
+20. Autonomous Engineering
 AI engineering systems may assist with:
 • repository inspection
 • architecture analysis
@@ -500,35 +714,105 @@ AI engineering systems may assist with:
 • migration planning
 • infrastructure generation
 • security analysis
+• verification
+• conformance analysis
 Autonomous engineering must operate within CoreGrid governance.
 AI agents may propose or generate architectural changes.
 They must not silently redefine canonical architecture.
+The engineering principle is:
+text
+IMPLEMENT WITHIN AUTHORITY.
+
 
 ───
 
-18. Security and Trust
+21. Engineering Intelligence
+CoreGrid's engineering loop is:
+text
+MISSION
+   ↓
+TASK
+   ↓
+AUTHORITY
+   ↓
+CONTEXT
+   ↓
+IMPLEMENTATION
+   ↓
+EXECUTION
+   ↓
+OBSERVATION
+   ↓
+EVIDENCE
+   ↓
+VERIFICATION
+   ↓
+CONFORMANCE
+   ↓
+PROGRESS
+   ↓
+DRIFT DETECTION
+   ↓
+EVOLUTION
+
+The system must distinguish:
+text
+DEFINED
+DESIGNED
+IMPLEMENTED
+EXECUTED
+OBSERVED
+VERIFIED
+CONFORMANT
+DEPLOYED
+OPERATIONAL
+
+These states are not interchangeable.
+In particular:
+text
+IMPLEMENTED ≠ VERIFIED
+VERIFIED ≠ CONFORMANT
+CONFORMANT ≠ DEPLOYED
+DEPLOYED ≠ OPERATIONAL
+
+
+───
+
+22. Security and Trust
 Security is foundational.
 CoreGrid separates:
 text
-Identity
+IDENTITY
    ↓
-Trust
+TRUST
    ↓
-Authorization
+AUTHORIZATION
    ↓
-Policy
+POLICY
    ↓
-Execution
+EXECUTION
    ↓
-Audit
+AUDIT
 
 Trust is contextual.
 Trust is not permission.
 AI confidence is not authorization.
+Intelligence is not authority.
+Security boundaries apply to:
+• humans
+• agents
+• models
+• services
+• tools
+• integrations
+• tenants
+• data
+• infrastructure
+• execution environments
 
 ───
 
-19. Governance
+23. Governance
 CoreGrid must remain governed as capability increases.
 Governance covers:
 • policies
@@ -541,8 +825,13 @@ Governance covers:
 • economic actions
 • self-improvement
 • architectural evolution
+• production authorization
+• tenant isolation
+• evidence
+• verification
 No autonomous subsystem may silently rewrite:
 • the Constitution
+• canonical architecture
 • Registry
 • Boundaries
 • Dependency Map
@@ -550,50 +839,16 @@ No autonomous subsystem may silently rewrite:
 • security architecture
 • tenant isolation
 • canonical financial truth
+Intelligence can propose.
+Governance authorizes.
+Execution implements.
+Verification establishes evidence.
 
 ───
 
-20. Evolution
-CoreGrid is designed to evolve.
-Evolution must be:
-• observable
-• tested
-• simulated
-• governed
-• versioned
-• auditable
-• reversible where possible
-The objective is:
-Continuous improvement without architectural amnesia.
-CoreGrid must preserve the continuity of the system while allowing its capabilities to evolve.
-
-───
-
-21. Existing-System-First Development
-CoreGrid follows an upgrade-not-rebuild philosophy.
-Before replacing an existing capability:
-text
-Inspect
- ↓
-Understand
- ↓
-Measure
- ↓
-Evaluate
- ↓
-Reuse
- ↓
-Refactor
- ↓
-Replace only if justified
-
-Existing working infrastructure is an asset.
-Architecture modernization must not become an excuse for unnecessary destruction.
-
-───
-
-22. Multi-Tenancy and Sovereignty
-CoreGrid must support:
+24. Multi-Tenancy and Sovereignty
+CoreGrid is designed for strong organizational and deployment isolation.
+It should support:
 • tenant isolation
 • organization isolation
 • regional deployment
@@ -602,9 +857,9 @@ CoreGrid must support:
 • customer cloud
 • BYOC
 • on-premise
-• edge
+• edge environments
 • air-gapped environments
-Tenant context must propagate across:
+Tenant context should propagate across:
 • data
 • agents
 • memory
@@ -618,20 +873,21 @@ Tenant context must propagate across:
 
 ───
 
-23. Global Architecture
-CoreGrid must support regional and jurisdictional differences without fragmenting the platform.
-Use:
+25. Global Architecture
+CoreGrid should support regional and jurisdictional differences without fragmenting the platform.
+Preferred mechanisms include:
 • localization
 • configuration
 • jurisdiction policies
 • adapters
 • domain extensions
 • regional infrastructure
-Avoid creating separate architectural foundations for every geography.
+• policy overlays
+Avoid creating separate architectural foundations for every geography unless genuinely required.
 
 ───
 
-24. Infrastructure Independence
+26. Infrastructure Independence
 CoreGrid should remain portable across:
 • cloud providers
 • infrastructure environments
@@ -640,38 +896,39 @@ CoreGrid should remain portable across:
 • hardware
 • deployment models
 Infrastructure is a substrate.
-It should not become a hidden architectural lock-in.
+It should not become an accidental architectural lock-in.
 
 ───
 
-25. Event-Driven Architecture
+27. Event-Driven Architecture
 Events describe things that happened.
 Commands describe requested actions.
-These must remain distinct.
+These remain distinct.
 text
-Command
+COMMAND
    ↓
-Authorization
+AUTHORIZATION
    ↓
-Policy
+POLICY
    ↓
-Execution
+EXECUTION
    ↓
-Event
+EVENT
    ↓
-Consumers
+CONSUMERS
 
 Events should support:
 • loose coupling
 • asynchronous processing
 • observability
 • auditability
+• replay where appropriate
 • ecosystem integration
 
 ───
 
-26. API and Contract Principle
-CoreGrid capabilities must communicate through explicit contracts.
+28. API and Contract Architecture
+CoreGrid capabilities communicate through explicit contracts.
 Preferred interfaces include:
 • APIs
 • commands
@@ -681,94 +938,113 @@ Preferred interfaces include:
 • SDKs
 • MCP interfaces
 • adapters
-Internal implementation details must not accidentally become public contracts.
+Internal implementation details should not accidentally become public contracts.
+Contracts should define:
+• ownership
+• inputs
+• outputs
+• authorization
+• errors
+• versioning
+• compatibility
+• observability
+• security requirements
 
 ───
 
-27. Database Boundary
-Domain ownership must remain explicit.
+29. Database Boundary
+Database access does not automatically equal ownership.
 A subsystem must not directly mutate another subsystem's canonical state merely because database access is technically possible.
-Preferred:
+Preferred boundary mechanisms include:
 text
 API
 Event
 Domain Service
+Command
 Query Contract
 Projection
 
-Direct cross-boundary writes require explicit architectural approval.
+Direct cross-boundary writes require explicit architectural authorization.
 
 ───
 
-28. Truth Hierarchy
+30. Truth and State Architecture
 CoreGrid distinguishes:
 text
-Reality
- ↓
-Observation
- ↓
-Canonical State
- ↓
-Derived State
- ↓
-Knowledge
- ↓
-Memory
- ↓
-Intelligence
- ↓
-Decision
- ↓
-Action
- ↓
-Audit
+REALITY
+   ↓
+OBSERVATION
+   ↓
+EVIDENCE
+   ↓
+CANONICAL STATE
+   ↓
+DERIVED STATE
+   ↓
+KNOWLEDGE
+   ↓
+MEMORY
+   ↓
+INTELLIGENCE
+   ↓
+DECISION
+   ↓
+ACTION
+   ↓
+OUTCOME
+   ↓
+AUDIT
 
-This hierarchy prevents:
+This prevents:
 • AI hallucinations becoming facts
 • analytics becoming canonical state
 • simulations becoming reality
 • memory becoming truth
 • agent decisions becoming automatic authority
+CoreGrid also preserves temporal distinctions such as:
+• current
+• historical
+• intended
+• planned
+• observed
+• predicted
+• superseded
+• disputed
+• stale
+• revoked
 
 ───
 
-29. Human Interface
-Humans remain first-class participants.
-CoreGrid should support:
-• web
-• mobile
-• natural-language interfaces
-• multimodal interfaces
-• command centres
-• accessibility
-• human oversight
-• human-agent collaboration
-Interfaces are consumers of CoreGrid capabilities.
-They are not the architecture itself.
+31. Verification and Evidence
+CoreGrid is designed around evidence-backed operation.
+The system must distinguish:
+text
+CLAIM
+   ↓
+EVIDENCE
+   ↓
+VERIFICATION
+   ↓
+CONFORMANCE
+
+No evidence means no justified achievement claim.
+Verification may involve:
+• tests
+• inspections
+• execution
+• observations
+• security analysis
+• adversarial testing
+• human verification
+• runtime evidence
+• reproducibility
+• conformance checks
+A worker's statement that work is complete is not itself verification.
 
 ───
 
-30. Ecosystem Architecture
-CoreGrid should support an ecosystem of:
-• developers
-• agents
-• extensions
-• applications
-• integrations
-• marketplaces
-• organizations
-• infrastructure providers
-Extensions must remain:
-• scoped
-• permissioned
-• versioned
-• isolated
-• auditable
-
-───
-
-31. Reliability
-Every critical capability must define:
+32. Reliability and Failure-First Engineering
+Every critical capability should define:
 • failure modes
 • degraded operation
 • retry behavior
@@ -777,19 +1053,43 @@ Every critical capability must define:
 • rollback
 • data integrity
 • operator escalation
-The architecture must never assume that every failure should simply "fail open" or "fail closed."
-Behavior must depend on capability sensitivity.
+• observability
+CoreGrid considers failure classes including:
+• dependency failure
+• database failure
+• network failure
+• model failure
+• worker failure
+• tool failure
+• partial execution
+• duplicate execution
+• stale state
+• conflicting state
+• missing data
+• corrupt data
+• schema mismatch
+• version mismatch
+• authorization failure
+• malicious input
+• prompt injection
+• secret exposure
+• deployment failure
+• rollback failure
+• recovery failure
+• concurrency failure
+The architecture must not assume that every failure has the same response.
 
 ───
 
-32. Observability
-Every critical subsystem must expose appropriate:
+33. Observability
+CoreGrid should expose appropriate:
 • metrics
 • logs
 • traces
 • health signals
 • security signals
 • operational events
+• audit records
 CoreGrid should be able to answer:
 What is happening?
 Why is it happening?
@@ -800,9 +1100,9 @@ What happened afterward?
 
 ───
 
-33. Auditability
-Important actions must remain explainable after execution.
-Audit systems should preserve:
+34. Auditability
+Important actions should remain explainable after execution.
+Audit systems should preserve, where appropriate:
 • actor
 • action
 • resource
@@ -812,12 +1112,14 @@ Audit systems should preserve:
 • context
 • outcome
 • evidence
+• correlation
+• version
 Audit records must be protected against unauthorized modification.
 
 ───
 
-34. Architectural Boundaries
-Every capability must have:
+35. Architecture Boundaries
+Every significant capability should have:
 • an owner
 • a purpose
 • a boundary
@@ -827,34 +1129,33 @@ Every capability must have:
 • contracts
 • security requirements
 • failure behavior
-Ownership must remain singular.
+• verification requirements
+Ownership should remain singular.
 Consumption does not equal ownership.
+A capability may have many consumers but should have a clearly defined canonical owner.
 
 ───
 
-35. Architecture Registry
-The canonical architecture registry defines the CoreGrid architecture phases and civilization layers.
-The current architecture contains:
-51 registered architecture phases.
-The registry is maintained in:
+36. Architecture Registry
+CoreGrid maintains a registered architecture consisting of 51 architecture phases.
+The architecture registry and phase specifications provide the structured architectural map of the platform.
+The repository currently maintains architectural material under:
+text
+architecture/
+
+and governance/registry artifacts including:
 text
 REGISTRY.md
-
-Detailed relationships are maintained in:
-text
 DEPENDENCY.md
-
-Ownership boundaries are maintained in:
-text
 BOUNDARIES.md
 
-Detailed phase specifications belong in the architecture specification system.
+The exact implementation state of each phase is governed by evidence rather than documentation alone.
 
 ───
 
-36. Governance Documents
-The repository is governed by the CoreGrid architecture control plane.
-Core documents include:
+37. Governance Documents
+CoreGrid is governed by a hierarchy of architectural and engineering artifacts.
+Core governance materials include:
 text
 CONSTITUTION.md
 ARCHITECTURE-PRINCIPLES.md
@@ -864,178 +1165,152 @@ BOUNDARIES.md
 DECISIONS.md
 PROGRESS.md
 
-Supporting architecture systems include:
+The broader architectural control plane includes:
 text
-architecture/
-database/
-frontend/
-tests/
-scripts/
-docs/
-.github/
-.codex/
+COREGRID.md
+GOVERNANCE.md
+ARCHITECTURE.md
+REALITY.md
+ENGINEERING.md
+WORKFORCE.md
+MISSIONS.md
+BLUEPRINTS.md
+PROGRESS.md
+ECOSYSTEM.md
+IMPLEMENTATION.md
+RUNTIME.md
+ASSURANCE.md
 
-These documents are complementary.
-No single document should silently redefine another document's authority.
-
-───
-
-37. Repository Architecture
-The repository may contain:
-text
-architecture/       Architecture and phase specifications
-
-frontend/           Web/runtime experience layer
-
-backend/            Backend and platform services
-
-mobile/             Mobile runtime
-
-agents/             Agent systems
-
-database/           Database schemas, migrations and checks
-
-infrastructure/     Deployment and infrastructure definitions
-
-tests/              Unit, integration and E2E tests
-
-docs/               Architecture, research and operational documentation
-
-scripts/             Engineering automation
-
-.codex/             AI engineering memory and operating instructions
-
-Directories may evolve as the platform evolves.
-The architecture, not the current folder layout, defines ownership.
+These artifacts are complementary.
+No lower-authority artifact may silently redefine a higher-authority artifact.
 
 ───
 
-38. Development Principles
-All CoreGrid engineering should optimize for:
-• correctness
-• simplicity
-• modularity
-• scalability
-• security
-• observability
-• explainability
-• maintainability
-• interoperability
-• resilience
-• reversibility
-• evolutionary compatibility
-Do not optimize merely for speed of implementation.
+38. Autonomous Agent Governance
+AI engineering and runtime agents must:
+1. establish identity
+2. establish authority
+3. establish scope
+4. retrieve authorized context
+5. inspect existing capabilities
+6. identify ownership
+7. identify dependencies
+8. execute only permitted actions
+9. produce evidence
+10. undergo verification
+11. report outcomes
+12. preserve auditability
+Agents must not:
+• silently expand scope
+• silently change architecture
+• fabricate completion
+• fabricate evidence
+• bypass permissions
+• expose secrets
+• treat memory as truth
+• treat intelligence as authority
 
 ───
 
-39. Testing Philosophy
-CoreGrid changes should be validated through appropriate levels of testing.
-Depending on the capability:
-• unit tests
-• integration tests
-• contract tests
-• E2E tests
-• security tests
-• tenant-isolation tests
-• AI evaluations
-• simulation
-• replay
-• regression tests
-• adversarial tests
-• resilience tests
-• migration tests
-A feature is not complete merely because its code compiles.
-
-───
-
-40. Architecture Drift
-CoreGrid should continuously compare:
-text
-Declared Architecture
-        vs
-Implemented Architecture
-
-Architecture drift includes:
-• unregistered capabilities
-• undocumented dependencies
-• ownership conflicts
-• forbidden database access
-• security bypasses
-• undocumented services
-• unauthorized architectural changes
-• duplicate infrastructure
-Architecture drift should be detectable automatically where practical.
-
-───
-
-41. Autonomous Agent Development Rules
-AI coding agents must:
-1. Read the Constitution.
-2. Read Architecture Principles.
-3. Read Registry.
-4. Read Boundaries.
-5. Read Dependency Map.
-6. Read Decisions.
-7. Read Progress.
-8. Inspect the existing repository.
-9. Identify existing capabilities.
-10. Identify ownership.
-11. Identify dependencies.
-12. Avoid duplicate infrastructure.
-13. Implement incrementally.
-14. Test changes.
-15. Validate security.
-16. Validate tenant boundaries.
-17. Validate contracts.
-18. Update documentation.
-19. Record material decisions.
-20. Update progress.
-AI agents are implementation participants, not architectural authorities.
-
-───
-
-42. No Silent Architectural Expansion
-An engineer or AI agent must not create a new architectural phase merely because:
+39. No Silent Architectural Expansion
+A developer or AI agent must not create a new architectural phase merely because:
 • an implementation is inconvenient
 • a feature feels large
 • a new service exists
-• a UI needs a new page
+• a UI needs another page
 • a model needs an adapter
 • a temporary experiment exists
+• a dependency is difficult
 New architectural boundaries require governance.
 
 ───
 
-43. Production Promotion
-No experimental capability should move directly into production.
-Preferred:
+40. Existing-System-First Development
+CoreGrid follows an upgrade-not-rebuild philosophy.
+Before replacing an existing capability:
 text
-Research
- ↓
-Development
- ↓
-Sandbox
- ↓
-Simulation
- ↓
-Testing
- ↓
-Security Validation
- ↓
-Approval
- ↓
-Staging
- ↓
-Production
- ↓
-Monitoring
+INSPECT
+   ↓
+UNDERSTAND
+   ↓
+MEASURE
+   ↓
+EVALUATE
+   ↓
+REUSE
+   ↓
+REFACTOR
+   ↓
+REPLACE ONLY IF JUSTIFIED
 
+Existing working infrastructure is an asset.
+Architecture modernization must not become an excuse for unnecessary destruction.
 
 ───
 
-44. Safe Autonomy
+41. Migration from the Existing School System
+CoreGrid originated from an existing school-oriented system.
+The migration strategy is:
+text
+EXISTING SYSTEM
+      ↓
+AUDIT
+      ↓
+UNDERSTAND
+      ↓
+MAP
+      ↓
+PRESERVE
+      ↓
+INTEGRATE
+      ↓
+REFACTOR
+      ↓
+GENERALIZE
+      ↓
+VALIDATE
+      ↓
+COREGRID RUNTIME
+
+The objective is not to erase the original system.
+The objective is to transform proven infrastructure into a more universal institutional computing foundation.
+CoreGrid Scholar represents the first major production runtime emerging from this transformation.
+
+───
+
+42. Production Promotion
+Experimental capabilities should not move directly into production.
+Preferred lifecycle:
+text
+RESEARCH
+   ↓
+DEVELOPMENT
+   ↓
+SANDBOX
+   ↓
+SIMULATION
+   ↓
+TESTING
+   ↓
+SECURITY VALIDATION
+   ↓
+APPROVAL
+   ↓
+STAGING
+   ↓
+PRODUCTION
+   ↓
+MONITORING
+   ↓
+EVOLUTION
+
+Promotion requires evidence appropriate to the capability's risk.
+
+───
+
+43. Safe Autonomy
 Autonomy must be proportional to demonstrated capability.
-Before increasing autonomy, evaluate:
+Before increasing autonomy, CoreGrid should evaluate:
 • reliability
 • security
 • observability
@@ -1044,23 +1319,69 @@ Before increasing autonomy, evaluate:
 • blast radius
 • governance
 • human oversight
+• verification evidence
 Greater capability requires stronger control systems.
 
 ───
 
-45. Blast Radius
+44. Blast Radius
 Every significant change should have an understood blast radius.
-Possible levels:
+Possible scopes include:
 text
 LOCAL
+   ↓
 DOMAIN
+   ↓
 TENANT
+   ↓
 REGIONAL
+   ↓
 PLATFORM
+   ↓
 GLOBAL
-CIVILIZATION
 
-The larger the blast radius, the stronger the required validation.
+The greater the blast radius, the stronger the required validation and authorization.
+
+───
+
+45. Architectural Evolution
+CoreGrid is designed to evolve.
+Evolution should be:
+• observable
+• tested
+• simulated
+• governed
+• versioned
+• auditable
+• traceable
+• reversible where possible
+The evolutionary loop is:
+text
+OBSERVE
+   ↓
+COMPARE
+   ↓
+DETECT
+   ↓
+CLASSIFY
+   ↓
+ASSESS
+   ↓
+PROPOSE
+   ↓
+AUTHORIZE
+   ↓
+IMPLEMENT
+   ↓
+VERIFY
+   ↓
+CONFORM
+   ↓
+ESTABLISH NEW BASELINE
+   ↺
+
+The objective is:
+Continuous improvement without architectural amnesia.
 
 ───
 
@@ -1073,80 +1394,157 @@ CoreGrid must preserve:
 • audit evidence
 • system knowledge
 • operational continuity
+• provenance
 The system should evolve without losing knowledge of how it became what it is.
 
 ───
 
-47. CoreGrid as an Intelligence Ecosystem
-CoreGrid should increasingly behave as a connected computational ecosystem rather than a static software product.
-The ecosystem contains:
-text
-Reality
-Entities
-Relationships
-State
-Knowledge
-Memory
-Intelligence
-Agents
-Workflows
-Simulations
-Runtimes
-Infrastructure
-Humans
-Organizations
-Governance
-Economics
-
-These components interact through explicit contracts.
+47. Ecosystem Architecture
+CoreGrid is designed to support an ecosystem of:
+• developers
+• organizations
+• agents
+• extensions
+• applications
+• integrations
+• infrastructure providers
+• domain runtimes
+• technology partners
+• computational services
+Extensions should remain:
+• scoped
+• permissioned
+• versioned
+• isolated
+• auditable
 
 ───
 
-48. Alien-Intelligence Perspective
-From an advanced-intelligence perspective, CoreGrid should not be thought of as:
-"a set of applications."
+48. Dynamic Institutional Computing
+CoreGrid's deeper architectural model is not:
+text
+APPLICATION
+
+but:
+text
+INSTITUTIONAL REALITY
+        ↓
+DIGITAL REPRESENTATION
+        ↓
+COMPUTATIONAL STATE
+        ↓
+CONTEXT
+        ↓
+INTELLIGENCE
+        ↓
+AGENTS
+        ↓
+WORKFLOWS
+        ↓
+ACTIONS
+        ↓
+OUTCOMES
+        ↓
+OBSERVATION
+        ↓
+GOVERNANCE
+        ↓
+EVOLUTION
+
+This allows CoreGrid to model organizations as continuously changing computational systems rather than collections of static screens.
+
+───
+
+49. CoreGrid as an Intelligence Ecosystem
+CoreGrid is intended to become a connected computational ecosystem containing:
+text
+REALITY
+ENTITIES
+RELATIONSHIPS
+STATE
+EVENTS
+KNOWLEDGE
+MEMORY
+INTELLIGENCE
+AGENTS
+WORKFLOWS
+SIMULATIONS
+RUNTIMES
+INFRASTRUCTURE
+HUMANS
+ORGANIZATIONS
+GOVERNANCE
+ECONOMICS
+
+These components interact through explicit contracts and governed runtime boundaries.
+
+───
+
+50. Alien-Intelligence Architectural Lens
+From an advanced-systems perspective, CoreGrid should not be thought of as:
+"a collection of applications."
 It is better understood as:
-a computational substrate through which complex realities can be represented, understood, simulated, acted upon, and evolved.
-The architecture therefore prioritizes:
+a computational substrate through which complex realities can be represented, understood, simulated, acted upon, and safely evolved.
+This architectural lens prioritizes:
 text
-Relationships over pages
+RELATIONSHIPS
+over
+PAGES
 
-Capabilities over applications
+CAPABILITIES
+over
+APPLICATIONS
 
-Reality over abstractions
+REALITY
+over
+ARBITRARY ABSTRACTIONS
 
-Context over isolated data
+CONTEXT
+over
+ISOLATED DATA
 
-Intelligence over static logic
+INTELLIGENCE
+over
+STATIC LOGIC
 
-Composition over duplication
+COMPOSITION
+over
+DUPLICATION
 
-Simulation over reckless deployment
+SIMULATION
+over
+RECKLESS DEPLOYMENT
 
-Governance over uncontrolled autonomy
+GOVERNANCE
+over
+UNCONTROLLED AUTONOMY
 
-Evolution over stagnation
+EVOLUTION
+over
+STAGNATION
 
-This perspective is an architectural lens—not a claim that CoreGrid possesses supernatural intelligence.
+This is an architectural design perspective, not a claim that CoreGrid possesses supernatural or human-like intelligence.
 
 ───
 
-49. Future Domain Principle
+51. Future Domain Principle
 A new domain should ideally require:
 text
-Domain Definition
+DOMAIN DEFINITION
        ↓
-Domain Ontology
+DOMAIN ONTOLOGY
        ↓
-Domain Policies
+DOMAIN POLICIES
        ↓
-Domain Workflows
+DOMAIN WORKFLOWS
        ↓
-Domain Capabilities
+DOMAIN CAPABILITIES
        ↓
-CoreGrid Intelligence
+COREGRID INTELLIGENCE
        ↓
-Domain Runtime
+DOMAIN RUNTIME
+       ↓
+DOMAIN EXPERIENCE
 
 It should not require rebuilding:
 • identity
@@ -1157,12 +1555,13 @@ It should not require rebuilding:
 • intelligence
 • memory
 • infrastructure
+• governance
 from scratch.
 
 ───
 
-50. CoreGrid's Ultimate Operating Loop
-The platform is designed around:
+52. CoreGrid's Universal Runtime Loop
+The conceptual operating loop is:
 text
 REALITY
    ↓
@@ -1184,18 +1583,204 @@ EXECUTE
    ↓
 MEASURE
    ↓
+VERIFY
+   ↓
 GOVERN
    ↓
 EVOLVE
    ↺
 
-This loop is the conceptual model for CoreGrid's evolution.
+This loop describes the intended relationship between CoreGrid's reality model, intelligence systems, runtime systems, and governance mechanisms.
 
 ───
 
-51. Final Architectural Identity
+53. Architecture at a Glance
+text
+COREGRID
+                               │
+                               ▼
+              AI-NATIVE INSTITUTIONAL COMPUTING
+                               │
+          ┌────────────────────┼────────────────────┐
+          │                    │                    │
+          ▼                    ▼                    ▼
+       REALITY             CAPABILITIES       GOVERNANCE
+          │                    │                    │
+          └────────────────────┼────────────────────┘
+                               ▼
+                         INTELLIGENCE
+                               │
+                               ▼
+                            AGENTS
+                               │
+                               ▼
+                          WORKFLOWS
+                               │
+                               ▼
+                        DOMAIN RUNTIMES
+                               │
+             ┌─────────────────┼─────────────────┐
+             ▼                 ▼                 ▼
+          SCHOLAR          ENTERPRISE        FUTURE DOMAINS
+             │                 │                 │
+             └─────────────────┼─────────────────┘
+                               ▼
+                         EXPERIENCES
+                               │
+                               ▼
+                           ECOSYSTEM
+                               │
+                               ↺
+                           EVOLUTION
+
+
+───
+
+54. Repository Entry Point
+New engineers and autonomous engineering systems should begin with:
+text
+AGENTS.md
+   ↓
+CONSTITUTION.md
+   ↓
+ARCHITECTURE-PRINCIPLES.md
+   ↓
+REGISTRY.md
+   ↓
+DEPENDENCY.md
+   ↓
+BOUNDARIES.md
+   ↓
+DECISIONS.md
+   ↓
+PROGRESS.md
+   ↓
+Applicable Architecture / Phase Specification
+   ↓
+Relevant Mission
+   ↓
+Repository Implementation
+   ↓
+Tests
+   ↓
+Verification
+
+Do not modify production architecture without understanding the governing documents and relevant implementation evidence.
+
+───
+
+55. Repository Structure
+The repository may contain:
+text
+architecture/       Architecture and phase specifications
+
+frontend/           Web and experience layer
+
+backend/            Backend and platform services
+
+mobile/             Mobile runtime
+
+agents/             Agent systems
+
+database/           Database schemas, migrations and checks
+
+infrastructure/     Deployment and infrastructure definitions
+
+tests/              Unit, integration and E2E tests
+
+docs/               Architecture, research and operational documentation
+
+scripts/             Engineering automation
+
+.cursor/            Cursor engineering configuration
+
+.codex/              AI engineering memory and instructions
+
+The exact folder structure may evolve.
+Architecture ownership, contracts, and governance—not folder names alone—define system boundaries.
+
+───
+
+56. Development
+Install dependencies:
+bash
+npm i
+
+Start development:
+bash
+npm run dev
+
+Environment variables are documented in:
+text
+.env.example
+
+Never commit secrets.
+
+───
+
+57. Verification
+Available verification commands may include:
+bash
+npm run build
+npm run typecheck
+npm run test:unit
+npm run verify
+npm run test:e2e
+
+The exact command set may evolve with the repository.
+The governing principle remains:
+A material capability is not complete merely because its code exists or compiles.
+Appropriate testing, execution evidence, verification, and conformance assessment are required.
+
+───
+
+58. Engineering Philosophy
+CoreGrid engineering optimizes for:
+• correctness
+• simplicity
+• modularity
+• scalability
+• security
+• observability
+• explainability
+• maintainability
+• interoperability
+• resilience
+• reversibility
+• evolutionary compatibility
+The objective is not simply to produce more software.
+The objective is to produce reliable computational infrastructure for increasingly complex institutional realities.
+
+───
+
+59. CoreGrid Architectural Laws
+The platform is governed by a small set of foundational laws:
+Reality Before Representation
+Represent meaningful reality instead of arbitrary application structures.
+Capability Before Duplication
+Reuse universal capabilities before creating parallel infrastructure.
+Authority Before Intelligence
+Intelligence does not create authority.
+Evidence Before Claims
+Claims about implementation, verification, or operation require evidence.
+Governance Before Autonomy
+Increasing autonomy requires increasing control.
+Context Before Action
+Agents and workflows require appropriate context before consequential execution.
+Verification Before Promotion
+Experimental capability must be appropriately validated before production promotion.
+Ownership Before Integration
+Every capability and canonical state must have a defined owner.
+Security Before Scale
+Scale must not bypass security boundaries.
+Evolution Without Amnesia
+The platform must evolve while preserving architectural and operational continuity.
+
+───
+
+60. Final Architectural Identity
 CoreGrid is:
-A programmable AI-native institutional computing platform designed to represent reality, coordinate intelligence, execute workflows, operate autonomous agents, create domain runtimes, and continuously evolve complex organizations and ecosystems while preserving security, governance, explainability, and architectural integrity.
+A programmable AI-native institutional computing platform designed to represent reality, coordinate intelligence, execute workflows, operate autonomous agents, instantiate domain runtimes, simulate change, and continuously evolve complex organizations and ecosystems while preserving security, governance, explainability, verification, sovereignty, and architectural integrity.
 CoreGrid Scholar is the first major production runtime.
 It is not the final boundary.
 The platform is intentionally designed so that education can coexist with:
@@ -1206,12 +1791,14 @@ The platform is intentionally designed so that education can coexist with:
 • research
 • industry
 • scientific systems
+• infrastructure
+• environmental systems
 • future computational domains
-without requiring the foundation to be rebuilt.
+without requiring the universal foundation to be rebuilt.
 
 ───
 
-52. Final CoreGrid Law
+61. The CoreGrid Operating Principle
 text
 REPRESENT REALITY.
 
@@ -1225,157 +1812,53 @@ GOVERN INTELLIGENCE.
 
 BOUND AUTONOMY.
 
+PRESERVE PROVENANCE.
+
 SIMULATE CHANGE.
 
 EXECUTE SAFELY.
 
-OBSERVE EVERYTHING IMPORTANT.
+OBSERVE IMPORTANT REALITY.
 
-PRESERVE PROVENANCE.
+VERIFY CLAIMS.
 
-LEARN FROM OUTCOMES.
+LEARN FROM VALIDATED OUTCOMES.
 
 EVOLVE WITHOUT LOSING CONTINUITY.
 
-Or, expressed as the shortest possible architectural statement:
-CoreGrid exists to turn complex reality into governed computational intelligence—and to allow that intelligence to create, operate, understand, and safely evolve the systems built upon it.
+Or, expressed as the shortest architectural statement:
+CoreGrid exists to turn complex reality into governed computational intelligence—and to provide the infrastructure through which that intelligence can create, operate, understand, simulate, and safely evolve the systems built upon it.
 
 ───
 
-53. Repository Entry Point
-New engineers and autonomous engineering systems should begin with:
+CoreGrid Status
 text
-AGENTS.md
-      ↓
-CONSTITUTION.md
-      ↓
-ARCHITECTURE-PRINCIPLES.md
-      ↓
-REGISTRY.md
-      ↓
-DEPENDENCY.md
-      ↓
-BOUNDARIES.md
-      ↓
-DECISIONS.md
-      ↓
-PROGRESS.md
-      ↓
-Applicable Architecture / Phase Specification
-      ↓
-Repository Implementation
+PLATFORM:
+CoreGrid
 
-Do not modify production architecture without understanding the governing documents.
+IDENTITY:
+AI-Native Institutional Computing Platform
 
-───
+ARCHITECTURE:
+Universal Institutional Computing Substrate
 
-54. Quickstart
-Install dependencies:
-sh
-npm i
+ARCHITECTURAL REGISTRY:
+51 Phases
 
-Start the development environment:
-sh
-npm run dev
+FIRST MAJOR PRODUCTION RUNTIME:
+CoreGrid Scholar
 
-Environment variables are documented in:
-text
-.env.example
+PRIMARY ARCHITECTURAL MODEL:
+Reality → Intelligence → Agents → Workflows → Domain Runtimes → Ecosystem
 
-Copy the example configuration into .env and provide the required environment-specific credentials.
-Never commit secrets.
+ENGINEERING MODEL:
+Mission → Task → Context → Implementation → Execution → Evidence → Verification → Conformance
 
-───
+EVOLUTION MODEL:
+Observe → Compare → Detect → Assess → Authorize → Implement → Verify → Evolve
 
-55. Verification
-Run the available verification commands:
-sh
-npm run build
-npm run typecheck
-npm run test:unit
-npm run verify
-npm run test:e2e
+ARCHITECTURAL DIRECTION:
+Universal, AI-native, reality-first, governed institutional computing
 
-The exact commands may evolve with the repository.
-The governing principle remains:
-No material capability is complete until it has been validated at the appropriate architectural level.
-
-───
-
-56. Existing-System Migration
-CoreGrid originated from an existing school operating system.
-The migration strategy is:
-text
-Existing System
-      ↓
-Audit
-      ↓
-Understand
-      ↓
-Map
-      ↓
-Preserve
-      ↓
-Integrate
-      ↓
-Refactor
-      ↓
-Generalize
-      ↓
-Validate
-      ↓
-CoreGrid Runtime
-
-The objective is not to erase the original system.
-The objective is to transform proven infrastructure into a more universal platform.
-
-───
-
-57. Migration Documentation
-Relevant migration artifacts may include:
-text
-docs/migration-audit.md
-migration-report.md
-architecture-map.md
-remaining-work.md
-
-These documents describe the evolution from the original system into CoreGrid.
-
-───
-
-58. Final Perspective
-The repository should no longer be understood as:
-text
-School Software
-
-It should be understood as:
-text
-COREGRID
-
-AI-NATIVE INSTITUTIONAL COMPUTING PLATFORM
-
-        ↓
-
-UNIVERSAL FOUNDATION
-
-        ↓
-
-INTELLIGENCE + AGENTS + WORKFLOWS
-
-        ↓
-
-DOMAIN RUNTIMES
-
-        ↓
-
-ECOSYSTEM APPLICATIONS
-
-CoreGrid Scholar is the first operational proof of this architecture.
-The long-term objective is much larger:
-Build a universal, governed, intelligent runtime capable of understanding and operating complex organizational realities across domains without sacrificing architectural integrity, security, sovereignty, human oversight, or evolutionary continuity.
-COREGRID PLATFORM
-ARCHITECTURE: COREGRID V2
-REGISTRY: 51 PHASES
-FIRST MAJOR RUNTIME: COREGRID SCHOLAR
-STATUS: PLATFORM FOUNDATION
-ARCHITECTURAL DIRECTION: UNIVERSAL AI-NATIVE INSTITUTIONAL COMPUTING
+CoreGrid is not being built as one application.
+It is being built as infrastructure for building, operating, understanding, and evolving intelligent institutions.

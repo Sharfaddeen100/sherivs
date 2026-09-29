@@ -1,0 +1,123 @@
+{
+  "$comment": "Evidence map for Phase 30. Current executable coverage proves regional and localization contracts; durable locale registry/runtime deployment remains declared.",
+  "phase": "30",
+  "phaseName": "Globalization",
+  "source": "architecture/phase-30-globalization.md",
+  "contract": "frontend/src/lib/kernel/phase-contracts/phase-30-globalization.ts",
+  "ownership": {
+    "canonicalOwners": {
+      "locale-and-format-rules": "30",
+      "localized-content": "30",
+      "regional-context-and-jurisdiction": "30",
+      "domain-semantics": "owning-domain-phase",
+      "human-interface": "50",
+      "sovereign-policy": "20"
+    }
+  },
+  "areas": [
+    {
+      "id": "locale-resolution-and-language-fallback",
+      "area": "Locale resolution respects authorization and language fallback",
+      "requirement": "Locales require language metadata, institutional policy takes precedence over user preference, and fallback cannot select unauthorized locales.",
+      "required": true,
+      "evidence": [
+        { "kind": "contract", "path": "frontend/src/lib/kernel/phase-contracts/phase-30-globalization.ts", "contains": "Regional correctness is data-driven" },
+        { "kind": "test", "path": "tests/unit/globalization.test.ts", "contains": "resolves institutional policy before user preference" },
+        { "kind": "test", "path": "tests/unit/globalization.test.ts", "contains": "falls through when the top candidate is unauthorized" },
+        { "kind": "test", "path": "tests/unit/globalization.test.ts", "contains": "builds a deduplicated fallback chain" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "rtl-unicode-and-cultural-safety",
+      "area": "RTL, Unicode, names, addresses and cultural conventions are safe",
+      "requirement": "Direction and Unicode safety are explicit, bidi overrides are detected, and cultural/name/address models do not impose universal conventions.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/globalization.test.ts", "contains": "detects bidi override attacks" },
+        { "kind": "test", "path": "tests/unit/globalization.test.ts", "contains": "rejects unpaired surrogate halves" },
+        { "kind": "test", "path": "tests/unit/globalization.test.ts", "contains": "rejects profiles that assume universal conventions" },
+        { "kind": "test", "path": "tests/unit/globalization.test.ts", "contains": "accepts non-Western address structures" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "translation-and-content-governance",
+      "area": "Translations and localized content preserve approval, version and drift",
+      "requirement": "AI translations require human review, updates reset approval, terminology proposals do not silently apply, and content fallback/drift/governance are controlled.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/globalization.test.ts", "contains": "bumps version and resets approval on update" },
+        { "kind": "test", "path": "tests/unit/globalization.test.ts", "contains": "marks high-risk AI translations for human approval" },
+        { "kind": "test", "path": "tests/unit/globalization.test.ts", "contains": "proposes terminology changes without silently applying them" },
+        { "kind": "test", "path": "tests/unit/globalization.test.ts", "contains": "detects translation drift against source versions" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "jurisdiction-residency-and-temporal-rules",
+      "area": "Jurisdiction, residency, timezone and calendar rules preserve history",
+      "requirement": "Jurisdiction chains, effective-dated rules, data transfer restrictions, timezone-aware events, calendars and holidays are explicit and versioned.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/globalization.test.ts", "contains": "builds and validates a jurisdiction chain" },
+        { "kind": "test", "path": "tests/unit/globalization.test.ts", "contains": "supersedes rules without losing history" },
+        { "kind": "test", "path": "tests/unit/globalization.test.ts", "contains": "restricts sensitive data transfers to in-country" },
+        { "kind": "test", "path": "tests/unit/globalization.test.ts", "contains": "requires recurrence to be timezone-aware" },
+        { "kind": "test", "path": "tests/unit/globalization.test.ts", "contains": "builds a non-overlapping academic calendar" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "regional-format-and-economic-representation",
+      "area": "Currency, tax, units, documents, communication and integrations are localized representations",
+      "requirement": "Regional formatting preserves source context, validates currencies/tax types, uses historical FX, and does not redefine domain truth.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/globalization.test.ts", "contains": "formats numbers and currency per locale" },
+        { "kind": "test", "path": "tests/unit/globalization.test.ts", "contains": "finds historical FX by timestamp" },
+        { "kind": "test", "path": "tests/unit/globalization.test.ts", "contains": "selects the effective tax rate" },
+        { "kind": "test", "path": "tests/unit/globalization.test.ts", "contains": "localizes integrations per region" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "regional-governance-and-readiness",
+      "area": "Configuration, feature availability and country expansion are gated",
+      "requirement": "Specific configuration precedence, immutable rules, regional dependencies, readiness scores, pilots, support and SLAs are explicit.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/globalization.test.ts", "contains": "resolves the most specific configuration" },
+        { "kind": "test", "path": "tests/unit/globalization.test.ts", "contains": "never overrides immutable rules" },
+        { "kind": "test", "path": "tests/unit/globalization.test.ts", "contains": "checks regional dependencies" },
+        { "kind": "test", "path": "tests/unit/globalization.test.ts", "contains": "computes readiness and launch gates" },
+        { "kind": "test", "path": "tests/unit/globalization.test.ts", "contains": "opens controlled regional pilots with monitoring" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "localization-quality-connectivity-and-events",
+      "area": "Localization QA, connectivity adaptation, regional graph and events are bounded",
+      "requirement": "Locale matrices cover LTR/RTL, test runs and human review are recorded, limited networks adapt sync/offline behavior, regional graphs validate, and only known events publish.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/globalization.test.ts", "contains": "requires both LTR and RTL in the locale matrix" },
+        { "kind": "test", "path": "tests/unit/globalization.test.ts", "contains": "tracks locale test runs" },
+        { "kind": "test", "path": "tests/unit/globalization.test.ts", "contains": "adapts sync on data-cost-aware limited networks" },
+        { "kind": "test", "path": "tests/unit/globalization.test.ts", "contains": "validates the regional graph" },
+        { "kind": "test", "path": "tests/unit/globalization.test.ts", "contains": "publishes only known event types" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "live-globalization-runtime",
+      "area": "Durable globalization registries and runtime projections are wired",
+      "requirement": "Locale, translation, jurisdiction, format and regional readiness records persist and are consumed by authorized runtime surfaces.",
+      "required": false,
+      "evidence": [
+        { "kind": "document", "path": "architecture/phase-30-globalization.md", "contains": "Phase 30 models regional representation" }
+      ],
+      "boundary": []
+    }
+  ]
+}

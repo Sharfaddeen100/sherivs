@@ -1,0 +1,92 @@
+{
+  "artifact": "phase-acceptance",
+  "phase": "41",
+  "phaseName": "Reality Simulation & Autonomous Sandbox Engine",
+  "source": "architecture/phase-41-reality-simulation-autonomous-sandbox-civilization-engine.md",
+  "generatedAt": "2026-09-28T15:12:53.723Z",
+  "classificationDefinitions": {
+    "ENFORCED": "an executable artefact proves it (test, verifier script, migration, policy or machine-checked contract match) and, where a boundary is declared, a real call site invokes it",
+    "DECLARED": "a module, document or contract mentions it, but nothing executable proves it",
+    "IMPLEMENTED_UNWIRED": "implementation and tests exist, but the declared boundary patterns match nothing — the capability protects nothing yet",
+    "MISSING": "no artefact found"
+  },
+  "summary": {
+    "areas": 3,
+    "enforced": 0,
+    "declared": 3,
+    "implementedUnwired": 0,
+    "implementedUnwiredAreas": [],
+    "missing": 0,
+    "missingRequired": [],
+    "unresolvedEvidencePaths": []
+  },
+  "ownership": {
+    "canonicalOwners": {
+      "sandbox-provisioning-and-isolation": "41",
+      "scenario-definition": "37",
+      "canonical-records": "kernel/owning-domain-phase",
+      "production-execution": "owning-phase",
+      "planetary-infrastructure": "44"
+    }
+  },
+  "areas": [
+    {
+      "id": "sandbox-isolation-boundary",
+      "area": "Sandbox isolation and lifecycle are defined",
+      "requirement": "Sandbox state, grants, credentials, lifecycle and resource boundaries isolate simulated realities from production.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "architecture/phase-41-reality-simulation-autonomous-sandbox-civilization-engine.md"
+      ],
+      "matchedEvidence": [
+        "architecture/phase-41-reality-simulation-autonomous-sandbox-civilization-engine.md"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "sandbox-promotion-boundary",
+      "area": "Promotion from sandbox is proposal-only and audited",
+      "requirement": "Sandbox output cannot write canonical reality; promotion requires validation, policy, approval and audit.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "architecture/phase-41-reality-simulation-autonomous-sandbox-civilization-engine.md"
+      ],
+      "matchedEvidence": [
+        "architecture/phase-41-reality-simulation-autonomous-sandbox-civilization-engine.md"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "live-sandbox-execution",
+      "area": "Sandbox execution, cleanup and operational evidence are wired",
+      "requirement": "Sandbox runs execute with scoped credentials, bounded resources, escape detection, cleanup and reproducible evidence.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "architecture/phase-41-reality-simulation-autonomous-sandbox-civilization-engine.md"
+      ],
+      "matchedEvidence": [
+        "architecture/phase-41-reality-simulation-autonomous-sandbox-civilization-engine.md"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    }
+  ],
+  "ok": true,
+  "limitations": [
+    "Classification measures the presence of executable evidence, not the correctness or completeness of that evidence.",
+    "A DECLARED area is unfinished work, never a false claim — it is reported as such.",
+    "An IMPLEMENTED_UNWIRED area has a tested implementation that no boundary calls; it is reported, never counted as enforcement.",
+    "Evidence patterns are declared per phase in architecture/phase-acceptance/phase-<id>-*.json and must be reviewed when a phase is re-audited."
+  ]
+}

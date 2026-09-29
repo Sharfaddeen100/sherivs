@@ -1,0 +1,46 @@
+{
+  "$comment": "Architecture-phase acceptance definition. It records design and contract evidence without claiming implementation, runtime, deployment, or operational completion.",
+  "phase": "47",
+  "phaseName": "Autonomous Engineering Self-Improvement Engine",
+  "source": "architecture/phase-47-autonomous-engineering-self-improvement-engine.md",
+  "contract": "frontend/src/lib/kernel/phase-contracts/phase-47-self-improvement.ts",
+  "ownership": {
+    "canonicalOwners": {
+      "phase-47-capability": "47"
+    },
+    "note": "Registry ownership is observed. Cross-phase duplication and runtime ownership remain subject to Mission 0001 reconciliation."
+  },
+  "areas": [
+    {
+      "id": "architecture-and-contract-defined",
+      "area": "Architecture and phase contract are defined",
+      "requirement": "The phase has a canonical blueprint and machine-readable phase contract; this proves definition only.",
+      "required": true,
+      "evidence": [
+        {
+          "kind": "document",
+          "path": "architecture/phase-47-autonomous-engineering-self-improvement-engine.md",
+          "contains": "Autonomous Engineering Self-Improvement Engine"
+        },
+        {
+          "kind": "contract",
+          "path": "frontend/src/lib/kernel/phase-contracts/phase-47-self-improvement.ts",
+          "contains": "phaseId"
+        }
+      ]
+    },
+    {
+      "id": "implementation-runtime-and-operations",
+      "area": "Implementation, runtime, deployment and operations remain unverified",
+      "requirement": "Executable modules, runtime consumers, deployment evidence and operational proof must be established by a later bounded mission; this definition does not infer them from design text.",
+      "required": false,
+      "evidence": [
+        {
+          "kind": "document",
+          "path": "architecture/phase-47-autonomous-engineering-self-improvement-engine.md",
+          "contains": "Implementation"
+        }
+      ]
+    }
+  ]
+}

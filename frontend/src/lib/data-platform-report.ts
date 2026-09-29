@@ -338,7 +338,7 @@ const INGEST_ENDPOINT: IngestionEndpoint = {
   ownerPhase: "14",
   source: { sourceId: "external-provider-a", kind: "external-provider", signed: true },
   authorised: true,
-  classification: "confidential",
+  classification: "CONFIDENTIAL",
   purpose: "reconcile externally reported records",
   naturalKey: ["reference"],
   schemaVersion: "v1",
@@ -405,6 +405,8 @@ export function runDataPlatformChecks(): readonly DataCheck[] {
     observed: lossy.ok ? "a history-destroying data migration was accepted" : lossy.detail,
     passed: !lossy.ok,
   });
+
+  return checks;
 }
 
 

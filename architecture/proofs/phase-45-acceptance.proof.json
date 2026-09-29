@@ -1,0 +1,71 @@
+{
+  "artifact": "phase-acceptance",
+  "phase": "45",
+  "phaseName": "AI Compute Civilization Engine",
+  "source": "architecture/phase-45-ai-compute-civilization-engine.md",
+  "generatedAt": "2026-09-28T15:36:03.010Z",
+  "classificationDefinitions": {
+    "ENFORCED": "an executable artefact proves it (test, verifier script, migration, policy or machine-checked contract match) and, where a boundary is declared, a real call site invokes it",
+    "DECLARED": "a module, document or contract mentions it, but nothing executable proves it",
+    "IMPLEMENTED_UNWIRED": "implementation and tests exist, but the declared boundary patterns match nothing — the capability protects nothing yet",
+    "MISSING": "no artefact found"
+  },
+  "summary": {
+    "areas": 2,
+    "enforced": 0,
+    "declared": 1,
+    "implementedUnwired": 0,
+    "implementedUnwiredAreas": [],
+    "missing": 1,
+    "missingRequired": [],
+    "unresolvedEvidencePaths": []
+  },
+  "ownership": {
+    "canonicalOwners": {
+      "phase-45-capability": "45"
+    },
+    "note": "Registry ownership is observed. Cross-phase duplication and runtime ownership remain subject to Mission 0001 reconciliation."
+  },
+  "areas": [
+    {
+      "id": "architecture-and-contract-defined",
+      "area": "Architecture and phase contract are defined",
+      "requirement": "The phase has a canonical blueprint and machine-readable phase contract; this proves definition only.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "architecture/phase-45-ai-compute-civilization-engine.md",
+        "frontend/src/lib/kernel/phase-contracts/phase-45-ai-compute.ts"
+      ],
+      "matchedEvidence": [
+        "architecture/phase-45-ai-compute-civilization-engine.md"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "implementation-runtime-and-operations",
+      "area": "Implementation, runtime, deployment and operations remain unverified",
+      "requirement": "Executable modules, runtime consumers, deployment evidence and operational proof must be established by a later bounded mission; this definition does not infer them from design text.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "MISSING",
+      "declaredEvidence": [
+        "architecture/phase-45-ai-compute-civilization-engine.md"
+      ],
+      "matchedEvidence": [],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    }
+  ],
+  "ok": true,
+  "limitations": [
+    "Classification measures the presence of executable evidence, not the correctness or completeness of that evidence.",
+    "A DECLARED area is unfinished work, never a false claim — it is reported as such.",
+    "An IMPLEMENTED_UNWIRED area has a tested implementation that no boundary calls; it is reported, never counted as enforcement.",
+    "Evidence patterns are declared per phase in architecture/phase-acceptance/phase-<id>-*.json and must be reviewed when a phase is re-audited."
+  ]
+}

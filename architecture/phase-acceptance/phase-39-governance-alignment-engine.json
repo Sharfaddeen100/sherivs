@@ -1,0 +1,63 @@
+{
+  "$comment": "Evidence map for Phase 39. Current evidence proves view-only governance projection and contract alignment; live drift records and escalation remain declared.",
+  "phase": "39",
+  "phaseName": "Governance & Alignment Engine",
+  "source": "architecture/phase-39-governance-alignment-engine.md",
+  "contract": "frontend/src/lib/kernel/phase-contracts/phase-39-governance-alignment.ts",
+  "ownership": {
+    "canonicalOwners": {
+      "alignment-expectations-and-conformance": "39",
+      "authorization-enforcement": "08",
+      "trust-verification": "09",
+      "adversarial-defense": "42",
+      "governance-authority": "governance documents"
+    }
+  },
+  "areas": [
+    {
+      "id": "contract-governance-projection",
+      "area": "Governance projection derives from canonical kernel contracts",
+      "requirement": "The governance surface projects contract coverage and does not own independent chain facts.",
+      "required": true,
+      "evidence": [
+        { "kind": "contract", "path": "frontend/src/lib/kernel/phase-contracts/phase-39-governance-alignment.ts", "contains": "Alignment is evidence-based" },
+        { "kind": "test", "path": "tests/unit/command-centre-contract-governance.test.ts", "contains": "projects the coverage snapshot instead of owning new chain facts" },
+        { "kind": "test", "path": "tests/unit/command-centre-contract-governance.test.ts", "contains": "derives every row from its own contract" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "phase-coverage-and-neutrality",
+      "area": "Alignment coverage is complete, registered and runtime-neutral",
+      "requirement": "Every phase has a contract row, registered capability relationship, neutral runtime seat and bounded autonomy level.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/command-centre-contract-governance.test.ts", "contains": "reports the chain as contract-complete" },
+        { "kind": "test", "path": "tests/unit/command-centre-contract-governance.test.ts", "contains": "binds every phase to the Scholar runtime and keeps neutral seats reserved" },
+        { "kind": "test", "path": "tests/unit/command-centre-contract-governance.test.ts", "contains": "never reports a capability the kernel does not own" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "view-only-governance-boundary",
+      "area": "Governance alignment remains view-only and cannot authorize actions",
+      "requirement": "The governance projection displays alignment and contract health without becoming an authorization input or duplicating security enforcement.",
+      "required": true,
+      "evidence": [
+        { "kind": "test", "path": "tests/unit/command-centre-contract-governance.test.ts", "contains": "keeps the governance card free of literal chain totals" },
+        { "kind": "test", "path": "tests/unit/command-centre-contract-governance.test.ts", "contains": "stays view-only — governance is not an authorization input" }
+      ],
+      "boundary": []
+    },
+    {
+      "id": "live-alignment-drift-and-escalation",
+      "area": "Live alignment evaluation, drift records and escalation are wired",
+      "requirement": "Observed behavior is evaluated against expectations, drift is persisted with evidence and actor attribution, and escalation occurs without altering enforcement authority.",
+      "required": false,
+      "evidence": [
+        { "kind": "document", "path": "architecture/phase-39-governance-alignment-engine.md", "contains": "alignment" }
+      ],
+      "boundary": []
+    }
+  ]
+}

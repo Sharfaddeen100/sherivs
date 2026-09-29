@@ -1,0 +1,267 @@
+{
+  "artifact": "phase-acceptance",
+  "phase": "32",
+  "phaseName": "Future Evolution",
+  "source": "architecture/phase-32-future-evolution.md",
+  "generatedAt": "2026-09-28T15:12:33.587Z",
+  "classificationDefinitions": {
+    "ENFORCED": "an executable artefact proves it (test, verifier script, migration, policy or machine-checked contract match) and, where a boundary is declared, a real call site invokes it",
+    "DECLARED": "a module, document or contract mentions it, but nothing executable proves it",
+    "IMPLEMENTED_UNWIRED": "implementation and tests exist, but the declared boundary patterns match nothing — the capability protects nothing yet",
+    "MISSING": "no artefact found"
+  },
+  "summary": {
+    "areas": 10,
+    "enforced": 9,
+    "declared": 1,
+    "implementedUnwired": 0,
+    "implementedUnwiredAreas": [],
+    "missing": 0,
+    "missingRequired": [],
+    "unresolvedEvidencePaths": []
+  },
+  "ownership": {
+    "canonicalOwners": {
+      "experiments-and-migrations": "32",
+      "lifecycle-and-evolution-governance": "32",
+      "architecture-authority": "governance",
+      "autonomous-engineering": "47",
+      "enterprise-scale": "31"
+    }
+  },
+  "areas": [
+    {
+      "id": "evolution-principles-and-lifecycle",
+      "area": "Evolution principles, capability discovery and lifecycle transitions are controlled",
+      "requirement": "Future capabilities require owner/metadata, lifecycle transitions are bounded, proposals route to the correct owner, and change protocol ordering is explicit.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/kernel/phase-contracts/phase-32-evolution.ts",
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/kernel/phase-contracts/phase-32-evolution.ts",
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "bounded-experiments-and-tenant-safety",
+      "area": "Experiments are isolated, expiring, reversible and risk-governed",
+      "requirement": "Experiments have hypothesis, measurement, owner, expiry and rollback; high-impact experiments receive extra governance; cohorts do not affect unrelated tenants.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "rollout-canary-and-failure-control",
+      "area": "Rollouts, canaries, feature flags and failure outcomes are controlled",
+      "requirement": "Rollouts progress through staged environments, canaries are monitored, flags have owners and emergency disablement, and failures preserve reusable engineering knowledge.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "deprecation-and-migration-safety",
+      "area": "Deprecation, sunset and migrations preserve rollback and compatibility",
+      "requirement": "Deprecation and sunset complete all required checks; migrations require dry run, incremental execution, rollback, validation and audit; compatibility is measured.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "schema-api-protocol-model-evolution",
+      "area": "Schema, API, protocol and model changes are backward-compatible or approved",
+      "requirement": "Schema evolution is additive/backward-compatible, breaking APIs require architecture approval and migration evidence, protocols have fallback controls, and model migration has measurable evidence.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "cryptographic-generational-and-vendor-continuity",
+      "area": "Cryptographic, generational and vendor migrations preserve continuity",
+      "requirement": "Crypto agility, generation migration steps, continuity areas and vendor exit mechanisms are complete before migration claims.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "evolution-intelligence-and-memory",
+      "area": "Technology, debt, dependency, risk, ADR and evolution memory are recorded",
+      "requirement": "Technology assessments, debt, dependency health, ADR completeness, evolution risk, known metrics, synthetic-data isolation and engineering memory are explicit.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "review-reversibility-and-autonomy",
+      "area": "Evolution review, reversibility and autonomy increases are bounded",
+      "requirement": "Reviews require all dimensions, high-risk changes require reversibility mechanisms, and autonomy increases require evidence and bounded actions.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "agent-graduation-security-and-supply-chain",
+      "area": "Agent evolution, graduation, ethics, security and supply chain remain governed",
+      "requirement": "Agent changes preserve permissions/tools/evaluations, graduation requires readiness and score, and ethical, security and supply-chain controls are complete.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts",
+        "tests/unit/evolution.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "incident-recovery-and-live-evolution",
+      "area": "Evolution incident response, recovery and live execution are wired",
+      "requirement": "Evolution incidents and recovery execute through durable authorized runtime boundaries with observable rollback and conformance evidence.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "architecture/phase-32-future-evolution.md"
+      ],
+      "matchedEvidence": [
+        "architecture/phase-32-future-evolution.md"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    }
+  ],
+  "ok": true,
+  "limitations": [
+    "Classification measures the presence of executable evidence, not the correctness or completeness of that evidence.",
+    "A DECLARED area is unfinished work, never a false claim — it is reported as such.",
+    "An IMPLEMENTED_UNWIRED area has a tested implementation that no boundary calls; it is reported, never counted as enforcement.",
+    "Evidence patterns are declared per phase in architecture/phase-acceptance/phase-<id>-*.json and must be reviewed when a phase is re-audited."
+  ]
+}

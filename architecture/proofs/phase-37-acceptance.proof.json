@@ -1,0 +1,92 @@
+{
+  "artifact": "phase-acceptance",
+  "phase": "37",
+  "phaseName": "Simulation & Future Intelligence Engine",
+  "source": "architecture/phase-37-simulation-future-intelligence-engine.md",
+  "generatedAt": "2026-09-28T15:12:43.713Z",
+  "classificationDefinitions": {
+    "ENFORCED": "an executable artefact proves it (test, verifier script, migration, policy or machine-checked contract match) and, where a boundary is declared, a real call site invokes it",
+    "DECLARED": "a module, document or contract mentions it, but nothing executable proves it",
+    "IMPLEMENTED_UNWIRED": "implementation and tests exist, but the declared boundary patterns match nothing — the capability protects nothing yet",
+    "MISSING": "no artefact found"
+  },
+  "summary": {
+    "areas": 3,
+    "enforced": 0,
+    "declared": 3,
+    "implementedUnwired": 0,
+    "implementedUnwiredAreas": [],
+    "missing": 0,
+    "missingRequired": [],
+    "unresolvedEvidencePaths": []
+  },
+  "ownership": {
+    "canonicalOwners": {
+      "simulation-and-foresight": "37",
+      "sandbox-execution": "41",
+      "twin-state": "16",
+      "canonical-reality": "33/owning-domain-phase",
+      "decision-execution": "17"
+    }
+  },
+  "areas": [
+    {
+      "id": "simulation-contract-and-lifecycle",
+      "area": "Scenario and simulation lifecycle is defined",
+      "requirement": "Simulation environments, scenarios, assumptions, parameters, runs and outcomes have explicit contracts and lifecycle.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "architecture/phase-37-simulation-future-intelligence-engine.md"
+      ],
+      "matchedEvidence": [
+        "architecture/phase-37-simulation-future-intelligence-engine.md"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "simulation-truth-boundary",
+      "area": "Simulation remains distinct from canonical reality",
+      "requirement": "Simulated outcomes remain derived, labelled and bounded; no simulation output writes canonical reality or is presented as observation without policy and approval.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "architecture/phase-37-simulation-future-intelligence-engine.md"
+      ],
+      "matchedEvidence": [
+        "architecture/phase-37-simulation-future-intelligence-engine.md"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "live-simulation-verification",
+      "area": "Universal simulation execution and verification are implemented",
+      "requirement": "Simulation runs execute in an isolated runtime with reproducible evidence, uncertainty, comparison against reality and governed promotion.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "architecture/phase-37-simulation-future-intelligence-engine.md"
+      ],
+      "matchedEvidence": [
+        "architecture/phase-37-simulation-future-intelligence-engine.md"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    }
+  ],
+  "ok": true,
+  "limitations": [
+    "Classification measures the presence of executable evidence, not the correctness or completeness of that evidence.",
+    "A DECLARED area is unfinished work, never a false claim — it is reported as such.",
+    "An IMPLEMENTED_UNWIRED area has a tested implementation that no boundary calls; it is reported, never counted as enforcement.",
+    "Evidence patterns are declared per phase in architecture/phase-acceptance/phase-<id>-*.json and must be reviewed when a phase is re-audited."
+  ]
+}

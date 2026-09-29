@@ -3,7 +3,7 @@
   "phase": "05",
   "phaseName": "Core Application Runtime",
   "source": "architecture/phase-05-core-application-runtime.md",
-  "generatedAt": "2026-09-17T14:21:57.344Z",
+  "generatedAt": "2026-09-28T12:05:17.140Z",
   "classificationDefinitions": {
     "ENFORCED": "an executable artefact proves it (test, verifier script, migration, policy or machine-checked contract match) and, where a boundary is declared, a real call site invokes it",
     "DECLARED": "a module, document or contract mentions it, but nothing executable proves it",

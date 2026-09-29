@@ -1,0 +1,166 @@
+{
+  "artifact": "phase-acceptance",
+  "phase": "36",
+  "phaseName": "Universal Memory & Knowledge Engine",
+  "source": "architecture/phase-36-universal-memory-knowledge-civilization-engine.md",
+  "generatedAt": "2026-09-28T15:12:41.598Z",
+  "classificationDefinitions": {
+    "ENFORCED": "an executable artefact proves it (test, verifier script, migration, policy or machine-checked contract match) and, where a boundary is declared, a real call site invokes it",
+    "DECLARED": "a module, document or contract mentions it, but nothing executable proves it",
+    "IMPLEMENTED_UNWIRED": "implementation and tests exist, but the declared boundary patterns match nothing — the capability protects nothing yet",
+    "MISSING": "no artefact found"
+  },
+  "summary": {
+    "areas": 6,
+    "enforced": 5,
+    "declared": 1,
+    "implementedUnwired": 0,
+    "implementedUnwiredAreas": [],
+    "missing": 0,
+    "missingRequired": [],
+    "unresolvedEvidencePaths": []
+  },
+  "ownership": {
+    "canonicalOwners": {
+      "memory-scopes-and-recall": "36",
+      "knowledge-structures": "36",
+      "canonical-records": "kernel/owning-phases",
+      "authorization": "08",
+      "agent-runtime": "07",
+      "knowledge-graph-feature-set": "48"
+    }
+  },
+  "areas": [
+    {
+      "id": "scoped-memory-access",
+      "area": "Memory recall is category, classification and tenant scoped",
+      "requirement": "Memory access rejects disallowed categories or classifications and permits only requests within declared scope.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/kernel/phase-contracts/phase-36-memory-knowledge.ts",
+        "tests/unit/agent-memory.test.ts",
+        "tests/unit/agent-memory.test.ts",
+        "tests/unit/agent-memory.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/kernel/phase-contracts/phase-36-memory-knowledge.ts",
+        "tests/unit/agent-memory.test.ts",
+        "tests/unit/agent-memory.test.ts",
+        "tests/unit/agent-memory.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "memory-provenance-and-inference-marking",
+      "area": "Memory writes preserve provenance and mark derived inference",
+      "requirement": "Empty or unauthorized persistent writes fail, while inference memory records its originating agent and provenance kind.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/agent-memory.test.ts",
+        "tests/unit/agent-memory.test.ts",
+        "tests/unit/agent-memory.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/agent-memory.test.ts",
+        "tests/unit/agent-memory.test.ts",
+        "tests/unit/agent-memory.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "context-packages-and-provenance",
+      "area": "Context packages require purpose, budget and provenance",
+      "requirement": "Context assembly rejects empty task summaries and invalid budgets, while valid packages preserve source provenance.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/agent-memory.test.ts",
+        "tests/unit/agent-memory.test.ts",
+        "tests/unit/agent-memory.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/agent-memory.test.ts",
+        "tests/unit/agent-memory.test.ts",
+        "tests/unit/agent-memory.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "memory-and-context-trust",
+      "area": "Memory/context trust prevents prompt injection and authority confusion",
+      "requirement": "System instructions may be trusted, external content and raw tool output are not instructions, and user content conflicting with policy is rejected.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "tests/unit/agent-memory.test.ts",
+        "tests/unit/agent-memory.test.ts",
+        "tests/unit/agent-memory.test.ts",
+        "tests/unit/agent-memory.test.ts"
+      ],
+      "matchedEvidence": [
+        "tests/unit/agent-memory.test.ts",
+        "tests/unit/agent-memory.test.ts",
+        "tests/unit/agent-memory.test.ts",
+        "tests/unit/agent-memory.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "noncanonical-memory-boundary",
+      "area": "Memory and knowledge remain subordinate to canonical truth",
+      "requirement": "Memory recall and derived knowledge cannot grant access or replace canonical records owned by the kernel or domain phases.",
+      "required": true,
+      "ownerPhase": null,
+      "classification": "ENFORCED",
+      "declaredEvidence": [
+        "frontend/src/lib/kernel/phase-contracts/phase-36-memory-knowledge.ts",
+        "tests/unit/agent-memory.test.ts"
+      ],
+      "matchedEvidence": [
+        "frontend/src/lib/kernel/phase-contracts/phase-36-memory-knowledge.ts",
+        "tests/unit/agent-memory.test.ts"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    },
+    {
+      "id": "live-memory-knowledge-runtime",
+      "area": "Durable memory stores, knowledge persistence and governed forgetting are wired",
+      "requirement": "Scoped memory stores, retention/forgetting records, knowledge structures and recall execute at a live authorized boundary with evidence of unreachable forgotten content.",
+      "required": false,
+      "ownerPhase": null,
+      "classification": "DECLARED",
+      "declaredEvidence": [
+        "architecture/phase-36-universal-memory-knowledge-civilization-engine.md"
+      ],
+      "matchedEvidence": [
+        "architecture/phase-36-universal-memory-knowledge-civilization-engine.md"
+      ],
+      "unresolvedEvidence": [],
+      "declaredBoundary": [],
+      "boundaryEvidence": []
+    }
+  ],
+  "ok": true,
+  "limitations": [
+    "Classification measures the presence of executable evidence, not the correctness or completeness of that evidence.",
+    "A DECLARED area is unfinished work, never a false claim — it is reported as such.",
+    "An IMPLEMENTED_UNWIRED area has a tested implementation that no boundary calls; it is reported, never counted as enforcement.",
+    "Evidence patterns are declared per phase in architecture/phase-acceptance/phase-<id>-*.json and must be reviewed when a phase is re-audited."
+  ]
+}

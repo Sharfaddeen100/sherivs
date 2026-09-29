@@ -1,0 +1,93 @@
+{
+  "$comment": "Phase 22 acceptance definition derived from architecture/phase-22-mobile-platform.md, the phase contract, platform-core/device/offline/observability/client-platform modules and the cited platform suites. Client classification, offline and trust models are tested libraries; no native release or server re-authorization boundary is inferred.",
+  "phase": "22",
+  "phaseName": "Mobile Platform",
+  "source": "architecture/phase-22-mobile-platform.md",
+  "contract": "frontend/src/lib/kernel/phase-contracts/phase-22-mobile-platform.ts",
+  "ownership": {
+    "note": "Phase 22 owns client capability profiles, offline queue semantics, push delivery records and client observability. Domain surfaces, authorization and web behaviour remain owned by consuming or adjacent phases.",
+    "canonicalOwners": {
+      "client-capabilities-offline-observability": "22",
+      "identity": "02",
+      "tenancy": "03",
+      "authorization": "08",
+      "workspace": "06",
+      "web-platform": "23"
+    }
+  },
+  "areas": [
+    {
+      "id": "device-and-target-classification",
+      "area": "Mobile platform profiles classify devices and targets",
+      "requirement": "Real device families, touch capability, responsive breakpoints, color scheme and platform targets are classified into the declared vocabulary; unknown targets fail closed.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/client-platform.ts" },
+        { "kind": "module", "path": "frontend/src/lib/platform-core.ts", "contains": "getBreakpoint" },
+        { "kind": "test", "path": "tests/unit/client-platform.test.ts", "contains": "maps real device UA strings into the P22 vocabulary" },
+        { "kind": "test", "path": "tests/unit/platform-targets.test.ts", "contains": "fails closed for unknown targets" }
+      ]
+    },
+    {
+      "id": "client-shell-routing-and-api",
+      "area": "Client launch, deep links, routes and API requests are typed",
+      "requirement": "Launch sources, deep links, known navigation routes and authenticated API request shapes are represented and invalid route/input values are rejected.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/platform-core.ts", "contains": "createLaunchContext" },
+        { "kind": "test", "path": "tests/unit/platform-core.test.ts", "contains": "creates launch context from deep link with payload" },
+        { "kind": "test", "path": "tests/unit/platform-core.test.ts", "contains": "rejects unknown route" },
+        { "kind": "test", "path": "tests/unit/platform-core.test.ts", "contains": "creates authenticated API request" }
+      ]
+    },
+    {
+      "id": "offline-and-resource-behaviour",
+      "area": "Offline synchronization and resource constraints are explicit",
+      "requirement": "Offline operations and cache entries have state, expiry and eviction rules, while weak bandwidth and low power cause constrained sync behaviour.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/platform-offline.ts", "contains": "createSyncOperation" },
+        { "kind": "test", "path": "tests/unit/platform-offline.test.ts", "contains": "creates pending sync operation" },
+        { "kind": "test", "path": "tests/unit/platform-offline.test.ts", "contains": "marks entry as stale" },
+        { "kind": "test", "path": "tests/unit/platform-offline.test.ts", "contains": "throttles sync on low battery" }
+      ]
+    },
+    {
+      "id": "device-trust-and-sensitive-capabilities",
+      "area": "Device trust and device capabilities are fail-closed",
+      "requirement": "Compromised or debug devices are not trusted, minimum requirements and sensitive permissions are evaluated explicitly, and biometric outcomes are represented.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/platform-device.ts" },
+        { "kind": "test", "path": "tests/unit/platform-device.test.ts", "contains": "returns compromised for jailbroken device" },
+        { "kind": "test", "path": "tests/unit/platform-device.test.ts", "contains": "fails when notifications missing" },
+        { "kind": "test", "path": "tests/unit/platform-device.test.ts", "contains": "returns unknown when debug mode detected" }
+      ]
+    },
+    {
+      "id": "client-observability-and-audit",
+      "area": "Client telemetry, audit and compatibility records are privacy-aware",
+      "requirement": "Telemetry is anonymized, client audit events are typed, AI interactions are recorded and version compatibility/OTA state is evaluable.",
+      "required": true,
+      "evidence": [
+        { "kind": "module", "path": "frontend/src/lib/platform-observability.ts", "contains": "createTelemetryEvent" },
+        { "kind": "test", "path": "tests/unit/platform-offline.test.ts", "contains": "creates anonymized telemetry event" },
+        { "kind": "test", "path": "tests/unit/platform-offline.test.ts", "contains": "creates client audit event" },
+        { "kind": "test", "path": "tests/unit/platform-offline.test.ts", "contains": "compatible when app version meets minimum" }
+      ]
+    },
+    {
+      "id": "server-reauthorization-and-release",
+      "area": "Server re-authorization and native delivery remain unwired",
+      "requirement": "Queued actions must be re-authorized server-side and a native delivery/release boundary must consume the client contracts; current evidence is client-library testing only.",
+      "required": false,
+      "evidence": [
+        { "kind": "contract", "path": "frontend/src/lib/kernel/phase-contracts/phase-22-mobile-platform.ts", "contains": "mobile-client-platform" },
+        { "kind": "module", "path": "frontend/src/lib/platform-offline.ts" }
+      ],
+      "boundary": [
+        { "kind": "module", "path": "frontend/src/lib/*.functions.ts", "contains": "syncOfflineAction" }
+      ]
+    }
+  ]
+}

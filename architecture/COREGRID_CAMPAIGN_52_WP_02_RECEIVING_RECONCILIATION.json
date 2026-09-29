@@ -1,0 +1,378 @@
+{
+  "mission": "COREGRID-MISSION-0001",
+  "campaign": "CAMPAIGN-52",
+  "workPackage": "CAMPAIGN-52-WP-02",
+  "artifact": "COREGRID_CAMPAIGN_52_WP_02_RECEIVING_RECONCILIATION",
+  "status": "RECONCILED_SCOPE_RECORDED_IMPLEMENTATION_DENIED",
+  "generatedAt": "2026-09-29T13:11:45.142Z",
+  "mappedCount": 19,
+  "blockedCount": 8,
+  "registryMutation": "NONE",
+  "phaseRegistration": "NONE",
+  "rule": "Mapped extracts are source-locked to existing owners. Blocked extracts stay untouched. No record authorizes runtime implementation.",
+  "records": [
+    {
+      "gapId": "CG-P52-GAP-007",
+      "decisionId": "CAMPAIGN-52-DECISION-CG-P52-GAP-007",
+      "title": "THE MAIN COREGRID APPLICATION COMES FIRST",
+      "extract": "architecture/phase-52-extracts/block-23-occurrence-102.md",
+      "artifactId": "p52-block-23-occurrence-102",
+      "contentSha256": "DDFF05C8CEC7B249FBD47161E6048D03731E2BBC673D3A31974AD26C6673AFE4",
+      "approvedOwner": "ENGINEERING.md / MISSIONS.md",
+      "disposition": "MAPPED_TO_MOTHER",
+      "principle": "The universal CoreGrid application shell comes before additional domain runtimes.",
+      "nonPurpose": "The named home surfaces are product intent. They do not authorize a new shell phase; COREGRID GLOBAL SHELL remains blocked.",
+      "stalePlanExtract": [
+        "Review complete extract p52-block-23-occurrence-102",
+        "Compare with existing Mission 001 and engineering sequence artifacts"
+      ],
+      "implementationAuthorization": "DENIED",
+      "registryMutation": "NONE",
+      "contractDelta": "NONE"
+    },
+    {
+      "gapId": "CG-P52-GAP-009",
+      "decisionId": "CAMPAIGN-52-DECISION-CG-P52-GAP-009",
+      "title": "ONE USER, MANY REALITIES",
+      "extract": "architecture/phase-52-extracts/block-25-occurrence-104.md",
+      "artifactId": "p52-block-25-occurrence-104",
+      "contentSha256": "92CBAE36F315FDA9E1D3279BB0CC2DA37209A5B195D0293E68E4F2870E83AC81",
+      "approvedOwner": "REALITY.md plus identity/tenancy/context laws",
+      "disposition": "MAPPED_TO_MOTHER",
+      "principle": "One identity may participate in many realities. CoreGrid switches active context and does not replace identity.",
+      "nonPurpose": "This does not create a reality phase or grant cross-reality access.",
+      "stalePlanExtract": [
+        "Review complete extract p52-block-25-occurrence-104",
+        "Compare REALITY.md, identity, tenancy and context contracts"
+      ],
+      "implementationAuthorization": "DENIED",
+      "registryMutation": "NONE",
+      "contractDelta": "NONE"
+    },
+    {
+      "gapId": "CG-P52-GAP-010",
+      "decisionId": "CAMPAIGN-52-DECISION-CG-P52-GAP-010",
+      "title": "CONTEXT SWITCHING MUST BE EXTREMELY SAFE",
+      "extract": "architecture/phase-52-extracts/block-26-occurrence-105.md",
+      "artifactId": "p52-block-26-occurrence-105",
+      "contentSha256": "A0C37B03BE7238AA02DD79989F274D6612D594BD08F549F1929210DA508B87C2",
+      "approvedOwner": "CONTROL-PLANE-05-CONTEXT-ASSEMBLY plus identity/security laws",
+      "disposition": "MAPPED_TO_MOTHER",
+      "principle": "An organization switch must verify membership, role, authority, domain, and organization reality before experience is loaded. A client organization id is not access.",
+      "nonPurpose": "This does not authorize a new context store or bypass existing authorization.",
+      "stalePlanExtract": [
+        "Review complete extract p52-block-25-occurrence-105",
+        "Compare Context Assembly, identity, tenancy and security contracts"
+      ],
+      "implementationAuthorization": "DENIED",
+      "registryMutation": "NONE",
+      "contractDelta": "NONE"
+    },
+    {
+      "gapId": "CG-P52-GAP-011",
+      "decisionId": "CAMPAIGN-52-DECISION-CG-P52-GAP-011",
+      "title": "PERSONAL VS ORGANIZATIONAL DATA",
+      "extract": "architecture/phase-52-extracts/block-27-occurrence-106.md",
+      "artifactId": "p52-block-27-occurrence-106",
+      "contentSha256": "88AF70BC64667CBAD56F31811904BA2FB0630DB0CE2CEE820EB64DD3164B5D41",
+      "approvedOwner": "Phase 14 Data Platform plus identity/tenancy/privacy laws",
+      "disposition": "MAPPED_TO_MOTHER",
+      "principle": "Personal reality and organizational reality stay separated. Cross-context access requires identity, membership, permission, purpose, policy, and consent where applicable.",
+      "nonPurpose": "This does not create a new data platform or infer consent.",
+      "stalePlanExtract": [
+        "Review complete extract p52-block-25-occurrence-106",
+        "Compare Phase 14 data governance and Phase 02/03 contracts"
+      ],
+      "implementationAuthorization": "DENIED",
+      "registryMutation": "NONE",
+      "contractDelta": "NONE"
+    },
+    {
+      "gapId": "CG-P52-GAP-012",
+      "decisionId": "CAMPAIGN-52-DECISION-CG-P52-GAP-012",
+      "title": "COREGRID APPLICATION ARCHITECTURE",
+      "extract": "architecture/phase-52-extracts/block-28-occurrence-107.md",
+      "artifactId": "p52-block-28-occurrence-107",
+      "contentSha256": "9E09721D689A9FD19C20287047BB3D6779970F1596FFF0CCFB05FF216A3B76E3",
+      "approvedOwner": "ARCHITECTURE.md / IMPLEMENTATION.md / RUNTIME.md; Phase 05 consumer",
+      "disposition": "MAPPED_TO_MOTHER",
+      "principle": "Application structure should share contracts across web, mobile, and admin surfaces.",
+      "nonPurpose": "The proposed directory tree is source design. It does not authorize a repository migration or new packages.",
+      "stalePlanExtract": [
+        "Review complete extract p52-block-26-occurrence-107",
+        "Compare Phase 05 runtime, implementation and architecture boundaries"
+      ],
+      "implementationAuthorization": "DENIED",
+      "registryMutation": "NONE",
+      "contractDelta": "NONE"
+    },
+    {
+      "gapId": "CG-P52-GAP-013",
+      "decisionId": "CAMPAIGN-52-DECISION-CG-P52-GAP-013",
+      "title": "WEB + IOS + ANDROID",
+      "extract": "architecture/phase-52-extracts/block-29-occurrence-108.md",
+      "artifactId": "p52-block-29-occurrence-108",
+      "contentSha256": "3805B6927C150BF21A3F63F47901C6C05B4B157EB4B8B52D0D5C3216C9B1DE1D",
+      "approvedOwner": "Phase 22 Mobile Platform and Phase 23 Web Platform",
+      "disposition": "MAPPED_TO_MOTHER",
+      "principle": "Web and mobile clients share domain contracts, identity, authorization, ontology, and experience definitions, while native capabilities stay local.",
+      "nonPurpose": "This does not create a third platform phase or claim mobile runtime completion.",
+      "stalePlanExtract": [
+        "Review complete extract p52-block-25-occurrence-108",
+        "Compare Phase 22 and Phase 23 contracts and platform modules"
+      ],
+      "implementationAuthorization": "DENIED",
+      "registryMutation": "NONE",
+      "contractDelta": "NONE"
+    },
+    {
+      "gapId": "CG-P52-GAP-014",
+      "decisionId": "CAMPAIGN-52-DECISION-CG-P52-GAP-014",
+      "title": "DO NOT BUILD THE ENGINES FIRST",
+      "extract": "architecture/phase-52-extracts/block-30-occurrence-109.md",
+      "artifactId": "p52-block-30-occurrence-109",
+      "contentSha256": "673B21F6B9165014FF3D0996B9CC29EF040BB374EE97D1ACE12F7953DA53ECD1",
+      "approvedOwner": "ENGINEERING.md / MISSIONS.md",
+      "disposition": "MAPPED_TO_MOTHER",
+      "principle": "Experience and engine construction follow a locked sequence. Engines are not the first build.",
+      "nonPurpose": "The extract stages do not override Mission 0001 gates or authorize those engines.",
+      "stalePlanExtract": [
+        "Review complete extract p52-block-27-occurrence-110",
+        "Compare Mission 001 dependency order and engineering laws"
+      ],
+      "implementationAuthorization": "DENIED",
+      "registryMutation": "NONE",
+      "contractDelta": "NONE"
+    },
+    {
+      "gapId": "CG-P52-GAP-015",
+      "decisionId": "CAMPAIGN-52-DECISION-CG-P52-GAP-015",
+      "title": "THE COREGRID DOMAIN PACKAGE",
+      "extract": "architecture/phase-52-extracts/block-31-occurrence-110.md",
+      "artifactId": "p52-block-31-occurrence-110",
+      "contentSha256": "1AC47DE991505533C6E5E5EB3BEB77047E2D24EBDF391FEA63569C4FECD1D427",
+      "approvedOwner": "RUNTIME.md / ECOSYSTEM.md / BLUEPRINTS.md",
+      "disposition": "MAPPED_TO_MOTHER",
+      "principle": "A domain runtime is a package of ontology, entities, workflows, policy, experience, and extension points, not a disconnected application.",
+      "nonPurpose": "Listing package facets does not instantiate them. Scholar remains the existing domain runtime.",
+      "stalePlanExtract": [
+        "Review complete extract p52-block-27-occurrence-111",
+        "Compare RUNTIME.md, ECOSYSTEM.md, BLUEPRINTS.md and Phase 28/40 contracts"
+      ],
+      "implementationAuthorization": "DENIED",
+      "registryMutation": "NONE",
+      "contractDelta": "NONE"
+    },
+    {
+      "gapId": "CG-P52-GAP-016",
+      "decisionId": "CAMPAIGN-52-DECISION-CG-P52-GAP-016",
+      "title": "COREGRID DOES NOT NEED TO KNOW EVERY DOMAIN IN ADVANCE",
+      "extract": "architecture/phase-52-extracts/block-32-occurrence-111.md",
+      "artifactId": "p52-block-32-occurrence-111",
+      "contentSha256": "E02E05A92680D1233673BF80EEB1FE6A5A95ED32C0265D61765BBD443FBBF598",
+      "approvedOwner": "COREGRID.md / ARCHITECTURE.md / ECOSYSTEM.md",
+      "disposition": "MAPPED_TO_MOTHER",
+      "principle": "CoreGrid does not need every domain prebuilt. Unknown domains are discovered, validated, and only then eligible to become packages.",
+      "nonPurpose": "Discovery and AI proposal are not canonical domain truth.",
+      "stalePlanExtract": [
+        "Review complete extract p52-block-27-occurrence-112",
+        "Compare COREGRID.md, ARCHITECTURE.md, ECOSYSTEM.md and domain-runtime contracts"
+      ],
+      "implementationAuthorization": "DENIED",
+      "registryMutation": "NONE",
+      "contractDelta": "NONE"
+    },
+    {
+      "gapId": "CG-P52-GAP-017",
+      "decisionId": "CAMPAIGN-52-DECISION-CG-P52-GAP-017",
+      "title": "COREGRID SDK ECONOMY",
+      "extract": "architecture/phase-52-extracts/block-33-occurrence-112.md",
+      "artifactId": "p52-block-33-occurrence-112",
+      "contentSha256": "601411B06917D5B2F45F1DEDE8B8B0234AB3D4D2670B23019BF927A028DC625A",
+      "approvedOwner": "ECOSYSTEM.md plus existing financial/economic governance",
+      "disposition": "MAPPED_TO_MOTHER",
+      "principle": "An SDK economy is a governed flywheel of validated capability, publication, installation, use, and compensation.",
+      "nonPurpose": "The flywheel does not authorize billing, marketplace publication, or the blocked developer-platform gaps.",
+      "stalePlanExtract": [
+        "Review complete extract p52-block-27-occurrence-113",
+        "Compare ecosystem, financial, developer and economy blueprints"
+      ],
+      "implementationAuthorization": "DENIED",
+      "registryMutation": "NONE",
+      "contractDelta": "NONE"
+    },
+    {
+      "gapId": "CG-P52-GAP-018",
+      "decisionId": "CAMPAIGN-52-DECISION-CG-P52-GAP-018",
+      "title": "THE COREGRID APP STORE MODEL",
+      "extract": "architecture/phase-52-extracts/block-34-occurrence-113.md",
+      "artifactId": "p52-block-34-occurrence-113",
+      "contentSha256": "D9743FEA60E512B489ED3E29024B73D78E9DD06E09304714BAA31798DED9ECE5",
+      "approvedOwner": "ECOSYSTEM.md plus Phase 27 Marketplace and Phase 28 Developer Platform",
+      "disposition": "MAPPED_TO_MOTHER",
+      "principle": "Users, organizations, and developers meet on one platform, with different installation and distribution surfaces.",
+      "nonPurpose": "This composition does not resolve the blocked developer marketplace or authorize live installation.",
+      "stalePlanExtract": [
+        "Review complete extract p52-block-27-occurrence-114",
+        "Compare marketplace, developer, package security and runtime installation contracts"
+      ],
+      "implementationAuthorization": "DENIED",
+      "registryMutation": "NONE",
+      "contractDelta": "NONE"
+    },
+    {
+      "gapId": "CG-P52-GAP-020",
+      "decisionId": "CAMPAIGN-52-DECISION-CG-P52-GAP-020",
+      "title": "THE REAL BLUE-OCEAN MOAT",
+      "extract": "architecture/phase-52-extracts/block-36-occurrence-115.md",
+      "artifactId": "p52-block-36-occurrence-115",
+      "contentSha256": "2E014F769BDEC801D0C7E58DA027154B5DE382DCEF7842B5B56C953348524F83",
+      "approvedOwner": "COREGRID.md / ARCHITECTURE.md / ECOSYSTEM.md",
+      "disposition": "MAPPED_TO_MOTHER",
+      "principle": "Durability comes from reinforcing ontology, reality, events, agents, experience, domain packages, and economy layers.",
+      "nonPurpose": "Strategy context does not register those layers as new capabilities or claim they are operational.",
+      "stalePlanExtract": [
+        "Review the complete blue-ocean strategy extract and mother documents."
+      ],
+      "implementationAuthorization": "DENIED",
+      "registryMutation": "NONE",
+      "contractDelta": "NONE"
+    },
+    {
+      "gapId": "CG-P52-GAP-021",
+      "decisionId": "CAMPAIGN-52-DECISION-CG-P52-GAP-021",
+      "title": "THE FINAL COREGRID EXPERIENCE FORMULA",
+      "extract": "architecture/phase-52-extracts/block-37-occurrence-116.md",
+      "artifactId": "p52-block-37-occurrence-116",
+      "contentSha256": "7B7E66281F3666D2E0A1C8D77A5D429D8A1E8631536A52D9C12D45A83A7A8E8F",
+      "approvedOwner": "Phase 24 Experience & Design Intelligence / Phase 50 Human Interface",
+      "disposition": "MAPPED_TO_MOTHER",
+      "principle": "Experience is a composition of domain invariants, organization reality, role, authority, current state, and objectives.",
+      "nonPurpose": "The formula is not an executable experience compiler.",
+      "stalePlanExtract": [
+        "Review the complete experience formula extract and Phase 24/50 contracts."
+      ],
+      "implementationAuthorization": "DENIED",
+      "registryMutation": "NONE",
+      "contractDelta": "NONE"
+    },
+    {
+      "gapId": "CG-P52-GAP-022",
+      "decisionId": "CAMPAIGN-52-DECISION-CG-P52-GAP-022",
+      "title": "THE COMPLETE COREGRID REALITY LOOP",
+      "extract": "architecture/phase-52-extracts/block-38-occurrence-117.md",
+      "artifactId": "p52-block-38-occurrence-117",
+      "contentSha256": "32EFB99ADC73647BFF4DB6CDD537D5A2E436987A8476D7FF98A596E56F887FEF",
+      "approvedOwner": "REALITY.md / MISSIONS.md / ASSURANCE.md",
+      "disposition": "MAPPED_TO_MOTHER",
+      "principle": "The reality loop connects earth, organizations, people, ontology, events, knowledge, decisions, and outcomes.",
+      "nonPurpose": "The diagram does not prove any loop edge. Each edge still needs its own contract and evidence.",
+      "stalePlanExtract": [
+        "Compare the extract with the reality ontology, mission and assurance artifacts."
+      ],
+      "implementationAuthorization": "DENIED",
+      "registryMutation": "NONE",
+      "contractDelta": "NONE"
+    },
+    {
+      "gapId": "CG-P52-GAP-023",
+      "decisionId": "CAMPAIGN-52-DECISION-CG-P52-GAP-023",
+      "title": "IMPLEMENTATION ORDER",
+      "extract": "architecture/phase-52-extracts/block-39-occurrence-118.md",
+      "artifactId": "p52-block-39-occurrence-118",
+      "contentSha256": "FA7156255EF4F2D3CF52E3770610B638B7F660DE88A257CBEDEDB98D0EB83772",
+      "approvedOwner": "ENGINEERING.md / MISSIONS.md",
+      "disposition": "MAPPED_TO_MOTHER",
+      "principle": "Implementation proceeds in locked blocks. The whole civilization is not coded at once.",
+      "nonPurpose": "The extract block list is historical sequencing advice. It is subordinate to Mission 0001 and does not authorize new shells or infrastructure.",
+      "stalePlanExtract": [
+        "Compare the implementation-order extract with the approved mission plan."
+      ],
+      "implementationAuthorization": "DENIED",
+      "registryMutation": "NONE",
+      "contractDelta": "NONE"
+    },
+    {
+      "gapId": "CG-P52-GAP-024",
+      "decisionId": "CAMPAIGN-52-DECISION-CG-P52-GAP-024",
+      "title": "THE ACTUAL PRODUCT WE SHOULD BUILD FIRST",
+      "extract": "architecture/phase-52-extracts/block-40-occurrence-119.md",
+      "artifactId": "p52-block-40-occurrence-119",
+      "contentSha256": "7A005EBAF9197B28EBD7104DB4E8B784652593D5DDAF9E075250950C8017E463",
+      "approvedOwner": "MISSIONS.md / COREGRID_FIRST_MISSION_DEFINITION",
+      "disposition": "MAPPED_TO_MOTHER",
+      "principle": "The first visible product is the universal CoreGrid experience, not a domain vertical such as school, hotel, or marketplace.",
+      "nonPurpose": "The screen sketch is mission rationale beside Foundation Mission 001. That mission remains unauthorized.",
+      "stalePlanExtract": [
+        "Compare the extract with the first mission definition and runtime readiness."
+      ],
+      "implementationAuthorization": "DENIED",
+      "registryMutation": "NONE",
+      "contractDelta": "NONE"
+    },
+    {
+      "gapId": "CG-P52-GAP-025",
+      "decisionId": "CAMPAIGN-52-DECISION-CG-P52-GAP-025",
+      "title": "55-Phase Architectural Binding",
+      "extract": "architecture/phase-52-extracts/block-17-occurrence-225.md",
+      "artifactId": "p52-block-17-occurrence-225",
+      "contentSha256": "F95A3A520D6799010ED1FDE2A803E535FD6637BA5B41C95100CAF5A992972D7C",
+      "approvedOwner": "ARCHITECTURE.md / REGISTRY.md / CONTROL-PLANE-01-REGISTRY.md",
+      "disposition": "MAPPED_TO_MOTHER",
+      "principle": "Heading-only source material names a 55-phase architectural binding.",
+      "nonPurpose": "It does not expand the canonical registry beyond 51 phases and does not register Phase 52.",
+      "stalePlanExtract": [
+        "Review source-linked extract p52-block-17-occurrence-225."
+      ],
+      "implementationAuthorization": "DENIED",
+      "registryMutation": "NONE",
+      "contractDelta": "NONE"
+    },
+    {
+      "gapId": "CG-P52-GAP-026",
+      "decisionId": "CAMPAIGN-52-DECISION-CG-P52-GAP-026",
+      "title": "55-Phase Architectural Binding",
+      "extract": "architecture/phase-52-extracts/block-17-occurrence-254.md",
+      "artifactId": "p52-block-17-occurrence-254",
+      "contentSha256": "E12A543B9A1E445425F88A6CA82172D21A7DD02A7E31BA88F146FBD100FBCA0C",
+      "approvedOwner": "ARCHITECTURE.md / REGISTRY.md / CONTROL-PLANE-01-REGISTRY.md",
+      "disposition": "MAPPED_TO_MOTHER",
+      "principle": "Duplicate heading-only binding. Provenance is preserved separately from occurrence 225.",
+      "nonPurpose": "Duplicate wording is not additional phase authority.",
+      "stalePlanExtract": [
+        "Review source-linked extract p52-block-17-occurrence-254."
+      ],
+      "implementationAuthorization": "DENIED",
+      "registryMutation": "NONE",
+      "contractDelta": "NONE"
+    },
+    {
+      "gapId": "CG-P52-GAP-027",
+      "decisionId": "CAMPAIGN-52-DECISION-CG-P52-GAP-027",
+      "title": "55-Phase Architectural Binding",
+      "extract": "architecture/phase-52-extracts/block-17-occurrence-276.md",
+      "artifactId": "p52-block-17-occurrence-276",
+      "contentSha256": "9C32D59D5D46F8772211610A9074387715037FEB26D6845EF056C068C81DA64C",
+      "approvedOwner": "ARCHITECTURE.md / REGISTRY.md / CONTROL-PLANE-01-REGISTRY.md",
+      "disposition": "MAPPED_TO_MOTHER",
+      "principle": "Duplicate heading-only binding. Provenance is preserved separately from occurrences 225 and 254.",
+      "nonPurpose": "Duplicate wording is not additional phase authority.",
+      "stalePlanExtract": [
+        "Review source-linked extract p52-block-17-occurrence-276."
+      ],
+      "implementationAuthorization": "DENIED",
+      "registryMutation": "NONE",
+      "contractDelta": "NONE"
+    }
+  ],
+  "excludedBlockedGapIds": [
+    "CG-P52-GAP-001",
+    "CG-P52-GAP-002",
+    "CG-P52-GAP-003",
+    "CG-P52-GAP-004",
+    "CG-P52-GAP-005",
+    "CG-P52-GAP-006",
+    "CG-P52-GAP-008",
+    "CG-P52-GAP-019"
+  ]
+}

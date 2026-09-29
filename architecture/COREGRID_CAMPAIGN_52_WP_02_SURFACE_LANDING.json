@@ -1,0 +1,170 @@
+{
+  "mission": "COREGRID-MISSION-0001",
+  "campaign": "CAMPAIGN-52",
+  "workPackage": "CAMPAIGN-52-WP-02",
+  "status": "RECEIVING_SURFACES_UPDATED",
+  "implementationAuthorization": "DENIED",
+  "registryPhaseCapacity": 51,
+  "landed": [
+    {
+      "path": "COREGRID.md",
+      "action": "APPENDED",
+      "gaps": [
+        "CG-P52-GAP-016",
+        "CG-P52-GAP-020"
+      ]
+    },
+    {
+      "path": "ARCHITECTURE.md",
+      "action": "APPENDED",
+      "gaps": [
+        "CG-P52-GAP-012",
+        "CG-P52-GAP-016",
+        "CG-P52-GAP-020",
+        "CG-P52-GAP-025",
+        "CG-P52-GAP-026",
+        "CG-P52-GAP-027"
+      ]
+    },
+    {
+      "path": "REALITY.md",
+      "action": "APPENDED",
+      "gaps": [
+        "CG-P52-GAP-009",
+        "CG-P52-GAP-022"
+      ]
+    },
+    {
+      "path": "ENGINEERING.md",
+      "action": "APPENDED",
+      "gaps": [
+        "CG-P52-GAP-007",
+        "CG-P52-GAP-014",
+        "CG-P52-GAP-023"
+      ]
+    },
+    {
+      "path": "MISSIONS.md",
+      "action": "APPENDED",
+      "gaps": [
+        "CG-P52-GAP-007",
+        "CG-P52-GAP-014",
+        "CG-P52-GAP-022",
+        "CG-P52-GAP-023",
+        "CG-P52-GAP-024"
+      ]
+    },
+    {
+      "path": "BLUEPRINTS.md",
+      "action": "APPENDED",
+      "gaps": [
+        "CG-P52-GAP-015"
+      ]
+    },
+    {
+      "path": "ECOSYSTEM.md",
+      "action": "APPENDED",
+      "gaps": [
+        "CG-P52-GAP-015",
+        "CG-P52-GAP-016",
+        "CG-P52-GAP-017",
+        "CG-P52-GAP-018",
+        "CG-P52-GAP-020"
+      ]
+    },
+    {
+      "path": "IMPLEMENTATION.md",
+      "action": "APPENDED",
+      "gaps": [
+        "CG-P52-GAP-012"
+      ]
+    },
+    {
+      "path": "RUNTIME.md",
+      "action": "APPENDED",
+      "gaps": [
+        "CG-P52-GAP-012",
+        "CG-P52-GAP-015"
+      ]
+    },
+    {
+      "path": "ASSURANCE.md",
+      "action": "APPENDED",
+      "gaps": [
+        "CG-P52-GAP-022"
+      ]
+    },
+    {
+      "path": "REGISTRY.md",
+      "action": "APPENDED",
+      "gaps": [
+        "CG-P52-GAP-025",
+        "CG-P52-GAP-026",
+        "CG-P52-GAP-027"
+      ]
+    },
+    {
+      "path": "CONTROL-PLANE-05-CONTEXT-ASSEMBLY.md",
+      "action": "APPENDED",
+      "gaps": [
+        "CG-P52-GAP-010"
+      ]
+    },
+    {
+      "path": "architecture/phase-05-core-application-runtime.md",
+      "action": "APPENDED",
+      "gaps": [
+        "CG-P52-GAP-012"
+      ]
+    },
+    {
+      "path": "architecture/phase-14-data-platform.md",
+      "action": "APPENDED",
+      "gaps": [
+        "CG-P52-GAP-011"
+      ]
+    },
+    {
+      "path": "architecture/phase-22-mobile-platform.md",
+      "action": "APPENDED",
+      "gaps": [
+        "CG-P52-GAP-013"
+      ]
+    },
+    {
+      "path": "architecture/phase-23-web-platform.md",
+      "action": "APPENDED",
+      "gaps": [
+        "CG-P52-GAP-013"
+      ]
+    },
+    {
+      "path": "architecture/phase-24-coregrid-experience-design-intelligence.md",
+      "action": "APPENDED",
+      "gaps": [
+        "CG-P52-GAP-021"
+      ]
+    },
+    {
+      "path": "architecture/phase-27-marketplace.md",
+      "action": "APPENDED",
+      "gaps": [
+        "CG-P52-GAP-018"
+      ]
+    },
+    {
+      "path": "architecture/phase-28-developer-platform.md",
+      "action": "APPENDED",
+      "gaps": [
+        "CG-P52-GAP-018"
+      ]
+    },
+    {
+      "path": "architecture/phase-50-human-civilization-interface-layer.md",
+      "action": "APPENDED",
+      "gaps": [
+        "CG-P52-GAP-021"
+      ]
+    }
+  ]
+}
