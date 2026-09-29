@@ -41,11 +41,23 @@ async function loadAdmin(): Promise<KernelAdminClient> {
   return asKernelAdmin(supabaseAdmin);
 }
 
-export const recordFoundationLoop = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
-  .validator((input: unknown) => requestSchema.parse(input))
-  .handler(async ({ data, context }): Promise<FoundationLoopResult> => {
-    const tenantId = await requireSchoolAdminScope(context.supabase);
+export async function executeRecordFoundationLoop(input: {
+  supabase: Parameters<typeof requireSchoolAdminScope>[0];
+  userId: string;
+  data: {
+    realityRef: string;
+    missionId: string;
+    version: string;
+    purpose: string;
+    authorityRef: string;
+    contextRef: string;
+    ownerRef: string;
+    action: "record-observation";
+    idempotencyKey: string;
+  };
+}): Promise<FoundationLoopResult> {
+  const { data } = input;
+    const tenantId = await requireSchoolAdminScope(input.supabase);
     const admin = await loadAdmin();
     const now = new Date().toISOString();
 
@@ -59,7 +71,7 @@ export const recordFoundationLoop = createServerFn({ method: "POST" })
     const executionId = crypto.randomUUID();
     const plan = planFoundationLoop({
       tenantId,
-      actorId: context.userId,
+      actorId: input.userId,
       now,
       reality: entity
         ? { id: String(entity.id), tenantId: entity.tenant_id ?? null }
@@ -139,10 +151,10 @@ export const recordFoundationLoop = createServerFn({ method: "POST" })
 
     const { error: auditError } = await admin.from("audit_logs").insert({
       school_id: tenantId,
-      user_id: context.userId,
+      user_id: input.userId,
       action: "foundation_loop",
       table_name: "cg_verification_result",
-      record_id: plan.verification?.verification_id ?? plan.execution.id,
+      record_id: plan.execution.id,
       new_value: {
         execution_status: plan.execution.status,
         verification_decision: plan.verification?.decision ?? null,
@@ -158,4 +170,15 @@ export const recordFoundationLoop = createServerFn({ method: "POST" })
       executionStatus: plan.execution.status,
       verification: plan.verification,
     };
-  });
+}
+
+export const recordFoundationLoop = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .validator((input: unknown) => requestSchema.parse(input))
+  .handler(async ({ data, context }): Promise<FoundationLoopResult> =>
+    executeRecordFoundationLoop({
+      supabase: context.supabase,
+      userId: context.userId,
+      data,
+    }),
+  );
