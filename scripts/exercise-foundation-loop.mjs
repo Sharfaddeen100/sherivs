@@ -3,6 +3,7 @@
  * Exercise recordFoundationLoop with a disposable school-admin session.
  * Secrets stay in process memory and are never printed.
  */
+import { spawn } from "node:child_process";
 import { randomBytes, randomUUID } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -213,6 +214,35 @@ console.log(
   }),
 );
 
+const child = spawn(
+  process.execPath,
+  [join(root, "node_modules/vitest/vitest.mjs"), "run", "tests/integration/foundation-loop.live.test.ts"],
+  {
+    cwd: root,
+    env: {
+      ...process.env,
+      SUPABASE_URL: supabaseUrl,
+      SUPABASE_PUBLISHABLE_KEY: anonKey,
+      SUPABASE_SERVICE_ROLE_KEY: serviceKey,
+      FOUNDATION_LOOP_EMAIL: email,
+      FOUNDATION_LOOP_PASSWORD: password,
+      FOUNDATION_LOOP_ENTITY_ID: entityId,
+      FOUNDATION_LOOP_SCHOOL_ID: schoolId,
+      FOUNDATION_LOOP_USER_ID: userId,
+    },
+    stdio: ["ignore", "pipe", "pipe"],
+  },
+);
+let vitestOutput = "";
+child.stdout.on("data", (chunk) => {
+  vitestOutput += chunk.toString();
+});
+child.stderr.on("data", (chunk) => {
+  vitestOutput += chunk.toString();
+});
+const vitestExit = await new Promise((resolve) => child.on("close", resolve));
+console.log(sanitize(vitestOutput));
+
 await management(`
   DELETE FROM public.audit_logs WHERE user_id = '${userId}';
   DELETE FROM public.cg_verification_result
@@ -226,9 +256,10 @@ await management(`
     FOR EACH ROW EXECUTE FUNCTION public.cg_foundation_reject_history_mutation();
   DELETE FROM public.cg_execution_record WHERE tenant_id = '${schoolId}';
   DELETE FROM public.cg_mission_intent WHERE tenant_id = '${schoolId}';
-  DELETE FROM public.cg_entity WHERE id = '${entityId}';
+  DELETE FROM public.cg_entity WHERE tenant_id = '${schoolId}';
   DELETE FROM public.users WHERE id = '${userId}';
   DELETE FROM public.schools WHERE id = '${schoolId}';
 `);
 await authAdmin(`/admin/users/${userId}`, { method: "DELETE" });
 console.log("probe_cleaned=true");
+if (vitestExit !== 0) process.exit(vitestExit ?? 1);

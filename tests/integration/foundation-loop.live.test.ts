@@ -1,15 +1,17 @@
 import { createClient } from "@supabase/supabase-js";
 import { describe, expect, it } from "vitest";
 import { executeRecordFoundationLoop } from "@/lib/foundation-loop.functions";
+import { executeScholarFoundationLoop } from "@/lib/scholar-foundation-loop.functions";
 
 const url = process.env.SUPABASE_URL ?? "";
 const anonKey = process.env.SUPABASE_PUBLISHABLE_KEY ?? "";
 const email = process.env.FOUNDATION_LOOP_EMAIL ?? "";
 const password = process.env.FOUNDATION_LOOP_PASSWORD ?? "";
 const entityId = process.env.FOUNDATION_LOOP_ENTITY_ID ?? "";
+const schoolId = process.env.FOUNDATION_LOOP_SCHOOL_ID ?? "";
 const userId = process.env.FOUNDATION_LOOP_USER_ID ?? "";
 
-const enabled = Boolean(url && anonKey && email && password && entityId && userId);
+const enabled = Boolean(url && anonKey && email && password && entityId && schoolId && userId);
 
 describe.skipIf(!enabled)("foundation loop live session", () => {
   it("verifies a same-tenant reality reference and replays the same execution", async () => {
@@ -40,5 +42,28 @@ describe.skipIf(!enabled)("foundation loop live session", () => {
     expect(second.replayed).toBe(true);
     expect(second.executionId).toBe(first.executionId);
     expect(second.verification?.decision).toBe("verified");
+  }, 90000);
+
+  it("records a Scholar entity through the universal substrate and verifies it", async () => {
+    const supabase = createClient(url, anonKey, {
+      auth: { persistSession: false, autoRefreshToken: false },
+    });
+    const signedIn = await supabase.auth.signInWithPassword({ email, password });
+    expect(signedIn.error).toBeNull();
+
+    const result = await executeScholarFoundationLoop({
+      supabase,
+      userId,
+      data: {
+        entityType: "learner",
+        state: "enrolled-probe",
+        attributes: { probe: true },
+        idempotencyKey: "scholar-live-idem-001",
+      },
+    });
+    expect(result.replayed).toBe(false);
+    expect(result.scholarEntityType).toBe("learner");
+    expect(result.executionStatus).toBe("admitted");
+    expect(result.verificationDecision).toBe("verified");
   }, 90000);
 });

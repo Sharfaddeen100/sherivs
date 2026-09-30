@@ -2,7 +2,7 @@
   "mission": "COREGRID-MISSION-0001",
   "directive": "V5.1 Parts 0-109 plus V5.2 Parts 110-141",
   "artifact": "COREGRID_V52_GATE_CHECKPOINT",
-  "captured": "2026-09-29",
+  "captured": "2026-09-30",
   "registryPhases": 51,
   "phase52Registration": "NOT_CANONICAL",
   "gates": {
@@ -18,9 +18,9 @@
     "9": "PARTIAL",
     "10": "PARTIAL",
     "11": "OWNERSHIP_RECORDED",
-    "12": "SCHEMA_AUTHORED_NOT_APPLIED",
-    "13": "NOT_STARTED",
-    "14": "DEFERRED",
+    "12": "APPLIED_DEV_NOT_OPERATIONAL",
+    "13": "VERIFIED_BOUNDED_PROBE",
+    "14": "EXECUTED_BOUNDED_PROBE",
     "15": "STATIC_ONLY",
     "16": "BLOCKED"
   },
@@ -41,23 +41,30 @@
     "implementationAuthorization": "DENIED"
   },
   "foundationMission001": {
-    "status": "AUTHORITY_RECORDED_IN_MEMORY_CONTRACT_PERSISTENCE_BLOCKED",
+    "status": "SCHEMA_APPLIED_AND_LOOP_VERIFIED",
     "authorityDecision": "architecture/COREGRID_FOUNDATION_MISSION_001_AUTHORITY_DECISION.json",
     "implementation": "frontend/src/lib/control-plane/foundation-mission.ts",
-    "implementationAuthorization": "SCHEMA_AUTHORED_NOT_APPLIED",
+    "serverPath": "frontend/src/lib/foundation-loop.functions.ts",
+    "httpEntry": "frontend/src/routes/foundation-loop.tsx",
     "migration": "database/supabase/migrations/20260929000000_coregrid_foundation_mission_001.sql",
+    "migrationApply": "APPLIED_DEV_PROJECT",
+    "migrationEvidence": "Six foundation tables present on nwrflbpbhyiqdptmlccm with RLS enabled, no anon or authenticated grants, and a rolled-back constraint probe leaving zero probe rows.",
+    "httpEvidence": "Generated _serverFn endpoint returned admitted + verified on first call and idempotent replay with the same executionId; disposable probe data cleaned.",
     "rollback": "database/supabase/rollbacks/20260929000000_coregrid_foundation_mission_001.sql"
+  },
+  "gate14": {
+    "artifact": "architecture/COREGRID_GATE_14_SCHOLAR_VALIDATION.json",
+    "summary": "Scholar 'learner' entity recorded through the universal cg_entity substrate and independently verified via the foundation loop on dev project nwrflbpbhyiqdptmlccm.",
+    "status": "EXECUTED_AND_VERIFIED_BOUNDED_PROBE",
+    "notClaimed": ["full Scholar workflow integration", "HTTP path for the Scholar function", "deployment", "operation"]
   },
   "unverified": [
     "lint",
     "e2e-browser",
-    "live-supabase",
     "deployment",
-    "operational-telemetry"
+    "operational-telemetry",
+    "independent-conformance"
   ],
-  "foundationServerPath": "frontend/src/lib/foundation-loop.functions.ts",
-  "migrationApply": "APPLIED_DEV_PROJECT",
-  "migrationEvidence": "Six foundation tables present on nwrflbpbhyiqdptmlccm with RLS enabled, no anon or authenticated grants, and a rolled-back constraint probe leaving zero probe rows.",
-  "nextAuthorizedGate": "Exercise recordFoundationLoop with an authenticated school-admin session against a same-tenant cg_entity. Live HTTP execution remains unverified.",
-  "rule": "Acceptance coverage and receiving-surface notes are not implementation, verification, conformance, or operation."
+  "nextAuthorizedGate": "Gate 15 operational assurance: RLS isolation check over the foundation tables, independent conformance assessment, then operational validation in an approved environment.",
+  "rule": "Acceptance coverage, scope records, and bounded probes are not deployment, conformance, or operation."
 }

@@ -1,0 +1,67 @@
+{
+  "mission": "COREGRID-MISSION-0001",
+  "parentMission": "COREGRID-FOUNDATION-MISSION-001",
+  "artifact": "COREGRID_GATE_14_SCHOLAR_VALIDATION",
+  "status": "EXECUTED_AND_VERIFIED_BOUNDED_PROBE",
+  "captured": "2026-09-30",
+  "gate": "V5.2 Gate 14 — Scholar integration (universal/domain boundary validation)",
+  "rule": "Scholar is the first domain-runtime validation environment. It consumes the universal substrate; it does not rebuild or extend it. No production or student data was used. All probe records and the disposable session were removed.",
+  "workflow": [
+    "Scholar ontology entity type validated at the runtime boundary (runtime/scholar-foundation-flow.ts via runtime/scholar-reality.ts)",
+    "Insert-ready row built through the UNIVERSAL kernel entity contract (kernel/reality.ts entityDraft)",
+    "Row persisted into cg_entity with tenant_id = actor's resolved school scope",
+    "Persisted entity carried through the verified foundation loop (mission intent, execution record, history, evidence, independent verification)",
+    "Audit appended to the legacy audit surface under action scholar_foundation_loop"
+  ],
+  "evidence": [
+    {
+      "kind": "test",
+      "path": "tests/unit/scholar-foundation-flow.test.ts",
+      "result": "4 passed — ontology boundary, universal kernel contract row, undeclared-type rejection, governed mission envelope"
+    },
+    {
+      "kind": "test",
+      "path": "tests/unit/kernel-purity.test.ts",
+      "result": "passed — Scholar vocabulary remains outside the universal kernel"
+    },
+    {
+      "kind": "execution",
+      "path": "tests/integration/foundation-loop.live.test.ts",
+      "result": "Scholar entity 'learner' recorded through cg_entity on dev project nwrflbpbhyiqdptmlccm; execution admitted; verification decision 'verified'; probe records cleaned"
+    },
+    {
+      "kind": "execution",
+      "path": "scripts/exercise-foundation-loop.mjs",
+      "result": "HTTP wrapper probe replayed idempotently (verified); integration suite 2/2 passed; probe_cleaned=true"
+    }
+  ],
+  "boundaryChecks": {
+    "scholarOntologyEnforced": true,
+    "universalKernelUntouched": true,
+    "tenantFromServerScope": true,
+    "clientCannotSetTenantOrVerification": true,
+    "noScholarTableTouched": true,
+    "noNewPhaseOrMother": true
+  },
+  "statusVocabulary": {
+    "implementation": "BOUNDED_IMPLEMENTED",
+    "execution": "EXECUTED",
+    "observation": "OBSERVED",
+    "verification": "VERIFIED_BOUNDED_PROBE",
+    "conformance": "NOT_ASSESSED_INDEPENDENTLY",
+    "deployment": "NOT_DEPLOYED",
+    "operational": "NOT_OPERATIONAL"
+  },
+  "nonClaims": [
+    "No claim that Scholar's full domain workflows are integrated",
+    "No claim of deployment or operational runtime",
+    "No claim that the HTTP path serves the Scholar function (HTTP verified only for the foundation wrapper; the Scholar path is verified through the authenticated server path)",
+    "No production data used"
+  ],
+  "remainingWork": [
+    "Expose scholarFoundationLoop through an authenticated HTTP entry point and rebuild",
+    "Independent conformance assessment of the foundation and Scholar validation contracts",
+    "Extend the bounded Scholar workflow to relationships and events (enrolls, teaches, learner.enrolled) through the same governed loop",
+    "Apply RLS isolation check coverage for the six foundation tables on the dev database"
+  ]
+}

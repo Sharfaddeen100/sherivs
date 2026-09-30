@@ -3,8 +3,8 @@
  *
  * Reality reference → mission/execution rows → independent verification row.
  * Tenant comes from the school-admin scope. The client cannot set tenant or
- * verification outcome. Status: AUTHORED. Live database application of
- * 20260929000000 is a separate step and is not claimed here.
+ * verification outcome. The persistence layer is the applied foundation
+ * migration (20260929000000) on the approved dev database.
  */
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
@@ -13,6 +13,7 @@ import { asKernelAdmin, type KernelAdminClient } from "@/lib/kernel-admin-client
 import { requireSchoolAdminScope } from "@/lib/security-role-gate";
 import {
   planFoundationLoop,
+  type FoundationLoopPlan,
   type FoundationVerificationRow,
 } from "@/lib/control-plane/foundation-loop";
 
@@ -41,6 +42,110 @@ async function loadAdmin(): Promise<KernelAdminClient> {
   return asKernelAdmin(supabaseAdmin);
 }
 
+function replayResult(
+  existing: { id: unknown; status: unknown },
+  priorVerification: Record<string, unknown> | null,
+): FoundationLoopResult {
+  return {
+    ok: true,
+    replayed: true,
+    executionId: String(existing.id),
+    executionStatus: String(existing.status),
+    verification: priorVerification
+      ? {
+          verification_id: String(priorVerification.verification_id),
+          execution_id: String(priorVerification.execution_id),
+          evidence_ids: (priorVerification.evidence_ids as string[] | null) ?? [],
+          decision: priorVerification.decision as FoundationVerificationRow["decision"],
+          reason: String(priorVerification.reason),
+        }
+      : null,
+  };
+}
+
+/** Persist a planned foundation loop; replays an existing idempotent execution. */
+export async function persistFoundationPlan(
+  plan: FoundationLoopPlan,
+  admin: KernelAdminClient,
+): Promise<FoundationLoopResult> {
+  const { execution } = plan;
+  const { error: missionError } = await admin.from("cg_mission_intent").upsert(
+    plan.mission,
+    { onConflict: "tenant_id,mission_id,version" },
+  );
+  if (missionError) throw new Error(missionError.message);
+
+  const { error: executionError } = await admin.from("cg_execution_record").insert(execution);
+  if (executionError) {
+    if (!String(executionError.message).toLowerCase().includes("duplicate")) {
+      throw new Error(executionError.message);
+    }
+    const { data: existing, error: existingError } = await admin
+      .from("cg_execution_record")
+      .select("id, status")
+      .eq("tenant_id", execution.tenant_id)
+      .eq("mission_id", execution.mission_id)
+      .eq("idempotency_key", execution.idempotency_key)
+      .eq("action", execution.action)
+      .maybeSingle();
+    if (existingError) throw new Error(existingError.message);
+    if (!existing) throw new Error(executionError.message);
+    const { data: priorVerification, error: priorError } = await admin
+      .from("cg_verification_result")
+      .select("verification_id, execution_id, evidence_ids, decision, reason")
+      .eq("execution_id", existing.id)
+      .maybeSingle();
+    if (priorError) throw new Error(priorError.message);
+    return replayResult(existing, priorVerification);
+  }
+
+  const { error: historyError } = await admin.from("cg_execution_history").insert(plan.history);
+  if (historyError) throw new Error(historyError.message);
+
+  if (plan.evidence) {
+    const { error: evidenceError } = await admin.from("cg_foundation_evidence").insert(plan.evidence);
+    if (evidenceError) throw new Error(evidenceError.message);
+  }
+  if (plan.verification) {
+    const { error: verificationError } = await admin
+      .from("cg_verification_result")
+      .insert(plan.verification);
+    if (verificationError) throw new Error(verificationError.message);
+  }
+
+  return {
+    ok: true,
+    replayed: false,
+    executionId: plan.execution.id,
+    executionStatus: plan.execution.status,
+    verification: plan.verification,
+  };
+}
+
+/** Audit append for a completed foundation loop (legacy audit surface). */
+export async function auditFoundationLoop(input: {
+  admin: KernelAdminClient;
+  tenantId: string;
+  userId: string;
+  action: string;
+  result: FoundationLoopResult;
+  realityRef: string;
+}): Promise<void> {
+  const { error: auditError } = await input.admin.from("audit_logs").insert({
+    school_id: input.tenantId,
+    user_id: input.userId,
+    action: input.action,
+    table_name: "cg_verification_result",
+    record_id: input.result.executionId,
+    new_value: {
+      execution_status: input.result.executionStatus,
+      verification_decision: input.result.verification?.decision ?? null,
+      reality_ref: input.realityRef,
+    },
+  });
+  if (auditError) throw new Error(auditError.message);
+}
+
 export async function executeRecordFoundationLoop(input: {
   supabase: Parameters<typeof requireSchoolAdminScope>[0];
   userId: string;
@@ -57,119 +162,50 @@ export async function executeRecordFoundationLoop(input: {
   };
 }): Promise<FoundationLoopResult> {
   const { data } = input;
-    const tenantId = await requireSchoolAdminScope(input.supabase);
-    const admin = await loadAdmin();
-    const now = new Date().toISOString();
+  const tenantId = await requireSchoolAdminScope(input.supabase);
+  const admin = await loadAdmin();
+  const now = new Date().toISOString();
 
-    const { data: entity, error: entityError } = await admin
-      .from("cg_entity")
-      .select("id, tenant_id")
-      .eq("id", data.realityRef)
-      .maybeSingle();
-    if (entityError) throw new Error(entityError.message);
+  const { data: entity, error: entityError } = await admin
+    .from("cg_entity")
+    .select("id, tenant_id")
+    .eq("id", data.realityRef)
+    .maybeSingle();
+  if (entityError) throw new Error(entityError.message);
 
-    const executionId = crypto.randomUUID();
-    const plan = planFoundationLoop({
-      tenantId,
-      actorId: input.userId,
-      now,
-      reality: entity
-        ? { id: String(entity.id), tenantId: entity.tenant_id ?? null }
-        : null,
-      requestedRealityRef: data.realityRef,
-      request: {
-        executionId,
-        idempotencyKey: data.idempotencyKey,
-        missionId: data.missionId,
-        version: data.version,
-        purpose: data.purpose,
-        authorityRef: data.authorityRef,
-        contextRef: data.contextRef,
-        ownerRef: data.ownerRef,
-        action: data.action,
-        requestedAt: now,
-      },
-    });
+  const executionId = crypto.randomUUID();
+  const plan = planFoundationLoop({
+    tenantId,
+    actorId: input.userId,
+    now,
+    reality: entity
+      ? { id: String(entity.id), tenantId: entity.tenant_id ?? null }
+      : null,
+    requestedRealityRef: data.realityRef,
+    request: {
+      executionId,
+      idempotencyKey: data.idempotencyKey,
+      missionId: data.missionId,
+      version: data.version,
+      purpose: data.purpose,
+      authorityRef: data.authorityRef,
+      contextRef: data.contextRef,
+      ownerRef: data.ownerRef,
+      action: data.action,
+      requestedAt: now,
+    },
+  });
 
-    const { error: missionError } = await admin.from("cg_mission_intent").upsert(
-      plan.mission,
-      { onConflict: "tenant_id,mission_id,version" },
-    );
-    if (missionError) throw new Error(missionError.message);
-
-    const { error: executionError } = await admin.from("cg_execution_record").insert(plan.execution);
-    if (executionError) {
-      if (!String(executionError.message).toLowerCase().includes("duplicate")) {
-        throw new Error(executionError.message);
-      }
-      const { data: existing, error: existingError } = await admin
-        .from("cg_execution_record")
-        .select("id, status")
-        .eq("tenant_id", tenantId)
-        .eq("mission_id", data.missionId)
-        .eq("idempotency_key", data.idempotencyKey)
-        .eq("action", data.action)
-        .maybeSingle();
-      if (existingError) throw new Error(existingError.message);
-      if (!existing) throw new Error(executionError.message);
-      const { data: priorVerification, error: priorError } = await admin
-        .from("cg_verification_result")
-        .select("verification_id, execution_id, evidence_ids, decision, reason")
-        .eq("execution_id", existing.id)
-        .maybeSingle();
-      if (priorError) throw new Error(priorError.message);
-      return {
-        ok: true,
-        replayed: true,
-        executionId: String(existing.id),
-        executionStatus: String(existing.status),
-        verification: priorVerification
-          ? {
-              verification_id: String(priorVerification.verification_id),
-              execution_id: String(priorVerification.execution_id),
-              evidence_ids: priorVerification.evidence_ids ?? [],
-              decision: priorVerification.decision,
-              reason: String(priorVerification.reason),
-            }
-          : null,
-      };
-    }
-
-    const { error: historyError } = await admin.from("cg_execution_history").insert(plan.history);
-    if (historyError) throw new Error(historyError.message);
-
-    if (plan.evidence) {
-      const { error: evidenceError } = await admin.from("cg_foundation_evidence").insert(plan.evidence);
-      if (evidenceError) throw new Error(evidenceError.message);
-    }
-    if (plan.verification) {
-      const { error: verificationError } = await admin
-        .from("cg_verification_result")
-        .insert(plan.verification);
-      if (verificationError) throw new Error(verificationError.message);
-    }
-
-    const { error: auditError } = await admin.from("audit_logs").insert({
-      school_id: tenantId,
-      user_id: input.userId,
-      action: "foundation_loop",
-      table_name: "cg_verification_result",
-      record_id: plan.execution.id,
-      new_value: {
-        execution_status: plan.execution.status,
-        verification_decision: plan.verification?.decision ?? null,
-        reality_ref: data.realityRef,
-      },
-    });
-    if (auditError) throw new Error(auditError.message);
-
-    return {
-      ok: true,
-      replayed: false,
-      executionId: plan.execution.id,
-      executionStatus: plan.execution.status,
-      verification: plan.verification,
-    };
+  const result = await persistFoundationPlan(plan, admin);
+  await auditFoundationLoop({
+    admin,
+    tenantId,
+    userId: input.userId,
+    action: "foundation_loop",
+    result,
+    realityRef: data.realityRef,
+  });
+  return result;
 }
 
 export const recordFoundationLoop = createServerFn({ method: "POST" })
