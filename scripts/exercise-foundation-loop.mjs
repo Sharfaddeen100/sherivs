@@ -185,7 +185,15 @@ async function callServerFunction() {
   if (!response.ok) {
     throw new Error(`server-function HTTP ${response.status} ${sanitize(text).slice(0, 500)}`);
   }
-  return fromCrossJSON(JSON.parse(text), { plugins: [] });
+  try {
+    const decoded = fromCrossJSON(JSON.parse(text), { plugins: [] });
+    if (decoded?.error) throw new Error(String(decoded.error.message ?? decoded.error));
+    return decoded?.result ?? decoded;
+  } catch (error) {
+    throw new Error(
+      `server-function decode failed: ${sanitize(text).slice(0, 1200)}; ${error instanceof Error ? error.message : String(error)}`,
+    );
+  }
 }
 
 const first = await callServerFunction();
