@@ -14,6 +14,7 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as AdmissionsRouteImport } from './routes/admissions'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BlogRouteImport } from './routes/blog'
+import { Route as FoundationLoopRouteImport } from './routes/foundation-loop'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as ManifestDotwebmanifestRouteImport } from './routes/manifest[.]webmanifest'
 import { Route as MarketplaceRouteImport } from './routes/marketplace'
@@ -182,6 +183,11 @@ const AuthRoute = AuthRouteImport.update({
 const BlogRoute = BlogRouteImport.update({
   id: '/blog',
   path: '/blog',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FoundationLoopRoute = FoundationLoopRouteImport.update({
+  id: '/foundation-loop',
+  path: '/foundation-loop',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -1031,6 +1037,7 @@ export interface FileRoutesByFullPath {
   '/admissions': typeof AdmissionsRoute
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRouteWithChildren
+  '/foundation-loop': typeof FoundationLoopRoute
   '/login': typeof LoginRoute
   '/manifest.webmanifest': typeof ManifestDotwebmanifestRoute
   '/marketplace': typeof MarketplaceRoute
@@ -1182,6 +1189,7 @@ export interface FileRoutesByTo {
   '/admissions': typeof AdmissionsRoute
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRouteWithChildren
+  '/foundation-loop': typeof FoundationLoopRoute
   '/login': typeof LoginRoute
   '/manifest.webmanifest': typeof ManifestDotwebmanifestRoute
   '/marketplace': typeof MarketplaceRoute
@@ -1335,6 +1343,7 @@ export interface FileRoutesById {
   '/admissions': typeof AdmissionsRoute
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRouteWithChildren
+  '/foundation-loop': typeof FoundationLoopRoute
   '/login': typeof LoginRoute
   '/manifest.webmanifest': typeof ManifestDotwebmanifestRoute
   '/marketplace': typeof MarketplaceRoute
@@ -1488,6 +1497,7 @@ export interface FileRouteTypes {
     | '/admissions'
     | '/auth'
     | '/blog'
+    | '/foundation-loop'
     | '/login'
     | '/manifest.webmanifest'
     | '/marketplace'
@@ -1639,6 +1649,7 @@ export interface FileRouteTypes {
     | '/admissions'
     | '/auth'
     | '/blog'
+    | '/foundation-loop'
     | '/login'
     | '/manifest.webmanifest'
     | '/marketplace'
@@ -1791,6 +1802,7 @@ export interface FileRouteTypes {
     | '/admissions'
     | '/auth'
     | '/blog'
+    | '/foundation-loop'
     | '/login'
     | '/manifest.webmanifest'
     | '/marketplace'
@@ -1944,6 +1956,7 @@ export interface RootRouteChildren {
   AdmissionsRoute: typeof AdmissionsRoute
   AuthRoute: typeof AuthRoute
   BlogRoute: typeof BlogRouteWithChildren
+  FoundationLoopRoute: typeof FoundationLoopRoute
   LoginRoute: typeof LoginRoute
   ManifestDotwebmanifestRoute: typeof ManifestDotwebmanifestRoute
   MarketplaceRoute: typeof MarketplaceRoute
@@ -1995,6 +2008,13 @@ declare module '@tanstack/react-router' {
       path: '/blog'
       fullPath: '/blog'
       preLoaderRoute: typeof BlogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/foundation-loop': {
+      id: '/foundation-loop'
+      path: '/foundation-loop'
+      fullPath: '/foundation-loop'
+      preLoaderRoute: typeof FoundationLoopRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -3434,6 +3454,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdmissionsRoute: AdmissionsRoute,
   AuthRoute: AuthRoute,
   BlogRoute: BlogRouteWithChildren,
+  FoundationLoopRoute: FoundationLoopRoute,
   LoginRoute: LoginRoute,
   ManifestDotwebmanifestRoute: ManifestDotwebmanifestRoute,
   MarketplaceRoute: MarketplaceRoute,
