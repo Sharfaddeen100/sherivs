@@ -162,4 +162,59 @@ WHERE n.nspname = 'public'
 GROUP BY p.proname, p.oid::text
 HAVING count(g.grantee) = 0;
 
+-- 9. Foundation Mission 001 substrate (20260929000000): six control-plane
+--    tables must be deny-by-default, the execution history must be
+--    append-only, and the truth constraints must be installed.
+SELECT format('FAIL: foundation table %I.%I has RLS DISABLED', schemaname, tablename) AS issue
+FROM pg_tables
+WHERE schemaname = 'public'
+  AND tablename IN (
+    'cg_mission_intent','cg_execution_record','cg_execution_history',
+    'cg_foundation_evidence','cg_verification_result','cg_conformance_assessment'
+  )
+  AND NOT rowsecurity;
+
+SELECT format('FAIL: anon/authenticated has %s on public.%s', g.privilege_type, g.table_name) AS issue
+FROM information_schema.role_table_grants g
+WHERE g.table_schema = 'public'
+  AND g.table_name IN (
+    'cg_mission_intent','cg_execution_record','cg_execution_history',
+    'cg_foundation_evidence','cg_verification_result','cg_conformance_assessment'
+  )
+  AND g.grantee IN ('anon','authenticated');
+
+SELECT format('FAIL: foundation execution history is not append-only (trigger missing)') AS issue
+FROM pg_trigger t
+JOIN pg_class c ON c.oid = t.tgrelid
+JOIN pg_namespace n ON n.oid = c.relnamespace
+WHERE n.nspname = 'public' AND c.relname = 'cg_execution_history'
+  AND t.tgname = 'cg_execution_history_append_only'
+  AND NOT t.tgisinternal
+HAVING count(*) = 0;
+
+SELECT format('FAIL: foundation verification evidence constraint missing') AS issue
+FROM pg_constraint
+WHERE conrelid = 'public.cg_verification_result'::regclass
+  AND pg_get_constraintdef(oid) LIKE '%cardinality(evidence_ids) > 0%'
+HAVING count(*) = 0;
+
+SELECT format('FAIL: foundation conformance contract-match constraint missing') AS issue
+FROM pg_constraint
+WHERE conrelid = 'public.cg_conformance_assessment'::regclass
+  AND pg_get_constraintdef(oid) LIKE '%declared_contract_id = observed_contract_id%'
+HAVING count(*) = 0;
+
+SELECT format('FAIL: foundation execution idempotency constraint missing') AS issue
+FROM pg_constraint
+WHERE conrelid = 'public.cg_execution_record'::regclass
+  AND pg_get_constraintdef(oid) LIKE '%idempotency_key%'
+  AND pg_get_constraintdef(oid) LIKE '%UNIQUE%'
+HAVING count(*) = 0;
+
+SELECT format('FAIL: foundation mission unique constraint missing') AS issue
+FROM pg_constraint
+WHERE conrelid = 'public.cg_mission_intent'::regclass
+  AND pg_get_constraintdef(oid) LIKE '%UNIQUE (tenant_id, mission_id, version)%'
+HAVING count(*) = 0;
+
 SELECT '✓ RLS isolation check passed' AS result;

@@ -21,7 +21,7 @@
     "12": "APPLIED_DEV_NOT_OPERATIONAL",
     "13": "VERIFIED_BOUNDED_PROBE",
     "14": "EXECUTED_BOUNDED_PROBE",
-    "15": "STATIC_ONLY",
+    "15": "CONFORMANCE_ASSESSED_RUNTIME_ASSURANCE_OPEN",
     "16": "BLOCKED"
   },
   "preservedConflicts": ["phase-27", "phase-33"],
@@ -58,13 +58,24 @@
     "status": "EXECUTED_AND_VERIFIED_BOUNDED_PROBE",
     "notClaimed": ["full Scholar workflow integration", "HTTP path for the Scholar function", "deployment", "operation"]
   },
+  "gate15": {
+    "artifact": "architecture/COREGRID_GATE_15_CONFORMANCE_ASSESSMENT.json",
+    "decision": "CONDITIONALLY_CONFORMANT",
+    "counts": { "conformant": 7, "nonconformant": 0, "notAssessed": 2, "total": 9 },
+    "evidence": [
+      "RLS isolation check passed live on nwrflbpbhyiqdptmlccm including the six foundation tables, append-only history trigger, and truth constraints",
+      "scripts/run-rls-isolation-check.mjs",
+      "scripts/assess-foundation-conformance.mjs"
+    ],
+    "notAssessed": ["deployment", "operational-runtime"],
+    "rule": "Deployment and operational runtime are unfinished work, not conformance failures."
+  },
   "unverified": [
     "lint",
     "e2e-browser",
     "deployment",
-    "operational-telemetry",
-    "independent-conformance"
+    "operational-telemetry"
   ],
-  "nextAuthorizedGate": "Gate 15 operational assurance: RLS isolation check over the foundation tables, independent conformance assessment, then operational validation in an approved environment.",
+  "nextAuthorizedGate": "Complete Gate 15 runtime assurance in an approved environment (health, recovery, telemetry), then establish the Gate 16 evolution baseline.",
   "rule": "Acceptance coverage, scope records, and bounded probes are not deployment, conformance, or operation."
 }
