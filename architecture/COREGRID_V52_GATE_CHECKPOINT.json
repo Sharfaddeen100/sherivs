@@ -21,8 +21,8 @@
     "12": "APPLIED_DEV_NOT_OPERATIONAL",
     "13": "VERIFIED_BOUNDED_PROBE",
     "14": "EXECUTED_BOUNDED_PROBE",
-    "15": "CONFORMANCE_ASSESSED_RUNTIME_ASSURANCE_OPEN",
-    "16": "BLOCKED"
+    "15": "CONFORMANCE_ASSESSED_RECOVERY_VERIFIED_DEPLOYMENT_BLOCKED",
+    "16": "BASELINE_ESTABLISHED"
   },
   "preservedConflicts": ["phase-27", "phase-33"],
   "campaign52": {
@@ -68,7 +68,13 @@
       "scripts/assess-foundation-conformance.mjs"
     ],
     "notAssessed": ["deployment", "operational-runtime"],
+    "recoveryEvidence": "Live rollback probe: admitted execution rolled back with compensation_required, both history entries preserved, idempotent replay returns rolled-back state without a new effect (3/3 integration tests).",
     "rule": "Deployment and operational runtime are unfinished work, not conformance failures."
+  },
+  "gate16": {
+    "artifact": "architecture/COREGRID_EVOLUTION_BASELINE_2026-09-30.json",
+    "status": "BASELINE_ESTABLISHED",
+    "summary": "Versioned comparison target recording reconciled architecture, foundation slice, verification and conformance evidence, and known gaps."
   },
   "unverified": [
     "lint",
@@ -76,6 +82,6 @@
     "deployment",
     "operational-telemetry"
   ],
-  "nextAuthorizedGate": "Complete Gate 15 runtime assurance in an approved environment (health, recovery, telemetry), then establish the Gate 16 evolution baseline.",
+  "nextAuthorizedGate": "Close the remaining Gate 15 dimensions in an approved environment (deployment health, live telemetry, E2E), then continue governed evolution against the 2026-09-30 baseline.",
   "rule": "Acceptance coverage, scope records, and bounded probes are not deployment, conformance, or operation."
 }

@@ -1,0 +1,84 @@
+{
+  "mission": "COREGRID-MISSION-0001",
+  "artifact": "COREGRID_EVOLUTION_BASELINE_2026-09-30",
+  "status": "ESTABLISHED",
+  "captured": "2026-09-30",
+  "directive": "V5.1 Part 108 + V5.2 Gate 16",
+  "purpose": "Versioned comparison target for all future governed evolution. Records the reconciled architecture, foundation implementation, verification and conformance evidence, and known gaps at the close of Gate 16 entry.",
+  "evolutionLaw": "Future evolution compares against this baseline and follows OBSERVE → COMPARE → DETECT → CLASSIFY → ASSESS → PROPOSE → AUTHORIZE → IMPLEMENT → VERIFY → CONFORM → NEW BASELINE. Drift never authorizes change by itself.",
+  "baseline": {
+    "registry": {
+      "artifact": "architecture/registry.json",
+      "phases": 51,
+      "capabilities": 50,
+      "runtimes": 2,
+      "phaseCapacityNote": "Heading-only 55-phase extracts do not expand the registry. Phase 52 remains a noncanonical corpus.",
+      "statusConflictsPreserved": ["phase-27", "phase-33"]
+    },
+    "mothers": 13,
+    "controlPlane": {
+      "mechanisms": 12,
+      "implementedInSlice": ["04-evidence (in-memory + applied schema)", "06-mission-orchestration (in-memory contract)", "08-execution (bounded loop + rollback)", "09-verification (independent record)", "10-conformance (assessed)"],
+      "designedOnly": ["01-registry", "02-schemas", "03-state", "05-context-assembly", "07-workforce-delegation", "11-progress-reconciliation", "12-drift-evolution"]
+    },
+    "campaign52": {
+      "mappedScopeRecorded": 19,
+      "blockedUntouched": 8,
+      "implementationAuthorization": "DENIED",
+      "receivingSurfacesUpdated": 20
+    },
+    "foundationMission001": {
+      "status": "SCHEMA_APPLIED_AND_LOOP_VERIFIED",
+      "authorityDecision": "architecture/COREGRID_FOUNDATION_MISSION_001_AUTHORITY_DECISION.json",
+      "contract": "frontend/src/lib/control-plane/foundation-mission.ts",
+      "loopPlan": "frontend/src/lib/control-plane/foundation-loop.ts",
+      "serverPath": "frontend/src/lib/foundation-loop.functions.ts",
+      "scholarFlow": "frontend/src/lib/runtime/scholar-foundation-flow.ts",
+      "scholarServerPath": "frontend/src/lib/scholar-foundation-loop.functions.ts",
+      "httpEntry": "frontend/src/routes/foundation-loop.tsx",
+      "migration": "database/supabase/migrations/20260929000000_coregrid_foundation_mission_001.sql",
+      "migrationAppliedTo": "nwrflbpbhyiqdptmlccm",
+      "rollback": "database/supabase/rollbacks/20260929000000_coregrid_foundation_mission_001.sql"
+    },
+    "scholarRuntime": {
+      "runtimeId": "runtime:scholar",
+      "registryRuntimeId": "runtime-001",
+      "validation": "bounded probe: learner entity through universal cg_entity substrate, verified via foundation loop",
+      "evidence": "architecture/COREGRID_GATE_14_SCHOLAR_VALIDATION.json"
+    }
+  },
+  "verificationBaseline": {
+    "unitTests": "26+ foundation/kernel/Scholar boundary tests passing",
+    "integrationTests": "3/3 live on dev project: foundation loop + idempotent replay, Scholar entity validation, rollback with preserved history",
+    "rlsIsolation": "PASS live — six foundation tables deny-by-default, append-only history trigger, truth constraints present",
+    "typecheck": "passed",
+    "conformance": "CONDITIONALLY_CONFORMANT — 7 conformant, 0 nonconformant, 2 not assessed",
+    "artifacts": [
+      "architecture/COREGRID_GATE_14_SCHOLAR_VALIDATION.json",
+      "architecture/COREGRID_GATE_15_CONFORMANCE_ASSESSMENT.json",
+      "architecture/COREGRID_V52_GATE_CHECKPOINT.json"
+    ]
+  },
+  "knownGaps": [
+    "Deployment: foundation slice never deployed to a named environment (NOT_DEPLOYED)",
+    "Operational telemetry: no live health, recovery-in-production, or telemetry evidence",
+    "E2E browser runtime: not exercised",
+    "Lint: previously interrupted, remains UNVERIFIED",
+    "Phases 45–50: missing implementation/runtime evidence in acceptance proofs",
+    "Phase 51: declared architecture/runtime gaps",
+    "Blocked Campaign-52 extracts: 8 items awaiting dedicated boundary reviews",
+    "Scholar HTTP entry: scholarFoundationLoop verified via authenticated server path, not its own generated HTTP endpoint",
+    "Context persistence: universal persisted context absent (Phase 26 partial)"
+  ],
+  "knownDebt": [
+    "Generated Supabase Database types lag the cg_* migrations; kernel server functions use a structural admin client",
+    "audit_logs is a legacy domain-shaped audit surface used by the foundation loop until a universal audit record is approved"
+  ],
+  "knownRisks": [
+    "Apply-foundation scripts read the access token from .env.local and must never run in CI",
+    "Rollback of the foundation schema destroys persisted history; it is for retiring the schema, not undoing single executions",
+    "Status conflicts for phase-27 and phase-33 are preserved and must not be silently resolved"
+  ],
+  "comparisonInstructions": "A future baseline supersedes this one only through a recorded governed decision. Any dimension above whose evidence cannot be reproduced is drift until classified.",
+  "rule": "This baseline records evidence-backed state only. Deployment and operational claims remain outside it."
+}

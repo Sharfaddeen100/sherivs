@@ -218,3 +218,80 @@ export const recordFoundationLoop = createServerFn({ method: "POST" })
       data,
     }),
   );
+
+export type FoundationRollbackResult = {
+  ok: true;
+  executionId: string;
+  status: "rolled_back";
+  externalEffect: "compensation_required";
+  historyCount: number;
+};
+
+/** Governed rollback: only admitted executions, own tenant only, history preserved. */
+export async function rollbackFoundationExecution(input: {
+  supabase: Parameters<typeof requireSchoolAdminScope>[0];
+  userId: string;
+  executionId: string;
+}): Promise<FoundationRollbackResult> {
+  const tenantId = await requireSchoolAdminScope(input.supabase);
+  const admin = await loadAdmin();
+  const now = new Date().toISOString();
+
+  const { data: record, error: recordError } = await admin
+    .from("cg_execution_record")
+    .select("id, tenant_id, status")
+    .eq("id", input.executionId)
+    .maybeSingle();
+  if (recordError) throw new Error(recordError.message);
+  if (!record || record.tenant_id !== tenantId) {
+    // Cross-tenant and unknown executions fail closed with the same signal.
+    throw new Error("Forbidden: execution not found in scope");
+  }
+  if (record.status !== "admitted") {
+    throw new Error(`Execution "${input.executionId}" is not admitted (status ${record.status})`);
+  }
+
+  const { error: updateError } = await admin
+    .from("cg_execution_record")
+    .update({ status: "rolled_back", external_effect: "compensation_required" })
+    .eq("id", input.executionId);
+  if (updateError) throw new Error(updateError.message);
+
+  const { error: historyError } = await admin.from("cg_execution_history").insert({
+    execution_id: input.executionId,
+    recorded_at: now,
+    status: "rolled_back",
+    reason: "rollback",
+    external_effect: "compensation_required",
+  });
+  if (historyError) throw new Error(historyError.message);
+
+  const { count, error: countError } = await admin
+    .from("cg_execution_history")
+    .select("id", { count: "exact", head: true })
+    .eq("execution_id", input.executionId);
+  if (countError) throw new Error(countError.message);
+
+  await auditFoundationLoop({
+    admin,
+    tenantId,
+    userId: input.userId,
+    action: "foundation_loop_rollback",
+    result: {
+      ok: true,
+      replayed: false,
+      executionId: input.executionId,
+      executionStatus: "rolled_back",
+      verification: null,
+    },
+    realityRef: input.executionId,
+  });
+
+  return {
+    ok: true,
+    executionId: input.executionId,
+    status: "rolled_back",
+    externalEffect: "compensation_required",
+    historyCount: count ?? 0,
+  };
+}

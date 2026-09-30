@@ -1,6 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import { describe, expect, it } from "vitest";
-import { executeRecordFoundationLoop } from "@/lib/foundation-loop.functions";
+import { executeRecordFoundationLoop, rollbackFoundationExecution } from "@/lib/foundation-loop.functions";
 import { executeScholarFoundationLoop } from "@/lib/scholar-foundation-loop.functions";
 
 const url = process.env.SUPABASE_URL ?? "";
@@ -65,5 +65,62 @@ describe.skipIf(!enabled)("foundation loop live session", () => {
     expect(result.scholarEntityType).toBe("learner");
     expect(result.executionStatus).toBe("admitted");
     expect(result.verificationDecision).toBe("verified");
+  }, 90000);
+
+  it("rolls back an admitted execution and preserves both history entries", async () => {
+    const supabase = createClient(url, anonKey, {
+      auth: { persistSession: false, autoRefreshToken: false },
+    });
+    const signedIn = await supabase.auth.signInWithPassword({ email, password });
+    expect(signedIn.error).toBeNull();
+
+    const admitted = await executeRecordFoundationLoop({
+      supabase,
+      userId,
+      data: {
+        realityRef: entityId,
+        missionId: "COREGRID-FOUNDATION-MISSION-001",
+        version: "live-1",
+        purpose: "bounded-reality-loop",
+        authorityRef: "CONTROL-PLANE-06",
+        contextRef: "foundation-live-context",
+        ownerRef: "MISSIONS.md",
+        action: "record-observation" as const,
+        idempotencyKey: "foundation-live-rollback-001",
+      },
+    });
+    expect(admitted.replayed).toBe(false);
+    expect(admitted.executionStatus).toBe("admitted");
+
+    const rolled = await rollbackFoundationExecution({
+      supabase,
+      userId,
+      executionId: admitted.executionId,
+    });
+    expect(rolled.status).toBe("rolled_back");
+    expect(rolled.externalEffect).toBe("compensation_required");
+    expect(rolled.historyCount).toBeGreaterThanOrEqual(2);
+
+    // Idempotent replay after rollback returns the rolled-back state, never a new effect.
+    const replay = await executeRecordFoundationLoop({
+      supabase,
+      userId,
+      data: {
+        realityRef: entityId,
+        missionId: "COREGRID-FOUNDATION-MISSION-001",
+        version: "live-1",
+        purpose: "bounded-reality-loop",
+        authorityRef: "CONTROL-PLANE-06",
+        contextRef: "foundation-live-context",
+        ownerRef: "MISSIONS.md",
+        action: "record-observation" as const,
+        idempotencyKey: "foundation-live-rollback-001",
+      },
+    });
+    expect(replay.replayed).toBe(true);
+    expect(replay.executionId).toBe(admitted.executionId);
+    expect(replay.executionStatus).toBe("rolled_back");
+    // The recorded verification of the original admitted attempt is preserved history.
+    expect(replay.verification?.decision).toBe("verified");
   }, 90000);
 });
