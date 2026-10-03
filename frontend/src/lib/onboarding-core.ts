@@ -31,6 +31,10 @@
 import type { TenantId } from "./tenant-core";
 import type { InstitutionId } from "./institution-core";
 import type { WorkforceRoleId } from "./workforce-core";
+import { SystemClock, TimeAuthority } from "./kernel/time-authority";
+
+/** J-023: time enters only via the kernel time-authority — no direct wall-clock sampling. */
+const timeAuthority = new TimeAuthority(new SystemClock());
 
 /* ─────────────────────────────────────────────────────────────
  * Branded IDs
@@ -114,7 +118,7 @@ export function createStaffInvitation(input: {
   expiresAt: string;
   now?: string;
 }): { ok: true; invitation: StaffInvitation } | { ok: false; error: string } {
-  const now = input.now ?? new Date().toISOString();
+  const now = input.now ?? timeAuthority.now().at;
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(input.email)) {
     return { ok: false, error: "Invalid invitation email address" };
   }
@@ -146,10 +150,16 @@ export function createStaffInvitation(input: {
 }
 
 /** Invitations are single-use and expiring (Section AP). */
-export function redeemInvitation(invitation: StaffInvitation, tokenFingerprint: string, now: string = new Date().toISOString()): {
-  ok: true;
-  invitation: StaffInvitation;
-} | { ok: false; error: string } {
+export function redeemInvitation(
+  invitation: StaffInvitation,
+  tokenFingerprint: string,
+  now: string = timeAuthority.now().at,
+):
+  | {
+      ok: true;
+      invitation: StaffInvitation;
+    }
+  | { ok: false; error: string } {
   if (invitation.status === "revoked") {
     return { ok: false, error: "Invitation has been revoked" };
   }
@@ -165,12 +175,18 @@ export function redeemInvitation(invitation: StaffInvitation, tokenFingerprint: 
   return { ok: true, invitation: { ...invitation, status: "accepted", acceptedAt: now } };
 }
 
-export function revokeInvitation(invitation: StaffInvitation, now: string = new Date().toISOString()): StaffInvitation {
+export function revokeInvitation(
+  invitation: StaffInvitation,
+  now: string = timeAuthority.now().at,
+): StaffInvitation {
   return { ...invitation, status: "revoked" };
 }
 
 /** Mark an invitation as expired when its expiry passes. */
-export function expireInvitation(invitation: StaffInvitation, now: string = new Date().toISOString()): StaffInvitation {
+export function expireInvitation(
+  invitation: StaffInvitation,
+  now: string = timeAuthority.now().at,
+): StaffInvitation {
   if (invitation.status !== "accepted" && invitation.expiresAt <= now) {
     return { ...invitation, status: "expired" };
   }
@@ -265,7 +281,7 @@ export function createOnboardingJourney(input: {
       ...s,
     })),
     isActive: input.isActive ?? true,
-    createdAt: input.now ?? new Date().toISOString(),
+    createdAt: input.now ?? timeAuthority.now().at,
   };
   return { ok: true, journey };
 }
@@ -292,7 +308,8 @@ export function isOnboardingStepPermitted(
  * Progress must support resume after logout / device change / interruption.
  * ────────────────────────────────────────────────────────────*/
 
-export type OnboardingStepState = "started" | "completed" | "skipped" | "deferred" | "failed" | "retried";
+export type OnboardingStepState =
+  "started" | "completed" | "skipped" | "deferred" | "failed" | "retried";
 
 export const ONBOARDING_STEP_STATES: readonly OnboardingStepState[] = [
   "started",
@@ -340,7 +357,7 @@ export function startOnboarding(input: {
     journeyVersion: input.journeyVersion,
     stepStates,
     currentStepKey: input.steps[0]?.key ?? null,
-    updatedAt: input.now ?? new Date().toISOString(),
+    updatedAt: input.now ?? timeAuthority.now().at,
   };
 }
 
@@ -348,7 +365,7 @@ export function updateOnboardingStep(
   progress: OnboardingProgress,
   stepKey: string,
   state: OnboardingStepState,
-  now: string = new Date().toISOString(),
+  now: string = timeAuthority.now().at,
 ): OnboardingProgress {
   return {
     ...progress,
@@ -359,12 +376,29 @@ export function updateOnboardingStep(
 }
 
 function nextIncompleteStep(progress: OnboardingProgress, justCompleted: string): string | null {
-  const order = ["welcome", "identity", "role", "context", "workspace", "key_capabilities", "first_task", "guided_action", "confirmation", "next_recommendation"];
+  const order = [
+    "welcome",
+    "identity",
+    "role",
+    "context",
+    "workspace",
+    "key_capabilities",
+    "first_task",
+    "guided_action",
+    "confirmation",
+    "next_recommendation",
+  ];
   const start = order.indexOf(justCompleted) + 1;
   for (let i = start; i < order.length; i++) {
     const key = order[i];
     const state = progress.stepStates[key];
-    if (state === undefined || state === "started" || state === "deferred" || state === "failed" || state === "retried") {
+    if (
+      state === undefined ||
+      state === "started" ||
+      state === "deferred" ||
+      state === "failed" ||
+      state === "retried"
+    ) {
       return key;
     }
   }
@@ -392,10 +426,7 @@ export interface FirstTask {
   autoExecutable: boolean;
 }
 
-export function selectFirstTasks(
-  candidates: FirstTask[],
-  userCapabilities: string[],
-): FirstTask[] {
+export function selectFirstTasks(candidates: FirstTask[], userCapabilities: string[]): FirstTask[] {
   return candidates.filter((t) => userCapabilities.includes(t.requiredCapability));
 }
 
@@ -406,7 +437,13 @@ export function selectFirstTasks(
 
 export interface OnboardingRecommendation {
   key: string;
-  kind: "first_action" | "missing_configuration" | "training" | "security_setup" | "workspace_configuration" | "required_policy";
+  kind:
+    | "first_action"
+    | "missing_configuration"
+    | "training"
+    | "security_setup"
+    | "workspace_configuration"
+    | "required_policy";
   label: string;
   /** Advisory by default — automation requires explicit authorization. */
   autoActionable: boolean;
@@ -470,7 +507,7 @@ export function acknowledgePolicy(input: {
     identityRef: input.identityRef,
     policyRef: input.policyRef,
     policyVersion: input.policyVersion,
-    acknowledgedAt: input.now ?? new Date().toISOString(),
+    acknowledgedAt: input.now ?? timeAuthority.now().at,
   };
 }
 
@@ -487,8 +524,3 @@ export function hasAcknowledgedPolicyVersion(
     (a) => a.policyRef === policyRef && a.policyVersion === policyVersion,
   );
 }
-
-
-
-
-

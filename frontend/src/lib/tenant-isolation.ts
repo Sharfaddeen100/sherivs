@@ -18,14 +18,17 @@ import type {
   TenantScope,
 } from "./tenant-core";
 import { isTenantUsable } from "./tenant-core";
+import { SystemClock, TimeAuthority } from "./kernel/time-authority";
+
+/** J-023: time enters only via the kernel time-authority — no direct wall-clock sampling. */
+const timeAuthority = new TimeAuthority(new SystemClock());
 
 /* ─────────────────────────────────────────────────────────────
  * Tenant context resolution (G4 + F1)
  * ────────────────────────────────────────────────────────────*/
 
 export type TenantResolutionResult =
-  | { ok: true; context: TenantContext }
-  | { ok: false; error: string };
+  { ok: true; context: TenantContext } | { ok: false; error: string };
 
 /**
  * Resolve tenant context from a request.
@@ -83,9 +86,7 @@ export function resolveTenantContext(
  * Tenant isolation enforcement (G6)
  * ────────────────────────────────────────────────────────────*/
 
-export type IsolationCheckResult =
-  | { ok: true; reason: string }
-  | { ok: false; error: string };
+export type IsolationCheckResult = { ok: true; reason: string } | { ok: false; error: string };
 
 /**
  * Verify that a resource belongs to the current tenant context.
@@ -113,9 +114,7 @@ export function assertResourceInTenant(
  * Verify that a tenant is usable for operations.
  * Invariant 05: Tenant isolation applies to synchronous and asynchronous operations.
  */
-export function assertTenantUsable(
-  tenant: Pick<CoreGridTenant, "status">,
-): IsolationCheckResult {
+export function assertTenantUsable(tenant: Pick<CoreGridTenant, "status">): IsolationCheckResult {
   if (!isTenantUsable(tenant)) {
     return {
       ok: false,
@@ -141,8 +140,7 @@ export interface CrossTenantAccessRequest {
 }
 
 export type CrossTenantAccessResult =
-  | { ok: true; scope: TenantScope }
-  | { ok: false; error: string };
+  { ok: true; scope: TenantScope } | { ok: false; error: string };
 
 /**
  * Authorize cross-tenant access.
@@ -151,7 +149,7 @@ export type CrossTenantAccessResult =
  */
 export function authorizeCrossTenantAccess(
   req: CrossTenantAccessRequest,
-  now: string = new Date().toISOString(),
+  now: string = timeAuthority.now().at,
 ): CrossTenantAccessResult {
   // Cross-tenant access must be explicit.
   if (req.sourceTenantId === req.targetTenantId) {
@@ -190,10 +188,7 @@ export function authorizeCrossTenantAccess(
  * Build a tenant-scoped cache key.
  * Invariant 06: Tenant boundaries must survive caches.
  */
-export function tenantCacheKey(
-  tenantId: TenantId | null,
-  key: string,
-): string {
+export function tenantCacheKey(tenantId: TenantId | null, key: string): string {
   return tenantId === null ? `platform:${key}` : `tenant:${tenantId}:${key}`;
 }
 

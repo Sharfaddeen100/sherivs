@@ -23,6 +23,10 @@
  */
 
 import type { TenantId } from "./tenant-core";
+import { SystemClock, TimeAuthority } from "./kernel/time-authority";
+
+/** J-023: time enters only via the kernel time-authority — no direct wall-clock sampling. */
+const timeAuthority = new TimeAuthority(new SystemClock());
 
 /* ─────────────────────────────────────────────────────────────
  * Branded IDs
@@ -153,7 +157,7 @@ export function recordIntegrationLog(input: {
     result: input.result,
     errorClass: input.errorClass ?? null,
     payloadSanitized: input.payloadSanitized ?? true,
-    occurredAt: input.now ?? new Date().toISOString(),
+    occurredAt: input.now ?? timeAuthority.now().at,
   };
 }
 
@@ -178,7 +182,7 @@ export function createTraceSpan(input: {
     parentSpanId: input.parentSpanId ?? null,
     spanId: input.spanId,
     operation: input.operation,
-    startedAt: input.now ?? new Date().toISOString(),
+    startedAt: input.now ?? timeAuthority.now().at,
     completedAt: null,
   };
 }
@@ -216,7 +220,13 @@ export function computeIntegrationMetrics(input: {
   };
 }
 
-export type IntegrationAlertKind = "authentication_failure" | "error_spike" | "sync_drift" | "provider_outage" | "certificate_expiry" | "rate_limit_exhaustion";
+export type IntegrationAlertKind =
+  | "authentication_failure"
+  | "error_spike"
+  | "sync_drift"
+  | "provider_outage"
+  | "certificate_expiry"
+  | "rate_limit_exhaustion";
 
 export const INTEGRATION_ALERT_KINDS: readonly IntegrationAlertKind[] = [
   "authentication_failure",
@@ -246,7 +256,11 @@ export function raiseIntegrationAlert(input: {
   message: string;
   now?: string;
 }): IntegrationAlert {
-  const severity = input.severity ?? (input.kind === "provider_outage" || input.kind === "certificate_expiry" ? "critical" : "warning");
+  const severity =
+    input.severity ??
+    (input.kind === "provider_outage" || input.kind === "certificate_expiry"
+      ? "critical"
+      : "warning");
   return {
     id: input.id,
     tenantId: input.tenantId ?? null,
@@ -254,7 +268,7 @@ export function raiseIntegrationAlert(input: {
     kind: input.kind,
     severity,
     message: input.message,
-    occurredAt: input.now ?? new Date().toISOString(),
+    occurredAt: input.now ?? timeAuthority.now().at,
   };
 }
 
@@ -292,7 +306,11 @@ export function registerCertificate(input: {
 }
 
 /** Section CL: a certificate is expiring within the warning window. */
-export function isCertificateExpiringSoon(cert: CertificateRecord, now: string, warnWithinDays: number = 30): boolean {
+export function isCertificateExpiringSoon(
+  cert: CertificateRecord,
+  now: string,
+  warnWithinDays: number = 30,
+): boolean {
   const days = (new Date(cert.expiresAt).getTime() - new Date(now).getTime()) / 86_400_000;
   return days <= warnWithinDays;
 }
@@ -338,7 +356,14 @@ export function isTransferPermitted(input: {
   return true;
 }
 
-export type IntegrationAuditEventType = "integration_created" | "credential_changed" | "mapping_changed" | "synchronization" | "failure" | "approval" | "deletion";
+export type IntegrationAuditEventType =
+  | "integration_created"
+  | "credential_changed"
+  | "mapping_changed"
+  | "synchronization"
+  | "failure"
+  | "approval"
+  | "deletion";
 
 export const INTEGRATION_AUDIT_EVENT_TYPES: readonly IntegrationAuditEventType[] = [
   "integration_created",
@@ -375,9 +400,7 @@ export function recordIntegrationAuditEvent(input: {
     integrationRef: input.integrationRef,
     type: input.type,
     actorRef: input.actorRef,
-    occurredAt: input.now ?? new Date().toISOString(),
+    occurredAt: input.now ?? timeAuthority.now().at,
     metadata: input.metadata ?? {},
   };
 }
-
-

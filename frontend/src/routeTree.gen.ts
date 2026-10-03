@@ -10,11 +10,13 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as siteRouteRouteImport } from './routes/(site)/route'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AdmissionsRouteImport } from './routes/admissions'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as FoundationLoopRouteImport } from './routes/foundation-loop'
+import { Route as HealthDotjsonRouteImport } from './routes/health[.]json'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as ManifestDotwebmanifestRouteImport } from './routes/manifest[.]webmanifest'
 import { Route as MarketplaceRouteImport } from './routes/marketplace'
@@ -22,10 +24,13 @@ import { Route as PlatformRouteImport } from './routes/platform'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as RulesRouteImport } from './routes/rules'
+import { Route as ScholarFoundationLoopRouteImport } from './routes/scholar-foundation-loop'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SuperAdminBootstrapRouteImport } from './routes/super-admin-bootstrap'
+import { Route as siteCoregridRouteImport } from './routes/(site)/coregrid'
 import { Route as AuthenticatedAdminRouteRouteImport } from './routes/_authenticated/admin/route'
 import { Route as AuthenticatedBursarRouteRouteImport } from './routes/_authenticated/bursar/route'
+import { Route as AuthenticatedCommandCentreRouteRouteImport } from './routes/_authenticated/command-centre/route'
 import { Route as AuthenticatedDriverRouteRouteImport } from './routes/_authenticated/driver/route'
 import { Route as AuthenticatedHqRouteRouteImport } from './routes/_authenticated/hq/route'
 import { Route as AuthenticatedMessagesRouteImport } from './routes/_authenticated/messages'
@@ -104,6 +109,7 @@ import { Route as AuthenticatedBursarFinancialIntelligenceRouteImport } from './
 import { Route as AuthenticatedBursarReceiptsRouteImport } from './routes/_authenticated/bursar/receipts'
 import { Route as AuthenticatedBursarReconciliationRouteImport } from './routes/_authenticated/bursar/reconciliation'
 import { Route as AuthenticatedBursarReportsRouteImport } from './routes/_authenticated/bursar/reports'
+import { Route as AuthenticatedCommandCentreIndexRouteImport } from './routes/_authenticated/command-centre/index'
 import { Route as AuthenticatedDriverDashboardRouteImport } from './routes/_authenticated/driver/dashboard'
 import { Route as AuthenticatedDriverStudentsRouteImport } from './routes/_authenticated/driver/students'
 import { Route as AuthenticatedHqDashboardRouteImport } from './routes/_authenticated/hq/dashboard'
@@ -166,6 +172,10 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const siteRouteRoute = siteRouteRouteImport.update({
+  id: '/(site)',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
@@ -188,6 +198,11 @@ const BlogRoute = BlogRouteImport.update({
 const FoundationLoopRoute = FoundationLoopRouteImport.update({
   id: '/foundation-loop',
   path: '/foundation-loop',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HealthDotjsonRoute = HealthDotjsonRouteImport.update({
+  id: '/health.json',
+  path: '/health.json',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -225,6 +240,11 @@ const RulesRoute = RulesRouteImport.update({
   path: '/rules',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ScholarFoundationLoopRoute = ScholarFoundationLoopRouteImport.update({
+  id: '/scholar-foundation-loop',
+  path: '/scholar-foundation-loop',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
@@ -235,6 +255,11 @@ const SuperAdminBootstrapRoute = SuperAdminBootstrapRouteImport.update({
   path: '/super-admin-bootstrap',
   getParentRoute: () => rootRouteImport,
 } as any)
+const siteCoregridRoute = siteCoregridRouteImport.update({
+  id: '/coregrid',
+  path: '/coregrid',
+  getParentRoute: () => siteRouteRoute,
+} as any)
 const AuthenticatedAdminRouteRoute = AuthenticatedAdminRouteRouteImport.update({
   id: '/admin',
   path: '/admin',
@@ -244,6 +269,12 @@ const AuthenticatedBursarRouteRoute =
   AuthenticatedBursarRouteRouteImport.update({
     id: '/bursar',
     path: '/bursar',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedCommandCentreRouteRoute =
+  AuthenticatedCommandCentreRouteRouteImport.update({
+    id: '/command-centre',
+    path: '/command-centre',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedDriverRouteRoute =
@@ -699,6 +730,12 @@ const AuthenticatedBursarReportsRoute =
     path: '/reports',
     getParentRoute: () => AuthenticatedBursarRouteRoute,
   } as any)
+const AuthenticatedCommandCentreIndexRoute =
+  AuthenticatedCommandCentreIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedCommandCentreRouteRoute,
+  } as any)
 const AuthenticatedDriverDashboardRoute =
   AuthenticatedDriverDashboardRouteImport.update({
     id: '/dashboard',
@@ -1038,6 +1075,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRouteWithChildren
   '/foundation-loop': typeof FoundationLoopRoute
+  '/health.json': typeof HealthDotjsonRoute
   '/login': typeof LoginRoute
   '/manifest.webmanifest': typeof ManifestDotwebmanifestRoute
   '/marketplace': typeof MarketplaceRoute
@@ -1045,16 +1083,19 @@ export interface FileRoutesByFullPath {
   '/privacy': typeof PrivacyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/rules': typeof RulesRoute
+  '/scholar-foundation-loop': typeof ScholarFoundationLoopRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/super-admin-bootstrap': typeof SuperAdminBootstrapRoute
   '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/bursar': typeof AuthenticatedBursarRouteRouteWithChildren
+  '/command-centre': typeof AuthenticatedCommandCentreRouteRouteWithChildren
   '/driver': typeof AuthenticatedDriverRouteRouteWithChildren
   '/hq': typeof AuthenticatedHqRouteRouteWithChildren
   '/parent': typeof AuthenticatedParentRouteRouteWithChildren
   '/student': typeof AuthenticatedStudentRouteRouteWithChildren
   '/super-admin': typeof AuthenticatedSuperAdminRouteRouteWithChildren
   '/teacher': typeof AuthenticatedTeacherRouteRouteWithChildren
+  '/coregrid': typeof siteCoregridRoute
   '/messages': typeof AuthenticatedMessagesRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/runtime': typeof AuthenticatedRuntimeRoute
@@ -1181,6 +1222,7 @@ export interface FileRoutesByFullPath {
   '/teacher/news': typeof AuthenticatedTeacherNewsRoute
   '/teacher/sign-in': typeof AuthenticatedTeacherSignInRoute
   '/teacher/timetable': typeof AuthenticatedTeacherTimetableRoute
+  '/command-centre/': typeof AuthenticatedCommandCentreIndexRoute
   '/api/public/audit/password-reset': typeof ApiPublicAuditPasswordResetRoute
   '/api/public/webhooks/paystack': typeof ApiPublicWebhooksPaystackRoute
 }
@@ -1190,6 +1232,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRouteWithChildren
   '/foundation-loop': typeof FoundationLoopRoute
+  '/health.json': typeof HealthDotjsonRoute
   '/login': typeof LoginRoute
   '/manifest.webmanifest': typeof ManifestDotwebmanifestRoute
   '/marketplace': typeof MarketplaceRoute
@@ -1197,6 +1240,7 @@ export interface FileRoutesByTo {
   '/privacy': typeof PrivacyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/rules': typeof RulesRoute
+  '/scholar-foundation-loop': typeof ScholarFoundationLoopRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/super-admin-bootstrap': typeof SuperAdminBootstrapRoute
   '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
@@ -1207,6 +1251,7 @@ export interface FileRoutesByTo {
   '/student': typeof AuthenticatedStudentRouteRouteWithChildren
   '/super-admin': typeof AuthenticatedSuperAdminRouteRouteWithChildren
   '/teacher': typeof AuthenticatedTeacherRouteRouteWithChildren
+  '/coregrid': typeof siteCoregridRoute
   '/messages': typeof AuthenticatedMessagesRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/runtime': typeof AuthenticatedRuntimeRoute
@@ -1333,17 +1378,20 @@ export interface FileRoutesByTo {
   '/teacher/news': typeof AuthenticatedTeacherNewsRoute
   '/teacher/sign-in': typeof AuthenticatedTeacherSignInRoute
   '/teacher/timetable': typeof AuthenticatedTeacherTimetableRoute
+  '/command-centre': typeof AuthenticatedCommandCentreIndexRoute
   '/api/public/audit/password-reset': typeof ApiPublicAuditPasswordResetRoute
   '/api/public/webhooks/paystack': typeof ApiPublicWebhooksPaystackRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/(site)': typeof siteRouteRouteWithChildren
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/admissions': typeof AdmissionsRoute
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRouteWithChildren
   '/foundation-loop': typeof FoundationLoopRoute
+  '/health.json': typeof HealthDotjsonRoute
   '/login': typeof LoginRoute
   '/manifest.webmanifest': typeof ManifestDotwebmanifestRoute
   '/marketplace': typeof MarketplaceRoute
@@ -1351,16 +1399,19 @@ export interface FileRoutesById {
   '/privacy': typeof PrivacyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/rules': typeof RulesRoute
+  '/scholar-foundation-loop': typeof ScholarFoundationLoopRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/super-admin-bootstrap': typeof SuperAdminBootstrapRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/_authenticated/bursar': typeof AuthenticatedBursarRouteRouteWithChildren
+  '/_authenticated/command-centre': typeof AuthenticatedCommandCentreRouteRouteWithChildren
   '/_authenticated/driver': typeof AuthenticatedDriverRouteRouteWithChildren
   '/_authenticated/hq': typeof AuthenticatedHqRouteRouteWithChildren
   '/_authenticated/parent': typeof AuthenticatedParentRouteRouteWithChildren
   '/_authenticated/student': typeof AuthenticatedStudentRouteRouteWithChildren
   '/_authenticated/super-admin': typeof AuthenticatedSuperAdminRouteRouteWithChildren
   '/_authenticated/teacher': typeof AuthenticatedTeacherRouteRouteWithChildren
+  '/(site)/coregrid': typeof siteCoregridRoute
   '/_authenticated/messages': typeof AuthenticatedMessagesRoute
   '/_authenticated/notifications': typeof AuthenticatedNotificationsRoute
   '/_authenticated/runtime': typeof AuthenticatedRuntimeRoute
@@ -1487,6 +1538,7 @@ export interface FileRoutesById {
   '/_authenticated/teacher/news': typeof AuthenticatedTeacherNewsRoute
   '/_authenticated/teacher/sign-in': typeof AuthenticatedTeacherSignInRoute
   '/_authenticated/teacher/timetable': typeof AuthenticatedTeacherTimetableRoute
+  '/_authenticated/command-centre/': typeof AuthenticatedCommandCentreIndexRoute
   '/api/public/audit/password-reset': typeof ApiPublicAuditPasswordResetRoute
   '/api/public/webhooks/paystack': typeof ApiPublicWebhooksPaystackRoute
 }
@@ -1498,6 +1550,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/blog'
     | '/foundation-loop'
+    | '/health.json'
     | '/login'
     | '/manifest.webmanifest'
     | '/marketplace'
@@ -1505,16 +1558,19 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/reset-password'
     | '/rules'
+    | '/scholar-foundation-loop'
     | '/sitemap.xml'
     | '/super-admin-bootstrap'
     | '/admin'
     | '/bursar'
+    | '/command-centre'
     | '/driver'
     | '/hq'
     | '/parent'
     | '/student'
     | '/super-admin'
     | '/teacher'
+    | '/coregrid'
     | '/messages'
     | '/notifications'
     | '/runtime'
@@ -1641,6 +1697,7 @@ export interface FileRouteTypes {
     | '/teacher/news'
     | '/teacher/sign-in'
     | '/teacher/timetable'
+    | '/command-centre/'
     | '/api/public/audit/password-reset'
     | '/api/public/webhooks/paystack'
   fileRoutesByTo: FileRoutesByTo
@@ -1650,6 +1707,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/blog'
     | '/foundation-loop'
+    | '/health.json'
     | '/login'
     | '/manifest.webmanifest'
     | '/marketplace'
@@ -1657,6 +1715,7 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/reset-password'
     | '/rules'
+    | '/scholar-foundation-loop'
     | '/sitemap.xml'
     | '/super-admin-bootstrap'
     | '/admin'
@@ -1667,6 +1726,7 @@ export interface FileRouteTypes {
     | '/student'
     | '/super-admin'
     | '/teacher'
+    | '/coregrid'
     | '/messages'
     | '/notifications'
     | '/runtime'
@@ -1793,16 +1853,19 @@ export interface FileRouteTypes {
     | '/teacher/news'
     | '/teacher/sign-in'
     | '/teacher/timetable'
+    | '/command-centre'
     | '/api/public/audit/password-reset'
     | '/api/public/webhooks/paystack'
   id:
     | '__root__'
     | '/'
+    | '/(site)'
     | '/_authenticated'
     | '/admissions'
     | '/auth'
     | '/blog'
     | '/foundation-loop'
+    | '/health.json'
     | '/login'
     | '/manifest.webmanifest'
     | '/marketplace'
@@ -1810,16 +1873,19 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/reset-password'
     | '/rules'
+    | '/scholar-foundation-loop'
     | '/sitemap.xml'
     | '/super-admin-bootstrap'
     | '/_authenticated/admin'
     | '/_authenticated/bursar'
+    | '/_authenticated/command-centre'
     | '/_authenticated/driver'
     | '/_authenticated/hq'
     | '/_authenticated/parent'
     | '/_authenticated/student'
     | '/_authenticated/super-admin'
     | '/_authenticated/teacher'
+    | '/(site)/coregrid'
     | '/_authenticated/messages'
     | '/_authenticated/notifications'
     | '/_authenticated/runtime'
@@ -1946,17 +2012,20 @@ export interface FileRouteTypes {
     | '/_authenticated/teacher/news'
     | '/_authenticated/teacher/sign-in'
     | '/_authenticated/teacher/timetable'
+    | '/_authenticated/command-centre/'
     | '/api/public/audit/password-reset'
     | '/api/public/webhooks/paystack'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  siteRouteRoute: typeof siteRouteRouteWithChildren
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AdmissionsRoute: typeof AdmissionsRoute
   AuthRoute: typeof AuthRoute
   BlogRoute: typeof BlogRouteWithChildren
   FoundationLoopRoute: typeof FoundationLoopRoute
+  HealthDotjsonRoute: typeof HealthDotjsonRoute
   LoginRoute: typeof LoginRoute
   ManifestDotwebmanifestRoute: typeof ManifestDotwebmanifestRoute
   MarketplaceRoute: typeof MarketplaceRoute
@@ -1964,6 +2033,7 @@ export interface RootRouteChildren {
   PrivacyRoute: typeof PrivacyRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   RulesRoute: typeof RulesRoute
+  ScholarFoundationLoopRoute: typeof ScholarFoundationLoopRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SuperAdminBootstrapRoute: typeof SuperAdminBootstrapRoute
   EventsIdRoute: typeof EventsIdRoute
@@ -1980,6 +2050,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(site)': {
+      id: '/(site)'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof siteRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated': {
@@ -2015,6 +2092,13 @@ declare module '@tanstack/react-router' {
       path: '/foundation-loop'
       fullPath: '/foundation-loop'
       preLoaderRoute: typeof FoundationLoopRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/health.json': {
+      id: '/health.json'
+      path: '/health.json'
+      fullPath: '/health.json'
+      preLoaderRoute: typeof HealthDotjsonRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -2066,6 +2150,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RulesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/scholar-foundation-loop': {
+      id: '/scholar-foundation-loop'
+      path: '/scholar-foundation-loop'
+      fullPath: '/scholar-foundation-loop'
+      preLoaderRoute: typeof ScholarFoundationLoopRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sitemap.xml': {
       id: '/sitemap.xml'
       path: '/sitemap.xml'
@@ -2080,6 +2171,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SuperAdminBootstrapRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/(site)/coregrid': {
+      id: '/(site)/coregrid'
+      path: '/coregrid'
+      fullPath: '/coregrid'
+      preLoaderRoute: typeof siteCoregridRouteImport
+      parentRoute: typeof siteRouteRoute
+    }
     '/_authenticated/admin': {
       id: '/_authenticated/admin'
       path: '/admin'
@@ -2092,6 +2190,13 @@ declare module '@tanstack/react-router' {
       path: '/bursar'
       fullPath: '/bursar'
       preLoaderRoute: typeof AuthenticatedBursarRouteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/command-centre': {
+      id: '/_authenticated/command-centre'
+      path: '/command-centre'
+      fullPath: '/command-centre'
+      preLoaderRoute: typeof AuthenticatedCommandCentreRouteRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/driver': {
@@ -2640,6 +2745,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedBursarReportsRouteImport
       parentRoute: typeof AuthenticatedBursarRouteRoute
     }
+    '/_authenticated/command-centre/': {
+      id: '/_authenticated/command-centre/'
+      path: '/'
+      fullPath: '/command-centre/'
+      preLoaderRoute: typeof AuthenticatedCommandCentreIndexRouteImport
+      parentRoute: typeof AuthenticatedCommandCentreRouteRoute
+    }
     '/_authenticated/driver/dashboard': {
       id: '/_authenticated/driver/dashboard'
       path: '/dashboard'
@@ -3035,6 +3147,18 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface siteRouteRouteChildren {
+  siteCoregridRoute: typeof siteCoregridRoute
+}
+
+const siteRouteRouteChildren: siteRouteRouteChildren = {
+  siteCoregridRoute: siteCoregridRoute,
+}
+
+const siteRouteRouteWithChildren = siteRouteRoute._addFileChildren(
+  siteRouteRouteChildren,
+)
+
 interface AuthenticatedAdminRouteRouteChildren {
   AuthenticatedAdminAdmissionsRoute: typeof AuthenticatedAdminAdmissionsRoute
   AuthenticatedAdminAiAssistantRoute: typeof AuthenticatedAdminAiAssistantRoute
@@ -3200,6 +3324,20 @@ const AuthenticatedBursarRouteRouteChildren: AuthenticatedBursarRouteRouteChildr
 const AuthenticatedBursarRouteRouteWithChildren =
   AuthenticatedBursarRouteRoute._addFileChildren(
     AuthenticatedBursarRouteRouteChildren,
+  )
+
+interface AuthenticatedCommandCentreRouteRouteChildren {
+  AuthenticatedCommandCentreIndexRoute: typeof AuthenticatedCommandCentreIndexRoute
+}
+
+const AuthenticatedCommandCentreRouteRouteChildren: AuthenticatedCommandCentreRouteRouteChildren =
+  {
+    AuthenticatedCommandCentreIndexRoute: AuthenticatedCommandCentreIndexRoute,
+  }
+
+const AuthenticatedCommandCentreRouteRouteWithChildren =
+  AuthenticatedCommandCentreRouteRoute._addFileChildren(
+    AuthenticatedCommandCentreRouteRouteChildren,
   )
 
 interface AuthenticatedDriverRouteRouteChildren {
@@ -3395,6 +3533,7 @@ const AuthenticatedTeacherRouteRouteWithChildren =
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminRouteRoute: typeof AuthenticatedAdminRouteRouteWithChildren
   AuthenticatedBursarRouteRoute: typeof AuthenticatedBursarRouteRouteWithChildren
+  AuthenticatedCommandCentreRouteRoute: typeof AuthenticatedCommandCentreRouteRouteWithChildren
   AuthenticatedDriverRouteRoute: typeof AuthenticatedDriverRouteRouteWithChildren
   AuthenticatedHqRouteRoute: typeof AuthenticatedHqRouteRouteWithChildren
   AuthenticatedParentRouteRoute: typeof AuthenticatedParentRouteRouteWithChildren
@@ -3410,6 +3549,8 @@ interface AuthenticatedRouteRouteChildren {
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminRouteRoute: AuthenticatedAdminRouteRouteWithChildren,
   AuthenticatedBursarRouteRoute: AuthenticatedBursarRouteRouteWithChildren,
+  AuthenticatedCommandCentreRouteRoute:
+    AuthenticatedCommandCentreRouteRouteWithChildren,
   AuthenticatedDriverRouteRoute: AuthenticatedDriverRouteRouteWithChildren,
   AuthenticatedHqRouteRoute: AuthenticatedHqRouteRouteWithChildren,
   AuthenticatedParentRouteRoute: AuthenticatedParentRouteRouteWithChildren,
@@ -3450,11 +3591,13 @@ const PlatformRouteWithChildren = PlatformRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  siteRouteRoute: siteRouteRouteWithChildren,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AdmissionsRoute: AdmissionsRoute,
   AuthRoute: AuthRoute,
   BlogRoute: BlogRouteWithChildren,
   FoundationLoopRoute: FoundationLoopRoute,
+  HealthDotjsonRoute: HealthDotjsonRoute,
   LoginRoute: LoginRoute,
   ManifestDotwebmanifestRoute: ManifestDotwebmanifestRoute,
   MarketplaceRoute: MarketplaceRoute,
@@ -3462,6 +3605,7 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacyRoute: PrivacyRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   RulesRoute: RulesRoute,
+  ScholarFoundationLoopRoute: ScholarFoundationLoopRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SuperAdminBootstrapRoute: SuperAdminBootstrapRoute,
   EventsIdRoute: EventsIdRoute,

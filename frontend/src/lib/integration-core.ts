@@ -35,6 +35,10 @@
  */
 
 import type { TenantId } from "./tenant-core";
+import { SystemClock, TimeAuthority } from "./kernel/time-authority";
+
+/** J-023: time enters only via the kernel time-authority — no direct wall-clock sampling. */
+const timeAuthority = new TimeAuthority(new SystemClock());
 
 /* ─────────────────────────────────────────────────────────────
  * Branded IDs
@@ -109,7 +113,16 @@ export const INTEGRATION_TYPES: readonly IntegrationType[] = [
  * Connector model (Section H) + lifecycle (I)
  * ────────────────────────────────────────────────────────────*/
 
-export type ConnectorLifecycleState = "draft" | "development" | "testing" | "certification" | "approved" | "published" | "active" | "deprecated" | "retired";
+export type ConnectorLifecycleState =
+  | "draft"
+  | "development"
+  | "testing"
+  | "certification"
+  | "approved"
+  | "published"
+  | "active"
+  | "deprecated"
+  | "retired";
 
 export const CONNECTOR_LIFECYCLE_STATES: readonly ConnectorLifecycleState[] = [
   "draft",
@@ -135,7 +148,16 @@ const CONNECTOR_ORDER: Record<ConnectorLifecycleState, number> = {
   retired: 8,
 };
 
-export type AuthMethod = "oauth2" | "oidc" | "api_key" | "mutual_tls" | "certificate" | "service_account" | "signed_request" | "ssh_key" | "username_password";
+export type AuthMethod =
+  | "oauth2"
+  | "oidc"
+  | "api_key"
+  | "mutual_tls"
+  | "certificate"
+  | "service_account"
+  | "signed_request"
+  | "ssh_key"
+  | "username_password";
 
 export const AUTH_METHODS: readonly AuthMethod[] = [
   "oauth2",
@@ -216,13 +238,16 @@ export function createConnector(input: {
       retryBehavior: input.retryBehavior ?? "exponential_backoff",
       compatibleCoreGridVersion: input.compatibleCoreGridVersion ?? "",
       lifecycleState: input.lifecycleState ?? "draft",
-      createdAt: input.now ?? new Date().toISOString(),
+      createdAt: input.now ?? timeAuthority.now().at,
     },
   };
 }
 
 /** Section I: connector lifecycle advances one stage at a time. */
-export function canTransitionConnector(current: ConnectorLifecycleState, next: ConnectorLifecycleState): boolean {
+export function canTransitionConnector(
+  current: ConnectorLifecycleState,
+  next: ConnectorLifecycleState,
+): boolean {
   return CONNECTOR_ORDER[next] === CONNECTOR_ORDER[current] + 1;
 }
 
@@ -230,9 +255,17 @@ export function canTransitionConnector(current: ConnectorLifecycleState, next: C
  * Integration instance (Section J) + connection (K)
  * ────────────────────────────────────────────────────────────*/
 
-export type ConnectionState = "provisioning" | "connected" | "validating" | "suspended" | "failed" | "deleted";
+export type ConnectionState =
+  "provisioning" | "connected" | "validating" | "suspended" | "failed" | "deleted";
 
-export const CONNECTION_STATES: readonly ConnectionState[] = ["provisioning", "connected", "validating", "suspended", "failed", "deleted"] as const;
+export const CONNECTION_STATES: readonly ConnectionState[] = [
+  "provisioning",
+  "connected",
+  "validating",
+  "suspended",
+  "failed",
+  "deleted",
+] as const;
 
 export interface Integration {
   id: IntegrationId;
@@ -280,8 +313,8 @@ export function createIntegration(input: {
       permissions: input.permissions ?? ["read"],
       ownerRef: input.ownerRef,
       isActive: false,
-      createdAt: input.now ?? new Date().toISOString(),
-      updatedAt: input.now ?? new Date().toISOString(),
+      createdAt: input.now ?? timeAuthority.now().at,
+      updatedAt: input.now ?? timeAuthority.now().at,
     },
   };
 }
@@ -314,7 +347,7 @@ export function createConnection(input: {
     state: "provisioning",
     credentialRef: null,
     lastValidatedAt: null,
-    createdAt: input.now ?? new Date().toISOString(),
+    createdAt: input.now ?? timeAuthority.now().at,
   };
 }
 
@@ -344,7 +377,7 @@ export function createCredentialReference(input: {
   expiresAt?: string | null;
   now?: string;
 }): { ok: true; credential: CredentialReference } | { ok: false; error: string } {
-  const now = input.now ?? new Date().toISOString();
+  const now = input.now ?? timeAuthority.now().at;
   if (!input.secretRef.trim()) {
     return { ok: false, error: "Credential reference requires a secret reference (Section L)" };
   }
@@ -367,7 +400,10 @@ export function createCredentialReference(input: {
 }
 
 /** Section M: credential rotation — a credential is due when expired or revoked. */
-export function isCredentialValid(credential: CredentialReference, now: string = new Date().toISOString()): boolean {
+export function isCredentialValid(
+  credential: CredentialReference,
+  now: string = timeAuthority.now().at,
+): boolean {
   if (credential.revokedAt !== null) return false;
   if (credential.expiresAt !== null && credential.expiresAt <= now) return false;
   return true;
@@ -377,7 +413,10 @@ export function isCredentialValid(credential: CredentialReference, now: string =
  * Section P tenant isolation: integration credentials must never accidentally
  * cross tenants.
  */
-export function isCredentialTenantIsolated(credential: CredentialReference, tenantId: TenantId): boolean {
+export function isCredentialTenantIsolated(
+  credential: CredentialReference,
+  tenantId: TenantId,
+): boolean {
   return credential.tenantId === tenantId;
 }
 
@@ -387,14 +426,21 @@ export function isCredentialTenantIsolated(credential: CredentialReference, tena
 
 export type IntegrationPermission = "read" | "write" | "execute" | "subscribe" | "publish";
 
-export const INTEGRATION_PERMISSIONS: readonly IntegrationPermission[] = ["read", "write", "execute", "subscribe", "publish"] as const;
+export const INTEGRATION_PERMISSIONS: readonly IntegrationPermission[] = [
+  "read",
+  "write",
+  "execute",
+  "subscribe",
+  "publish",
+] as const;
 
 /**
  * Least privilege (Section O): an integration must receive only the external
  * permissions required for its declared functionality.
  */
-export function isLeastPrivilegeSatisfied(requested: IntegrationPermission[], declaredNeeds: IntegrationPermission[]): boolean {
+export function isLeastPrivilegeSatisfied(
+  requested: IntegrationPermission[],
+  declaredNeeds: IntegrationPermission[],
+): boolean {
   return requested.every((p) => declaredNeeds.includes(p));
 }
-
-

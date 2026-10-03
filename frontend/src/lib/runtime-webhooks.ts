@@ -12,12 +12,17 @@
 
 import type { TenantId } from "./tenant-core";
 import type { CorrelationId } from "./runtime-core";
+import { SystemClock, TimeAuthority } from "./kernel/time-authority";
+
+/** J-023: time enters only via the kernel time-authority — no direct wall-clock sampling. */
+const timeAuthority = new TimeAuthority(new SystemClock());
 
 /* ─────────────────────────────────────────────────────────────
  * Webhook delivery model (Section GR)
  * ────────────────────────────────────────────────────────────*/
 
-export type WebhookDeliveryStatus = "pending" | "delivered" | "failed" | "retrying" | "dead_lettered";
+export type WebhookDeliveryStatus =
+  "pending" | "delivered" | "failed" | "retrying" | "dead_lettered";
 
 export interface WebhookDeliveryAttempt {
   attemptNumber: number;
@@ -154,7 +159,9 @@ export function computeWebhookSignature(
  * ────────────────────────────────────────────────────────────*/
 
 export interface WebhookSender {
-  send(delivery: WebhookDelivery): Promise<{ ok: true; status: number; body: string } | { ok: false; error: string }>;
+  send(
+    delivery: WebhookDelivery,
+  ): Promise<{ ok: true; status: number; body: string } | { ok: false; error: string }>;
 }
 
 export interface WebhookDeliveryTracker {
@@ -178,7 +185,7 @@ export function createWebhookDeliveryTracker(): WebhookDeliveryTracker {
       const d = deliveries.find((x) => x.id === id);
       if (!d) return false;
       d.status = status;
-      d.updatedAt = new Date().toISOString();
+      d.updatedAt = timeAuthority.now().at;
       return true;
     },
   };
@@ -212,7 +219,10 @@ export async function processWebhookDelivery(
     attempt.error = result.error;
     attempt.retryDecision = attemptNumber >= delivery.maxAttempts ? "permanent_failure" : "retry";
     delivery.status = attempt.retryDecision === "retry" ? "retrying" : "dead_lettered";
-    delivery.nextRetryAt = attempt.retryDecision === "retry" ? new Date(Date.now() + 1000 * Math.pow(2, attemptNumber - 1)).toISOString() : null;
+    delivery.nextRetryAt =
+      attempt.retryDecision === "retry"
+        ? new Date(timeAuthority.now().atMs + 1000 * Math.pow(2, attemptNumber - 1)).toISOString()
+        : null;
   } else {
     attempt.responseStatus = result.status;
     attempt.responseBody = result.body;

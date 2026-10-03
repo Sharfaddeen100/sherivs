@@ -29,14 +29,30 @@ import { createHash } from "node:crypto";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { pgSslConfig } from "./lib/pg-ssl.mjs";
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
 const MIGRATION_REF =
   "database/supabase/migrations/20260907000800_coregrid_role_assignment_substrate.sql";
-const FUNCTIONS_REF = "frontend/src/lib/scholar-role-assignments.functions.ts";
+const FUNCTIONS_REF = "frontend/src/lib/runtime/scholar/scholar-role-assignments.functions.ts";
 const PROOF_REF = "architecture/proofs/role-assignment-substrate.proof.json";
 
 const TABLES = ["cg_role_assignment", "cg_role_grant"];
+const POLICY_BACKED_POSTURE = {
+  // Post J-005/J-006 (migration 20261002000013): these tables carry FORCED RLS
+  // with exactly the neutral tenant-membership policies, and authenticated
+  // holds table privileges so those policies are the operative row gate.
+  cg_role_assignment: [
+    "role_assignment_select_own_tenant",
+    "role_assignment_insert_tenant_admin",
+    "role_assignment_update_tenant_admin",
+  ],
+  cg_role_grant: [
+    "role_grant_select_own_tenant",
+    "role_grant_insert_tenant_admin",
+    "role_grant_update_tenant_admin",
+  ],
+};
 const RPCS = [
   "list_role_assignments",
   "assign_role",
@@ -150,116 +166,157 @@ check(
 
 const digest = `sha256:${createHash("sha256").update(migration).digest("hex")}`;
 
+/** Live invariants against the applied database, over a strictly-verified TLS channel. */
+async function runLiveChecks(client, check) {
+  for (const table of TABLES) {
+    const rel = await client.query("SELECT to_regclass($1) AS oid", [`public.${table}`]);
+    check(
+      `live:table:${table}`,
+      Boolean(rel.rows[0]?.oid),
+      `public.${table} exists in the applied database`,
+    );
+    const rls = await client.query(
+      "SELECT relrowsecurity, relforcerowsecurity FROM pg_class WHERE oid = $1::regclass",
+      [`public.${table}`],
+    );
+    check(
+      `live:rls:${table}`,
+      rls.rows[0]?.relrowsecurity === true,
+      `public.${table} has row level security enabled`,
+    );
+    const expectedPolicies = POLICY_BACKED_POSTURE[table] ?? null;
+    if (expectedPolicies) {
+      check(
+        `live:rls-forced:${table}`,
+        rls.rows[0]?.relforcerowsecurity === true,
+        `public.${table} has FORCE ROW LEVEL SECURITY (owner bound for non-bypass owners)`,
+      );
+      const declared = await client.query(
+        "SELECT policyname FROM pg_policies WHERE schemaname = 'public' AND tablename = $1 ORDER BY policyname",
+        [table],
+      );
+      const names = declared.rows.map((r) => r.policyname).sort();
+      check(
+        `live:policies:${table}`,
+        names.length === expectedPolicies.length &&
+          expectedPolicies.slice().sort().every((name, i) => names[i] === name),
+        `public.${table} declares exactly the J-005/J-006 neutral tenant-membership policies: ${expectedPolicies.join(", ")}`,
+      );
+      for (const [role, expected] of [
+        ["anon", false],
+        ["authenticated", true],
+        ["service_role", true],
+      ]) {
+        const priv = await client.query(
+          "SELECT has_table_privilege($1, $2, 'SELECT,INSERT,UPDATE,DELETE') AS allowed",
+          [role, `public.${table}`],
+        );
+        check(
+          `live:privilege:${table}:${role}`,
+          priv.rows[0]?.allowed === expected,
+          `${role} table access = ${priv.rows[0]?.allowed} (expected ${expected}; policy-backed posture)`,
+        );
+      }
+    } else {
+      const policies = await client.query(
+        "SELECT count(*)::int AS n FROM pg_policies WHERE schemaname = 'public' AND tablename = $1",
+        [table],
+      );
+      check(
+        `live:policies:${table}`,
+        policies.rows[0]?.n === 0,
+        `public.${table} declares ${policies.rows[0]?.n} policies (0 = deny by default)`,
+      );
+      for (const [role, expected] of [
+        ["anon", false],
+        ["authenticated", false],
+        ["service_role", true],
+      ]) {
+        const priv = await client.query(
+          "SELECT has_table_privilege($1, $2, 'SELECT,INSERT,UPDATE,DELETE') AS allowed",
+          [role, `public.${table}`],
+        );
+        check(
+          `live:privilege:${table}:${role}`,
+          priv.rows[0]?.allowed === expected,
+          `${role} table access = ${priv.rows[0]?.allowed} (expected ${expected})`,
+        );
+      }
+    }
+  }
+
+  const procs = await client.query(
+    `SELECT p.oid AS oid, p.proname AS name, p.prosecdef AS definer
+     FROM pg_proc p
+     JOIN pg_namespace n ON n.oid = p.pronamespace
+     WHERE n.nspname = 'public' AND p.proname = ANY($1::text[])`,
+    [RPCS],
+  );
+  const found = new Set(procs.rows.map((row) => row.name));
+  for (const rpc of RPCS) {
+    const row = procs.rows.find((candidate) => candidate.name === rpc);
+    check(
+      `live:rpc:${rpc}`,
+      Boolean(row) && row.definer === true,
+      row
+        ? `public.${rpc} is present and SECURITY DEFINER`
+        : `public.${rpc} is missing from the applied database`,
+    );
+    const exec = row
+      ? await client
+          .query("SELECT has_function_privilege('authenticated', $1::oid, 'EXECUTE') AS allowed", [
+            row.oid,
+          ])
+          .catch(() => null)
+      : null;
+    check(
+      `live:rpc-execute:${rpc}`,
+      exec?.rows[0]?.allowed === true,
+      exec
+        ? `authenticated may execute ${rpc} = ${exec.rows[0].allowed}`
+        : `could not resolve ${rpc} for a privilege check`,
+    );
+  }
+  check(
+    "live:rpc-complete",
+    RPCS.every((rpc) => found.has(rpc)),
+    `${found.size}/${RPCS.length} substrate RPCs present`,
+  );
+
+  const indexes = await client.query(
+    "SELECT indexname FROM pg_indexes WHERE schemaname = 'public' AND indexname = ANY($1::text[])",
+    [INDEXES],
+  );
+  const indexNames = new Set(indexes.rows.map((row) => row.indexname));
+  for (const index of INDEXES) {
+    check(`live:index:${index}`, indexNames.has(index), `${index} backs active-row uniqueness`);
+  }
+}
+
 /* ── 2. LIVE invariants (only when a database is provided) ────────────────── */
 
 const dbUrl = process.env.DATABASE_URL;
 let mode = "static";
 
 if (dbUrl) {
-  mode = "live";
+  const { connectCoregridPostgres } = await import("./lib/pg-connect.mjs");
   const pg = await import("pg").catch(() => null);
   if (!pg) {
     check("live:driver", false, "DATABASE_URL is set but the 'pg' driver is not installed");
   } else {
-    const client = new pg.default.Client({
-      connectionString: dbUrl,
-      ssl: { rejectUnauthorized: false },
-    });
-    await client.connect();
+    let client = null;
     try {
-      for (const table of TABLES) {
-        const rel = await client.query("SELECT to_regclass($1) AS oid", [`public.${table}`]);
-        check(
-          `live:table:${table}`,
-          Boolean(rel.rows[0]?.oid),
-          `public.${table} exists in the applied database`,
-        );
-        const rls = await client.query(
-          "SELECT relrowsecurity FROM pg_class WHERE oid = $1::regclass",
-          [`public.${table}`],
-        );
-        check(
-          `live:rls:${table}`,
-          rls.rows[0]?.relrowsecurity === true,
-          `public.${table} has row level security enabled`,
-        );
-        const policies = await client.query(
-          "SELECT count(*)::int AS n FROM pg_policies WHERE schemaname = 'public' AND tablename = $1",
-          [table],
-        );
-        check(
-          `live:policies:${table}`,
-          policies.rows[0]?.n === 0,
-          `public.${table} declares ${policies.rows[0]?.n} policies (0 = deny by default)`,
-        );
-        for (const [role, expected] of [
-          ["anon", false],
-          ["authenticated", false],
-          ["service_role", true],
-        ]) {
-          const priv = await client.query(
-            "SELECT has_table_privilege($1, $2, 'SELECT,INSERT,UPDATE,DELETE') AS allowed",
-            [role, `public.${table}`],
-          );
-          check(
-            `live:privilege:${table}:${role}`,
-            priv.rows[0]?.allowed === expected,
-            `${role} table access = ${priv.rows[0]?.allowed} (expected ${expected})`,
-          );
-        }
-      }
-
-      const procs = await client.query(
-        `SELECT p.proname AS name, p.prosecdef AS definer,
-                pg_get_function_identity_arguments(p.oid) AS args
-         FROM pg_proc p
-         JOIN pg_namespace n ON n.oid = p.pronamespace
-         WHERE n.nspname = 'public' AND p.proname = ANY($1::text[])`,
-        [RPCS],
-      );
-      const found = new Set(procs.rows.map((row) => row.name));
-      for (const rpc of RPCS) {
-        const row = procs.rows.find((candidate) => candidate.name === rpc);
-        check(
-          `live:rpc:${rpc}`,
-          Boolean(row) && row.definer === true,
-          row
-            ? `public.${rpc}(${row.args}) is present and SECURITY DEFINER`
-            : `public.${rpc} is missing from the applied database`,
-        );
-        const exec = row
-          ? await client
-              .query(
-                "SELECT has_function_privilege('authenticated', $1::regprocedure, 'EXECUTE') AS allowed",
-                [`public.${rpc}(${row.args})`],
-              )
-              .catch(() => null)
-          : null;
-        check(
-          `live:rpc-execute:${rpc}`,
-          exec?.rows[0]?.allowed === true,
-          exec
-            ? `authenticated may execute ${rpc} = ${exec.rows[0].allowed}`
-            : `could not resolve ${rpc} signature for a privilege check`,
-        );
-      }
-      check(
-        "live:rpc-complete",
-        RPCS.every((rpc) => found.has(rpc)),
-        `${found.size}/${RPCS.length} substrate RPCs present`,
-      );
-
-      const indexes = await client.query(
-        "SELECT indexname FROM pg_indexes WHERE schemaname = 'public' AND indexname = ANY($1::text[])",
-        [INDEXES],
-      );
-      const indexNames = new Set(indexes.rows.map((row) => row.indexname));
-      for (const index of INDEXES) {
-        check(`live:index:${index}`, indexNames.has(index), `${index} backs active-row uniqueness`);
-      }
+      client = await connectCoregridPostgres(dbUrl, pg, (line) => console.error(line));
     } catch (err) {
-      check("live:query", false, err instanceof Error ? err.message : String(err));
-    } finally {
+      check(
+        "live:transport",
+        false,
+        `could not open a strictly-verified TLS channel (${err instanceof Error ? err.message : String(err)}) — provision COREGRID_DB_CA_CERT with the Supabase project CA; verification is never disabled for convenience`,
+      );
+    }
+    if (client) {
+      mode = "live";
+      await runLiveChecks(client, check);
       await client.end();
     }
   }

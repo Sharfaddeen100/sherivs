@@ -39,12 +39,18 @@
 
 import type { TenantId } from "./tenant-core";
 import type { MarketplaceProductId } from "./marketplace-core";
+import { SystemClock, TimeAuthority } from "./kernel/time-authority";
+
+/** J-023: time enters only via the kernel time-authority — no direct wall-clock sampling. */
+const timeAuthority = new TimeAuthority(new SystemClock());
 
 /* ─────────────────────────────────────────────────────────────
  * Branded IDs
  * ────────────────────────────────────────────────────────────*/
 
-export type MarketplaceSecurityIncidentId = string & { readonly __brand: "MarketplaceSecurityIncidentId" };
+export type MarketplaceSecurityIncidentId = string & {
+  readonly __brand: "MarketplaceSecurityIncidentId";
+};
 export type MarketplaceAuditEventId = string & { readonly __brand: "MarketplaceAuditEventId" };
 export type MarketplaceEventId = string & { readonly __brand: "MarketplaceEventId" };
 
@@ -62,7 +68,8 @@ export function marketplaceEventId(raw: string): MarketplaceEventId {
  * Publishing governance (Sections 120, 121, 122)
  * ────────────────────────────────────────────────────────────*/
 
-export type ProductLifecycleState = "draft" | "submitted" | "approved" | "published" | "suspended" | "retired" | "removed";
+export type ProductLifecycleState =
+  "draft" | "submitted" | "approved" | "published" | "suspended" | "retired" | "removed";
 
 export const PRODUCT_LIFECYCLE_STATES: readonly ProductLifecycleState[] = [
   "draft",
@@ -74,7 +81,8 @@ export const PRODUCT_LIFECYCLE_STATES: readonly ProductLifecycleState[] = [
   "removed",
 ] as const;
 
-export type SuspensionReason = "security_vulnerability" | "fraud" | "policy_violation" | "severe_outage" | "malicious_behavior";
+export type SuspensionReason =
+  "security_vulnerability" | "fraud" | "policy_violation" | "severe_outage" | "malicious_behavior";
 
 export const SUSPENSION_REASONS: readonly SuspensionReason[] = [
   "security_vulnerability",
@@ -94,9 +102,14 @@ export interface ProductLifecycleRecord {
 export function transitionProductLifecycle(
   record: ProductLifecycleRecord,
   to: ProductLifecycleState,
-  now: string = new Date().toISOString(),
+  now: string = timeAuthority.now().at,
 ): ProductLifecycleRecord {
-  return { ...record, state: to, suspendedReason: to === "suspended" ? record.suspendedReason : null, updatedAt: now };
+  return {
+    ...record,
+    state: to,
+    suspendedReason: to === "suspended" ? record.suspendedReason : null,
+    updatedAt: now,
+  };
 }
 
 /**
@@ -124,13 +137,18 @@ export interface PolicyCompatibilityInput {
   tenantJurisdictions: string[];
 }
 
-export function evaluatePolicyCompatibility(input: PolicyCompatibilityInput): { compatible: boolean; reasons: string[] } {
+export function evaluatePolicyCompatibility(input: PolicyCompatibilityInput): {
+  compatible: boolean;
+  reasons: string[];
+} {
   const reasons: string[] = [];
   for (const pol of input.requiredPolicyRefs) {
-    if (input.forbiddenPolicyRefs.includes(pol)) reasons.push(`Product requires forbidden policy: ${pol}`);
+    if (input.forbiddenPolicyRefs.includes(pol))
+      reasons.push(`Product requires forbidden policy: ${pol}`);
   }
   for (const jur of input.requiredJurisdictions) {
-    if (!input.tenantJurisdictions.includes(jur)) reasons.push(`Required jurisdiction not supported: ${jur}`);
+    if (!input.tenantJurisdictions.includes(jur))
+      reasons.push(`Required jurisdiction not supported: ${jur}`);
   }
   return { compatible: reasons.length === 0, reasons };
 }
@@ -187,7 +205,13 @@ export function recommendationRequiresApproval(): boolean {
  * Security incidents (176) + emergency response (177) + audit (178)
  * ────────────────────────────────────────────────────────────*/
 
-export type MarketplaceIncidentKind = "malicious_product" | "compromised_vendor" | "package_tampering" | "credential_theft" | "data_leakage" | "fraudulent_listing";
+export type MarketplaceIncidentKind =
+  | "malicious_product"
+  | "compromised_vendor"
+  | "package_tampering"
+  | "credential_theft"
+  | "data_leakage"
+  | "fraudulent_listing";
 
 export const MARKETPLACE_INCIDENT_KINDS: readonly MarketplaceIncidentKind[] = [
   "malicious_product",
@@ -198,7 +222,8 @@ export const MARKETPLACE_INCIDENT_KINDS: readonly MarketplaceIncidentKind[] = [
   "fraudulent_listing",
 ] as const;
 
-export type IncidentResponseStage = "detect" | "contain" | "suspend" | "investigate" | "notify" | "remediate" | "restore";
+export type IncidentResponseStage =
+  "detect" | "contain" | "suspend" | "investigate" | "notify" | "remediate" | "restore";
 
 export const INCIDENT_RESPONSE_STAGES: readonly IncidentResponseStage[] = [
   "detect",
@@ -235,12 +260,15 @@ export function reportMarketplaceIncident(input: {
     productId: input.productId ?? null,
     vendorRef: input.vendorRef ?? null,
     responseStage: "detect",
-    reportedAt: input.now ?? new Date().toISOString(),
+    reportedAt: input.now ?? timeAuthority.now().at,
   };
 }
 
 /** Section 177: response stages advance in order. */
-export function canAdvanceIncidentStage(current: IncidentResponseStage, next: IncidentResponseStage): boolean {
+export function canAdvanceIncidentStage(
+  current: IncidentResponseStage,
+  next: IncidentResponseStage,
+): boolean {
   const ci = INCIDENT_RESPONSE_STAGES.indexOf(current);
   const ni = INCIDENT_RESPONSE_STAGES.indexOf(next);
   return ni === ci + 1;
@@ -292,7 +320,7 @@ export function recordMarketplaceAuditEvent(input: {
     type: input.type,
     actorRef: input.actorRef,
     productId: input.productId ?? null,
-    occurredAt: input.now ?? new Date().toISOString(),
+    occurredAt: input.now ?? timeAuthority.now().at,
     metadata: input.metadata ?? {},
   };
 }
@@ -349,8 +377,10 @@ export function isWebhookDeliveryAuthorized(input: {
 }): { allowed: boolean; reasons: string[] } {
   const reasons: string[] = [];
   if (!input.signatureValid) reasons.push("Invalid signature");
-  if (input.eventAgeMinutes > input.webhook.replayProtectionWindowMinutes) reasons.push("Replay window exceeded");
-  if (input.requestsThisMinute > input.webhook.rateLimitPerMinute) reasons.push("Rate limit exceeded");
+  if (input.eventAgeMinutes > input.webhook.replayProtectionWindowMinutes)
+    reasons.push("Replay window exceeded");
+  if (input.requestsThisMinute > input.webhook.rateLimitPerMinute)
+    reasons.push("Rate limit exceeded");
   return { allowed: reasons.length === 0, reasons };
 }
 
@@ -428,7 +458,10 @@ export function createOfflinePackage(input: {
 }
 
 /** Section 156: offline packages require signature + integrity + non-expiry. */
-export function isOfflinePackageValid(pkg: OfflinePackage, now: string = new Date().toISOString()): boolean {
+export function isOfflinePackageValid(
+  pkg: OfflinePackage,
+  now: string = timeAuthority.now().at,
+): boolean {
   if (!pkg.signed) return false;
   if (pkg.checksumRef.trim() === "") return false;
   if (pkg.expiresAt !== null && pkg.expiresAt <= now) return false;
@@ -488,7 +521,7 @@ export function publishMarketplaceEvent(input: {
     tenantId: input.tenantId ?? null,
     type: input.type,
     productId: input.productId ?? null,
-    occurredAt: input.now ?? new Date().toISOString(),
+    occurredAt: input.now ?? timeAuthority.now().at,
     metadata: input.metadata ?? {},
   };
 }
@@ -506,11 +539,9 @@ export interface CatalogCacheEntry {
  * Catalog caching (Section 187-188): frequently accessed catalog data may be
  * cached; product changes invalidate the relevant cached representations.
  */
-export function invalidateCatalogCache(entries: CatalogCacheEntry[], productId: MarketplaceProductId): CatalogCacheEntry[] {
+export function invalidateCatalogCache(
+  entries: CatalogCacheEntry[],
+  productId: MarketplaceProductId,
+): CatalogCacheEntry[] {
   return entries.map((e) => (e.productId === productId ? { ...e, invalidated: true } : e));
 }
-
-
-
-
-

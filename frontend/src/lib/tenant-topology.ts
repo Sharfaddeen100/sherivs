@@ -9,11 +9,11 @@
  * - Cross-tenant operations must be explicit, authorized, and auditable (Invariants 07, 08).
  */
 
-import type {
-  TenantId,
-  TenantTopologyEdge,
-  TopologyRelation,
-} from "./tenant-core";
+import type { TenantId, TenantTopologyEdge, TopologyRelation } from "./tenant-core";
+import { SystemClock, TimeAuthority } from "./kernel/time-authority";
+
+/** J-023: time enters only via the kernel time-authority — no direct wall-clock sampling. */
+const timeAuthority = new TimeAuthority(new SystemClock());
 
 /* ─────────────────────────────────────────────────────────────
  * Topology edge creation
@@ -28,12 +28,11 @@ export interface CreateTopologyEdgeInput {
 }
 
 export type CreateTopologyEdgeResult =
-  | { ok: true; edge: TenantTopologyEdge }
-  | { ok: false; error: string };
+  { ok: true; edge: TenantTopologyEdge } | { ok: false; error: string };
 
 export function createTopologyEdge(
   input: CreateTopologyEdgeInput,
-  now: string = new Date().toISOString(),
+  now: string = timeAuthority.now().at,
 ): CreateTopologyEdgeResult {
   // Self-loops are not allowed.
   if (input.fromTenantId === input.toTenantId) {
@@ -65,19 +64,13 @@ export function createTopologyEdge(
  * Topology queries
  * ────────────────────────────────────────────────────────────*/
 
-export function getChildren(
-  edges: TenantTopologyEdge[],
-  parentTenantId: TenantId,
-): TenantId[] {
+export function getChildren(edges: TenantTopologyEdge[], parentTenantId: TenantId): TenantId[] {
   return edges
     .filter((e) => e.relation === "child" && e.fromTenantId === parentTenantId)
     .map((e) => e.toTenantId);
 }
 
-export function getParents(
-  edges: TenantTopologyEdge[],
-  childTenantId: TenantId,
-): TenantId[] {
+export function getParents(edges: TenantTopologyEdge[], childTenantId: TenantId): TenantId[] {
   return edges
     .filter(
       (e) =>
@@ -87,10 +80,7 @@ export function getParents(
     .map((e) => e.fromTenantId);
 }
 
-export function getPeers(
-  edges: TenantTopologyEdge[],
-  tenantId: TenantId,
-): TenantId[] {
+export function getPeers(edges: TenantTopologyEdge[], tenantId: TenantId): TenantId[] {
   const peerIds = new Set<TenantId>();
   for (const edge of edges) {
     if (edge.relation === "peer") {
@@ -134,10 +124,7 @@ export function canAccessTenant(
  * Detect cycles in the tenant topology graph.
  * Prevents infinite hierarchy loops.
  */
-export function hasCycle(
-  edges: TenantTopologyEdge[],
-  startTenantId: TenantId,
-): boolean {
+export function hasCycle(edges: TenantTopologyEdge[], startTenantId: TenantId): boolean {
   const visited = new Set<TenantId>();
   const stack = new Set<TenantId>();
 
@@ -148,9 +135,7 @@ export function hasCycle(
     visited.add(node);
     stack.add(node);
 
-    const neighbors = edges
-      .filter((e) => e.fromTenantId === node)
-      .map((e) => e.toTenantId);
+    const neighbors = edges.filter((e) => e.fromTenantId === node).map((e) => e.toTenantId);
 
     for (const neighbor of neighbors) {
       if (dfs(neighbor)) return true;
@@ -193,9 +178,7 @@ export function validateTopology(
 
   // No cycles in parent/child relationships.
   for (const tenantId of tenantIds) {
-    const hierarchyEdges = edges.filter(
-      (e) => e.relation === "parent" || e.relation === "child",
-    );
+    const hierarchyEdges = edges.filter((e) => e.relation === "parent" || e.relation === "child");
     if (hasCycle(hierarchyEdges, tenantId)) {
       errors.push(`Cycle detected in tenant hierarchy involving ${tenantId}`);
       break;

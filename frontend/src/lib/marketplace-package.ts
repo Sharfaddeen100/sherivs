@@ -24,6 +24,10 @@
  */
 
 import type { TenantId } from "./tenant-core";
+import { SystemClock, TimeAuthority } from "./kernel/time-authority";
+
+/** J-023: time enters only via the kernel time-authority — no direct wall-clock sampling. */
+const timeAuthority = new TimeAuthority(new SystemClock());
 
 /* ─────────────────────────────────────────────────────────────
  * Branded IDs
@@ -152,7 +156,7 @@ export function evaluateSecurityScan(input: {
     manifestId: input.manifestId,
     findings: input.findings,
     passed,
-    scannedAt: input.now ?? new Date().toISOString(),
+    scannedAt: input.now ?? timeAuthority.now().at,
   };
 }
 
@@ -174,7 +178,10 @@ export function isPackageSignatureValid(input: {
  * Least privilege + data minimization (Sections 33, 127): a product should request
  * only the permissions/data it needs. Excessive declared access is flagged.
  */
-export function hasExcessiveDataAccess(manifest: PackageManifest, maxCategories: number = 3): boolean {
+export function hasExcessiveDataAccess(
+  manifest: PackageManifest,
+  maxCategories: number = 3,
+): boolean {
   return manifest.dataAccessCategories.length > maxCategories;
 }
 
@@ -212,7 +219,9 @@ export interface CompatibilityResult {
 export function evaluateCompatibility(input: CompatibilityInput): CompatibilityResult {
   const reasons: string[] = [];
   if (!isCoreGridVersionCompatible(input.requiredCoreGridVersion, input.currentCoreGridVersion)) {
-    reasons.push(`Requires CoreGrid >= ${input.requiredCoreGridVersion}, found ${input.currentCoreGridVersion}`);
+    reasons.push(
+      `Requires CoreGrid >= ${input.requiredCoreGridVersion}, found ${input.currentCoreGridVersion}`,
+    );
   }
   for (const api of input.requiredApis) {
     if (!input.availableApis.includes(api)) reasons.push(`Required API unavailable: ${api}`);
@@ -304,5 +313,3 @@ export function createInstallationDryRun(input: {
     passed: input.checksPassed,
   };
 }
-
-

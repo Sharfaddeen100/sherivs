@@ -16,6 +16,10 @@ import type {
   TenantQuota,
 } from "./tenant-core";
 import { QUOTA_RESOURCES, TENANT_CAPABILITIES } from "./tenant-core";
+import { SystemClock, TimeAuthority } from "./kernel/time-authority";
+
+/** J-023: time enters only via the kernel time-authority — no direct wall-clock sampling. */
+const timeAuthority = new TimeAuthority(new SystemClock());
 
 /* ─────────────────────────────────────────────────────────────
  * Entitlement engine (O)
@@ -41,7 +45,7 @@ export type EntitlementDecision =
  */
 export function evaluateEntitlement(
   req: EntitlementEvaluationRequest,
-  now: string = new Date().toISOString(),
+  now: string = timeAuthority.now().at,
 ): EntitlementDecision {
   // Validate capability is known.
   if (!TENANT_CAPABILITIES.includes(req.capability)) {
@@ -70,7 +74,7 @@ export function evaluateEntitlement(
 
 export function isEntitlementActive(
   entitlement: TenantEntitlement,
-  now: string = new Date().toISOString(),
+  now: string = timeAuthority.now().at,
 ): boolean {
   if (entitlement.status !== "enabled") return false;
   if (entitlement.effectiveUntil !== null && entitlement.effectiveUntil <= now) return false;
@@ -79,7 +83,7 @@ export function isEntitlementActive(
 
 export function expireEntitlement(
   entitlement: TenantEntitlement,
-  now: string = new Date().toISOString(),
+  now: string = timeAuthority.now().at,
 ): TenantEntitlement {
   return { ...entitlement, status: "expired", effectiveUntil: now };
 }
@@ -88,7 +92,7 @@ export function revokeEntitlement(
   entitlement: TenantEntitlement,
   actorId: string,
   reason: string,
-  now: string = new Date().toISOString(),
+  now: string = timeAuthority.now().at,
 ): { entitlement: TenantEntitlement; auditEvent: Record<string, unknown> } {
   const revoked: TenantEntitlement = { ...entitlement, status: "disabled" };
   return {
@@ -117,10 +121,7 @@ export type QuotaCheckResult =
  * P2: Soft quota warns when approaching a limit.
  * P3: Hard quota blocks consumption after the limit.
  */
-export function checkQuota(
-  quota: TenantQuota,
-  requestedAmount: number = 1,
-): QuotaCheckResult {
+export function checkQuota(quota: TenantQuota, requestedAmount: number = 1): QuotaCheckResult {
   const projectedUsage = quota.currentUsage + requestedAmount;
 
   if (projectedUsage > quota.limit) {
@@ -183,7 +184,7 @@ export interface BurstAllowance {
 
 export function isBurstAvailable(
   burst: BurstAllowance,
-  now: string = new Date().toISOString(),
+  now: string = timeAuthority.now().at,
 ): boolean {
   if (burst.expiresAt <= now) return false;
   return burst.burstUsed < burst.burstLimit;
@@ -233,9 +234,7 @@ export function assertQuotaFairness(
  * Quota validation
  * ────────────────────────────────────────────────────────────*/
 
-export function validateQuota(
-  quota: TenantQuota,
-): { valid: boolean; errors: string[] } {
+export function validateQuota(quota: TenantQuota): { valid: boolean; errors: string[] } {
   const errors: string[] = [];
 
   if (!QUOTA_RESOURCES.includes(quota.resource)) {

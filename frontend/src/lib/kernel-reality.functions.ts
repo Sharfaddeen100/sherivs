@@ -33,6 +33,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { asKernelAdmin, type KernelAdminClient } from "@/lib/kernel-admin-client";
+import { tokenMsRemaining } from "@/lib/auth-helpers";
 import { requireSchoolAdminScope } from "@/lib/security-role-gate";
 import {
   DATA_CLASSIFICATIONS,
@@ -44,6 +45,10 @@ import {
   type DataClassification,
   type ObservationKind,
 } from "@/lib/kernel/reality";
+import { SystemClock, TimeAuthority } from "./kernel/time-authority";
+
+/** J-023: time enters only via the kernel time-authority — no direct wall-clock sampling. */
+const timeAuthority = new TimeAuthority(new SystemClock());
 
 /* ─────────────────────────────────────────────────────────────
  * Validators
@@ -149,9 +154,16 @@ export const writeEntity = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .validator((input: unknown) => writeEntitySchema.parse(input))
   .handler(async ({ data, context }): Promise<WriteEntityResult> => {
-    const schoolId = await requireSchoolAdminScope(context.supabase);
+    // Lifecycle threading (DEFECT-1 follow-through): the JWT carries no
+    // lifecycle claim, so `lifecycle: null` opts this call into the lifecycle
+    // contract while flagging the identity lifecycle unverified (never silent);
+    // session validity is attested from the verified token's exp claim.
+    const schoolId = await requireSchoolAdminScope(context.supabase, {
+      lifecycle: null,
+      sessionValid: typeof context?.claims?.exp === "number" && tokenMsRemaining(context.claims.exp) > 0,
+    });
     const admin = await loadAdmin();
-    const now = new Date().toISOString();
+    const now = timeAuthority.now().at;
 
     const row = entityDraft(
       {
@@ -189,9 +201,16 @@ export const writeRelationship = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .validator((input: unknown) => writeRelationshipSchema.parse(input))
   .handler(async ({ data, context }): Promise<WriteRelationshipResult> => {
-    const schoolId = await requireSchoolAdminScope(context.supabase);
+    // Lifecycle threading (DEFECT-1 follow-through): the JWT carries no
+    // lifecycle claim, so `lifecycle: null` opts this call into the lifecycle
+    // contract while flagging the identity lifecycle unverified (never silent);
+    // session validity is attested from the verified token's exp claim.
+    const schoolId = await requireSchoolAdminScope(context.supabase, {
+      lifecycle: null,
+      sessionValid: typeof context?.claims?.exp === "number" && tokenMsRemaining(context.claims.exp) > 0,
+    });
     const admin = await loadAdmin();
-    const now = new Date().toISOString();
+    const now = timeAuthority.now().at;
 
     // Tenant boundary: both endpoints must already be entities in this tenant.
     await assertEntitiesInScope(
@@ -236,9 +255,16 @@ export const writeObservation = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .validator((input: unknown) => writeObservationSchema.parse(input))
   .handler(async ({ data, context }): Promise<WriteObservationResult> => {
-    const schoolId = await requireSchoolAdminScope(context.supabase);
+    // Lifecycle threading (DEFECT-1 follow-through): the JWT carries no
+    // lifecycle claim, so `lifecycle: null` opts this call into the lifecycle
+    // contract while flagging the identity lifecycle unverified (never silent);
+    // session validity is attested from the verified token's exp claim.
+    const schoolId = await requireSchoolAdminScope(context.supabase, {
+      lifecycle: null,
+      sessionValid: typeof context?.claims?.exp === "number" && tokenMsRemaining(context.claims.exp) > 0,
+    });
     const admin = await loadAdmin();
-    const now = new Date().toISOString();
+    const now = timeAuthority.now().at;
 
     // Tenant boundary: the observed subject must be an entity in this tenant.
     await assertEntitiesInScope(admin, schoolId, [data.subject_entity_id], "Subject entity");
@@ -277,9 +303,16 @@ export const recordEvent = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .validator((input: unknown) => recordEventSchema.parse(input))
   .handler(async ({ data, context }): Promise<RecordEventResult> => {
-    const schoolId = await requireSchoolAdminScope(context.supabase);
+    // Lifecycle threading (DEFECT-1 follow-through): the JWT carries no
+    // lifecycle claim, so `lifecycle: null` opts this call into the lifecycle
+    // contract while flagging the identity lifecycle unverified (never silent);
+    // session validity is attested from the verified token's exp claim.
+    const schoolId = await requireSchoolAdminScope(context.supabase, {
+      lifecycle: null,
+      sessionValid: typeof context?.claims?.exp === "number" && tokenMsRemaining(context.claims.exp) > 0,
+    });
     const admin = await loadAdmin();
-    const now = new Date().toISOString();
+    const now = timeAuthority.now().at;
 
     const idempotencyKey = data.idempotency_key ?? null;
     if (idempotencyKey) {

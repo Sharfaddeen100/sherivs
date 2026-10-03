@@ -1,6 +1,6 @@
 {
   "mission": "COREGRID-MISSION-0001",
-  "directive": "V5.1 Parts 0-109 plus V5.2 Parts 110-141",
+  "directive": "V5.1 Parts 0-109 plus V5.2 Parts 110-141, executing under the V5.3 V1 MVP execution profile",
   "artifact": "COREGRID_V52_GATE_CHECKPOINT",
   "captured": "2026-09-30",
   "registryPhases": 51,
@@ -22,7 +22,8 @@
     "13": "VERIFIED_BOUNDED_PROBE",
     "14": "EXECUTED_BOUNDED_PROBE",
     "15": "CONFORMANCE_ASSESSED_RECOVERY_VERIFIED_DEPLOYMENT_BLOCKED",
-    "16": "BASELINE_ESTABLISHED"
+    "16": "BASELINE_ESTABLISHED",
+    "17": "V53_RECONCILED_V1_SCOPE_LOCKED_PLAN_MODE_COMPLETE"
   },
   "preservedConflicts": ["phase-27", "phase-33"],
   "campaign52": {
@@ -56,18 +57,29 @@
     "artifact": "architecture/COREGRID_GATE_14_SCHOLAR_VALIDATION.json",
     "summary": "Scholar 'learner' entity recorded through the universal cg_entity substrate and independently verified via the foundation loop on dev project nwrflbpbhyiqdptmlccm.",
     "status": "EXECUTED_AND_VERIFIED_BOUNDED_PROBE",
-    "notClaimed": ["full Scholar workflow integration", "HTTP path for the Scholar function", "deployment", "operation"]
+    "notClaimed": [
+      "full Scholar workflow integration",
+      "HTTP path for the Scholar function",
+      "deployment",
+      "operation"
+    ]
   },
   "gate15": {
     "artifact": "architecture/COREGRID_GATE_15_CONFORMANCE_ASSESSMENT.json",
     "decision": "CONDITIONALLY_CONFORMANT",
-    "counts": { "conformant": 7, "nonconformant": 0, "notAssessed": 2, "total": 9 },
+    "counts": { "conformant": 8, "nonconformant": 0, "notAssessed": 2, "total": 10 },
     "evidence": [
       "RLS isolation check passed live on nwrflbpbhyiqdptmlccm including the six foundation tables, append-only history trigger, and truth constraints",
       "scripts/run-rls-isolation-check.mjs",
-      "scripts/assess-foundation-conformance.mjs"
+      "scripts/assess-foundation-conformance.mjs",
+      "architecture/COREGRID_GATE_15_OPERATIONAL_READINESS.json (deployment and operational-runtime dimensions readiness-assessed by workforce stream B)",
+      "Live battery re-executed 2026-09-30 on the secrets-injected VM: RLS isolation PASS; live exerciser first call admitted + verified with idempotent replay (same executionId) and probe_cleaned=true; 5/5 live integration tests passed (tests/integration/foundation-loop.live.test.ts), including Scholar relationship/event binding, cross-tenant relationship rejection, and rollback with preserved history"
     ],
     "notAssessed": ["deployment", "operational-runtime"],
+    "dimensionDispositions": {
+      "deployment": "READINESS_ASSESSED (not conformance-assessed): CI/artifact/env-contract layer conformant with evidence; applied-infrastructure and app-runtime layers BLOCKED on provider credentials and a deployment target; remaining items classified BLOCKED/DEFERRED/FUTURE in the readiness artifact. The live conformance assessment records this dimension NOT_ASSESSED.",
+      "operational-runtime": "READINESS_ASSESSED (not conformance-assessed): failure-handling (idempotent replay + governed rollback), audit trail, webhook signatures and resilience primitives conformant; structured logging, metrics, health probes and graceful shutdown recorded as DEFERRED/FUTURE with owners and rationale. The live conformance assessment records this dimension NOT_ASSESSED."
+    },
     "recoveryEvidence": "Live rollback probe: admitted execution rolled back with compensation_required, both history entries preserved, idempotent replay returns rolled-back state without a new effect (3/3 integration tests).",
     "rule": "Deployment and operational runtime are unfinished work, not conformance failures."
   },
@@ -76,12 +88,154 @@
     "status": "BASELINE_ESTABLISHED",
     "summary": "Versioned comparison target recording reconciled architecture, foundation slice, verification and conformance evidence, and known gaps."
   },
-  "unverified": [
-    "lint",
-    "e2e-browser",
-    "deployment",
-    "operational-telemetry"
-  ],
-  "nextAuthorizedGate": "Close the remaining Gate 15 dimensions in an approved environment (deployment health, live telemetry, E2E), then continue governed evolution against the 2026-09-30 baseline.",
+  "unverified": ["lint-debt-remaining (lint itself ran and was classified; 231 non-mechanical problems recorded)", "e2e-browser", "deployment", "operational-telemetry"],
+  "continuation": {
+    "date": "2026-09-30",
+    "record": "Mobile continuation verified the loop position, repaired the P08 enforcement-surface inventory, and extended the Scholar validation with governed relationship and event vocabulary.",
+      "verification": {
+        "testUnit": "PASS (196 files, 3084 tests; integration/live tests were skipped without secrets at the time of this record — superseded 2026-09-30 when the live battery ran 5/5 on the secrets-injected VM)",
+      "verifyReconciliationArtifacts": "PASS_WITH_REPORTED_CONFLICTS (preserved phase-27, phase-33)",
+      "verifyCampaign52DecisionLedger": "PASS_DECISIONS_RECORDED_WITH_BLOCKERS",
+      "validateCampaign52AuthorizedDecisions": "PASS_NO_INVALID_DECISIONS",
+      "typecheck": "PASS",
+      "build": "PASS (vite build; routeTree regenerated with the scholar-foundation-loop route)",
+      "fullVerifyPipeline": "PASS (npm run verify: typecheck + unit + registry + secret-scan + build)",
+      "lint": "RAN AND CLASSIFIED — touched files clean; repository-wide debt recorded (16099 prettier formatting, 175 no-explicit-any, 37 react-hooks/exhaustive-deps across 519 files). Repo-wide fix is a proposed governed hygiene mission, not executed here."
+    },
+    "change": "tests/unit/p08-enforcement-surface.test.ts — registered foundation-loop.functions.ts and scholar-foundation-loop.functions.ts as ADOPTED of the canonical security-role-gate; both import the gate and resolve tenant via requireSchoolAdminScope. No authorization behavior changed.",
+    "evidence": ["tests/unit/p08-enforcement-surface.test.ts"],
+    "scholarRealityExtension": {
+      "record": "Scholar foundation loop extended through the SAME governed execution: ontology-validated relationships (enrolls, teaches) into cg_relationship and Scholar domain events (learner.enrolled) into cg_event, via runtime/scholar-events.ts and runtime/scholar-reality.ts. No new infrastructure; kernel substrate tables (20260903000000) reused.",
+      "flow": "frontend/src/lib/runtime/scholar-foundation-flow.ts",
+      "serverPath": "frontend/src/lib/scholar-foundation-loop.functions.ts",
+      "security": "Relationship targets are verified to exist inside the actor's resolved tenant before any write; ontology source/target types are enforced; the event aggregate must match the created entity type; replayed idempotency keys return the recorded execution without creating new reality rows.",
+      "httpEntry": "frontend/src/routes/scholar-foundation-loop.tsx (authenticated, mirrors foundation-loop.tsx)",
+      "conformance": "assess-foundation-conformance.mjs extended with the scholar-reality-vocabulary dimension (static, no secrets required to assess)",
+      "tests": [
+        "tests/unit/scholar-foundation-flow.test.ts",
+        "tests/integration/foundation-loop.live.test.ts (self-skips without secrets)"
+      ],
+      "notClaimed": [
+        "live execution of the extended loop — SUPERSEDED 2026-09-30: the live battery ran on the secrets-injected VM; the 5/5 live integration tests include binding the Scholar entity into the reality graph with a relationship and event",
+        "deployment",
+        "operation",
+        "conformance beyond assessed scope"
+      ]
+    },
+    "exerciserRepair": {
+      "record": "exercise-foundation-loop.mjs cleanup extended to delete cg_event and cg_relationship rows for the probe tenant before deleting cg_entity. Required because the extended Scholar loop now persists relationship and event rows that reference cg_entity with ON DELETE RESTRICT; without this repair the live exerciser would fail mid-cleanup and leak probe reality rows.",
+      "evidence": ["scripts/exercise-foundation-loop.mjs"],
+      "notClaimed": ["live execution of the repaired exerciser — SUPERSEDED 2026-09-30: the repaired exerciser ran live end-to-end on the secrets-injected VM (admitted + verified, idempotent replay, probe_cleaned=true)"]
+    },
+    "liveBatteryExecution": {
+      "record": "The previously blocked secrets-gated live battery was executed in full on this VM (booted after secret injection): RLS isolation check PASS live on nwrflbpbhyiqdptmlccm; live conformance assessment CONDITIONALLY_CONFORMANT (8 conformant / 0 nonconformant / 2 NOT_ASSESSED of 10 dimensions); vite build + preview served the generated _serverFn endpoint; live exerciser first call admitted + verified with idempotent replay returning the same executionId, and 5/5 live integration tests passed; disposable probe data cleaned (probe_cleaned=true).",
+      "operationalFindings": [
+        "STALE_SECRET: the injected SUPABASE_PUBLISHABLE_KEY did not match the dev project's current anon key (service key and URL verified matching). Resolved by refreshing the VM-local git-ignored .env.local via the authorized Supabase management API — the same mechanism scripts/exercise-foundation-loop.mjs itself uses. No secret value was printed, logged, or committed. Operator should update the Cursor Cloud Secret to the current anon/publishable key.",
+        "PREVIEW_BINDING: vite preview binds IPv6 ::1 in this environment; the exerciser's default http://127.0.0.1:4173 (IPv4) was refused. Run with FOUNDATION_LOOP_BASE_URL=http://localhost:4173 (the script's existing override); exerciser default amended to localhost.",
+        "No permission expansion occurred: credentials lifted a recorded blocker via injection only; every call ran through the existing governed surfaces (Part 140 discipline preserved)."
+      ],
+      "evidence": [
+        "scripts/run-rls-isolation-check.mjs (RLS_ISOLATION_CHECK=PASS)",
+        "scripts/assess-foundation-conformance.mjs",
+        "architecture/COREGRID_GATE_15_CONFORMANCE_ASSESSMENT.json (captured 2026-09-30T22:03:08.754Z)",
+        "scripts/exercise-foundation-loop.mjs (admitted + verified, idempotent replay, 5/5 live tests, probe_cleaned=true)",
+        "tests/integration/foundation-loop.live.test.ts"
+      ],
+      "notClaimed": ["deployment", "operational-runtime telemetry", "operation"]
+    },
+    "hygieneMissionExecution": {
+      "record": "Executed the previously proposed mechanical lint hygiene pass: eslint --fix across the repository (prettier formatting: quote normalization, line rewrapping). 16329 problems reduced to 231 (177 errors, 54 warnings). No manual code edits; behavior verified unchanged by the full pipeline.",
+      "verification": {
+        "fullVerifyPipeline": "PASS (typecheck + unit 3084 tests + registry + secret-scan + build)",
+        "remainingDebt": "177 errors: 175 @typescript-eslint/no-explicit-any, 1 no-var-requires, 1 @next/next/no-img-element; 54 warnings: 37 react-hooks/exhaustive-deps, 17 react-refresh/only-export-components"
+      },
+      "notClaimed": [
+        "resolution of no-explicit-any (case-by-case review per Constitution §32 — separate governed work)",
+        "resolution of react-hooks/exhaustive-deps (each dependency-array change is a behavior decision, not formatting)"
+      ]
+    },
+    "baselineAmendments": {
+      "record": "Governed amendment to architecture/COREGRID_EVOLUTION_BASELINE_2026-09-30.json knownGaps, per V5.1 Part 47 evolution law and the baseline's comparisonInstructions: changes are recorded decisions against the baseline, not silent rewrites of it.",
+      "closed": [
+        {
+          "gap": "Scholar HTTP entry: scholarFoundationLoop verified via authenticated server path, not its own generated HTTP endpoint",
+          "resolution": "Authenticated HTTP entry point added and rebuilt",
+          "evidence": [
+            "frontend/src/routes/scholar-foundation-loop.tsx",
+            "frontend/src/routeTree.gen.ts (regenerated)",
+            "commit a9893eb"
+          ]
+        }
+      ],
+      "quantified": [
+        {
+          "gap": "Lint: previously interrupted, remains UNVERIFIED",
+          "resolution": "RESOLVED MECHANICALLY — repo-wide eslint --fix executed and full pipeline passed; remaining 231 non-mechanical problems classified and recorded",
+          "evidence": {
+            "mechanicalPass": "commit executing eslint --fix; 16329 -> 231 problems",
+            "repositoryDebt": "remaining: 175 @typescript-eslint/no-explicit-any (case-by-case review pending per Constitution §32), 37 react-hooks/exhaustive-deps, 17 react-refresh/only-export-components, 1 no-var-requires, 1 no-img-element",
+            "proposedGovernedMission": "no-explicit-any and exhaustive-deps require human-reviewed semantics changes; not executable mechanically"
+          }
+        }
+      ]
+    }
+  },
+  "nextAuthorizedGate": "ACT MODE under the V5.3 V1 MVP execution profile: execute the dependency-validated sequence in architecture/coregrid-mvp-architecture/foundation/COREGRID_V1_MASTER_IMPLEMENTATION_PLAN.json (deployment track in parallel from day 1; worker-delegation governance decision BLK-6 escalated to the operator).",
+  "secretsBlocker": {
+    "status": "RESOLVED",
+    "originalRecord": {
+      "record": "Operator added the four SUPABASE_* secrets to Cursor Cloud Secrets during this run, but this VM booted before injection and no SUPABASE_* variable exists in any process environment (init, exec-daemon, and fresh login shells all probed). Cloud secrets inject into new VMs only; a running VM has no injection path. Per Part 140 the gate blocker is recorded rather than bypassed.",
+      "blockedWork": [
+        "scripts/run-rls-isolation-check.mjs (live)",
+        "scripts/assess-foundation-conformance.mjs (live)",
+        "scripts/exercise-foundation-loop.mjs + 5 live integration tests"
+      ],
+      "nextAction": "Start a new agent run (VM reboots with secrets injected); the live battery is the first authorized execution of that run."
+    },
+    "resolution": {
+      "record": "The Gate 15 secrets blocker is RESOLVED. A new agent run booted a VM with the four SUPABASE_* secrets injected and present in the process environment, and the previously blocked live battery was executed in full on dev project nwrflbpbhyiqdptmlccm and passed. The blocker was lifted by credential injection only — no gate, policy, or security boundary was bypassed (Part 140 discipline preserved). One injected value was stale (SUPABASE_PUBLISHABLE_KEY did not match the project's current anon key) and was resolved via the authorized management API into the VM-local git-ignored .env.local; see continuation.liveBatteryExecution.operationalFindings.",
+      "resolvedDate": "2026-09-30",
+      "evidence": [
+        "scripts/run-rls-isolation-check.mjs (RLS_ISOLATION_CHECK=PASS)",
+        "architecture/COREGRID_GATE_15_CONFORMANCE_ASSESSMENT.json",
+        "scripts/exercise-foundation-loop.mjs (admitted + verified, idempotent replay, 5/5 live tests, probe_cleaned=true)",
+        "continuation.liveBatteryExecution"
+      ]
+    }
+  },
+  "workforceExecution": {
+    "record": "MISSION-0002 Gate 15 Operational Assurance Closure executed with a coordinated concurrent workforce per V5.1 Parts 24 and 69: stream A (security/quality analyst subagent) classified all 176 no-explicit-any/no-var-requires findings read-only; stream B (SRE/platform-architect subagent) produced the deployment and operational-runtime readiness inventory read-only; the coordinator held the secrets-gated execution stream and reconciled both reports into canonical artifacts. No conflicting mutations were parallelized.",
+    "artifacts": [
+      "architecture/COREGRID_LINT_DEBT_CLASSIFICATION.json",
+      "architecture/COREGRID_GATE_15_OPERATIONAL_READINESS.json"
+    ],
+    "continuationRun": {
+      "record": "2026-09-30 secrets-gated live battery run decomposed the same way: stream A (read-only analyst subagent) produced the amendment inventory and V5.3 reconciliation draft against the on-disk artifacts; stream B (read-only security/hygiene subagent) swept tracked files for secret leakage, audited exerciser sanitization paths, and confirmed server/admin client isolation; the coordinator held all mutations (checkpoint, reconciliation artifact, baseline amendment, exerciser default) plus the live execution stream, and verified both reports itself before applying them.",
+      "evidence": [
+        "architecture/COREGRID_V53_DIRECTIVE_RECONCILIATION.json",
+        "architecture/COREGRID_V52_GATE_CHECKPOINT.json (continuation.liveBatteryExecution)",
+        "scripts/exercise-foundation-loop.mjs (default base URL amendment)"
+      ]
+    }
+  },
+  "v53DirectiveReconciliation": "architecture/COREGRID_V53_DIRECTIVE_RECONCILIATION.json",
+  "gate17": {
+    "artifact": "architecture/coregrid-mvp-architecture/foundation/COREGRID_V1_SCOPE_LOCK.json",
+    "record": "Constitution V5.3 (MVP-first execution profile, Parts 0-85) received in full and reconciled per V5.2 Part 110: ADOPTED as the binding MVP execution profile; V5.1/V5.2 preserved as master directives; five provisions analyzed (two conflicts resolved by adoption, one extension, two alignments). MISSION-V1-001/002/003 executed via a four-stream read-only workforce (repository archaeologist, Phase 52 classification officer, governance reconciliation officer, V1 planning analyst) with coordinator-only mutations and independent verification of every report.",
+    "evidence": [
+      "architecture/COREGRID_V53_DIRECTIVE_RECONCILIATION.json",
+      "architecture/coregrid-mvp-architecture/ (README, COREGRID-V1.md, scope lock, capability catalog, master implementation plan, launch criteria, blockers)",
+      "architecture/COREGRID_PHASE_52_V1_FUTURE_CLASSIFICATION.json (51 phases + 313 Phase 52 occurrences classified; 10 human-review items recorded UNRESOLVED)",
+      "architecture/future/COREGRID_FUTURE_ARCHITECTURE_REGISTER.json (V2/V3/FUTURE frozen registers with reopen conditions)",
+      "registry.json: version_target x51 + versionClassification block, additive only; scope guard enforced in scripts/verification/registry-validate.mjs (validated: it caught the phase-15 IMPLEMENTING-vs-FROZEN conflict, which is recorded UNRESOLVED rather than silently resolved)",
+      "19 governance/mother files carry the V1 EXECUTION BOUNDARY banner; CONSTITUTION.md §228; DECISIONS.md PLATFORM-012; PROGRESS.md §226; REGISTRY.md §19 version_target hook; AGENTS.md §45"
+    ],
+    "notClaimed": [
+      "any V1 capability implemented (PLAN MODE complete; ACT MODE entry recorded)",
+      "the 10 October 2026 launch target achieved or scheduled with evidence",
+      "Phase 52 line-level classification exhaustive (occurrence-level recorded; sub-section splits need human review)",
+      "quarantine of leakage modules executed (classified only; code moves require governed decisions)"
+    ]
+  },
   "rule": "Acceptance coverage, scope records, and bounded probes are not deployment, conformance, or operation."
 }

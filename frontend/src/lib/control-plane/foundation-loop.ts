@@ -14,6 +14,12 @@ import {
   type MissionIntent,
   type VerificationResult,
 } from "./foundation-mission";
+import {
+  checkVerificationIndependence,
+  type IdentityEquivalenceRegistry,
+  type IndependenceCheckResult,
+  type WorkCriticality,
+} from "../verification";
 
 export interface FoundationRealityRef {
   id: string;
@@ -93,6 +99,23 @@ export interface FoundationVerificationRow {
   reason: string;
 }
 
+/**
+ * Additive loop-stage verification governance (J-038 / V1CAP-060 /
+ * MISSION-R-92): when the verification stage declares a verifier, the loop
+ * consumes the independence check. A stage whose verification fails
+ * independence BLOCKS stage closure — the loop cannot proceed on self-verified
+ * or equivalent-identity-verified work, and critical work can never close on
+ * an AI verifier (E-027 structural law).
+ */
+export interface LoopVerificationGovernance {
+  /** The verifier identity for this loop stage's verification act. */
+  readonly verifierIdentityRef: string;
+  /** Criticality of the work being verified (critical work requires a human verifier). */
+  readonly workCriticality: WorkCriticality;
+  /** Declarative identity → effective-identity equivalence-class registry. */
+  readonly identityRegistry: IdentityEquivalenceRegistry;
+}
+
 export interface FoundationLoopPlan {
   admission: ExecutionRecord;
   mission: FoundationMissionRow;
@@ -100,14 +123,17 @@ export interface FoundationLoopPlan {
   history: FoundationHistoryRow;
   evidence: FoundationEvidenceRow | null;
   verification: FoundationVerificationRow | null;
+  /**
+   * Independence check for the loop's verification stage, when the stage
+   * declared a verifier (additive — null otherwise).
+   */
+  verificationIndependence: IndependenceCheckResult | null;
 }
 
 const AUTHORIZED_ACTION = "record-observation";
 
 function integrityBinding(tenantId: string, realityId: string, observedAt: string): string {
-  return createHash("sha256")
-    .update(`${tenantId}|${realityId}|${observedAt}`)
-    .digest("hex");
+  return createHash("sha256").update(`${tenantId}|${realityId}|${observedAt}`).digest("hex");
 }
 
 export function planFoundationLoop(input: {
@@ -117,11 +143,10 @@ export function planFoundationLoop(input: {
   reality: FoundationRealityRef | null;
   requestedRealityRef: string;
   request: FoundationLoopRequest;
+  verificationGovernance?: LoopVerificationGovernance;
 }): FoundationLoopPlan {
-  const realityInTenant =
-    input.reality !== null && input.reality.tenantId === input.tenantId;
-  const crossTenantReality =
-    input.reality !== null && input.reality.tenantId !== input.tenantId;
+  const realityInTenant = input.reality !== null && input.reality.tenantId === input.tenantId;
+  const crossTenantReality = input.reality !== null && input.reality.tenantId !== input.tenantId;
   const mission: MissionIntent = {
     missionId: input.request.missionId,
     version: input.request.version,
@@ -201,7 +226,15 @@ export function planFoundationLoop(input: {
   };
 
   if (admission.result.status !== "admitted" || !realityInTenant || !input.reality) {
-    return { admission, mission: missionRow, execution, history, evidence: null, verification: null };
+    return {
+      admission,
+      mission: missionRow,
+      execution,
+      history,
+      evidence: null,
+      verification: null,
+      verificationIndependence: null,
+    };
   }
 
   const evidenceRecord: EvidenceRecord = {
@@ -223,6 +256,29 @@ export function planFoundationLoop(input: {
     evidence: [evidenceRecord],
     criteriaMet: input.reality.tenantId === input.tenantId,
   });
+
+  // Loop verification stage consumes the independence check (J-038 /
+  // V1CAP-060): the executor of the verified work is the loop actor. A
+  // verifier that fails independence BLOCKS stage closure — the verification
+  // decision is forced to "failed" with the independence reason, so the loop
+  // cannot proceed on self-verified critical work (E-027 structural law).
+  const governance = input.verificationGovernance ?? null;
+  let verificationIndependence: IndependenceCheckResult | null = null;
+  let effectiveDecision = verification.decision;
+  let effectiveReason = verification.reason;
+  if (governance !== null) {
+    verificationIndependence = checkVerificationIndependence({
+      verifierIdentityRef: governance.verifierIdentityRef,
+      executorIdentityRef: input.actorId,
+      workCriticality: governance.workCriticality,
+      identityRegistry: governance.identityRegistry,
+    });
+    if (!verificationIndependence.independent) {
+      effectiveDecision = "failed";
+      effectiveReason = "verification_independence_failed";
+    }
+  }
+
   return {
     admission,
     mission: missionRow,
@@ -244,8 +300,9 @@ export function planFoundationLoop(input: {
       verification_id: verification.verificationId,
       execution_id: verification.executionId,
       evidence_ids: verification.evidenceIds,
-      decision: verification.decision,
-      reason: verification.reason,
+      decision: effectiveDecision,
+      reason: effectiveReason,
     },
+    verificationIndependence,
   };
 }

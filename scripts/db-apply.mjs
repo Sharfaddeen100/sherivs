@@ -13,6 +13,7 @@ import { readdirSync, readFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import pg from "pg";
+import { pgSslConfig } from "./lib/pg-ssl.mjs";
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
 const MIGRATIONS_DIR = join(ROOT, "database", "supabase", "migrations");
@@ -23,7 +24,9 @@ if (!dbUrl) {
   process.exit(2);
 }
 
-const files = readdirSync(MIGRATIONS_DIR).filter((f) => f.endsWith(".sql")).sort();
+const files = readdirSync(MIGRATIONS_DIR)
+  .filter((f) => f.endsWith(".sql"))
+  .sort();
 if (files.length === 0) {
   console.error(`No .sql migrations found in ${MIGRATIONS_DIR}`);
   process.exit(2);
@@ -31,7 +34,7 @@ if (files.length === 0) {
 
 const client = new pg.Client({
   connectionString: dbUrl,
-  ssl: { rejectUnauthorized: false },
+  ssl: pgSslConfig(dbUrl),
 });
 await client.connect();
 

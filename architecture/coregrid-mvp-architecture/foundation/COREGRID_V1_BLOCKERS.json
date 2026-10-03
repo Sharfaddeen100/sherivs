@@ -1,0 +1,27 @@
+{
+  "mission": "COREGRID-MISSION-0001",
+  "artifact": "COREGRID_V1_BLOCKERS",
+  "mechanism": "V5.3 Part 58 (record UNKNOWN/blockers, never guess) + Part 140 discipline",
+  "captured": "2026-09-30",
+  "purpose": "Recorded external blockers for the CoreGrid V1 launch. Each entry states what it unblocks. Nothing here is bypassed; work continues on unblocked streams (overnight directive).",
+  "blockers": [
+    {"id": "BLK-1", "item": "Supabase production project + service credentials; also re-inject current SUPABASE_PUBLISHABLE_KEY (stale in Cursor Cloud Secrets per baseline amendment)", "unblocks": "production migrations, live RLS isolation check on target, deployment, launch validation"},
+    {"id": "BLK-2", "item": "AI provider key + gateway decision (AI_API_KEY / AI_GATEWAY_URL)", "unblocks": "intelligence gateway live calls, AI WORKER link in the Part 62 slice, agent runtime + context live testing"},
+    {"id": "BLK-3", "item": "Deployment target credentials: OCI (TF_VAR_oci_*), Hetzner/Vultr, Cloudflare (infrastructure/CREDENTIALS.md)", "unblocks": "IaC apply, cluster, release workflow, health probes; closes the Gate 15 deployment dimension; without it the 10 Oct target has no serving URL"},
+    {"id": "BLK-4", "item": "Paystack live/secret key; Stripe-vs-Paystack decision if V1 needs non-NGN currency", "unblocks": "live payment validation on the existing Scholar fee slice"},
+    {"id": "BLK-5", "item": "Communication provider keys (Resend/SendGrid/SMTP email, Twilio SMS/voice); Vapi go/no-go decision (not referenced in code)", "unblocks": "live send paths for notifications/communication; web-push (VAPID) already works"},
+    {"id": "BLK-6", "item": "Governance decisions (non-credential): canonical mission/worker owner (CG-GAP-009/011, D3 cluster); monitoring stack ADR; phase-15 V1/V2 code boundary; phase-16 twin split; GAP-008 global shell disposition", "unblocks": "worker delegation implementation (critical path), observability backend choice, quarantine execution"},
+    {"id": "BLK-7", "item": "RESOLVED 2026-10-01: push token recovered; all commits on origin.", "unblocks": "n/a"},
+    {"id": "OPS-1", "item": "Provision DATABASE_URL (dev DB password) + project CA cert (prod-ca-2021.crt, dashboard-only) for NODE_EXTRA_CA_CERTS; db scripts now fail closed on TLS verification by design (OPS-RISK-1 fix); logged escape hatch COREGRID_DB_INSECURE_TLS=1 exists", "unblocks": "end-to-end secure-TLS db-run proof"},
+    {"id": "OPS-2", "item": "RESOLVED 2026-10-01: CTO directive Part 30 approved both migrations; applied to dev project nwrflbpbhyiqdptmlccm via scripts/apply-approved-v1-migrations.mjs; RLS isolation check PASS; cg_workspace/cg_workspace_member/cg_org_unit/cg_org_membership verified rowsecurity=true. Existence does not prove final V1 data-model completeness (reconcile against scope lock).", "unblocks": "n/a — cleared"},
+    {"id": "DEC-1", "item": "DECIDED by CTO directive: deny-by-default service-role-only posture remains authoritative during reconciliation; domain-neutral authorization model must be DESIGNED as V1 architecture before scope lock (done: STREAM I/K consolidated requirement; V1CAP-013/014)", "unblocks": "n/a — decided"},
+    {"id": "DEC-2", "item": "DECIDED by CTO directive RULING-4: universal layer must use domain-neutral roles (ACTOR..SYSTEM); education/restaurant roles map INTO neutral roles, never the reverse; restaurant service_staff->teacher mapping must not persist as architecture", "unblocks": "n/a — decided (engineering via mission M-R-21)"},
+    {"id": "DEC-3", "item": "DECIDED by CTO directive RULING-3: workers are governed actors, an extension of the actor/delegation model; persistent definition/authority/history/evidence, ephemeral runtime. Resolves BLK-6/CG-GAP-009/011", "unblocks": "worker delegation implementation (mission M-R-40)"},
+    {"id": "DEC-4", "item": "DECIDED by CTO directive RULING-5: map Part 17 engine onto automation-workflow.ts only if domain-neutral with stronger retry/idempotency semantics; ONE canonical lifecycle (DEFINED..ARCHIVED, 15 states)", "unblocks": "n/a — decided (engineering post-scope-lock)"},
+    {"id": "DEC-5", "item": "DECIDED by CTO directive RULING-6: phase 15 QUARANTINE — CLASSIFY ONLY, DELETE NOTHING; V2 hardware expansion frozen", "unblocks": "n/a — decided"},
+    {"id": "SEC-1", "item": "GitHub release-pipeline secrets: DOCKER_REGISTRY, DOCKER_USERNAME, DOCKER_PASSWORD, DOCKER_NAMESPACE (+ DEPLOY_SSH_* later); approve production environment gate on first release", "unblocks": "tagged-release image build/push; deploy still waits on BLK-3"},
+    {"id": "SEC-2", "item": "Add version field to root package.json", "unblocks": "health.json version reporting"}
+  ],
+  "governanceConstraint": "Migration applies to the dev project require an explicit human decision per the established handoff law. V1-minimal schema migrations (workspace persistence) are prepared as governed proposals and wait for authorization rather than self-applying.",
+  "rule": "A recorded blocker never authorizes a bypass. Unblocked streams continue."
+}

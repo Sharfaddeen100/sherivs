@@ -8,13 +8,12 @@
  * - Secrets must never be logged.
  */
 
-import type {
-  CredentialKind,
-  CredentialMetadata,
-  CredentialStatus,
-  IdentityId,
-} from "./identity";
+import type { CredentialKind, CredentialMetadata, CredentialStatus, IdentityId } from "./identity";
 import { canTransitionCredential } from "./identity";
+import { SystemClock, TimeAuthority } from "./kernel/time-authority";
+
+/** J-023: time enters only via the kernel time-authority — no direct wall-clock sampling. */
+const timeAuthority = new TimeAuthority(new SystemClock());
 
 /* ─────────────────────────────────────────────────────────────
  * Credential creation
@@ -30,12 +29,11 @@ export interface CreateCredentialInput {
 }
 
 export type CreateCredentialResult =
-  | { ok: true; credential: CredentialMetadata }
-  | { ok: false; error: string };
+  { ok: true; credential: CredentialMetadata } | { ok: false; error: string };
 
 export function createCredential(
   input: CreateCredentialInput,
-  now: string = new Date().toISOString(),
+  now: string = timeAuthority.now().at,
 ): CreateCredentialResult {
   if (!input.fingerprint.trim()) {
     return { ok: false, error: "Credential fingerprint is required" };
@@ -64,13 +62,12 @@ export function createCredential(
  * ────────────────────────────────────────────────────────────*/
 
 export type CredentialTransitionResult =
-  | { ok: true; credential: CredentialMetadata }
-  | { ok: false; error: string };
+  { ok: true; credential: CredentialMetadata } | { ok: false; error: string };
 
 export function transitionCredentialStatus(
   credential: CredentialMetadata,
   to: CredentialStatus,
-  now: string = new Date().toISOString(),
+  now: string = timeAuthority.now().at,
 ): CredentialTransitionResult {
   if (!canTransitionCredential(credential.status, to)) {
     return {
@@ -91,7 +88,7 @@ export function transitionCredentialStatus(
 
 export function isCredentialActive(
   credential: CredentialMetadata,
-  now: string = new Date().toISOString(),
+  now: string = timeAuthority.now().at,
 ): boolean {
   if (credential.status !== "active") return false;
   if (credential.expiresAt !== null && credential.expiresAt <= now) return false;
@@ -100,14 +97,14 @@ export function isCredentialActive(
 
 export function isCredentialExpired(
   credential: CredentialMetadata,
-  now: string = new Date().toISOString(),
+  now: string = timeAuthority.now().at,
 ): boolean {
   return credential.expiresAt !== null && credential.expiresAt <= now;
 }
 
 export function markCredentialUsed(
   credential: CredentialMetadata,
-  now: string = new Date().toISOString(),
+  now: string = timeAuthority.now().at,
 ): CredentialMetadata {
   return { ...credential, lastUsedAt: now };
 }
@@ -128,7 +125,7 @@ export interface CredentialPolicy {
 export function validateCredentialAgainstPolicy(
   credential: CredentialMetadata,
   policy: CredentialPolicy,
-  now: string = new Date().toISOString(),
+  now: string = timeAuthority.now().at,
 ): { valid: boolean; reason: string } {
   if (!policy.allowedKinds.includes(credential.kind)) {
     return {
@@ -144,7 +141,8 @@ export function validateCredentialAgainstPolicy(
     };
   }
 
-  const lifetimeMs = new Date(credential.expiresAt).getTime() - new Date(credential.issuedAt).getTime();
+  const lifetimeMs =
+    new Date(credential.expiresAt).getTime() - new Date(credential.issuedAt).getTime();
   if (lifetimeMs > policy.maxLifetimeSeconds * 1000) {
     return {
       valid: false,

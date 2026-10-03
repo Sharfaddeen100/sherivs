@@ -8,12 +8,12 @@
  * - No cross-tenant relationship leakage.
  */
 
-import type {
-  IdentityId,
-  IdentityRelationship,
-  RelationshipType,
-} from "./identity";
+import type { IdentityId, IdentityRelationship, RelationshipType } from "./identity";
 import { RELATIONSHIP_TYPES } from "./identity";
+import { SystemClock, TimeAuthority } from "./kernel/time-authority";
+
+/** J-023: time enters only via the kernel time-authority — no direct wall-clock sampling. */
+const timeAuthority = new TimeAuthority(new SystemClock());
 
 /* ─────────────────────────────────────────────────────────────
  * Relationship creation
@@ -30,12 +30,11 @@ export interface CreateRelationshipInput {
 }
 
 export type CreateRelationshipResult =
-  | { ok: true; relationship: IdentityRelationship }
-  | { ok: false; error: string };
+  { ok: true; relationship: IdentityRelationship } | { ok: false; error: string };
 
 export function createRelationship(
   input: CreateRelationshipInput,
-  now: string = new Date().toISOString(),
+  now: string = timeAuthority.now().at,
 ): CreateRelationshipResult {
   // Validate relationship type.
   if (!RELATIONSHIP_TYPES.includes(input.type)) {
@@ -68,7 +67,7 @@ export function createRelationship(
 
 export function revokeRelationship(
   relationship: IdentityRelationship,
-  now: string = new Date().toISOString(),
+  now: string = timeAuthority.now().at,
 ): IdentityRelationship {
   return {
     ...relationship,
@@ -83,7 +82,7 @@ export function revokeRelationship(
 
 export function isRelationshipActive(
   relationship: IdentityRelationship,
-  now: string = new Date().toISOString(),
+  now: string = timeAuthority.now().at,
 ): boolean {
   if (relationship.revokedAt !== null) return false;
   if (relationship.expiresAt !== null && relationship.expiresAt <= now) return false;
@@ -92,7 +91,7 @@ export function isRelationshipActive(
 
 export function activeRelationships(
   relationships: IdentityRelationship[],
-  now: string = new Date().toISOString(),
+  now: string = timeAuthority.now().at,
 ): IdentityRelationship[] {
   return relationships.filter((r) => isRelationshipActive(r, now));
 }
@@ -100,7 +99,7 @@ export function activeRelationships(
 export function relationshipsOfType(
   relationships: IdentityRelationship[],
   type: RelationshipType,
-  now: string = new Date().toISOString(),
+  now: string = timeAuthority.now().at,
 ): IdentityRelationship[] {
   return activeRelationships(relationships, now).filter((r) => r.type === type);
 }
@@ -108,21 +107,17 @@ export function relationshipsOfType(
 export function relationshipsForSubject(
   relationships: IdentityRelationship[],
   subjectId: IdentityId,
-  now: string = new Date().toISOString(),
+  now: string = timeAuthority.now().at,
 ): IdentityRelationship[] {
-  return activeRelationships(relationships, now).filter(
-    (r) => r.subjectId === subjectId,
-  );
+  return activeRelationships(relationships, now).filter((r) => r.subjectId === subjectId);
 }
 
 export function relationshipsForTarget(
   relationships: IdentityRelationship[],
   targetId: string,
-  now: string = new Date().toISOString(),
+  now: string = timeAuthority.now().at,
 ): IdentityRelationship[] {
-  return activeRelationships(relationships, now).filter(
-    (r) => r.targetId === targetId,
-  );
+  return activeRelationships(relationships, now).filter((r) => r.targetId === targetId);
 }
 
 /* ─────────────────────────────────────────────────────────────

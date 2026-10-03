@@ -17,6 +17,10 @@ import type {
   TenantStatus,
 } from "./tenant-core";
 import { canTransitionTenant } from "./tenant-core";
+import { SystemClock, TimeAuthority } from "./kernel/time-authority";
+
+/** J-023: time enters only via the kernel time-authority — no direct wall-clock sampling. */
+const timeAuthority = new TimeAuthority(new SystemClock());
 
 /* ─────────────────────────────────────────────────────────────
  * Lifecycle transition request
@@ -35,8 +39,7 @@ export interface TenantLifecycleTransitionRequest {
 }
 
 export type TenantLifecycleTransitionResult =
-  | { ok: true; tenant: CoreGridTenant; event: TenantEvent }
-  | { ok: false; error: string };
+  { ok: true; tenant: CoreGridTenant; event: TenantEvent } | { ok: false; error: string };
 
 /* ─────────────────────────────────────────────────────────────
  * Lifecycle engine
@@ -44,7 +47,7 @@ export type TenantLifecycleTransitionResult =
 
 export function transitionTenantLifecycle(
   req: TenantLifecycleTransitionRequest,
-  now: string = new Date().toISOString(),
+  now: string = timeAuthority.now().at,
 ): TenantLifecycleTransitionResult {
   // 1. Validate the transition is allowed by the state machine.
   if (!canTransitionTenant(req.from, req.to)) {
@@ -172,7 +175,7 @@ export interface ProvisioningState {
 
 export function advanceProvisioning(
   state: ProvisioningState,
-  now: string = new Date().toISOString(),
+  now: string = timeAuthority.now().at,
 ): ProvisioningState {
   const currentIndex = PROVISIONING_PIPELINE.indexOf(state.stage);
   const nextStage = PROVISIONING_PIPELINE[currentIndex + 1];
@@ -198,13 +201,7 @@ export function isProvisioningComplete(state: ProvisioningState): boolean {
  * ────────────────────────────────────────────────────────────*/
 
 export type MigrationStage =
-  | "PLANNED"
-  | "VALIDATING"
-  | "SNAPSHOTTING"
-  | "COPYING"
-  | "VERIFYING"
-  | "SWITCHING"
-  | "COMPLETED";
+  "PLANNED" | "VALIDATING" | "SNAPSHOTTING" | "COPYING" | "VERIFYING" | "SWITCHING" | "COMPLETED";
 
 export const MIGRATION_PIPELINE: readonly MigrationStage[] = [
   "PLANNED",
@@ -230,7 +227,7 @@ export interface MigrationState {
 
 export function advanceMigration(
   state: MigrationState,
-  now: string = new Date().toISOString(),
+  now: string = timeAuthority.now().at,
 ): MigrationState {
   const currentIndex = MIGRATION_PIPELINE.indexOf(state.stage);
   const nextStage = MIGRATION_PIPELINE[currentIndex + 1];

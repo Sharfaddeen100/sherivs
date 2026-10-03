@@ -32,6 +32,10 @@
  */
 
 import type { TenantId } from "./tenant-core";
+import { SystemClock, TimeAuthority } from "./kernel/time-authority";
+
+/** J-023: time enters only via the kernel time-authority — no direct wall-clock sampling. */
+const timeAuthority = new TimeAuthority(new SystemClock());
 
 /* ─────────────────────────────────────────────────────────────
  * Branded IDs
@@ -102,7 +106,15 @@ export const DEVELOPER_TYPES: readonly DeveloperType[] = [
  * Developer organizations (Sections 7, 8)
  * ────────────────────────────────────────────────────────────*/
 
-export type DeveloperOrgRole = "owner" | "administrator" | "developer" | "reviewer" | "security_engineer" | "release_manager" | "support_engineer" | "billing_administrator";
+export type DeveloperOrgRole =
+  | "owner"
+  | "administrator"
+  | "developer"
+  | "reviewer"
+  | "security_engineer"
+  | "release_manager"
+  | "support_engineer"
+  | "billing_administrator";
 
 export const DEVELOPER_ORG_ROLES: readonly DeveloperOrgRole[] = [
   "owner",
@@ -147,8 +159,8 @@ export function createDeveloperOrganization(input: {
       tenantId: input.tenantId,
       name: input.name.trim(),
       members: input.members,
-      createdAt: input.now ?? new Date().toISOString(),
-      updatedAt: input.now ?? new Date().toISOString(),
+      createdAt: input.now ?? timeAuthority.now().at,
+      updatedAt: input.now ?? timeAuthority.now().at,
     },
   };
 }
@@ -201,7 +213,11 @@ export const DEVELOPER_PROJECT_TYPES: readonly DeveloperProjectType[] = [
 
 export type ProjectVisibility = "private" | "org_internal" | "public";
 
-export const PROJECT_VISIBILITIES: readonly ProjectVisibility[] = ["private", "org_internal", "public"] as const;
+export const PROJECT_VISIBILITIES: readonly ProjectVisibility[] = [
+  "private",
+  "org_internal",
+  "public",
+] as const;
 
 export interface DeveloperProject {
   id: DeveloperProjectId;
@@ -245,8 +261,8 @@ export function createDeveloperProject(input: {
       visibility: input.visibility ?? "private",
       targetPhase: input.targetPhase ?? null,
       manifestRef: null,
-      createdAt: input.now ?? new Date().toISOString(),
-      updatedAt: input.now ?? new Date().toISOString(),
+      createdAt: input.now ?? timeAuthority.now().at,
+      updatedAt: input.now ?? timeAuthority.now().at,
     },
   };
 }
@@ -316,9 +332,19 @@ export function createProjectManifest(input: {
   };
 }
 
-export type SdkLanguage = "typescript" | "javascript" | "python" | "java" | "kotlin" | "swift" | "go" | "rust";
+export type SdkLanguage =
+  "typescript" | "javascript" | "python" | "java" | "kotlin" | "swift" | "go" | "rust";
 
-export const SDK_LANGUAGES: readonly SdkLanguage[] = ["typescript", "javascript", "python", "java", "kotlin", "swift", "go", "rust"] as const;
+export const SDK_LANGUAGES: readonly SdkLanguage[] = [
+  "typescript",
+  "javascript",
+  "python",
+  "java",
+  "kotlin",
+  "swift",
+  "go",
+  "rust",
+] as const;
 
 export interface Sdk {
   id: SdkId;
@@ -344,7 +370,7 @@ export function registerSdk(input: {
     version: input.version,
     abstractions: input.abstractions ?? [],
     isActive: input.isActive ?? false,
-    createdAt: input.now ?? new Date().toISOString(),
+    createdAt: input.now ?? timeAuthority.now().at,
   };
 }
 
@@ -366,7 +392,13 @@ export interface ProductionAccessCheck {
  * role, explicit authorization, auditability, and risk controls.
  */
 export function isProductionAccessPermitted(input: ProductionAccessCheck): boolean {
-  return input.strongerAuthentication && input.appropriateRole && input.explicitAuthorization && input.auditable && input.riskControls;
+  return (
+    input.strongerAuthentication &&
+    input.appropriateRole &&
+    input.explicitAuthorization &&
+    input.auditable &&
+    input.riskControls
+  );
 }
 
 export interface BreakGlassDevAccess {
@@ -385,14 +417,16 @@ export function grantBreakGlassDevAccess(input: {
   durationMinutes: number;
   now?: string;
 }): { ok: true; access: BreakGlassDevAccess } | { ok: false; error: string } {
-  const now = input.now ?? new Date().toISOString();
+  const now = input.now ?? timeAuthority.now().at;
   if (!input.reason.trim()) {
     return { ok: false, error: "Break-glass development access requires a reason (Section CZ)" };
   }
   if (input.durationMinutes <= 0 || input.durationMinutes > 480) {
     return { ok: false, error: "Break-glass duration must be between 1 and 480 minutes" };
   }
-  const expiresAt = new Date(new Date(now).getTime() + input.durationMinutes * 60_000).toISOString();
+  const expiresAt = new Date(
+    new Date(now).getTime() + input.durationMinutes * 60_000,
+  ).toISOString();
   return {
     ok: true,
     access: {
@@ -405,5 +439,3 @@ export function grantBreakGlassDevAccess(input: {
     },
   };
 }
-
-

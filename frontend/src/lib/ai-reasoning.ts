@@ -24,6 +24,10 @@
  */
 
 import type { AiModelId } from "./ai-core";
+import { SystemClock, TimeAuthority } from "./kernel/time-authority";
+
+/** J-023: time enters only via the kernel time-authority — no direct wall-clock sampling. */
+const timeAuthority = new TimeAuthority(new SystemClock());
 
 /* ─────────────────────────────────────────────────────────────
  * Branded IDs
@@ -51,7 +55,8 @@ export function explanationId(raw: string): ExplanationId {
  * Reasoning levels (Section 40)
  * ────────────────────────────────────────────────────────────*/
 
-export type ReasoningLevel = "simple" | "structured" | "multi_step" | "domain_specialist" | "cross_domain";
+export type ReasoningLevel =
+  "simple" | "structured" | "multi_step" | "domain_specialist" | "cross_domain";
 
 export const REASONING_LEVELS: readonly ReasoningLevel[] = [
   "simple",
@@ -121,7 +126,7 @@ export function createReasoningTrace(input: {
     decision: input.decision,
     outputRef: input.outputRef,
     confidence: input.confidence,
-    createdAt: input.now ?? new Date().toISOString(),
+    createdAt: input.now ?? timeAuthority.now().at,
   };
 }
 
@@ -174,7 +179,7 @@ export function estimateUncertainty(input: {
   sourceReliability: number;
 }): UncertaintyEstimate {
   const confidence = Math.max(0, Math.min(1, input.confidence));
-  const uncertainty = 1 - (confidence * input.evidenceQuality * input.sourceReliability);
+  const uncertainty = 1 - confidence * input.evidenceQuality * input.sourceReliability;
   return {
     confidence,
     uncertainty,
@@ -187,9 +192,14 @@ export function estimateUncertainty(input: {
  * Calibration (Section 44): measure whether stated confidence corresponds to
  * actual correctness. Returns a calibration error — the lower the better.
  */
-export function calibrationError(samples: Array<{ statedConfidence: number; correct: boolean }>): number {
+export function calibrationError(
+  samples: Array<{ statedConfidence: number; correct: boolean }>,
+): number {
   if (samples.length === 0) return 0;
-  const total = samples.reduce((sum, s) => sum + Math.abs(s.statedConfidence - (s.correct ? 1 : 0)), 0);
+  const total = samples.reduce(
+    (sum, s) => sum + Math.abs(s.statedConfidence - (s.correct ? 1 : 0)),
+    0,
+  );
   return total / samples.length;
 }
 
@@ -197,7 +207,12 @@ export function calibrationError(samples: Array<{ statedConfidence: number; corr
  * Claim verification (Section 46) + hallucination detection (45)
  * ────────────────────────────────────────────────────────────*/
 
-export type VerificationMethod = "retrieval_verification" | "source_comparison" | "structured_validation" | "domain_rules" | "secondary_model";
+export type VerificationMethod =
+  | "retrieval_verification"
+  | "source_comparison"
+  | "structured_validation"
+  | "domain_rules"
+  | "secondary_model";
 
 export const VERIFICATION_METHODS: readonly VerificationMethod[] = [
   "retrieval_verification",
@@ -244,7 +259,7 @@ export function verifyClaim(input: {
       id: verificationId(crypto.randomUUID()),
       method: input.method,
       supported,
-      checkedAt: input.now ?? new Date().toISOString(),
+      checkedAt: input.now ?? timeAuthority.now().at,
     },
     confidence: supported ? Math.min(1, input.verificationScore) : input.verificationScore * 0.5,
   };
@@ -255,10 +270,10 @@ export function verifyClaim(input: {
  * hallucination when it cites no retrievable evidence OR cites evidence that
  * does not support the claim.
  */
-export function detectHallucination(input: {
-  claim: Claim;
-  retrievableEvidenceRefs: string[];
-}): { suspected: boolean; reason: string | null } {
+export function detectHallucination(input: { claim: Claim; retrievableEvidenceRefs: string[] }): {
+  suspected: boolean;
+  reason: string | null;
+} {
   if (input.claim.evidenceRefs.length === 0) {
     return { suspected: true, reason: "No evidence cited (unsupported generation)" };
   }
@@ -324,7 +339,16 @@ export function multiModelVerify(
  * Specialist model routing (Section 51)
  * ────────────────────────────────────────────────────────────*/
 
-export type SpecialistDomain = "language" | "mathematics" | "vision" | "speech" | "documents" | "education" | "forecasting" | "code" | "reasoning";
+export type SpecialistDomain =
+  | "language"
+  | "mathematics"
+  | "vision"
+  | "speech"
+  | "documents"
+  | "education"
+  | "forecasting"
+  | "code"
+  | "reasoning";
 
 export const SPECIALIST_DOMAINS: readonly SpecialistDomain[] = [
   "language",
@@ -337,5 +361,3 @@ export const SPECIALIST_DOMAINS: readonly SpecialistDomain[] = [
   "code",
   "reasoning",
 ] as const;
-
-

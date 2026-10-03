@@ -29,6 +29,10 @@
  */
 
 import type { TenantId } from "./tenant-core";
+import { SystemClock, TimeAuthority } from "./kernel/time-authority";
+
+/** J-023: time enters only via the kernel time-authority — no direct wall-clock sampling. */
+const timeAuthority = new TimeAuthority(new SystemClock());
 
 /* ─────────────────────────────────────────────────────────────
  * Branded IDs
@@ -89,9 +93,22 @@ export const INTELLIGENCE_CAPABILITIES: readonly IntelligenceCapability[] = [
 
 export type AiRiskLevel = "low" | "medium" | "high" | "critical";
 
-export const AI_RISK_LEVELS: readonly AiRiskLevel[] = ["low", "medium", "high", "critical"] as const;
+export const AI_RISK_LEVELS: readonly AiRiskLevel[] = [
+  "low",
+  "medium",
+  "high",
+  "critical",
+] as const;
 
-export type AiOutputType = "text" | "structured" | "classification" | "extraction" | "embedding" | "image" | "audio" | "video";
+export type AiOutputType =
+  | "text"
+  | "structured"
+  | "classification"
+  | "extraction"
+  | "embedding"
+  | "image"
+  | "audio"
+  | "video";
 
 export const AI_OUTPUT_TYPES: readonly AiOutputType[] = [
   "text",
@@ -155,7 +172,10 @@ export interface CreateAiRequestInput {
  * an explicit tenant, requester, role, permissions, purpose, and output type —
  * the same resolution a backend API boundary requires.
  */
-export function createAiRequest(input: CreateAiRequestInput, now: string = new Date().toISOString()): AiRequestModel {
+export function createAiRequest(
+  input: CreateAiRequestInput,
+  now: string = timeAuthority.now().at,
+): AiRequestModel {
   if (!input.tenantId) {
     throw new Error("AI request requires an explicit tenant context (Section 11)");
   }
@@ -199,7 +219,10 @@ export function aiContextGrantsPermissions(): boolean {
  * Section 10: the AI layer consumes security decisions and cannot bypass them.
  * This contract enforces the tenant boundary explicitly (Section 11).
  */
-export function isTenantBoundarySatisfied(request: AiRequestModel, allowedTenantId: TenantId): boolean {
+export function isTenantBoundarySatisfied(
+  request: AiRequestModel,
+  allowedTenantId: TenantId,
+): boolean {
   return request.tenantId === allowedTenantId;
 }
 
@@ -218,7 +241,8 @@ export const AI_MODEL_MODALITIES: readonly AiModelModality[] = [
   "embedding",
 ] as const;
 
-export type ModelDeploymentLocation = "centralized_cloud" | "regional" | "private_cloud" | "on_premises" | "edge" | "byoc";
+export type ModelDeploymentLocation =
+  "centralized_cloud" | "regional" | "private_cloud" | "on_premises" | "edge" | "byoc";
 
 export const MODEL_DEPLOYMENT_LOCATIONS: readonly ModelDeploymentLocation[] = [
   "centralized_cloud",
@@ -279,10 +303,12 @@ export interface RegisterModelInput {
 }
 
 export type RegisterModelResult =
-  | { ok: true; model: AiModelDefinition }
-  | { ok: false; error: string };
+  { ok: true; model: AiModelDefinition } | { ok: false; error: string };
 
-export function registerModel(input: RegisterModelInput, now: string = new Date().toISOString()): RegisterModelResult {
+export function registerModel(
+  input: RegisterModelInput,
+  now: string = timeAuthority.now().at,
+): RegisterModelResult {
   if (!input.provider.trim() || !input.name.trim()) {
     return { ok: false, error: "Model provider and name are required" };
   }
@@ -346,7 +372,8 @@ export function routeModel(
   const eligible = candidates.filter((m) => {
     if (!m.capabilities.includes(criteria.task)) return false;
     if (criteria.modality && !m.modalities.includes(criteria.modality)) return false;
-    if (criteria.maxLatencyRank !== undefined && m.latencyRank > criteria.maxLatencyRank) return false;
+    if (criteria.maxLatencyRank !== undefined && m.latencyRank > criteria.maxLatencyRank)
+      return false;
     if (criteria.maxCostRank !== undefined && m.costRank > criteria.maxCostRank) return false;
     if (criteria.requiresNoRetention && m.retainsInputs) return false;
     if (criteria.riskLevel === "high" || criteria.riskLevel === "critical") {
@@ -391,7 +418,9 @@ export function escalateModelCascade(
 ): AiModelDefinition | null {
   if (!evaluationFailed) return currentModel;
   const larger = candidates
-    .filter((m) => m.contextWindowTokens > currentModel.contextWindowTokens && m.approvedForProduction)
+    .filter(
+      (m) => m.contextWindowTokens > currentModel.contextWindowTokens && m.approvedForProduction,
+    )
     .sort((a, b) => a.contextWindowTokens - b.contextWindowTokens);
   return larger[0] ?? null;
 }
@@ -440,7 +469,7 @@ export function evaluateModelHealth(input: {
     hallucinationRate: input.hallucinationRate,
     safetyIncidentCount: input.safetyIncidentCount,
     healthy,
-    lastCheckedAt: input.now ?? new Date().toISOString(),
+    lastCheckedAt: input.now ?? timeAuthority.now().at,
   };
 }
 
@@ -459,6 +488,3 @@ export interface InferenceGatewayResult {
   startedAt: string;
   completedAt: string;
 }
-
-
-

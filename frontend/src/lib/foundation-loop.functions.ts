@@ -10,24 +10,31 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { asKernelAdmin, type KernelAdminClient } from "@/lib/kernel-admin-client";
+import { tokenMsRemaining } from "@/lib/auth-helpers";
 import { requireSchoolAdminScope } from "@/lib/security-role-gate";
 import {
   planFoundationLoop,
   type FoundationLoopPlan,
   type FoundationVerificationRow,
 } from "@/lib/control-plane/foundation-loop";
+import { SystemClock, TimeAuthority } from "./kernel/time-authority";
 
-const requestSchema = z.object({
-  realityRef: z.string().uuid(),
-  missionId: z.string().trim().min(1).max(160),
-  version: z.string().trim().min(1).max(32),
-  purpose: z.string().trim().min(1).max(200),
-  authorityRef: z.string().trim().min(1).max(200),
-  contextRef: z.string().trim().min(1).max(200),
-  ownerRef: z.string().trim().min(1).max(200),
-  action: z.literal("record-observation"),
-  idempotencyKey: z.string().trim().min(8).max(200),
-}).strict();
+/** J-023: time enters only via the kernel time-authority — no direct wall-clock sampling. */
+const timeAuthority = new TimeAuthority(new SystemClock());
+
+const requestSchema = z
+  .object({
+    realityRef: z.string().uuid(),
+    missionId: z.string().trim().min(1).max(160),
+    version: z.string().trim().min(1).max(32),
+    purpose: z.string().trim().min(1).max(200),
+    authorityRef: z.string().trim().min(1).max(200),
+    contextRef: z.string().trim().min(1).max(200),
+    ownerRef: z.string().trim().min(1).max(200),
+    action: z.literal("record-observation"),
+    idempotencyKey: z.string().trim().min(8).max(200),
+  })
+  .strict();
 
 export type FoundationLoopResult = {
   ok: true;
@@ -69,10 +76,9 @@ export async function persistFoundationPlan(
   admin: KernelAdminClient,
 ): Promise<FoundationLoopResult> {
   const { execution } = plan;
-  const { error: missionError } = await admin.from("cg_mission_intent").upsert(
-    plan.mission,
-    { onConflict: "tenant_id,mission_id,version" },
-  );
+  const { error: missionError } = await admin
+    .from("cg_mission_intent")
+    .upsert(plan.mission, { onConflict: "tenant_id,mission_id,version" });
   if (missionError) throw new Error(missionError.message);
 
   const { error: executionError } = await admin.from("cg_execution_record").insert(execution);
@@ -103,7 +109,9 @@ export async function persistFoundationPlan(
   if (historyError) throw new Error(historyError.message);
 
   if (plan.evidence) {
-    const { error: evidenceError } = await admin.from("cg_foundation_evidence").insert(plan.evidence);
+    const { error: evidenceError } = await admin
+      .from("cg_foundation_evidence")
+      .insert(plan.evidence);
     if (evidenceError) throw new Error(evidenceError.message);
   }
   if (plan.verification) {
@@ -149,6 +157,8 @@ export async function auditFoundationLoop(input: {
 export async function executeRecordFoundationLoop(input: {
   supabase: Parameters<typeof requireSchoolAdminScope>[0];
   userId: string;
+  /** Authenticated request claims — attests session validity at the gate. */
+  claims?: { exp: number };
   data: {
     realityRef: string;
     missionId: string;
@@ -162,9 +172,17 @@ export async function executeRecordFoundationLoop(input: {
   };
 }): Promise<FoundationLoopResult> {
   const { data } = input;
-  const tenantId = await requireSchoolAdminScope(input.supabase);
+  // Lifecycle threading (DEFECT-1 follow-through): the JWT carries no
+  // lifecycle claim, so `lifecycle: null` opts this call into the lifecycle
+  // contract while flagging the identity lifecycle unverified (never silent);
+  // session validity is attested from the verified token's exp claim when the
+  // caller supplies claims, and left unverified (flagged) otherwise.
+  const tenantId = await requireSchoolAdminScope(input.supabase, {
+    lifecycle: null,
+    sessionValid: input.claims ? tokenMsRemaining(input.claims.exp) > 0 : undefined,
+  });
   const admin = await loadAdmin();
-  const now = new Date().toISOString();
+  const now = timeAuthority.now().at;
 
   const { data: entity, error: entityError } = await admin
     .from("cg_entity")
@@ -178,9 +196,7 @@ export async function executeRecordFoundationLoop(input: {
     tenantId,
     actorId: input.userId,
     now,
-    reality: entity
-      ? { id: String(entity.id), tenantId: entity.tenant_id ?? null }
-      : null,
+    reality: entity ? { id: String(entity.id), tenantId: entity.tenant_id ?? null } : null,
     requestedRealityRef: data.realityRef,
     request: {
       executionId,
@@ -215,6 +231,7 @@ export const recordFoundationLoop = createServerFn({ method: "POST" })
     executeRecordFoundationLoop({
       supabase: context.supabase,
       userId: context.userId,
+      claims: context.claims,
       data,
     }),
   );
@@ -231,11 +248,17 @@ export type FoundationRollbackResult = {
 export async function rollbackFoundationExecution(input: {
   supabase: Parameters<typeof requireSchoolAdminScope>[0];
   userId: string;
+  /** Authenticated request claims — attests session validity at the gate. */
+  claims?: { exp: number };
   executionId: string;
 }): Promise<FoundationRollbackResult> {
-  const tenantId = await requireSchoolAdminScope(input.supabase);
+  // Lifecycle threading: see executeRecordFoundationLoop for the signal semantics.
+  const tenantId = await requireSchoolAdminScope(input.supabase, {
+    lifecycle: null,
+    sessionValid: input.claims ? tokenMsRemaining(input.claims.exp) > 0 : undefined,
+  });
   const admin = await loadAdmin();
-  const now = new Date().toISOString();
+  const now = timeAuthority.now().at;
 
   const { data: record, error: recordError } = await admin
     .from("cg_execution_record")

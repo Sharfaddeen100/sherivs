@@ -32,6 +32,10 @@
  */
 
 import type { TenantId } from "./tenant-core";
+import { SystemClock, TimeAuthority } from "./kernel/time-authority";
+
+/** J-023: time enters only via the kernel time-authority — no direct wall-clock sampling. */
+const timeAuthority = new TimeAuthority(new SystemClock());
 
 /* ─────────────────────────────────────────────────────────────
  * Branded IDs
@@ -59,7 +63,15 @@ export function reconciliationRunId(raw: string): ReconciliationRunId {
  * Field mapping (Sections U) + transformation (V)
  * ────────────────────────────────────────────────────────────*/
 
-export type MappingKind = "direct" | "rename" | "type_conversion" | "conditional" | "calculated" | "normalization" | "enrichment" | "filtering";
+export type MappingKind =
+  | "direct"
+  | "rename"
+  | "type_conversion"
+  | "conditional"
+  | "calculated"
+  | "normalization"
+  | "enrichment"
+  | "filtering";
 
 export const MAPPING_KINDS: readonly MappingKind[] = [
   "direct",
@@ -112,7 +124,10 @@ export function createIntegrationMapping(input: {
 }
 
 /** Transform an external payload into canonical shape by applying mappings. */
-export function applyMapping(payload: Record<string, unknown>, mappings: IntegrationMapping[]): Record<string, unknown> {
+export function applyMapping(
+  payload: Record<string, unknown>,
+  mappings: IntegrationMapping[],
+): Record<string, unknown> {
   const out: Record<string, unknown> = {};
   for (const m of mappings) {
     if (m.kind === "filtering") continue;
@@ -141,12 +156,20 @@ export interface InboundValidationInput {
   integrityValid: boolean;
 }
 
-export type ValidationOutcome = "accepted" | "rejected" | "quarantined" | "dead_lettered" | "manual_review";
+export type ValidationOutcome =
+  "accepted" | "rejected" | "quarantined" | "dead_lettered" | "manual_review";
 
-export function validateInboundPayload(input: InboundValidationInput): { outcome: ValidationOutcome; reasons: string[] } {
+export function validateInboundPayload(input: InboundValidationInput): {
+  outcome: ValidationOutcome;
+  reasons: string[];
+} {
   const reasons: string[] = [];
   for (const field of input.requiredFields) {
-    if (input.payload[field] === undefined || input.payload[field] === null || input.payload[field] === "") {
+    if (
+      input.payload[field] === undefined ||
+      input.payload[field] === null ||
+      input.payload[field] === ""
+    ) {
       reasons.push(`Missing required field: ${field}`);
     }
   }
@@ -155,7 +178,11 @@ export function validateInboundPayload(input: InboundValidationInput): { outcome
   if (!input.integrityValid) reasons.push("Payload integrity check failed");
   if (reasons.length === 0) return { outcome: "accepted", reasons };
   // Invalid payloads must not silently enter production (Section X).
-  const outcome: ValidationOutcome = reasons.includes("Payload integrity check failed") ? "dead_lettered" : reasons.includes("Missing tenant context") ? "manual_review" : "quarantined";
+  const outcome: ValidationOutcome = reasons.includes("Payload integrity check failed")
+    ? "dead_lettered"
+    : reasons.includes("Missing tenant context")
+      ? "manual_review"
+      : "quarantined";
   return { outcome, reasons };
 }
 
@@ -177,9 +204,16 @@ export function markEventProcessed(state: IdempotencyState, key: string): Idempo
   return { ...state, processedKeys: [...state.processedKeys, key] };
 }
 
-export type DeduplicationKey = "event_id" | "external_id" | "idempotency_key" | "content_fingerprint" | "reconciliation_key";
+export type DeduplicationKey =
+  "event_id" | "external_id" | "idempotency_key" | "content_fingerprint" | "reconciliation_key";
 
-export const DEDUPLICATION_KEYS: readonly DeduplicationKey[] = ["event_id", "external_id", "idempotency_key", "content_fingerprint", "reconciliation_key"] as const;
+export const DEDUPLICATION_KEYS: readonly DeduplicationKey[] = [
+  "event_id",
+  "external_id",
+  "idempotency_key",
+  "content_fingerprint",
+  "reconciliation_key",
+] as const;
 
 /* ─────────────────────────────────────────────────────────────
  * Dead-letter system (AF) + retry engine (AG) + rate limits (AI)
@@ -216,13 +250,20 @@ export function recordDeadLetter(input: {
     attempts: input.attempts,
     error: input.error,
     correlationId: input.correlationId,
-    occurredAt: input.now ?? new Date().toISOString(),
+    occurredAt: input.now ?? timeAuthority.now().at,
   };
 }
 
-export type RetryClass = "transient" | "rate_limited" | "authorization" | "validation" | "permanent";
+export type RetryClass =
+  "transient" | "rate_limited" | "authorization" | "validation" | "permanent";
 
-export const RETRY_CLASSES: readonly RetryClass[] = ["transient", "rate_limited", "authorization", "validation", "permanent"] as const;
+export const RETRY_CLASSES: readonly RetryClass[] = [
+  "transient",
+  "rate_limited",
+  "authorization",
+  "validation",
+  "permanent",
+] as const;
 
 export interface RetryPolicy {
   maxAttempts: number;
@@ -235,14 +276,27 @@ export interface RetryPolicy {
  * Retry engine (AG): transient/rate-limited failures are retryable with
  * exponential backoff + jitter; authorization/validation/permanent failures are not.
  */
-export function shouldRetry(input: { retryClass: RetryClass; attempt: number; policy: RetryPolicy }): boolean {
-  if (input.retryClass === "permanent" || input.retryClass === "authorization" || input.retryClass === "validation") return false;
+export function shouldRetry(input: {
+  retryClass: RetryClass;
+  attempt: number;
+  policy: RetryPolicy;
+}): boolean {
+  if (
+    input.retryClass === "permanent" ||
+    input.retryClass === "authorization" ||
+    input.retryClass === "validation"
+  )
+    return false;
   if (input.attempt >= input.policy.maxAttempts) return false;
   return true;
 }
 
 /** Exponential backoff with jitter (AG). */
-export function computeBackoffDelay(input: { attempt: number; policy: RetryPolicy; now?: number }): number {
+export function computeBackoffDelay(input: {
+  attempt: number;
+  policy: RetryPolicy;
+  now?: number;
+}): number {
   const base = input.policy.baseDelayMs * Math.pow(input.policy.backoffFactor, input.attempt - 1);
   const jitter = Math.random() * input.policy.jitterMs;
   return Math.round(base + jitter);
@@ -252,7 +306,11 @@ export function computeBackoffDelay(input: { attempt: number; policy: RetryPolic
  * Rate limit management (AI): connectors must respect provider rate limits
  * with throttling, backoff, and concurrency limits.
  */
-export function isWithinProviderRateLimit(requestsThisMinute: number, connectorRateLimit: number, concurrencyLimit: number): boolean {
+export function isWithinProviderRateLimit(
+  requestsThisMinute: number,
+  connectorRateLimit: number,
+  concurrencyLimit: number,
+): boolean {
   return requestsThisMinute <= connectorRateLimit && concurrencyLimit > 0;
 }
 
@@ -266,7 +324,13 @@ export const SYNC_MODES: readonly SyncMode[] = ["incremental", "full", "bidirect
 
 export type SyncState = "idle" | "running" | "completed" | "failed" | "paused";
 
-export const SYNC_STATES: readonly SyncState[] = ["idle", "running", "completed", "failed", "paused"] as const;
+export const SYNC_STATES: readonly SyncState[] = [
+  "idle",
+  "running",
+  "completed",
+  "failed",
+  "paused",
+] as const;
 
 export interface SyncJob {
   id: SyncJobId;
@@ -312,9 +376,16 @@ export function resolveFieldAuthority(input: {
   return { owner: input.coregridAuthoritative ? "coregrid" : "external", unambiguous: true };
 }
 
-export type ConflictPolicy = "coregrid_wins" | "external_wins" | "latest_timestamp" | "source_priority" | "manual_resolution";
+export type ConflictPolicy =
+  "coregrid_wins" | "external_wins" | "latest_timestamp" | "source_priority" | "manual_resolution";
 
-export const CONFLICT_POLICIES: readonly ConflictPolicy[] = ["coregrid_wins", "external_wins", "latest_timestamp", "source_priority", "manual_resolution"] as const;
+export const CONFLICT_POLICIES: readonly ConflictPolicy[] = [
+  "coregrid_wins",
+  "external_wins",
+  "latest_timestamp",
+  "source_priority",
+  "manual_resolution",
+] as const;
 
 export function resolveConflict(input: {
   policy: ConflictPolicy;
@@ -376,7 +447,9 @@ export function reconcile(input: {
   const missingInCoregrid = input.externalRefs.filter((r) => !coreSet.has(r));
   const missingInExternal = input.coregridRefs.filter((r) => !externalSet.has(r));
   const duplicateCore = input.coregridRefs.filter((r, i) => input.coregridRefs.indexOf(r) !== i);
-  const duplicateExternal = input.externalRefs.filter((r, i) => input.externalRefs.indexOf(r) !== i);
+  const duplicateExternal = input.externalRefs.filter(
+    (r, i) => input.externalRefs.indexOf(r) !== i,
+  );
   return {
     id: input.id,
     integrationRef: input.integrationRef,
@@ -388,14 +461,17 @@ export function reconcile(input: {
     unauthorizedChanges: [],
     lastSuccessfulSyncAt: input.lastSuccessfulSyncAt ?? null,
     failureRate: input.failureRate ?? 0,
-    completedAt: input.now ?? new Date().toISOString(),
+    completedAt: input.now ?? timeAuthority.now().at,
   };
 }
 
 /** Section AQ: a reconciliation with any unresolved gap is flagged for review. */
 export function hasReconciliationGaps(result: ReconciliationResult): boolean {
-  return result.missingInCoregrid.length > 0 || result.missingInExternal.length > 0 || result.duplicates.length > 0 || result.mismatches.length > 0 || result.unauthorizedChanges.length > 0;
+  return (
+    result.missingInCoregrid.length > 0 ||
+    result.missingInExternal.length > 0 ||
+    result.duplicates.length > 0 ||
+    result.mismatches.length > 0 ||
+    result.unauthorizedChanges.length > 0
+  );
 }
-
-
-
