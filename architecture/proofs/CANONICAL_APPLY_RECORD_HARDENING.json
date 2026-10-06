@@ -5,8 +5,8 @@
   "projectRef": "nwrflbpbhyiqdptmlccm",
   "transport": "supabase-management-api-database-query",
   "exclusiveAccess": "serialized — one canonical operation at a time (campaign canonical lock held by TEAM 3)",
-  "executedAt": "2026-10-03T11:58:41.756Z",
-  "completedAt": "2026-10-03T11:58:53.066Z",
+  "executedAt": "2026-10-03T21:19:31.162Z",
+  "completedAt": "2026-10-03T21:19:43.462Z",
   "declaredVsApplied": [
     {
       "file": "20261002000005_coregrid_v1_reconciliation.sql",
@@ -110,12 +110,12 @@
     {
       "file": "20261002000014_coregrid_v2_transport_buses_rls.sql",
       "mission": "H2-03 — transport_buses RLS normalization to the zero-policy deny-by-default posture (drops every legacy permissive policy; revokes client-role privileges; service_role parity)",
-      "state": "ALREADY_APPLIED",
+      "state": "SUPERSEDED",
       "checksum": "a1e3bcc3b0f1436de6c49d4ccd601cd894fdd10bdae5f25d692b02f37be83517",
       "rollbackChecksum": "cd8ccc673c2f525ae0dfce7100f9b35e68870e7485b9f1544dbfe10721c84f14",
-      "declaredObjectCount": 1,
+      "declaredObjectCount": 0,
       "elapsedMs": null,
-      "evidence": "all 1 declared objects present (pre-flight catalog probe)",
+      "evidence": "declared signature superseded by 20261003000041_coregrid_transport_bus_reads.sql — live posture owned there; never re-executed",
       "error": null
     },
     {
@@ -183,6 +183,50 @@
       "elapsedMs": null,
       "evidence": "all 1 declared objects present (pre-flight catalog probe)",
       "error": null
+    },
+    {
+      "file": "20261003000030_coregrid_hermes_observation_substrate.sql",
+      "mission": "R-wave R4 — Hermes observation substrate: cg_hermes_observation append-only intelligence ledger with full §12 provenance (source/event_ref/subject_ref, observed_at vs recorded_at, created_by, generated_by_ai), §9 canonical-truth CHECK (AI-generated implies unverified), exactly-once event consumption via partial unique (tenant_id, event_ref), append-only trigger, deny-by-default: RLS enabled, zero policies, anon/authenticated revoked, service_role granted",
+      "state": "ALREADY_APPLIED",
+      "checksum": "de1578478b5d1bd6312d720d91d78db73003a0edc229d5fdca594d0c62033e38",
+      "rollbackChecksum": "506fd905aa2b608387ff44304346c65b0d7e807e3952ea42035f9a0586a935c9",
+      "declaredObjectCount": 8,
+      "elapsedMs": null,
+      "evidence": "all 8 declared objects present (pre-flight catalog probe)",
+      "error": null
+    },
+    {
+      "file": "20261003000031_coregrid_delivery_evidence.sql",
+      "mission": "R-wave R6 — delivery-evidence substrate: cg_delivery_evidence append-only attempt ledger over the email/voice channels (one row per outbound ATTEMPT including fail-closed BLOCKED_NO_CREDENTIAL — the block is evidence), redacted recipients, outcome-coherence CHECK (provider-confirmed id only on delivered), append-only trigger, deny-by-default: RLS enabled, zero policies, anon/authenticated revoked, service_role granted",
+      "state": "ALREADY_APPLIED",
+      "checksum": "24fc4eb2215fd08cfe2ae45febcf3614415d31603bae984e9931d56b2fe33e5b",
+      "rollbackChecksum": "e916d17868ff0a82f7ded256888504c819cbbb538a698d2cae50eb1a35648951",
+      "declaredObjectCount": 7,
+      "elapsedMs": null,
+      "evidence": "all 7 declared objects present (pre-flight catalog probe)",
+      "error": null
+    },
+    {
+      "file": "20261003000040_coregrid_school_media_bucket.sql",
+      "mission": "Post-R-wave T-C — storage provisioning: school-media bucket (PRIVATE — the admin gallery flow uploads authenticated and renders via 10-year createSignedUrl; envelope bounded to 8 MB + image mime types mirroring the client contract), idempotent INSERT ON CONFLICT DO NOTHING; grants NOTHING new — the five tenant-scoped school-media object policies are owned by applied migration 20260707223958",
+      "state": "APPLIED_AND_VERIFIED",
+      "checksum": "e2a97176d54a75feacc72c7ba5dd3770dae91ccfd56d61681966f0527176cce7",
+      "rollbackChecksum": "39655afd2b5eaa954f52ba24090e4bce366111f78039d5466321e7dfe0f5d2ef",
+      "declaredObjectCount": 0,
+      "elapsedMs": 791,
+      "evidence": null,
+      "error": null
+    },
+    {
+      "file": "20261003000041_coregrid_transport_bus_reads.sql",
+      "mission": "Post-R-wave T-D — transport fleet driver bus-read gate: FORCE RLS + GRANT SELECT to authenticated + exactly one least-privilege policy transport_buses_select_driver_assigned (FOR SELECT TO authenticated USING (driver_id = auth.uid()) — the actor is re-derived inside the predicate per §26; the J-005 tenant-equality shape is inexpressible on this legacy substrate — no neutral tenant reference, zero live neutral bindings — recorded in scripts/verification/rls-table-postures-transport.json). Supersedes the 20261002000014 interim zero-policy posture for the driver SELECT surface ONLY: writes for every client role and every other read family remain denied; anon/PUBLIC stay at zero privileges; service_role untouched",
+      "state": "APPLIED_AND_VERIFIED",
+      "checksum": "9a1e0194dcfebde50e031c63fd3701b9b6c7cbed712f9968c646bd83976ab3cf",
+      "rollbackChecksum": "b7264175c38b8df50116f7a41f6574b8a5679d0ba1c8f1c9a03fd4db975c8e26",
+      "declaredObjectCount": 1,
+      "elapsedMs": 1042,
+      "evidence": null,
+      "error": null
     }
   ],
   "rlsPosture": [
@@ -196,7 +240,7 @@
     },
     {
       "table": "cg_reconciliation_input",
-      "posture": "policy-backed (J-005/J-006 tenant-scoped)",
+      "posture": "policy-backed (declared policies)",
       "rlsEnabled": true,
       "rlsForced": true,
       "policies": [
@@ -231,7 +275,7 @@
     },
     {
       "table": "cg_event_route_subscription",
-      "posture": "policy-backed (J-005/J-006 tenant-scoped)",
+      "posture": "policy-backed (declared policies)",
       "rlsEnabled": true,
       "rlsForced": true,
       "policies": [
@@ -266,7 +310,7 @@
     },
     {
       "table": "cg_evidence_record",
-      "posture": "policy-backed (J-005/J-006 tenant-scoped)",
+      "posture": "policy-backed (declared policies)",
       "rlsEnabled": true,
       "rlsForced": true,
       "policies": [
@@ -301,7 +345,7 @@
     },
     {
       "table": "cg_usage_attribution_bucket",
-      "posture": "policy-backed (J-005/J-006 tenant-scoped)",
+      "posture": "policy-backed (declared policies)",
       "rlsEnabled": true,
       "rlsForced": true,
       "policies": [
@@ -360,7 +404,7 @@
     },
     {
       "table": "cg_file_object",
-      "posture": "policy-backed (J-005/J-006 tenant-scoped)",
+      "posture": "policy-backed (declared policies)",
       "rlsEnabled": true,
       "rlsForced": true,
       "policies": [
@@ -372,7 +416,7 @@
     },
     {
       "table": "cg_idempotency_record",
-      "posture": "policy-backed (J-005/J-006 tenant-scoped)",
+      "posture": "policy-backed (declared policies)",
       "rlsEnabled": true,
       "rlsForced": true,
       "policies": [
@@ -407,7 +451,15 @@
       "ok": true
     },
     {
-      "table": "transport_buses",
+      "table": "cg_hermes_observation",
+      "posture": "zero-policy (deny-by-default)",
+      "rlsEnabled": true,
+      "rlsForced": false,
+      "policies": 0,
+      "ok": true
+    },
+    {
+      "table": "cg_delivery_evidence",
       "posture": "zero-policy (deny-by-default)",
       "rlsEnabled": true,
       "rlsForced": false,
@@ -416,7 +468,7 @@
     },
     {
       "table": "cg_role_assignment",
-      "posture": "policy-backed (J-005/J-006 tenant-scoped)",
+      "posture": "policy-backed (declared policies)",
       "rlsEnabled": true,
       "rlsForced": true,
       "policies": [
@@ -428,7 +480,7 @@
     },
     {
       "table": "cg_role_grant",
-      "posture": "policy-backed (J-005/J-006 tenant-scoped)",
+      "posture": "policy-backed (declared policies)",
       "rlsEnabled": true,
       "rlsForced": true,
       "policies": [
@@ -440,13 +492,23 @@
     },
     {
       "table": "cg_org_membership",
-      "posture": "policy-backed (J-005/J-006 tenant-scoped)",
+      "posture": "policy-backed (declared policies)",
       "rlsEnabled": true,
       "rlsForced": true,
       "policies": [
         "org_membership_insert_tenant_admin",
         "org_membership_select_own_tenant",
         "org_membership_update_tenant_admin"
+      ],
+      "ok": true
+    },
+    {
+      "table": "transport_buses",
+      "posture": "policy-backed (declared policies)",
+      "rlsEnabled": true,
+      "rlsForced": true,
+      "policies": [
+        "transport_buses_select_driver_assigned"
       ],
       "ok": true
     }
@@ -500,7 +562,8 @@
     {
       "file": "20261002000014_coregrid_v2_transport_buses_rls.sql",
       "verified": true,
-      "missingCount": 0
+      "missingCount": 0,
+      "note": "superseded by 20261003000041_coregrid_transport_bus_reads.sql — live posture verified there"
     },
     {
       "file": "20261002000015_coregrid_v1_substrate_policies.sql",
@@ -529,6 +592,26 @@
     },
     {
       "file": "20261003000020_coregrid_is_super_admin_definer.sql",
+      "verified": true,
+      "missingCount": 0
+    },
+    {
+      "file": "20261003000030_coregrid_hermes_observation_substrate.sql",
+      "verified": true,
+      "missingCount": 0
+    },
+    {
+      "file": "20261003000031_coregrid_delivery_evidence.sql",
+      "verified": true,
+      "missingCount": 0
+    },
+    {
+      "file": "20261003000040_coregrid_school_media_bucket.sql",
+      "verified": true,
+      "missingCount": 0
+    },
+    {
+      "file": "20261003000041_coregrid_transport_bus_reads.sql",
       "verified": true,
       "missingCount": 0
     }
