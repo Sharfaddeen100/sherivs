@@ -34,6 +34,8 @@ import { hasNavDestinations, resolveWorkspaceNav } from "@/lib/workspace-engine/
 import { resolveMemberWorkspaceExperience } from "@/lib/experience/workspace-experience";
 import { scholarWorkspaceLabelForMember } from "@/lib/runtime/scholar-workforce-nav";
 import { getMyPrimaryWorkforcePosition } from "@/lib/runtime/scholar/workforce-positions.functions";
+import { identityFromAppState } from "@/lib/identity/context";
+import { switchActiveOrganization } from "@/lib/identity/memberships.functions";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 
@@ -63,9 +65,13 @@ function AuthenticatedRouteErrorComponent({ error, reset }: { error: Error; rese
 }
 
 function AuthenticatedLayout() {
-  const { profile, superAdmin, school, role, loading, signOut, authUser } = useApp();
+  const { profile, superAdmin, school, role, loading, signOut, authUser, refresh } = useApp();
   const navigate = useNavigate();
   const getMyPrimaryPosition = useServerFn(getMyPrimaryWorkforcePosition);
+  const switchActiveOrg = useServerFn(switchActiveOrganization);
+  // The resolved identity chain (§11): drives the switcher's cross-organization
+  // options and the active-context destination.
+  const identity = identityFromAppState({ superAdmin, profile, school });
 
   const myPosition = useQuery({
     queryKey: ["my-primary-position", profile?.id, role],
@@ -166,8 +172,39 @@ function AuthenticatedLayout() {
                   </div>
                 </Link>
                 <WorkspaceSwitcher
-                  options={school ? [{ id: school.id, label: school.name ?? "Workspace" }] : []}
+                  options={
+                    school
+                      ? [
+                          {
+                            id: school.id,
+                            label: school.name ?? "Workspace",
+                          },
+                          // Multi-membership members can switch to any other
+                          // organization they verifiably belong to (resolved
+                          // from identity, never client storage).
+                          ...identity.organizations
+                            .filter((org) => org.organizationId !== school.id)
+                            .map((org) => ({ id: org.organizationId, label: org.name })),
+                        ]
+                      : []
+                  }
                   currentId={school?.id ?? null}
+                  onSwitch={
+                    identity.organizations.length > 1
+                      ? async ({ workspaceId }) => {
+                          try {
+                            const result = await switchActiveOrg({
+                              data: { organizationId: workspaceId },
+                            });
+                            await refresh();
+                            await navigate({ to: result.destination, replace: true });
+                          } catch {
+                            // The switcher stays on the current context; the
+                            // failure is server-raised and audited there.
+                          }
+                        }
+                      : undefined
+                  }
                 />
               </div>
               <div className="flex items-center gap-2 text-sm sm:gap-3">

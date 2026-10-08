@@ -1,6 +1,9 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
 import { useApp } from "@/contexts/app-context";
 import { identityFromAppState } from "@/lib/identity/context";
+import { switchActiveOrganization } from "@/lib/identity/memberships.functions";
 import { scholarWorkspaceLabelForRole } from "@/lib/runtime/nav-registry";
 import { Initial } from "@/components/public/_shared";
 
@@ -8,9 +11,10 @@ import { Initial } from "@/components/public/_shared";
  * Organization selector (§11 — multi-organization members).
  *
  * Shown when a signed-in user resolves to more than one organization
- * membership: they choose which organization's workspace to enter. With the
- * current single-membership identity store this page currently lists one
- * organization; the destination law never sends single-membership users here.
+ * membership. Choosing an organization SWITCHES the active workspace context
+ * server-side (submit–resolve: the client submits an organization id; the
+ * server validates it against the caller's own membership set before
+ * persisting) and routes into the switched workspace.
  */
 export const Route = createFileRoute("/_authenticated/organizations")({
   ssr: false,
@@ -18,8 +22,11 @@ export const Route = createFileRoute("/_authenticated/organizations")({
 });
 
 function OrganizationSelectorPage() {
-  const { profile, superAdmin, school, loading } = useApp();
+  const { profile, superAdmin, school, loading, refresh } = useApp();
   const navigate = useNavigate();
+  const switchOrganization = useServerFn(switchActiveOrganization);
+  const [error, setError] = useState<string | null>(null);
+  const [busyId, setBusyId] = useState<string | null>(null);
 
   if (loading) {
     return (
@@ -39,6 +46,19 @@ function OrganizationSelectorPage() {
     return null;
   }
 
+  async function handleChoose(organizationId: string) {
+    setBusyId(organizationId);
+    setError(null);
+    try {
+      const result = await switchOrganization({ data: { organizationId } });
+      await refresh();
+      await navigate({ to: result.destination, replace: true });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not switch organization");
+      setBusyId(null);
+    }
+  }
+
   return (
     <div className="mx-auto w-full max-w-3xl px-4 py-12">
       <header className="text-center">
@@ -49,17 +69,28 @@ function OrganizationSelectorPage() {
           Your organizations
         </h1>
         <p className="mx-auto mt-3 max-w-md text-sm text-muted-foreground">
-          You&apos;re a member of more than one organization. Select the one you want to work in.
+          You&apos;re a member of more than one organization. Select the one you want to work in —
+          you can switch again at any time.
         </p>
       </header>
+
+      {error && (
+        <div
+          role="alert"
+          className="mx-auto mt-6 max-w-md rounded-md border border-destructive/40 bg-destructive/10 px-3 py-2 text-center text-sm text-destructive-foreground"
+        >
+          {error}
+        </div>
+      )}
 
       <ul className="mt-10 grid gap-4">
         {identity.organizations.map((org) => (
           <li key={org.organizationId}>
             <button
               type="button"
-              onClick={() => void navigate({ to: org.homePath, replace: true })}
-              className="uos-card flex w-full items-center gap-4 p-5 text-left transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+              disabled={busyId !== null}
+              onClick={() => void handleChoose(org.organizationId)}
+              className="uos-card flex w-full items-center gap-4 p-5 text-left transition-opacity hover:opacity-90 disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
             >
               <Initial name={org.name} size={44} className="rounded-xl" />
               <span className="min-w-0 flex-1">
@@ -71,7 +102,7 @@ function OrganizationSelectorPage() {
                 </span>
               </span>
               <span aria-hidden="true" className="shrink-0 text-sm font-semibold text-primary">
-                Open →
+                {busyId === org.organizationId ? "Switching…" : "Open →"}
               </span>
             </button>
           </li>
