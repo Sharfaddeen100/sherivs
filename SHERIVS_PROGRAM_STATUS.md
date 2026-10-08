@@ -5,7 +5,7 @@ Report date: 2026-10-08. Branch: `cursor/sherivs-refoundation-2507`. Every statu
 
 ## 1. Executive summary
 
-The experience boundary is locked and the customer-facing brand migration is complete on production (sherivs.com). Four independent verification methods (SSR HTML scan, route sweep, unit-test boundary pins, domain-neutrality gate) confirm zero CoreGrid leakage on public surfaces. The universal-vs-domain architecture correction is partially executed: identity routing, multi-membership, internal-control isolation, in-product organization onboarding, the organization reality read-model, Plane B custom-domain resolution, and the runtime workspace composition contract are DEPLOYED; the E2E critical-flow pyramid is AUTOMATED and passing live (8/8 critical flows + 5 Playwright tests). The remaining open engineering fronts are the institutional-intelligence core inside runtime workspaces (reality/memory/context primitives above the domain layer) and a second installed runtime — the latter frozen at the composition contract per the V1 envelope.
+The experience boundary is locked and the customer-facing brand migration is complete on production (sherivs.com). Four independent verification methods (SSR HTML scan, route sweep, unit-test boundary pins, domain-neutrality gate) confirm zero CoreGrid leakage on public surfaces. The universal-vs-domain architecture correction is substantially executed: identity routing, multi-membership, internal-control isolation, in-product organization onboarding (now reachable through the browser by the founder persona it serves), Plane B custom-domain resolution with NEUTRAL generated-site presentation for non-education classes, the runtime workspace composition contract, and organization reality rendered inside the runtime workspace are DEPLOYED; the E2E critical-flow pyramid is AUTOMATED and passing live (8/8 critical flows + 33 browser E2E tests including the full founder journey). The remaining open front is deepening reality/memory/context primitives inside runtime workspaces; a second installed runtime is frozen at the composition contract per the V1 envelope.
 
 ## 2. Category definition
 
@@ -29,7 +29,7 @@ Identity gateway chain (authenticate → memberships → runtime → workspace �
 
 ## 7. Organization architecture
 
-Organization = tenant primitive (`organization_memberships`, active-org switching via `switchActiveOrganization`). **In-product organization onboarding DEPLOYED (2026-10-08)**: the §21 founder pipeline — account → organization identity → runtime selection → profile → review → provisioning → activation — is live at `/onboarding` (server fn `create-organization.functions.ts` over the sole customer write path `create_organization_with_founder`, migration `20261008000060`, applied to the canonical project and behaviorally verified: unauthenticated refusal, linked-founder refusal, frozen-runtime refusal, full authenticated E2E probe with atomic-rollback fault injection; probe data deleted after verification). **Plane B organization public experience DEPLOYED (2026-10-08)**: host classification (`classifyTenantHost` — platform | subdomain | custom-domain) resolves tenant slug subdomains AND registered custom domains; `app-context` loads the organization by `schools.domain` when the visitor lands on a custom-domain host (no slug); homepage SSR loading branch honors both. Unit-pinned (`tests/unit/tenant-resolution.test.ts`, 14 tests). The generated-site engine beneath the resolution remains Scholar-shaped (universal read) — presentation refinement, not resolution, is the remaining Plane B work.
+Organization = tenant primitive (`organization_memberships`, active-org switching via `switchActiveOrganization`). **In-product organization onboarding DEPLOYED (2026-10-08)**: the §21 founder pipeline — account → organization identity → runtime selection → profile → review → provisioning → activation — is live at `/onboarding` (server fn `create-organization.functions.ts` over the sole customer write path `create_organization_with_founder`, migration `20261008000060`, applied to the canonical project and behaviorally verified: unauthenticated refusal, linked-founder refusal, frozen-runtime refusal, full authenticated E2E probe with atomic-rollback fault injection; probe data deleted after verification). **Founder-shell routing fix (2026-10-08, found by browser E2E)**: the authenticated shell previously blocked unlinked accounts (no profile row) from `/welcome` and `/onboarding` — the wizard was unreachable by the persona it serves; the founder surfaces now render (the server fn re-verifies all authorization), pinned in `organization-onboarding.test.ts` and exercised live by `tests/e2e/authenticated-shell.spec.ts`. **Plane B organization public experience DEPLOYED**: host classification (`classifyTenantHost` — platform | subdomain | custom-domain) resolves tenant slug subdomains AND registered custom domains; `app-context` loads the organization by `schools.domain` when the visitor lands on a custom-domain host (no slug); homepage SSR loading branch honors both. **Generated-site presentation refined (2026-10-08)**: unknown classes resolve to the NEUTRAL reality (never the school preset), and education sections are reality-scoped so a company/government/unknown class generates a genuinely organization-neutral site; pinned in `surface-renderers.test.ts`. The tenant-site composer (existing school sections) remains correct for the V1 tenant population (every provisioned org runs Scholar).
 
 ## 8. Runtime architecture
 
@@ -37,7 +37,7 @@ Domain-runtime boundary enforced: runtimes register via `domainRef` (`kernel/obj
 
 ## 9. Reality architecture
 
-Bitemporal kernel substrate exists (`coregrid_v1_kernel_bitemporal`, evidence lifecycle, event security migrations — VERIFIED at DB level per prior live checks). **Organization reality read-model IMPLEMENTED and DEPLOYED (Milestone 9 substrate increment, 2026-10-08)**: `lib/reality/organization-reality.ts` derives organization lifecycle state (onboarding/operational/inactive) from verified truth only (Constitution §9 — no inference); `organization-reality.functions.ts` reads it RLS-scoped (roster counts readable only for the caller's active context — null elsewhere, never fabricated); wired into the `/organizations` selector. The neutral cg_ org-model substrate remains deliberately-unapplied (COND-003); reality-model exposure inside runtime workspaces (education reality screens) is PARTIAL.
+Bitemporal kernel substrate exists (`coregrid_v1_kernel_bitemporal`, evidence lifecycle, event security migrations — VERIFIED at DB level per prior live checks). **Organization reality read-model IMPLEMENTED and DEPLOYED (Milestone 9 substrate increment, 2026-10-08)**: `lib/reality/organization-reality.ts` derives organization lifecycle state (onboarding/operational/inactive) from verified truth only (Constitution §9 — no inference); `organization-reality.functions.ts` reads it RLS-scoped (roster counts readable only for the caller's active context — null elsewhere, never fabricated); wired into the `/organizations` selector. **Reality exposure inside the runtime workspace DEPLOYED (2026-10-08)**: `OrganizationRealityCard` (`components/reality/organization-reality-card.tsx`) renders the universal read-model on the admin workspace home — lifecycle state, RLS-visible roster count (an invisible roster renders "Not visible in this context", never a number), workspace address, and the canonical-truth provenance statement; pinned in `organization-onboarding.test.ts`. The neutral cg_ org-model substrate remains deliberately-unapplied (COND-003); deeper reality/memory/context primitives inside runtime workspaces (education reality screens, institutional memory surfaces) remain PARTIAL.
 
 ## 10. Mission architecture
 
@@ -53,7 +53,7 @@ Internal control surface renamed Sherivs Control (command-centre heading + opera
 
 ## 13. AI Gateway
 
-Canonical gateway exists with model registry + routing tests (`tests/unit/ai-gateway-*.test.ts`, 8,955 tests passing include gateway adoption checks). VERIFIED as internal capability; model ≠ worker separation present in contracts.
+Canonical gateway exists with model registry + routing tests (`tests/unit/ai-gateway-*.test.ts`, 8,959 tests passing include gateway adoption checks). VERIFIED as internal capability; model ≠ worker separation present in contracts.
 
 ## 14. Security posture
 
@@ -65,7 +65,7 @@ Evidence lifecycle substrate at DB level (evidence migrations live). Engineering
 
 ## 16. Verification posture
 
-Unit: 8,955 pass (4 pre-existing mobile collection failures — `mobile/node_modules` absent; 5 skipped). Typecheck PASS. Secrets PASS. Domain-neutrality PASS. RLS behavioral matrix PASS (2026-10-08). **E2E critical-flow pyramid AUTOMATED and passing (2026-10-08)**: `npm run verify:critical-flows` (`scripts/verify-critical-flows.mjs --live`) — 8/8 live flows against the canonical substrate (homepage, signup, onboarding RPC, identity resolution, reality read, second-org refusal, cross-tenant isolation, self-cleaning cleanup); Playwright public-experience spec 5/5 (`tests/e2e/sherivs-public.spec.ts`). Browser E2E for the authenticated shell beyond these critical flows: PARTIAL.
+Unit: 8,959 pass (4 pre-existing mobile collection failures — `mobile/node_modules` absent; 5 skipped). Typecheck PASS. Secrets PASS. Domain-neutrality PASS. RLS behavioral matrix PASS (2026-10-08). **E2E critical-flow pyramid AUTOMATED and passing (2026-10-08)**: `npm run verify:critical-flows` (`scripts/verify-critical-flows.mjs --live`) — 8/8 live flows against the canonical substrate (homepage, signup, onboarding RPC, identity resolution, reality read, second-org refusal, cross-tenant isolation, self-cleaning cleanup); Playwright suite 30 passed / 3 environment-skips — including the public-experience spec (5), the authenticated-shell founder journey (live browser: sign-in → wizard → provisioning → shell with live reality card), the V1 vertical slice (stale pre-migration pins corrected), and the enterprise checklist.
 
 ## 17. Communication integrations
 
@@ -85,7 +85,7 @@ Mobile sources exist (`mobile/`) but are not installed/built in this environment
 
 ## 21. Testing
 
-Unit suite comprehensive (structural pins on boundaries: `sherivs-refoundation.test.ts`, `organization-onboarding.test.ts` — 26 pins on the onboarding state machine, slug contract, failure mapping, and reality derivation; `tenant-resolution.test.ts` — 14 pins on host classification and custom-domain resolution; `site-marketing.test.ts` landmark assertions cover the shared `SiteHeader`). RLS/security tests present; onboarding verified behaviorally against the live DB (E2E probe + fault injection). **Critical-flow automation DEPLOYED (2026-10-08)**: `verify:critical-flows` runs the 8-flow live pyramid (opt-in via `--live`; self-cleaning `zz-e2e-` probe data so runs leave no residue); Playwright spec covers the public homepage critical flow on mobile viewport. Remaining: authenticated-shell browser E2E (beyond the API-level critical flows) — next milestone.
+Unit suite comprehensive (structural pins on boundaries: `sherivs-refoundation.test.ts`, `organization-onboarding.test.ts` — onboarding state machine, slug contract, failure mapping, reality derivation, founder-shell routing, and workspace reality-card exposure; `tenant-resolution.test.ts` — 14 pins on host classification and custom-domain resolution; `site-marketing.test.ts` landmark assertions cover the shared `SiteHeader`; `surface-renderers.test.ts` — class-neutral generated-site pins). RLS/security tests present; onboarding verified behaviorally against the live DB (E2E probe + fault injection). **Critical-flow automation DEPLOYED (2026-10-08)**: `verify:critical-flows` runs the 8-flow live pyramid (opt-in via `--live`; self-cleaning `zz-e2e-` probe data so runs leave no residue — verified 0 leftovers); browser E2E covers the public homepage critical flow AND the authenticated founder journey (sign-in → wizard → provisioning → shell, live against the canonical substrate).
 
 ## 22. Performance
 
@@ -93,11 +93,11 @@ SSR homepage 30 KB initial HTML with full hero/CTA (no loading shell) — DEPLOY
 
 ## 23. Deployment
 
-Vercel production: sherivs.com → www (308) → READY deployments above; all 14 routes 200; zero CoreGrid in served HTML. DNS already routed via Vercel domains config. Onboarding migration `20261008000060` applied to canonical Supabase (additive; genuine inverse rollback). OPERATIONAL — current deployment `dpl_9Y5FGySYDpbLUD2KjyzN8AHS1FrD` (sha `82aa5bf`); live checks this pass: homepage 200 with header + hero + CTAs, `/auth`, `/request-demo`, `/coregrid`, `/about` all 200, 0 coregrid hits.
+Vercel production: sherivs.com → www (308) → READY deployments above; all 14 routes 200; zero CoreGrid in served HTML. DNS already routed via Vercel domains config. Onboarding migration `20261008000060` applied to canonical Supabase (additive; genuine inverse rollback). OPERATIONAL — current deployment `dpl_Ct4z3joVknA92DGwepX82W8WXGKD` (sha `c47393a`); live checks this pass: homepage 200 with header + hero + CTAs, `/auth`, `/request-demo` 200, 0 coregrid hits; `verify:critical-flows --live --base-url https://sherivs.com` 8/8 against PRODUCTION itself.
 
 ## 24. V1 status
 
-V1 envelope (AGENTS.md §45): organizational capability platform with Scholar runtime — identity, membership, **in-product organization onboarding**, **Plane B custom-domain public experience**, **runtime workspace composition contract**, workspace, governance substrate DEPLOYED, and the **E2E critical-flow pyramid** automated and passing live. V1-complete is NOT claimed: generated-site presentation beneath the Plane B resolution remains Scholar-shaped, reality-model exposure inside runtime workspaces is PARTIAL, and a second installed runtime is frozen out of scope (composition contract ready when unfrozen).
+V1 envelope (AGENTS.md §45): organizational capability platform with Scholar runtime — identity, membership, **in-product organization onboarding (browser-reachable founder journey)**, **Plane B custom-domain public experience with class-neutral generated-site presentation**, **runtime workspace composition contract**, **organization reality inside the runtime workspace**, workspace, governance substrate DEPLOYED, and the **E2E critical-flow pyramid** automated and passing live (API-level + browser founder journey). V1-complete is NOT claimed: deeper reality/memory/context primitives inside runtime workspaces remain PARTIAL, and a second installed runtime is frozen out of scope (composition contract ready when unfrozen).
 
 ## 25. V2 status
 
@@ -120,16 +120,16 @@ All deferrals carry reason/owner/removal-criteria in `SHERIVS_BRAND_MIGRATION.md
 
 ## 29. Technical debt
 
-Mobile test environment; zod version pinning history (resolved); hydration swap on `?school=` preview URLs during load; Scholar-shaped generated-site presentation beneath the (now domain-neutral) Plane B resolution layer.
+Mobile test environment; zod version pinning history (resolved); hydration swap on `?school=` preview URLs during load; deeper reality/memory/context primitives inside runtime workspaces (education reality screens, institutional memory surfaces) beyond the deployed organization reality card.
 
 ## 30–32. Evidence links
 
 - `SHERIVS_EXPERIENCE_BOUNDARY.md`, `SHERIVS_BRAND_MIGRATION.md` (repository root)
-- Commits: `8f5a193`, `abab29f`, `c3aa8d9`, `65228b8` (onboarding + reality), `82aa5bf` (Plane B domains + composition contract + E2E pyramid) on `cursor/sherivs-refoundation-2507` (mirrored to `master`)
+- Commits: `8f5a193`, `abab29f`, `c3aa8d9`, `65228b8` (onboarding + reality), `82aa5bf` (Plane B domains + composition contract + E2E pyramid), `c47393a` (neutral presentation + founder-shell fix + workspace reality card + browser E2E) on `cursor/sherivs-refoundation-2507` (mirrored to `master`)
 - PR: https://github.com/vibeoraai-bit/coregrid-scholar-migration/pull/5
-- Deployments: `dpl_9Y5FGySYDpbLUD2KjyzN8AHS1FrD` (current production, sha `82aa5bf`)
+- Deployments: `dpl_Ct4z3joVknA92DGwepX82W8WXGKD` (current production, sha `c47393a`)
 - Onboarding behavioral evidence (live probes, 2026-10-08): AUTH_REQUIRED under definer without session; founder E2E created school + users row (role admin) + trigger-derived primary membership + audit row; FOUNDER_ALREADY_LINKED refusal; RUNTIME_NOT_AVAILABLE refusal; atomic rollback verified on an injected audit fault; probe data deleted post-verification
-- Critical-flow pyramid evidence (2026-10-08): `verify:critical-flows --live` 8/8 PASS (F1 homepage 200; F2 signup `fdf215bb…`; F3 onboarding org `92fa4d9e…`; F4 identity resolution role=admin primary=true; F5 reality read roster=1; F6a second-org refused FOUNDER_ALREADY_LINKED; F6b cross-tenant isolation visibleRows=0; F7 cleanup orgsLeft=0 usersLeft=0); Playwright `tests/e2e/sherivs-public.spec.ts` 5/5 PASS; gates: typecheck PASS, unit 8,955 PASS, secrets PASS, domain-neutrality STATUS=PASS
+- Critical-flow pyramid evidence (2026-10-08): `verify:critical-flows --live` 8/8 PASS — against the canonical substrate AND against production (`--base-url https://sherivs.com`); Playwright suite 30 passed / 3 env-skips (public spec 5, authenticated founder journey live, vertical slice with corrected pins, enterprise checklist); browser E2E found and fixed the founder-shell dead end (unlinked accounts could not reach /welcome or /onboarding); gates: typecheck PASS, unit 8,959 PASS, secrets PASS, domain-neutrality STATUS=PASS
 
 ## 33. Outstanding human actions
 
