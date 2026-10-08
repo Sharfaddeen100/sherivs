@@ -1,9 +1,12 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
 import { useApp } from "@/contexts/app-context";
 import { scholarWorkspaceHome } from "@/lib/runtime/nav-registry";
 import { PLATFORM_NAME } from "@/lib/platform";
+import { resolveSherivsIdentity } from "@/lib/identity/resolve-identity.functions";
+import { identityFromAppState } from "@/lib/identity/context";
 
 export const Route = createFileRoute("/auth")({
   ssr: false,
@@ -14,7 +17,7 @@ type Mode = "signin" | "signup" | "forgot";
 
 function AuthPage() {
   const navigate = useNavigate();
-  const { loading, role, refresh, school, tenantSlug } = useApp();
+  const { loading, role, refresh, school, tenantSlug, profile, superAdmin } = useApp();
   const [mode, setMode] = useState<Mode>("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -22,13 +25,18 @@ function AuthPage() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [info, setInfo] = useState<string | null>(null);
+  const resolveIdentity = useServerFn(resolveSherivsIdentity);
 
-  // If already signed in, redirect to the right dashboard
+  // Identity-based post-auth routing (§11): signed-in users are routed by the
+  // resolved identity chain — internal workforce → /internal, one membership
+  // → its workspace, several → the organization selector, none → /welcome —
+  // never unconditionally into a runtime workspace.
+  const contextIdentity = identityFromAppState({ superAdmin, profile, school });
   useEffect(() => {
     if (!loading && role) {
-      navigate({ to: scholarWorkspaceHome(role), replace: true });
+      navigate({ to: contextIdentity.destination, replace: true });
     }
-  }, [loading, role, navigate]);
+  }, [loading, role, contextIdentity.destination, navigate]);
 
   function reset() {
     setError(null);
@@ -81,6 +89,17 @@ function AuthPage() {
         }).catch(() => {});
 
         await refresh();
+
+        // Server-authoritative identity resolution (§11): resolve the full
+        // chain — memberships → organizations → roles → runtime → workspace
+        // — and route to its destination. The context effect above is the
+        // fallback if the server round-trip fails.
+        try {
+          const identity = await resolveIdentity();
+          await navigate({ to: identity.destination, replace: true });
+        } catch {
+          // context effect handles routing — never block sign-in on resolution
+        }
       } else if (mode === "signup") {
         const { error } = await supabase.auth.signUp({
           email,

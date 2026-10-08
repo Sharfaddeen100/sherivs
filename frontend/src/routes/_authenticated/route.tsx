@@ -18,7 +18,6 @@ import { CommandCenterMount } from "@/components/command-center";
 import { ShellHeaderActions } from "@/components/shell/shell-header-actions";
 import { WorkspaceSwitcher } from "@/components/shell/workspace-switcher";
 import { PLATFORM_NAME } from "@/lib/platform";
-import { INSTALLED_RUNTIME_NAME as SCHOLAR_RUNTIME_NAME } from "@/lib/runtime/installed-runtimes";
 import { WorkspaceBottomNav } from "@/components/mobile-bottom-nav";
 import { OfflineBanner } from "@/components/offline-banner";
 import { AppFramePreview } from "@/components/app-frame-preview";
@@ -92,9 +91,9 @@ function AuthenticatedLayout() {
         <div className="max-w-md uos-card p-8 text-center">
           <h1 className="font-display text-xl font-bold">Account not yet linked</h1>
           <p className="mt-3 text-sm text-muted-foreground">
-            Your sign-in is valid, but your account has not been linked to a school yet. A school
-            administrator (or a CoreGrid platform super admin) needs to assign you a role before you
-            can open a portal.
+            Your sign-in is valid, but your account has not been linked to an organization yet. An
+            organization administrator (or a {PLATFORM_NAME} platform administrator) needs to assign
+            you a role before your workspace can open.
           </p>
           <button
             onClick={async () => {
@@ -111,7 +110,9 @@ function AuthenticatedLayout() {
   }
 
   const displayName = profile?.full_name ?? superAdmin?.full_name ?? "User";
-  const dashHref = role ? scholarWorkspaceHome(role) : "/";
+  // Internal workforce home is the internal environment (plane 4); members
+  // home to their resolved organization workspace.
+  const dashHref = superAdmin && !profile ? "/internal" : role ? scholarWorkspaceHome(role) : "/";
   const memberLabel = role
     ? scholarWorkspaceLabelForMember(
         myPosition.data?.kind_code ?? null,
@@ -157,7 +158,7 @@ function AuthenticatedLayout() {
                   </div>
                   <div className="leading-tight min-w-0">
                     <div className="font-display font-bold text-sm truncate">
-                      {school?.name ?? `${PLATFORM_NAME} · ${SCHOLAR_RUNTIME_NAME}`}
+                      {school?.name ?? `${PLATFORM_NAME} HQ`}
                     </div>
                     <div className="text-[10px] uppercase tracking-widest text-muted-foreground">
                       {experience.roleTitle}
@@ -176,9 +177,7 @@ function AuthenticatedLayout() {
                   greeting={experience.greeting}
                   workspaceName={school?.name ?? null}
                   notificationViewer={
-                    school && authUser
-                      ? { tenantId: school.id, recipientId: authUser.id }
-                      : null
+                    school && authUser ? { tenantId: school.id, recipientId: authUser.id } : null
                   }
                   onSignOut={async () => {
                     await signOut();

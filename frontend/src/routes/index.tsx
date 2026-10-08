@@ -1,9 +1,9 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { useApp } from "@/contexts/app-context";
-import { scholarWorkspaceHome } from "@/lib/runtime/nav-registry";
 import { PublicSchoolSite } from "@/components/public/site";
 import { SherivsHome } from "@/components/public/sherivs-home";
+import { identityFromAppState } from "@/lib/identity/context";
 import { PLATFORM_NAME, PLATFORM_URL } from "@/lib/platform";
 
 export const Route = createFileRoute("/")({
@@ -39,12 +39,16 @@ function Index() {
   const { loading, school, tenantSlug, role, profile, superAdmin } = useApp();
   const navigate = useNavigate();
 
-  // Signed-in users (on the platform host, not a tenant site) → their dashboard
+  // Identity-based routing (§11): signed-in users on the platform host (not a
+  // tenant site) go to their resolved identity destination — internal
+  // workforce → /internal, organization member → their workspace home,
+  // multiple memberships → the selector, unlinked → /welcome.
+  const identity = identityFromAppState({ superAdmin, profile, school });
   useEffect(() => {
-    if (!loading && role && !tenantSlug) {
-      navigate({ to: scholarWorkspaceHome(role), replace: true });
+    if (!loading && (role || profile || superAdmin) && !tenantSlug) {
+      navigate({ to: identity.destination, replace: true });
     }
-  }, [loading, role, tenantSlug, navigate]);
+  }, [loading, role, profile, superAdmin, tenantSlug, identity.destination, navigate]);
 
   // Per-tenant document title + meta description + OG image + JSON-LD
   useEffect(() => {
