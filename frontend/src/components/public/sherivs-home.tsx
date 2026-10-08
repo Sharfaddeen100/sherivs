@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { PLATFORM_NAME, PLATFORM_TAGLINE } from "@/lib/platform";
+import { SiteHeader } from "@/components/public/site-header";
 
 /**
  * Sherivs public company homepage.
@@ -184,6 +185,7 @@ function SectionHeading({
 export function SherivsHome() {
   return (
     <>
+      <SiteHeader />
       {/* Hero */}
       <section aria-labelledby="sherivs-hero" className="border-b border-border">
         <div className="mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 sm:py-24">

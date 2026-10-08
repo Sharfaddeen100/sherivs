@@ -4,7 +4,7 @@ import { useApp } from "@/contexts/app-context";
 import { PublicSchoolSite } from "@/components/public/site";
 import { SherivsHome } from "@/components/public/sherivs-home";
 import { identityFromAppState } from "@/lib/identity/context";
-import { resolveTenantSlug } from "@/lib/tenant";
+import { resolveTenantDomain, resolveTenantSlug } from "@/lib/tenant";
 import { PLATFORM_NAME, PLATFORM_URL } from "@/lib/platform";
 
 export const Route = createFileRoute("/")({
@@ -137,12 +137,12 @@ function Index() {
   }, [school]);
 
   if (loading) {
-    // Platform context (sherivs.com host, server render, or no tenant slug):
-    // render the public homepage immediately so crawlers and browser
-    // previews receive the real hero/CTA markup instead of a loading shell
-    // (§27 SEO, §28 performance). Tenant hosts keep the loading state —
-    // their site content resolves asynchronously.
-    if (resolveTenantSlug() === null) {
+    // Platform context (sherivs.com host, server render, or no tenant
+    // signal): render the public homepage immediately so crawlers and
+    // browser previews receive the real hero/CTA markup instead of a
+    // loading shell (§27 SEO, §28 performance). Tenant hosts keep the
+    // loading state — their site content resolves asynchronously.
+    if (resolveTenantSlug() === null && resolveTenantDomain() === null) {
       return <SherivsHome />;
     }
     return <div className="min-h-dvh grid place-items-center text-muted-foreground">Loading…</div>;

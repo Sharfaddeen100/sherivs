@@ -2,8 +2,8 @@ import { createServerFn } from "@tanstack/react-start";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import type { Database } from "@/integrations/supabase/types";
-import { scholarWorkspaceHome } from "@/lib/runtime/nav-registry";
 import { INSTALLED_RUNTIME_ID, INSTALLED_RUNTIME_NAME } from "@/lib/runtime/installed-runtimes";
+import { runtimeWorkspaceHome } from "@/lib/runtime/nav-registry";
 import { resolveIdentity, type OrganizationMembership } from "./identity";
 
 /**
@@ -128,7 +128,7 @@ async function readLegacyMembership(
       role,
       runtimeId: INSTALLED_RUNTIME_ID,
       runtimeName: INSTALLED_RUNTIME_NAME,
-      homePath: scholarWorkspaceHome(role),
+      homePath: runtimeWorkspaceHome(role),
     },
   ];
 }
@@ -148,6 +148,6 @@ function toMembership(
     role,
     runtimeId: INSTALLED_RUNTIME_ID,
     runtimeName: INSTALLED_RUNTIME_NAME,
-    homePath: scholarWorkspaceHome(role),
+    homePath: runtimeWorkspaceHome(role),
   };
 }

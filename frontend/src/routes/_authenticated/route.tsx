@@ -25,10 +25,10 @@ import {
   ALL_NAV_CONTRIBUTIONS,
   scholarCapabilitiesForPortal,
   scholarCapabilitiesForRole,
-  scholarWorkspaceHome,
   scholarWorkspaceLabelForRole,
   // The runtime layer names its own portal kinds; the shell speaks of them generically.
   type ScholarPortalKind as RuntimePortalKind,
+  runtimeWorkspaceHome,
 } from "@/lib/runtime/nav-registry";
 import { hasNavDestinations, resolveWorkspaceNav } from "@/lib/workspace-engine/navigation";
 import { resolveMemberWorkspaceExperience } from "@/lib/experience/workspace-experience";
@@ -122,7 +122,7 @@ function AuthenticatedLayout() {
   const displayName = profile?.full_name ?? superAdmin?.full_name ?? "User";
   // Internal workforce home is the internal environment (plane 4); members
   // home to their resolved organization workspace.
-  const dashHref = superAdmin && !profile ? "/internal" : role ? scholarWorkspaceHome(role) : "/";
+  const dashHref = superAdmin && !profile ? "/internal" : role ? runtimeWorkspaceHome(role) : "/";
   const memberLabel = role
     ? scholarWorkspaceLabelForMember(
         myPosition.data?.kind_code ?? null,

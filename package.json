@@ -13,6 +13,7 @@
     "test": "npm run typecheck && npm run test:unit",
     "verify": "npm run typecheck && npm run test:unit && npm run verify:registry && npm run verify:drift && npm run verify:neutrality && npm run verify:secrets && npm run build",
     "verify:neutrality": "node scripts/verify-domain-neutrality.mjs",
+    "verify:critical-flows": "node scripts/verify-critical-flows.mjs",
     "verify:registry": "node scripts/verification/registry-validate.mjs",
     "verify:drift": "node scripts/verify-registry-drift.mjs",
     "verify:reconciliation": "node scripts/verify-reconciliation-artifacts.mjs",

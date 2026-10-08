@@ -13,6 +13,7 @@ import {
   type OnboardingStep,
 } from "@/lib/onboarding/organization-onboarding";
 import { createOrganization } from "@/lib/onboarding/create-organization.functions";
+import { runtimeWorkspaceHome } from "@/lib/runtime/nav-registry";
 import { useServerFn } from "@tanstack/react-start";
 
 /**
@@ -73,7 +74,7 @@ function OnboardingPage() {
         },
       });
       await refresh();
-      await navigate({ to: "/admin/dashboard", replace: true });
+      await navigate({ to: runtimeWorkspaceHome("admin"), replace: true });
     } catch (e) {
       const message = e instanceof Error ? e.message : "";
       setError(provisioningErrorMessage(mapProvisioningError(message)));

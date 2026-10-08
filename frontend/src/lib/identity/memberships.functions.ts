@@ -3,7 +3,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import type { Database } from "@/integrations/supabase/types";
-import { scholarWorkspaceHome } from "@/lib/runtime/nav-registry";
+import { runtimeWorkspaceHome } from "@/lib/runtime/nav-registry";
 import type { OrganizationMembership } from "@/lib/identity/identity";
 import { writeAuditRecord } from "@/lib/server/write-audit";
 
@@ -76,7 +76,7 @@ export const switchActiveOrganization = createServerFn({ method: "POST" })
     if (profile.school_id === data.organizationId) {
       // Already active — resolve the destination without a write.
       return {
-        destination: scholarWorkspaceHome(membershipRole),
+        destination: runtimeWorkspaceHome(membershipRole),
         organizationId: data.organizationId,
       };
     }
@@ -103,7 +103,7 @@ export const switchActiveOrganization = createServerFn({ method: "POST" })
     });
 
     return {
-      destination: scholarWorkspaceHome(membershipRole),
+      destination: runtimeWorkspaceHome(membershipRole),
       organizationId: data.organizationId,
     };
   });

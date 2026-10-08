@@ -1,5 +1,6 @@
 import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
 import { PLATFORM_NAME, PLATFORM_TAGLINE } from "@/lib/platform";
+import { SiteHeader } from "@/components/public/site-header";
 
 /**
  * Sherivs public site — pathless layout group `(site)`.
@@ -16,60 +17,10 @@ export const Route = createFileRoute("/(site)")({
   component: SiteLayout,
 });
 
-const SECTION_LINKS = [
-  { href: "/#platform", label: "Platform" },
-  { href: "/#ai-workforce", label: "AI Workforce" },
-  { href: "/#solutions", label: "Solutions" },
-  { href: "/#enterprise", label: "Enterprise" },
-  { href: "/#security", label: "Security" },
-] as const;
-
 function SiteLayout() {
   return (
     <div className="flex min-h-dvh flex-col bg-background text-foreground">
-      <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur">
-        <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6">
-          <Link
-            to="/"
-            className="font-display text-lg font-bold tracking-tight focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-          >
-            {PLATFORM_NAME}
-          </Link>
-
-          <nav aria-label="Site" className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
-            {SECTION_LINKS.map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
-                className="text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-              >
-                {item.label}
-              </a>
-            ))}
-            <Link
-              to="/coregrid"
-              className="text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-            >
-              Platform detail
-            </Link>
-          </nav>
-
-          <nav aria-label="Account" className="flex items-center gap-2 text-sm">
-            <Link
-              to="/auth"
-              className="rounded-md border border-border px-3 py-1.5 font-semibold transition-colors hover:bg-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-            >
-              Sign in
-            </Link>
-            <Link
-              to="/request-demo"
-              className="rounded-md bg-primary px-3 py-1.5 font-semibold text-primary-foreground transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-            >
-              Request a demo
-            </Link>
-          </nav>
-        </div>
-      </header>
+      <SiteHeader />
 
       <main id="main-content" className="flex-1">
         <Outlet />
