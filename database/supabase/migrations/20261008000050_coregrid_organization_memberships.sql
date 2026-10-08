@@ -1,9 +1,15 @@
 -- =============================================================================
 -- Sherivs — organization memberships (multi-membership identity store)
 -- =============================================================================
--- Status: AUTHORED. Apply only with an explicit operator authorization
---   decision (governance law):
---     supabase db push --workdir database/supabase
+-- Status: APPLIED to the canonical project (nwrflbpbhyiqdptmlccm) on
+--   2026-10-08 via `node scripts/db-apply-one.mjs 20261008000050`, under the
+--   EXPLICIT OPERATOR AUTHORIZATION given in the refoundation run record
+--   ("I give you go ahead on everything", 2026-10-08). Post-apply verification
+--   recorded in the run: RLS ENABLED+FORCED, four policies present, backfill
+--   8/8 users with 0 unmatched, grants exactly (anon: none, authenticated:
+--   SELECT/INSERT/UPDATE/DELETE, service_role: ALL), behavioral RLS matrix
+--   (member reads own row only; org admin manages own organization; cross-user
+--   write and self-grant INSERT fail closed; TRUNCATE privilege revoked).
 -- Rollback (genuine inverse):
 --   database/supabase/rollbacks/20261008000050_coregrid_organization_memberships.sql
 --
@@ -60,7 +66,7 @@ CREATE TABLE IF NOT EXISTS public.organization_memberships (
   id          uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id     uuid NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   school_id   uuid NOT NULL REFERENCES public.schools(id) ON DELETE CASCADE,
-  role        text NOT NULL CHECK (role IN ('admin','principal','teacher','parent','student','bursar','hq')),
+  role        text NOT NULL CHECK (role IN ('admin','principal','teacher','parent','student','bursar','hq','alumni','driver')),
   is_primary  boolean NOT NULL DEFAULT false,
   is_active   boolean NOT NULL DEFAULT true,
   created_at  timestamptz NOT NULL DEFAULT now(),
@@ -191,7 +197,11 @@ CREATE POLICY organization_memberships_delete ON public.organization_memberships
 
 -- Privileges follow the policy posture: anon has NOTHING; authenticated may
 -- exercise exactly the four policy-gated commands; service role full access.
+-- TRUNCATE/REFERENCES/TRIGGER are revoked from authenticated: TRUNCATE is NOT
+-- row-level-security gated, so a table-level TRUNCATE grant would be a
+-- policy-bypassing write path outside the declared posture.
 REVOKE ALL ON TABLE public.organization_memberships FROM anon;
+REVOKE TRUNCATE, REFERENCES, TRIGGER ON TABLE public.organization_memberships FROM authenticated;
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.organization_memberships TO authenticated;
 GRANT ALL ON TABLE public.organization_memberships TO service_role;
 

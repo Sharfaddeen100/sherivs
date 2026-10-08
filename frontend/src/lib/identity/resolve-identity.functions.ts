@@ -64,54 +64,26 @@ type ResolverClient = SupabaseClient<Database>;
 
 interface MembershipRow {
   school_id: string;
-  role: OrganizationMembership["role"];
-  is_primary: boolean | null;
+  role: string;
 }
-
-/**
- * Structural client for the membership substrate. The generated Database
- * types are produced from the LIVE database (`npm run types:generate`); the
- * membership table arrives with migration 20261008000050 and is not yet in
- * the generated types. Reads are single-column-name lookups on the caller's
- * own rows — the structural type keeps the resolver decoupled from
- * regeneration ordering without weakening any check that matters (the
- * server resolver never trusts client data).
- */
-interface MembershipFilter {
-  eq(col: "user_id" | "school_id" | "is_active", val: string | boolean): MembershipFilter;
-  order(col: "is_primary" | "created_at", opts: { ascending: boolean }): MembershipFilter;
-  limit(n: number): MembershipQuery;
-  maybeSingle(): MembershipQuery;
-}
-
-interface MembershipSubstrateClient {
-  from(table: "organization_memberships"): {
-    select(cols: string): MembershipFilter;
-  };
-}
-
-type MembershipQuery = PromiseLike<{
-  data: unknown;
-  error: { message: string } | null;
-}>;
 
 async function readMembershipRows(
   db: ResolverClient,
   userId: string,
 ): Promise<OrganizationMembership[]> {
-  const substrate = db as unknown as MembershipSubstrateClient;
   // Explicit failure → legacy fallback (never a guessed workspace).
-  const { data, error } = await substrate
+  const { data, error } = await db
     .from("organization_memberships")
     .select("school_id, role, is_primary, is_active, created_at")
     .eq("user_id", userId)
     .eq("is_active", true)
     .order("is_primary", { ascending: false })
+    .order("created_at", { ascending: true })
     .limit(100);
 
   if (error) return [];
 
-  const rows = (data ?? []) as MembershipRow[];
+  const rows = data ?? [];
   if (rows.length === 0) return [];
 
   const orgIds = [...new Set(rows.map((r) => r.school_id))];
@@ -165,13 +137,17 @@ function toMembership(
   row: MembershipRow,
   org: { id: string; name: string | null; slug: string | null } | null | undefined,
 ): OrganizationMembership {
+  // The substrate CHECK constrains role to the declared tenant-role
+  // vocabulary (mirroring users_role_check); the resolver narrows it to the
+  // app-role union at this single boundary.
+  const role = row.role as OrganizationMembership["role"];
   return {
     organizationId: row.school_id,
     name: (org?.name as string | undefined) ?? "Your organization",
     slug: (org?.slug as string | null | undefined) ?? null,
-    role: row.role,
+    role,
     runtimeId: INSTALLED_RUNTIME_ID,
     runtimeName: INSTALLED_RUNTIME_NAME,
-    homePath: scholarWorkspaceHome(row.role),
+    homePath: scholarWorkspaceHome(role),
   };
 }

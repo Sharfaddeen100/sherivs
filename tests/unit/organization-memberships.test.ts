@@ -51,8 +51,11 @@ describe("organization_memberships migration — structure", () => {
 
   it("mirrors the declared tenant role vocabulary and excludes super_admin", () => {
     const roleCheck = MIGRATION.match(/CHECK \(role IN \(([^)]*)\)\)/)?.[1] ?? "";
-    expect(roleCheck).toContain("'admin'");
-    expect(roleCheck).toContain("'teacher'");
+    // Mirrors the live users_role_check vocabulary exactly, so the dual-write
+    // trigger can never fail on a role the identity store legally holds.
+    for (const role of ["admin","principal","teacher","parent","student","bursar","hq","alumni","driver"]) {
+      expect(roleCheck).toContain(`'${role}'`);
+    }
     expect(roleCheck).not.toContain("super_admin");
   });
 

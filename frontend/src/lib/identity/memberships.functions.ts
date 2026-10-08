@@ -41,33 +41,6 @@ export function pickSwitchTarget<T extends { organizationId: string }>(
   return memberships.find((m) => m.organizationId === organizationId) ?? null;
 }
 
-/**
- * Structural client for the membership substrate. The generated Database
- * types are produced from the LIVE database (`npm run types:generate`); the
- * membership table arrives with migration 20261008000050 and is not yet in
- * the generated types. Reads are single-column-name lookups on the caller's
- * own rows — the structural type keeps the switch path decoupled from
- * regeneration ordering without weakening any check that matters (the
- * server fn never trusts client data; the write is audited).
- */
-interface MembershipFilter {
-  eq(col: "user_id" | "school_id" | "is_active", val: string | boolean): MembershipFilter;
-  maybeSingle(): PromiseLike<{
-    data: {
-      school_id: string;
-      role: OrganizationMembership["role"];
-      is_active: boolean | null;
-    } | null;
-    error: { message: string } | null;
-  }>;
-}
-
-interface MembershipSubstrateClient {
-  from(table: "organization_memberships"): {
-    select(cols: string): MembershipFilter;
-  };
-}
-
 export const switchActiveOrganization = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .validator((input: unknown) => switchValidator.parse(input))
@@ -76,8 +49,7 @@ export const switchActiveOrganization = createServerFn({ method: "POST" })
     const userId = context.userId;
 
     // 1. Resolve the caller's own ACTIVE membership (RLS-scoped).
-    const substrate = db as unknown as MembershipSubstrateClient;
-    const { data: membership, error: membershipErr } = await substrate
+    const { data: membership, error: membershipErr } = await db
       .from("organization_memberships")
       .select("school_id, role, is_active")
       .eq("user_id", userId)
@@ -87,6 +59,9 @@ export const switchActiveOrganization = createServerFn({ method: "POST" })
     if (membershipErr || !membership) {
       throw new Error("Not an active member of that organization.");
     }
+    // The substrate CHECK constrains role to the declared tenant-role
+    // vocabulary (mirroring users_role_check); narrowed at this boundary.
+    const membershipRole = membership.role as OrganizationMembership["role"];
 
     // 2. Verify the caller's identity-store row is live (deactivated
     //    accounts cannot switch contexts at all).
@@ -101,7 +76,7 @@ export const switchActiveOrganization = createServerFn({ method: "POST" })
     if (profile.school_id === data.organizationId) {
       // Already active — resolve the destination without a write.
       return {
-        destination: scholarWorkspaceHome(membership.role),
+        destination: scholarWorkspaceHome(membershipRole),
         organizationId: data.organizationId,
       };
     }
@@ -111,7 +86,7 @@ export const switchActiveOrganization = createServerFn({ method: "POST" })
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { error: updateErr } = await supabaseAdmin
       .from("users")
-      .update({ school_id: data.organizationId, role: membership.role })
+      .update({ school_id: data.organizationId, role: membershipRole })
       .eq("id", userId);
     if (updateErr) throw new Error(updateErr.message);
 
@@ -128,7 +103,7 @@ export const switchActiveOrganization = createServerFn({ method: "POST" })
     });
 
     return {
-      destination: scholarWorkspaceHome(membership.role),
+      destination: scholarWorkspaceHome(membershipRole),
       organizationId: data.organizationId,
     };
   });
