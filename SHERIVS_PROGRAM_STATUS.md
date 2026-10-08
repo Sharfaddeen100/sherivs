@@ -5,7 +5,7 @@ Report date: 2026-10-08. Branch: `cursor/sherivs-refoundation-2507`. Every statu
 
 ## 1. Executive summary
 
-The experience boundary is locked and the customer-facing brand migration is complete on production (sherivs.com). Four independent verification methods (SSR HTML scan, route sweep, unit-test boundary pins, domain-neutrality gate) confirm zero CoreGrid leakage on public surfaces. The universal-vs-domain architecture correction is partially executed: identity routing, multi-membership, and internal-control isolation are DEPLOYED; the universal workspace shell and the institutional-intelligence core (reality/memory/context primitives above the domain layer) remain the primary open engineering fronts.
+The experience boundary is locked and the customer-facing brand migration is complete on production (sherivs.com). Four independent verification methods (SSR HTML scan, route sweep, unit-test boundary pins, domain-neutrality gate) confirm zero CoreGrid leakage on public surfaces. The universal-vs-domain architecture correction is partially executed: identity routing, multi-membership, internal-control isolation, in-product organization onboarding, the organization reality read-model, Plane B custom-domain resolution, and the runtime workspace composition contract are DEPLOYED; the E2E critical-flow pyramid is AUTOMATED and passing live (8/8 critical flows + 5 Playwright tests). The remaining open engineering fronts are the institutional-intelligence core inside runtime workspaces (reality/memory/context primitives above the domain layer) and a second installed runtime — the latter frozen at the composition contract per the V1 envelope.
 
 ## 2. Category definition
 
@@ -17,7 +17,7 @@ The experience boundary is locked and the customer-facing brand migration is com
 
 ## 4. Route architecture
 
-Single-application boundary model (no multi-app split) per §7 "operational simplicity" rule. Planes separated by route groups: `(site)/` public, `_authenticated/` customer + internal, `(site)/coregrid` compat. SSR homepage served on platform host. Evidence: live route sweep 14/14 HTTP 200.
+Single-application boundary model (no multi-app split) per §7 "operational simplicity" rule. Planes separated by route groups: `(site)/` public, `_authenticated/` customer + internal, `(site)/coregrid` compat. SSR homepage served on platform host. Evidence: live route sweep 14/14 HTTP 200. **Homepage header parity (2026-10-08)**: the homepage (which renders outside the `(site)` layout group so tenant hosts can serve a different public site at the same path) now renders the shared `SiteHeader` (`frontend/src/components/public/site-header.tsx`) also used by the `(site)` layout — brand, section story links, Sign in, Request a demo on the first screen; verified by Playwright (`tests/e2e/sherivs-public.spec.ts`, 5/5).
 
 ## 5. Brand migration status
 
@@ -29,11 +29,11 @@ Identity gateway chain (authenticate → memberships → runtime → workspace �
 
 ## 7. Organization architecture
 
-Organization = tenant primitive (`organization_memberships`, active-org switching via `switchActiveOrganization`). **In-product organization onboarding DEPLOYED (2026-10-08)**: the §21 founder pipeline — account → organization identity → runtime selection → profile → review → provisioning → activation — is live at `/onboarding` (server fn `create-organization.functions.ts` over the sole customer write path `create_organization_with_founder`, migration `20261008000060`, applied to the canonical project and behaviorally verified: unauthenticated refusal, linked-founder refusal, frozen-runtime refusal, full authenticated E2E probe with atomic-rollback fault injection; probe data deleted after verification). Organization public experience (Plane B) remains PARTIAL: subdomain/`?school=` resolution + generated-site engine exist (`generated-site-view.ts`), still Scholar-shaped beneath the universal read.
+Organization = tenant primitive (`organization_memberships`, active-org switching via `switchActiveOrganization`). **In-product organization onboarding DEPLOYED (2026-10-08)**: the §21 founder pipeline — account → organization identity → runtime selection → profile → review → provisioning → activation — is live at `/onboarding` (server fn `create-organization.functions.ts` over the sole customer write path `create_organization_with_founder`, migration `20261008000060`, applied to the canonical project and behaviorally verified: unauthenticated refusal, linked-founder refusal, frozen-runtime refusal, full authenticated E2E probe with atomic-rollback fault injection; probe data deleted after verification). **Plane B organization public experience DEPLOYED (2026-10-08)**: host classification (`classifyTenantHost` — platform | subdomain | custom-domain) resolves tenant slug subdomains AND registered custom domains; `app-context` loads the organization by `schools.domain` when the visitor lands on a custom-domain host (no slug); homepage SSR loading branch honors both. Unit-pinned (`tests/unit/tenant-resolution.test.ts`, 14 tests). The generated-site engine beneath the resolution remains Scholar-shaped (universal read) — presentation refinement, not resolution, is the remaining Plane B work.
 
 ## 8. Runtime architecture
 
-Domain-runtime boundary enforced: runtimes register via `domainRef` (`kernel/object-type-registry.ts`); Scholar is a runtime, not the platform (`frontend/src/lib/runtime/`). The shell renders ONLY runtime-contributed navigation resolved against the viewer's capabilities (`nav-registry.ts` contribution sets × `workspace-engine/navigation.ts`) — installing another runtime adds its navigation without editing the shell. Onboarding's runtime catalog (§21) presents Scholar as the only selectable V1 runtime and honestly marks Commerce/Healthcare/Government "in development" (structural pins: `tests/unit/organization-onboarding.test.ts`). VERIFIED at the shell-contract level; per-runtime workspace composition beyond Scholar remains future work.
+Domain-runtime boundary enforced: runtimes register via `domainRef` (`kernel/object-type-registry.ts`); Scholar is a runtime, not the platform (`frontend/src/lib/runtime/`). The shell renders ONLY runtime-contributed navigation resolved against the viewer's capabilities (`nav-registry.ts` contribution sets × `workspace-engine/navigation.ts`) — installing another runtime adds its navigation without editing the shell. Onboarding's runtime catalog (§21) presents Scholar as the only selectable V1 runtime and honestly marks Commerce/Healthcare/Government "in development" (structural pins: `tests/unit/organization-onboarding.test.ts`). **Runtime workspace composition contract IMPLEMENTED (2026-10-08)**: `runtimeWorkspaceHome(role)` in `nav-registry.ts` is the neutral platform-layer entry for "which workspace home does this role land in"; all platform-layer consumers (`resolve-identity.functions.ts`, `memberships.functions.ts`, `app-context.tsx`, `_authenticated/route.tsx`, `onboarding.tsx`) now resolve the destination through the contract instead of importing Scholar's home directly — the platform layer no longer names a specific runtime in its destination wiring. VERIFIED (typecheck + unit + neutrality gates). No second runtime is implemented (V1 envelope frozen, AGENTS.md §45); the contract is the deliverable — installing a second runtime resolves through the same composition point without platform edits.
 
 ## 9. Reality architecture
 
@@ -53,7 +53,7 @@ Internal control surface renamed Sherivs Control (command-centre heading + opera
 
 ## 13. AI Gateway
 
-Canonical gateway exists with model registry + routing tests (`tests/unit/ai-gateway-*.test.ts`, 8,915 tests passing include gateway adoption checks). VERIFIED as internal capability; model ≠ worker separation present in contracts.
+Canonical gateway exists with model registry + routing tests (`tests/unit/ai-gateway-*.test.ts`, 8,955 tests passing include gateway adoption checks). VERIFIED as internal capability; model ≠ worker separation present in contracts.
 
 ## 14. Security posture
 
@@ -65,7 +65,7 @@ Evidence lifecycle substrate at DB level (evidence migrations live). Engineering
 
 ## 16. Verification posture
 
-Unit: 8,915 pass (4 pre-existing mobile collection failures — `mobile/node_modules` absent). Typecheck PASS. Secrets PASS. Domain-neutrality PASS. RLS behavioral matrix PASS (2026-10-08). E2E pyramid beyond unit: PARTIAL (no production E2E run recorded this pass).
+Unit: 8,955 pass (4 pre-existing mobile collection failures — `mobile/node_modules` absent; 5 skipped). Typecheck PASS. Secrets PASS. Domain-neutrality PASS. RLS behavioral matrix PASS (2026-10-08). **E2E critical-flow pyramid AUTOMATED and passing (2026-10-08)**: `npm run verify:critical-flows` (`scripts/verify-critical-flows.mjs --live`) — 8/8 live flows against the canonical substrate (homepage, signup, onboarding RPC, identity resolution, reality read, second-org refusal, cross-tenant isolation, self-cleaning cleanup); Playwright public-experience spec 5/5 (`tests/e2e/sherivs-public.spec.ts`). Browser E2E for the authenticated shell beyond these critical flows: PARTIAL.
 
 ## 17. Communication integrations
 
@@ -85,7 +85,7 @@ Mobile sources exist (`mobile/`) but are not installed/built in this environment
 
 ## 21. Testing
 
-Unit suite comprehensive (structural pins on boundaries: `sherivs-refoundation.test.ts`, `organization-onboarding.test.ts` — 26 pins on the onboarding state machine, slug contract, failure mapping, and reality derivation). RLS/security tests present; onboarding verified behaviorally against the live DB (E2E probe + fault injection). E2E/critical-flow automation beyond this: PARTIAL — next milestone.
+Unit suite comprehensive (structural pins on boundaries: `sherivs-refoundation.test.ts`, `organization-onboarding.test.ts` — 26 pins on the onboarding state machine, slug contract, failure mapping, and reality derivation; `tenant-resolution.test.ts` — 14 pins on host classification and custom-domain resolution; `site-marketing.test.ts` landmark assertions cover the shared `SiteHeader`). RLS/security tests present; onboarding verified behaviorally against the live DB (E2E probe + fault injection). **Critical-flow automation DEPLOYED (2026-10-08)**: `verify:critical-flows` runs the 8-flow live pyramid (opt-in via `--live`; self-cleaning `zz-e2e-` probe data so runs leave no residue); Playwright spec covers the public homepage critical flow on mobile viewport. Remaining: authenticated-shell browser E2E (beyond the API-level critical flows) — next milestone.
 
 ## 22. Performance
 
@@ -93,11 +93,11 @@ SSR homepage 30 KB initial HTML with full hero/CTA (no loading shell) — DEPLOY
 
 ## 23. Deployment
 
-Vercel production: sherivs.com → www (308) → READY deployments above; all 14 routes 200; zero CoreGrid in served HTML. DNS already routed via Vercel domains config. Onboarding migration `20261008000060` applied to canonical Supabase (additive; genuine inverse rollback). OPERATIONAL — current deployment `dpl_9AHb1etyEj1c1pwmfqSP6t45mqpu` (sha `65228b8`).
+Vercel production: sherivs.com → www (308) → READY deployments above; all 14 routes 200; zero CoreGrid in served HTML. DNS already routed via Vercel domains config. Onboarding migration `20261008000060` applied to canonical Supabase (additive; genuine inverse rollback). OPERATIONAL — current deployment `dpl_9Y5FGySYDpbLUD2KjyzN8AHS1FrD` (sha `82aa5bf`); live checks this pass: homepage 200 with header + hero + CTAs, `/auth`, `/request-demo`, `/coregrid`, `/about` all 200, 0 coregrid hits.
 
 ## 24. V1 status
 
-V1 envelope (AGENTS.md §45): organizational capability platform with Scholar runtime — identity, membership, **in-product organization onboarding**, workspace, governance substrate DEPLOYED. V1-complete is NOT claimed: org public experience (Plane B) and runtime workspace composition beyond Scholar remain.
+V1 envelope (AGENTS.md §45): organizational capability platform with Scholar runtime — identity, membership, **in-product organization onboarding**, **Plane B custom-domain public experience**, **runtime workspace composition contract**, workspace, governance substrate DEPLOYED, and the **E2E critical-flow pyramid** automated and passing live. V1-complete is NOT claimed: generated-site presentation beneath the Plane B resolution remains Scholar-shaped, reality-model exposure inside runtime workspaces is PARTIAL, and a second installed runtime is frozen out of scope (composition contract ready when unfrozen).
 
 ## 25. V2 status
 
@@ -120,15 +120,16 @@ All deferrals carry reason/owner/removal-criteria in `SHERIVS_BRAND_MIGRATION.md
 
 ## 29. Technical debt
 
-Mobile test environment; zod version pinning history (resolved); hydration swap on `?school=` preview URLs during load; scholar-shaped universal shell.
+Mobile test environment; zod version pinning history (resolved); hydration swap on `?school=` preview URLs during load; Scholar-shaped generated-site presentation beneath the (now domain-neutral) Plane B resolution layer.
 
 ## 30–32. Evidence links
 
 - `SHERIVS_EXPERIENCE_BOUNDARY.md`, `SHERIVS_BRAND_MIGRATION.md` (repository root)
-- Commits: `8f5a193`, `abab29f`, `c3aa8d9`, `65228b8` (onboarding + reality) on `cursor/sherivs-refoundation-2507` (mirrored to `master`)
+- Commits: `8f5a193`, `abab29f`, `c3aa8d9`, `65228b8` (onboarding + reality), `82aa5bf` (Plane B domains + composition contract + E2E pyramid) on `cursor/sherivs-refoundation-2507` (mirrored to `master`)
 - PR: https://github.com/vibeoraai-bit/coregrid-scholar-migration/pull/5
-- Deployments: `dpl_9AHb1etyEj1c1pwmfqSP6t45mqpu` (current production, sha `65228b8`)
+- Deployments: `dpl_9Y5FGySYDpbLUD2KjyzN8AHS1FrD` (current production, sha `82aa5bf`)
 - Onboarding behavioral evidence (live probes, 2026-10-08): AUTH_REQUIRED under definer without session; founder E2E created school + users row (role admin) + trigger-derived primary membership + audit row; FOUNDER_ALREADY_LINKED refusal; RUNTIME_NOT_AVAILABLE refusal; atomic rollback verified on an injected audit fault; probe data deleted post-verification
+- Critical-flow pyramid evidence (2026-10-08): `verify:critical-flows --live` 8/8 PASS (F1 homepage 200; F2 signup `fdf215bb…`; F3 onboarding org `92fa4d9e…`; F4 identity resolution role=admin primary=true; F5 reality read roster=1; F6a second-org refused FOUNDER_ALREADY_LINKED; F6b cross-tenant isolation visibleRows=0; F7 cleanup orgsLeft=0 usersLeft=0); Playwright `tests/e2e/sherivs-public.spec.ts` 5/5 PASS; gates: typecheck PASS, unit 8,955 PASS, secrets PASS, domain-neutrality STATUS=PASS
 
 ## 33. Outstanding human actions
 
