@@ -29,15 +29,15 @@ Identity gateway chain (authenticate → memberships → runtime → workspace �
 
 ## 7. Organization architecture
 
-Organization = tenant primitive (`organization_memberships`, active-org switching via `switchActiveOrganization`). Organization public experience exists via subdomain/`?school=` resolution + generated-site engine (`generated-site-view.ts`, `/reality/:class`). PARTIAL: org public experience still Scholar-shaped (school entity); universal organization model beyond school rows is the next structural mission.
+Organization = tenant primitive (`organization_memberships`, active-org switching via `switchActiveOrganization`). **In-product organization onboarding DEPLOYED (2026-10-08)**: the §21 founder pipeline — account → organization identity → runtime selection → profile → review → provisioning → activation — is live at `/onboarding` (server fn `create-organization.functions.ts` over the sole customer write path `create_organization_with_founder`, migration `20261008000060`, applied to the canonical project and behaviorally verified: unauthenticated refusal, linked-founder refusal, frozen-runtime refusal, full authenticated E2E probe with atomic-rollback fault injection; probe data deleted after verification). Organization public experience (Plane B) remains PARTIAL: subdomain/`?school=` resolution + generated-site engine exist (`generated-site-view.ts`), still Scholar-shaped beneath the universal read.
 
 ## 8. Runtime architecture
 
-Domain-runtime boundary enforced: runtimes register via `domainRef` (`kernel/object-type-registry.ts`); Scholar is a runtime, not the platform (`frontend/src/lib/runtime/`). Universal shell (`_authenticated/route.tsx`) still carries Scholar-era navigation composition — runtime-aware shell composition PARTIAL.
+Domain-runtime boundary enforced: runtimes register via `domainRef` (`kernel/object-type-registry.ts`); Scholar is a runtime, not the platform (`frontend/src/lib/runtime/`). The shell renders ONLY runtime-contributed navigation resolved against the viewer's capabilities (`nav-registry.ts` contribution sets × `workspace-engine/navigation.ts`) — installing another runtime adds its navigation without editing the shell. Onboarding's runtime catalog (§21) presents Scholar as the only selectable V1 runtime and honestly marks Commerce/Healthcare/Government "in development" (structural pins: `tests/unit/organization-onboarding.test.ts`). VERIFIED at the shell-contract level; per-runtime workspace composition beyond Scholar remains future work.
 
 ## 9. Reality architecture
 
-Bitemporal kernel substrate exists (`coregrid_v1_kernel_bitemporal`, evidence lifecycle, event security migrations — VERIFIED at DB level per prior live checks). Reality-model exposure to organization workspaces is PARTIAL (education reality screens exist: `admin/education-reality.tsx`).
+Bitemporal kernel substrate exists (`coregrid_v1_kernel_bitemporal`, evidence lifecycle, event security migrations — VERIFIED at DB level per prior live checks). **Organization reality read-model IMPLEMENTED and DEPLOYED (Milestone 9 substrate increment, 2026-10-08)**: `lib/reality/organization-reality.ts` derives organization lifecycle state (onboarding/operational/inactive) from verified truth only (Constitution §9 — no inference); `organization-reality.functions.ts` reads it RLS-scoped (roster counts readable only for the caller's active context — null elsewhere, never fabricated); wired into the `/organizations` selector. The neutral cg_ org-model substrate remains deliberately-unapplied (COND-003); reality-model exposure inside runtime workspaces (education reality screens) is PARTIAL.
 
 ## 10. Mission architecture
 
@@ -85,7 +85,7 @@ Mobile sources exist (`mobile/`) but are not installed/built in this environment
 
 ## 21. Testing
 
-Unit suite comprehensive (structural pins on boundaries: `sherivs-refoundation.test.ts`, domain-neutrality gate). RLS/security tests present. E2E/critical-flow automation (signup→org→runtime→mission chains): PARTIAL — next milestone.
+Unit suite comprehensive (structural pins on boundaries: `sherivs-refoundation.test.ts`, `organization-onboarding.test.ts` — 26 pins on the onboarding state machine, slug contract, failure mapping, and reality derivation). RLS/security tests present; onboarding verified behaviorally against the live DB (E2E probe + fault injection). E2E/critical-flow automation beyond this: PARTIAL — next milestone.
 
 ## 22. Performance
 
@@ -93,11 +93,11 @@ SSR homepage 30 KB initial HTML with full hero/CTA (no loading shell) — DEPLOY
 
 ## 23. Deployment
 
-Vercel production: sherivs.com → www (308) → READY deployments above; all 14 routes 200; zero CoreGrid in served HTML. DNS already routed via Vercel domains config. OPERATIONAL.
+Vercel production: sherivs.com → www (308) → READY deployments above; all 14 routes 200; zero CoreGrid in served HTML. DNS already routed via Vercel domains config. Onboarding migration `20261008000060` applied to canonical Supabase (additive; genuine inverse rollback). OPERATIONAL — current deployment `dpl_9AHb1etyEj1c1pwmfqSP6t45mqpu` (sha `65228b8`).
 
 ## 24. V1 status
 
-V1 envelope (AGENTS.md §45): organizational capability platform with Scholar runtime — identity, membership, workspace, governance substrate DEPLOYED. V1-complete is NOT claimed: universal workspace shell, org onboarding pipeline, and org-public-experience generation remain.
+V1 envelope (AGENTS.md §45): organizational capability platform with Scholar runtime — identity, membership, **in-product organization onboarding**, workspace, governance substrate DEPLOYED. V1-complete is NOT claimed: org public experience (Plane B) and runtime workspace composition beyond Scholar remain.
 
 ## 25. V2 status
 
@@ -112,6 +112,7 @@ All deferrals carry reason/owner/removal-criteria in `SHERIVS_BRAND_MIGRATION.md
 - `/coregrid` compat path and `/privacy` duplicate remain until link hygiene + redirect mission.
 - `@coregrid/contracts` + root package name still carry legacy identifiers (internal-only).
 - `COREGRID_INTERNAL` enum persists in role data until identifier-migration mission.
+- Onboarding founders self-provision organizations — abuse surface (mass org creation). Mitigation present: authentication required, one org per unlinked account, audited. Rate limiting/verification email gating is a hardening follow-up before public growth.
 
 ## 28. Known blockers
 
@@ -124,9 +125,10 @@ Mobile test environment; zod version pinning history (resolved); hydration swap 
 ## 30–32. Evidence links
 
 - `SHERIVS_EXPERIENCE_BOUNDARY.md`, `SHERIVS_BRAND_MIGRATION.md` (repository root)
-- Commits: `8f5a193`, `abab29f`, `c3aa8d9` on `cursor/sherivs-refoundation-2507` (mirrored to `master`)
+- Commits: `8f5a193`, `abab29f`, `c3aa8d9`, `65228b8` (onboarding + reality) on `cursor/sherivs-refoundation-2507` (mirrored to `master`)
 - PR: https://github.com/vibeoraai-bit/coregrid-scholar-migration/pull/5
-- Deployments: `dpl_AyYFyJM8X6KUtizpkzQ9RZdyVGuR` (current production, sha `c3aa8d9`)
+- Deployments: `dpl_9AHb1etyEj1c1pwmfqSP6t45mqpu` (current production, sha `65228b8`)
+- Onboarding behavioral evidence (live probes, 2026-10-08): AUTH_REQUIRED under definer without session; founder E2E created school + users row (role admin) + trigger-derived primary membership + audit row; FOUNDER_ALREADY_LINKED refusal; RUNTIME_NOT_AVAILABLE refusal; atomic rollback verified on an injected audit fault; probe data deleted post-verification
 
 ## 33. Outstanding human actions
 
