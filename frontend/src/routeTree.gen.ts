@@ -23,11 +23,17 @@ import { Route as MarketplaceRouteImport } from './routes/marketplace'
 import { Route as PlatformRouteImport } from './routes/platform'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as RulesRouteImport } from './routes/rules'
 import { Route as ScholarFoundationLoopRouteImport } from './routes/scholar-foundation-loop'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SuperAdminBootstrapRouteImport } from './routes/super-admin-bootstrap'
+import { Route as siteAboutRouteImport } from './routes/(site)/about'
+import { Route as siteContactRouteImport } from './routes/(site)/contact'
 import { Route as siteCoregridRouteImport } from './routes/(site)/coregrid'
+import { Route as sitePrivacyPolicyRouteImport } from './routes/(site)/privacy-policy'
+import { Route as siteRequestDemoRouteImport } from './routes/(site)/request-demo'
+import { Route as siteTermsRouteImport } from './routes/(site)/terms'
 import { Route as AuthenticatedAdminRouteRouteImport } from './routes/_authenticated/admin/route'
 import { Route as AuthenticatedBursarRouteRouteImport } from './routes/_authenticated/bursar/route'
 import { Route as AuthenticatedCommandCentreRouteRouteImport } from './routes/_authenticated/command-centre/route'
@@ -236,6 +242,11 @@ const ResetPasswordRoute = ResetPasswordRouteImport.update({
   path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
+  id: '/robots.txt',
+  path: '/robots.txt',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RulesRoute = RulesRouteImport.update({
   id: '/rules',
   path: '/rules',
@@ -256,9 +267,34 @@ const SuperAdminBootstrapRoute = SuperAdminBootstrapRouteImport.update({
   path: '/super-admin-bootstrap',
   getParentRoute: () => rootRouteImport,
 } as any)
+const siteAboutRoute = siteAboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => siteRouteRoute,
+} as any)
+const siteContactRoute = siteContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => siteRouteRoute,
+} as any)
 const siteCoregridRoute = siteCoregridRouteImport.update({
   id: '/coregrid',
   path: '/coregrid',
+  getParentRoute: () => siteRouteRoute,
+} as any)
+const sitePrivacyPolicyRoute = sitePrivacyPolicyRouteImport.update({
+  id: '/privacy-policy',
+  path: '/privacy-policy',
+  getParentRoute: () => siteRouteRoute,
+} as any)
+const siteRequestDemoRoute = siteRequestDemoRouteImport.update({
+  id: '/request-demo',
+  path: '/request-demo',
+  getParentRoute: () => siteRouteRoute,
+} as any)
+const siteTermsRoute = siteTermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
   getParentRoute: () => siteRouteRoute,
 } as any)
 const AuthenticatedAdminRouteRoute = AuthenticatedAdminRouteRouteImport.update({
@@ -1089,6 +1125,7 @@ export interface FileRoutesByFullPath {
   '/platform': typeof PlatformRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/robots.txt': typeof RobotsDottxtRoute
   '/rules': typeof RulesRoute
   '/scholar-foundation-loop': typeof ScholarFoundationLoopRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -1102,7 +1139,12 @@ export interface FileRoutesByFullPath {
   '/student': typeof AuthenticatedStudentRouteRouteWithChildren
   '/super-admin': typeof AuthenticatedSuperAdminRouteRouteWithChildren
   '/teacher': typeof AuthenticatedTeacherRouteRouteWithChildren
+  '/about': typeof siteAboutRoute
+  '/contact': typeof siteContactRoute
   '/coregrid': typeof siteCoregridRoute
+  '/privacy-policy': typeof sitePrivacyPolicyRoute
+  '/request-demo': typeof siteRequestDemoRoute
+  '/terms': typeof siteTermsRoute
   '/messages': typeof AuthenticatedMessagesRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/runtime': typeof AuthenticatedRuntimeRoute
@@ -1247,6 +1289,7 @@ export interface FileRoutesByTo {
   '/platform': typeof PlatformRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/robots.txt': typeof RobotsDottxtRoute
   '/rules': typeof RulesRoute
   '/scholar-foundation-loop': typeof ScholarFoundationLoopRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -1259,7 +1302,12 @@ export interface FileRoutesByTo {
   '/student': typeof AuthenticatedStudentRouteRouteWithChildren
   '/super-admin': typeof AuthenticatedSuperAdminRouteRouteWithChildren
   '/teacher': typeof AuthenticatedTeacherRouteRouteWithChildren
+  '/about': typeof siteAboutRoute
+  '/contact': typeof siteContactRoute
   '/coregrid': typeof siteCoregridRoute
+  '/privacy-policy': typeof sitePrivacyPolicyRoute
+  '/request-demo': typeof siteRequestDemoRoute
+  '/terms': typeof siteTermsRoute
   '/messages': typeof AuthenticatedMessagesRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/runtime': typeof AuthenticatedRuntimeRoute
@@ -1407,6 +1455,7 @@ export interface FileRoutesById {
   '/platform': typeof PlatformRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/robots.txt': typeof RobotsDottxtRoute
   '/rules': typeof RulesRoute
   '/scholar-foundation-loop': typeof ScholarFoundationLoopRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -1420,7 +1469,12 @@ export interface FileRoutesById {
   '/_authenticated/student': typeof AuthenticatedStudentRouteRouteWithChildren
   '/_authenticated/super-admin': typeof AuthenticatedSuperAdminRouteRouteWithChildren
   '/_authenticated/teacher': typeof AuthenticatedTeacherRouteRouteWithChildren
+  '/(site)/about': typeof siteAboutRoute
+  '/(site)/contact': typeof siteContactRoute
   '/(site)/coregrid': typeof siteCoregridRoute
+  '/(site)/privacy-policy': typeof sitePrivacyPolicyRoute
+  '/(site)/request-demo': typeof siteRequestDemoRoute
+  '/(site)/terms': typeof siteTermsRoute
   '/_authenticated/messages': typeof AuthenticatedMessagesRoute
   '/_authenticated/notifications': typeof AuthenticatedNotificationsRoute
   '/_authenticated/runtime': typeof AuthenticatedRuntimeRoute
@@ -1567,6 +1621,7 @@ export interface FileRouteTypes {
     | '/platform'
     | '/privacy'
     | '/reset-password'
+    | '/robots.txt'
     | '/rules'
     | '/scholar-foundation-loop'
     | '/sitemap.xml'
@@ -1580,7 +1635,12 @@ export interface FileRouteTypes {
     | '/student'
     | '/super-admin'
     | '/teacher'
+    | '/about'
+    | '/contact'
     | '/coregrid'
+    | '/privacy-policy'
+    | '/request-demo'
+    | '/terms'
     | '/messages'
     | '/notifications'
     | '/runtime'
@@ -1725,6 +1785,7 @@ export interface FileRouteTypes {
     | '/platform'
     | '/privacy'
     | '/reset-password'
+    | '/robots.txt'
     | '/rules'
     | '/scholar-foundation-loop'
     | '/sitemap.xml'
@@ -1737,7 +1798,12 @@ export interface FileRouteTypes {
     | '/student'
     | '/super-admin'
     | '/teacher'
+    | '/about'
+    | '/contact'
     | '/coregrid'
+    | '/privacy-policy'
+    | '/request-demo'
+    | '/terms'
     | '/messages'
     | '/notifications'
     | '/runtime'
@@ -1884,6 +1950,7 @@ export interface FileRouteTypes {
     | '/platform'
     | '/privacy'
     | '/reset-password'
+    | '/robots.txt'
     | '/rules'
     | '/scholar-foundation-loop'
     | '/sitemap.xml'
@@ -1897,7 +1964,12 @@ export interface FileRouteTypes {
     | '/_authenticated/student'
     | '/_authenticated/super-admin'
     | '/_authenticated/teacher'
+    | '/(site)/about'
+    | '/(site)/contact'
     | '/(site)/coregrid'
+    | '/(site)/privacy-policy'
+    | '/(site)/request-demo'
+    | '/(site)/terms'
     | '/_authenticated/messages'
     | '/_authenticated/notifications'
     | '/_authenticated/runtime'
@@ -2045,6 +2117,7 @@ export interface RootRouteChildren {
   PlatformRoute: typeof PlatformRouteWithChildren
   PrivacyRoute: typeof PrivacyRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  RobotsDottxtRoute: typeof RobotsDottxtRoute
   RulesRoute: typeof RulesRoute
   ScholarFoundationLoopRoute: typeof ScholarFoundationLoopRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
@@ -2156,6 +2229,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/robots.txt': {
+      id: '/robots.txt'
+      path: '/robots.txt'
+      fullPath: '/robots.txt'
+      preLoaderRoute: typeof RobotsDottxtRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/rules': {
       id: '/rules'
       path: '/rules'
@@ -2184,11 +2264,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SuperAdminBootstrapRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/(site)/about': {
+      id: '/(site)/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof siteAboutRouteImport
+      parentRoute: typeof siteRouteRoute
+    }
+    '/(site)/contact': {
+      id: '/(site)/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof siteContactRouteImport
+      parentRoute: typeof siteRouteRoute
+    }
     '/(site)/coregrid': {
       id: '/(site)/coregrid'
       path: '/coregrid'
       fullPath: '/coregrid'
       preLoaderRoute: typeof siteCoregridRouteImport
+      parentRoute: typeof siteRouteRoute
+    }
+    '/(site)/privacy-policy': {
+      id: '/(site)/privacy-policy'
+      path: '/privacy-policy'
+      fullPath: '/privacy-policy'
+      preLoaderRoute: typeof sitePrivacyPolicyRouteImport
+      parentRoute: typeof siteRouteRoute
+    }
+    '/(site)/request-demo': {
+      id: '/(site)/request-demo'
+      path: '/request-demo'
+      fullPath: '/request-demo'
+      preLoaderRoute: typeof siteRequestDemoRouteImport
+      parentRoute: typeof siteRouteRoute
+    }
+    '/(site)/terms': {
+      id: '/(site)/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof siteTermsRouteImport
       parentRoute: typeof siteRouteRoute
     }
     '/_authenticated/admin': {
@@ -3168,11 +3283,21 @@ declare module '@tanstack/react-router' {
 }
 
 interface siteRouteRouteChildren {
+  siteAboutRoute: typeof siteAboutRoute
+  siteContactRoute: typeof siteContactRoute
   siteCoregridRoute: typeof siteCoregridRoute
+  sitePrivacyPolicyRoute: typeof sitePrivacyPolicyRoute
+  siteRequestDemoRoute: typeof siteRequestDemoRoute
+  siteTermsRoute: typeof siteTermsRoute
 }
 
 const siteRouteRouteChildren: siteRouteRouteChildren = {
+  siteAboutRoute: siteAboutRoute,
+  siteContactRoute: siteContactRoute,
   siteCoregridRoute: siteCoregridRoute,
+  sitePrivacyPolicyRoute: sitePrivacyPolicyRoute,
+  siteRequestDemoRoute: siteRequestDemoRoute,
+  siteTermsRoute: siteTermsRoute,
 }
 
 const siteRouteRouteWithChildren = siteRouteRoute._addFileChildren(
@@ -3627,6 +3752,7 @@ const rootRouteChildren: RootRouteChildren = {
   PlatformRoute: PlatformRouteWithChildren,
   PrivacyRoute: PrivacyRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  RobotsDottxtRoute: RobotsDottxtRoute,
   RulesRoute: RulesRoute,
   ScholarFoundationLoopRoute: ScholarFoundationLoopRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,

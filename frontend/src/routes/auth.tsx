@@ -1,12 +1,9 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
 import { useApp } from "@/contexts/app-context";
 import { scholarWorkspaceHome } from "@/lib/runtime/nav-registry";
 import { PLATFORM_NAME } from "@/lib/platform";
-import { INSTALLED_RUNTIME_NAME as SCHOLAR_RUNTIME_NAME } from "@/lib/runtime/installed-runtimes";
-import { provisionDemoEnterprise } from "@/lib/runtime/scholar/demo-provision.functions";
 
 export const Route = createFileRoute("/auth")({
   ssr: false,
@@ -25,27 +22,6 @@ function AuthPage() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [info, setInfo] = useState<string | null>(null);
-  const [demoBusy, setDemoBusy] = useState(false);
-  const provisionDemo = useServerFn(provisionDemoEnterprise);
-
-  async function handleDemoLogin() {
-    setDemoBusy(true);
-    setError(null);
-    setInfo(null);
-    try {
-      const creds = await provisionDemo();
-      const { error } = await supabase.auth.signInWithPassword({
-        email: creds.email,
-        password: creds.password,
-      });
-      if (error) throw error;
-      await refresh();
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Demo login failed");
-    } finally {
-      setDemoBusy(false);
-    }
-  }
 
   // If already signed in, redirect to the right dashboard
   useEffect(() => {
@@ -116,7 +92,7 @@ function AuthPage() {
         });
         if (error) throw error;
         setInfo(
-          "Account created. A school admin must link your account to a school before you can access a portal.",
+          "Account created. An organization admin must link your account to an organization before you can access a workspace.",
         );
       } else {
         // forgot password — call audit FIRST so the server can enforce rate-limit.
@@ -185,7 +161,7 @@ function AuthPage() {
           <p className="mt-1 text-sm text-muted-foreground">
             {mode === "forgot"
               ? "Enter the email tied to your account and we'll send you a reset link."
-              : `${PLATFORM_NAME} portal access — ${SCHOLAR_RUNTIME_NAME} runtime`}
+              : `Sign in to ${PLATFORM_NAME} — your organization's operating environment.`}
           </p>
         </div>
 
@@ -267,27 +243,6 @@ function AuthPage() {
         </form>
 
         <div className="mt-6 space-y-2 text-center text-sm">
-          <div className="mb-4 rounded-xl border border-amber-500/40 bg-amber-500/5 p-4 text-left">
-            <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-amber-500">
-              <span>★</span> Enterprise demo
-            </div>
-            <p className="mt-1 text-xs text-muted-foreground">
-              One click provisions an Enterprise-tier school so every locked feature (Expenses,
-              Digital Twin, CoreGrid Intelligence, etc.) unlocks.
-            </p>
-            <button
-              type="button"
-              onClick={handleDemoLogin}
-              disabled={demoBusy || busy}
-              className="mt-3 w-full rounded-md bg-amber-500 px-3 py-2 text-sm font-semibold text-black disabled:opacity-60"
-            >
-              {demoBusy ? "Provisioning…" : "Sign in as Enterprise demo"}
-            </button>
-            <p className="mt-3 text-[11px] text-muted-foreground">
-              Demo credentials are generated at provisioning time and are never displayed or stored
-              on this page (V1-008). Provisioning is environment-gated and disabled by default.
-            </p>
-          </div>
           {mode === "signin" && (
             <button
               type="button"

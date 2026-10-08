@@ -202,7 +202,7 @@ function GeneratedRuntime() {
 
       <nav className="flex flex-wrap gap-4 pt-2 text-xs">
         <Link to="/" className="underline">
-          Command Centre
+          Sherivs Control
         </Link>
         <a href="/platform/org" className="underline">
           Platform organization

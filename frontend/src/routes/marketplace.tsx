@@ -75,7 +75,7 @@ function MarketplacePage() {
           </div>
           <nav className="flex flex-wrap gap-4 text-xs">
             <Link to="/" className="underline">
-              Command Centre
+              Sherivs Control
             </Link>
             <Link to="/reality/$class" params={{ class: orgType }} className="underline">
               Generated environment
