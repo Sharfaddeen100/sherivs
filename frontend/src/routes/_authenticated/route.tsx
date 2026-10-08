@@ -3,6 +3,7 @@ import {
   Outlet,
   redirect,
   Link,
+  useLocation,
   useNavigate,
   useRouter,
 } from "@tanstack/react-router";
@@ -71,6 +72,7 @@ function AuthenticatedRouteErrorComponent({ error, reset }: { error: unknown; re
 function AuthenticatedLayout() {
   const { profile, superAdmin, school, role, loading, signOut, authUser, refresh } = useApp();
   const navigate = useNavigate();
+  const location = useLocation();
   const getMyPrimaryPosition = useServerFn(getMyPrimaryWorkforcePosition);
   const switchActiveOrg = useServerFn(switchActiveOrganization);
   // The resolved identity chain (§11): drives the switcher's cross-organization
@@ -96,6 +98,15 @@ function AuthenticatedLayout() {
   }
 
   if (!profile && !superAdmin) {
+    // Unlinked account (§11 — new/pending customer). The FOUNDER pipeline
+    // surfaces (/welcome, /onboarding §21) are exactly for this persona and
+    // their server function re-verifies authorization, so those children
+    // render. Everywhere else the shell states the linking state — a
+    // workspace cannot open without a verified organization link.
+    const pathname = location.pathname.replace(/\/+$/, "") || "/";
+    if (pathname === "/welcome" || pathname.startsWith("/onboarding")) {
+      return <Outlet />;
+    }
     return (
       <div className="min-h-dvh grid place-items-center px-4">
         <div className="max-w-md uos-card p-8 text-center">
