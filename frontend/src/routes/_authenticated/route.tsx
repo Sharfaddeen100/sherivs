@@ -51,11 +51,15 @@ export const Route = createFileRoute("/_authenticated")({
   errorComponent: AuthenticatedRouteErrorComponent,
 });
 
-function AuthenticatedRouteErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
+function AuthenticatedRouteErrorComponent({ error, reset }: { error: unknown; reset: () => void }) {
   const router = useRouter();
+  const normalized =
+    error instanceof Error
+      ? error
+      : new Error(typeof error === "string" ? error : "Unexpected route error");
   return (
     <RouteErrorBoundary
-      error={error}
+      error={normalized}
       reset={() => {
         reset();
         router.invalidate();
