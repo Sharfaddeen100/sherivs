@@ -7581,6 +7581,15 @@ export type Database = {
         Args: { p_batch_limit?: number; p_before: string };
         Returns: number;
       };
+      create_organization_with_founder: {
+        Args: {
+          p_full_name: string;
+          p_org_name: string;
+          p_org_slug: string;
+          p_runtime?: string;
+        };
+        Returns: string;
+      };
       end_role_assignment: {
         Args: { p_assignment_id: string };
         Returns: boolean;

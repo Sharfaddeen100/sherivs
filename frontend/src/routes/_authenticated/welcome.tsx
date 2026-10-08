@@ -30,16 +30,23 @@ function WelcomePage() {
         <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
           Your account
           {authUser?.email ? <strong> ({authUser.email})</strong> : null} is verified, but it
-          isn&apos;t linked to an organization yet. An organization admin (or a {PLATFORM_NAME}{" "}
-          platform administrator) needs to assign you a role before your workspace can open.
+          isn&apos;t linked to an organization yet. Create your own organization, request a demo, or
+          wait for an organization admin (or a {PLATFORM_NAME} platform administrator) to assign you
+          a role.
         </p>
 
         <div className="mt-8 grid gap-3">
           <Link
-            to="/request-demo"
+            to="/onboarding"
             className="rounded-md bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
           >
-            Set up your organization
+            Create your organization
+          </Link>
+          <Link
+            to="/request-demo"
+            className="rounded-md border border-border px-4 py-2.5 text-sm font-semibold transition-colors hover:bg-accent"
+          >
+            Request a demo
           </Link>
           <a
             href="mailto:hello@sherivs.com?subject=Link%20my%20account"

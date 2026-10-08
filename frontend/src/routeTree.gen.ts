@@ -42,6 +42,7 @@ import { Route as AuthenticatedHqRouteRouteImport } from './routes/_authenticate
 import { Route as AuthenticatedInternalRouteImport } from './routes/_authenticated/internal'
 import { Route as AuthenticatedMessagesRouteImport } from './routes/_authenticated/messages'
 import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authenticated/notifications'
+import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding'
 import { Route as AuthenticatedOrganizationsRouteImport } from './routes/_authenticated/organizations'
 import { Route as AuthenticatedParentRouteRouteImport } from './routes/_authenticated/parent/route'
 import { Route as AuthenticatedRuntimeRouteImport } from './routes/_authenticated/runtime'
@@ -344,6 +345,11 @@ const AuthenticatedNotificationsRoute =
     path: '/notifications',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedOnboardingRoute = AuthenticatedOnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedOrganizationsRoute =
   AuthenticatedOrganizationsRouteImport.update({
     id: '/organizations',
@@ -1167,6 +1173,7 @@ export interface FileRoutesByFullPath {
   '/internal': typeof AuthenticatedInternalRoute
   '/messages': typeof AuthenticatedMessagesRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
+  '/onboarding': typeof AuthenticatedOnboardingRoute
   '/organizations': typeof AuthenticatedOrganizationsRoute
   '/runtime': typeof AuthenticatedRuntimeRoute
   '/settings': typeof AuthenticatedSettingsRoute
@@ -1333,6 +1340,7 @@ export interface FileRoutesByTo {
   '/internal': typeof AuthenticatedInternalRoute
   '/messages': typeof AuthenticatedMessagesRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
+  '/onboarding': typeof AuthenticatedOnboardingRoute
   '/organizations': typeof AuthenticatedOrganizationsRoute
   '/runtime': typeof AuthenticatedRuntimeRoute
   '/settings': typeof AuthenticatedSettingsRoute
@@ -1503,6 +1511,7 @@ export interface FileRoutesById {
   '/_authenticated/internal': typeof AuthenticatedInternalRoute
   '/_authenticated/messages': typeof AuthenticatedMessagesRoute
   '/_authenticated/notifications': typeof AuthenticatedNotificationsRoute
+  '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute
   '/_authenticated/organizations': typeof AuthenticatedOrganizationsRoute
   '/_authenticated/runtime': typeof AuthenticatedRuntimeRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
@@ -1672,6 +1681,7 @@ export interface FileRouteTypes {
     | '/internal'
     | '/messages'
     | '/notifications'
+    | '/onboarding'
     | '/organizations'
     | '/runtime'
     | '/settings'
@@ -1838,6 +1848,7 @@ export interface FileRouteTypes {
     | '/internal'
     | '/messages'
     | '/notifications'
+    | '/onboarding'
     | '/organizations'
     | '/runtime'
     | '/settings'
@@ -2007,6 +2018,7 @@ export interface FileRouteTypes {
     | '/_authenticated/internal'
     | '/_authenticated/messages'
     | '/_authenticated/notifications'
+    | '/_authenticated/onboarding'
     | '/_authenticated/organizations'
     | '/_authenticated/runtime'
     | '/_authenticated/settings'
@@ -2397,6 +2409,13 @@ declare module '@tanstack/react-router' {
       path: '/notifications'
       fullPath: '/notifications'
       preLoaderRoute: typeof AuthenticatedNotificationsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/onboarding': {
+      id: '/_authenticated/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof AuthenticatedOnboardingRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/organizations': {
@@ -3749,6 +3768,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedInternalRoute: typeof AuthenticatedInternalRoute
   AuthenticatedMessagesRoute: typeof AuthenticatedMessagesRoute
   AuthenticatedNotificationsRoute: typeof AuthenticatedNotificationsRoute
+  AuthenticatedOnboardingRoute: typeof AuthenticatedOnboardingRoute
   AuthenticatedOrganizationsRoute: typeof AuthenticatedOrganizationsRoute
   AuthenticatedRuntimeRoute: typeof AuthenticatedRuntimeRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
@@ -3770,6 +3790,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedInternalRoute: AuthenticatedInternalRoute,
   AuthenticatedMessagesRoute: AuthenticatedMessagesRoute,
   AuthenticatedNotificationsRoute: AuthenticatedNotificationsRoute,
+  AuthenticatedOnboardingRoute: AuthenticatedOnboardingRoute,
   AuthenticatedOrganizationsRoute: AuthenticatedOrganizationsRoute,
   AuthenticatedRuntimeRoute: AuthenticatedRuntimeRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
