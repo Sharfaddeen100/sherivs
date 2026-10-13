@@ -6,11 +6,7 @@
  * custom domains vs platform hosts).
  */
 import { afterEach, describe, expect, it } from "vitest";
-import {
-  classifyTenantHost,
-  resolveTenantDomain,
-  resolveTenantSlug,
-} from "@/lib/tenant";
+import { classifyTenantHost, resolveTenantDomain, resolveTenantSlug } from "@/lib/tenant";
 
 const ORIGINAL_WINDOW = globalThis.window;
 
@@ -28,6 +24,8 @@ describe("classifyTenantHost", () => {
     expect(classifyTenantHost("sherivs.com")).toEqual({ kind: "platform" });
     expect(classifyTenantHost("www.sherivs.com")).toEqual({ kind: "platform" });
     expect(classifyTenantHost("app.sherivs.com")).toEqual({ kind: "platform" });
+    expect(classifyTenantHost("console.sherivs.com")).toEqual({ kind: "platform" });
+    expect(classifyTenantHost("internal.sherivs.com")).toEqual({ kind: "platform" });
     expect(classifyTenantHost("localhost")).toEqual({ kind: "platform" });
     expect(classifyTenantHost("127.0.0.1")).toEqual({ kind: "platform" });
     expect(classifyTenantHost("app.universalschoolos.com")).toEqual({ kind: "platform" });
@@ -49,6 +47,15 @@ describe("classifyTenantHost", () => {
     expect(classifyTenantHost("api.example.com")).toEqual({ kind: "platform" });
     expect(classifyTenantHost("admin.example.com")).toEqual({ kind: "platform" });
     expect(classifyTenantHost("dashboard.example.com")).toEqual({ kind: "platform" });
+    expect(classifyTenantHost("console.example.com")).toEqual({ kind: "platform" });
+    expect(classifyTenantHost("internal.example.com")).toEqual({ kind: "platform" });
+  });
+
+  it("does not treat generated Vercel hosts as organization slugs", () => {
+    expect(classifyTenantHost("coregrid-scholar-migration-abc.vercel.app")).toEqual({
+      kind: "platform",
+    });
+    expect(classifyTenantHost("preview.vercel.sh")).toEqual({ kind: "platform" });
   });
 
   it("classifies a first subdomain label as a tenant slug", () => {
@@ -90,6 +97,10 @@ describe("resolveTenantSlug", () => {
 
   it("returns null on platform hosts and custom domains", () => {
     withLocation("https://sherivs.com/");
+    expect(resolveTenantSlug()).toBeNull();
+    withLocation("https://console.sherivs.com/");
+    expect(resolveTenantSlug()).toBeNull();
+    withLocation("https://app.sherivs.com/");
     expect(resolveTenantSlug()).toBeNull();
     withLocation("https://organization-domain.com/");
     expect(resolveTenantSlug()).toBeNull();
