@@ -43,6 +43,8 @@ describe("hostnameFromHostHeader", () => {
     expect(hostnameFromHostHeader("console.sherivs.com, www.sherivs.com")).toBe(
       "console.sherivs.com",
     );
+    expect(hostnameFromHostHeader("[::1]")).toBe("[::1]");
+    expect(hostnameFromHostHeader("[::1]:443")).toBe("[::1]");
     expect(hostnameFromHostHeader(null)).toBe("");
     expect(hostnameFromHostHeader(undefined)).toBe("");
   });

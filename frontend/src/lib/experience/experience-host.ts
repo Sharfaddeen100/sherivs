@@ -46,11 +46,16 @@ const VERCEL_PLATFORM_HOST_SUFFIXES = [".vercel.app", ".vercel.sh"] as const;
 
 const RESERVED_SUBS = new Set(["www", "app", "api", "admin", "dashboard", "internal", "console"]);
 
-/** Strip port and multi-value forwarded hosts. Exact hostname only. */
+/** Strip port and multi-value forwarded hosts. Exact hostname only. Preserve IPv6 brackets. */
 export function hostnameFromHostHeader(hostHeader: string | null | undefined): string {
   if (!hostHeader) return "";
   const first = hostHeader.split(",")[0]?.trim() ?? "";
-  return first.split("/")[0]?.split(":")[0]?.trim().toLowerCase() ?? "";
+  const withoutPath = first.split("/")[0]?.trim().toLowerCase() ?? "";
+  if (withoutPath.startsWith("[")) {
+    const end = withoutPath.indexOf("]");
+    if (end !== -1) return withoutPath.slice(0, end + 1);
+  }
+  return withoutPath.split(":")[0]?.trim() ?? "";
 }
 
 /** Generated Vercel preview / deployment hosts are not tenants and not production. */
