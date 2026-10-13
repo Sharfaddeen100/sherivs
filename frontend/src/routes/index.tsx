@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { useApp } from "@/contexts/app-context";
 import { PublicSchoolSite } from "@/components/public/site";
@@ -6,8 +6,27 @@ import { SherivsHome } from "@/components/public/sherivs-home";
 import { identityFromAppState } from "@/lib/identity/context";
 import { resolveTenantDomain, resolveTenantSlug } from "@/lib/tenant";
 import { PLATFORM_NAME, PLATFORM_URL } from "@/lib/platform";
+import {
+  resolveExperienceHost,
+  shouldRedirectCanonicalRootToAuth,
+} from "@/lib/experience/experience-host";
+import { readRequestHostname } from "@/lib/experience/experience-host.functions";
+
+async function loaderHostname(): Promise<string> {
+  if (typeof window !== "undefined") return window.location.hostname;
+  return readRequestHostname();
+}
 
 export const Route = createFileRoute("/")({
+  loader: async () => {
+    const hostname = await loaderHostname();
+    const hostKind = resolveExperienceHost(hostname);
+    // App and console must not SSR the public marketing homepage.
+    if (shouldRedirectCanonicalRootToAuth(hostKind)) {
+      throw redirect({ to: "/auth" });
+    }
+    return { hostname, hostKind };
+  },
   component: Index,
   head: () => ({
     meta: [
