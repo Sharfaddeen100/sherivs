@@ -2,7 +2,8 @@ import { createHash } from "node:crypto";
 import { mkdtempSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { afterEach, beforeAll, describe, expect, it } from "vitest";
+import { afterAll, afterEach, beforeAll, describe, expect, it } from "vitest";
+import pg from "pg";
 import {
   PINNED_MIGRATION_COUNT,
   PINNED_SOURCE_COMMIT,
@@ -24,14 +25,34 @@ import {
   collectForbiddenFallbacks,
   resolveStagingTarget,
 } from "../../scripts/staging/sherivs-restore/target.mjs";
-import { inspectTlsPosture, strictTlsConfig } from "../../scripts/staging/sherivs-restore/tls.mjs";
+import {
+  buildPinnedClientConfig,
+  inspectTlsPosture,
+  parseDiscreteConnection,
+  strictTlsConfig,
+} from "../../scripts/staging/sherivs-restore/tls.mjs";
 import { createLogger, redactText, redactUrl } from "../../scripts/staging/sherivs-restore/redact.mjs";
 import {
   LEDGER_STATUS,
   createMemoryLedger,
   evaluateLedger,
 } from "../../scripts/staging/sherivs-restore/ledger.mjs";
-import { createLiveConnector, createMockConnector } from "../../scripts/staging/sherivs-restore/connect.mjs";
+import {
+  createLiveConnector,
+  createMockConnector,
+  demonstrateDriverSslOverwrite,
+  inspectConstructedClientSsl,
+} from "../../scripts/staging/sherivs-restore/connect.mjs";
+import {
+  createAdvisoryLock,
+  createFakeAdvisorySession,
+  createLockRegistry,
+  transitionLock,
+  LOCK_STATES,
+  advisoryLockPlan,
+} from "../../scripts/staging/sherivs-restore/lock.mjs";
+import { reconcileRestoreState } from "../../scripts/staging/sherivs-restore/reconcile.mjs";
+import { extractExpectedObjects } from "../../scripts/staging/sherivs-restore/catalog-contract.mjs";
 import { catalogNotAssumedFromPriorReport, runOfflinePreflight } from "../../scripts/staging/sherivs-restore/preflight.mjs";
 import {
   assertExecuteAuthorization,
@@ -39,7 +60,27 @@ import {
 } from "../../scripts/staging/sherivs-restore/runner.mjs";
 import { help, main as cliMain } from "../../scripts/staging/sherivs-restore/cli.mjs";
 
-const CA_PEM = "-----BEGIN CERTIFICATE-----\nMIITestStagingRestore\n-----END CERTIFICATE-----\n";
+const CA_PEM = `-----BEGIN CERTIFICATE-----
+MIIDNTCCAh2gAwIBAgIUMCCBaiUc4B42kZIGKlbl+0cX1dkwDQYJKoZIhvcNAQEL
+BQAwKjEoMCYGA1UEAwwfU2hlcml2cyBTdGFnaW5nIFJlc3RvcmUgVGVzdCBDQTAe
+Fw0yNjEwMTQyMDQ2NDFaFw0zNjEwMTEyMDQ2NDFaMCoxKDAmBgNVBAMMH1NoZXJp
+dnMgU3RhZ2luZyBSZXN0b3JlIFRlc3QgQ0EwggEiMA0GCSqGSIb3DQEBAQUAA4IB
+DwAwggEKAoIBAQC9V+PpifhPLoaRudFVLXiq0ZDhF0Jn4fZPIx6Vo/n3aYuiZNst
+A4abGTFkT1vhaCeMoQX+c01DUcZ/RK3bjzNeVfXq+WXjxV2p4axAiporzMK2OwZm
+T7aB2N397fRZpEwOk7PzUzjEPGE2RXWlM6NzSn32J2Vqt4lqlXD+WEQcEPxN9l25
+yz73ofLbQMcdx1beAMdLr4x9fBxY4JyfQFXQ9RTvKnRlsfnu6kFf3FQsmA9DmBVe
+T7ihUBFMmZJ0IWvnwMhZstjTxI55FDwENdz2iht176lElVROsh0rpBcWFvZQID1G
+HbVycqDcIyRssHtY85aebzaddo9fdxSXLFitAgMBAAGjUzBRMB0GA1UdDgQWBBTp
+uovQF1M0S8lHTeDzg+a8/Qwr0jAfBgNVHSMEGDAWgBTpuovQF1M0S8lHTeDzg+a8
+/Qwr0jAPBgNVHRMBAf8EBTADAQH/MA0GCSqGSIb3DQEBCwUAA4IBAQCY/uiEGKE8
+1MknbVlNNKJZzkR3lKp8/gvWXYSjCXl9fPfDovkzp6qqzKIFzmUsz4HM+w1iYa5g
+hY+t3n1to16E9EWVd+9oB5ySRPsI4hXFVJmOdCdiqAotgy6vM+sXBAXpqJBEmXv2
+RFwnwx5nbJI5od1s8w55nxXiDK2/3YUvsb+4vjvyWwfSbgMwvGFNs1reLdFNawHI
+rys7AYJLVRI9FaHxqPN7mIrnEouVoVPRmCpNC3ddDQkIw91Ga7zGWTVLZGDoiEsw
+eexdUtdehTGJtVexIvxkovHB3hIQLy48sg/Wu+hUXYD+2x9mo/tgJ0yQ86ETYoAK
+KycRmXbx7DwR
+-----END CERTIFICATE-----
+`;
 const STAGING_POOLER_URL =
   "postgresql://postgres.dvxszhracsjwdancijdc:fixture-not-a-secret@aws-0-eu-west-1.pooler.supabase.com:5432/postgres";
 const STAGING_DIRECT_URL =
@@ -90,17 +131,57 @@ const executeFlags = {
   iAuthorizeStagingRestore: true,
 };
 
+function greenFieldObservations() {
+  return {
+    catalog: { status: "observed" as const, tables: [], policies: [] },
+    vendorHistory: { status: "absent" as const, versions: [] as string[] },
+  };
+}
+
+function advisoryHarness() {
+  const registry = createLockRegistry();
+  const session = createFakeAdvisorySession(registry);
+  const lock = createAdvisoryLock({ session, owner: "test-runner" });
+  return { registry, session, lock };
+}
+
+function executeHarness(overrides: Record<string, unknown> = {}) {
+  const { registry, session, lock } = advisoryHarness();
+  return {
+    ...executeFlags,
+    ...greenFieldObservations(),
+    lock,
+    registry,
+    session,
+    allowNetwork: false,
+    skipOfflinePreflight: true,
+    ...overrides,
+  };
+}
+
 describe("SHERIVS staging-only migration runner (offline)", () => {
   let approved: ReturnType<typeof loadApprovedManifest>;
   let gitLoaded: Awaited<ReturnType<typeof loadFromGitCommit>>;
+  const originalConnect = pg.Client.prototype.connect;
 
   beforeAll(() => {
+    pg.Client.prototype.connect = function offlineConnectGuard() {
+      throw new Error("NETWORK_DISABLED: offline tests must not open a database session");
+    };
     approved = loadApprovedManifest();
     gitLoaded = loadFromGitCommit();
   });
 
+  afterAll(() => {
+    pg.Client.prototype.connect = originalConnect;
+  });
+
   afterEach(() => {
     delete process.env.COREGRID_DB_INSECURE_TLS;
+    delete process.env.PGSSLMODE;
+    delete process.env.PGSSLROOTCERT;
+    delete process.env.PGSSLCERT;
+    delete process.env.PGSSLKEY;
   });
 
   it("1. correct 71-file manifest passes", () => {
@@ -305,14 +386,12 @@ describe("SHERIVS staging-only migration runner (offline)", () => {
     });
     const result = await runRestore({
       mode: "execute",
-      ...executeFlags,
       env: stagingEnv(),
       manifest: mini,
       sqlByFilename: mini.sqlByFilename,
-      skipOfflinePreflight: true,
       connector,
       ledger: createMemoryLedger(),
-      allowNetwork: false,
+      ...executeHarness(),
     });
     expect(result.ok).toBe(false);
     expect(result.stopped).toBe(true);
@@ -340,27 +419,23 @@ describe("SHERIVS staging-only migration runner (offline)", () => {
     const ledger = createMemoryLedger();
     const first = await runRestore({
       mode: "execute",
-      ...executeFlags,
       env: stagingEnv(),
       manifest: mini,
       sqlByFilename: mini.sqlByFilename,
-      skipOfflinePreflight: true,
       connector,
       ledger,
-      allowNetwork: false,
+      ...executeHarness(),
     });
     expect(first.ok).toBe(false);
     expect(applyB).toBe(1);
     const second = await runRestore({
       mode: "execute",
-      ...executeFlags,
       env: stagingEnv(),
       manifest: mini,
       sqlByFilename: mini.sqlByFilename,
-      skipOfflinePreflight: true,
       connector,
       ledger,
-      allowNetwork: false,
+      ...executeHarness(),
     });
     expect(second.ok).toBe(false);
     expect(second.retried).toBe(false);
@@ -373,14 +448,12 @@ describe("SHERIVS staging-only migration runner (offline)", () => {
     const connector = createMockConnector();
     const result = await runRestore({
       mode: "execute",
-      ...executeFlags,
       env: stagingEnv(),
       manifest: mini,
       sqlByFilename: mini.sqlByFilename,
-      skipOfflinePreflight: true,
       connector,
       ledger: createMemoryLedger(),
-      allowNetwork: false,
+      ...executeHarness(),
     });
     expect(result.ok).toBe(true);
     const applyOpens = connector.opened.filter((o) => o.label.startsWith("apply:"));
@@ -550,5 +623,501 @@ describe("SHERIVS staging-only migration runner (offline)", () => {
     await expect(
       connector.withConnection("a", async () => connector.withConnection("b", async () => null)),
     ).rejects.toThrow(/CONNECTION_ISOLATION_VIOLATION/);
+  });
+
+  it("TLS URL sslmode=no-verify is refused before Client construction", () => {
+    const env = stagingEnv();
+    const url = `${STAGING_POOLER_URL}?sslmode=no-verify`;
+    expect(() => strictTlsConfig(url, env)).toThrow(/TLS_NO_VERIFY_FORBIDDEN/);
+    const posture = inspectTlsPosture(url, env);
+    expect(posture.ok).toBe(false);
+    expect(posture.code).toBe("TLS_NO_VERIFY_FORBIDDEN");
+    expect(JSON.stringify(posture)).not.toContain("fixture-not-a-secret");
+  });
+
+  it("TLS URL sslmode=disable is refused", () => {
+    expect(() =>
+      strictTlsConfig(`${STAGING_POOLER_URL}?sslmode=disable`, stagingEnv()),
+    ).toThrow(/TLS_DISABLED_FORBIDDEN/);
+  });
+
+  it("conflicting URL sslmode cannot downgrade pinned Client ssl", () => {
+    const env = stagingEnv();
+    const requireUrl = `${STAGING_POOLER_URL}?sslmode=require`;
+    expect(() => strictTlsConfig(requireUrl, env)).toThrow(/TLS_SSLMODE_REFUSED/);
+    const verifyCaUrl = `${STAGING_POOLER_URL}?sslmode=verify-ca`;
+    expect(() => parseDiscreteConnection(verifyCaUrl)).toThrow(/TLS_SSLMODE_REFUSED/);
+
+    const pinned = buildPinnedClientConfig(STAGING_POOLER_URL, env);
+    expect(pinned.config).not.toHaveProperty("connectionString");
+    expect(pinned.config.ssl.rejectUnauthorized).toBe(true);
+    expect(pinned.config.ssl.ca).toContain("BEGIN CERTIFICATE");
+
+    const inspected = inspectConstructedClientSsl(STAGING_POOLER_URL, env);
+    expect(inspected.hasConnectionString).toBe(false);
+    expect(inspected.rejectUnauthorized).toBe(true);
+    expect(inspected.caPresent).toBe(true);
+    expect(inspected.sslIsFalse).toBe(false);
+
+    const driver = demonstrateDriverSslOverwrite(
+      `${STAGING_POOLER_URL}?sslmode=no-verify`,
+      { rejectUnauthorized: true, ca: CA_PEM },
+      pg.Client,
+    );
+    expect(driver.naiveSsl).toEqual({ rejectUnauthorized: false });
+    expect(driver.pinnedSsl.rejectUnauthorized).toBe(true);
+    expect(driver.naiveOverwrote).toBe(true);
+  });
+
+  it("missing or invalid CA configuration fails closed", () => {
+    expect(() =>
+      strictTlsConfig(STAGING_POOLER_URL, { STAGING_DATABASE_URL: STAGING_POOLER_URL }),
+    ).toThrow(/TLS_CA_REQUIRED/);
+    expect(() =>
+      strictTlsConfig(
+        STAGING_POOLER_URL,
+        stagingEnv({ COREGRID_DB_CA_CERT: "-----BEGIN CERTIFICATE-----\nnot-a-cert\n-----END CERTIFICATE-----" }),
+      ),
+    ).toThrow(/TLS_CA_INVALID/);
+    expect(() =>
+      strictTlsConfig(
+        STAGING_POOLER_URL,
+        stagingEnv({
+          COREGRID_DB_CA_CERT: "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASC\n-----END PRIVATE KEY-----",
+        }),
+      ),
+    ).toThrow(/TLS_CA_NOT_CERTIFICATE/);
+  });
+
+  it("unexpected URL parameters and PGSSLMODE fail closed without leaking secrets", () => {
+    const hostOverride = `${STAGING_POOLER_URL}?host=db.${PRODUCTION_PROJECT_REF}.supabase.co`;
+    expect(() => parseDiscreteConnection(hostOverride)).toThrow(/TLS_URL_PARAM_REFUSED/);
+    expect(() => parseDiscreteConnection(`${STAGING_POOLER_URL}?hostaddr=1.2.3.4`)).toThrow(
+      /TLS_URL_PARAM_REFUSED/,
+    );
+    expect(() => parseDiscreteConnection(`${STAGING_POOLER_URL}?ssl=no-verify`)).toThrow(
+      /TLS_NO_VERIFY_FORBIDDEN|TLS_URL_PARAM_REFUSED/,
+    );
+    try {
+      parseDiscreteConnection(`${STAGING_POOLER_URL}?hostaddr=1.2.3.4`);
+    } catch (err) {
+      expect(String(err)).not.toContain("fixture-not-a-secret");
+    }
+    const env = stagingEnv({ PGSSLMODE: "disable" });
+    expect(() => strictTlsConfig(STAGING_POOLER_URL, env)).toThrow(/TLS_PG_ENV_REFUSED/);
+  });
+
+  it("sslmode=verify-full is the only accepted explicit mode", () => {
+    const cfg = strictTlsConfig(`${STAGING_POOLER_URL}?sslmode=verify-full`, stagingEnv());
+    expect(cfg.ok).toBe(true);
+    expect(cfg.rejectUnauthorized).toBe(true);
+    expect(cfg.sslmode).toBe("verify-full");
+  });
+
+  it("lock state machine records acquire, hold, release, and loss", () => {
+    const unlocked = { status: LOCK_STATES.UNLOCKED, owner: null };
+    const held = transitionLock(unlocked, { type: "acquire_ok", owner: "a" });
+    expect(held).toMatchObject({ status: LOCK_STATES.HELD, owner: "a", ok: true });
+    expect(transitionLock(held, { type: "acquire_ok", owner: "b" }).code).toBe("LOCK_HELD");
+    expect(transitionLock(held, { type: "connection_lost" }).code).toBe("LOCK_CONNECTION_LOST");
+    expect(transitionLock(held, { type: "release_ok" }).status).toBe(LOCK_STATES.RELEASED);
+    expect(advisoryLockPlan().scope).toBe("entire_restore_run");
+    expect(advisoryLockPlan().whyNotProcessLocal).toMatch(/two runner processes/);
+  });
+
+  it("two concurrent runner attempts cannot both acquire the advisory lock", async () => {
+    const mini = miniManifest();
+    const registry = createLockRegistry();
+    const lockA = createAdvisoryLock({
+      session: createFakeAdvisorySession(registry),
+      owner: "a",
+    });
+    const lockB = createAdvisoryLock({
+      session: createFakeAdvisorySession(registry),
+      owner: "b",
+    });
+    await lockA.acquire();
+    const blocked = await runRestore({
+      mode: "execute",
+      env: stagingEnv(),
+      manifest: mini,
+      sqlByFilename: mini.sqlByFilename,
+      connector: createMockConnector(),
+      ledger: createMemoryLedger(),
+      ...executeHarness({ lock: lockB }),
+    });
+    expect(blocked.ok).toBe(false);
+    expect(blocked.reason).toBe("LOCK_ACQUIRE_FAILED");
+    expect(blocked.retried).toBe(false);
+    expect(blocked.autoRetry).toBe(false);
+    await lockA.release();
+    const allowed = await runRestore({
+      mode: "execute",
+      env: stagingEnv(),
+      manifest: mini,
+      sqlByFilename: mini.sqlByFilename,
+      connector: createMockConnector(),
+      ledger: createMemoryLedger(),
+      ...executeHarness({ lock: lockB }),
+    });
+    expect(allowed.ok).toBe(true);
+  });
+
+  it("lock acquisition failure blocks execution", async () => {
+    const mini = miniManifest();
+    const result = await runRestore({
+      mode: "execute",
+      env: stagingEnv(),
+      manifest: mini,
+      sqlByFilename: mini.sqlByFilename,
+      connector: createMockConnector(),
+      ledger: createMemoryLedger(),
+      ...executeHarness(),
+      lock: {
+        kind: "advisory",
+        async acquire() {
+          throw Object.assign(new Error("LOCK_ACQUIRE_FAILED: held"), {
+            code: "LOCK_ACQUIRE_FAILED",
+          });
+        },
+      },
+    });
+    expect(result.ok).toBe(false);
+    expect(result.reason).toBe("LOCK_ACQUIRE_FAILED");
+    expect(result.retried).toBe(false);
+  });
+
+  it("process-local mutex is refused as the restore lock", async () => {
+    const mini = miniManifest();
+    await expect(
+      runRestore({
+        mode: "execute",
+        env: stagingEnv(),
+        manifest: mini,
+        sqlByFilename: mini.sqlByFilename,
+        connector: createMockConnector(),
+        ledger: createMemoryLedger(),
+        ...executeHarness({ lock: { kind: "mutex", acquire: async () => ({ ok: true }) } }),
+      }),
+    ).rejects.toThrow(/LOCK_NOT_DISTRIBUTED/);
+  });
+
+  it("lock release and connection-loss stop apply without automatic retry", async () => {
+    const mini = miniManifest();
+    const registry = createLockRegistry();
+    const session = createFakeAdvisorySession(registry);
+    const lock = createAdvisoryLock({ session, owner: "lossy" });
+    let applyCreates = 0;
+    const connector = createMockConnector({
+      onQuery: ({ label, sql }) => {
+        if (label.startsWith("apply:") && String(sql) === "COMMIT") {
+          applyCreates += 1;
+          if (applyCreates === 1) session.simulateConnectionLoss();
+        }
+        return { rows: [], rowCount: 0 };
+      },
+    });
+    const ledger = createMemoryLedger();
+    const first = await runRestore({
+      mode: "execute",
+      env: stagingEnv(),
+      manifest: mini,
+      sqlByFilename: mini.sqlByFilename,
+      connector,
+      ledger,
+      ...executeHarness({ lock, catalog: { status: "observed", tables: [], policies: [] } }),
+    });
+    expect(first.ok).toBe(false);
+    expect(first.failed.code).toBe("LOCK_CONNECTION_LOST");
+    expect(first.retried).toBe(false);
+    expect(first.applied).toHaveLength(1);
+
+    const secondSession = createFakeAdvisorySession(registry);
+    const secondLock = createAdvisoryLock({ session: secondSession, owner: "lossy-2" });
+    const second = await runRestore({
+      mode: "execute",
+      env: stagingEnv(),
+      manifest: mini,
+      sqlByFilename: mini.sqlByFilename,
+      connector,
+      ledger,
+      ...executeHarness({ lock: secondLock }),
+    });
+    expect(second.ok).toBe(false);
+    expect(second.retried).toBe(false);
+    expect(second.autoRetry).toBe(false);
+    expect(["LEDGER_AMBIGUOUS", "LEDGER_INCOMPLETE", "LEDGER_PARTIAL_PREFIX"]).toContain(
+      second.decision.reason,
+    );
+    const applyLabels = connector.opened.filter((o) => o.label.startsWith("apply:"));
+    expect(applyLabels).toHaveLength(1);
+  });
+
+  it("private ledger complete is not restore completion without catalog", () => {
+    const mini = miniManifest();
+    const rows = mini.files.map((f) => ({
+      filename: f.filename,
+      status: LEDGER_STATUS.SUCCEEDED,
+      completed_at: new Date().toISOString(),
+      content_checksum: f.sha256,
+      source_commit: PINNED_SOURCE_COMMIT,
+      manifest_id: mini.manifestId,
+    }));
+    const ledgerOnly = evaluateLedger(rows, mini);
+    expect(ledgerOnly.action).toBe("already_complete");
+    const decision = reconcileRestoreState({
+      manifest: mini,
+      ledgerRows: rows,
+      sqlByFilename: mini.sqlByFilename,
+      vendorHistory: { status: "available", versions: mini.files.map((f) => f.filename.slice(0, 14)) },
+      catalog: { status: "NOT_CHECKED", tables: [], policies: [] },
+    });
+    expect(decision.ok).toBe(false);
+    expect(decision.reason).toBe("CATALOG_NOT_CHECKED");
+  });
+
+  it("private ledger says complete but schema is absent", () => {
+    const mini = miniManifest();
+    const rows = mini.files.map((f) => ({
+      filename: f.filename,
+      status: LEDGER_STATUS.SUCCEEDED,
+      completed_at: new Date().toISOString(),
+      content_checksum: f.sha256,
+      source_commit: PINNED_SOURCE_COMMIT,
+      manifest_id: mini.manifestId,
+    }));
+    const decision = reconcileRestoreState({
+      manifest: mini,
+      ledgerRows: rows,
+      sqlByFilename: mini.sqlByFilename,
+      vendorHistory: {
+        status: "available",
+        versions: mini.files.map((f) => f.filename.slice(0, 14)),
+      },
+      catalog: { status: "observed", tables: [], policies: [] },
+    });
+    expect(decision.ok).toBe(false);
+    expect(decision.reason).toBe("LEDGER_SCHEMA_ABSENT");
+    expect(decision.autoRetry).toBe(false);
+    expect(decision.securityProof).toBe(false);
+  });
+
+  it("Supabase migration history disagrees with the private ledger", () => {
+    const mini = miniManifest();
+    const empty = reconcileRestoreState({
+      manifest: mini,
+      ledgerRows: [],
+      sqlByFilename: mini.sqlByFilename,
+      vendorHistory: {
+        status: "available",
+        versions: [mini.files[0].filename.slice(0, 14)],
+      },
+      catalog: { status: "observed", tables: [], policies: [] },
+    });
+    expect(empty.ok).toBe(false);
+    expect(empty.reason).toBe("VENDOR_HISTORY_DISAGREE");
+
+    const rows = mini.files.map((f) => ({
+      filename: f.filename,
+      status: LEDGER_STATUS.SUCCEEDED,
+      completed_at: new Date().toISOString(),
+      content_checksum: f.sha256,
+      source_commit: PINNED_SOURCE_COMMIT,
+      manifest_id: mini.manifestId,
+    }));
+    const expected = extractExpectedObjects(mini.sqlByFilename);
+    const completeCatalog = {
+      status: "observed",
+      tables: expected.tables.map((t) => ({ schema: t.schema, name: t.name })),
+      policies: [],
+    };
+    const mismatch = reconcileRestoreState({
+      manifest: mini,
+      ledgerRows: rows,
+      sqlByFilename: mini.sqlByFilename,
+      expected,
+      vendorHistory: { status: "available", versions: ["19990101000000"] },
+      catalog: completeCatalog,
+    });
+    expect(mismatch.ok).toBe(false);
+    expect(mismatch.reason).toBe("VENDOR_HISTORY_DISAGREE");
+  });
+
+  it("manifest checksum differs from recorded vendor history", () => {
+    const mini = miniManifest();
+    const decision = reconcileRestoreState({
+      manifest: mini,
+      ledgerRows: [],
+      sqlByFilename: mini.sqlByFilename,
+      vendorHistory: {
+        status: "available",
+        versions: [mini.files[0].filename.slice(0, 14)],
+        entries: [
+          {
+            version: mini.files[0].filename.slice(0, 14),
+            checksum: "0".repeat(64),
+          },
+        ],
+      },
+      catalog: { status: "observed", tables: [], policies: [] },
+    });
+    expect(decision.ok).toBe(false);
+    expect(decision.reason).toBe("MANIFEST_CHECKSUM_DIFFERS_FROM_HISTORY");
+  });
+
+  it("partially applied migration blocks continuation", () => {
+    const mini = miniManifest();
+    const expected = extractExpectedObjects(mini.sqlByFilename);
+    const decision = reconcileRestoreState({
+      manifest: mini,
+      ledgerRows: [],
+      sqlByFilename: mini.sqlByFilename,
+      expected,
+      vendorHistory: { status: "absent", versions: [] },
+      catalog: {
+        status: "observed",
+        tables: [{ schema: expected.tables[0].schema, name: expected.tables[0].name }],
+        policies: [],
+      },
+    });
+    expect(decision.ok).toBe(false);
+    expect(decision.reason).toBe("PARTIAL_SCHEMA");
+    expect(decision.autoRetry).toBe(false);
+  });
+
+  it("unknown migration state blocks continuation", () => {
+    const mini = miniManifest();
+    const expected = extractExpectedObjects(mini.sqlByFilename);
+    const decision = reconcileRestoreState({
+      manifest: mini,
+      ledgerRows: [],
+      sqlByFilename: mini.sqlByFilename,
+      expected,
+      vendorHistory: { status: "absent", versions: [] },
+      catalog: {
+        status: "observed",
+        tables: expected.tables.map((t) => ({ schema: t.schema, name: t.name })),
+        policies: [],
+      },
+    });
+    expect(decision.ok).toBe(false);
+    expect(decision.reason).toBe("UNKNOWN_MIGRATION_STATE");
+    expect(decision.autoRetry).toBe(false);
+  });
+
+  it("execute does not treat ledger-only already_complete as success", async () => {
+    const mini = miniManifest();
+    const rows = mini.files.map((f) => ({
+      filename: f.filename,
+      status: LEDGER_STATUS.SUCCEEDED,
+      completed_at: new Date().toISOString(),
+      content_checksum: f.sha256,
+      source_commit: PINNED_SOURCE_COMMIT,
+      manifest_id: mini.manifestId,
+    }));
+    const result = await runRestore({
+      mode: "execute",
+      env: stagingEnv(),
+      manifest: mini,
+      sqlByFilename: mini.sqlByFilename,
+      connector: createMockConnector(),
+      ledger: createMemoryLedger(rows),
+      ...executeHarness(),
+    });
+    expect(result.ok).toBe(false);
+    expect(result.alreadyComplete).not.toBe(true);
+    expect(result.decision.reason).toBe("LEDGER_SCHEMA_ABSENT");
+    expect(result.retried).toBe(false);
+  });
+
+  it("unexpected catalog objects are reported and block fresh_apply", () => {
+    const mini = miniManifest();
+    const decision = reconcileRestoreState({
+      manifest: mini,
+      ledgerRows: [],
+      sqlByFilename: mini.sqlByFilename,
+      vendorHistory: { status: "absent", versions: [] },
+      catalog: {
+        status: "observed",
+        tables: [{ schema: "public", name: "surprise_table" }],
+        policies: [],
+      },
+    });
+    expect(decision.ok).toBe(false);
+    expect(decision.reason).toBe("CATALOG_UNEXPECTED_OBJECTS");
+    expect(decision.unexpectedTables).toEqual([
+      expect.objectContaining({ name: "surprise_table" }),
+    ]);
+  });
+
+  it("already_complete requires ledger, vendor history, and catalog agreement", () => {
+    const mini = miniManifest();
+    const expected = extractExpectedObjects(mini.sqlByFilename);
+    expect(expected.securityProof).toBe(false);
+    const rows = mini.files.map((f) => ({
+      filename: f.filename,
+      status: LEDGER_STATUS.SUCCEEDED,
+      completed_at: new Date().toISOString(),
+      content_checksum: f.sha256,
+      source_commit: PINNED_SOURCE_COMMIT,
+      manifest_id: mini.manifestId,
+    }));
+    const decision = reconcileRestoreState({
+      manifest: mini,
+      ledgerRows: rows,
+      sqlByFilename: mini.sqlByFilename,
+      expected,
+      vendorHistory: {
+        status: "available",
+        versions: mini.files.map((f) => f.filename.slice(0, 14)),
+      },
+      catalog: {
+        status: "observed",
+        tables: expected.tables.map((t) => ({ schema: t.schema, name: t.name })),
+        policies: expected.policies.map((p) => ({ name: p.name, table: p.table })),
+      },
+    });
+    expect(decision.action).toBe("already_complete");
+    expect(decision.schemaExistence).toBe(true);
+    expect(decision.securityProof).toBe(false);
+  });
+
+  it("pinned 71-file source, transport order, and production refusal remain intact", () => {
+    expect(approved.count).toBe(71);
+    expect(approved.sourceCommit).toBe(PINNED_SOURCE_COMMIT);
+    expect(approved.sourceTree).toBe(PINNED_SOURCE_TREE);
+    expect(approved.files[58].filename).toBe(TRANSPORT_FIRST);
+    expect(approved.files[68].filename).toBe(TRANSPORT_SECOND);
+    expect(gitLoaded.count).toBe(71);
+    expect(() => assertStagingTarget(PRODUCTION_URL)).toThrow(/TARGET_PRODUCTION_REF/);
+    const sqlByFilename = Object.fromEntries(
+      gitLoaded.loaded.map((f) => [f.filename, f.bytes.toString("utf8")]),
+    );
+    const expected = extractExpectedObjects(sqlByFilename);
+    expect(expected.tableCount).toBeGreaterThan(50);
+    expect(expected.nonIdempotentCreateTable).toBeGreaterThan(0);
+    expect(expected.existenceOnly).toBe(true);
+    expect(expected.securityProof).toBe(false);
+  });
+
+  it("offline test mode cannot open a database connection", async () => {
+    expect(createMockConnector().allowNetwork).toBe(false);
+    expect(() =>
+      createLiveConnector({
+        allowNetwork: false,
+        connectionString: STAGING_POOLER_URL,
+        env: stagingEnv(),
+      }),
+    ).toThrow(/NETWORK_DISABLED/);
+    const live = createLiveConnector({
+      allowNetwork: true,
+      connectionString: STAGING_POOLER_URL,
+      env: stagingEnv(),
+    });
+    await expect(live.withConnection("should-not-connect", async () => null)).rejects.toThrow(
+      /NETWORK_DISABLED: offline tests must not open a database session/,
+    );
+    const cfg = buildPinnedClientConfig(STAGING_POOLER_URL, stagingEnv());
+    expect(cfg.config).not.toHaveProperty("connectionString");
   });
 });

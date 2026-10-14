@@ -53,6 +53,38 @@ export const CA_ENV_NAMES = Object.freeze([
 ]);
 export const INSECURE_TLS_ENV = "COREGRID_DB_INSECURE_TLS";
 
+/** Only these URL query keys are accepted. Values are still validated. */
+export const ALLOWED_URL_QUERY_KEYS = Object.freeze(["sslmode"]);
+/** sslmode may be omitted or exactly verify-full. All other modes fail closed. */
+export const ALLOWED_SSLMODE = Object.freeze(["verify-full"]);
+export const FORBIDDEN_SSLMODE = Object.freeze([
+  "disable",
+  "allow",
+  "prefer",
+  "require",
+  "verify-ca",
+  "no-verify",
+]);
+export const FORBIDDEN_PG_SSL_ENV = Object.freeze([
+  "PGSSLMODE",
+  "PGSSLROOTCERT",
+  "PGSSLCERT",
+  "PGSSLKEY",
+  "PGSSLNEGOTIATION",
+]);
+export const REQUIRED_PG_PORT = 5432;
+
+/**
+ * Session advisory-lock keys for the restore run (two int4 arguments to
+ * pg_try_advisory_lock). Chosen as unique ASCII 'SHRV' / 'STAG' so they
+ * do not collide with typical application locks. Scope: entire restore
+ * attempt, held on a dedicated lock session, not on per-file apply
+ * connections.
+ */
+export const ADVISORY_LOCK_CLASSID = 0x53485256; // 'SHRV'
+export const ADVISORY_LOCK_OBJID = 0x53544147; // 'STAG'
+export const ADVISORY_LOCK_SCOPE = "entire_restore_run";
+
 export const MODES = Object.freeze({
   MANIFEST: "manifest",
   OFFLINE: "offline",

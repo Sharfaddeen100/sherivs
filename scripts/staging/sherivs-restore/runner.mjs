@@ -27,6 +27,8 @@ import {
   versionOf,
 } from "./ledger.mjs";
 import { runOfflinePreflight, catalogNotAssumedFromPriorReport } from "./preflight.mjs";
+import { reconcileRestoreState } from "./reconcile.mjs";
+import { extractExpectedObjects } from "./catalog-contract.mjs";
 
 function fail(code, detail) {
   const err = new Error(`${code}: ${detail}`);
@@ -96,6 +98,7 @@ async function applySequence({
   sqlByFilename,
   logger,
   attemptId,
+  lock,
 }) {
   const applied = [];
   const connections = [];
@@ -103,6 +106,45 @@ async function applySequence({
     const sql = sqlByFilename[file.filename];
     if (typeof sql !== "string") {
       fail("MISSING_MIGRATION", `no SQL loaded for ${file.filename}`);
+    }
+    try {
+      if (lock && typeof lock.probe === "function") {
+        await lock.probe();
+      }
+    } catch (err) {
+      const redacted = redactError(err);
+      if (typeof ledger.recordUncertain === "function") {
+        await ledger.recordUncertain(
+          file.filename,
+          attemptId,
+          err,
+          "lock-probe",
+          TX_OUTCOME.UNKNOWN,
+        );
+      }
+      logger.error("lock_lost", {
+        seq: file.seq,
+        filename: file.filename,
+        attemptId,
+        error: redacted.message,
+      });
+      return {
+        ok: false,
+        stopped: true,
+        retried: false,
+        autoRetry: false,
+        failed: {
+          seq: file.seq,
+          filename: file.filename,
+          sha256: file.sha256,
+          phase: "lock-probe",
+          error: redacted.message,
+          code: err.code ?? "LOCK_CONNECTION_LOST",
+        },
+        applied,
+        connections,
+        succeededCount: applied.length,
+      };
     }
     logger.info("migration_start", {
       seq: file.seq,
@@ -260,29 +302,47 @@ export async function runRestore(options = {}) {
     );
     if (!tls.ok) fail(tls.code, tls.detail);
 
-    const ledger = options.ledger ?? createMemoryLedger(options.ledgerRows ?? []);
-    if (typeof ledger.bootstrap === "function") {
-      await ledger.bootstrap();
+    const lock = options.lock;
+    if (!lock) {
+      fail(
+        "LOCK_REQUIRED",
+        "execute requires an advisory lock controller; a process-local mutex is not sufficient",
+      );
     }
-    const rows = await ledger.load();
-    const decision = evaluateLedger(rows, manifest);
-    if (decision.action === "already_complete") {
-      logger.info("already_complete", { succeededMatching: decision.succeededMatching });
-      return { ok: true, mode, alreadyComplete: true, decision, retried: false };
+    if (lock.kind === "mutex" || lock.kind === "memory") {
+      fail(
+        "LOCK_NOT_DISTRIBUTED",
+        "process-local lock is not sufficient for multiple runner processes",
+      );
     }
-    if (decision.action !== "fresh_apply") {
-      logger.error("ledger_blocks_execute", { reason: decision.reason });
-      return { ok: false, mode, decision, retried: false };
+    if (lock.kind !== "advisory") {
+      fail("LOCK_KIND_REFUSED", `lock kind ${lock.kind} is not advisory`);
+    }
+
+    try {
+      await lock.acquire();
+    } catch (err) {
+      logger.error("lock_acquire_failed", { code: err.code, error: redactError(err).message });
+      return {
+        ok: false,
+        mode,
+        retried: false,
+        autoRetry: false,
+        reason: err.code ?? "LOCK_ACQUIRE_FAILED",
+        decision: { action: "refuse", ok: false, reason: err.code ?? "LOCK_ACQUIRE_FAILED" },
+      };
     }
 
     const connector = options.connector;
     if (!connector) {
+      await lock.release?.();
       fail(
         "CONNECTOR_REQUIRED",
         "execute mode requires an injected connector; refusing implicit network",
       );
     }
     if (connector.allowNetwork && !options.allowNetwork) {
+      await lock.release?.();
       fail(
         "NETWORK_DISABLED",
         "live network is not enabled for this process",
@@ -290,23 +350,70 @@ export async function runRestore(options = {}) {
     }
 
     const sqlByFilename = loadSqlMap(options);
+    const expected = extractExpectedObjects(sqlByFilename);
+    const catalog = options.catalog ?? { status: "NOT_CHECKED", tables: [], policies: [] };
+    const vendorHistory = options.vendorHistory ?? { status: "unknown", versions: [] };
 
-    const result = await applySequence({
-      manifest,
-      ledger,
-      connector,
-      sqlByFilename,
-      logger,
-      attemptId,
-    });
-    return {
-      ok: result.ok,
-      mode,
-      attemptId,
-      target: { hostname: target.hostname, projectRef: target.projectRef, kind: target.kind },
-      retried: false,
-      ...result,
-    };
+    try {
+      const ledger = options.ledger ?? createMemoryLedger(options.ledgerRows ?? []);
+      if (typeof ledger.bootstrap === "function") {
+        await ledger.bootstrap();
+      }
+      const rows = await ledger.load();
+      const ledgerDecision = evaluateLedger(rows, manifest);
+      const decision = reconcileRestoreState({
+        manifest,
+        ledgerDecision,
+        ledgerRows: rows,
+        vendorHistory,
+        catalog,
+        sqlByFilename,
+        expected,
+      });
+      if (decision.action === "already_complete") {
+        logger.info("already_complete", {
+          reason: decision.reason,
+          schemaExistence: decision.schemaExistence,
+          securityProof: false,
+        });
+        return {
+          ok: true,
+          mode,
+          alreadyComplete: true,
+          decision,
+          retried: false,
+          autoRetry: false,
+          securityProof: false,
+        };
+      }
+      if (decision.action !== "fresh_apply") {
+        logger.error("reconcile_blocks_execute", { reason: decision.reason });
+        return { ok: false, mode, decision, retried: false, autoRetry: false };
+      }
+
+      const result = await applySequence({
+        manifest,
+        ledger,
+        connector,
+        sqlByFilename,
+        logger,
+        attemptId,
+        lock,
+      });
+      return {
+        ok: result.ok,
+        mode,
+        attemptId,
+        target: { hostname: target.hostname, projectRef: target.projectRef, kind: target.kind },
+        retried: false,
+        autoRetry: false,
+        decision,
+        securityProof: false,
+        ...result,
+      };
+    } finally {
+      await lock.release?.();
+    }
   }
 
   fail("MODE_REQUIRED", "unhandled mode");

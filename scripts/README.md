@@ -57,5 +57,6 @@ live connector):
 
 - `node scripts/staging/sherivs-restore/cli.mjs --mode=manifest`
 - `node scripts/staging/sherivs-restore/cli.mjs --mode=offline`
-- See `scripts/staging/sherivs-restore/README.md` and
-  `docs/security/rls-prep/SHERIVS-STAGING-MIGRATION-RUNNER-001.md`
+- See `scripts/staging/sherivs-restore/README.md`,
+  `docs/security/rls-prep/SHERIVS-STAGING-MIGRATION-RUNNER-001.md`, and
+  `docs/security/rls-prep/SHERIVS-STAGING-MIGRATION-RUNNER-CORRECTIONS-001.md`

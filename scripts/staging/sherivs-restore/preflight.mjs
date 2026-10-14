@@ -138,12 +138,23 @@ export function runOfflinePreflight(options = {}) {
     name: "ledger",
     ok: ledgerEval.ok && (ledgerEval.action === "fresh_apply" || ledgerEval.action === "already_complete"),
     ...ledgerEval,
+    note:
+      "private ledger is not restore completion proof; execute requires vendor history and catalog observation",
   });
 
   checks.push({
     name: "catalog",
     ok: true,
     ...catalogNotAssumedFromPriorReport(),
+  });
+
+  checks.push({
+    name: "reconciliation",
+    ok: true,
+    executeReady: false,
+    catalog: "NOT_CHECKED",
+    vendorHistory: options.vendorHistory?.status ?? "unknown",
+    note: "offline preflight cannot prove green-field or already_complete against a live catalog",
   });
 
   const working = inspectWorkingTree(options.root);

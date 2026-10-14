@@ -56,6 +56,10 @@ CREATE TABLE IF NOT EXISTS ${LEDGER_SCHEMA}.${LEDGER_TABLE} (
 CREATE UNIQUE INDEX IF NOT EXISTS sherivs_staging_ledger_attempt_file
   ON ${LEDGER_SCHEMA}.${LEDGER_TABLE} (attempt_id, filename);
 
+CREATE UNIQUE INDEX IF NOT EXISTS sherivs_staging_ledger_filename_inflight
+  ON ${LEDGER_SCHEMA}.${LEDGER_TABLE} (filename)
+  WHERE status IN ('started', 'succeeded');
+
 CREATE TABLE IF NOT EXISTS ${LEDGER_SCHEMA}.${SCHEMA_MIGRATIONS_TABLE} (
   version text PRIMARY KEY
 );
@@ -191,6 +195,17 @@ export function createMemoryLedger(seedRows = []) {
       return rows.slice();
     },
     async recordStarted(entry) {
+      const inflight = rows.find(
+        (r) =>
+          r.filename === entry.filename &&
+          (r.status === LEDGER_STATUS.STARTED || r.status === LEDGER_STATUS.SUCCEEDED),
+      );
+      if (inflight) {
+        throw Object.assign(
+          new Error("LEDGER_FILENAME_INFLIGHT: started/succeeded unique index refused a second holder"),
+          { code: "LEDGER_FILENAME_INFLIGHT" },
+        );
+      }
       const row = {
         id: randomUUID(),
         status: LEDGER_STATUS.STARTED,
@@ -248,6 +263,33 @@ export function createMemoryLedger(seedRows = []) {
       row.transaction_outcome = txOutcome ?? TX_OUTCOME.ROLLED_BACK;
       row.reconciliation_required = true;
       row.error_redacted = redacted.message;
+      return row;
+    },
+    async recordUncertain(filename, attemptId, err, phase, txOutcome) {
+      const redacted = redactError(err);
+      const row = rows.find(
+        (r) => r.filename === filename && r.attempt_id === attemptId,
+      );
+      const next = {
+        status: LEDGER_STATUS.AMBIGUOUS,
+        completed_at: new Date().toISOString(),
+        execution_phase: phase,
+        transaction_outcome: txOutcome ?? TX_OUTCOME.UNKNOWN,
+        reconciliation_required: true,
+        error_redacted: redacted.message,
+      };
+      if (!row) {
+        const created = {
+          id: randomUUID(),
+          filename,
+          attempt_id: attemptId,
+          started_at: new Date().toISOString(),
+          ...next,
+        };
+        rows.push(created);
+        return created;
+      }
+      Object.assign(row, next);
       return row;
     },
   };
@@ -330,6 +372,33 @@ export function createSqlLedger(connector) {
             RETURNING *`,
           [
             LEDGER_STATUS.FAILED,
+            phase,
+            txOutcome ?? TX_OUTCOME.UNKNOWN,
+            message,
+            filename,
+            attemptId,
+          ],
+        );
+        return result.rows[0];
+      });
+    },
+    async recordUncertain(filename, attemptId, err, phase, txOutcome) {
+      const message = redactText(
+        err instanceof Error ? err.message : String(err),
+      );
+      return connector.withConnection("ledger-uncertain", async (client) => {
+        const result = await client.query(
+          `UPDATE ${LEDGER_SCHEMA}.${LEDGER_TABLE}
+              SET status = $1,
+                  completed_at = now(),
+                  execution_phase = $2,
+                  transaction_outcome = $3,
+                  reconciliation_required = true,
+                  error_redacted = $4
+            WHERE filename = $5 AND attempt_id = $6
+            RETURNING *`,
+          [
+            LEDGER_STATUS.AMBIGUOUS,
             phase,
             txOutcome ?? TX_OUTCOME.UNKNOWN,
             message,

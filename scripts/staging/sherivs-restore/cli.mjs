@@ -59,6 +59,7 @@ export function help() {
     "  --mode=preflight    same as offline; live catalog remains NOT_CHECKED unless separately enabled",
     "  --mode=execute      requires --confirm-staging-ref --confirm-source-commit --i-authorize-staging-restore",
     "                      Credentials alone never start apply. Live pg is not constructed here.",
+    "                      Advisory lock + catalog/vendor reconcile are required before any future live apply.",
     "",
     `Pinned commit: ${PINNED_SOURCE_COMMIT}`,
     `Pinned staging ref: ${STAGING_PROJECT_REF}`,
