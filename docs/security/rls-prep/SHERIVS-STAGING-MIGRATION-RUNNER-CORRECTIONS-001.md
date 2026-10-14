@@ -189,8 +189,8 @@ Command:
 npx vitest run tests/unit/sherivs-staging-migration-runner.test.ts
 ```
 
-**Result:** recorded after the targeted suite run in this mission (see
-§4.1). No database integration tests were run.
+**Result:** **56 passed / 56**, 1 file, ~1s. No database integration tests
+were run.
 
 Covered offline:
 
@@ -211,7 +211,18 @@ Covered offline:
 
 ### 4.1 Suite output
 
-_To be filled immediately after the targeted Vitest run._
+```
+ ✓ tests/unit/sherivs-staging-migration-runner.test.ts (56 tests)
+ Test Files  1 passed (1)
+      Tests  56 passed (56)
+```
+
+Additional offline CLI checks (no database URL, no connector):
+
+- `node scripts/staging/sherivs-restore/cli.mjs --mode=manifest` →
+  `manifest_ok` count 71, commit `d195ba8…`, tree `bbd82895…`
+- `node …/cli.mjs --mode=execute` with all three confirmation flags →
+  exit 2, `LIVE_EXECUTE_NOT_ENABLED`
 
 ---
 

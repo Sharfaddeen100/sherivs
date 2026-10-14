@@ -88,11 +88,13 @@ export async function main(argv = process.argv.slice(2), options = {}) {
       return { ok: false, code: err.code, error: err.message, exitCode: 2 };
     }
     if (!options.connector) {
+      const error =
+        "execute refused: this CLI does not construct a live database client. A later authorized process must inject a connector after written approval.";
+      logger.error("live_execute_not_enabled", { code: "LIVE_EXECUTE_NOT_ENABLED" });
       return {
         ok: false,
         code: "LIVE_EXECUTE_NOT_ENABLED",
-        error:
-          "execute refused: this CLI does not construct a live database client. A later authorized process must inject a connector after written approval.",
+        error,
         exitCode: 2,
       };
     }
