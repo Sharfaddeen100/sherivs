@@ -37,8 +37,14 @@ node scripts/staging/sherivs-restore/cli.mjs --mode=preflight
 - `--confirm-source-commit=d195ba861f80379b79533126653b9cee82a8e872`
 - `--i-authorize-staging-restore`
 
-The CLI still **does not construct a live `pg` client**. A later authorized
-process must inject a connector. Credentials alone never start apply.
+The CLI still **does not construct a live `pg` client**. `createLiveConnector`
+is disabled in this mission even if `allowNetwork` is true; it does not
+construct `pg.Client` or call `connect()`. A later authorized live-connector
+mission is required. Credentials alone never start apply.
+
+`--mode=execute` still returns `LIVE_EXECUTE_NOT_ENABLED`. An object with
+`kind: "advisory"` is not treated as a PostgreSQL advisory lock. Live lock
+sessions are not implemented (`LIVE_LOCK_SESSION_NOT_AUTHORIZED`).
 
 ## Environment
 
@@ -71,8 +77,16 @@ One new connection per migration file. Migration `#23`
 
 Concurrency: a PostgreSQL **session advisory lock** on a dedicated lock
 session spans the whole restore attempt. It is not taken on apply
-connections. A process-local mutex is refused. Lock failure or lock-session
-loss blocks continuation and does not auto-retry.
+connections. A process-local mutex is refused. Only lock controllers minted
+by the official factory are trusted; `kind: "advisory"` on an arbitrary
+object is not proof that a lock is held. Official offline controllers are
+`fake-offline` and cannot satisfy live execution. Lock failure or
+lock-session loss blocks continuation and does not auto-retry.
+
+Each apply connection is closed after success and after failure. Cleanup
+errors are attached to the original failure and do not replace it. Close
+failure after COMMIT is treated as an uncertain transaction outcome with no
+automatic retry.
 
 Ledger: `supabase_migrations.sherivs_staging_ledger` plus
 `supabase_migrations.schema_migrations(version)` on success so a later
@@ -85,12 +99,16 @@ The private ledger is **not** sole completion authority. Execute reconciles:
 
 1. pinned manifest checksums
 2. vendor `schema_migrations` (absent or available)
-3. observed catalog tables/policies
+3. observed catalog against a static expected-object contract (tables,
+   columns, constraints, indexes, functions, triggers, RLS, policies
+   including command/roles/USING/WITH CHECK, table and column grants,
+   storage metadata where parseable)
 
-Ledger-complete with missing schema objects is refused. Vendor/ledger
-disagreement is refused. Partial or unknown schema is refused. Unexpected
-public tables are reported and block. Schema existence is **not** security
-proof.
+Missing policies, incorrect policy command or role, column/constraint/grant
+mismatches, missing required functions or triggers, unexpected objects, and
+required objects that cannot be derived statically (NOT VERIFIED) all block
+`already_complete`. A contract match is **not** live schema equivalence and
+**not** application-security proof.
 
 Partial failure default recovery: recreate staging. No automatic retry.
 
@@ -98,4 +116,4 @@ Partial failure default recovery: recreate staging. No automatic retry.
 
 Preflight records `catalog: NOT_CHECKED`. GATE4 emptiness is historical and
 is not treated as proof. A future read-only staging catalog is still
-required before any live execute.
+required before any live execute. This runner does not query a database.

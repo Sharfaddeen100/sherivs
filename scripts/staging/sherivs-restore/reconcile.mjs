@@ -19,6 +19,7 @@
 import { LEDGER_STATUS, PINNED_SOURCE_COMMIT } from "./constants.mjs";
 import { evaluateLedger } from "./ledger.mjs";
 import {
+  catalogBlocksCompletion,
   compareCatalog,
   extractExpectedObjects,
   versionOfFilename,
@@ -113,9 +114,14 @@ export function reconcileRestoreState(input = {}) {
     expected: {
       tableCount: expected.tableCount ?? expected.tables?.length ?? 0,
       policyCount: expected.policyCount ?? expected.policies?.length ?? 0,
+      functionCount: expected.functionCount ?? expected.functions?.length ?? 0,
+      triggerCount: expected.triggerCount ?? expected.triggers?.length ?? 0,
+      unverifiedCount: expected.unverifiedCount ?? expected.unverified?.length ?? 0,
+      comparedObjectClasses: expected.comparedObjectClasses,
       limitations: expected.limitations,
       securityProof: false,
-      existenceOnly: true,
+      existenceOnly: false,
+      schemaEquivalence: false,
     },
     autoRetry: false,
     retried: false,
@@ -156,19 +162,29 @@ export function reconcileRestoreState(input = {}) {
           "private ledger claims complete; vendor schema_migrations was not observed",
       });
     }
-    if (catalogComparison.missingTables.length) {
-      return refuse("LEDGER_SCHEMA_ABSENT", {
+    const completeBlock = catalogBlocksCompletion(catalogComparison);
+    if (completeBlock) {
+      return refuse(completeBlock, {
         ...common,
         detail:
-          "private ledger claims complete but expected schema objects are missing; refusing to ignore absence",
+          completeBlock === "LEDGER_SCHEMA_ABSENT"
+            ? "private ledger claims complete but expected schema objects are missing; refusing to ignore absence"
+            : completeBlock === "CATALOG_UNEXPECTED_OBJECTS"
+              ? "unexpected schema objects must be reconciled before claiming complete"
+              : "observed catalog does not satisfy the static expected-object contract; this is not schema equivalence or security proof",
         missingTables: catalogComparison.missingTables.map((t) => t.key),
-      });
-    }
-    if (catalogComparison.unexpectedTables.length) {
-      return refuse("CATALOG_UNEXPECTED_OBJECTS", {
-        ...common,
+        missingPolicies: catalogComparison.missingPolicies.map((p) => p.key),
         unexpectedTables: catalogComparison.unexpectedTables,
-        detail: "unexpected schema objects must be reconciled before claiming complete",
+        unexpectedPolicies: catalogComparison.unexpectedPolicies,
+        policyMismatches: catalogComparison.policyMismatches,
+        columnMismatches: catalogComparison.columnMismatches,
+        constraintMismatches: catalogComparison.constraintMismatches,
+        grantMismatches: catalogComparison.grantMismatches,
+        columnGrantMismatches: catalogComparison.columnGrantMismatches,
+        missingFunctions: catalogComparison.missingFunctions,
+        missingTriggers: catalogComparison.missingTriggers,
+        unverifiedRequired: catalogComparison.unverifiedRequired,
+        shapeIncomplete: catalogComparison.shapeIncomplete,
       });
     }
     const vendorEmpty =
@@ -198,9 +214,10 @@ export function reconcileRestoreState(input = {}) {
       reason: "ledger_vendor_catalog_agree",
       ...common,
       schemaExistence: true,
+      schemaEquivalence: false,
       securityProof: false,
       detail:
-        "schema objects named in the contract exist; this is not proof that application behaviour is secure",
+        "static expected-object contract matched the injected catalog; this is not live schema equivalence and not proof that application behaviour is secure",
     };
   }
 
@@ -245,10 +262,11 @@ export function reconcileRestoreState(input = {}) {
           "catalog already contains expected objects while the private ledger is empty; refusing automatic apply",
       });
     }
-    if (catalogComparison.unexpectedTables.length) {
+    if (catalogComparison.unexpectedTables.length || catalogComparison.unexpectedPolicies?.length) {
       return refuse("CATALOG_UNEXPECTED_OBJECTS", {
         ...common,
         unexpectedTables: catalogComparison.unexpectedTables,
+        unexpectedPolicies: catalogComparison.unexpectedPolicies,
         detail: "unexpected schema objects are reported and block fresh_apply",
       });
     }
@@ -258,6 +276,7 @@ export function reconcileRestoreState(input = {}) {
       reason: "green_field_ledger_vendor_catalog",
       ...common,
       schemaExistence: false,
+      schemaEquivalence: false,
       securityProof: false,
     };
   }

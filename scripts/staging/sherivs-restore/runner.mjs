@@ -7,6 +7,7 @@
 import { randomUUID } from "node:crypto";
 import {
   LEDGER_SCHEMA,
+  LIVE_CONNECTOR_CODE,
   MODES,
   PINNED_SOURCE_COMMIT,
   SCHEMA_MIGRATIONS_TABLE,
@@ -29,6 +30,7 @@ import {
 import { runOfflinePreflight, catalogNotAssumedFromPriorReport } from "./preflight.mjs";
 import { reconcileRestoreState } from "./reconcile.mjs";
 import { extractExpectedObjects } from "./catalog-contract.mjs";
+import { assertTrustedLockController } from "./lock.mjs";
 
 function fail(code, detail) {
   const err = new Error(`${code}: ${detail}`);
@@ -197,6 +199,47 @@ async function applySequence({
       });
     } catch (err) {
       const redacted = redactError(err);
+      const closeAfterSuccess = err?.code === "CONNECTION_CLOSE_FAILED";
+      const originalMessage = redacted.message;
+      const closeMessage = err?.closeError
+        ? redactError(err.closeError).message
+        : undefined;
+      if (closeAfterSuccess) {
+        if (typeof ledger.recordUncertain === "function") {
+          await ledger.recordUncertain(
+            file.filename,
+            attemptId,
+            err,
+            "apply-close",
+            TX_OUTCOME.UNKNOWN,
+          );
+        }
+        logger.error("migration_close_uncertain", {
+          seq: file.seq,
+          filename: file.filename,
+          attemptId,
+          error: originalMessage,
+          closeError: closeMessage,
+        });
+        return {
+          ok: false,
+          stopped: true,
+          retried: false,
+          autoRetry: false,
+          failed: {
+            seq: file.seq,
+            filename: file.filename,
+            sha256: file.sha256,
+            phase: "apply-close",
+            error: originalMessage,
+            closeError: closeMessage,
+            code: "TX_OUTCOME_UNKNOWN",
+          },
+          applied,
+          connections,
+          succeededCount: applied.length,
+        };
+      }
       await ledger.recordFailed(
         file.filename,
         attemptId,
@@ -210,19 +253,23 @@ async function applySequence({
         sha256: file.sha256,
         attemptId,
         phase: "apply",
-        error: redacted.message,
+        error: originalMessage,
+        closeError: closeMessage,
         succeededCount: applied.length,
       });
       return {
         ok: false,
         stopped: true,
         retried: false,
+        autoRetry: false,
         failed: {
           seq: file.seq,
           filename: file.filename,
           sha256: file.sha256,
           phase: "apply",
-          error: redacted.message,
+          error: originalMessage,
+          closeError: closeMessage,
+          originalCode: err?.code,
         },
         applied,
         connections,
@@ -303,20 +350,20 @@ export async function runRestore(options = {}) {
     if (!tls.ok) fail(tls.code, tls.detail);
 
     const lock = options.lock;
-    if (!lock) {
+    assertTrustedLockController(lock);
+
+    const connector = options.connector;
+    const liveRequested = Boolean(
+      options.allowNetwork ||
+        connector?.allowNetwork ||
+        connector?.kind === "live",
+    );
+    if (liveRequested) {
+      assertTrustedLockController(lock, { requireLiveCapable: true });
       fail(
-        "LOCK_REQUIRED",
-        "execute requires an advisory lock controller; a process-local mutex is not sufficient",
+        LIVE_CONNECTOR_CODE,
+        "live PostgreSQL connector is disabled until a separately approved live-connector mission",
       );
-    }
-    if (lock.kind === "mutex" || lock.kind === "memory") {
-      fail(
-        "LOCK_NOT_DISTRIBUTED",
-        "process-local lock is not sufficient for multiple runner processes",
-      );
-    }
-    if (lock.kind !== "advisory") {
-      fail("LOCK_KIND_REFUSED", `lock kind ${lock.kind} is not advisory`);
     }
 
     try {
@@ -333,7 +380,6 @@ export async function runRestore(options = {}) {
       };
     }
 
-    const connector = options.connector;
     if (!connector) {
       await lock.release?.();
       fail(
@@ -341,7 +387,14 @@ export async function runRestore(options = {}) {
         "execute mode requires an injected connector; refusing implicit network",
       );
     }
-    if (connector.allowNetwork && !options.allowNetwork) {
+    if (connector.kind === "live") {
+      await lock.release?.();
+      fail(
+        LIVE_CONNECTOR_CODE,
+        "live PostgreSQL connector is disabled until a separately approved live-connector mission",
+      );
+    }
+    if (connector.allowNetwork) {
       await lock.release?.();
       fail(
         "NETWORK_DISABLED",

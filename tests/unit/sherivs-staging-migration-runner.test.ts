@@ -42,17 +42,25 @@ import {
   createMockConnector,
   demonstrateDriverSslOverwrite,
   inspectConstructedClientSsl,
+  liveConnectorPlan,
 } from "../../scripts/staging/sherivs-restore/connect.mjs";
 import {
+  assertTrustedLockController,
   createAdvisoryLock,
   createFakeAdvisorySession,
+  createLivePostgresLockSession,
   createLockRegistry,
+  isAuthenticLockController,
   transitionLock,
+  LOCK_AUTHENTICITY,
   LOCK_STATES,
   advisoryLockPlan,
 } from "../../scripts/staging/sherivs-restore/lock.mjs";
 import { reconcileRestoreState } from "../../scripts/staging/sherivs-restore/reconcile.mjs";
-import { extractExpectedObjects } from "../../scripts/staging/sherivs-restore/catalog-contract.mjs";
+import {
+  extractExpectedObjects,
+  observedCatalogFromExpected,
+} from "../../scripts/staging/sherivs-restore/catalog-contract.mjs";
 import { catalogNotAssumedFromPriorReport, runOfflinePreflight } from "../../scripts/staging/sherivs-restore/preflight.mjs";
 import {
   assertExecuteAuthorization,
@@ -157,6 +165,51 @@ function executeHarness(overrides: Record<string, unknown> = {}) {
     skipOfflinePreflight: true,
     ...overrides,
   };
+}
+
+function richSchemaSql() {
+  return `
+CREATE TABLE public.people (
+  id uuid PRIMARY KEY,
+  ssn text NOT NULL,
+  name text
+);
+ALTER TABLE public.people ENABLE ROW LEVEL SECURITY;
+CREATE POLICY people_self ON public.people
+  FOR SELECT
+  TO authenticated
+  USING (id = auth.uid())
+  WITH CHECK (id = auth.uid());
+GRANT SELECT ON TABLE public.people TO authenticated;
+GRANT SELECT (ssn) ON TABLE public.people TO authenticated;
+CREATE FUNCTION public.touch_people() RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER AS $$ BEGIN RETURN NEW; END; $$;
+CREATE TRIGGER people_touch BEFORE UPDATE ON public.people
+  FOR EACH ROW EXECUTE FUNCTION public.touch_people();
+CREATE INDEX people_name_idx ON public.people (name);
+`.trim();
+}
+
+function richManifest() {
+  const sql = richSchemaSql();
+  return {
+    manifestId: "test-rich-contract",
+    sourceCommit: PINNED_SOURCE_COMMIT,
+    sourceTree: PINNED_SOURCE_TREE,
+    count: 1,
+    files: [{ seq: 1, filename: "20260101000000_people.sql", sha256: digest(sql) }],
+    sqlByFilename: { "20260101000000_people.sql": sql },
+  };
+}
+
+function completeLedger(manifest: { files: { filename: string; sha256: string }[]; manifestId: string }) {
+  return manifest.files.map((f) => ({
+    filename: f.filename,
+    status: LEDGER_STATUS.SUCCEEDED,
+    completed_at: new Date().toISOString(),
+    content_checksum: f.sha256,
+    source_commit: PINNED_SOURCE_COMMIT,
+    manifest_id: manifest.manifestId,
+  }));
 }
 
 describe("SHERIVS staging-only migration runner (offline)", () => {
@@ -402,6 +455,7 @@ describe("SHERIVS staging-only migration runner (offline)", () => {
       "apply:20260101000000_a.sql",
       `apply:${TRANSPORT_FIRST}`,
     ]);
+    expect(connector.closed).toEqual(connector.opened.map((o) => o.id));
   });
 
   it("20. a migration is never automatically retried after uncertain outcome", async () => {
@@ -765,6 +819,16 @@ describe("SHERIVS staging-only migration runner (offline)", () => {
 
   it("lock acquisition failure blocks execution", async () => {
     const mini = miniManifest();
+    const registry = createLockRegistry();
+    const holder = createAdvisoryLock({
+      session: createFakeAdvisorySession(registry),
+      owner: "holder",
+    });
+    await holder.acquire();
+    const blocked = createAdvisoryLock({
+      session: createFakeAdvisorySession(registry),
+      owner: "blocked",
+    });
     const result = await runRestore({
       mode: "execute",
       env: stagingEnv(),
@@ -772,19 +836,12 @@ describe("SHERIVS staging-only migration runner (offline)", () => {
       sqlByFilename: mini.sqlByFilename,
       connector: createMockConnector(),
       ledger: createMemoryLedger(),
-      ...executeHarness(),
-      lock: {
-        kind: "advisory",
-        async acquire() {
-          throw Object.assign(new Error("LOCK_ACQUIRE_FAILED: held"), {
-            code: "LOCK_ACQUIRE_FAILED",
-          });
-        },
-      },
+      ...executeHarness({ lock: blocked }),
     });
     expect(result.ok).toBe(false);
     expect(result.reason).toBe("LOCK_ACQUIRE_FAILED");
     expect(result.retried).toBe(false);
+    await holder.release();
   });
 
   it("process-local mutex is refused as the restore lock", async () => {
@@ -1096,8 +1153,12 @@ describe("SHERIVS staging-only migration runner (offline)", () => {
     const expected = extractExpectedObjects(sqlByFilename);
     expect(expected.tableCount).toBeGreaterThan(50);
     expect(expected.nonIdempotentCreateTable).toBeGreaterThan(0);
-    expect(expected.existenceOnly).toBe(true);
+    expect(expected.existenceOnly).toBe(false);
+    expect(expected.schemaEquivalence).toBe(false);
     expect(expected.securityProof).toBe(false);
+    expect(expected.comparedObjectClasses).toEqual(
+      expect.arrayContaining(["tables", "columns", "policies", "functions", "triggers", "grants"]),
+    );
   });
 
   it("offline test mode cannot open a database connection", async () => {
@@ -1109,15 +1170,418 @@ describe("SHERIVS staging-only migration runner (offline)", () => {
         env: stagingEnv(),
       }),
     ).toThrow(/NETWORK_DISABLED/);
-    const live = createLiveConnector({
-      allowNetwork: true,
-      connectionString: STAGING_POOLER_URL,
-      env: stagingEnv(),
-    });
-    await expect(live.withConnection("should-not-connect", async () => null)).rejects.toThrow(
-      /NETWORK_DISABLED: offline tests must not open a database session/,
-    );
+    expect(() =>
+      createLiveConnector({
+        allowNetwork: true,
+        connectionString: STAGING_POOLER_URL,
+        env: stagingEnv(),
+      }),
+    ).toThrow(/LIVE_CONNECTOR_NOT_AUTHORIZED/);
+    expect(liveConnectorPlan().constructsClient).toBe(false);
+    expect(liveConnectorPlan().callsConnect).toBe(false);
     const cfg = buildPinnedClientConfig(STAGING_POOLER_URL, stagingEnv());
     expect(cfg.config).not.toHaveProperty("connectionString");
+  });
+
+  it("a fake advisory lock cannot satisfy the live-execution capability", async () => {
+    const stub = {
+      kind: "advisory",
+      authenticity: LOCK_AUTHENTICITY.POSTGRES_SESSION,
+      liveCapable: true,
+      async acquire() {
+        return { ok: true };
+      },
+      async probe() {
+        return { ok: true };
+      },
+      async release() {
+        return { ok: true };
+      },
+    };
+    expect(isAuthenticLockController(stub)).toBe(false);
+    expect(() => assertTrustedLockController(stub)).toThrow(/LOCK_CONTROLLER_UNTRUSTED/);
+    expect(() => createLivePostgresLockSession()).toThrow(/LIVE_LOCK_SESSION_NOT_AUTHORIZED/);
+    expect(() =>
+      createAdvisoryLock({
+        session: createFakeAdvisorySession(createLockRegistry()),
+        authenticity: LOCK_AUTHENTICITY.POSTGRES_SESSION,
+      }),
+    ).toThrow(/LIVE_LOCK_SESSION_NOT_AUTHORIZED/);
+
+    const official = createAdvisoryLock({
+      session: createFakeAdvisorySession(createLockRegistry()),
+      owner: "offline",
+    });
+    expect(official.authenticity).toBe(LOCK_AUTHENTICITY.FAKE_OFFLINE);
+    expect(official.liveCapable).toBe(false);
+    expect(() => assertTrustedLockController(official, { requireLiveCapable: true })).toThrow(
+      /LOCK_LIVE_CAPABILITY_UNSATISFIED/,
+    );
+
+    const mini = miniManifest();
+    await expect(
+      runRestore({
+        mode: "execute",
+        env: stagingEnv(),
+        manifest: mini,
+        sqlByFilename: mini.sqlByFilename,
+        connector: createMockConnector(),
+        ledger: createMemoryLedger(),
+        ...executeHarness({ lock: stub }),
+      }),
+    ).rejects.toThrow(/LOCK_CONTROLLER_UNTRUSTED/);
+
+    await expect(
+      runRestore({
+        mode: "execute",
+        env: stagingEnv(),
+        manifest: mini,
+        sqlByFilename: mini.sqlByFilename,
+        connector: { ...createMockConnector(), allowNetwork: true, kind: "live" },
+        ledger: createMemoryLedger(),
+        ...executeHarness({ lock: official, allowNetwork: true }),
+      }),
+    ).rejects.toThrow(/LOCK_LIVE_CAPABILITY_UNSATISFIED/);
+  });
+
+  it("malformed, missing, and disconnected lock controllers are refused", async () => {
+    const mini = miniManifest();
+    await expect(
+      runRestore({
+        mode: "execute",
+        env: stagingEnv(),
+        manifest: mini,
+        sqlByFilename: mini.sqlByFilename,
+        connector: createMockConnector(),
+        ledger: createMemoryLedger(),
+        ...executeHarness({ lock: undefined }),
+      }),
+    ).rejects.toThrow(/LOCK_REQUIRED/);
+
+    await expect(
+      runRestore({
+        mode: "execute",
+        env: stagingEnv(),
+        manifest: mini,
+        sqlByFilename: mini.sqlByFilename,
+        connector: createMockConnector(),
+        ledger: createMemoryLedger(),
+        ...executeHarness({ lock: { kind: "advisory" } }),
+      }),
+    ).rejects.toThrow(/LOCK_CONTROLLER_UNTRUSTED/);
+
+    const copy = { ...createAdvisoryLock({ session: createFakeAdvisorySession(createLockRegistry()) }) };
+    expect(isAuthenticLockController(copy)).toBe(false);
+
+    const registry = createLockRegistry();
+    const session = createFakeAdvisorySession(registry);
+    const lock = createAdvisoryLock({ session, owner: "disc" });
+    await lock.acquire();
+    session.simulateConnectionLoss();
+    await expect(lock.probe()).rejects.toThrow(/LOCK_CONNECTION_LOST/);
+  });
+
+  it("manifest, offline, and preflight modes never construct a live client", async () => {
+    const Original = pg.Client;
+    let constructed = 0;
+    const Spy = function SpyClient(this: unknown, ...args: unknown[]) {
+      constructed += 1;
+      return new Original(...(args as []));
+    } as unknown as typeof pg.Client;
+    Spy.prototype = Original.prototype;
+    Object.setPrototypeOf(Spy, Original);
+    pg.Client = Spy;
+    try {
+      const manifest = await cliMain(["--mode=manifest"], { env: {} });
+      expect(manifest.ok).toBe(true);
+      const offline = await cliMain(["--mode=offline"], { env: stagingEnv() });
+      expect(offline.ok).toBe(true);
+      const preflight = await cliMain(["--mode=preflight"], { env: stagingEnv() });
+      expect(preflight.ok).toBe(true);
+      const execute = await cliMain(
+        [
+          "--mode=execute",
+          `--confirm-staging-ref=${STAGING_PROJECT_REF}`,
+          `--confirm-source-commit=${PINNED_SOURCE_COMMIT}`,
+          "--i-authorize-staging-restore",
+          "--allow-network",
+        ],
+        { env: stagingEnv() },
+      );
+      expect(execute.ok).toBe(false);
+      expect(execute.code).toBe("LIVE_EXECUTE_NOT_ENABLED");
+      expect(constructed).toBe(0);
+      expect(() =>
+        createLiveConnector({
+          allowNetwork: true,
+          connectionString: STAGING_POOLER_URL,
+          env: stagingEnv(),
+        }),
+      ).toThrow(/LIVE_CONNECTOR_NOT_AUTHORIZED/);
+      expect(constructed).toBe(0);
+    } finally {
+      pg.Client = Original;
+    }
+  });
+
+  it("missing required policy blocks already_complete", () => {
+    const rich = richManifest();
+    const expected = extractExpectedObjects(rich.sqlByFilename);
+    expect(expected.policyCount).toBe(1);
+    const catalog = observedCatalogFromExpected(expected);
+    catalog.policies = [];
+    const decision = reconcileRestoreState({
+      manifest: rich,
+      ledgerRows: completeLedger(rich),
+      sqlByFilename: rich.sqlByFilename,
+      expected,
+      vendorHistory: { status: "available", versions: rich.files.map((f) => f.filename.slice(0, 14)) },
+      catalog,
+    });
+    expect(decision.ok).toBe(false);
+    expect(decision.reason).toBe("CATALOG_POLICY_MISSING");
+    expect(decision.securityProof).toBe(false);
+  });
+
+  it("incorrect policy command or role blocks already_complete", () => {
+    const rich = richManifest();
+    const expected = extractExpectedObjects(rich.sqlByFilename);
+    const catalog = observedCatalogFromExpected(expected);
+    catalog.policies = catalog.policies.map((p) => ({ ...p, command: "ALL", roles: ["public"] }));
+    const decision = reconcileRestoreState({
+      manifest: rich,
+      ledgerRows: completeLedger(rich),
+      sqlByFilename: rich.sqlByFilename,
+      expected,
+      vendorHistory: { status: "available", versions: rich.files.map((f) => f.filename.slice(0, 14)) },
+      catalog,
+    });
+    expect(decision.ok).toBe(false);
+    expect(decision.reason).toBe("CATALOG_POLICY_MISMATCH");
+  });
+
+  it("required constraint or column mismatch blocks already_complete", () => {
+    const rich = richManifest();
+    const expected = extractExpectedObjects(rich.sqlByFilename);
+    expect(expected.tables[0].columns.map((c: { name: string }) => c.name)).toEqual(
+      expect.arrayContaining(["id", "ssn", "name"]),
+    );
+    const catalog = observedCatalogFromExpected(expected);
+    catalog.tables[0].columns = catalog.tables[0].columns.map((c: { name: string; type: string }) =>
+      c.name === "ssn" ? { ...c, type: "integer", nullable: true } : c,
+    );
+    const columnDecision = reconcileRestoreState({
+      manifest: rich,
+      ledgerRows: completeLedger(rich),
+      sqlByFilename: rich.sqlByFilename,
+      expected,
+      vendorHistory: { status: "available", versions: rich.files.map((f) => f.filename.slice(0, 14)) },
+      catalog,
+    });
+    expect(columnDecision.ok).toBe(false);
+    expect(columnDecision.reason).toBe("CATALOG_COLUMN_MISMATCH");
+
+    const catalog2 = observedCatalogFromExpected(expected);
+    catalog2.tables[0].constraints = [];
+    const constraintDecision = reconcileRestoreState({
+      manifest: rich,
+      ledgerRows: completeLedger(rich),
+      sqlByFilename: rich.sqlByFilename,
+      expected,
+      vendorHistory: { status: "available", versions: rich.files.map((f) => f.filename.slice(0, 14)) },
+      catalog: catalog2,
+    });
+    expect(constraintDecision.ok).toBe(false);
+    expect(constraintDecision.reason).toBe("CATALOG_CONSTRAINT_MISMATCH");
+  });
+
+  it("sensitive-column grant mismatch blocks already_complete", () => {
+    const rich = richManifest();
+    const expected = extractExpectedObjects(rich.sqlByFilename);
+    expect(expected.tables[0].columnGrants.length).toBeGreaterThan(0);
+    const catalog = observedCatalogFromExpected(expected);
+    catalog.tables[0].columnGrants = [];
+    const decision = reconcileRestoreState({
+      manifest: rich,
+      ledgerRows: completeLedger(rich),
+      sqlByFilename: rich.sqlByFilename,
+      expected,
+      vendorHistory: { status: "available", versions: rich.files.map((f) => f.filename.slice(0, 14)) },
+      catalog,
+    });
+    expect(decision.ok).toBe(false);
+    expect(decision.reason).toBe("CATALOG_COLUMN_GRANT_MISMATCH");
+  });
+
+  it("missing function or trigger blocks already_complete where required", () => {
+    const rich = richManifest();
+    const expected = extractExpectedObjects(rich.sqlByFilename);
+    expect(expected.functionCount).toBe(1);
+    expect(expected.triggerCount).toBe(1);
+    const noFn = observedCatalogFromExpected(expected);
+    noFn.functions = [];
+    const fnDecision = reconcileRestoreState({
+      manifest: rich,
+      ledgerRows: completeLedger(rich),
+      sqlByFilename: rich.sqlByFilename,
+      expected,
+      vendorHistory: { status: "available", versions: rich.files.map((f) => f.filename.slice(0, 14)) },
+      catalog: noFn,
+    });
+    expect(fnDecision.ok).toBe(false);
+    expect(fnDecision.reason).toBe("CATALOG_FUNCTION_MISSING");
+
+    const noTrig = observedCatalogFromExpected(expected);
+    noTrig.triggers = [];
+    const trigDecision = reconcileRestoreState({
+      manifest: rich,
+      ledgerRows: completeLedger(rich),
+      sqlByFilename: rich.sqlByFilename,
+      expected,
+      vendorHistory: { status: "available", versions: rich.files.map((f) => f.filename.slice(0, 14)) },
+      catalog: noTrig,
+    });
+    expect(trigDecision.ok).toBe(false);
+    expect(trigDecision.reason).toBe("CATALOG_TRIGGER_MISSING");
+  });
+
+  it("unexpected schema state blocks already_complete", () => {
+    const rich = richManifest();
+    const expected = extractExpectedObjects(rich.sqlByFilename);
+    const catalog = observedCatalogFromExpected(expected);
+    catalog.tables.push({ schema: "public", name: "surprise_table" });
+    const decision = reconcileRestoreState({
+      manifest: rich,
+      ledgerRows: completeLedger(rich),
+      sqlByFilename: rich.sqlByFilename,
+      expected,
+      vendorHistory: { status: "available", versions: rich.files.map((f) => f.filename.slice(0, 14)) },
+      catalog,
+    });
+    expect(decision.ok).toBe(false);
+    expect(decision.reason).toBe("CATALOG_UNEXPECTED_OBJECTS");
+  });
+
+  it("unknown catalog requirements block completion", () => {
+    const sql = `
+DO $$ BEGIN
+  EXECUTE 'CREATE TABLE ' || chr(97);
+END $$;
+`;
+    const manifest = {
+      manifestId: "test-unverified",
+      sourceCommit: PINNED_SOURCE_COMMIT,
+      sourceTree: PINNED_SOURCE_TREE,
+      count: 1,
+      files: [{ seq: 1, filename: "20260101000000_dyn.sql", sha256: digest(sql) }],
+      sqlByFilename: { "20260101000000_dyn.sql": sql },
+    };
+    const expected = extractExpectedObjects(manifest.sqlByFilename);
+    expect(expected.unverifiedCount).toBeGreaterThan(0);
+    const decision = reconcileRestoreState({
+      manifest,
+      ledgerRows: completeLedger(manifest),
+      sqlByFilename: manifest.sqlByFilename,
+      expected,
+      vendorHistory: { status: "available", versions: ["20260101000000"] },
+      catalog: { status: "observed", tables: [], policies: [], functions: [], triggers: [], indexes: [] },
+    });
+    expect(decision.ok).toBe(false);
+    expect(decision.reason).toBe("CATALOG_REQUIREMENTS_UNVERIFIED");
+  });
+
+  it("connection cleanup after connection failure", async () => {
+    const mini = miniManifest();
+    const connector = createMockConnector({
+      onOpen: ({ label }) => {
+        if (label.includes(TRANSPORT_FIRST)) {
+          throw Object.assign(new Error("connect-failed"), { code: "CONNECT_FAILED" });
+        }
+      },
+    });
+    const result = await runRestore({
+      mode: "execute",
+      env: stagingEnv(),
+      manifest: mini,
+      sqlByFilename: mini.sqlByFilename,
+      connector,
+      ledger: createMemoryLedger(),
+      ...executeHarness(),
+    });
+    expect(result.ok).toBe(false);
+    expect(result.failed.error).toMatch(/connect-failed/);
+    expect(connector.closed).toEqual(connector.opened.map((o) => o.id));
+    expect(connector.closed.length).toBeGreaterThan(0);
+  });
+
+  it("connection cleanup after migration failure", async () => {
+    const mini = miniManifest();
+    const connector = createMockConnector({
+      onQuery: ({ sql }) => {
+        if (String(sql).includes("CREATE TABLE b")) {
+          throw Object.assign(new Error("apply-failed-b"), { code: "APPLY_FAILED" });
+        }
+        return { rows: [], rowCount: 0 };
+      },
+    });
+    const result = await runRestore({
+      mode: "execute",
+      env: stagingEnv(),
+      manifest: mini,
+      sqlByFilename: mini.sqlByFilename,
+      connector,
+      ledger: createMemoryLedger(),
+      ...executeHarness(),
+    });
+    expect(result.ok).toBe(false);
+    expect(result.failed.error).toMatch(/apply-failed-b/);
+    expect(connector.closed).toEqual(connector.opened.map((o) => o.id));
+  });
+
+  it("cleanup errors preserve the original migration error", async () => {
+    const mini = miniManifest();
+    const connector = createMockConnector({
+      onQuery: ({ sql }) => {
+        if (String(sql).includes("CREATE TABLE a")) {
+          throw Object.assign(new Error("original-apply-error"), { code: "APPLY_FAILED" });
+        }
+        return { rows: [], rowCount: 0 };
+      },
+      onClose: () => {
+        throw new Error("close-also-failed");
+      },
+    });
+    const result = await runRestore({
+      mode: "execute",
+      env: stagingEnv(),
+      manifest: mini,
+      sqlByFilename: mini.sqlByFilename,
+      connector,
+      ledger: createMemoryLedger(),
+      ...executeHarness(),
+    });
+    expect(result.ok).toBe(false);
+    expect(result.failed.error).toMatch(/original-apply-error/);
+    expect(result.failed.error).not.toMatch(/close-also-failed/);
+    expect(result.failed.closeError).toMatch(/close-also-failed/);
+    expect(connector.closed).toEqual(connector.opened.map((o) => o.id));
+    expect(result.retried).toBe(false);
+    expect(result.autoRetry).toBe(false);
+  });
+
+  it("execute mode still returns LIVE_EXECUTE_NOT_ENABLED with every confirmation flag", async () => {
+    const cli = await cliMain(
+      [
+        "--mode=execute",
+        `--confirm-staging-ref=${STAGING_PROJECT_REF}`,
+        `--confirm-source-commit=${PINNED_SOURCE_COMMIT}`,
+        "--i-authorize-staging-restore",
+        "--allow-network",
+      ],
+      { env: stagingEnv() },
+    );
+    expect(cli.ok).toBe(false);
+    expect(cli.code).toBe("LIVE_EXECUTE_NOT_ENABLED");
+    expect(cli.exitCode).toBe(2);
   });
 });

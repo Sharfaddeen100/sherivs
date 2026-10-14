@@ -85,6 +85,9 @@ export const ADVISORY_LOCK_CLASSID = 0x53485256; // 'SHRV'
 export const ADVISORY_LOCK_OBJID = 0x53544147; // 'STAG'
 export const ADVISORY_LOCK_SCOPE = "entire_restore_run";
 
+export const LIVE_CONNECTOR_CODE = "LIVE_CONNECTOR_NOT_AUTHORIZED";
+export const LIVE_LOCK_SESSION_CODE = "LIVE_LOCK_SESSION_NOT_AUTHORIZED";
+
 export const MODES = Object.freeze({
   MANIFEST: "manifest",
   OFFLINE: "offline",

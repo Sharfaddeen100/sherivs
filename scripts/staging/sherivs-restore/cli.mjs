@@ -8,8 +8,10 @@
  *   node scripts/staging/sherivs-restore/cli.mjs --mode=offline
  *   node scripts/staging/sherivs-restore/cli.mjs --mode=preflight
  *
- * Execute still requires confirmation flags AND a future process that opts
- * into a live connector. This file does not construct a live pg client.
+ * Execute still requires confirmation flags. This file does not construct a
+ * live pg client, does not import createLiveConnector, and does not call
+ * connect(). createLiveConnector is disabled in this mission even if a later
+ * caller passes allowNetwork.
  */
 
 import { pathToFileURL } from "node:url";
@@ -59,7 +61,8 @@ export function help() {
     "  --mode=preflight    same as offline; live catalog remains NOT_CHECKED unless separately enabled",
     "  --mode=execute      requires --confirm-staging-ref --confirm-source-commit --i-authorize-staging-restore",
     "                      Credentials alone never start apply. Live pg is not constructed here.",
-    "                      Advisory lock + catalog/vendor reconcile are required before any future live apply.",
+    "                      createLiveConnector is disabled. Advisory lock stubs with kind:advisory are refused.",
+    "                      Catalog contract mismatch (including missing policies) blocks already_complete.",
     "",
     `Pinned commit: ${PINNED_SOURCE_COMMIT}`,
     `Pinned staging ref: ${STAGING_PROJECT_REF}`,

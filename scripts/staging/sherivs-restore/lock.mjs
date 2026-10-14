@@ -9,32 +9,31 @@
  * - Transaction-level advisory locks would be released at COMMIT on the
  *   lock session and cannot span the 71 per-file apply connections.
  *
- * Interaction with per-migration connection isolation:
- * - The lock is held on a *dedicated* session that never executes migration
- *   SQL. That session stays open for the whole attempt.
- * - Each migration still uses its own apply connection (see connect.mjs).
- * - Apply connections do not take the advisory lock; they rely on the lock
- *   session remaining alive. The runner probes the lock session before
- *   every file. Probe failure stops the run as uncertain — no automatic
- *   retry (non-idempotent SQL may already have committed on another
- *   backend).
- * - Unique index on (filename) WHERE status IN ('started','succeeded') is
- *   defense in depth if the lock session dies during a TOCTOU window.
+ * Capability boundary:
+ * - `kind: "advisory"` on an arbitrary object is **not** proof that a
+ *   PostgreSQL advisory lock is held.
+ * - Only controllers minted by this module's official factories are trusted.
+ * - The official offline factory issues `authenticity: "fake-offline"`
+ *   controllers. They may be used with mock/offline connectors only.
+ * - A genuine PostgreSQL lock-session implementation is **not** provided
+ *   here. `createLivePostgresLockSession` throws
+ *   LIVE_LOCK_SESSION_NOT_AUTHORIZED.
+ * - Live execution (allowNetwork / live connector) requires
+ *   authenticity "postgres-session" and liveCapable true — unsatisfiable
+ *   in this mission.
  *
- * Scope: entire restore attempt (all files), one holder per database.
- * Lifetime: acquire after execute authorization / TLS pin, before ledger
- * bootstrap and apply; release in finally, or implicitly on session end.
- *
- * This module does not open a network connection. Live pg_try_advisory_lock
- * is a documented SQL plan for a future authorized connector. Offline tests
- * inject a fake advisory session that interprets the same SQL.
+ * This module does not open a network connection.
  */
 
 import {
   ADVISORY_LOCK_CLASSID,
   ADVISORY_LOCK_OBJID,
   ADVISORY_LOCK_SCOPE,
+  LIVE_LOCK_SESSION_CODE,
 } from "./constants.mjs";
+
+const AUTHENTIC_LOCKS = new WeakSet();
+const LOCK_BRAND = Symbol("sherivs.advisoryLock");
 
 function fail(code, detail) {
   const err = new Error(`${code}: ${detail}`);
@@ -51,6 +50,11 @@ export const LOCK_STATES = Object.freeze({
   PROBE_FAILED: "probe_failed",
 });
 
+export const LOCK_AUTHENTICITY = Object.freeze({
+  FAKE_OFFLINE: "fake-offline",
+  POSTGRES_SESSION: "postgres-session",
+});
+
 export const LOCK_SQL = Object.freeze({
   acquire: "SELECT pg_try_advisory_lock($1, $2) AS acquired",
   probe: `SELECT granted
@@ -65,6 +69,11 @@ export const LOCK_SQL = Object.freeze({
 export function advisoryLockPlan() {
   return {
     kind: "advisory",
+    authenticityRequired: LOCK_AUTHENTICITY.POSTGRES_SESSION,
+    liveImplementation: "unavailable",
+    liveCode: "LIVE_LOCK_SESSION_NOT_AUTHORIZED",
+    stubKindIsNotProof:
+      "an object with kind:advisory is not a PostgreSQL advisory lock",
     scope: ADVISORY_LOCK_SCOPE,
     lifetime:
       "dedicated lock session, held from acquire until explicit unlock or backend death",
@@ -169,6 +178,7 @@ export function createFakeAdvisorySession(registry) {
   if (!registry) fail("LOCK_REGISTRY_REQUIRED", "advisory session needs a registry");
   const session = {
     kind: "advisory-session",
+    authenticity: LOCK_AUTHENTICITY.FAKE_OFFLINE,
     alive: true,
     async query(sql, params) {
       if (!session.alive) {
@@ -217,8 +227,34 @@ export function createFakeAdvisorySession(registry) {
   return session;
 }
 
-export function createAdvisoryLock({ session, owner }) {
+function brandLock(lock) {
+  Object.defineProperty(lock, LOCK_BRAND, {
+    value: true,
+    enumerable: false,
+    configurable: false,
+    writable: false,
+  });
+  AUTHENTIC_LOCKS.add(lock);
+  return lock;
+}
+
+/**
+ * Official lock controller. This factory never opens PostgreSQL.
+ * Issued controllers are `fake-offline` and are not live-execution capable.
+ */
+export function createAdvisoryLock({ session, owner, authenticity } = {}) {
   if (!session) fail("LOCK_SESSION_REQUIRED", "advisory lock requires a session");
+  const auth = authenticity ?? LOCK_AUTHENTICITY.FAKE_OFFLINE;
+  if (auth === LOCK_AUTHENTICITY.POSTGRES_SESSION) {
+    fail(
+      LIVE_LOCK_SESSION_CODE,
+      "this factory cannot mint a PostgreSQL lock session",
+    );
+  }
+  if (auth !== LOCK_AUTHENTICITY.FAKE_OFFLINE) {
+    fail("LOCK_AUTHENTICITY_REFUSED", `authenticity ${auth} is not issued by this factory`);
+  }
+
   let state = { status: LOCK_STATES.UNLOCKED, owner: null };
   const keys = [ADVISORY_LOCK_CLASSID, ADVISORY_LOCK_OBJID];
   const lockOwner = owner ?? "restore";
@@ -234,9 +270,7 @@ export function createAdvisoryLock({ session, owner }) {
           : { type: "acquire_conflict", owner: lockOwner },
       );
       if (!state.ok) {
-        const err = new Error("LOCK_ACQUIRE_FAILED: another restore holder is active");
-        err.code = "LOCK_ACQUIRE_FAILED";
-        throw err;
+        fail("LOCK_ACQUIRE_FAILED", "another restore holder is active");
       }
       return { ok: true, scope: ADVISORY_LOCK_SCOPE, owner: lockOwner };
     } catch (err) {
@@ -289,13 +323,74 @@ export function createAdvisoryLock({ session, owner }) {
     }
   }
 
-  return {
+  return brandLock({
     kind: "advisory",
+    authenticity: auth,
+    liveCapable: false,
     scope: ADVISORY_LOCK_SCOPE,
     plan: advisoryLockPlan(),
     getState: () => ({ ...state }),
     acquire,
     probe,
     release,
-  };
+  });
+}
+
+/**
+ * Genuine PostgreSQL advisory-lock session. Not implemented in this mission.
+ */
+export function createLivePostgresLockSession() {
+  fail(
+    LIVE_LOCK_SESSION_CODE,
+    "a reviewed PostgreSQL advisory-lock session is not implemented; do not substitute a fake kind:advisory stub",
+  );
+}
+
+export function isAuthenticLockController(lock) {
+  return Boolean(lock) && AUTHENTIC_LOCKS.has(lock) && lock[LOCK_BRAND] === true;
+}
+
+/**
+ * Capability check. `kind: "advisory"` is not sufficient.
+ *
+ * @param {object} lock
+ * @param {{ requireLiveCapable?: boolean }} [options]
+ */
+export function assertTrustedLockController(lock, options = {}) {
+  if (!lock) {
+    fail(
+      "LOCK_REQUIRED",
+      "execute requires an advisory lock controller; a process-local mutex is not sufficient",
+    );
+  }
+  if (lock.kind === "mutex" || lock.kind === "memory") {
+    fail(
+      "LOCK_NOT_DISTRIBUTED",
+      "process-local lock is not sufficient for multiple runner processes",
+    );
+  }
+  if (!isAuthenticLockController(lock)) {
+    fail(
+      "LOCK_CONTROLLER_UNTRUSTED",
+      "kind:advisory is not proof that a PostgreSQL advisory lock is held; controller was not minted by the official factory",
+    );
+  }
+  if (lock.kind !== "advisory") {
+    fail("LOCK_KIND_REFUSED", `lock kind ${lock.kind} is not advisory`);
+  }
+  if (typeof lock.acquire !== "function" || typeof lock.probe !== "function") {
+    fail("LOCK_CONTROLLER_MALFORMED", "authentic lock must expose acquire and probe");
+  }
+  if (options.requireLiveCapable) {
+    if (
+      lock.authenticity !== LOCK_AUTHENTICITY.POSTGRES_SESSION ||
+      lock.liveCapable !== true
+    ) {
+      fail(
+        "LOCK_LIVE_CAPABILITY_UNSATISFIED",
+        "a fake or offline advisory lock cannot satisfy the live-execution capability; a reviewed PostgreSQL lock session is required",
+      );
+    }
+  }
+  return lock;
 }
