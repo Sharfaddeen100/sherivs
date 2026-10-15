@@ -12,15 +12,24 @@
  * Capability boundary:
  * - `kind: "advisory"` on an arbitrary object is **not** proof that a
  *   PostgreSQL advisory lock is held.
+ * - Writable public fields (`liveCapable`, `authenticity`) are **not**
+ *   proof. Live capability is a module-scoped WeakSet membership that
+ *   no public factory in this mission can populate.
  * - Only controllers minted by this module's official factories are trusted.
  * - The official offline factory issues `authenticity: "fake-offline"`
  *   controllers. They may be used with mock/offline connectors only.
+ * - Spreading or copying an official controller drops WeakSet identity
+ *   and the non-enumerable brand.
  * - A genuine PostgreSQL lock-session implementation is **not** provided
  *   here. `createLivePostgresLockSession` throws
- *   LIVE_LOCK_SESSION_NOT_AUTHORIZED.
+ *   LIVE_LOCK_SESSION_NOT_AUTHORIZED and never brands a controller.
  * - Live execution (allowNetwork / live connector) requires
- *   authenticity "postgres-session" and liveCapable true — unsatisfiable
- *   in this mission.
+ *   `isLiveCapableLockController`, which is unsatisfiable in this mission.
+ *
+ * Limitation: this is in-process trust. A later edit of this module could
+ * add to the live WeakSet. That is a change-control event, not a runtime
+ * override. Property assignment, object literals, and copies cannot mint
+ * the capability.
  *
  * This module does not open a network connection.
  */
@@ -33,7 +42,9 @@ import {
 } from "./constants.mjs";
 
 const AUTHENTIC_LOCKS = new WeakSet();
+const LIVE_CAPABLE_LOCKS = new WeakSet();
 const LOCK_BRAND = Symbol("sherivs.advisoryLock");
+const LOCK_CAPABILITY = Symbol("sherivs.lockCapability");
 
 function fail(code, detail) {
   const err = new Error(`${code}: ${detail}`);
@@ -227,15 +238,43 @@ export function createFakeAdvisorySession(registry) {
   return session;
 }
 
-function brandLock(lock) {
-  Object.defineProperty(lock, LOCK_BRAND, {
-    value: true,
-    enumerable: false,
+function defineImmutable(lock, key, value, enumerable) {
+  Object.defineProperty(lock, key, {
+    value,
+    enumerable,
     configurable: false,
     writable: false,
   });
+}
+
+/**
+ * Brand an official controller. Live capability is a separate WeakSet
+ * that this function never writes. Public fields are non-writable so
+ * assignment cannot impersonate a live session.
+ */
+function brandLock(lock, capability) {
+  const authenticity =
+    capability === LOCK_AUTHENTICITY.POSTGRES_SESSION
+      ? LOCK_AUTHENTICITY.POSTGRES_SESSION
+      : LOCK_AUTHENTICITY.FAKE_OFFLINE;
+  defineImmutable(lock, LOCK_BRAND, true, false);
+  defineImmutable(lock, LOCK_CAPABILITY, authenticity, false);
+  defineImmutable(lock, "kind", "advisory", true);
+  defineImmutable(lock, "authenticity", authenticity, true);
+  defineImmutable(lock, "liveCapable", authenticity === LOCK_AUTHENTICITY.POSTGRES_SESSION, true);
   AUTHENTIC_LOCKS.add(lock);
   return lock;
+}
+
+/**
+ * Intentionally unused. No public or internal caller in this mission
+ * may populate LIVE_CAPABLE_LOCKS.
+ */
+function markLiveCapable() {
+  fail(
+    LIVE_LOCK_SESSION_CODE,
+    "no live lock capability can be minted in this mission; LIVE_CAPABLE_LOCKS stays empty",
+  );
 }
 
 /**
@@ -323,17 +362,17 @@ export function createAdvisoryLock({ session, owner, authenticity } = {}) {
     }
   }
 
-  return brandLock({
-    kind: "advisory",
-    authenticity: auth,
-    liveCapable: false,
-    scope: ADVISORY_LOCK_SCOPE,
-    plan: advisoryLockPlan(),
-    getState: () => ({ ...state }),
-    acquire,
-    probe,
-    release,
-  });
+  return brandLock(
+    {
+      scope: ADVISORY_LOCK_SCOPE,
+      plan: advisoryLockPlan(),
+      getState: () => ({ ...state }),
+      acquire,
+      probe,
+      release,
+    },
+    LOCK_AUTHENTICITY.FAKE_OFFLINE,
+  );
 }
 
 /**
@@ -348,6 +387,18 @@ export function createLivePostgresLockSession() {
 
 export function isAuthenticLockController(lock) {
   return Boolean(lock) && AUTHENTIC_LOCKS.has(lock) && lock[LOCK_BRAND] === true;
+}
+
+/**
+ * Live capability is WeakSet membership, not a public field.
+ * This mission never adds a controller to LIVE_CAPABLE_LOCKS.
+ */
+export function isLiveCapableLockController(lock) {
+  return (
+    isAuthenticLockController(lock) &&
+    LIVE_CAPABLE_LOCKS.has(lock) &&
+    lock[LOCK_CAPABILITY] === LOCK_AUTHENTICITY.POSTGRES_SESSION
+  );
 }
 
 /**
@@ -382,13 +433,10 @@ export function assertTrustedLockController(lock, options = {}) {
     fail("LOCK_CONTROLLER_MALFORMED", "authentic lock must expose acquire and probe");
   }
   if (options.requireLiveCapable) {
-    if (
-      lock.authenticity !== LOCK_AUTHENTICITY.POSTGRES_SESSION ||
-      lock.liveCapable !== true
-    ) {
+    if (!isLiveCapableLockController(lock)) {
       fail(
         "LOCK_LIVE_CAPABILITY_UNSATISFIED",
-        "a fake or offline advisory lock cannot satisfy the live-execution capability; a reviewed PostgreSQL lock session is required",
+        "a fake or offline advisory lock cannot satisfy the live-execution capability; writable liveCapable/authenticity fields are not proof",
       );
     }
   }

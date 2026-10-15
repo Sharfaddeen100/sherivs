@@ -79,8 +79,11 @@ Concurrency: a PostgreSQL **session advisory lock** on a dedicated lock
 session spans the whole restore attempt. It is not taken on apply
 connections. A process-local mutex is refused. Only lock controllers minted
 by the official factory are trusted; `kind: "advisory"` on an arbitrary
-object is not proof that a lock is held. Official offline controllers are
-`fake-offline` and cannot satisfy live execution. Lock failure or
+object is not proof that a lock is held. Writable `liveCapable` /
+`authenticity` fields are not proof — live capability is a module-scoped
+WeakSet that no public factory in this mission can populate. Official
+offline controllers are `fake-offline` and cannot satisfy live execution.
+Copies and property assignment cannot mint the capability. Lock failure or
 lock-session loss blocks continuation and does not auto-retry.
 
 Each apply connection is closed after success and after failure. Cleanup
@@ -104,9 +107,11 @@ The private ledger is **not** sole completion authority. Execute reconciles:
    including command/roles/USING/WITH CHECK, table and column grants,
    storage metadata where parseable)
 
-Missing policies, incorrect policy command or role, column/constraint/grant
-mismatches, missing required functions or triggers, unexpected objects, and
-required objects that cannot be derived statically (NOT VERIFIED) all block
+Missing policies, incorrect policy command / role / permissive mode,
+column/constraint/grant mismatches (constraint identity, not kind-only),
+same-name different-signature functions, function-grant mismatches, missing
+required functions or triggers, unexpected objects, and required objects
+that cannot be derived statically (NOT VERIFIED) all block
 `already_complete`. A contract match is **not** live schema equivalence and
 **not** application-security proof.
 

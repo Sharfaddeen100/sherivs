@@ -28,6 +28,18 @@ export const CONTRACT_LIMITATIONS = Object.freeze([
   "existence or contract match is not live schema equivalence",
   "non-idempotent CREATE statements must not be replayed against a partial catalog",
   "live catalog observation is required before execute; offline cannot prove emptiness",
+  "CHECK comparison is whitespace/case-normalized expression text, not proven semantic equivalence (a > 0 vs 0 < a is a mismatch)",
+  "FOREIGN KEY REFERENCES table without column list is implicit-PK; referenced columns are compared only when both sides are explicit",
+  "pg_get_expr / format_type output is normalized (timestamptz, varchar) and may still differ from live catalog spelling",
+  "function bodies, owners, tablespace, views, sequences, enums, extensions, publications, default privileges, and column defaults are not in this contract",
+]);
+
+export const CATALOG_OBSERVE_LIMITATIONS = Object.freeze([
+  "this process does not execute CATALOG_OBSERVE_SQL",
+  "pg_get_constraintdef / pg_get_expr text is normalized, not executed",
+  "implicit primary-key REFERENCES cannot be resolved to column names without the referenced table PK",
+  "owners, tablespaces, inheritance, identity/generated columns, collations, and default privileges are not represented",
+  "unknown or unparseable observed rows must be marked unverified and block already_complete",
 ]);
 
 export const VENDOR_SCHEMAS = Object.freeze([
@@ -63,12 +75,15 @@ export const SENSITIVE_COLUMN_HINTS = Object.freeze([
 ]);
 
 export const CATALOG_OBSERVE_SQL = Object.freeze({
-  tables: `SELECT n.nspname AS schema, c.relname AS name
-             FROM pg_class c
-             JOIN pg_namespace n ON n.oid = c.relnamespace
-            WHERE c.relkind = 'r'
-              AND n.nspname = 'public'
-            ORDER BY 1, 2`,
+  tables: `SELECT n.nspname AS schema,
+                    c.relname AS name,
+                    c.relrowsecurity AS rls_enabled,
+                    c.relforcerowsecurity AS rls_forced
+               FROM pg_class c
+               JOIN pg_namespace n ON n.oid = c.relnamespace
+              WHERE c.relkind = 'r'
+                AND n.nspname = 'public'
+              ORDER BY 1, 2`,
   columns: `SELECT n.nspname AS schema, c.relname AS table, a.attname AS name,
                     pg_catalog.format_type(a.atttypid, a.atttypmod) AS type,
                     NOT a.attnotnull AS nullable
@@ -76,22 +91,152 @@ export const CATALOG_OBSERVE_SQL = Object.freeze({
                JOIN pg_class c ON c.oid = a.attrelid
                JOIN pg_namespace n ON n.oid = c.relnamespace
               WHERE a.attnum > 0 AND NOT a.attisdropped AND n.nspname = 'public'`,
+  constraints: `SELECT n.nspname AS schema,
+                    c.relname AS table,
+                    con.conname AS name,
+                    CASE con.contype
+                      WHEN 'p' THEN 'PRIMARY KEY'
+                      WHEN 'u' THEN 'UNIQUE'
+                      WHEN 'f' THEN 'FOREIGN KEY'
+                      WHEN 'c' THEN 'CHECK'
+                      ELSE con.contype::text
+                    END AS kind,
+                    pg_get_constraintdef(con.oid) AS definition,
+                    ARRAY(SELECT a.attname
+                            FROM unnest(con.conkey) WITH ORDINALITY AS k(attnum, ord)
+                            JOIN pg_attribute a ON a.attrelid = con.conrelid AND a.attnum = k.attnum
+                           ORDER BY k.ord) AS columns,
+                    fn.nspname AS referenced_schema,
+                    ft.relname AS referenced_table,
+                    ARRAY(SELECT a.attname
+                            FROM unnest(con.confkey) WITH ORDINALITY AS k(attnum, ord)
+                            JOIN pg_attribute a ON a.attrelid = con.confrelid AND a.attnum = k.attnum
+                           ORDER BY k.ord) AS referenced_columns,
+                    CASE con.confdeltype
+                      WHEN 'a' THEN 'NO ACTION' WHEN 'r' THEN 'RESTRICT'
+                      WHEN 'c' THEN 'CASCADE' WHEN 'n' THEN 'SET NULL'
+                      WHEN 'd' THEN 'SET DEFAULT' ELSE NULL END AS on_delete,
+                    CASE con.confupdtype
+                      WHEN 'a' THEN 'NO ACTION' WHEN 'r' THEN 'RESTRICT'
+                      WHEN 'c' THEN 'CASCADE' WHEN 'n' THEN 'SET NULL'
+                      WHEN 'd' THEN 'SET DEFAULT' ELSE NULL END AS on_update,
+                    con.condeferrable AS deferrable,
+                    con.condeferred AS initially_deferred
+               FROM pg_constraint con
+               JOIN pg_class c ON c.oid = con.conrelid
+               JOIN pg_namespace n ON n.oid = c.relnamespace
+               LEFT JOIN pg_class ft ON ft.oid = con.confrelid
+               LEFT JOIN pg_namespace fn ON fn.oid = ft.relnamespace
+              WHERE n.nspname = 'public'`,
+  indexes: `SELECT n.nspname AS schema,
+                    t.relname AS table,
+                    c.relname AS name,
+                    i.indisunique AS unique,
+                    pg_get_indexdef(i.indexrelid) AS definition
+               FROM pg_index i
+               JOIN pg_class c ON c.oid = i.indexrelid
+               JOIN pg_class t ON t.oid = i.indrelid
+               JOIN pg_namespace n ON n.oid = t.relnamespace
+              WHERE n.nspname = 'public'`,
+  functions: `SELECT n.nspname AS schema,
+                    p.proname AS name,
+                    pg_get_function_identity_arguments(p.oid) AS identity_args,
+                    pg_get_function_arguments(p.oid) AS args,
+                    pg_get_function_result(p.oid) AS returns,
+                    CASE WHEN p.prosecdef THEN 'DEFINER' ELSE 'INVOKER' END AS security,
+                    l.lanname AS language,
+                    CASE p.provolatile WHEN 'i' THEN 'IMMUTABLE' WHEN 's' THEN 'STABLE' ELSE 'VOLATILE' END AS volatility,
+                    p.proconfig AS config
+               FROM pg_proc p
+               JOIN pg_namespace n ON n.oid = p.pronamespace
+               JOIN pg_language l ON l.oid = p.prolang
+              WHERE n.nspname = 'public'`,
+  triggers: `SELECT n.nspname AS schema,
+                    c.relname AS table,
+                    t.tgname AS name,
+                    CASE WHEN t.tgtype & 2 = 2 THEN 'BEFORE'
+                         WHEN t.tgtype & 64 = 64 THEN 'INSTEAD OF'
+                         ELSE 'AFTER' END AS timing,
+                    trim(both ' OR ' FROM concat_ws(' OR ',
+                      CASE WHEN t.tgtype & 4 = 4 THEN 'INSERT' END,
+                      CASE WHEN t.tgtype & 8 = 8 THEN 'DELETE' END,
+                      CASE WHEN t.tgtype & 16 = 16 THEN 'UPDATE' END)) AS events,
+                    fn.nspname || '.' || fp.proname AS function
+               FROM pg_trigger t
+               JOIN pg_class c ON c.oid = t.tgrelid
+               JOIN pg_namespace n ON n.oid = c.relnamespace
+               JOIN pg_proc fp ON fp.oid = t.tgfoid
+               JOIN pg_namespace fn ON fn.oid = fp.pronamespace
+              WHERE NOT t.tgisinternal AND n.nspname = 'public'`,
   policies: `SELECT n.nspname AS schema,
                     c.relname AS table,
                     p.polname AS name,
+                    p.polpermissive AS permissive,
                     CASE p.polcmd WHEN 'r' THEN 'SELECT' WHEN 'a' THEN 'INSERT'
                          WHEN 'w' THEN 'UPDATE' WHEN 'd' THEN 'DELETE' ELSE 'ALL' END AS command,
+                    ARRAY(SELECT r.rolname FROM pg_roles r WHERE r.oid = ANY (p.polroles)
+                          UNION ALL
+                          SELECT 'public' WHERE 0::oid = ANY (p.polroles)) AS roles,
                     pg_get_expr(p.polqual, p.polrelid) AS using,
                     pg_get_expr(p.polwithcheck, p.polrelid) AS with_check
                FROM pg_policy p
                JOIN pg_class c ON c.oid = p.polrelid
                JOIN pg_namespace n ON n.oid = c.relnamespace
               WHERE n.nspname = 'public'`,
+  tableGrants: `SELECT n.nspname AS schema,
+                    c.relname AS table,
+                    CASE WHEN g.grantee = 0 THEN 'public' ELSE r.rolname END AS grantee,
+                    g.privilege AS privilege
+               FROM pg_class c
+               JOIN pg_namespace n ON n.oid = c.relnamespace
+               CROSS JOIN LATERAL aclexplode(COALESCE(c.relacl, acldefault('r', c.relowner)))
+                 AS g(grantor, grantee, privilege, is_grantable)
+               LEFT JOIN pg_roles r ON r.oid = g.grantee
+              WHERE n.nspname = 'public' AND c.relkind = 'r'`,
+  columnGrants: `SELECT n.nspname AS schema,
+                    c.relname AS table,
+                    a.attname AS column,
+                    CASE WHEN g.grantee = 0 THEN 'public' ELSE r.rolname END AS grantee,
+                    g.privilege AS privilege
+               FROM pg_attribute a
+               JOIN pg_class c ON c.oid = a.attrelid
+               JOIN pg_namespace n ON n.oid = c.relnamespace
+               CROSS JOIN LATERAL aclexplode(a.attacl) AS g(grantor, grantee, privilege, is_grantable)
+               LEFT JOIN pg_roles r ON r.oid = g.grantee
+              WHERE a.attnum > 0 AND NOT a.attisdropped AND n.nspname = 'public'`,
+  functionGrants: `SELECT n.nspname AS schema,
+                    p.proname AS name,
+                    pg_get_function_identity_arguments(p.oid) AS args,
+                    CASE WHEN g.grantee = 0 THEN 'public' ELSE r.rolname END AS grantee,
+                    g.privilege AS privilege
+               FROM pg_proc p
+               JOIN pg_namespace n ON n.oid = p.pronamespace
+               CROSS JOIN LATERAL aclexplode(p.proacl) AS g(grantor, grantee, privilege, is_grantable)
+               LEFT JOIN pg_roles r ON r.oid = g.grantee
+              WHERE n.nspname = 'public'`,
+  storageBuckets: `SELECT id, name, public, file_size_limit, allowed_mime_types
+                      FROM storage.buckets`,
   vendorHistory: `SELECT version
                     FROM supabase_migrations.schema_migrations
                    ORDER BY version`,
   note: "read-only observation plan for a future authorized catalog mission; this process does not execute it",
+  limitations: CATALOG_OBSERVE_LIMITATIONS,
 });
+
+export const REQUIRED_OBSERVED_CLASSES = Object.freeze([
+  "tables",
+  "columns",
+  "constraints",
+  "indexes",
+  "functions",
+  "triggers",
+  "rls",
+  "policies",
+  "grants",
+  "columnGrants",
+  "functionGrants",
+  "storageBuckets",
+]);
 
 function fail(code, detail) {
   const err = new Error(`${code}: ${detail}`);
@@ -160,6 +305,366 @@ function matchingParen(text, openIdx) {
   return -1;
 }
 
+function sameOrderedList(a = [], b = []) {
+  if (a.length !== b.length) return false;
+  return a.every((v, i) => String(v) === String(b[i]));
+}
+
+function parseColumnList(parenText) {
+  const text = String(parenText ?? "").trim();
+  if (!text) return [];
+  const inner = text.startsWith("(") ? text.slice(1, matchingParen(text, 0)) : text;
+  return splitTopLevel(inner, ",")
+    .map((c) => identName(c).toLowerCase())
+    .filter(Boolean);
+}
+
+function parseReferentialActions(rest) {
+  const text = String(rest ?? "");
+  const del = text.match(/\bON\s+DELETE\s+(NO\s+ACTION|RESTRICT|CASCADE|SET\s+NULL|SET\s+DEFAULT)/i);
+  const upd = text.match(/\bON\s+UPDATE\s+(NO\s+ACTION|RESTRICT|CASCADE|SET\s+NULL|SET\s+DEFAULT)/i);
+  const notDeferrable = /\bNOT\s+DEFERRABLE\b/i.test(text);
+  const deferrable = !notDeferrable && /\bDEFERRABLE\b/i.test(text);
+  const initiallyDeferred = /\bINITIALLY\s+DEFERRED\b/i.test(text);
+  return {
+    onDelete: del ? del[1].replace(/\s+/g, " ").toUpperCase() : "NO ACTION",
+    onUpdate: upd ? upd[1].replace(/\s+/g, " ").toUpperCase() : "NO ACTION",
+    deferrable: deferrable || initiallyDeferred,
+    initiallyDeferred,
+  };
+}
+
+function tableKeyOf(raw, fallback = "public.unknown") {
+  if (raw?.table) {
+    const t = String(raw.table).replaceAll('"', "").toLowerCase();
+    return t.includes(".") ? t : `public.${t}`;
+  }
+  if (raw?.schema && raw?.name) {
+    return `${String(raw.schema).toLowerCase()}.${String(raw.name).toLowerCase()}`;
+  }
+  return String(fallback).toLowerCase();
+}
+
+/**
+ * Structured constraint identity. Kind-only matching is refused.
+ * CHECK expressions are compared after whitespace/case normalization,
+ * not as proven semantic equivalents.
+ */
+export function normalizeConstraint(raw, fallbackTable) {
+  const table = tableKeyOf(raw, fallbackTable);
+  const schema = table.includes(".") ? table.split(".")[0] : "public";
+  const name = raw?.name ? identName(raw.name).toLowerCase() : null;
+  const kind = String(raw?.kind ?? raw?.type ?? "").replace(/\s+/g, " ").toUpperCase();
+  const spec = raw?.spec ?? raw?.definition ?? raw?.checkExpression ?? "";
+
+  if (!["PRIMARY KEY", "UNIQUE", "FOREIGN KEY", "CHECK"].includes(kind)) {
+    return {
+      kind: kind || "UNKNOWN",
+      table,
+      schema,
+      name,
+      unverified: true,
+      reason: kind ? `unsupported constraint kind ${kind}` : "constraint kind missing",
+    };
+  }
+
+  if (kind === "CHECK") {
+    let expr = raw?.checkExpression ?? raw?.expression ?? null;
+    if (!expr && spec) {
+      const text = String(spec);
+      const checkAt = text.search(/\bCHECK\b/i);
+      const open = text.indexOf("(", checkAt === -1 ? 0 : checkAt);
+      const close = open === -1 ? -1 : matchingParen(text, open);
+      if (close !== -1) expr = text.slice(open + 1, close);
+    }
+    if (!expr || !String(expr).trim()) {
+      return { kind, table, schema, name, unverified: true, reason: "CHECK expression unparseable" };
+    }
+    const checkExpression = normalizeExpr(expr);
+    return {
+      kind,
+      table,
+      schema,
+      name,
+      columns: [],
+      checkExpression,
+      identity: `CHECK:${table}:${checkExpression}`,
+      unverified: false,
+    };
+  }
+
+  if (kind === "PRIMARY KEY" || kind === "UNIQUE") {
+    let columns = Array.isArray(raw?.columns) ? raw.columns.map((c) => String(c).toLowerCase()) : null;
+    if (!columns?.length && spec) {
+      const open = String(spec).indexOf("(");
+      const close = open === -1 ? -1 : matchingParen(String(spec), open);
+      if (close !== -1) columns = parseColumnList(String(spec).slice(open, close + 1));
+    }
+    if (!columns?.length) {
+      return { kind, table, schema, name, unverified: true, reason: "constraint columns unparseable" };
+    }
+    return {
+      kind,
+      table,
+      schema,
+      name,
+      columns,
+      identity: `${kind}:${table}:(${columns.join(",")})`,
+      unverified: false,
+    };
+  }
+
+  let columns = Array.isArray(raw?.columns) ? raw.columns.map((c) => String(c).toLowerCase()) : null;
+  let referencedSchema = raw?.referencedSchema ? String(raw.referencedSchema).toLowerCase() : null;
+  let referencedTable = raw?.referencedTable ? String(raw.referencedTable).toLowerCase() : null;
+  if (referencedTable && referencedTable.includes(".")) {
+    const q = qualify(referencedTable);
+    referencedSchema = q.schema;
+    referencedTable = q.name;
+  }
+  let referencedColumns = Array.isArray(raw?.referencedColumns)
+    ? raw.referencedColumns.map((c) => String(c).toLowerCase())
+    : null;
+  let referencedColumnsMode = raw?.referencedColumnsMode ?? null;
+  let actions = {
+    onDelete: raw?.onDelete ? String(raw.onDelete).replace(/\s+/g, " ").toUpperCase() : null,
+    onUpdate: raw?.onUpdate ? String(raw.onUpdate).replace(/\s+/g, " ").toUpperCase() : null,
+    deferrable: typeof raw?.deferrable === "boolean" ? raw.deferrable : null,
+    initiallyDeferred: typeof raw?.initiallyDeferred === "boolean" ? raw.initiallyDeferred : null,
+  };
+
+  if ((!columns?.length || !referencedTable) && spec) {
+    const text = String(spec);
+    const open = text.indexOf("(");
+    const close = open === -1 ? -1 : matchingParen(text, open);
+    if (!columns?.length && close !== -1) {
+      columns = parseColumnList(text.slice(open, close + 1));
+    }
+    const ref = text.match(
+      /\bREFERENCES\s+((?:"[^"]+"|[a-zA-Z_][\w$]*)(?:\s*\.\s*(?:"[^"]+"|[a-zA-Z_][\w$]*))?)\s*(\([^)]*\))?/i,
+    );
+    if (ref) {
+      const q = qualify(ref[1]);
+      referencedSchema = q.schema;
+      referencedTable = q.name;
+      if (ref[2]) {
+        referencedColumns = parseColumnList(ref[2]);
+        referencedColumnsMode = "explicit";
+      } else if (!referencedColumnsMode) {
+        referencedColumnsMode = "implicit-pk";
+      }
+    }
+    const parsedActions = parseReferentialActions(text);
+    actions = {
+      onDelete: actions.onDelete ?? parsedActions.onDelete,
+      onUpdate: actions.onUpdate ?? parsedActions.onUpdate,
+      deferrable: actions.deferrable ?? parsedActions.deferrable,
+      initiallyDeferred: actions.initiallyDeferred ?? parsedActions.initiallyDeferred,
+    };
+  }
+
+  if (!referencedColumnsMode) {
+    referencedColumnsMode = referencedColumns?.length ? "explicit" : "implicit-pk";
+  }
+  if (!columns?.length || !referencedTable) {
+    return { kind, table, schema, name, unverified: true, reason: "foreign key unparseable" };
+  }
+
+  return {
+    kind,
+    table,
+    schema,
+    name,
+    columns,
+    referencedSchema: referencedSchema ?? "public",
+    referencedTable,
+    referencedColumns: referencedColumnsMode === "explicit" ? referencedColumns ?? [] : null,
+    referencedColumnsMode,
+    onDelete: actions.onDelete ?? "NO ACTION",
+    onUpdate: actions.onUpdate ?? "NO ACTION",
+    deferrable: Boolean(actions.deferrable),
+    initiallyDeferred: Boolean(actions.initiallyDeferred),
+    identity: `FOREIGN KEY:${table}:(${columns.join(",")})->${referencedSchema ?? "public"}.${referencedTable}(${
+      referencedColumnsMode === "explicit" ? (referencedColumns ?? []).join(",") : "<implicit-pk>"
+    })`,
+    unverified: false,
+  };
+}
+
+export function constraintsEquivalent(expectedRaw, observedRaw, tableKey) {
+  const expected = normalizeConstraint(expectedRaw, tableKey);
+  const observed = normalizeConstraint(observedRaw, observedRaw?.table ?? tableKey);
+  if (expected.unverified || observed.unverified) {
+    return { match: false, unverified: true, expected, observed };
+  }
+  if (expected.kind !== observed.kind || expected.table !== observed.table) {
+    return { match: false, unverified: false, expected, observed };
+  }
+  if (expected.name && observed.name && expected.name !== observed.name) {
+    return { match: false, unverified: false, field: "name", expected, observed };
+  }
+  if (expected.kind === "CHECK") {
+    return {
+      match: expected.checkExpression === observed.checkExpression,
+      unverified: false,
+      expected,
+      observed,
+    };
+  }
+  if (expected.kind === "PRIMARY KEY" || expected.kind === "UNIQUE") {
+    return {
+      match: sameOrderedList(expected.columns, observed.columns),
+      unverified: false,
+      expected,
+      observed,
+    };
+  }
+  if (!sameOrderedList(expected.columns, observed.columns)) {
+    return { match: false, unverified: false, field: "columns", expected, observed };
+  }
+  if (
+    expected.referencedSchema !== observed.referencedSchema ||
+    expected.referencedTable !== observed.referencedTable
+  ) {
+    return { match: false, unverified: false, field: "referencedTable", expected, observed };
+  }
+  if (expected.referencedColumnsMode === "explicit" && observed.referencedColumnsMode === "explicit") {
+    if (!sameOrderedList(expected.referencedColumns ?? [], observed.referencedColumns ?? [])) {
+      return { match: false, unverified: false, field: "referencedColumns", expected, observed };
+    }
+  }
+  if (expected.onDelete !== observed.onDelete || expected.onUpdate !== observed.onUpdate) {
+    return { match: false, unverified: false, field: "referentialAction", expected, observed };
+  }
+  if (expected.deferrable !== observed.deferrable || expected.initiallyDeferred !== observed.initiallyDeferred) {
+    return { match: false, unverified: false, field: "deferrability", expected, observed };
+  }
+  return { match: true, unverified: false, expected, observed };
+}
+
+const TYPE_ONLY_ARG = /^(integer|int|int4|int2|int8|smallint|bigint|text|uuid|boolean|bool|numeric|decimal|real|double|float8|float4|varchar|character|char|timestamp|timestamptz|date|time|json|jsonb|bytea|name|regclass|anyelement|anyarray|record|void|trigger)\b/i;
+
+export function parseFunctionArgs(argsText) {
+  const raw = String(argsText ?? "").trim();
+  const text = raw.startsWith("(") ? raw : `(${raw})`;
+  const close = matchingParen(text, 0);
+  const inner = close === -1 ? text.replace(/^\(|\)$/g, "") : text.slice(1, close);
+  if (!inner.trim()) {
+    return { args: "()", argTypes: [], inputTypes: [], modes: [], unverified: false };
+  }
+  const parts = splitTopLevel(inner, ",");
+  const args = [];
+  for (const part of parts) {
+    let p = part.trim();
+    if (!p) continue;
+    let mode = "IN";
+    const modeMatch = p.match(/^(IN\s+OUT|INOUT|OUT|IN|VARIADIC)\b/i);
+    if (modeMatch) {
+      mode = modeMatch[1].replace(/\s+/g, " ").toUpperCase().replace("IN OUT", "INOUT");
+      p = p.slice(modeMatch[0].length).trim();
+    }
+    const named = p.match(/^((?:"[^"]+"|[a-zA-Z_][\w$]*))\s+([\s\S]+)$/);
+    let type;
+    if (named && !TYPE_ONLY_ARG.test(named[1])) {
+      type = named[2];
+    } else {
+      type = p;
+    }
+    args.push({ mode, type: normalizeType(type) });
+  }
+  const inputTypes = args
+    .filter((a) => a.mode === "IN" || a.mode === "INOUT" || a.mode === "VARIADIC")
+    .map((a) => a.type);
+  return {
+    args: `(${args.map((a) => a.type).join(",")})`,
+    argTypes: args.map((a) => a.type),
+    inputTypes,
+    modes: args.map((a) => a.mode),
+    unverified: false,
+  };
+}
+
+export function functionIdentityKey(fn) {
+  const schema = (fn.schema ?? "public").toLowerCase();
+  const name = String(fn.name).toLowerCase();
+  const parsed = Array.isArray(fn.inputTypes) ? fn : parseFunctionArgs(fn.args ?? fn.identityArgs ?? "()");
+  return `${schema}.${name}(${(parsed.inputTypes ?? []).join(",")})`;
+}
+
+function parseSearchPath(header) {
+  const match = String(header ?? "").match(/\bSET\s+search_path\s*(?:TO|=)\s*([^;]+)/i);
+  if (!match) return null;
+  return normalizeWs(match[1]).toLowerCase();
+}
+
+function parseVolatility(header) {
+  if (/\bIMMUTABLE\b/i.test(header)) return "IMMUTABLE";
+  if (/\bSTABLE\b/i.test(header)) return "STABLE";
+  return "VOLATILE";
+}
+
+function parseReturns(header) {
+  const match = String(header ?? "").match(/\bRETURNS\s+/i);
+  if (!match) return null;
+  const rest = header.slice(match.index + match[0].length).trim();
+  if (/^TABLE\s*\(/i.test(rest)) {
+    const open = rest.indexOf("(");
+    const close = matchingParen(rest, open);
+    if (close === -1) return { returns: null, unverified: true };
+    return { returns: normalizeType(`table${rest.slice(open, close + 1)}`), unverified: false };
+  }
+  const type = rest.split(/\s+(LANGUAGE|SECURITY|VOLATILE|STABLE|IMMUTABLE|STRICT|CALLED|SET|AS)\b/i)[0];
+  return { returns: normalizeType(type), unverified: false };
+}
+
+export function normalizeFunction(raw) {
+  const schema = (raw?.schema ?? "public").toLowerCase();
+  const name = String(raw?.name ?? "").toLowerCase();
+  const parsed = Array.isArray(raw?.inputTypes)
+    ? {
+        args: raw.args ?? `(${raw.inputTypes.join(",")})`,
+        argTypes: raw.argTypes ?? raw.inputTypes,
+        inputTypes: raw.inputTypes,
+        unverified: false,
+      }
+    : parseFunctionArgs(raw?.args ?? raw?.identityArgs ?? raw?.identity_args ?? "()");
+  const returns = raw?.returns
+    ? normalizeType(raw.returns)
+    : parseReturns(raw?.header ?? "")?.returns ?? null;
+  const security = raw?.security
+    ? String(raw.security).toUpperCase()
+    : /\bSECURITY\s+DEFINER\b/i.test(raw?.header ?? "")
+      ? "DEFINER"
+      : "INVOKER";
+  const volatility = raw?.volatility
+    ? String(raw.volatility).toUpperCase()
+    : parseVolatility(raw?.header ?? "");
+  const language = raw?.language ? String(raw.language).toLowerCase() : null;
+  const searchPath = raw?.searchPath ?? raw?.search_path ?? parseSearchPath(raw?.header ?? raw?.config ?? "");
+  const key = `${schema}.${name}(${(parsed.inputTypes ?? []).join(",")})`;
+  return {
+    schema,
+    name,
+    args: parsed.args,
+    argTypes: parsed.argTypes,
+    inputTypes: parsed.inputTypes,
+    key,
+    returns,
+    security,
+    volatility,
+    language,
+    searchPath: searchPath ? normalizeWs(String(searchPath)).toLowerCase() : null,
+    unverified: Boolean(parsed.unverified),
+    sourceFile: raw?.sourceFile,
+  };
+}
+
+function functionGrantKey(g) {
+  const fn = String(g.function ?? g.name ?? "").toLowerCase();
+  const args = g.args ? String(g.args).toLowerCase() : "";
+  return `${fn}${args}::${(g.roles ?? []).map((r) => String(r).toLowerCase()).sort().join(",")}::${(g.privileges ?? []).join(",")}`;
+}
+
 function stripPlainComments(sql) {
   return String(sql)
     .replace(/\/\*[\s\S]*?\*\//g, " ")
@@ -221,13 +726,18 @@ function parseCreateTableColumns(parenBody, tableKey, filename) {
     );
     if (constraint) {
       const kind = constraint[2].replace(/\s+/g, " ").toUpperCase();
-      constraints.push({
-        name: constraint[1] ? identName(constraint[1]) : null,
-        kind,
-        spec: normalizeWs(constraint[3]),
-        table: tableKey,
-        sourceFile: filename,
-      });
+      constraints.push(
+        normalizeConstraint(
+          {
+            name: constraint[1] ? identName(constraint[1]) : null,
+            kind,
+            spec: normalizeWs(constraint[3]),
+            table: tableKey,
+            sourceFile: filename,
+          },
+          tableKey,
+        ),
+      );
       continue;
     }
     const col = raw.match(/^((?:"[^"]+"|[a-zA-Z_][\w$]*))\s+([a-zA-Z_][\w$]*(?:\s*\.\s*[a-zA-Z_][\w$]*)?)(\s*\([^)]*\))?([\s\S]*)$/);
@@ -237,42 +747,46 @@ function parseCreateTableColumns(parenBody, tableKey, filename) {
     const rest = col[4] ?? "";
     const nullable = !/\bNOT\s+NULL\b/i.test(rest) && !/\bPRIMARY\s+KEY\b/i.test(rest);
     if (/\bPRIMARY\s+KEY\b/i.test(rest)) {
-      constraints.push({
-        name: null,
-        kind: "PRIMARY KEY",
-        spec: `(${name})`,
-        table: tableKey,
-        sourceFile: filename,
-      });
+      constraints.push(
+        normalizeConstraint(
+          { name: null, kind: "PRIMARY KEY", spec: `(${name})`, table: tableKey, sourceFile: filename },
+          tableKey,
+        ),
+      );
     }
     if (/\bUNIQUE\b/i.test(rest) && !/\bUNIQUE\s+INDEX\b/i.test(rest)) {
-      constraints.push({
-        name: null,
-        kind: "UNIQUE",
-        spec: `(${name})`,
-        table: tableKey,
-        sourceFile: filename,
-      });
+      constraints.push(
+        normalizeConstraint(
+          { name: null, kind: "UNIQUE", spec: `(${name})`, table: tableKey, sourceFile: filename },
+          tableKey,
+        ),
+      );
     }
-    const fk = rest.match(/\bREFERENCES\s+((?:"[^"]+"|[a-zA-Z_][\w$]*)(?:\s*\.\s*(?:"[^"]+"|[a-zA-Z_][\w$]*))?)/i);
+    const fk = rest.match(
+      /\bREFERENCES\s+((?:"[^"]+"|[a-zA-Z_][\w$]*)(?:\s*\.\s*(?:"[^"]+"|[a-zA-Z_][\w$]*))?)\s*(\([^)]*\))?([\s\S]*)/i,
+    );
     if (fk) {
-      constraints.push({
-        name: null,
-        kind: "FOREIGN KEY",
-        spec: `(${name}) REFERENCES ${qualify(fk[1]).schema}.${qualify(fk[1]).name}`,
-        table: tableKey,
-        sourceFile: filename,
-      });
+      constraints.push(
+        normalizeConstraint(
+          {
+            name: null,
+            kind: "FOREIGN KEY",
+            spec: `(${name}) REFERENCES ${qualify(fk[1]).schema}.${qualify(fk[1]).name}${fk[2] ?? ""}${fk[3] ?? ""}`,
+            table: tableKey,
+            sourceFile: filename,
+          },
+          tableKey,
+        ),
+      );
     }
     const check = rest.match(/\bCHECK\s*\(/i);
     if (check) {
-      constraints.push({
-        name: null,
-        kind: "CHECK",
-        spec: normalizeWs(rest.slice(check.index)),
-        table: tableKey,
-        sourceFile: filename,
-      });
+      constraints.push(
+        normalizeConstraint(
+          { name: null, kind: "CHECK", spec: normalizeWs(rest.slice(check.index)), table: tableKey, sourceFile: filename },
+          tableKey,
+        ),
+      );
     }
     columns.push({
       name,
@@ -556,13 +1070,18 @@ function extractPlainDdl(body, filename, into) {
     const ident = qualify(match[1]);
     ident.key = `${ident.schema}.${ident.name}`;
     const tableObj = ensureTable(into.tables, ident, filename);
-    tableObj.constraints.push({
-      name: match[2] ? identName(match[2]) : null,
-      kind: match[3].replace(/\s+/g, " ").toUpperCase(),
-      spec: normalizeWs(match[4] ?? ""),
-      table: ident.key,
-      sourceFile: filename,
-    });
+    tableObj.constraints.push(
+      normalizeConstraint(
+        {
+          name: match[2] ? identName(match[2]) : null,
+          kind: match[3].replace(/\s+/g, " ").toUpperCase(),
+          spec: normalizeWs(match[4] ?? ""),
+          table: ident.key,
+          sourceFile: filename,
+        },
+        ident.key,
+      ),
+    );
   }
 
   const rlsRe = new RegExp(
@@ -602,32 +1121,66 @@ function extractPlainDdl(body, filename, into) {
     into.indexes.delete(name);
   }
 
-  const fnRe = new RegExp(
-    `CREATE\\s+(?:OR\\s+REPLACE\\s+)?FUNCTION\\s+(${QUAL})\\s*(\\([^)]*\\))([\\s\\S]*?)\\bAS\\s+`,
-    "gi",
-  );
-  while ((match = fnRe.exec(src))) {
-    const ident = qualify(match[1]);
-    const args = normalizeWs(match[2]);
-    const header = match[3] ?? "";
-    const security = /\bSECURITY\s+DEFINER\b/i.test(header)
-      ? "DEFINER"
-      : /\bSECURITY\s+INVOKER\b/i.test(header)
-        ? "INVOKER"
-        : "INVOKER";
-    const language = (header.match(/\bLANGUAGE\s+([a-zA-Z_]+)/i) ?? [])[1] ?? null;
-    const returns = (header.match(/\bRETURNS\s+([a-zA-Z_][\w$]*)/i) ?? [])[1] ?? null;
-    const key = `${ident.schema}.${ident.name}${args.toLowerCase()}`;
-    into.functions.set(key, {
+  const fnStartRe = /CREATE\s+(?:OR\s+REPLACE\s+)?FUNCTION\s+/gi;
+  while ((match = fnStartRe.exec(src))) {
+    const rest = src.slice(match.index + match[0].length);
+    const nameMatch = rest.match(new RegExp(`^(${QUAL})`));
+    if (!nameMatch) {
+      into.unverified.push({
+        kind: "function",
+        sourceFile: filename,
+        reason: "CREATE FUNCTION name was not parseable",
+        required: true,
+        verification: "NOT_VERIFIED",
+      });
+      continue;
+    }
+    let i = nameMatch[0].length;
+    while (rest[i] && /\s/.test(rest[i])) i += 1;
+    if (rest[i] !== "(") {
+      into.unverified.push({
+        kind: "function",
+        sourceFile: filename,
+        reason: "CREATE FUNCTION argument list was not parseable",
+        required: true,
+        verification: "NOT_VERIFIED",
+      });
+      continue;
+    }
+    const close = matchingParen(rest, i);
+    if (close === -1) {
+      into.unverified.push({
+        kind: "function",
+        sourceFile: filename,
+        reason: "CREATE FUNCTION argument list was not closed",
+        required: true,
+        verification: "NOT_VERIFIED",
+      });
+      continue;
+    }
+    const argsText = rest.slice(i, close + 1);
+    const headerAndBody = rest.slice(close + 1);
+    const asMatch = headerAndBody.match(/\bAS\s+/i);
+    if (!asMatch) {
+      into.unverified.push({
+        kind: "function",
+        sourceFile: filename,
+        reason: "CREATE FUNCTION header was not parseable",
+        required: true,
+        verification: "NOT_VERIFIED",
+      });
+      continue;
+    }
+    const header = headerAndBody.slice(0, asMatch.index);
+    const ident = qualify(nameMatch[1]);
+    const normalized = normalizeFunction({
       schema: ident.schema,
       name: ident.name,
-      args: args.toLowerCase(),
-      key,
-      security,
-      language: language ? language.toLowerCase() : null,
-      returns: returns ? returns.toLowerCase() : null,
+      args: argsText,
+      header,
       sourceFile: filename,
     });
+    into.functions.set(normalized.key, normalized);
   }
 
   const triggerRe = new RegExp(
@@ -668,20 +1221,50 @@ function extractPlainDdl(body, filename, into) {
   }
 
   const grantFnRe = new RegExp(
-    `(GRANT|REVOKE)\\s+EXECUTE\\s+ON\\s+FUNCTION\\s+(${QUAL})\\s*(?:\\([^)]*\\))?\\s+(?:TO|FROM)\\s+([^;]+)`,
+    `(GRANT|REVOKE)\\s+EXECUTE\\s+ON\\s+FUNCTION\\s+(${QUAL})\\s*`,
     "gi",
   );
   while ((match = grantFnRe.exec(src))) {
+    let cursor = match.index + match[0].length;
+    let args = "";
+    if (src[cursor] === "(") {
+      const close = matchingParen(src, cursor);
+      if (close === -1) {
+        into.unverified.push({
+          kind: "function_grant",
+          sourceFile: filename,
+          reason: "GRANT ON FUNCTION argument list was not closed",
+          required: true,
+          verification: "NOT_VERIFIED",
+        });
+        continue;
+      }
+      args = src.slice(cursor, close + 1);
+      cursor = close + 1;
+    }
+    const tail = src.slice(cursor);
+    const toFrom = tail.match(/^\s*(?:TO|FROM)\s+([^;]+)/i);
+    if (!toFrom) continue;
     const ident = qualify(match[2]);
-    const roles = splitTopLevel(match[3], ",").map((r) => identName(r).toLowerCase());
-    const key = `${ident.schema}.${ident.name}`;
-    into.functionGrants.set(key, {
-      function: key,
+    const roles = splitTopLevel(toFrom[1], ",").map((r) => identName(r).toLowerCase());
+    const parsed = args ? parseFunctionArgs(args) : { inputTypes: [], args: "" };
+    const fnKey = args
+      ? `${ident.schema}.${ident.name}(${parsed.inputTypes.join(",")})`
+      : `${ident.schema}.${ident.name}`;
+    const rec = {
+      function: fnKey,
+      name: ident.name,
+      schema: ident.schema,
+      args: parsed.args || "",
+      inputTypes: parsed.inputTypes,
       privileges: ["EXECUTE"],
       roles: roles.sort(),
       revoke: match[1].toUpperCase() === "REVOKE",
       sourceFile: filename,
-    });
+    };
+    const stored = functionGrantKey(rec);
+    if (rec.revoke) into.functionGrants.delete(stored);
+    else into.functionGrants.set(stored, rec);
   }
 
   const bucketRe =
@@ -753,16 +1336,48 @@ export function extractExpectedObjects(sqlByFilename = {}) {
   const functionGrants = [...into.functionGrants.values()];
   const storageBuckets = [...into.storageBuckets.values()];
 
+  for (const table of tables) {
+    for (const cons of table.constraints ?? []) {
+      if (cons.unverified) {
+        into.unverified.push({
+          kind: "constraint",
+          table: table.key,
+          reason: cons.reason ?? "constraint unparseable",
+          required: true,
+          verification: "NOT_VERIFIED",
+        });
+      }
+    }
+  }
+  for (const fn of functions) {
+    if (fn.unverified) {
+      into.unverified.push({
+        kind: "function",
+        key: fn.key,
+        reason: "function identity unparseable",
+        required: true,
+        verification: "NOT_VERIFIED",
+      });
+    }
+  }
+
   const comparedObjectClasses = [
     "tables",
     "columns",
     "constraints",
+    "constraintIdentity",
     "indexes",
     "functions",
+    "functionIdentity",
+    "functionReturns",
     "functionSecurity",
+    "functionVolatility",
+    "functionSearchPath",
+    "functionGrants",
     "triggers",
     "rls",
     "policies",
+    "policyPermissiveness",
     "policyExpressions",
     "grants",
     "columnGrants",
@@ -847,6 +1462,9 @@ export function compareCatalog(expected, catalog) {
   if ((expected.functions ?? []).length && catalog.functions == null) {
     incomplete.push("functions");
   }
+  if ((expected.functionGrants ?? []).length && catalog.functionGrants == null) {
+    incomplete.push("functionGrants");
+  }
   if ((expected.triggers ?? []).length && catalog.triggers == null) {
     incomplete.push("triggers");
   }
@@ -859,10 +1477,7 @@ export function compareCatalog(expected, catalog) {
 
   const observedTables = indexBy(catalog.tables ?? [], observedTableKey);
   const observedPolicies = indexBy(catalog.policies ?? [], observedPolicyKey);
-  const observedFunctions = indexBy(
-    catalog.functions ?? [],
-    (f) => `${(f.schema ?? "public").toLowerCase()}.${String(f.name).toLowerCase()}${String(f.args ?? "").toLowerCase()}`,
-  );
+  const observedFunctions = indexBy(catalog.functions ?? [], (f) => functionIdentityKey(f));
   const observedTriggers = indexBy(catalog.triggers ?? [], (t) => {
     const table = String(t.table).includes(".")
       ? String(t.table).toLowerCase()
@@ -933,19 +1548,35 @@ export function compareCatalog(expected, catalog) {
     if ((table.constraints ?? []).length) {
       if (!observed.constraints) incomplete.push(`constraints:${table.key}`);
       else {
-        const gotKinds = observed.constraints.map((c) =>
-          `${String(c.kind).toUpperCase()}:${normalizeWs(c.spec ?? "")}`,
-        );
+        const used = new Set();
         for (const cons of table.constraints) {
-          const needle = `${cons.kind}:${cons.spec}`;
-          const found = gotKinds.some(
-            (g) => g === needle || g.startsWith(`${cons.kind}:`),
-          );
-          if (!found) {
+          let matched = false;
+          let unverified = false;
+          observed.constraints.forEach((got, idx) => {
+            if (matched || used.has(idx)) return;
+            const result = constraintsEquivalent(cons, got, table.key);
+            if (result.unverified) unverified = true;
+            else if (result.match) {
+              matched = true;
+              used.add(idx);
+            }
+          });
+          if (unverified && !matched) {
             constraintMismatches.push({
               table: table.key,
               kind: cons.kind,
-              spec: cons.spec,
+              identity: cons.identity,
+              reason: "unverified",
+            });
+          } else if (!matched) {
+            constraintMismatches.push({
+              table: table.key,
+              kind: cons.kind,
+              identity: cons.identity ?? cons.spec,
+              columns: cons.columns,
+              checkExpression: cons.checkExpression,
+              referencedTable: cons.referencedTable,
+              reason: "mismatch",
             });
           }
         }
@@ -993,40 +1624,99 @@ export function compareCatalog(expected, catalog) {
   for (const policy of expected.policies ?? []) {
     const got = observedPolicies.get(policy.key);
     if (!got) continue;
-    if (got.command || got.roles || got.using || got.withCheck) {
-      if (got.command && String(got.command).toUpperCase() !== policy.command) {
-        policyMismatches.push({ key: policy.key, field: "command" });
-      }
-      if (got.roles && !sameStringList(got.roles, policy.roles)) {
-        policyMismatches.push({ key: policy.key, field: "roles" });
-      }
-      if (got.using != null && normalizeExpr(got.using) !== (policy.using ?? "")) {
-        policyMismatches.push({ key: policy.key, field: "using" });
-      }
-      if (got.withCheck != null && normalizeExpr(got.withCheck) !== (policy.withCheck ?? "")) {
-        policyMismatches.push({ key: policy.key, field: "withCheck" });
-      }
-    } else if (policy.command !== "ALL" || (policy.using || policy.withCheck)) {
+    const hasShape =
+      got.command != null ||
+      got.roles != null ||
+      got.using != null ||
+      got.withCheck != null ||
+      typeof got.permissive === "boolean";
+    if (!hasShape) {
       incomplete.push(`policyShape:${policy.key}`);
+      continue;
+    }
+    if (got.command && String(got.command).toUpperCase() !== policy.command) {
+      policyMismatches.push({ key: policy.key, field: "command" });
+    }
+    if (got.roles && !sameStringList(got.roles, policy.roles)) {
+      policyMismatches.push({ key: policy.key, field: "roles" });
+    }
+    if (got.using != null && normalizeExpr(got.using) !== (policy.using ?? "")) {
+      policyMismatches.push({ key: policy.key, field: "using" });
+    }
+    if (got.withCheck != null && normalizeExpr(got.withCheck) !== (policy.withCheck ?? "")) {
+      policyMismatches.push({ key: policy.key, field: "withCheck" });
+    }
+    const expectedPermissive = policy.permissive !== false;
+    if (typeof got.permissive === "boolean") {
+      if (got.permissive !== expectedPermissive) {
+        policyMismatches.push({ key: policy.key, field: "permissive" });
+      }
+    } else if (expectedPermissive === false) {
+      policyMismatches.push({ key: policy.key, field: "permissive" });
     }
   }
 
-  const missingFunctions = (expected.functions ?? []).filter((f) => {
-    if (observedFunctions.has(f.key)) return false;
-    const byName = `${f.schema}.${f.name}`;
-    return ![...observedFunctions.keys()].some((k) => k.startsWith(byName));
+  const expectedFunctionKeys = new Set((expected.functions ?? []).map((f) => functionIdentityKey(f)));
+  const missingFunctions = (expected.functions ?? []).filter((f) => !observedFunctions.has(functionIdentityKey(f)));
+  const unexpectedFunctions = (catalog.functions ?? []).filter((f) => {
+    const schema = (f.schema ?? "public").toLowerCase();
+    if (VENDOR_SCHEMAS.includes(schema) && schema !== "public") return false;
+    return !expectedFunctionKeys.has(functionIdentityKey(f));
   });
   const functionSecurityMismatches = [];
+  const functionMismatches = [];
   for (const fn of expected.functions ?? []) {
-    const got =
-      observedFunctions.get(fn.key) ??
-      [...observedFunctions.values()].find(
-        (o) =>
-          (o.schema ?? "public").toLowerCase() === fn.schema &&
-          String(o.name).toLowerCase() === fn.name,
-      );
-    if (got && got.security && String(got.security).toUpperCase() !== fn.security) {
-      functionSecurityMismatches.push({ key: fn.key, expected: fn.security, observed: got.security });
+    const exp = normalizeFunction(fn);
+    const gotRaw = observedFunctions.get(exp.key);
+    if (!gotRaw) continue;
+    const got = normalizeFunction(gotRaw);
+    if (got.unverified || exp.unverified) {
+      functionMismatches.push({ key: exp.key, field: "unverified" });
+      continue;
+    }
+    if (got.security && got.security !== exp.security) {
+      functionSecurityMismatches.push({
+        key: exp.key,
+        expected: exp.security,
+        observed: got.security,
+      });
+    }
+    if (exp.returns && got.returns && exp.returns !== got.returns) {
+      functionMismatches.push({ key: exp.key, field: "returns", expected: exp.returns, observed: got.returns });
+    }
+    if (exp.volatility && got.volatility && exp.volatility !== got.volatility) {
+      functionMismatches.push({
+        key: exp.key,
+        field: "volatility",
+        expected: exp.volatility,
+        observed: got.volatility,
+      });
+    }
+    if (exp.searchPath && got.searchPath && exp.searchPath !== got.searchPath) {
+      functionMismatches.push({
+        key: exp.key,
+        field: "searchPath",
+        expected: exp.searchPath,
+        observed: got.searchPath,
+      });
+    }
+    if (exp.searchPath && !got.searchPath && gotRaw.config == null && got.searchPath == null) {
+      incomplete.push(`functionSearchPath:${exp.key}`);
+    }
+  }
+
+  const functionGrantMismatches = [];
+  if ((expected.functionGrants ?? []).length) {
+    if (catalog.functionGrants == null) {
+      incomplete.push("functionGrants");
+    } else {
+      const got = new Set((catalog.functionGrants ?? []).map(functionGrantKey));
+      for (const g of expected.functionGrants) {
+        if (g.revoke) continue;
+        if (!got.has(functionGrantKey(g))) {
+          functionGrantMismatches.push(g);
+        }
+      }
     }
   }
 
@@ -1058,7 +1748,10 @@ export function compareCatalog(expected, catalog) {
     columnGrantMismatches,
     rlsMismatches,
     missingFunctions,
+    unexpectedFunctions,
+    functionMismatches,
     functionSecurityMismatches,
+    functionGrantMismatches,
     missingTriggers,
     missingIndexes,
     missingStorage,
@@ -1084,18 +1777,27 @@ export function catalogBlocksCompletion(comparison) {
   if (comparison.missingPolicies?.length) return "CATALOG_POLICY_MISSING";
   if (comparison.policyMismatches?.length) return "CATALOG_POLICY_MISMATCH";
   if (comparison.columnMismatches?.length) return "CATALOG_COLUMN_MISMATCH";
+  if (comparison.constraintMismatches?.some((c) => c.reason === "unverified")) {
+    return "CATALOG_CONSTRAINT_UNVERIFIED";
+  }
   if (comparison.constraintMismatches?.length) return "CATALOG_CONSTRAINT_MISMATCH";
   if (comparison.rlsMismatches?.length) return "CATALOG_RLS_MISMATCH";
   if (comparison.grantMismatches?.length) return "CATALOG_GRANT_MISMATCH";
   if (comparison.columnGrantMismatches?.length) return "CATALOG_COLUMN_GRANT_MISMATCH";
   if (comparison.missingFunctions?.length) return "CATALOG_FUNCTION_MISSING";
+  if (comparison.functionMismatches?.length) return "CATALOG_FUNCTION_MISMATCH";
   if (comparison.functionSecurityMismatches?.length) {
     return "CATALOG_FUNCTION_SECURITY_MISMATCH";
   }
+  if (comparison.functionGrantMismatches?.length) return "CATALOG_FUNCTION_GRANT_MISMATCH";
   if (comparison.missingTriggers?.length) return "CATALOG_TRIGGER_MISSING";
   if (comparison.missingIndexes?.length) return "CATALOG_INDEX_MISSING";
   if (comparison.missingStorage?.length) return "CATALOG_STORAGE_MISMATCH";
-  if (comparison.unexpectedTables?.length || comparison.unexpectedPolicies?.length) {
+  if (
+    comparison.unexpectedTables?.length ||
+    comparison.unexpectedPolicies?.length ||
+    comparison.unexpectedFunctions?.length
+  ) {
     return "CATALOG_UNEXPECTED_OBJECTS";
   }
   return null;
@@ -1121,8 +1823,10 @@ export function observedCatalogFromExpected(expected) {
       roles: p.roles,
       using: p.using,
       withCheck: p.withCheck,
+      permissive: p.permissive !== false,
     })),
     functions: expected.functions ?? [],
+    functionGrants: expected.functionGrants ?? [],
     triggers: expected.triggers ?? [],
     indexes: expected.indexes ?? [],
     storageBuckets: expected.storageBuckets ?? [],

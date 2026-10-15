@@ -35,6 +35,7 @@ import { createLogger, redactText, redactUrl } from "../../scripts/staging/sheri
 import {
   LEDGER_STATUS,
   createMemoryLedger,
+  createSqlLedger,
   evaluateLedger,
 } from "../../scripts/staging/sherivs-restore/ledger.mjs";
 import {
@@ -51,6 +52,7 @@ import {
   createLivePostgresLockSession,
   createLockRegistry,
   isAuthenticLockController,
+  isLiveCapableLockController,
   transitionLock,
   LOCK_AUTHENTICITY,
   LOCK_STATES,
@@ -58,7 +60,11 @@ import {
 } from "../../scripts/staging/sherivs-restore/lock.mjs";
 import { reconcileRestoreState } from "../../scripts/staging/sherivs-restore/reconcile.mjs";
 import {
+  CATALOG_OBSERVE_SQL,
+  catalogBlocksCompletion,
+  compareCatalog,
   extractExpectedObjects,
+  functionIdentityKey,
   observedCatalogFromExpected,
 } from "../../scripts/staging/sherivs-restore/catalog-contract.mjs";
 import { catalogNotAssumedFromPriorReport, runOfflinePreflight } from "../../scripts/staging/sherivs-restore/preflight.mjs";
@@ -1583,5 +1589,392 @@ END $$;
     expect(cli.ok).toBe(false);
     expect(cli.code).toBe("LIVE_EXECUTE_NOT_ENABLED");
     expect(cli.exitCode).toBe(2);
+  });
+
+  function identitySql() {
+    return `
+CREATE TABLE public.orgs (id uuid PRIMARY KEY, name text UNIQUE);
+CREATE TABLE public.people (
+  id uuid PRIMARY KEY,
+  org_id uuid NOT NULL REFERENCES public.orgs (id) ON DELETE CASCADE,
+  name text CHECK (name <> '')
+);
+CREATE FUNCTION public.touch_people(a integer) RETURNS integer LANGUAGE sql SECURITY DEFINER AS $$ SELECT 1; $$;
+CREATE FUNCTION public.touch_people(a text) RETURNS text LANGUAGE sql SECURITY INVOKER AS $$ SELECT a; $$;
+GRANT EXECUTE ON FUNCTION public.touch_people(integer) TO authenticated;
+CREATE POLICY people_self ON public.people AS RESTRICTIVE
+  FOR SELECT TO authenticated
+  USING (id = auth.uid());
+`.trim();
+  }
+
+  function identityManifest() {
+    const sql = identitySql();
+    return {
+      manifestId: "test-identity-contract",
+      sourceCommit: PINNED_SOURCE_COMMIT,
+      sourceTree: PINNED_SOURCE_TREE,
+      count: 1,
+      files: [{ seq: 1, filename: "20260101000000_identity.sql", sha256: digest(sql) }],
+      sqlByFilename: { "20260101000000_identity.sql": sql },
+    };
+  }
+
+  function completeDecision(manifest: ReturnType<typeof identityManifest>, catalog: Record<string, unknown>) {
+    const expected = extractExpectedObjects(manifest.sqlByFilename);
+    return {
+      expected,
+      decision: reconcileRestoreState({
+        manifest,
+        ledgerRows: completeLedger(manifest),
+        sqlByFilename: manifest.sqlByFilename,
+        expected,
+        vendorHistory: { status: "available", versions: manifest.files.map((f) => f.filename.slice(0, 14)) },
+        catalog,
+      }),
+    };
+  }
+
+  it("PRIMARY KEY (id) does not match PRIMARY KEY (ssn)", () => {
+    const manifest = identityManifest();
+    const expected = extractExpectedObjects(manifest.sqlByFilename);
+    const catalog = observedCatalogFromExpected(expected);
+    const people = catalog.tables.find((t: { name: string }) => t.name === "people");
+    people.constraints = people.constraints.map((c: { kind: string }) =>
+      c.kind === "PRIMARY KEY" ? { ...c, columns: ["ssn"], spec: "(ssn)" } : c,
+    );
+    const { decision } = completeDecision(manifest, catalog);
+    expect(decision.ok).toBe(false);
+    expect(decision.reason).toBe("CATALOG_CONSTRAINT_MISMATCH");
+  });
+
+  it("a different CHECK expression does not match", () => {
+    const manifest = identityManifest();
+    const expected = extractExpectedObjects(manifest.sqlByFilename);
+    const catalog = observedCatalogFromExpected(expected);
+    const people = catalog.tables.find((t: { name: string }) => t.name === "people");
+    people.constraints = people.constraints.map((c: { kind: string }) =>
+      c.kind === "CHECK" ? { ...c, checkExpression: "false", spec: "CHECK (false)" } : c,
+    );
+    const { decision } = completeDecision(manifest, catalog);
+    expect(decision.ok).toBe(false);
+    expect(decision.reason).toBe("CATALOG_CONSTRAINT_MISMATCH");
+  });
+
+  it("a foreign key pointing to a different table does not match", () => {
+    const manifest = identityManifest();
+    const expected = extractExpectedObjects(manifest.sqlByFilename);
+    const catalog = observedCatalogFromExpected(expected);
+    const people = catalog.tables.find((t: { name: string }) => t.name === "people");
+    people.constraints = people.constraints.map((c: { kind: string }) =>
+      c.kind === "FOREIGN KEY"
+        ? { ...c, referencedTable: "other", referencedSchema: "public", spec: "(org_id) REFERENCES public.other (id)" }
+        : c,
+    );
+    const { decision } = completeDecision(manifest, catalog);
+    expect(decision.ok).toBe(false);
+    expect(decision.reason).toBe("CATALOG_CONSTRAINT_MISMATCH");
+  });
+
+  it("constraint column order differences are detected", () => {
+    const sql = "CREATE TABLE public.pair (a int, b int, PRIMARY KEY (a, b));";
+    const manifest = {
+      manifestId: "test-pk-order",
+      sourceCommit: PINNED_SOURCE_COMMIT,
+      sourceTree: PINNED_SOURCE_TREE,
+      count: 1,
+      files: [{ seq: 1, filename: "20260101000000_pair.sql", sha256: digest(sql) }],
+      sqlByFilename: { "20260101000000_pair.sql": sql },
+    };
+    const expected = extractExpectedObjects(manifest.sqlByFilename);
+    const catalog = observedCatalogFromExpected(expected);
+    catalog.tables[0].constraints = catalog.tables[0].constraints.map((c: { kind: string }) =>
+      c.kind === "PRIMARY KEY" ? { ...c, columns: ["b", "a"], spec: "(b, a)" } : c,
+    );
+    const decision = reconcileRestoreState({
+      manifest,
+      ledgerRows: completeLedger(manifest),
+      sqlByFilename: manifest.sqlByFilename,
+      expected,
+      vendorHistory: { status: "available", versions: ["20260101000000"] },
+      catalog,
+    });
+    expect(decision.ok).toBe(false);
+    expect(decision.reason).toBe("CATALOG_CONSTRAINT_MISMATCH");
+  });
+
+  it("a missing required constraint cannot produce already_complete", () => {
+    const manifest = identityManifest();
+    const expected = extractExpectedObjects(manifest.sqlByFilename);
+    const catalog = observedCatalogFromExpected(expected);
+    catalog.tables.find((t: { name: string }) => t.name === "people").constraints = [];
+    const { decision } = completeDecision(manifest, catalog);
+    expect(decision.ok).toBe(false);
+    expect(decision.reason).toBe("CATALOG_CONSTRAINT_MISMATCH");
+  });
+
+  it("unknown constraint representations fail closed", () => {
+    const manifest = identityManifest();
+    const expected = extractExpectedObjects(manifest.sqlByFilename);
+    const catalog = observedCatalogFromExpected(expected);
+    const people = catalog.tables.find((t: { name: string }) => t.name === "people");
+    people.constraints = people.constraints.map((c: { kind: string }) =>
+      c.kind === "CHECK" ? { kind: "EXCLUDE", spec: "USING gist (name WITH &&)", table: "public.people" } : c,
+    );
+    const comparison = compareCatalog(expected, catalog);
+    expect(catalogBlocksCompletion(comparison)).toBe("CATALOG_CONSTRAINT_UNVERIFIED");
+    const { decision } = completeDecision(manifest, catalog);
+    expect(decision.ok).toBe(false);
+    expect(decision.reason).toBe("CATALOG_CONSTRAINT_UNVERIFIED");
+  });
+
+  it("same-name functions with different signatures do not match", () => {
+    const manifest = identityManifest();
+    const expected = extractExpectedObjects(manifest.sqlByFilename);
+    expect(expected.functionCount).toBe(2);
+    expect(expected.functions.map((f: { key: string }) => f.key)).toEqual(
+      expect.arrayContaining(["public.touch_people(integer)", "public.touch_people(text)"]),
+    );
+    const catalog = observedCatalogFromExpected(expected);
+    catalog.functions = catalog.functions.filter((f: { inputTypes: string[] }) =>
+      (f.inputTypes ?? []).includes("integer"),
+    );
+    catalog.functions.push({
+      schema: "public",
+      name: "touch_people",
+      args: "(uuid)",
+      inputTypes: ["uuid"],
+      security: "DEFINER",
+      returns: "integer",
+      volatility: "VOLATILE",
+    });
+    const { decision } = completeDecision(manifest, catalog);
+    expect(decision.ok).toBe(false);
+    expect(["CATALOG_FUNCTION_MISSING", "CATALOG_UNEXPECTED_OBJECTS"]).toContain(decision.reason);
+  });
+
+  it("changed function argument type, return type, and security block already_complete", () => {
+    const manifest = identityManifest();
+    const expected = extractExpectedObjects(manifest.sqlByFilename);
+    const catalog = observedCatalogFromExpected(expected);
+    catalog.functions = catalog.functions.map((f: { key: string; inputTypes: string[] }) =>
+      functionIdentityKey(f) === "public.touch_people(integer)"
+        ? { ...f, inputTypes: ["text"], args: "(text)", key: "public.touch_people(text)" }
+        : f,
+    );
+    expect(completeDecision(manifest, catalog).decision.reason).toMatch(
+      /CATALOG_FUNCTION_MISSING|CATALOG_UNEXPECTED_OBJECTS/,
+    );
+
+    const catalogReturn = observedCatalogFromExpected(expected);
+    catalogReturn.functions = catalogReturn.functions.map((f: { key: string }) =>
+      functionIdentityKey(f) === "public.touch_people(integer)" ? { ...f, returns: "text" } : f,
+    );
+    expect(completeDecision(manifest, catalogReturn).decision.reason).toBe("CATALOG_FUNCTION_MISMATCH");
+
+    const catalogSec = observedCatalogFromExpected(expected);
+    catalogSec.functions = catalogSec.functions.map((f: { key: string }) =>
+      functionIdentityKey(f) === "public.touch_people(integer)" ? { ...f, security: "INVOKER" } : f,
+    );
+    expect(completeDecision(manifest, catalogSec).decision.reason).toBe("CATALOG_FUNCTION_SECURITY_MISMATCH");
+  });
+
+  it("unexpected function definitions block already_complete", () => {
+    const manifest = identityManifest();
+    const expected = extractExpectedObjects(manifest.sqlByFilename);
+    const catalog = observedCatalogFromExpected(expected);
+    catalog.functions.push({
+      schema: "public",
+      name: "surprise_fn",
+      args: "()",
+      inputTypes: [],
+      security: "INVOKER",
+      returns: "void",
+    });
+    expect(completeDecision(manifest, catalog).decision.ok).toBe(false);
+    expect(completeDecision(manifest, catalog).decision.reason).toBe("CATALOG_UNEXPECTED_OBJECTS");
+  });
+
+  it("function grants are compared and mismatch fails closed", () => {
+    const manifest = identityManifest();
+    const expected = extractExpectedObjects(manifest.sqlByFilename);
+    expect(expected.functionGrants.length).toBeGreaterThan(0);
+    const catalog = observedCatalogFromExpected(expected);
+    catalog.functionGrants = [];
+    const { decision } = completeDecision(manifest, catalog);
+    expect(decision.ok).toBe(false);
+    expect(decision.reason).toBe("CATALOG_FUNCTION_GRANT_MISMATCH");
+  });
+
+  it("policy permissive versus restrictive mode is compared", () => {
+    const manifest = identityManifest();
+    const expected = extractExpectedObjects(manifest.sqlByFilename);
+    expect(expected.policies[0].permissive).toBe(false);
+    const catalog = observedCatalogFromExpected(expected);
+    catalog.policies = catalog.policies.map((p: { permissive: boolean }) => ({ ...p, permissive: true }));
+    const { decision } = completeDecision(manifest, catalog);
+    expect(decision.ok).toBe(false);
+    expect(decision.reason).toBe("CATALOG_POLICY_MISMATCH");
+  });
+
+  it("catalog observe plan represents the required contract classes", () => {
+    expect(CATALOG_OBSERVE_SQL.constraints).toMatch(/pg_constraint/);
+    expect(CATALOG_OBSERVE_SQL.functions).toMatch(/pg_get_function_identity_arguments/);
+    expect(CATALOG_OBSERVE_SQL.policies).toMatch(/polpermissive/);
+    expect(CATALOG_OBSERVE_SQL.policies).toMatch(/polroles/);
+    expect(CATALOG_OBSERVE_SQL.functionGrants).toMatch(/proacl/);
+    expect(CATALOG_OBSERVE_SQL.columnGrants).toMatch(/attacl/);
+    expect(CATALOG_OBSERVE_SQL.tableGrants).toMatch(/relacl/);
+    expect(CATALOG_OBSERVE_SQL.indexes).toMatch(/pg_index/);
+    expect(CATALOG_OBSERVE_SQL.triggers).toMatch(/pg_trigger/);
+    expect(CATALOG_OBSERVE_SQL.tables).toMatch(/relrowsecurity/);
+    expect(CATALOG_OBSERVE_SQL.storageBuckets).toMatch(/storage\.buckets/);
+    expect(CATALOG_OBSERVE_SQL.note).toMatch(/does not execute/);
+  });
+
+  it("forged, mutated, copied, and injected lock controllers cannot satisfy live capability", async () => {
+    const official = createAdvisoryLock({
+      session: createFakeAdvisorySession(createLockRegistry()),
+      owner: "offline",
+    });
+    expect(official.liveCapable).toBe(false);
+    expect(isLiveCapableLockController(official)).toBe(false);
+    expect(() => {
+      official.liveCapable = true;
+    }).toThrow();
+    expect(() => {
+      official.authenticity = LOCK_AUTHENTICITY.POSTGRES_SESSION;
+    }).toThrow();
+    expect(official.liveCapable).toBe(false);
+    expect(() => assertTrustedLockController(official, { requireLiveCapable: true })).toThrow(
+      /LOCK_LIVE_CAPABILITY_UNSATISFIED/,
+    );
+
+    const assigned = Object.assign({}, official, {
+      liveCapable: true,
+      authenticity: LOCK_AUTHENTICITY.POSTGRES_SESSION,
+    });
+    expect(isAuthenticLockController(assigned)).toBe(false);
+    expect(() => assertTrustedLockController(assigned, { requireLiveCapable: true })).toThrow(
+      /LOCK_CONTROLLER_UNTRUSTED/,
+    );
+
+    const forged = {
+      kind: "advisory",
+      authenticity: LOCK_AUTHENTICITY.POSTGRES_SESSION,
+      liveCapable: true,
+      acquire: async () => ({ ok: true }),
+      probe: async () => ({ ok: true }),
+      release: async () => ({ ok: true }),
+    };
+    expect(() => assertTrustedLockController(forged, { requireLiveCapable: true })).toThrow(
+      /LOCK_CONTROLLER_UNTRUSTED/,
+    );
+    expect(() => createLivePostgresLockSession()).toThrow(/LIVE_LOCK_SESSION_NOT_AUTHORIZED/);
+    expect(isLiveCapableLockController(official)).toBe(false);
+
+    const mini = miniManifest();
+    await expect(
+      runRestore({
+        mode: "execute",
+        env: stagingEnv(),
+        manifest: mini,
+        sqlByFilename: mini.sqlByFilename,
+        connector: { ...createMockConnector(), allowNetwork: true, kind: "live" },
+        ledger: createMemoryLedger(),
+        ...executeHarness({ lock: official, allowNetwork: true }),
+      }),
+    ).rejects.toThrow(/LOCK_LIVE_CAPABILITY_UNSATISFIED/);
+  });
+
+  it("close-after-success is an uncertain outcome with no automatic retry", async () => {
+    const mini = miniManifest();
+    const connector = createMockConnector({
+      onClose: ({ label }) => {
+        if (label.includes("20260101000000_a.sql")) throw new Error("close-after-commit");
+      },
+    });
+    const ledger = createMemoryLedger();
+    const first = await runRestore({
+      mode: "execute",
+      env: stagingEnv(),
+      manifest: mini,
+      sqlByFilename: mini.sqlByFilename,
+      connector,
+      ledger,
+      ...executeHarness(),
+    });
+    expect(first.ok).toBe(false);
+    expect(first.failed.code).toBe("TX_OUTCOME_UNKNOWN");
+    expect(first.failed.phase).toBe("apply-close");
+    expect(first.retried).toBe(false);
+    expect(first.autoRetry).toBe(false);
+    expect(connector.closed).toEqual(connector.opened.map((o) => o.id));
+
+    const second = await runRestore({
+      mode: "execute",
+      env: stagingEnv(),
+      manifest: mini,
+      sqlByFilename: mini.sqlByFilename,
+      connector,
+      ledger,
+      ...executeHarness(),
+    });
+    expect(second.ok).toBe(false);
+    expect(second.retried).toBe(false);
+    expect(second.autoRetry).toBe(false);
+    expect(["LEDGER_AMBIGUOUS", "LEDGER_INCOMPLETE", "LEDGER_PARTIAL_PREFIX"]).toContain(
+      second.decision.reason,
+    );
+  });
+
+  it("createSqlLedger bootstrap, success, and failure stay on the mock connector", async () => {
+    const connector = createMockConnector();
+    const ledger = createSqlLedger(connector);
+    await ledger.bootstrap();
+    expect(connector.opened.some((o) => o.label === "ledger-bootstrap")).toBe(true);
+    expect(connector.queries.some((q: { sql: string }) => /sherivs_staging_ledger/.test(q.sql))).toBe(true);
+    expect(connector.closed).toEqual(connector.opened.map((o) => o.id));
+
+    await ledger.recordStarted({
+      seq: 1,
+      filename: "20260101000000_a.sql",
+      content_checksum: "a".repeat(64),
+      source_commit: PINNED_SOURCE_COMMIT,
+      manifest_id: "sql-ledger",
+      attempt_id: "attempt-1",
+    });
+    expect(connector.queries.some((q: { sql: string }) => /INSERT INTO/.test(q.sql))).toBe(true);
+
+    await connector.withConnection("apply", async (client) => {
+      await ledger.markSucceededInTransaction(client, "20260101000000_a.sql", "attempt-1");
+    });
+    expect(connector.queries.some((q: { sql: string }) => /SET status/.test(q.sql) || /SUCCEEDED|succeeded/.test(q.sql))).toBe(
+      true,
+    );
+
+    const failing = createMockConnector({
+      onQuery: ({ sql }) => {
+        if (String(sql).includes("INSERT INTO")) {
+          throw Object.assign(new Error("original-sql-ledger-error"), { code: "LEDGER_WRITE_FAILED" });
+        }
+        return { rows: [{ id: "row-1" }], rowCount: 1 };
+      },
+      onClose: () => {
+        throw new Error("close-also-failed");
+      },
+    });
+    const failingLedger = createSqlLedger(failing);
+    await expect(
+      failingLedger.recordStarted({
+        seq: 1,
+        filename: "20260101000000_a.sql",
+        content_checksum: "a".repeat(64),
+        source_commit: PINNED_SOURCE_COMMIT,
+        manifest_id: "sql-ledger",
+        attempt_id: "attempt-2",
+      }),
+    ).rejects.toMatchObject({ message: expect.stringMatching(/original-sql-ledger-error/) });
+    expect(failing.closed).toEqual(failing.opened.map((o) => o.id));
   });
 });
