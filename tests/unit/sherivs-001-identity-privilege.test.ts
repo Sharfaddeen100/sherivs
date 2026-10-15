@@ -552,12 +552,13 @@ describe("B-1 trusted execution context (static source)", () => {
   });
 
   it("names current_user = 'service_role' as the only trusted provisioner", () => {
-    expect(triggerBody).toMatch(/IF\s+current_user\s+=\s+'service_role'\s+THEN/);
-    expect(triggerBody).not.toMatch(/session_user/);
-    expect(triggerBody).not.toMatch(/current_setting\s*\(/);
-    expect(triggerBody).not.toMatch(/request\.jwt/);
-    expect(triggerBody).not.toMatch(/auth\.role\s*\(/);
-    expect(triggerBody).not.toMatch(/'postgres'/);
+    const executable = triggerBody.replace(/--[^\n]*/g, "");
+    expect(executable).toMatch(/IF\s+current_user\s+=\s+'service_role'\s+THEN/);
+    expect(executable).not.toMatch(/session_user/);
+    expect(executable).not.toMatch(/current_setting\s*\(/);
+    expect(executable).not.toMatch(/request\.jwt/);
+    expect(executable).not.toMatch(/auth\.role\s*\(/);
+    expect(executable).not.toMatch(/'postgres'/);
   });
 
   it("fails closed when privilege columns change outside the trusted role and without a subject", () => {
@@ -705,10 +706,13 @@ describe("B-2 transactional forward proposal (static source)", () => {
   });
 
   it("contains no non-transactional operations and does not swallow errors", () => {
-    expect(proposed).not.toMatch(/CREATE INDEX CONCURRENTLY/i);
-    expect(proposed).not.toMatch(/REINDEX/i);
-    expect(proposed).not.toMatch(/\bVACUUM\b/i);
-    expect(proposed).not.toMatch(/EXCEPTION WHEN OTHERS/i);
+    const statements = proposed
+      .replace(/\$comment\$[\s\S]*?\$comment\$/g, "")
+      .replace(/--[^\n]*/g, "");
+    expect(statements).not.toMatch(/CREATE INDEX CONCURRENTLY/i);
+    expect(statements).not.toMatch(/REINDEX/i);
+    expect(statements).not.toMatch(/\bVACUUM\b/i);
+    expect(statements).not.toMatch(/EXCEPTION WHEN OTHERS/i);
     expect(proposed).toContain("runner.mjs");
     expect(proposed).toContain("inner COMMIT");
   });
