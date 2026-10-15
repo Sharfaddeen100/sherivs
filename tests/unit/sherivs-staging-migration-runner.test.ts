@@ -1501,7 +1501,7 @@ describe("SHERIVS staging-only migration runner (offline)", () => {
     const rich = richManifest();
     const expected = extractExpectedObjects(rich.sqlByFilename);
     const catalog = observedCatalogFromExpected(expected);
-    catalog.tables.push({ schema: "public", name: "surprise_table" });
+    catalog.tables.push(observedPublicTable("surprise_table"));
     const decision = reconcileRestoreState({
       manifest: rich,
       ledgerRows: completeLedger(rich),

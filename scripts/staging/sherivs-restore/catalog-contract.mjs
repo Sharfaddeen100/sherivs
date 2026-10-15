@@ -1960,9 +1960,13 @@ function observedPolicyKey(p) {
   return `${qualified}::${p.name}`;
 }
 
+function asObservedList(value) {
+  return Array.isArray(value) ? value : [];
+}
+
 function indexBy(list, keyFn) {
   const map = new Map();
-  for (const item of list ?? []) map.set(keyFn(item), item);
+  for (const item of asObservedList(list)) map.set(keyFn(item), item);
   return map;
 }
 
@@ -2074,20 +2078,20 @@ export function compareCatalog(expected, catalog) {
     for (const table of catalog.tables) requireCompleteTableClasses(table, incomplete);
   }
 
-  const observedTables = indexBy(catalog.tables ?? [], observedTableKey);
-  const observedPolicies = indexBy(catalog.policies ?? [], observedPolicyKey);
-  const observedFunctions = indexBy(catalog.functions ?? [], (f) => functionIdentityKey(f));
-  const observedTriggers = indexBy(catalog.triggers ?? [], (t) => {
+  const observedTables = indexBy(catalog.tables, observedTableKey);
+  const observedPolicies = indexBy(catalog.policies, observedPolicyKey);
+  const observedFunctions = indexBy(catalog.functions, (f) => functionIdentityKey(f));
+  const observedTriggers = indexBy(catalog.triggers, (t) => {
     const table = String(t.table).includes(".")
       ? String(t.table).toLowerCase()
       : `public.${String(t.table).toLowerCase()}`;
     return `${table}::${String(t.name).toLowerCase()}`;
   });
-  const observedIndexes = indexBy(catalog.indexes ?? [], (i) => String(i.name).toLowerCase());
+  const observedIndexes = indexBy(catalog.indexes, (i) => String(i.name).toLowerCase());
 
   const missingTables = (expected.tables ?? []).filter((t) => !observedTables.has(t.key));
   const expectedTableKeys = new Set((expected.tables ?? []).map((t) => t.key));
-  const unexpectedTables = (catalog.tables ?? []).filter((t) => {
+  const unexpectedTables = asObservedList(catalog.tables).filter((t) => {
     const schema = (t.schema ?? "public").toLowerCase();
     if (VENDOR_SCHEMAS.includes(schema)) return false;
     return !expectedTableKeys.has(observedTableKey(t));
@@ -2097,7 +2101,7 @@ export function compareCatalog(expected, catalog) {
     (p) => !observedPolicies.has(p.key),
   );
   const expectedPolicyKeys = new Set((expected.policies ?? []).map((p) => p.key));
-  const unexpectedPolicies = (catalog.policies ?? []).filter((p) => {
+  const unexpectedPolicies = asObservedList(catalog.policies).filter((p) => {
     const table = String(p.table).replaceAll('"', "").toLowerCase();
     const schema = table.includes(".") ? table.split(".")[0] : "public";
     if (VENDOR_SCHEMAS.includes(schema) && schema !== "public") return false;
@@ -2319,7 +2323,7 @@ export function compareCatalog(expected, catalog) {
 
   const expectedFunctionKeys = new Set((expected.functions ?? []).map((f) => functionIdentityKey(f)));
   const missingFunctions = (expected.functions ?? []).filter((f) => !observedFunctions.has(functionIdentityKey(f)));
-  const unexpectedFunctions = (catalog.functions ?? []).filter((f) => {
+  const unexpectedFunctions = asObservedList(catalog.functions).filter((f) => {
     const schema = (f.schema ?? "public").toLowerCase();
     if (VENDOR_SCHEMAS.includes(schema) && schema !== "public") return false;
     return !expectedFunctionKeys.has(functionIdentityKey(f));
@@ -2392,7 +2396,7 @@ export function compareCatalog(expected, catalog) {
     if (expectedFunctionGrants.length && catalog.functionGrants == null) {
       incomplete.push("functionGrants");
     } else {
-      const observedGrants = catalog.functionGrants ?? [];
+      const observedGrants = asObservedList(catalog.functionGrants);
       const got = new Set(observedGrants.map(functionGrantKey));
       const exp = new Set(expectedFunctionGrants.map(functionGrantKey));
       for (const g of expectedFunctionGrants) {
@@ -2416,7 +2420,7 @@ export function compareCatalog(expected, catalog) {
   };
   const expectedTriggerKeys = new Set((expected.triggers ?? []).map((t) => t.key ?? triggerKeyOf(t)));
   const missingTriggers = (expected.triggers ?? []).filter((t) => !observedTriggers.has(t.key ?? triggerKeyOf(t)));
-  const unexpectedTriggers = (catalog.triggers ?? []).filter((t) => {
+  const unexpectedTriggers = asObservedList(catalog.triggers).filter((t) => {
     const table = String(t.table ?? "").toLowerCase();
     const schema = table.includes(".") ? table.split(".")[0] : "public";
     if (VENDOR_SCHEMAS.includes(schema) && schema !== "public") return false;
@@ -2469,7 +2473,7 @@ export function compareCatalog(expected, catalog) {
   }
   const unexpectedIndexes = [];
   const unverifiedIndexes = [];
-  for (const i of catalog.indexes ?? []) {
+  for (const i of asObservedList(catalog.indexes)) {
     const name = String(i.name ?? "").toLowerCase();
     if (expectedIndexNames.has(name)) continue;
     const verdict = isConstraintImpliedIndex(i, expected.tables);
@@ -2486,9 +2490,9 @@ export function compareCatalog(expected, catalog) {
   const missingStorage = (expected.storageBuckets ?? []).filter((b) => {
     if (!catalog.storageBuckets) return false;
     const id = storageId(b);
-    return !(catalog.storageBuckets ?? []).some((o) => storageId(o) === id);
+    return !asObservedList(catalog.storageBuckets).some((o) => storageId(o) === id);
   });
-  const unexpectedStorage = (catalog.storageBuckets ?? []).filter((b) => !expectedStorageIds.has(storageId(b)));
+  const unexpectedStorage = asObservedList(catalog.storageBuckets).filter((b) => !expectedStorageIds.has(storageId(b)));
 
   const unverifiedRequired = (expected.unverified ?? []).filter((u) => u.required !== false);
 
