@@ -116,8 +116,10 @@ function grants, missing required functions or triggers, unexpected public
 columns / constraints / indexes / triggers / storage buckets, unexpected
 WITH GRANT OPTION, unexpected objects, and required objects that cannot be
 derived statically (NOT VERIFIED) all block `already_complete`. The only
-documented extra-object allowlist is a constraint-implied unique/primary
-index (same table and ordered columns as an expected PRIMARY KEY or UNIQUE).
+documented extra-object allowlist is a constraint-implied unique btree
+index whose uniqueness, simple ordered keys, non-partial predicate, and
+empty INCLUDE are proven. Omitted index fields and omitted catalog
+object-class keys are incomplete or unverified, not empty defaults.
 A contract match is **not** live schema equivalence and **not**
 application-security proof. Implicit `REFERENCES table` is resolved against
 the referenced relation's PRIMARY KEY or fails closed. SQL NULL USING/WITH

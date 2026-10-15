@@ -33,6 +33,8 @@ export const CONTRACT_LIMITATIONS = Object.freeze([
   "observation undefined / omitted keys, SQL NULL (legally absent), empty strings, and present values are distinct states",
   "function/table/column grant compare is explicit GRANT tuples from pinned SQL versus the observed grant list, including WITH GRANT OPTION; inherited, OWNER, PUBLIC-default, and ALTER DEFAULT PRIVILEGES are not modeled as effective privilege equivalence",
   "unexpected public columns, constraints, indexes, triggers, and storage buckets refuse already_complete unless listed in CONTRACT_ALLOWLIST",
+  "a constraint-implied index is permitted only when uniqueness, simple ordered keys, non-partial predicate, and empty INCLUDE are proven; omitted fields are unknown, not defaults",
+  "an omitted catalog object-class key is missing observation, not an empty set",
   "pg_get_expr / format_type output is normalized (timestamptz, varchar) and may still differ from live catalog spelling",
   "function bodies, owners, tablespace, views, sequences, enums, extensions, publications, default privileges, and column defaults are not in this contract",
 ]);
@@ -77,8 +79,17 @@ export const CONTRACT_ALLOWLIST = Object.freeze({
     constraintImpliedIndexes: Object.freeze({
       permitted: true,
       rationale:
-        "PostgreSQL materializes PRIMARY KEY and UNIQUE as unique indexes; those indexes are implied by an already-compared constraint on the same table and ordered columns",
+        "PostgreSQL materializes PRIMARY KEY and UNIQUE as btree unique indexes with the same ordered key columns, no predicate, and no INCLUDE; implication requires those attributes to be proven, not assumed",
       scope: "indexes only",
+      requires: Object.freeze([
+        "unique === true",
+        "same schema.table as the constraint",
+        "same ordered simple key columns",
+        "predicate proven absent",
+        "INCLUDE proven empty",
+        "no expression keys",
+        "access method btree when represented",
+      ]),
     }),
   }),
 });
@@ -263,6 +274,45 @@ export const REQUIRED_OBSERVED_CLASSES = Object.freeze([
   "functionGrants",
   "storageBuckets",
 ]);
+
+/** Top-level catalog arrays that must be present to prove extras are absent. */
+export const REQUIRED_CATALOG_CLASS_KEYS = Object.freeze([
+  "tables",
+  "policies",
+  "functions",
+  "functionGrants",
+  "triggers",
+  "indexes",
+  "storageBuckets",
+]);
+
+/** Nested arrays required on each observed public table. */
+export const REQUIRED_TABLE_CLASS_KEYS = Object.freeze([
+  "columns",
+  "constraints",
+  "grants",
+  "columnGrants",
+]);
+
+export const CATALOG_CLASS_STATES = Object.freeze({
+  EMPTY: "empty",
+  POPULATED: "populated",
+  MISSING: "missing",
+  FAILED: "failed",
+  UNKNOWN: "unknown",
+});
+
+export function emptyObservedCatalogClasses() {
+  return {
+    tables: [],
+    policies: [],
+    functions: [],
+    functionGrants: [],
+    triggers: [],
+    indexes: [],
+    storageBuckets: [],
+  };
+}
 
 /**
  * Unused observe-SQL → comparator field map. This process does not execute
@@ -458,16 +508,15 @@ function sameOrderedList(a = [], b = []) {
   return a.every((v, i) => String(v) === String(b[i]));
 }
 
+const SIMPLE_INDEX_IDENT = /^[a-z_][a-z0-9_$]*$/i;
+
+function isSimpleIndexIdent(name) {
+  return SIMPLE_INDEX_IDENT.test(String(name ?? ""));
+}
+
 export function parseIndexColumns(idx) {
-  if (Array.isArray(idx?.columns) && idx.columns.length) {
-    return idx.columns.map((c) => String(c).toLowerCase());
-  }
-  const spec = String(idx?.spec ?? idx?.definition ?? "");
-  const open = spec.indexOf("(");
-  if (open === -1) return [];
-  const close = matchingParen(spec, open);
-  if (close === -1) return [];
-  return parseColumnList(spec.slice(open, close + 1));
+  const shape = parseIndexShape(idx);
+  return shape.columns ?? [];
 }
 
 export function indexTableKey(idx) {
@@ -476,20 +525,208 @@ export function indexTableKey(idx) {
   return table.includes(".") ? table : `public.${table}`;
 }
 
+function sliceParenList(text, fromIndex) {
+  const open = String(text ?? "").indexOf("(", fromIndex);
+  if (open === -1) return null;
+  const close = matchingParen(text, open);
+  if (close === -1) return null;
+  return { open, close, inner: text.slice(open, close + 1) };
+}
+
+function parseIndexKeyTokens(parenText) {
+  const cols = parseColumnList(parenText);
+  const expressions = cols.some((c) => !isSimpleIndexIdent(c) || /[():.]/.test(c));
+  return { columns: cols, expressions };
+}
+
+/**
+ * Structural index attributes used for implication. Omitted fields stay
+ * unknown; they are not filled with PostgreSQL defaults except the
+ * documented CREATE INDEX access-method default when a full CREATE INDEX
+ * string has no USING clause.
+ */
+export function parseIndexShape(idx) {
+  const table = indexTableKey(idx);
+  const definition = String(idx?.definition ?? idx?.indexdef ?? "");
+  const spec = String(idx?.spec ?? "");
+  const text = definition || spec;
+  const reasons = [];
+
+  let unique;
+  if (typeof idx?.unique === "boolean") unique = idx.unique;
+  else if (typeof idx?.indisunique === "boolean") unique = idx.indisunique;
+  else if (/^CREATE\s+UNIQUE\s+INDEX\b/i.test(text)) unique = true;
+  else if (/^CREATE\s+INDEX\b/i.test(text)) unique = false;
+
+  let method;
+  if (idx?.method != null && String(idx.method).trim() !== "") {
+    method = String(idx.method).toLowerCase();
+  } else if (idx?.accessMethod != null && String(idx.accessMethod).trim() !== "") {
+    method = String(idx.accessMethod).toLowerCase();
+  } else {
+    const using = text.match(/\bUSING\s+([a-z0-9_]+)/i);
+    if (using) method = using[1].toLowerCase();
+    else if (/^CREATE\s+(UNIQUE\s+)?INDEX\b/i.test(text)) method = "btree";
+  }
+
+  let include;
+  let includeUnknown = true;
+  if (hasOwn(idx, "include") || hasOwn(idx, "included") || hasOwn(idx, "includeColumns")) {
+    includeUnknown = false;
+    const raw = idx.include ?? idx.included ?? idx.includeColumns;
+    if (raw == null) include = [];
+    else if (Array.isArray(raw)) include = raw.map((c) => identName(c).toLowerCase());
+    else {
+      includeUnknown = true;
+      reasons.push("include_unparseable");
+    }
+  } else if (text) {
+    const inc = text.match(/\bINCLUDE\s*\(/i);
+    if (inc) {
+      includeUnknown = false;
+      const sliced = sliceParenList(text, inc.index + inc[0].length - 1);
+      include = sliced ? parseColumnList(sliced.inner) : [];
+      if (!sliced) {
+        includeUnknown = true;
+        reasons.push("include_unparseable");
+      }
+    } else {
+      includeUnknown = false;
+      include = [];
+    }
+  }
+
+  let predicate;
+  let predicateUnknown = true;
+  if (hasOwn(idx, "predicate") || hasOwn(idx, "where") || hasOwn(idx, "indexPredicate")) {
+    predicateUnknown = false;
+    const raw = idx.predicate ?? idx.where ?? idx.indexPredicate;
+    predicate = raw == null || String(raw).trim() === "" ? null : String(raw);
+  } else if (text) {
+    const whereAt = text.search(/\)\s*WHERE\b/i);
+    if (whereAt !== -1) {
+      predicateUnknown = false;
+      const whereKw = text.slice(whereAt).search(/\bWHERE\b/i);
+      predicate = text.slice(whereAt + whereKw + 5).trim() || "WHERE";
+    } else {
+      predicateUnknown = false;
+      predicate = null;
+    }
+  }
+
+  let columns = [];
+  let expressions = false;
+  let columnsUnknown = true;
+  const keyFromText = (() => {
+    if (!text) return null;
+    const using = text.match(/\bUSING\s+[a-z0-9_]+\s*/i);
+    let searchFrom = 0;
+    if (using) searchFrom = using.index + using[0].length;
+    else {
+      const onMatch = text.match(/\bON\s+(?:[a-zA-Z_][\w$]*\.)?[a-zA-Z_][\w$]*\s*/i);
+      if (onMatch) searchFrom = onMatch.index + onMatch[0].length;
+    }
+    const sliced = sliceParenList(text, searchFrom);
+    if (!sliced) return null;
+    return parseIndexKeyTokens(sliced.inner);
+  })();
+
+  if (keyFromText) {
+    columnsUnknown = false;
+    columns = keyFromText.columns;
+    expressions = keyFromText.expressions;
+  }
+  if (Array.isArray(idx?.columns)) {
+    const fromArr = idx.columns.map((c) => identName(c).toLowerCase());
+    const arrExpr = fromArr.some((c) => !isSimpleIndexIdent(c));
+    if (keyFromText) {
+      if (arrExpr) expressions = true;
+      if (
+        !arrExpr &&
+        !keyFromText.expressions &&
+        fromArr.length &&
+        keyFromText.columns.length &&
+        !sameOrderedList(fromArr, keyFromText.columns)
+      ) {
+        reasons.push("columns_disagree_with_definition");
+      }
+    } else {
+      columnsUnknown = false;
+      columns = fromArr;
+      expressions = arrExpr;
+    }
+  }
+
+  return {
+    table,
+    unique,
+    method,
+    include: include ?? [],
+    includeUnknown,
+    predicate: predicate ?? null,
+    predicateUnknown,
+    columns,
+    columnsUnknown,
+    expressions,
+    unverified: reasons.length > 0,
+    reasons,
+  };
+}
+
+/**
+ * Permit an extra index only when metadata proves it is the btree unique
+ * index PostgreSQL creates for a PRIMARY KEY or UNIQUE constraint.
+ * Unknown uniqueness, predicate, INCLUDE, or keys → unverified, not implied.
+ */
 export function isConstraintImpliedIndex(index, tables) {
-  if (index?.unique === false) return false;
-  const tableKey = indexTableKey(index);
-  const cols = parseIndexColumns(index);
-  if (!tableKey || !cols.length) return false;
+  const shape = parseIndexShape(index);
+  if (shape.unverified) {
+    return { implied: false, unverified: true, reason: shape.reasons.join(",") || "unparseable", shape };
+  }
+  if (shape.unique !== true) {
+    if (shape.unique === false) {
+      return { implied: false, unverified: false, reason: "not_unique", shape };
+    }
+    return { implied: false, unverified: true, reason: "unique_unknown", shape };
+  }
+  if (shape.predicateUnknown) {
+    return { implied: false, unverified: true, reason: "predicate_unknown", shape };
+  }
+  if (shape.predicate) {
+    return { implied: false, unverified: false, reason: "partial", shape };
+  }
+  if (shape.includeUnknown) {
+    return { implied: false, unverified: true, reason: "include_unknown", shape };
+  }
+  if (shape.include.length) {
+    return { implied: false, unverified: false, reason: "include", shape };
+  }
+  if (shape.expressions) {
+    return { implied: false, unverified: false, reason: "expression_keys", shape };
+  }
+  if (shape.columnsUnknown || !shape.columns.length) {
+    return { implied: false, unverified: true, reason: "columns_unknown", shape };
+  }
+  if (shape.method && shape.method !== "btree") {
+    return { implied: false, unverified: false, reason: "access_method", shape };
+  }
+  const tableKey = shape.table;
+  if (!tableKey) {
+    return { implied: false, unverified: true, reason: "table_unknown", shape };
+  }
   const table = (tables ?? []).find((t) => tableRecordKey(t, tableKey) === tableKey);
-  if (!table) return false;
+  if (!table) {
+    return { implied: false, unverified: false, reason: "unknown_table", shape };
+  }
   for (const cons of table.constraints ?? []) {
     const normalized = normalizeConstraint(cons, tableKey);
     if (normalized.unverified) continue;
     if (normalized.kind !== "PRIMARY KEY" && normalized.kind !== "UNIQUE") continue;
-    if (sameOrderedList(normalized.columns, cols)) return true;
+    if (sameOrderedList(normalized.columns, shape.columns)) {
+      return { implied: true, unverified: false, reason: "constraint_index", shape, constraintKind: normalized.kind };
+    }
   }
-  return false;
+  return { implied: false, unverified: false, reason: "no_matching_constraint", shape };
 }
 
 function parseColumnList(parenText) {
@@ -1681,6 +1918,8 @@ export function extractExpectedObjects(sqlByFilename = {}) {
     "unexpectedTriggers",
     "unexpectedStorage",
     "grantOptions",
+    "catalogClassObservation",
+    "constraintImpliedIndexProof",
   ];
 
   return {
@@ -1733,12 +1972,85 @@ function sameStringList(a = [], b = []) {
   return aa.length === bb.length && aa.every((v, i) => v === bb[i]);
 }
 
-function requireObserved(expectedList, observedList, className, incomplete) {
-  if (expectedList.length === 0) return;
-  if (observedList == null) incomplete.push(className);
+export function catalogClassObservationState(catalog, className) {
+  if (!catalog || typeof catalog !== "object") {
+    return { state: CATALOG_CLASS_STATES.UNKNOWN, className };
+  }
+  if (
+    catalog.observationFailed === true ||
+    catalog.status === "failed" ||
+    catalog.status === "observation_failed"
+  ) {
+    return { state: CATALOG_CLASS_STATES.FAILED, className };
+  }
+  const classBag = catalog.classStates && typeof catalog.classStates === "object" ? catalog.classStates[className] : undefined;
+  if (classBag === "failed" || classBag === CATALOG_CLASS_STATES.FAILED) {
+    return { state: CATALOG_CLASS_STATES.FAILED, className };
+  }
+  if (classBag === "unknown" || classBag === CATALOG_CLASS_STATES.UNKNOWN) {
+    return { state: CATALOG_CLASS_STATES.UNKNOWN, className };
+  }
+  if (!hasOwn(catalog, className) || catalog[className] == null) {
+    return { state: CATALOG_CLASS_STATES.MISSING, className };
+  }
+  const value = catalog[className];
+  if (value === "failed" || value === CATALOG_CLASS_STATES.FAILED) {
+    return { state: CATALOG_CLASS_STATES.FAILED, className };
+  }
+  if (value === "unknown" || value === CATALOG_CLASS_STATES.UNKNOWN) {
+    return { state: CATALOG_CLASS_STATES.UNKNOWN, className };
+  }
+  if (!Array.isArray(value)) {
+    return { state: CATALOG_CLASS_STATES.UNKNOWN, className };
+  }
+  return {
+    state: value.length ? CATALOG_CLASS_STATES.POPULATED : CATALOG_CLASS_STATES.EMPTY,
+    className,
+    count: value.length,
+  };
+}
+
+function requireCompleteCatalogClass(catalog, className, incomplete) {
+  const { state } = catalogClassObservationState(catalog, className);
+  if (state === CATALOG_CLASS_STATES.EMPTY || state === CATALOG_CLASS_STATES.POPULATED) return;
+  incomplete.push(`class:${className}:${state}`);
+}
+
+function requireCompleteTableClasses(table, incomplete) {
+  const schema = String(table?.schema ?? "public").toLowerCase();
+  if (VENDOR_SCHEMAS.includes(schema) && schema !== "public") return;
+  const tableKey = observedTableKey(table);
+  for (const key of REQUIRED_TABLE_CLASS_KEYS) {
+    if (!hasOwn(table, key) || table[key] == null) {
+      incomplete.push(`tableClass:${tableKey}:${key}:missing`);
+      continue;
+    }
+    if (!Array.isArray(table[key])) {
+      incomplete.push(`tableClass:${tableKey}:${key}:unknown`);
+    }
+  }
 }
 
 export function compareCatalog(expected, catalog) {
+  if (
+    catalog?.observationFailed === true ||
+    catalog?.status === "failed" ||
+    catalog?.status === "observation_failed"
+  ) {
+    return {
+      available: false,
+      status: "failed",
+      observationFailed: true,
+      missingTables: [],
+      unexpectedTables: [],
+      missingPolicies: [],
+      matchingTables: 0,
+      shapeIncomplete: ["observation:failed"],
+      securityProof: false,
+      schemaEquivalence: false,
+      existenceOnly: false,
+    };
+  }
   if (!catalog || catalog.status !== "observed") {
     return {
       available: false,
@@ -1755,24 +2067,11 @@ export function compareCatalog(expected, catalog) {
 
   const incomplete = [];
   if (Array.isArray(catalog.shapeIncomplete)) incomplete.push(...catalog.shapeIncomplete);
-  requireObserved(expected.tables ?? [], catalog.tables, "tables", incomplete);
-  if ((expected.policies ?? []).length && catalog.policies == null) {
-    incomplete.push("policies");
+  for (const className of REQUIRED_CATALOG_CLASS_KEYS) {
+    requireCompleteCatalogClass(catalog, className, incomplete);
   }
-  if ((expected.functions ?? []).length && catalog.functions == null) {
-    incomplete.push("functions");
-  }
-  if ((expected.functionGrants ?? []).length && catalog.functionGrants == null) {
-    incomplete.push("functionGrants");
-  }
-  if ((expected.triggers ?? []).length && catalog.triggers == null) {
-    incomplete.push("triggers");
-  }
-  if ((expected.indexes ?? []).length && catalog.indexes == null) {
-    incomplete.push("indexes");
-  }
-  if ((expected.storageBuckets ?? []).length && catalog.storageBuckets == null) {
-    incomplete.push("storageBuckets");
+  if (Array.isArray(catalog.tables)) {
+    for (const table of catalog.tables) requireCompleteTableClasses(table, incomplete);
   }
 
   const observedTables = indexBy(catalog.tables ?? [], observedTableKey);
@@ -2168,11 +2467,19 @@ export function compareCatalog(expected, catalog) {
       indexMismatches.push({ name: exp.name, field: "table" });
     }
   }
-  const unexpectedIndexes = (catalog.indexes ?? []).filter((i) => {
+  const unexpectedIndexes = [];
+  const unverifiedIndexes = [];
+  for (const i of catalog.indexes ?? []) {
     const name = String(i.name ?? "").toLowerCase();
-    if (expectedIndexNames.has(name)) return false;
-    return !isConstraintImpliedIndex(i, expected.tables);
-  });
+    if (expectedIndexNames.has(name)) continue;
+    const verdict = isConstraintImpliedIndex(i, expected.tables);
+    if (verdict.implied) continue;
+    if (verdict.unverified) {
+      unverifiedIndexes.push({ index: i, reason: verdict.reason, shape: verdict.shape });
+    } else {
+      unexpectedIndexes.push(i);
+    }
+  }
 
   const storageId = (b) => String(b.id || b.name);
   const expectedStorageIds = new Set((expected.storageBuckets ?? []).map(storageId));
@@ -2208,6 +2515,7 @@ export function compareCatalog(expected, catalog) {
     triggerMismatches,
     missingIndexes,
     unexpectedIndexes,
+    unverifiedIndexes,
     indexMismatches,
     missingStorage,
     unexpectedStorage,
@@ -2226,6 +2534,7 @@ export function compareCatalog(expected, catalog) {
 }
 
 export function catalogBlocksCompletion(comparison) {
+  if (comparison?.observationFailed) return "CATALOG_OBSERVATION_FAILED";
   if (!comparison?.available) return "CATALOG_NOT_CHECKED";
   if (comparison.unverifiedRequired?.length) return "CATALOG_REQUIREMENTS_UNVERIFIED";
   if (comparison.shapeIncomplete?.length) return "CATALOG_SHAPE_INCOMPLETE";
@@ -2250,6 +2559,7 @@ export function catalogBlocksCompletion(comparison) {
   if (comparison.triggerMismatches?.length) return "CATALOG_TRIGGER_MISMATCH";
   if (comparison.missingIndexes?.length) return "CATALOG_INDEX_MISSING";
   if (comparison.indexMismatches?.length) return "CATALOG_INDEX_MISMATCH";
+  if (comparison.unverifiedIndexes?.length) return "CATALOG_INDEX_UNVERIFIED";
   if (comparison.missingStorage?.length) return "CATALOG_STORAGE_MISMATCH";
   if (comparison.unexpectedStorage?.length) return "CATALOG_STORAGE_MISMATCH";
   if (

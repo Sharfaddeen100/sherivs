@@ -60,12 +60,15 @@ import {
 } from "../../scripts/staging/sherivs-restore/lock.mjs";
 import { reconcileRestoreState } from "../../scripts/staging/sherivs-restore/reconcile.mjs";
 import {
+  CATALOG_CLASS_STATES,
   CATALOG_OBSERVE_SQL,
   CONTRACT_ALLOWLIST,
   OBSERVE_SQL_FIELD_MAP,
   catalogBlocksCompletion,
+  catalogClassObservationState,
   compareCatalog,
   constraintsEquivalent,
+  emptyObservedCatalogClasses,
   extractExpectedObjects,
   functionIdentityKey,
   grantKey,
@@ -74,6 +77,7 @@ import {
   normalizeConstraint,
   observedCatalogFromExpected,
   observationState,
+  parseIndexShape,
   resolveForeignKeyReferencedColumns,
 } from "../../scripts/staging/sherivs-restore/catalog-contract.mjs";
 import { catalogNotAssumedFromPriorReport, runOfflinePreflight } from "../../scripts/staging/sherivs-restore/preflight.mjs";
@@ -154,9 +158,40 @@ const executeFlags = {
   iAuthorizeStagingRestore: true,
 };
 
+function completeEmptyCatalog() {
+  return {
+    status: "observed" as const,
+    ...emptyObservedCatalogClasses(),
+  };
+}
+
+function observedPublicTable(name: string, extra: Record<string, unknown> = {}) {
+  return {
+    schema: "public",
+    name,
+    columns: [],
+    constraints: [],
+    grants: [],
+    columnGrants: [],
+    ...extra,
+  };
+}
+
+function provenImpliedIndex(name: string, table: string, columns: string[]) {
+  return {
+    name,
+    table,
+    unique: true,
+    columns,
+    predicate: null,
+    include: [],
+    method: "btree",
+  };
+}
+
 function greenFieldObservations() {
   return {
-    catalog: { status: "observed" as const, tables: [], policies: [] },
+    catalog: completeEmptyCatalog(),
     vendorHistory: { status: "absent" as const, versions: [] as string[] },
   };
 }
@@ -966,7 +1001,7 @@ describe("SHERIVS staging-only migration runner (offline)", () => {
         status: "available",
         versions: mini.files.map((f) => f.filename.slice(0, 14)),
       },
-      catalog: { status: "observed", tables: [], policies: [] },
+      catalog: completeEmptyCatalog(),
     });
     expect(decision.ok).toBe(false);
     expect(decision.reason).toBe("LEDGER_SCHEMA_ABSENT");
@@ -984,7 +1019,7 @@ describe("SHERIVS staging-only migration runner (offline)", () => {
         status: "available",
         versions: [mini.files[0].filename.slice(0, 14)],
       },
-      catalog: { status: "observed", tables: [], policies: [] },
+      catalog: completeEmptyCatalog(),
     });
     expect(empty.ok).toBe(false);
     expect(empty.reason).toBe("VENDOR_HISTORY_DISAGREE");
@@ -999,8 +1034,8 @@ describe("SHERIVS staging-only migration runner (offline)", () => {
     }));
     const expected = extractExpectedObjects(mini.sqlByFilename);
     const completeCatalog = {
-      status: "observed",
-      tables: expected.tables.map((t) => ({ schema: t.schema, name: t.name })),
+      ...completeEmptyCatalog(),
+      tables: expected.tables.map((t: { schema: string; name: string }) => observedPublicTable(t.name, { schema: t.schema })),
       policies: [],
     };
     const mismatch = reconcileRestoreState({
@@ -1144,9 +1179,11 @@ describe("SHERIVS staging-only migration runner (offline)", () => {
         versions: mini.files.map((f) => f.filename.slice(0, 14)),
       },
       catalog: {
-        status: "observed",
-        tables: expected.tables.map((t) => ({ schema: t.schema, name: t.name })),
-        policies: expected.policies.map((p) => ({ name: p.name, table: p.table })),
+        ...completeEmptyCatalog(),
+        tables: expected.tables.map((t: { schema: string; name: string }) =>
+          observedPublicTable(t.name, { schema: t.schema }),
+        ),
+        policies: expected.policies.map((p: { name: string; table: string }) => ({ name: p.name, table: p.table })),
       },
     });
     expect(decision.action).toBe("already_complete");
@@ -2680,24 +2717,31 @@ GRANT SELECT (ssn) ON TABLE public.people TO authenticated WITH GRANT OPTION;
     const manifest = identityManifest();
     const expected = extractExpectedObjects(manifest.sqlByFilename);
     const implied = [
-      { name: "orgs_pkey", table: "public.orgs", unique: true, columns: ["id"] },
-      { name: "orgs_name_key", table: "public.orgs", unique: true, columns: ["name"] },
-      { name: "people_pkey", table: "public.people", unique: true, columns: ["id"] },
+      provenImpliedIndex("orgs_pkey", "public.orgs", ["id"]),
+      provenImpliedIndex("orgs_name_key", "public.orgs", ["name"]),
+      provenImpliedIndex("people_pkey", "public.people", ["id"]),
     ];
     for (const index of implied) {
-      expect(isConstraintImpliedIndex(index, expected.tables)).toBe(true);
+      expect(isConstraintImpliedIndex(index, expected.tables).implied).toBe(true);
     }
     expect(
       isConstraintImpliedIndex(
-        { name: "people_name_idx", table: "public.people", unique: false, columns: ["name"] },
+        { name: "people_name_idx", table: "public.people", unique: false, columns: ["name"], predicate: null, include: [] },
         expected.tables,
-      ),
+      ).implied,
     ).toBe(false);
     expect(
       isConstraintImpliedIndex(
-        { name: "people_name_uidx", table: "public.people", unique: true, columns: ["name"] },
+        {
+          name: "people_name_uidx",
+          table: "public.people",
+          unique: true,
+          columns: ["name"],
+          predicate: null,
+          include: [],
+        },
         expected.tables,
-      ),
+      ).implied,
     ).toBe(false);
 
     const catalog = observedCatalogFromExpected(expected);
@@ -2705,6 +2749,7 @@ GRANT SELECT (ssn) ON TABLE public.people TO authenticated WITH GRANT OPTION;
     const { decision } = completeDecision(manifest, catalog);
     expect(decision.action).toBe("already_complete");
     expect(compareCatalog(expected, catalog).unexpectedIndexes).toEqual([]);
+    expect(compareCatalog(expected, catalog).unverifiedIndexes).toEqual([]);
 
     catalog.indexes.push({ name: "people_name_idx", table: "public.people", unique: false, columns: ["name"] });
     expect(completeDecision(manifest, catalog).decision.action).not.toBe("already_complete");
@@ -2726,5 +2771,164 @@ GRANT SELECT (ssn) ON TABLE public.people TO authenticated WITH GRANT OPTION;
     expect(mapper.shapeIncomplete).toEqual(
       expect.arrayContaining(["storageBuckets", "tableGrants", "columnGrants", "indexes", "triggers"]),
     );
+  });
+
+  it("constraint-implied index allowlist requires proven uniqueness, keys, predicate, and INCLUDE", () => {
+    const manifest = identityManifest();
+    const expected = extractExpectedObjects(manifest.sqlByFilename);
+    const catalogOf = (index: Record<string, unknown>) => {
+      const catalog = observedCatalogFromExpected(expected);
+      catalog.indexes = [...(catalog.indexes ?? []), index];
+      return catalog;
+    };
+
+    const genuine = provenImpliedIndex("people_pkey", "public.people", ["id"]);
+    expect(isConstraintImpliedIndex(genuine, expected.tables).implied).toBe(true);
+    expect(completeDecision(manifest, catalogOf(genuine)).decision.action).toBe("already_complete");
+
+    const fromDefinition = {
+      name: "orgs_pkey",
+      table: "public.orgs",
+      definition: "CREATE UNIQUE INDEX orgs_pkey ON public.orgs USING btree (id)",
+    };
+    expect(isConstraintImpliedIndex(fromDefinition, expected.tables).implied).toBe(true);
+    expect(parseIndexShape(fromDefinition).predicate).toBeNull();
+    expect(parseIndexShape(fromDefinition).include).toEqual([]);
+
+    const partial = {
+      name: "people_id_alive",
+      table: "public.people",
+      unique: true,
+      columns: ["id"],
+      definition: "CREATE UNIQUE INDEX people_id_alive ON public.people (id) WHERE deleted_at IS NULL",
+    };
+    expect(isConstraintImpliedIndex(partial, expected.tables)).toMatchObject({ implied: false, reason: "partial" });
+    expect(completeDecision(manifest, catalogOf(partial)).decision.reason).toBe("CATALOG_UNEXPECTED_OBJECTS");
+
+    const includeIdx = {
+      name: "people_id_inc",
+      table: "public.people",
+      unique: true,
+      definition: "CREATE UNIQUE INDEX people_id_inc ON public.people (id) INCLUDE (name)",
+    };
+    expect(isConstraintImpliedIndex(includeIdx, expected.tables)).toMatchObject({ implied: false, reason: "include" });
+    expect(completeDecision(manifest, catalogOf(includeIdx)).decision.reason).toBe("CATALOG_UNEXPECTED_OBJECTS");
+
+    const uniqueOmitted = { name: "people_id_maybe", table: "public.people", columns: ["id"], predicate: null, include: [] };
+    expect(isConstraintImpliedIndex(uniqueOmitted, expected.tables)).toMatchObject({
+      unverified: true,
+      reason: "unique_unknown",
+    });
+    expect(completeDecision(manifest, catalogOf(uniqueOmitted)).decision.reason).toBe("CATALOG_INDEX_UNVERIFIED");
+
+    const expressionIdx = {
+      name: "people_lower_id",
+      table: "public.people",
+      unique: true,
+      spec: "((lower(id::text)))",
+      predicate: null,
+      include: [],
+    };
+    expect(isConstraintImpliedIndex(expressionIdx, expected.tables)).toMatchObject({
+      implied: false,
+      reason: "expression_keys",
+    });
+    expect(completeDecision(manifest, catalogOf(expressionIdx)).decision.reason).toBe("CATALOG_UNEXPECTED_OBJECTS");
+
+    const order = {
+      name: "orgs_name_id",
+      table: "public.orgs",
+      unique: true,
+      columns: ["name", "id"],
+      predicate: null,
+      include: [],
+    };
+    expect(isConstraintImpliedIndex(order, expected.tables)).toMatchObject({
+      implied: false,
+      reason: "no_matching_constraint",
+    });
+
+    const wrongTable = {
+      name: "ghost_pkey",
+      table: "public.ghost",
+      unique: true,
+      columns: ["id"],
+      predicate: null,
+      include: [],
+    };
+    expect(isConstraintImpliedIndex(wrongTable, expected.tables)).toMatchObject({
+      implied: false,
+      reason: "unknown_table",
+    });
+    expect(completeDecision(manifest, catalogOf(wrongTable)).decision.reason).toBe("CATALOG_UNEXPECTED_OBJECTS");
+
+    const unknownMeta = { name: "people_id_unproven", table: "public.people", unique: true, columns: ["id"] };
+    expect(isConstraintImpliedIndex(unknownMeta, expected.tables).unverified).toBe(true);
+    expect(completeDecision(manifest, catalogOf(unknownMeta)).decision.reason).toBe("CATALOG_INDEX_UNVERIFIED");
+
+    const columnsHideWhere = {
+      name: "people_id_hidden_where",
+      table: "public.people",
+      unique: true,
+      columns: ["id"],
+      definition: "CREATE UNIQUE INDEX people_id_hidden_where ON public.people (id) WHERE true",
+    };
+    expect(isConstraintImpliedIndex(columnsHideWhere, expected.tables)).toMatchObject({
+      implied: false,
+      reason: "partial",
+    });
+    expect(completeDecision(manifest, catalogOf(columnsHideWhere)).decision.action).not.toBe("already_complete");
+  });
+
+  it("omitted object-class keys are missing observations, not empty sets", () => {
+    const manifest = identityManifest();
+    const expected = extractExpectedObjects(manifest.sqlByFilename);
+    expect(expected.indexes).toEqual([]);
+    expect(expected.triggers).toEqual([]);
+    expect(expected.storageBuckets).toEqual([]);
+
+    const completeEmpty = observedCatalogFromExpected(expected);
+    expect(catalogClassObservationState(completeEmpty, "indexes").state).toBe(CATALOG_CLASS_STATES.EMPTY);
+    expect(completeDecision(manifest, completeEmpty).decision.action).toBe("already_complete");
+
+    for (const key of ["indexes", "triggers", "storageBuckets", "functions", "functionGrants", "policies"] as const) {
+      const omitted = observedCatalogFromExpected(expected);
+      delete omitted[key];
+      expect(catalogClassObservationState(omitted, key).state).toBe(CATALOG_CLASS_STATES.MISSING);
+      expect(completeDecision(manifest, omitted).decision.action).not.toBe("already_complete");
+      expect(completeDecision(manifest, omitted).decision.reason).toBe("CATALOG_SHAPE_INCOMPLETE");
+    }
+
+    const nestedMissing = observedCatalogFromExpected(expected);
+    const people = nestedMissing.tables.find((t: { name: string }) => t.name === "people");
+    delete people.columns;
+    expect(completeDecision(manifest, nestedMissing).decision.reason).toBe("CATALOG_SHAPE_INCOMPLETE");
+
+    const sql = `${identitySql()}\nINSERT INTO storage.buckets (id, name) VALUES ('avatars', 'avatars');`;
+    const storageManifest = {
+      manifestId: "probe-storage-class",
+      sourceCommit: PINNED_SOURCE_COMMIT,
+      sourceTree: PINNED_SOURCE_TREE,
+      count: 1,
+      files: [{ seq: 1, filename: "20260101000000_storage.sql", sha256: digest(sql) }],
+      sqlByFilename: { "20260101000000_storage.sql": sql },
+    };
+    const storageExpected = extractExpectedObjects(storageManifest.sqlByFilename);
+    const omittedWhenExpected = observedCatalogFromExpected(storageExpected);
+    delete omittedWhenExpected.storageBuckets;
+    expect(completeDecision(storageManifest, omittedWhenExpected).decision.reason).toBe("CATALOG_SHAPE_INCOMPLETE");
+
+    const failed = observedCatalogFromExpected(expected);
+    failed.observationFailed = true;
+    expect(completeDecision(manifest, failed).decision.reason).toBe("CATALOG_OBSERVATION_FAILED");
+
+    const unknown = observedCatalogFromExpected(expected);
+    unknown.indexes = { not: "an-array" };
+    expect(catalogClassObservationState(unknown, "indexes").state).toBe(CATALOG_CLASS_STATES.UNKNOWN);
+    expect(completeDecision(manifest, unknown).decision.reason).toBe("CATALOG_SHAPE_INCOMPLETE");
+
+    const partial = observedCatalogFromExpected(expected);
+    delete partial.triggers;
+    expect(completeDecision(manifest, partial).decision.reason).toBe("CATALOG_SHAPE_INCOMPLETE");
   });
 });
