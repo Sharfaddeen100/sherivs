@@ -3,7 +3,9 @@
  * Positive isolation check for a disposable PostgreSQL endpoint.
  * Does not connect. Does not print secrets or full URLs.
  *
- * Exit 0: loopback development URL, no live project refs.
+ * Exit 0: development target, ephemeral-local lifecycle attestation,
+ * loopback authority host, explicit port, no libpq host/hostaddr/port
+ * query overrides, no live project refs.
  * Exit 2: not qualified. Do not open a database connection.
  */
 import { qualifyDisposablePostgres } from "./lib/sherivs-disposable-pg.mjs";

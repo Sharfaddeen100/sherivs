@@ -3,8 +3,16 @@
  *
  * This module does not import `pg`, does not open sockets, and does not
  * execute SQL. A variable named LOCAL_DATABASE_URL is not proof of isolation.
- * The hostname must independently parse as loopback, and the string must not
- * contain production or staging project refs or hosted Supabase hostnames.
+ * The hostname must independently parse as loopback, the authority must
+ * include an explicit port, libpq endpoint-override query keys are refused,
+ * and the operator must attest an ephemeral local lifecycle.
+ *
+ * Loopback is necessary and not sufficient. An SSH tunnel or local proxy can
+ * bind 127.0.0.1 while forwarding to production. Qualification therefore also
+ * requires SHERIVS_DISPOSABLE_PG_LIFECYCLE=ephemeral-local. That attestation
+ * is not cryptographic proof; it is an explicit ownership claim the operator
+ * must be able to defend with lifecycle evidence (create/teardown of a
+ * disposable instance they control).
  */
 
 import {
@@ -16,6 +24,8 @@ import {
 } from "./sherivs-db-target.mjs";
 
 export const DISPOSABLE_TARGET = "development";
+export const DISPOSABLE_LIFECYCLE_ENV = "SHERIVS_DISPOSABLE_PG_LIFECYCLE";
+export const DISPOSABLE_LIFECYCLE_ALLOWED = "ephemeral-local";
 export const DISPOSABLE_URL_ENV_NAMES = Object.freeze([
   "SHERIVS_DISPOSABLE_DATABASE_URL",
   "LOCAL_DATABASE_URL",
@@ -24,6 +34,13 @@ export const DISPOSABLE_URL_ENV_NAMES = Object.freeze([
 ]);
 
 const LOOPBACK = new Set(["localhost", "127.0.0.1", "::1"]);
+/**
+ * libpq / node-pg honour these query keys over URL authority. A loopback
+ * authority with ?host= or ?hostaddr= pointing elsewhere is a remote
+ * endpoint. Refuse them even when the override value is also loopback so
+ * the intended host and port are exactly the authority components.
+ */
+const LIBPQ_ENDPOINT_OVERRIDE_KEYS = new Set(["host", "hostaddr", "port"]);
 
 export class DisposablePgError extends Error {
   constructor(code, message) {
@@ -41,18 +58,27 @@ function trimEnv(env, name) {
 function parseEndpoint(connectionString) {
   try {
     const url = new URL(connectionString);
+    const endpointOverrides = [];
+    for (const [key] of url.searchParams.entries()) {
+      const lowered = String(key).toLowerCase();
+      if (LIBPQ_ENDPOINT_OVERRIDE_KEYS.has(lowered) && !endpointOverrides.includes(lowered)) {
+        endpointOverrides.push(lowered);
+      }
+    }
     return {
       protocol: url.protocol.replace(/:$/, ""),
       host: url.hostname,
       port: url.port || null,
+      endpointOverrides,
     };
   } catch {
-    const match = String(connectionString).match(/@([^/:]+)/);
+    // Do not salvage a host from userinfo via regex. Malformed strings fail closed.
     return {
       protocol: null,
-      host: match ? match[1] : null,
+      host: null,
       port: null,
       unparseable: true,
+      endpointOverrides: [],
     };
   }
 }
@@ -64,6 +90,20 @@ function isLoopbackHost(host) {
 
 function isPostgresProtocol(protocol) {
   return protocol === "postgres" || protocol === "postgresql";
+}
+
+function portStatus(port) {
+  if (port == null || String(port).trim() === "") {
+    return { ok: false, code: "DISPOSABLE_PORT_REQUIRED" };
+  }
+  if (!/^[0-9]+$/.test(String(port))) {
+    return { ok: false, code: "DISPOSABLE_PORT_INVALID" };
+  }
+  const n = Number(port);
+  if (!Number.isInteger(n) || n < 1 || n > 65535) {
+    return { ok: false, code: "DISPOSABLE_PORT_INVALID" };
+  }
+  return { ok: true, code: null };
 }
 
 /**
@@ -82,16 +122,19 @@ export function classifyConnectionString(connectionString, sourceName = "connect
   const endpoint = parseEndpoint(connectionString);
   const refs = inspectKnownProjectRefs(connectionString);
   const hosted = looksLikeSupabaseHost(connectionString) ||
-    /\.supabase\.com$/i.test(String(endpoint.host || "")) ||
-    /pooler\.supabase\.com$/i.test(String(endpoint.host || ""));
+    /\.supabase\.com$/i.test(String(endpoint.host || "").replace(/^\[|\]$/g, "")) ||
+    /pooler\.supabase\.com$/i.test(String(endpoint.host || "").replace(/^\[|\]$/g, ""));
   const loopback = isLoopbackHost(endpoint.host);
   const postgres = isPostgresProtocol(endpoint.protocol);
+  const port = portStatus(endpoint.port);
   let code = "DISPOSABLE_OK";
   if (endpoint.unparseable || !endpoint.host) code = "DISPOSABLE_URL_UNPARSEABLE";
   else if (!postgres) code = "DISPOSABLE_PROTOCOL_UNSUPPORTED";
   else if (refs.production) code = "DISPOSABLE_PRODUCTION_REF";
   else if (refs.staging) code = "DISPOSABLE_STAGING_REF";
   else if (hosted) code = "DISPOSABLE_REMOTE_SUPABASE";
+  else if (endpoint.endpointOverrides.length > 0) code = "DISPOSABLE_ENDPOINT_OVERRIDE";
+  else if (!port.ok) code = port.code;
   else if (!loopback) code = "DISPOSABLE_HOST_NOT_LOOPBACK";
   return {
     sourceName,
@@ -103,6 +146,7 @@ export function classifyConnectionString(connectionString, sourceName = "connect
     port: endpoint.port,
     loopback,
     hostedSupabase: hosted,
+    endpointOverrides: endpoint.endpointOverrides,
     refs: {
       production: refs.production,
       staging: refs.staging,
@@ -118,6 +162,21 @@ function selectCandidate(env) {
   return null;
 }
 
+function lifecycleStatus(env) {
+  if (!Object.prototype.hasOwnProperty.call(env ?? {}, DISPOSABLE_LIFECYCLE_ENV) ||
+      env[DISPOSABLE_LIFECYCLE_ENV] == null) {
+    return { ok: false, value: null, code: "DISPOSABLE_LIFECYCLE_REQUIRED" };
+  }
+  const value = String(env[DISPOSABLE_LIFECYCLE_ENV]).trim();
+  if (value === "") {
+    return { ok: false, value: null, code: "DISPOSABLE_LIFECYCLE_REQUIRED" };
+  }
+  if (value !== DISPOSABLE_LIFECYCLE_ALLOWED) {
+    return { ok: false, value, code: "DISPOSABLE_LIFECYCLE_REFUSED" };
+  }
+  return { ok: true, value, code: null };
+}
+
 /**
  * Positive isolation check. Never opens a database connection.
  */
@@ -129,12 +188,24 @@ export function qualifyDisposablePostgres(env = process.env) {
   const classified = candidate
     ? classifyConnectionString(candidate.value, candidate.name)
     : { sourceName: null, present: false, qualified: false, code: "DISPOSABLE_URL_MISSING" };
+  const lifecycle = lifecycleStatus(env);
 
   const reasons = [];
   if (targetMissing || target === "") {
     reasons.push("SHERIVS_DATABASE_TARGET is required and must be development");
   } else if (target !== DISPOSABLE_TARGET) {
     reasons.push(`SHERIVS_DATABASE_TARGET=${target} is not an isolated disposable target`);
+  }
+  if (!lifecycle.ok) {
+    if (lifecycle.code === "DISPOSABLE_LIFECYCLE_REQUIRED") {
+      reasons.push(
+        `${DISPOSABLE_LIFECYCLE_ENV} is required and must be ${DISPOSABLE_LIFECYCLE_ALLOWED}; loopback is not proof of a disposable lifecycle`,
+      );
+    } else {
+      reasons.push(
+        `${DISPOSABLE_LIFECYCLE_ENV} value is not an allowed disposable lifecycle attestation`,
+      );
+    }
   }
   if (!classified.present) {
     reasons.push("no candidate connection URL is set");
@@ -155,17 +226,30 @@ export function qualifyDisposablePostgres(env = process.env) {
 
   const qualified =
     target === DISPOSABLE_TARGET &&
+    lifecycle.ok === true &&
     classified.qualified === true &&
     classified.loopback === true &&
     classified.refs?.production !== true &&
     classified.refs?.staging !== true &&
     !unscopedWhileLive;
 
+  let code = "DISPOSABLE_NOT_QUALIFIED";
+  if (qualified) code = "DISPOSABLE_QUALIFIED";
+  else if (targetMissing || target === "" || (target && target !== DISPOSABLE_TARGET)) {
+    code = classified.code || "DISPOSABLE_NOT_QUALIFIED";
+  } else if (!lifecycle.ok) code = lifecycle.code;
+  else if (!classified.present || !classified.qualified || unscopedWhileLive) {
+    code = unscopedWhileLive && classified.qualified
+      ? "DISPOSABLE_UNSCOPED_WHILE_LIVE"
+      : (classified.code || "DISPOSABLE_NOT_QUALIFIED");
+  }
+
   return {
     qualified,
     target: target || null,
-    code: qualified ? "DISPOSABLE_QUALIFIED" : (classified.code || "DISPOSABLE_NOT_QUALIFIED"),
+    code,
     candidate: classified.sourceName,
+    lifecycle: lifecycle.value,
     endpoint: classified.present
       ? {
           protocol: classified.protocol,
@@ -173,6 +257,7 @@ export function qualifyDisposablePostgres(env = process.env) {
           port: classified.port,
           loopback: classified.loopback,
           hostedSupabase: classified.hostedSupabase,
+          endpointOverrides: classified.endpointOverrides || [],
           refs: classified.refs,
         }
       : null,
