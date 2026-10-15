@@ -34,6 +34,11 @@ import {
 } from "@/lib/identity-privilege";
 import { decideAccountAdministration, evaluateRoleGate } from "@/lib/security-role-gate";
 import { resolvePublicSupabaseConfig } from "../../frontend/src/integrations/supabase/public-config";
+import {
+  executableSqlCode,
+  extractDollarQuotedFunctionBody,
+  stripSqlComments,
+} from "./sherivs-sql-comment-strip";
 
 const ROOT = fileURLToPath(new URL("../..", import.meta.url));
 
@@ -65,21 +70,13 @@ const rollback = read(PROPOSED_ROLLBACK);
 const canonicalUsers = read(CANONICAL_USERS);
 const helpersDefiner = read(HELPERS_DEFINER);
 
-function plpgsqlBodyOf(sql: string, functionName: string): string {
-  const marker = `CREATE OR REPLACE FUNCTION ${functionName}()`;
-  const start = sql.indexOf(marker);
-  if (start < 0) {
-    throw new Error(`function ${functionName} not found`);
-  }
-  const as = sql.indexOf("AS $$", start);
-  const end = sql.indexOf("$$;", as);
-  if (as < 0 || end < 0) {
-    throw new Error(`function body for ${functionName} not found`);
-  }
-  return sql.slice(as + "AS $$".length, end);
-}
-
-const triggerBody = plpgsqlBodyOf(proposed, "public.forbid_self_privilege_mutation");
+const triggerBody = extractDollarQuotedFunctionBody(
+  proposed,
+  "public.forbid_self_privilege_mutation",
+);
+const triggerExecutable = executableSqlCode(triggerBody);
+const triggerWithoutComments = stripSqlComments(triggerBody);
+const proposedExecutable = executableSqlCode(proposed);
 
 /**
  * Simulated BEFORE UPDATE control flow for the proposed trigger.
@@ -547,26 +544,30 @@ describe("proposed migration inventory and rollback inverse", () => {
 
 describe("B-1 trusted execution context (static source)", () => {
   it("does not treat auth.uid() IS NULL as an automatic privilege-mutation bypass", () => {
-    expect(triggerBody).not.toMatch(/IF\s+auth\.uid\(\)\s+IS\s+NULL\s+THEN/i);
-    expect(triggerBody).not.toMatch(/auth\.uid\(\)\s+IS\s+NULL[\s\S]{0,80}RETURN NEW/i);
+    expect(triggerWithoutComments).not.toMatch(/IF\s+auth\.uid\(\)\s+IS\s+NULL\s+THEN/i);
+    expect(triggerExecutable).not.toMatch(/IF\s+auth\.uid\(\)\s+IS\s+NULL\s+THEN/i);
+    expect(triggerWithoutComments).toMatch(
+      /IF\s+v_uid\s+IS\s+NULL\s+THEN\s+RAISE EXCEPTION 'Forbidden: untrusted execution context cannot modify privileged identity fields'/,
+    );
   });
 
   it("names current_user = 'service_role' as the only trusted provisioner", () => {
-    const executable = triggerBody.replace(/--[^\n]*/g, "");
-    expect(executable).toMatch(/IF\s+current_user\s+=\s+'service_role'\s+THEN/);
-    expect(executable).not.toMatch(/session_user/);
-    expect(executable).not.toMatch(/current_setting\s*\(/);
-    expect(executable).not.toMatch(/request\.jwt/);
-    expect(executable).not.toMatch(/auth\.role\s*\(/);
-    expect(executable).not.toMatch(/'postgres'/);
+    expect(triggerWithoutComments).toMatch(/IF\s+current_user\s+=\s+'service_role'\s+THEN/);
+    expect(triggerExecutable).toMatch(/current_user\s+=/);
+    expect(triggerExecutable).not.toMatch(/session_user/);
+    expect(triggerExecutable).not.toMatch(/current_setting\s*\(/);
+    expect(triggerExecutable).not.toMatch(/request\.jwt/);
+    expect(triggerExecutable).not.toMatch(/auth\.role\s*\(/);
+    expect(triggerExecutable).not.toMatch(/postgres/);
   });
 
   it("fails closed when privilege columns change outside the trusted role and without a subject", () => {
-    expect(triggerBody).toContain("v_uid := auth.uid();");
-    expect(triggerBody).toMatch(/IF\s+v_uid\s+IS\s+NULL\s+THEN/);
-    expect(triggerBody).toContain(
+    expect(triggerWithoutComments).toContain("v_uid := auth.uid();");
+    expect(triggerWithoutComments).toMatch(/IF\s+v_uid\s+IS\s+NULL\s+THEN/);
+    expect(triggerWithoutComments).toContain(
       "RAISE EXCEPTION 'Forbidden: untrusted execution context cannot modify privileged identity fields'",
     );
+    expect(triggerExecutable).toMatch(/RAISE EXCEPTION/);
   });
 });
 
@@ -691,28 +692,36 @@ describe("B-1 privilege-mutation matrix (simulated — not PostgreSQL)", () => {
 
 describe("B-2 transactional forward proposal (static source)", () => {
   it("wraps helper replacement and trigger installation in one BEGIN/COMMIT", () => {
-    const begin = proposed.search(/^\s*BEGIN;/m);
-    const commit = proposed.search(/^\s*COMMIT;/m);
-    expect(begin).toBeGreaterThan(0);
+    const begin = proposedExecutable.search(/^\s*BEGIN;/m);
+    const commit = proposedExecutable.search(/^\s*COMMIT;/m);
+    expect(begin).toBeGreaterThanOrEqual(0);
     expect(commit).toBeGreaterThan(begin);
-    const window = proposed.slice(begin, commit);
+    const window = proposedExecutable.slice(begin, commit);
     expect(window).toContain("CREATE OR REPLACE FUNCTION public.get_my_school_id()");
     expect(window).toContain("CREATE OR REPLACE FUNCTION public.get_my_role()");
     expect(window).toContain("CREATE OR REPLACE FUNCTION public.is_school_admin()");
     expect(window).toContain("CREATE OR REPLACE FUNCTION public.forbid_self_privilege_mutation()");
     expect(window).toContain("DROP TRIGGER IF EXISTS trg_users_forbid_self_privilege_mutation ON public.users");
     expect(window).toContain("CREATE TRIGGER trg_users_forbid_self_privilege_mutation");
-    expect(proposed.slice(commit)).not.toMatch(/CREATE OR REPLACE FUNCTION|CREATE TRIGGER|DROP TRIGGER/);
+    expect(proposedExecutable.slice(commit)).not.toMatch(
+      /CREATE OR REPLACE FUNCTION|CREATE TRIGGER|DROP TRIGGER/,
+    );
   });
 
   it("contains no non-transactional operations and does not swallow errors", () => {
-    const statements = proposed
-      .replace(/\$comment\$[\s\S]*?\$comment\$/g, "")
-      .replace(/--[^\n]*/g, "");
-    expect(statements).not.toMatch(/CREATE INDEX CONCURRENTLY/i);
-    expect(statements).not.toMatch(/REINDEX/i);
-    expect(statements).not.toMatch(/\bVACUUM\b/i);
-    expect(statements).not.toMatch(/EXCEPTION WHEN OTHERS/i);
+    expect(proposedExecutable).not.toMatch(/CREATE INDEX CONCURRENTLY/i);
+    expect(proposedExecutable).not.toMatch(/REINDEX/i);
+    expect(proposedExecutable).not.toMatch(/\bVACUUM\b/i);
+    expect(triggerExecutable).not.toMatch(/EXCEPTION\s+WHEN\s+OTHERS/i);
+    for (const name of [
+      "public.get_my_school_id",
+      "public.get_my_role",
+      "public.is_school_admin",
+      "public.forbid_self_privilege_mutation",
+    ]) {
+      const body = extractDollarQuotedFunctionBody(proposed, name);
+      expect(executableSqlCode(body)).not.toMatch(/EXCEPTION\s+WHEN\s+OTHERS/i);
+    }
     expect(proposed).toContain("runner.mjs");
     expect(proposed).toContain("inner COMMIT");
   });
