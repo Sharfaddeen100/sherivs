@@ -31,7 +31,8 @@ export const CONTRACT_LIMITATIONS = Object.freeze([
   "CHECK comparison is whitespace/case-normalized expression text, not proven semantic equivalence (a > 0 vs 0 < a is a mismatch)",
   "FOREIGN KEY REFERENCES table without a column list is implicit-PK; effective referenced columns are the referenced relation PRIMARY KEY, or NOT_VERIFIED if that key cannot be resolved",
   "observation undefined / omitted keys, SQL NULL (legally absent), empty strings, and present values are distinct states",
-  "function/table/column grant compare is explicit GRANT tuples from pinned SQL versus the observed grant list; inherited, OWNER, PUBLIC-default, and ALTER DEFAULT PRIVILEGES are not modeled as effective privilege equivalence",
+  "function/table/column grant compare is explicit GRANT tuples from pinned SQL versus the observed grant list, including WITH GRANT OPTION; inherited, OWNER, PUBLIC-default, and ALTER DEFAULT PRIVILEGES are not modeled as effective privilege equivalence",
+  "unexpected public columns, constraints, indexes, triggers, and storage buckets refuse already_complete unless listed in CONTRACT_ALLOWLIST",
   "pg_get_expr / format_type output is normalized (timestamptz, varchar) and may still differ from live catalog spelling",
   "function bodies, owners, tablespace, views, sequences, enums, extensions, publications, default privileges, and column defaults are not in this contract",
 ]);
@@ -64,6 +65,23 @@ export const VENDOR_SCHEMAS = Object.freeze([
   "pg_catalog",
   "pg_toast",
 ]);
+
+/**
+ * Narrow extras that may appear in an observed catalog without refusing
+ * completion. This is not a wildcard. It does not permit extra columns,
+ * constraints, triggers, buckets, or grants.
+ */
+export const CONTRACT_ALLOWLIST = Object.freeze({
+  vendorSchemas: VENDOR_SCHEMAS,
+  extras: Object.freeze({
+    constraintImpliedIndexes: Object.freeze({
+      permitted: true,
+      rationale:
+        "PostgreSQL materializes PRIMARY KEY and UNIQUE as unique indexes; those indexes are implied by an already-compared constraint on the same table and ordered columns",
+      scope: "indexes only",
+    }),
+  }),
+});
 
 export const SENSITIVE_COLUMN_HINTS = Object.freeze([
   "password",
@@ -438,6 +456,40 @@ function matchingParen(text, openIdx) {
 function sameOrderedList(a = [], b = []) {
   if (a.length !== b.length) return false;
   return a.every((v, i) => String(v) === String(b[i]));
+}
+
+export function parseIndexColumns(idx) {
+  if (Array.isArray(idx?.columns) && idx.columns.length) {
+    return idx.columns.map((c) => String(c).toLowerCase());
+  }
+  const spec = String(idx?.spec ?? idx?.definition ?? "");
+  const open = spec.indexOf("(");
+  if (open === -1) return [];
+  const close = matchingParen(spec, open);
+  if (close === -1) return [];
+  return parseColumnList(spec.slice(open, close + 1));
+}
+
+export function indexTableKey(idx) {
+  const table = String(idx?.table ?? "").replaceAll('"', "").toLowerCase();
+  if (!table) return "";
+  return table.includes(".") ? table : `public.${table}`;
+}
+
+export function isConstraintImpliedIndex(index, tables) {
+  if (index?.unique === false) return false;
+  const tableKey = indexTableKey(index);
+  const cols = parseIndexColumns(index);
+  if (!tableKey || !cols.length) return false;
+  const table = (tables ?? []).find((t) => tableRecordKey(t, tableKey) === tableKey);
+  if (!table) return false;
+  for (const cons of table.constraints ?? []) {
+    const normalized = normalizeConstraint(cons, tableKey);
+    if (normalized.unverified) continue;
+    if (normalized.kind !== "PRIMARY KEY" && normalized.kind !== "UNIQUE") continue;
+    if (sameOrderedList(normalized.columns, cols)) return true;
+  }
+  return false;
 }
 
 function parseColumnList(parenText) {
@@ -1075,8 +1127,16 @@ function ensureTable(tables, ident, filename) {
   return tables.get(ident.key);
 }
 
-function grantKey(g) {
-  return `${g.table}::${(g.roles ?? []).join(",")}::${(g.privileges ?? []).join(",")}::${(g.columns ?? []).join(",")}`;
+export function grantKey(g) {
+  const grantable = g.grantable === true || g.is_grantable === true ? "grantable" : "";
+  const roles = (g.roles ?? []).map((r) => String(r).toLowerCase()).sort();
+  const privileges = (g.privileges ?? []).map((p) => String(p).toUpperCase()).sort();
+  const columns = (g.columns ?? []).map((c) => String(c).toLowerCase()).sort();
+  return `${g.table}::${roles.join(",")}::${privileges.join(",")}::${columns.join(",")}::${grantable}`;
+}
+
+function grantObservationComplete(g) {
+  return Array.isArray(g?.roles) && g.roles.length > 0 && Array.isArray(g?.privileges) && g.privileges.length > 0;
 }
 
 function parseGrantList(list) {
@@ -1086,12 +1146,25 @@ function parseGrantList(list) {
     .filter(Boolean);
 }
 
-function applyGrant(tableObj, privileges, roles, columns, revoke) {
+function parseGrantTargets(raw) {
+  const text = String(raw ?? "");
+  const grantable = /\bWITH\s+GRANT\s+OPTION\b/i.test(text);
+  const cleaned = text
+    .replace(/\bWITH\s+GRANT\s+OPTION\b/gi, "")
+    .replace(/\bGRANTED\s+BY\b[\s\S]*/i, "");
+  const roles = splitTopLevel(cleaned, ",")
+    .map((r) => identName(r).toLowerCase())
+    .filter(Boolean);
+  return { roles, grantable };
+}
+
+function applyGrant(tableObj, privileges, roles, columns, revoke, grantable = false) {
   const rec = {
     privileges: privileges.slice().sort(),
     roles: roles.slice().sort(),
     columns: (columns ?? []).map((c) => c.toLowerCase()).sort(),
     table: tableObj.key,
+    grantable: Boolean(grantable),
   };
   const key = grantKey(rec);
   if (columns?.length) {
@@ -1427,11 +1500,11 @@ function extractPlainDdl(body, filename, into) {
     ident.key = `${ident.schema}.${ident.name}`;
     const tableObj = ensureTable(into.tables, ident, filename);
     const privileges = parseGrantList(match[2]);
-    const roles = splitTopLevel(match[6], ",").map((r) => identName(r).toLowerCase());
+    const { roles, grantable } = parseGrantTargets(match[6]);
     const columns = match[3]
       ? splitTopLevel(match[3], ",").map((c) => identName(c).toLowerCase())
       : [];
-    applyGrant(tableObj, privileges, roles, columns, match[1].toUpperCase() === "REVOKE");
+    applyGrant(tableObj, privileges, roles, columns, match[1].toUpperCase() === "REVOKE", grantable);
   }
 
   const grantFnRe = new RegExp(
@@ -1460,7 +1533,7 @@ function extractPlainDdl(body, filename, into) {
     const toFrom = tail.match(/^\s*(?:TO|FROM)\s+([^;]+)/i);
     if (!toFrom) continue;
     const ident = qualify(match[2]);
-    const roles = splitTopLevel(toFrom[1], ",").map((r) => identName(r).toLowerCase());
+    const { roles, grantable } = parseGrantTargets(toFrom[1]);
     const parsed = args ? parseFunctionArgs(args) : { inputTypes: [], args: "" };
     const fnKey = args
       ? `${ident.schema}.${ident.name}(${parsed.inputTypes.join(",")})`
@@ -1473,6 +1546,7 @@ function extractPlainDdl(body, filename, into) {
       inputTypes: parsed.inputTypes,
       privileges: ["EXECUTE"],
       roles: roles.sort(),
+      grantable,
       revoke: match[1].toUpperCase() === "REVOKE",
       sourceFile: filename,
     };
@@ -1601,6 +1675,12 @@ export function extractExpectedObjects(sqlByFilename = {}) {
     "columnGrants",
     "storageBuckets",
     "implicitPrimaryKeyForeignKeys",
+    "unexpectedColumns",
+    "unexpectedConstraints",
+    "unexpectedIndexes",
+    "unexpectedTriggers",
+    "unexpectedStorage",
+    "grantOptions",
   ];
 
   return {
@@ -1734,82 +1814,103 @@ export function compareCatalog(expected, catalog) {
   for (const table of expected.tables ?? []) {
     const observed = observedTables.get(table.key);
     if (!observed) continue;
-    if ((table.columns ?? []).length) {
-      if (!observed.columns) incomplete.push(`columns:${table.key}`);
-      else {
-        const byName = indexBy(observed.columns, (c) => String(c.name).toLowerCase());
-        for (const col of table.columns) {
-          const got = byName.get(col.name);
-          if (!got) {
-            columnMismatches.push({ table: table.key, column: col.name, reason: "missing" });
-            continue;
-          }
-          const typeObs = observationState(got, "type");
-          if (typeObs.state !== OBSERVATION_STATES.PRESENT) {
-            incomplete.push(`columnType:${table.key}.${col.name}`);
-          } else if (normalizeType(typeObs.value) !== col.type) {
-            columnMismatches.push({
-              table: table.key,
-              column: col.name,
-              reason: "type",
-              expected: col.type,
-              observed: normalizeType(typeObs.value),
-            });
-          }
-          const nullObs = observationState(got, "nullable", { allowEmpty: true });
-          if (nullObs.state !== OBSERVATION_STATES.PRESENT || typeof got.nullable !== "boolean") {
-            incomplete.push(`columnNullable:${table.key}.${col.name}`);
-          } else if (got.nullable !== col.nullable) {
-            columnMismatches.push({
-              table: table.key,
-              column: col.name,
-              reason: "nullability",
-              expected: col.nullable,
-              observed: got.nullable,
-            });
-          }
+    const expectedCols = table.columns ?? [];
+    if (expectedCols.length && !observed.columns) {
+      incomplete.push(`columns:${table.key}`);
+    } else if (Array.isArray(observed.columns)) {
+      const byName = indexBy(observed.columns, (c) => String(c.name).toLowerCase());
+      for (const col of expectedCols) {
+        const got = byName.get(col.name);
+        if (!got) {
+          columnMismatches.push({ table: table.key, column: col.name, reason: "missing" });
+          continue;
         }
+        const typeObs = observationState(got, "type");
+        if (typeObs.state !== OBSERVATION_STATES.PRESENT) {
+          incomplete.push(`columnType:${table.key}.${col.name}`);
+        } else if (normalizeType(typeObs.value) !== col.type) {
+          columnMismatches.push({
+            table: table.key,
+            column: col.name,
+            reason: "type",
+            expected: col.type,
+            observed: normalizeType(typeObs.value),
+          });
+        }
+        const nullObs = observationState(got, "nullable", { allowEmpty: true });
+        if (nullObs.state !== OBSERVATION_STATES.PRESENT || typeof got.nullable !== "boolean") {
+          incomplete.push(`columnNullable:${table.key}.${col.name}`);
+        } else if (got.nullable !== col.nullable) {
+          columnMismatches.push({
+            table: table.key,
+            column: col.name,
+            reason: "nullability",
+            expected: col.nullable,
+            observed: got.nullable,
+          });
+        }
+      }
+      const expectedNames = new Set(expectedCols.map((c) => String(c.name).toLowerCase()));
+      for (const got of observed.columns) {
+        const name = String(got.name ?? "").toLowerCase();
+        if (!name || expectedNames.has(name)) continue;
+        columnMismatches.push({
+          table: table.key,
+          column: name,
+          reason: "unexpected",
+          sensitive: SENSITIVE_COLUMN_HINTS.some((h) => name.includes(h)),
+        });
       }
     }
-    if ((table.constraints ?? []).length) {
-      if (!observed.constraints) incomplete.push(`constraints:${table.key}`);
-      else {
-        const used = new Set();
-        for (const cons of table.constraints) {
-          let matched = false;
-          let unverified = false;
-          observed.constraints.forEach((got, idx) => {
-            if (matched || used.has(idx)) return;
-            const result = constraintsEquivalent(cons, got, table.key, {
-              expectedTables: expected.tables,
-              observedTables: catalog.tables,
-            });
-            if (result.unverified) unverified = true;
-            else if (result.match) {
-              matched = true;
-              used.add(idx);
-            }
+    const expectedConstraints = table.constraints ?? [];
+    if (expectedConstraints.length && !observed.constraints) {
+      incomplete.push(`constraints:${table.key}`);
+    } else if (Array.isArray(observed.constraints)) {
+      const used = new Set();
+      for (const cons of expectedConstraints) {
+        let matched = false;
+        let unverified = false;
+        observed.constraints.forEach((got, idx) => {
+          if (matched || used.has(idx)) return;
+          const result = constraintsEquivalent(cons, got, table.key, {
+            expectedTables: expected.tables,
+            observedTables: catalog.tables,
           });
-          if (unverified && !matched) {
-            constraintMismatches.push({
-              table: table.key,
-              kind: cons.kind,
-              identity: cons.identity,
-              reason: "unverified",
-            });
-          } else if (!matched) {
-            constraintMismatches.push({
-              table: table.key,
-              kind: cons.kind,
-              identity: cons.identity ?? cons.spec,
-              columns: cons.columns,
-              checkExpression: cons.checkExpression,
-              referencedTable: cons.referencedTable,
-              reason: "mismatch",
-            });
+          if (result.unverified) unverified = true;
+          else if (result.match) {
+            matched = true;
+            used.add(idx);
           }
+        });
+        if (unverified && !matched) {
+          constraintMismatches.push({
+            table: table.key,
+            kind: cons.kind,
+            identity: cons.identity,
+            reason: "unverified",
+          });
+        } else if (!matched) {
+          constraintMismatches.push({
+            table: table.key,
+            kind: cons.kind,
+            identity: cons.identity ?? cons.spec,
+            columns: cons.columns,
+            checkExpression: cons.checkExpression,
+            referencedTable: cons.referencedTable,
+            reason: "mismatch",
+          });
         }
       }
+      observed.constraints.forEach((got, idx) => {
+        if (used.has(idx)) return;
+        const normalized = normalizeConstraint(got, table.key);
+        constraintMismatches.push({
+          table: table.key,
+          kind: normalized.kind,
+          identity: normalized.identity ?? normalized.spec,
+          reason: normalized.unverified ? "unverified" : "unexpected",
+        });
+      });
     }
     if (table.rlsEnabled || table.rlsForced) {
       const enabledState = hasOwn(observed, "rlsEnabled")
@@ -1833,6 +1934,9 @@ export function compareCatalog(expected, catalog) {
       incomplete.push(`grants:${table.key}`);
     } else if (hasOwn(observed, "grants") || (table.grants ?? []).length) {
       const gotList = observed.grants ?? [];
+      if (gotList.some((g) => !grantObservationComplete(g))) {
+        incomplete.push(`grants:${table.key}`);
+      }
       const got = new Set(gotList.map((g) => grantKey({ ...g, table: table.key })));
       const exp = new Set((table.grants ?? []).map((g) => grantKey({ ...g, table: table.key })));
       for (const g of table.grants ?? []) {
@@ -1851,6 +1955,9 @@ export function compareCatalog(expected, catalog) {
       incomplete.push(`columnGrants:${table.key}`);
     } else if (hasOwn(observed, "columnGrants") || (table.columnGrants ?? []).length) {
       const gotList = observed.columnGrants ?? [];
+      if (gotList.some((g) => !grantObservationComplete(g))) {
+        incomplete.push(`columnGrants:${table.key}`);
+      }
       const got = new Set(gotList.map((g) => grantKey({ ...g, table: table.key })));
       const exp = new Set((table.columnGrants ?? []).map((g) => grantKey({ ...g, table: table.key })));
       for (const g of table.columnGrants ?? []) {
@@ -2002,10 +2109,23 @@ export function compareCatalog(expected, catalog) {
     }
   }
 
-  const missingTriggers = (expected.triggers ?? []).filter((t) => !observedTriggers.has(t.key));
+  const triggerKeyOf = (t) => {
+    const table = String(t.table).includes(".")
+      ? String(t.table).toLowerCase()
+      : `public.${String(t.table).toLowerCase()}`;
+    return `${table}::${String(t.name).toLowerCase()}`;
+  };
+  const expectedTriggerKeys = new Set((expected.triggers ?? []).map((t) => t.key ?? triggerKeyOf(t)));
+  const missingTriggers = (expected.triggers ?? []).filter((t) => !observedTriggers.has(t.key ?? triggerKeyOf(t)));
+  const unexpectedTriggers = (catalog.triggers ?? []).filter((t) => {
+    const table = String(t.table ?? "").toLowerCase();
+    const schema = table.includes(".") ? table.split(".")[0] : "public";
+    if (VENDOR_SCHEMAS.includes(schema) && schema !== "public") return false;
+    return !expectedTriggerKeys.has(triggerKeyOf(t));
+  });
   const triggerMismatches = [];
   for (const trig of expected.triggers ?? []) {
-    const got = observedTriggers.get(trig.key);
+    const got = observedTriggers.get(trig.key ?? triggerKeyOf(trig));
     if (!got) continue;
     for (const field of ["timing", "events", "function"]) {
       const state = observationState(got, field);
@@ -2023,16 +2143,45 @@ export function compareCatalog(expected, catalog) {
       triggerMismatches.push({ key: trig.key, field: "function" });
     }
   }
+  const expectedIndexNames = new Set((expected.indexes ?? []).map((i) => String(i.name).toLowerCase()));
   const missingIndexes = (expected.indexes ?? []).filter((i) => {
     if (!catalog.indexes) return false;
     return !observedIndexes.has(i.name);
   });
+  const indexMismatches = [];
+  for (const exp of expected.indexes ?? []) {
+    const got = observedIndexes.get(String(exp.name).toLowerCase());
+    if (!got) continue;
+    const expCols = parseIndexColumns(exp);
+    const gotCols = parseIndexColumns(got);
+    if (expCols.length && !gotCols.length && !got.spec && !got.definition && !got.columns) {
+      incomplete.push(`indexDefinition:${exp.name}`);
+      continue;
+    }
+    if (expCols.length && gotCols.length && !sameOrderedList(expCols, gotCols)) {
+      indexMismatches.push({ name: exp.name, field: "columns", expected: expCols, observed: gotCols });
+    }
+    if (typeof exp.unique === "boolean" && typeof got.unique === "boolean" && exp.unique !== got.unique) {
+      indexMismatches.push({ name: exp.name, field: "unique" });
+    }
+    if (exp.table && got.table && indexTableKey(exp) !== indexTableKey(got)) {
+      indexMismatches.push({ name: exp.name, field: "table" });
+    }
+  }
+  const unexpectedIndexes = (catalog.indexes ?? []).filter((i) => {
+    const name = String(i.name ?? "").toLowerCase();
+    if (expectedIndexNames.has(name)) return false;
+    return !isConstraintImpliedIndex(i, expected.tables);
+  });
 
+  const storageId = (b) => String(b.id || b.name);
+  const expectedStorageIds = new Set((expected.storageBuckets ?? []).map(storageId));
   const missingStorage = (expected.storageBuckets ?? []).filter((b) => {
     if (!catalog.storageBuckets) return false;
-    const id = String(b.id || b.name);
-    return !(catalog.storageBuckets ?? []).some((o) => String(o.id || o.name) === id);
+    const id = storageId(b);
+    return !(catalog.storageBuckets ?? []).some((o) => storageId(o) === id);
   });
+  const unexpectedStorage = (catalog.storageBuckets ?? []).filter((b) => !expectedStorageIds.has(storageId(b)));
 
   const unverifiedRequired = (expected.unverified ?? []).filter((u) => u.required !== false);
 
@@ -2055,9 +2204,13 @@ export function compareCatalog(expected, catalog) {
     functionSecurityMismatches,
     functionGrantMismatches,
     missingTriggers,
+    unexpectedTriggers,
     triggerMismatches,
     missingIndexes,
+    unexpectedIndexes,
+    indexMismatches,
     missingStorage,
+    unexpectedStorage,
     unverifiedRequired,
     shapeIncomplete: incomplete,
     matchingTables: (expected.tables?.length ?? 0) - missingTables.length,
@@ -2096,11 +2249,15 @@ export function catalogBlocksCompletion(comparison) {
   if (comparison.missingTriggers?.length) return "CATALOG_TRIGGER_MISSING";
   if (comparison.triggerMismatches?.length) return "CATALOG_TRIGGER_MISMATCH";
   if (comparison.missingIndexes?.length) return "CATALOG_INDEX_MISSING";
+  if (comparison.indexMismatches?.length) return "CATALOG_INDEX_MISMATCH";
   if (comparison.missingStorage?.length) return "CATALOG_STORAGE_MISMATCH";
+  if (comparison.unexpectedStorage?.length) return "CATALOG_STORAGE_MISMATCH";
   if (
     comparison.unexpectedTables?.length ||
     comparison.unexpectedPolicies?.length ||
-    comparison.unexpectedFunctions?.length
+    comparison.unexpectedFunctions?.length ||
+    comparison.unexpectedIndexes?.length ||
+    comparison.unexpectedTriggers?.length
   ) {
     return "CATALOG_UNEXPECTED_OBJECTS";
   }
@@ -2193,6 +2350,7 @@ export function mapObservedRowsToCatalog(rows) {
   requireClass("indexes");
   requireClass("tableGrants");
   requireClass("columnGrants");
+  requireClass("storageBuckets");
 
   const columnRows = rows.columns ?? [];
   const constraintRows = rows.constraints ?? [];

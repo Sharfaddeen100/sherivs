@@ -61,12 +61,15 @@ import {
 import { reconcileRestoreState } from "../../scripts/staging/sherivs-restore/reconcile.mjs";
 import {
   CATALOG_OBSERVE_SQL,
+  CONTRACT_ALLOWLIST,
   OBSERVE_SQL_FIELD_MAP,
   catalogBlocksCompletion,
   compareCatalog,
   constraintsEquivalent,
   extractExpectedObjects,
   functionIdentityKey,
+  grantKey,
+  isConstraintImpliedIndex,
   mapObservedRowsToCatalog,
   normalizeConstraint,
   observedCatalogFromExpected,
@@ -2345,5 +2348,383 @@ CREATE TABLE public.orders (
     expect(complete.policies[0].withCheck).toBeNull();
     expect(complete.tables[0].rlsEnabled).toBe(true);
     expect(complete.tables[0].rlsForced).toBe(false);
+  });
+
+  it("extra ssn column on an otherwise matched table refuses already_complete", () => {
+    const manifest = identityManifest();
+    const expected = extractExpectedObjects(manifest.sqlByFilename);
+    const catalog = observedCatalogFromExpected(expected);
+    expect(completeDecision(manifest, catalog).decision.action).toBe("already_complete");
+    const people = catalog.tables.find((t: { name: string }) => t.name === "people");
+    people.columns.push({ name: "ssn", type: "text", nullable: true });
+    const { decision } = completeDecision(manifest, catalog);
+    expect(decision.ok).toBe(false);
+    expect(decision.action).not.toBe("already_complete");
+    expect(decision.reason).toBe("CATALOG_COLUMN_MISMATCH");
+    const comparison = compareCatalog(expected, catalog);
+    expect(comparison.columnMismatches).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ table: "public.people", column: "ssn", reason: "unexpected", sensitive: true }),
+      ]),
+    );
+  });
+
+  it("missing, renamed, mistyped, and unexpected sensitive columns refuse already_complete", () => {
+    const manifest = identityManifest();
+    const expected = extractExpectedObjects(manifest.sqlByFilename);
+
+    const missing = observedCatalogFromExpected(expected);
+    missing.tables.find((t: { name: string }) => t.name === "people").columns = missing.tables
+      .find((t: { name: string }) => t.name === "people")
+      .columns.filter((c: { name: string }) => c.name !== "name");
+    expect(completeDecision(manifest, missing).decision.reason).toBe("CATALOG_COLUMN_MISMATCH");
+
+    const renamed = observedCatalogFromExpected(expected);
+    renamed.tables.find((t: { name: string }) => t.name === "people").columns = renamed.tables
+      .find((t: { name: string }) => t.name === "people")
+      .columns.map((c: { name: string }) => (c.name === "name" ? { ...c, name: "full_name" } : c));
+    const renamedDecision = completeDecision(manifest, renamed).decision;
+    expect(renamedDecision.reason).toBe("CATALOG_COLUMN_MISMATCH");
+    expect(compareCatalog(expected, renamed).columnMismatches).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ column: "name", reason: "missing" }),
+        expect.objectContaining({ column: "full_name", reason: "unexpected" }),
+      ]),
+    );
+
+    const mistyped = observedCatalogFromExpected(expected);
+    mistyped.tables.find((t: { name: string }) => t.name === "people").columns = mistyped.tables
+      .find((t: { name: string }) => t.name === "people")
+      .columns.map((c: { name: string }) => (c.name === "name" ? { ...c, type: "integer" } : c));
+    expect(completeDecision(manifest, mistyped).decision.reason).toBe("CATALOG_COLUMN_MISMATCH");
+
+    const secret = observedCatalogFromExpected(expected);
+    secret.tables.find((t: { name: string }) => t.name === "people").columns.push({
+      name: "refresh_token",
+      type: "text",
+      nullable: true,
+    });
+    expect(completeDecision(manifest, secret).decision.reason).toBe("CATALOG_COLUMN_MISMATCH");
+    expect(compareCatalog(expected, secret).columnMismatches).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ column: "refresh_token", reason: "unexpected", sensitive: true }),
+      ]),
+    );
+  });
+
+  it("extra UNIQUE constraint, index, and trigger refuse already_complete", () => {
+    const manifest = identityManifest();
+    const expected = extractExpectedObjects(manifest.sqlByFilename);
+
+    const extraUnique = observedCatalogFromExpected(expected);
+    extraUnique.tables.find((t: { name: string }) => t.name === "people").constraints.push({
+      kind: "UNIQUE",
+      spec: "(name)",
+      columns: ["name"],
+      table: "public.people",
+    });
+    expect(completeDecision(manifest, extraUnique).decision.reason).toBe("CATALOG_CONSTRAINT_MISMATCH");
+    expect(compareCatalog(expected, extraUnique).constraintMismatches).toEqual(
+      expect.arrayContaining([expect.objectContaining({ reason: "unexpected", kind: "UNIQUE" })]),
+    );
+
+    const extraIndex = observedCatalogFromExpected(expected);
+    extraIndex.indexes = [
+      ...(extraIndex.indexes ?? []),
+      { name: "people_name_idx", table: "public.people", unique: false, columns: ["name"] },
+    ];
+    expect(completeDecision(manifest, extraIndex).decision.reason).toBe("CATALOG_UNEXPECTED_OBJECTS");
+    expect(compareCatalog(expected, extraIndex).unexpectedIndexes).toEqual(
+      expect.arrayContaining([expect.objectContaining({ name: "people_name_idx" })]),
+    );
+
+    const extraTrigger = observedCatalogFromExpected(expected);
+    extraTrigger.triggers = [
+      ...(extraTrigger.triggers ?? []),
+      {
+        name: "people_audit",
+        table: "public.people",
+        timing: "AFTER",
+        events: "INSERT",
+        function: "public.touch_people",
+      },
+    ];
+    expect(completeDecision(manifest, extraTrigger).decision.reason).toBe("CATALOG_UNEXPECTED_OBJECTS");
+    expect(compareCatalog(expected, extraTrigger).unexpectedTriggers).toEqual(
+      expect.arrayContaining([expect.objectContaining({ name: "people_audit" })]),
+    );
+  });
+
+  it("same-name index or trigger with a mismatched definition refuses already_complete", () => {
+    const rich = richManifest();
+    const expected = extractExpectedObjects(rich.sqlByFilename);
+    expect(expected.indexes.some((i: { name: string }) => i.name === "people_name_idx")).toBe(true);
+    expect(expected.triggers.length).toBe(1);
+
+    const indexMismatch = observedCatalogFromExpected(expected);
+    indexMismatch.indexes = indexMismatch.indexes.map((i: { name: string }) =>
+      i.name === "people_name_idx" ? { ...i, columns: ["ssn"], spec: "(ssn)" } : i,
+    );
+    const indexDecision = reconcileRestoreState({
+      manifest: rich,
+      ledgerRows: completeLedger(rich),
+      sqlByFilename: rich.sqlByFilename,
+      expected,
+      vendorHistory: { status: "available", versions: rich.files.map((f) => f.filename.slice(0, 14)) },
+      catalog: indexMismatch,
+    });
+    expect(indexDecision.reason).toBe("CATALOG_INDEX_MISMATCH");
+
+    const triggerMismatch = observedCatalogFromExpected(expected);
+    triggerMismatch.triggers = triggerMismatch.triggers.map((t: { name: string }) => ({
+      ...t,
+      timing: "AFTER",
+      events: "INSERT",
+    }));
+    const triggerDecision = reconcileRestoreState({
+      manifest: rich,
+      ledgerRows: completeLedger(rich),
+      sqlByFilename: rich.sqlByFilename,
+      expected,
+      vendorHistory: { status: "available", versions: rich.files.map((f) => f.filename.slice(0, 14)) },
+      catalog: triggerMismatch,
+    });
+    expect(triggerDecision.reason).toBe("CATALOG_TRIGGER_MISMATCH");
+  });
+
+  it("extra storage bucket refuses already_complete", () => {
+    const manifest = identityManifest();
+    const expected = extractExpectedObjects(manifest.sqlByFilename);
+    const catalog = observedCatalogFromExpected(expected);
+    expect(catalog.storageBuckets).toEqual([]);
+    catalog.storageBuckets = [{ id: "private-docs", name: "private-docs" }];
+    const { decision } = completeDecision(manifest, catalog);
+    expect(decision.ok).toBe(false);
+    expect(decision.action).not.toBe("already_complete");
+    expect(decision.reason).toBe("CATALOG_STORAGE_MISMATCH");
+    expect(compareCatalog(expected, catalog).unexpectedStorage).toEqual(
+      expect.arrayContaining([expect.objectContaining({ id: "private-docs" })]),
+    );
+  });
+
+  it("missing expected storage bucket and omitted storage observations refuse already_complete", () => {
+    const sql = `${identitySql()}\nINSERT INTO storage.buckets (id, name) VALUES ('avatars', 'avatars');`;
+    const manifest = {
+      manifestId: "test-storage-contract",
+      sourceCommit: PINNED_SOURCE_COMMIT,
+      sourceTree: PINNED_SOURCE_TREE,
+      count: 1,
+      files: [{ seq: 1, filename: "20260101000000_storage.sql", sha256: digest(sql) }],
+      sqlByFilename: { "20260101000000_storage.sql": sql },
+    };
+    const expected = extractExpectedObjects(manifest.sqlByFilename);
+    expect(expected.storageBuckets.map((b: { id?: string; name?: string }) => b.id || b.name)).toContain("avatars");
+
+    const missing = observedCatalogFromExpected(expected);
+    missing.storageBuckets = [];
+    expect(completeDecision(manifest, missing).decision.reason).toBe("CATALOG_STORAGE_MISMATCH");
+
+    const omitted = observedCatalogFromExpected(expected);
+    delete omitted.storageBuckets;
+    expect(completeDecision(manifest, omitted).decision.reason).toBe("CATALOG_SHAPE_INCOMPLETE");
+  });
+
+  it("table and column WITH GRANT OPTION is represented and unexpected options refuse", () => {
+    const rich = richManifest();
+    const expected = extractExpectedObjects(rich.sqlByFilename);
+    expect(expected.tables[0].grants.length).toBeGreaterThan(0);
+    expect(grantKey({ ...expected.tables[0].grants[0], table: "public.people" })).toMatch(/::$/);
+    expect(grantKey({ ...expected.tables[0].grants[0], table: "public.people", grantable: true })).toMatch(
+      /::grantable$/,
+    );
+
+    const grantable = observedCatalogFromExpected(expected);
+    grantable.tables[0].grants = grantable.tables[0].grants.map((g: Record<string, unknown>) => ({
+      ...g,
+      grantable: true,
+    }));
+    const grantableDecision = reconcileRestoreState({
+      manifest: rich,
+      ledgerRows: completeLedger(rich),
+      sqlByFilename: rich.sqlByFilename,
+      expected,
+      vendorHistory: { status: "available", versions: rich.files.map((f) => f.filename.slice(0, 14)) },
+      catalog: grantable,
+    });
+    expect(grantableDecision.ok).toBe(false);
+    expect(grantableDecision.action).not.toBe("already_complete");
+    expect(grantableDecision.reason).toBe("CATALOG_GRANT_MISMATCH");
+
+    const columnGrantable = observedCatalogFromExpected(expected);
+    columnGrantable.tables[0].columnGrants = columnGrantable.tables[0].columnGrants.map(
+      (g: Record<string, unknown>) => ({ ...g, grantable: true }),
+    );
+    const columnDecision = reconcileRestoreState({
+      manifest: rich,
+      ledgerRows: completeLedger(rich),
+      sqlByFilename: rich.sqlByFilename,
+      expected,
+      vendorHistory: { status: "available", versions: rich.files.map((f) => f.filename.slice(0, 14)) },
+      catalog: columnGrantable,
+    });
+    expect(columnDecision.reason).toBe("CATALOG_COLUMN_GRANT_MISMATCH");
+  });
+
+  it("missing, unexpected, PUBLIC, and incomplete table or column grants refuse already_complete", () => {
+    const rich = richManifest();
+    const expected = extractExpectedObjects(rich.sqlByFilename);
+
+    const missing = observedCatalogFromExpected(expected);
+    missing.tables[0].grants = [];
+    expect(
+      reconcileRestoreState({
+        manifest: rich,
+        ledgerRows: completeLedger(rich),
+        sqlByFilename: rich.sqlByFilename,
+        expected,
+        vendorHistory: { status: "available", versions: rich.files.map((f) => f.filename.slice(0, 14)) },
+        catalog: missing,
+      }).reason,
+    ).toBe("CATALOG_GRANT_MISMATCH");
+
+    const unexpectedGrantee = observedCatalogFromExpected(expected);
+    unexpectedGrantee.tables[0].grants = [
+      ...unexpectedGrantee.tables[0].grants,
+      { table: "public.people", roles: ["anon"], privileges: ["SELECT"], columns: [] },
+    ];
+    expect(
+      reconcileRestoreState({
+        manifest: rich,
+        ledgerRows: completeLedger(rich),
+        sqlByFilename: rich.sqlByFilename,
+        expected,
+        vendorHistory: { status: "available", versions: rich.files.map((f) => f.filename.slice(0, 14)) },
+        catalog: unexpectedGrantee,
+      }).reason,
+    ).toBe("CATALOG_GRANT_MISMATCH");
+
+    const publicGrant = observedCatalogFromExpected(expected);
+    publicGrant.tables[0].grants = [
+      ...publicGrant.tables[0].grants,
+      { table: "public.people", roles: ["public"], privileges: ["SELECT"], columns: [] },
+    ];
+    expect(
+      reconcileRestoreState({
+        manifest: rich,
+        ledgerRows: completeLedger(rich),
+        sqlByFilename: rich.sqlByFilename,
+        expected,
+        vendorHistory: { status: "available", versions: rich.files.map((f) => f.filename.slice(0, 14)) },
+        catalog: publicGrant,
+      }).reason,
+    ).toBe("CATALOG_GRANT_MISMATCH");
+
+    const incomplete = observedCatalogFromExpected(expected);
+    incomplete.tables[0].grants = [{ table: "public.people", roles: ["authenticated"], privileges: [] }];
+    expect(
+      reconcileRestoreState({
+        manifest: rich,
+        ledgerRows: completeLedger(rich),
+        sqlByFilename: rich.sqlByFilename,
+        expected,
+        vendorHistory: { status: "available", versions: rich.files.map((f) => f.filename.slice(0, 14)) },
+        catalog: incomplete,
+      }).reason,
+    ).toBe("CATALOG_SHAPE_INCOMPLETE");
+
+    const missingColumn = observedCatalogFromExpected(expected);
+    missingColumn.tables[0].columnGrants = [];
+    expect(
+      reconcileRestoreState({
+        manifest: rich,
+        ledgerRows: completeLedger(rich),
+        sqlByFilename: rich.sqlByFilename,
+        expected,
+        vendorHistory: { status: "available", versions: rich.files.map((f) => f.filename.slice(0, 14)) },
+        catalog: missingColumn,
+      }).reason,
+    ).toBe("CATALOG_COLUMN_GRANT_MISMATCH");
+  });
+
+  it("explicit GRANT WITH GRANT OPTION is parsed and compared; allowlist remains indexes-only", () => {
+    const sql = `
+CREATE TABLE public.people (id uuid PRIMARY KEY, ssn text NOT NULL);
+GRANT SELECT ON TABLE public.people TO authenticated WITH GRANT OPTION;
+GRANT SELECT (ssn) ON TABLE public.people TO authenticated WITH GRANT OPTION;
+`.trim();
+    const expected = extractExpectedObjects({ "20260101000000_grant_option.sql": sql });
+    expect(expected.tables[0].grants[0].grantable).toBe(true);
+    expect(expected.tables[0].columnGrants[0].grantable).toBe(true);
+    const catalog = observedCatalogFromExpected(expected);
+    const comparison = compareCatalog(expected, catalog);
+    expect(catalogBlocksCompletion(comparison)).toBeNull();
+
+    const droppedOption = observedCatalogFromExpected(expected);
+    droppedOption.tables[0].grants = droppedOption.tables[0].grants.map((g: Record<string, unknown>) => ({
+      ...g,
+      grantable: false,
+    }));
+    expect(catalogBlocksCompletion(compareCatalog(expected, droppedOption))).toBe("CATALOG_GRANT_MISMATCH");
+
+    expect(Object.keys(CONTRACT_ALLOWLIST.extras)).toEqual(["constraintImpliedIndexes"]);
+    expect(CONTRACT_ALLOWLIST.extras.constraintImpliedIndexes.permitted).toBe(true);
+    expect(CONTRACT_ALLOWLIST.extras.constraintImpliedIndexes.scope).toBe("indexes only");
+    expect(CONTRACT_ALLOWLIST.extras).not.toHaveProperty("columns");
+    expect(CONTRACT_ALLOWLIST.extras).not.toHaveProperty("constraints");
+    expect(CONTRACT_ALLOWLIST.extras).not.toHaveProperty("triggers");
+    expect(CONTRACT_ALLOWLIST.extras).not.toHaveProperty("storageBuckets");
+    expect(CONTRACT_ALLOWLIST.extras).not.toHaveProperty("grants");
+  });
+
+  it("constraint-implied unique indexes are the only permitted extras", () => {
+    const manifest = identityManifest();
+    const expected = extractExpectedObjects(manifest.sqlByFilename);
+    const implied = [
+      { name: "orgs_pkey", table: "public.orgs", unique: true, columns: ["id"] },
+      { name: "orgs_name_key", table: "public.orgs", unique: true, columns: ["name"] },
+      { name: "people_pkey", table: "public.people", unique: true, columns: ["id"] },
+    ];
+    for (const index of implied) {
+      expect(isConstraintImpliedIndex(index, expected.tables)).toBe(true);
+    }
+    expect(
+      isConstraintImpliedIndex(
+        { name: "people_name_idx", table: "public.people", unique: false, columns: ["name"] },
+        expected.tables,
+      ),
+    ).toBe(false);
+    expect(
+      isConstraintImpliedIndex(
+        { name: "people_name_uidx", table: "public.people", unique: true, columns: ["name"] },
+        expected.tables,
+      ),
+    ).toBe(false);
+
+    const catalog = observedCatalogFromExpected(expected);
+    catalog.indexes = [...(catalog.indexes ?? []), ...implied];
+    const { decision } = completeDecision(manifest, catalog);
+    expect(decision.action).toBe("already_complete");
+    expect(compareCatalog(expected, catalog).unexpectedIndexes).toEqual([]);
+
+    catalog.indexes.push({ name: "people_name_idx", table: "public.people", unique: false, columns: ["name"] });
+    expect(completeDecision(manifest, catalog).decision.action).not.toBe("already_complete");
+    expect(completeDecision(manifest, catalog).decision.reason).toBe("CATALOG_UNEXPECTED_OBJECTS");
+  });
+
+  it("unparseable leftover constraint and omitted grantable-bearing observe classes refuse", () => {
+    const manifest = identityManifest();
+    const expected = extractExpectedObjects(manifest.sqlByFilename);
+    const unverified = observedCatalogFromExpected(expected);
+    unverified.tables.find((t: { name: string }) => t.name === "people").constraints.push({
+      kind: "UNIQUE",
+      spec: "not-a-constraint",
+      table: "public.people",
+    });
+    expect(completeDecision(manifest, unverified).decision.reason).toBe("CATALOG_CONSTRAINT_UNVERIFIED");
+
+    const mapper = mapObservedRowsToCatalog({ tables: [] });
+    expect(mapper.shapeIncomplete).toEqual(
+      expect.arrayContaining(["storageBuckets", "tableGrants", "columnGrants", "indexes", "triggers"]),
+    );
   });
 });

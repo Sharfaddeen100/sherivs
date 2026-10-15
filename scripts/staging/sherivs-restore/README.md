@@ -112,12 +112,17 @@ omitted observation fields (column type, function returns, USING/WITH CHECK
 keys, RLS bits), column/constraint/grant mismatches (constraint identity,
 not kind-only), implicit-PK foreign keys that cannot resolve the referenced
 PRIMARY KEY, same-name different-signature functions, missing or unexpected
-function grants, missing required functions or triggers, unexpected objects,
-and required objects that cannot be derived statically (NOT VERIFIED) all
-block `already_complete`. A contract match is **not** live schema equivalence
-and **not** application-security proof. Implicit `REFERENCES table` is
-resolved against the referenced relation's PRIMARY KEY or fails closed. SQL
-NULL USING/WITH CHECK is legally absent; an omitted observation key is not.
+function grants, missing required functions or triggers, unexpected public
+columns / constraints / indexes / triggers / storage buckets, unexpected
+WITH GRANT OPTION, unexpected objects, and required objects that cannot be
+derived statically (NOT VERIFIED) all block `already_complete`. The only
+documented extra-object allowlist is a constraint-implied unique/primary
+index (same table and ordered columns as an expected PRIMARY KEY or UNIQUE).
+A contract match is **not** live schema equivalence and **not**
+application-security proof. Implicit `REFERENCES table` is resolved against
+the referenced relation's PRIMARY KEY or fails closed. SQL NULL USING/WITH
+CHECK is legally absent; an omitted observation key is not. Grant compare
+is explicit SQL tuples, not inherited or default privilege equivalence.
 
 Partial failure default recovery: recreate staging. No automatic retry.
 
