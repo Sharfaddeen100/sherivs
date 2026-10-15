@@ -10,6 +10,15 @@ import { PortalPage, FeatureLockedCard, PortalPageSkeleton } from "@/components/
 import { PageHeader } from "@/components/page-header";
 import { Button } from "@/components/ui/button";
 import { SUBSCRIPTION_TIERS, isFeatureActive, type TierName } from "@/lib/subscription-tiers";
+import {
+  academicAverage,
+  attendanceRate,
+  composeWeightedScore,
+  feeCollectionRate,
+  roundScore
+  staffAttendanceRate,
+  unavailableNote,
+} from "@/lib/runtime/scholar/honest-scores";
 
 export const Route = createFileRoute("/_authenticated/admin/health-certificate")({
   ssr: false,
@@ -106,52 +115,74 @@ function HealthCertificatePage() {
           .gte("created_at", startTS),
       ]);
 
-      // Component 1: Student Attendance
       const attRows = attendance.data ?? [];
-      const presentCount = attRows.filter(
-        (a: any) => a.status === "present" || a.status === "late",
-      ).length;
       const totalAtt = attRows.length;
-      const attendanceScore = totalAtt > 0 ? (presentCount / totalAtt) * 100 : 0;
+      const attendanceScore = attendanceRate(attRows);
 
-      // Component 2: Academic
       const gradeRows = grades.data ?? [];
-      const academicScore =
-        gradeRows.length > 0
-          ? gradeRows.reduce((sum: number, g: any) => sum + (Number(g.total_score) || 0), 0) /
-            gradeRows.length
-          : 0;
+      const academicScore = academicAverage(gradeRows);
 
-      // Component 3: Fee Collection
       const feeRows = fees.data ?? [];
       const totalBilled = feeRows.reduce((s: number, f: any) => s + (Number(f.amount) || 0), 0);
       const totalCollected = feeRows.reduce(
         (s: number, f: any) => s + (Number(f.paid_amount) || 0),
         0,
       );
-      const feeScore = totalBilled > 0 ? (totalCollected / totalBilled) * 100 : 100;
+      const feeScore = feeCollectionRate(totalBilled, totalCollected);
 
-      // Component 4: Staff Attendance
       const teacherRows = teachers.data ?? [];
       const totalTeachers = teacherRows.length;
       const logRows = staffLogs.data ?? [];
       const uniqueTeachers = new Set(logRows.map((l: any) => l.teacher_id).filter(Boolean)).size;
-      const staffScore = totalTeachers > 0 ? (uniqueTeachers / totalTeachers) * 100 : 0;
+      const staffScore = staffAttendanceRate(totalTeachers, uniqueTeachers);
 
-      // Component 5: Parent Engagement (placeholder)
-      const parentScore = 70;
-
-      const overall = Math.round(
-        attendanceScore * 0.25 +
-          academicScore * 0.25 +
-          feeScore * 0.2 +
-          staffScore * 0.15 +
-          parentScore * 0.15,
-      );
-
-      // Extra metrics
       const studentRows = students.data ?? [];
       const activeStudents = studentRows.filter((s: any) => s.is_active).length;
+      // Parent engagement is not derived here: this page does not load a
+      // tenant-scoped engagement table, and a silent 70 is forbidden.
+      const parentScore: number | null = null;
+
+      const composed = composeWeightedScore([
+        {
+          id: "attendance",
+          label: "Student Attendance",
+          score: attendanceScore,
+          weight: 25,
+          note: attendanceScore === null ? unavailableNote("attendance") : undefined,
+        },
+        {
+          id: "academics",
+          label: "Academic Performance",
+          score: academicScore,
+          weight: 25,
+          note: academicScore === null ? unavailableNote("academics") : undefined,
+        },
+        {
+          id: "fees",
+          label: "Fee Collection",
+          score: feeScore,
+          weight: 20,
+          note: feeScore === null ? unavailableNote("fees") : undefined,
+        },
+        {
+          id: "staff",
+          label: "Staff Attendance",
+          score: staffScore,
+          weight: 15,
+          note: staffScore === null ? unavailableNote("staff") : undefined,
+        },
+        {
+          id: "parents",
+          label: "Parent Engagement",
+          score: parentScore,
+          weight: 15,
+          note:
+            parentScore === null
+              ? "Parent engagement is not measured on this certificate — score unavailable"
+              : undefined,
+        },
+      ]);
+
       const activeTeachers = teacherRows.filter((t: any) => t.is_active).length;
       const lessonsPlanned = (lessons.data ?? []).length;
       const absentRows = attRows.filter((a: any) => a.status === "absent").length;
@@ -161,19 +192,13 @@ function HealthCertificatePage() {
         totalTeachers > 0 ? Math.max(0, totalTeachers - uniqueTeachers) : 0;
 
       return {
-        overall: Math.min(100, Math.max(0, overall)),
-        components: [
-          { label: "Student Attendance", score: Math.round(attendanceScore), weight: 25 },
-          { label: "Academic Performance", score: Math.round(academicScore), weight: 25 },
-          { label: "Fee Collection", score: Math.round(feeScore), weight: 20 },
-          { label: "Staff Attendance", score: Math.round(staffScore), weight: 15 },
-          {
-            label: "Parent Engagement",
-            score: parentScore,
-            weight: 15,
-            note: "Based on portal activity estimates",
-          },
-        ],
+        overall: roundScore(composed.overall),
+        components: composed.components.map((c) => ({
+          label: c.label,
+          score: roundScore(c.score),
+          weight: c.weight,
+          note: c.note,
+        })),
         metrics: {
           totalStudents: activeStudents,
           activeTeachers,
@@ -283,10 +308,21 @@ function HealthCertificatePage() {
 
         {/* Section 2: Overall Gauge */}
         <div className="glass-card p-6 sm:p-10 flex flex-col items-center text-center">
-          <Gauge score={d.overall} />
+          {d.overall === null ? (
+            <div
+              className="flex min-h-[160px] max-w-md items-center justify-center rounded-lg border border-white/10 px-6 py-10 text-sm text-white/60"
+              role="status"
+            >
+              Overall health score unavailable — not enough records this period to compute a score.
+            </div>
+          ) : (
+            <Gauge score={d.overall} />
+          )}
           <h2 className="mt-6 text-xl sm:text-2xl font-bold text-white">Overall Health Score</h2>
           <p className="mt-2 text-sm sm:text-base text-white/60 max-w-xl">
-            {interpretation(d.overall)}
+            {d.overall === null
+              ? "Unavailable — attendance, grades, fees, staff, or parent activity must exist before a score is shown."
+              : interpretation(d.overall)}
           </p>
           <p className="mt-3 text-xs text-white/40">
             {tierMeta.name} plan · {label}
@@ -312,14 +348,23 @@ function HealthCertificatePage() {
                     )}
                   </div>
                   <div className="flex items-baseline gap-3">
-                    <span className="text-lg font-bold text-white">{c.score}%</span>
+                    <span className="text-lg font-bold text-white">
+                      {c.score === null ? "Unavailable" : `${c.score}%`}
+                    </span>
                     <span className="text-xs text-white/40">Weight: {c.weight}%</span>
                   </div>
                 </div>
                 <div className="h-2.5 w-full rounded-full bg-white/10 overflow-hidden">
                   <div
-                    className={`h-full rounded-full transition-all duration-1000 ease-out ${bandTailwind(c.score)}`}
-                    style={{ width: animated ? `${Math.min(100, Math.max(0, c.score))}%` : "0%" }}
+                    className={`h-full rounded-full transition-all duration-1000 ease-out ${
+                      c.score === null ? "bg-white/20" : bandTailwind(c.score)
+                    }`}
+                    style={{
+                      width:
+                        animated && c.score !== null
+                          ? `${Math.min(100, Math.max(0, c.score))}%`
+                          : "0%",
+                    }}
                   />
                 </div>
               </div>

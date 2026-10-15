@@ -7,6 +7,7 @@ import { scholarWorkspaceHome } from "@/lib/runtime/nav-registry";
 import { PLATFORM_NAME } from "@/lib/platform";
 import { INSTALLED_RUNTIME_NAME as SCHOLAR_RUNTIME_NAME } from "@/lib/runtime/installed-runtimes";
 import { provisionDemoEnterprise } from "@/lib/runtime/scholar/demo-provision.functions";
+import { shouldShowPublicDemoEntry } from "@/lib/runtime/scholar/demo-entry";
 
 export const Route = createFileRoute("/auth")({
   ssr: false,
@@ -27,6 +28,8 @@ function AuthPage() {
   const [info, setInfo] = useState<string | null>(null);
   const [demoBusy, setDemoBusy] = useState(false);
   const provisionDemo = useServerFn(provisionDemoEnterprise);
+  const showDemoEntry =
+    typeof window !== "undefined" && shouldShowPublicDemoEntry(window.location.search);
 
   async function handleDemoLogin() {
     setDemoBusy(true);
@@ -267,27 +270,33 @@ function AuthPage() {
         </form>
 
         <div className="mt-6 space-y-2 text-center text-sm">
-          <div className="mb-4 rounded-xl border border-amber-500/40 bg-amber-500/5 p-4 text-left">
-            <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-amber-500">
-              <span>★</span> Enterprise demo
-            </div>
-            <p className="mt-1 text-xs text-muted-foreground">
-              One click provisions an Enterprise-tier school so every locked feature (Expenses,
-              Digital Twin, CoreGrid Intelligence, etc.) unlocks.
-            </p>
-            <button
-              type="button"
-              onClick={handleDemoLogin}
-              disabled={demoBusy || busy}
-              className="mt-3 w-full rounded-md bg-amber-500 px-3 py-2 text-sm font-semibold text-black disabled:opacity-60"
+          {showDemoEntry ? (
+            <div
+              className="mb-4 rounded-xl border border-amber-500/40 bg-amber-500/5 p-4 text-left"
+              data-demo-entry="explicit"
             >
-              {demoBusy ? "Provisioning…" : "Sign in as Enterprise demo"}
-            </button>
-            <p className="mt-3 text-[11px] text-muted-foreground">
-              Demo credentials are generated at provisioning time and are never displayed or stored
-              on this page (V1-008). Provisioning is environment-gated and disabled by default.
-            </p>
-          </div>
+              <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-amber-500">
+                <span>★</span> Isolated demo mode
+              </div>
+              <p className="mt-1 text-xs text-muted-foreground">
+                This control is hidden on the production sign-in page. It is visible only because
+                demo entry was explicitly requested. Provisioning still requires the server
+                environment gate and is disabled unless that gate is on.
+              </p>
+              <button
+                type="button"
+                onClick={handleDemoLogin}
+                disabled={demoBusy || busy}
+                className="mt-3 w-full rounded-md bg-amber-500 px-3 py-2 text-sm font-semibold text-black disabled:opacity-60"
+              >
+                {demoBusy ? "Provisioning…" : "Sign in as Enterprise demo"}
+              </button>
+              <p className="mt-3 text-[11px] text-muted-foreground">
+                Demo credentials are generated at provisioning time and are never displayed or stored
+                on this page (V1-008).
+              </p>
+            </div>
+          ) : null}
           {mode === "signin" && (
             <button
               type="button"
