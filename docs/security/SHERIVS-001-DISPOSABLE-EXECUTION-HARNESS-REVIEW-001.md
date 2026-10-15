@@ -41,6 +41,7 @@ Verified at inspection before this branch was created:
 | Inspection HEAD | `4df714122063e6e9c18d9e91ff7c6d7a3eb476bb` (confirmed) |
 | Working tree at inspection | clean |
 | This mission branch | `cursor/sherivs-001-disposable-exec-harness-d80b` |
+| Harness commit | `f527893c7325f29acbc0832f26543c09a67dccb9` |
 | Proposed SQL | `database/supabase/migrations/20261015000010_sherivs_identity_privilege_freeze.sql.proposed` |
 | Proposed SHA-256 | `62aaad757e3b7ff79cf6fc89aaa3d604cd1fb151feadee6ea03f813361715416` (confirmed; **unchanged**) |
 | Rollback SHA-256 | `6a9363db98dd3c82036b315e67d38559a0db00583b8ea7de541375a334bfb7e4` (confirmed; **unchanged**) |
@@ -230,7 +231,22 @@ npx vitest run \
   tests/unit/security-role-gate.test.ts
 ```
 
-Results are recorded after this command is run in this environment. They are **not** PostgreSQL results. Integration tests were **not** run. No database connection was opened.
+| File | Passed | Failed |
+|---|---|---|
+| `sherivs-disposable-exec.test.ts` | 16 | 0 |
+| `sherivs-disposable-pg.test.ts` | 26 | 0 |
+| `sherivs-sql-comment-strip.test.ts` | 10 | 0 |
+| `sherivs-001-identity-privilege.test.ts` | 54 | 0 |
+| `sherivs-db-target.test.ts` | 23 | 0 |
+| `sherivs-staging-migration-runner.test.ts` | 108 | 0 |
+| `security-role-gate.test.ts` | 27 | 0 |
+| **Total** | **264** | **0** |
+
+`VITEST_EXIT:0`. Summary: `/opt/cursor/artifacts/sherivs-001-harness-offline-summary.log`.
+
+These are **not** PostgreSQL results. Integration tests were **not** run.
+
+Harness CLI inspect in this pod (no connect): exit **0** (pinned SHA-256 values match on disk), `qualified: false`, `authorized: false`, `connected: false`, `executedSql: false`, `code: DISPOSABLE_URL_MISSING`. Sanitized JSON: `/opt/cursor/artifacts/sherivs-001-harness-inspect.sanitized.json`.
 
 ---
 
