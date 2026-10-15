@@ -40,6 +40,7 @@ Verified at inspection on `cursor/sherivs-001-disposable-postgres-verify-d80b` b
 | Historical baseline HEAD | `e7f8b8dd4de9511323b2ca3c0a519cc2b8d3403f` (confirmed) |
 | Working tree at inspection | clean |
 | This mission branch | `cursor/sherivs-001-external-isolated-db-verify-d80b` |
+| Qualifier correction commit | `d0ac023c8bd1f769b9abc63de14f690ef80dfc50` |
 | Proposed SQL | `database/supabase/migrations/20261015000010_sherivs_identity_privilege_freeze.sql.proposed` |
 | Proposed SHA-256 | `62aaad757e3b7ff79cf6fc89aaa3d604cd1fb151feadee6ea03f813361715416` (confirmed; **unchanged**) |
 | Rollback SHA-256 | `6a9363db98dd3c82036b315e67d38559a0db00583b8ea7de541375a334bfb7e4` (**unchanged**) |
@@ -426,9 +427,27 @@ npx vitest run \
   tests/unit/security-role-gate.test.ts
 ```
 
-Results for this mission are recorded after the command is run in this environment. They are **not** PostgreSQL results. Do not treat them as runtime verification.
+| File | Passed | Failed |
+|---|---|---|
+| `sherivs-disposable-pg.test.ts` | 26 | 0 |
+| `sherivs-sql-comment-strip.test.ts` | 10 | 0 |
+| `sherivs-001-identity-privilege.test.ts` | 54 | 0 |
+| `sherivs-db-target.test.ts` | 23 | 0 |
+| `sherivs-staging-migration-runner.test.ts` | 108 | 0 |
+| `security-role-gate.test.ts` | 27 | 0 |
+| **Total** | **248** | **0** |
 
-Qualifier CLI (no connect) is expected to exit **2** in this pod because the candidate URL is not a disposable loopback endpoint and lifecycle attestation is unset.
+`VITEST_EXIT:0`. Log: `/opt/cursor/artifacts/sherivs-001-external-isolated-offline-tests.log`.
+
+These are **not** PostgreSQL results. They do not measure `current_user` under PostgREST.
+
+Qualifier CLI (no connect) in this pod:
+
+```
+node scripts/sherivs-001-qualify-disposable-pg.mjs
+```
+
+Result: `qualified: false`, `code: DISPOSABLE_PRODUCTION_REF`, `connects: false`, `lifecycle: null`, **exit 2**. Candidate was unscoped `DATABASE_URL`. Reasons: missing `SHERIVS_DATABASE_TARGET`, missing `SHERIVS_DISPOSABLE_PG_LIFECYCLE`, production ref in the candidate, staging/production URL variables also present. Sanitized JSON: `/opt/cursor/artifacts/sherivs-001-qualify-cli.sanitized.json`.
 
 ---
 
