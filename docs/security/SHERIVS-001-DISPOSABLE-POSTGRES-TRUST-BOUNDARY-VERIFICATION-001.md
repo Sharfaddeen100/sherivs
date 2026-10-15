@@ -41,6 +41,8 @@ A fail-closed **qualification gate** was added so a future environment cannot tr
 | Working tree at inspection | clean |
 | Uncommitted user work | none |
 | This mission branch | `cursor/sherivs-001-disposable-postgres-verify-d80b` |
+| Report commit | `47d7f5da3aa14101f4600ce91bc8389924a3ccd0` |
+| Qualifier commit | `34ca40f121d9e661e13b4306117223300d5a9e71` |
 | Proposed SQL | `database/supabase/migrations/20261015000010_sherivs_identity_privilege_freeze.sql.proposed` |
 | Proposed SHA-256 | `62aaad757e3b7ff79cf6fc89aaa3d604cd1fb151feadee6ea03f813361715416` (confirmed) |
 | Rollback SHA-256 | `6a9363db98dd3c82036b315e67d38559a0db00583b8ea7de541375a334bfb7e4` |
