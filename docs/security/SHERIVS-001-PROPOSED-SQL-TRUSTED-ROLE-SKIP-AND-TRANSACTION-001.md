@@ -51,7 +51,9 @@ No `git reset`, `git clean`, or discard was performed. Unrelated work was not ov
 | Correction branch | `cursor/sherivs-001-proposed-sql-trusted-role-txn-d80b` |
 | Implementation commit | `7c3010db13b74bea2ac0e9e99b1d8ff491075d72` |
 | Test-fix commit | `e07bdfee47e0e85695447a801e93b4d5c2a4ee94` |
-| Report commit | recorded after this file is committed |
+| Report commit | `ba2c8b9229b1e4c72806b645a14cba19ad449bd5` |
+| Report SHA pin | this follow-up commit |
+| Final HEAD | recorded in the pin commit |
 | Pull request | https://github.com/vibeoraai-bit/coregrid-scholar-migration/pull/41 (draft, stacked on the independent-review branch) |
 
 ---
