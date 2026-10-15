@@ -2275,11 +2275,11 @@ export function observedCatalogFromExpected(expected) {
         type: c.type,
         nullable: c.nullable,
       })),
-      constraints: t.constraints ?? [],
+      constraints: (t.constraints ?? []).map((c) => ({ ...c })),
       rlsEnabled: Boolean(t.rlsEnabled),
       rlsForced: Boolean(t.rlsForced),
-      grants: t.grants ?? [],
-      columnGrants: t.columnGrants ?? [],
+      grants: (t.grants ?? []).map((g) => ({ ...g })),
+      columnGrants: (t.columnGrants ?? []).map((g) => ({ ...g })),
     })),
     policies: (expected.policies ?? []).map((p) => ({
       name: p.name,
@@ -2304,7 +2304,7 @@ export function observedCatalogFromExpected(expected) {
         language: n.language,
       };
     }),
-    functionGrants: expected.functionGrants ?? [],
+    functionGrants: (expected.functionGrants ?? []).map((g) => ({ ...g })),
     triggers: (expected.triggers ?? []).map((t) => ({
       name: t.name,
       table: t.table,
@@ -2312,8 +2312,8 @@ export function observedCatalogFromExpected(expected) {
       events: t.events ?? null,
       function: t.function ?? null,
     })),
-    indexes: expected.indexes ?? [],
-    storageBuckets: expected.storageBuckets ?? [],
+    indexes: (expected.indexes ?? []).map((i) => ({ ...i })),
+    storageBuckets: (expected.storageBuckets ?? []).map((b) => ({ ...b })),
   };
 }
 
