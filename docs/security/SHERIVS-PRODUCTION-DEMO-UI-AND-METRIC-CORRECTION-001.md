@@ -20,8 +20,8 @@ Recorded from local git only.
 | Branch | `cursor/sherivs-production-demo-ui-metric-correction-5537` |
 | Implementation commit | `45def42ecafd53613809046f012352756379ff21` |
 | Test-fix commit | `7404298d5f1f8dd546cd33ec6e27f10448eca1d5` |
+| Documentation commit | `ec29dec` (this report) |
 | Base at branch start | `190955201514edc6932296b001f1f28729703aee` (environment-separation inventory) |
-| Working tree at report authoring | this report uncommitted |
 | PR | https://github.com/vibeoraai-bit/coregrid-scholar-migration/pull/37 |
 
 No `.env`, Vercel, DNS, migration runner, or SQL files were modified.
