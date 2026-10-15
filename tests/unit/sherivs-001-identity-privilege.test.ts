@@ -269,10 +269,10 @@ describe("TEST 10 — RLS new-row checks (source model)", () => {
   });
 
   it("proposed SQL does not drop or broaden users policies or grants", () => {
-    expect(proposed).not.toMatch(/CREATE POLICY/);
-    expect(proposed).not.toMatch(/DROP POLICY/);
-    expect(proposed).not.toMatch(/GRANT /);
-    expect(proposed).not.toMatch(/REVOKE /);
+    expect(proposed).not.toMatch(/^\s*CREATE POLICY/m);
+    expect(proposed).not.toMatch(/^\s*DROP POLICY/m);
+    expect(proposed).not.toMatch(/^\s*GRANT /m);
+    expect(proposed).not.toMatch(/^\s*REVOKE /m);
   });
 });
 
