@@ -52,8 +52,8 @@ No `git reset`, `git clean`, or discard was performed. Unrelated work was not ov
 | Implementation commit | `7c3010db13b74bea2ac0e9e99b1d8ff491075d72` |
 | Test-fix commit | `e07bdfee47e0e85695447a801e93b4d5c2a4ee94` |
 | Report commit | `ba2c8b9229b1e4c72806b645a14cba19ad449bd5` |
-| Report SHA pin | this follow-up commit |
-| Final HEAD | recorded in the pin commit |
+| Report SHA pin | `6720c8fc3a216084b7de0d2bf7cfc26d5eaa41a2` |
+| Final HEAD | named by the follow-up commit that records this pin SHA |
 | Pull request | https://github.com/vibeoraai-bit/coregrid-scholar-migration/pull/41 (draft, stacked on the independent-review branch) |
 
 ---
