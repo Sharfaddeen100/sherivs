@@ -37,6 +37,20 @@ describe("public demo entry — default hidden, explicit opt-in only", () => {
     expect(shouldShowPublicDemoEntry({ [DEMO_ENTRY_SEARCH_PARAM]: "true" })).toBe(true);
     expect(shouldShowPublicDemoEntry({ demoEntry: true })).toBe(true);
   });
+
+  it("does not read NODE_ENV or ALLOW_DEMO_PROVISIONING for UI visibility", () => {
+    const helper = readFileSync(
+      join(ROOT, "frontend/src/lib/runtime/scholar/demo-entry.ts"),
+      "utf8",
+    );
+    const executable = helper
+      .replace(/\/\*[\s\S]*?\*\//g, "")
+      .replace(/\/\/.*$/gm, "");
+    expect(executable).not.toMatch(/process\.env/);
+    expect(executable).not.toMatch(/NODE_ENV/);
+    expect(executable).not.toMatch(/ALLOW_DEMO_PROVISIONING/);
+    expect(executable).not.toMatch(/import\.meta\.env/);
+  });
 });
 
 describe("auth route wiring", () => {

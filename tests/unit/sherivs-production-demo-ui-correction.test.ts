@@ -67,4 +67,15 @@ describe("hard-coded metric placeholders removed from production portal paths", 
     expect(health).toMatch(/\.eq\("school_id", schoolId\)/);
     expect(teacher).toMatch(/\.eq\("school_id", schoolId!\)/);
   });
+
+  it("keeps feature-locked and missing-school query gates (unauthorized/unavailable)", () => {
+    expect(intelligence).toContain("canIntelligence");
+    expect(intelligence).toContain("FeatureLockedCard");
+    expect(intelligence).toContain("enabled: !!schoolId && canIntelligence");
+    expect(health).toContain("canHealth");
+    expect(health).toContain("FeatureLockedCard");
+    expect(health).toContain("enabled: !!schoolId && canHealth");
+    expect(intelligence).toContain('score === null ? "Unavailable"');
+    expect(health).toContain("Overall health score unavailable");
+  });
 });
