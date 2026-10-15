@@ -65,6 +65,84 @@ const rollback = read(PROPOSED_ROLLBACK);
 const canonicalUsers = read(CANONICAL_USERS);
 const helpersDefiner = read(HELPERS_DEFINER);
 
+function plpgsqlBodyOf(sql: string, functionName: string): string {
+  const marker = `CREATE OR REPLACE FUNCTION ${functionName}()`;
+  const start = sql.indexOf(marker);
+  if (start < 0) {
+    throw new Error(`function ${functionName} not found`);
+  }
+  const as = sql.indexOf("AS $$", start);
+  const end = sql.indexOf("$$;", as);
+  if (as < 0 || end < 0) {
+    throw new Error(`function body for ${functionName} not found`);
+  }
+  return sql.slice(as + "AS $$".length, end);
+}
+
+const triggerBody = plpgsqlBodyOf(proposed, "public.forbid_self_privilege_mutation");
+
+/**
+ * Simulated BEFORE UPDATE control flow for the proposed trigger.
+ * This is a static transcription of the plpgsql branches. It does not
+ * prove PostgreSQL enforcement, RLS ordering, or live current_user.
+ */
+type SimulatedRow = {
+  id: string;
+  role: string;
+  school_id: string;
+  is_active: boolean | null;
+};
+
+type SimulatedTriggerResult = { ok: true } | { ok: false; message: string };
+
+function simulateForbidSelfPrivilegeMutation(input: {
+  currentUser: string;
+  authUid: string | null;
+  old: SimulatedRow;
+  next: SimulatedRow;
+}): SimulatedTriggerResult {
+  const privilegeChanged =
+    input.next.role !== input.old.role ||
+    input.next.school_id !== input.old.school_id ||
+    input.next.is_active !== input.old.is_active;
+
+  if (input.next.id !== input.old.id) {
+    return { ok: false, message: "Forbidden: identity key cannot be changed" };
+  }
+  if (input.currentUser === "service_role") {
+    return { ok: true };
+  }
+  if (!privilegeChanged) {
+    return { ok: true };
+  }
+  if (input.authUid === null) {
+    return {
+      ok: false,
+      message: "Forbidden: untrusted execution context cannot modify privileged identity fields",
+    };
+  }
+  if (input.next.id === input.authUid) {
+    return {
+      ok: false,
+      message: "Forbidden: cannot modify privileged identity fields on your own account",
+    };
+  }
+  return { ok: true };
+}
+
+const SELF = {
+  id: "11111111-1111-1111-1111-111111111111",
+  role: "teacher",
+  school_id: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+  is_active: true,
+};
+const OTHER = {
+  id: "22222222-2222-2222-2222-222222222222",
+  role: "teacher",
+  school_id: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+  is_active: true,
+};
+
 describe("TEST 1 — self-role escalation (application)", () => {
   it("rejects a self-service profile patch that includes role", () => {
     expect(() => parseSelfProfilePatch({ role: "admin", full_name: "Ada" })).toThrow(
@@ -226,9 +304,14 @@ describe("TEST 8 — trigger side effects", () => {
     expect(proposed).toContain("NEW.role IS DISTINCT FROM OLD.role");
     expect(proposed).toContain("NEW.school_id IS DISTINCT FROM OLD.school_id");
     expect(proposed).toContain("NEW.is_active IS DISTINCT FROM OLD.is_active");
-    expect(proposed).toContain("NEW.id = auth.uid()");
-    expect(proposed).toContain("auth.uid() IS NULL");
-    expect(proposed).toContain("RAISE EXCEPTION 'Forbidden: cannot modify privileged identity fields on your own account'");
+    expect(proposed).toContain("NEW.id = v_uid");
+    expect(proposed).toContain("current_user = 'service_role'");
+    expect(proposed).toContain(
+      "RAISE EXCEPTION 'Forbidden: cannot modify privileged identity fields on your own account'",
+    );
+    expect(proposed).toContain(
+      "RAISE EXCEPTION 'Forbidden: untrusted execution context cannot modify privileged identity fields'",
+    );
     expect(proposed).toMatch(/SECURITY INVOKER/);
   });
 });
@@ -444,12 +527,189 @@ describe("proposed migration inventory and rollback inverse", () => {
     expect(rollback).toContain("DROP FUNCTION IF EXISTS public.forbid_self_privilege_mutation();");
     expect(rollback).toContain("SELECT school_id FROM public.users WHERE id = auth.uid();");
     expect(rollback).toContain("SELECT EXISTS (SELECT 1 FROM public.users WHERE id = auth.uid() AND role IN ('admin','principal'));");
-    expect(rollback).toContain("BEGIN;");
-    expect(rollback).toContain("COMMIT;");
+    expect(rollback).toMatch(/^\s*BEGIN;/m);
+    expect(rollback).toMatch(/^\s*COMMIT;/m);
+    const begin = rollback.search(/^\s*BEGIN;/m);
+    const commit = rollback.search(/^\s*COMMIT;/m);
+    const window = rollback.slice(begin, commit);
+    expect(window).toContain("DROP TRIGGER IF EXISTS trg_users_forbid_self_privilege_mutation");
+    expect(window).toContain("DROP FUNCTION IF EXISTS public.forbid_self_privilege_mutation()");
+    expect(window).toContain("CREATE OR REPLACE FUNCTION public.get_my_school_id()");
+    expect(window).toContain("CREATE OR REPLACE FUNCTION public.get_my_role()");
+    expect(window).toContain("CREATE OR REPLACE FUNCTION public.is_school_admin()");
   });
 
   it("application call sites import the privilege helper", () => {
     expect(read(PROFILE_FN)).toContain("parseSelfProfilePatch");
     expect(read(HR)).toContain("parseHrStaffPatch");
+  });
+});
+
+describe("B-1 trusted execution context (static source)", () => {
+  it("does not treat auth.uid() IS NULL as an automatic privilege-mutation bypass", () => {
+    expect(triggerBody).not.toMatch(/IF\s+auth\.uid\(\)\s+IS\s+NULL\s+THEN/i);
+    expect(triggerBody).not.toMatch(/auth\.uid\(\)\s+IS\s+NULL[\s\S]{0,80}RETURN NEW/i);
+  });
+
+  it("names current_user = 'service_role' as the only trusted provisioner", () => {
+    expect(triggerBody).toMatch(/IF\s+current_user\s+=\s+'service_role'\s+THEN/);
+    expect(triggerBody).not.toMatch(/session_user/);
+    expect(triggerBody).not.toMatch(/current_setting\s*\(/);
+    expect(triggerBody).not.toMatch(/request\.jwt/);
+    expect(triggerBody).not.toMatch(/auth\.role\s*\(/);
+    expect(triggerBody).not.toMatch(/'postgres'/);
+  });
+
+  it("fails closed when privilege columns change outside the trusted role and without a subject", () => {
+    expect(triggerBody).toContain("v_uid := auth.uid();");
+    expect(triggerBody).toMatch(/IF\s+v_uid\s+IS\s+NULL\s+THEN/);
+    expect(triggerBody).toContain(
+      "RAISE EXCEPTION 'Forbidden: untrusted execution context cannot modify privileged identity fields'",
+    );
+  });
+});
+
+describe("B-1 privilege-mutation matrix (simulated — not PostgreSQL)", () => {
+  it("CASE 1: authenticated profile-field update is unaffected by the freeze", () => {
+    const result = simulateForbidSelfPrivilegeMutation({
+      currentUser: "authenticated",
+      authUid: SELF.id,
+      old: SELF,
+      next: { ...SELF },
+    });
+    expect(result).toEqual({ ok: true });
+  });
+
+  it("CASE 2: authenticated self role change is rejected", () => {
+    const result = simulateForbidSelfPrivilegeMutation({
+      currentUser: "authenticated",
+      authUid: SELF.id,
+      old: SELF,
+      next: { ...SELF, role: "admin" },
+    });
+    expect(result.ok).toBe(false);
+  });
+
+  it("CASE 3: authenticated self school_id change is rejected", () => {
+    const result = simulateForbidSelfPrivilegeMutation({
+      currentUser: "authenticated",
+      authUid: SELF.id,
+      old: SELF,
+      next: { ...SELF, school_id: "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb" },
+    });
+    expect(result.ok).toBe(false);
+  });
+
+  it("CASE 4: authenticated self is_active change is rejected", () => {
+    const result = simulateForbidSelfPrivilegeMutation({
+      currentUser: "authenticated",
+      authUid: SELF.id,
+      old: SELF,
+      next: { ...SELF, is_active: false },
+    });
+    expect(result.ok).toBe(false);
+  });
+
+  it("CASE 5: privilege update with null uid and non-service_role is rejected", () => {
+    const result = simulateForbidSelfPrivilegeMutation({
+      currentUser: "authenticated",
+      authUid: null,
+      old: SELF,
+      next: { ...SELF, role: "admin" },
+    });
+    expect(result).toEqual({
+      ok: false,
+      message: "Forbidden: untrusted execution context cannot modify privileged identity fields",
+    });
+  });
+
+  it("CASE 6: authenticated administrator updating another user is trigger-permitted", () => {
+    const result = simulateForbidSelfPrivilegeMutation({
+      currentUser: "authenticated",
+      authUid: SELF.id,
+      old: OTHER,
+      next: { ...OTHER, role: "admin", is_active: false },
+    });
+    expect(result).toEqual({ ok: true });
+  });
+
+  it("CASE 7: service_role provisioning of privilege columns is trigger-permitted", () => {
+    const withSubject = simulateForbidSelfPrivilegeMutation({
+      currentUser: "service_role",
+      authUid: SELF.id,
+      old: SELF,
+      next: { ...SELF, role: "admin" },
+    });
+    const withoutSubject = simulateForbidSelfPrivilegeMutation({
+      currentUser: "service_role",
+      authUid: null,
+      old: SELF,
+      next: { ...SELF, role: "admin", is_active: true },
+    });
+    expect(withSubject).toEqual({ ok: true });
+    expect(withoutSubject).toEqual({ ok: true });
+  });
+
+  it("CASE 8: postgres DEFINER execution is not treated as the provisioner", () => {
+    const result = simulateForbidSelfPrivilegeMutation({
+      currentUser: "postgres",
+      authUid: null,
+      old: SELF,
+      next: { ...SELF, role: "admin" },
+    });
+    expect(result.ok).toBe(false);
+  });
+
+  it("CASE 9: DEFINER owner is not a trusted provisioner; self-writes still freeze", () => {
+    const selfWrite = simulateForbidSelfPrivilegeMutation({
+      currentUser: "postgres",
+      authUid: SELF.id,
+      old: SELF,
+      next: { ...SELF, is_active: false },
+    });
+    expect(selfWrite.ok).toBe(false);
+    const otherWrite = simulateForbidSelfPrivilegeMutation({
+      currentUser: "postgres",
+      authUid: SELF.id,
+      old: OTHER,
+      next: { ...OTHER, role: "admin" },
+    });
+    expect(otherWrite).toEqual({ ok: true });
+  });
+
+  it("CASE 10: unknown execution context fails closed on privilege columns", () => {
+    const result = simulateForbidSelfPrivilegeMutation({
+      currentUser: "anon",
+      authUid: null,
+      old: SELF,
+      next: { ...SELF, school_id: "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb" },
+    });
+    expect(result.ok).toBe(false);
+  });
+});
+
+describe("B-2 transactional forward proposal (static source)", () => {
+  it("wraps helper replacement and trigger installation in one BEGIN/COMMIT", () => {
+    const begin = proposed.search(/^\s*BEGIN;/m);
+    const commit = proposed.search(/^\s*COMMIT;/m);
+    expect(begin).toBeGreaterThan(0);
+    expect(commit).toBeGreaterThan(begin);
+    const window = proposed.slice(begin, commit);
+    expect(window).toContain("CREATE OR REPLACE FUNCTION public.get_my_school_id()");
+    expect(window).toContain("CREATE OR REPLACE FUNCTION public.get_my_role()");
+    expect(window).toContain("CREATE OR REPLACE FUNCTION public.is_school_admin()");
+    expect(window).toContain("CREATE OR REPLACE FUNCTION public.forbid_self_privilege_mutation()");
+    expect(window).toContain("DROP TRIGGER IF EXISTS trg_users_forbid_self_privilege_mutation ON public.users");
+    expect(window).toContain("CREATE TRIGGER trg_users_forbid_self_privilege_mutation");
+    expect(proposed.slice(commit)).not.toMatch(/CREATE OR REPLACE FUNCTION|CREATE TRIGGER|DROP TRIGGER/);
+  });
+
+  it("contains no non-transactional operations and does not swallow errors", () => {
+    expect(proposed).not.toMatch(/CREATE INDEX CONCURRENTLY/i);
+    expect(proposed).not.toMatch(/REINDEX/i);
+    expect(proposed).not.toMatch(/\bVACUUM\b/i);
+    expect(proposed).not.toMatch(/EXCEPTION WHEN OTHERS/i);
+    expect(proposed).toContain("runner.mjs");
+    expect(proposed).toContain("inner COMMIT");
   });
 });

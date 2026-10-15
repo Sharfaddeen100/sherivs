@@ -7,8 +7,10 @@
 -- Do not execute this file from this mission. Do not db push / db reset /
 -- db restore. A file existing in Git is not proof of live catalog state.
 --
--- Mission: SHERIVS-001-IDENTITY-AND-PRIVILEGE-ESCALATION-HARDENING-001
+-- Mission: SHERIVS-001-PROPOSED-SQL-TRUSTED-ROLE-SKIP-AND-TRANSACTION-001
 -- Version-target classification: ACTIVE-V1 identity / Scholar RLS helpers.
+-- Corrects apply-blocking findings B-1 and B-2 from
+-- docs/security/SHERIVS-001-PROPOSED-SQL-INDEPENDENT-REVIEW-001.md
 --
 -- Rollback (genuine inverse; also proposed, not applied):
 --   database/supabase/rollbacks/20261015000010_sherivs_identity_privilege_freeze.sql.proposed
@@ -31,10 +33,44 @@
 --   • UPDATE WITH CHECK cannot see OLD. A subquery on public.users during
 --     WITH CHECK observes the new row, so "role = get_my_role()" is a
 --     tautology. The trigger compares NEW to OLD.
---   • auth.uid() IS NULL leaves NEW unchanged so service-role / owner
---     provisioning (staff-accounts, inviteTeacher, demo-provision) continues.
 --   • Self-updates of non-privileged columns (full_name, phone, push_token,
 --     digital_twin_opt_out, …) still succeed.
+--
+-- B-1 trusted execution context (replaces auth.uid() IS NULL RETURN NEW):
+--   Privileged-column UPDATE is allowed for the PostgreSQL role
+--   current_user = 'service_role' only. That value is the role after the
+--   authenticator SET ROLE, not a caller-controlled JWT GUC, not
+--   session_user (which stays `authenticator` for both user and service
+--   JWTs), and not `postgres` (SECURITY DEFINER owner would otherwise
+--   inherit a silent bypass).
+--   An absent JWT subject (auth.uid() IS NULL) is NOT proof of trust.
+--   Unidentified, non-service_role privilege-column mutation fails closed.
+--   Identified JWT self-updates of role / school_id / is_active raise.
+--   Identified JWT updates of a different row are left to RLS.
+--
+-- B-2 transactional execution contract:
+--   This file wraps helper replacement and trigger installation in one
+--   explicit BEGIN/COMMIT. Every statement below is transactional
+--   (CREATE OR REPLACE FUNCTION, COMMENT ON, DROP TRIGGER, CREATE TRIGGER).
+--   There is no CREATE INDEX CONCURRENTLY, VACUUM, or other
+--   non-transactional operation.
+--
+--   Honored by: a PostgreSQL client that submits this whole file as one
+--   script and respects BEGIN/COMMIT (psql -f / -1; node-pg client.query
+--   of the full string with no pre-existing transaction). That is the
+--   contract of scripts/db-apply.mjs and scripts/db-apply-one.mjs.
+--
+--   NOT compatible with a tool that already wraps the file in BEGIN/
+--   COMMIT, including scripts/staging/sherivs-restore/runner.mjs. An
+--   inner COMMIT would close that outer transaction before the ledger
+--   INSERT. This file remains *.sql.proposed and is excluded from that
+--   runner. Promoting it to canonical .sql requires either stripping
+--   BEGIN/COMMIT (so the runner wrap is the sole boundary) or changing
+--   the runner so it does not wrap files that already contain COMMIT.
+--   Do not promote without that change.
+--
+--   Failure of any statement aborts the transaction. There is no
+--   EXCEPTION WHEN OTHERS handler. Success is reported only by COMMIT.
 --
 -- Not in this file (out of mission or not confirmed as a self-escalation):
 --   • Neutral cg_org_membership / cg_role_assignment policies already require
@@ -44,7 +80,11 @@
 --     is unchanged (SHERIVS-002).
 --   • Sensitive HR/financial/NIN/biometric columns are unchanged (SHERIVS-003).
 --   • news_reads parent-engagement query is unchanged (separate OPEN item).
+--   • postgres / table-owner DBA repair is not a silent skip. Owner repair
+--     requires SET ROLE service_role (if granted) or DISABLE TRIGGER.
 -- =============================================================================
+
+BEGIN;
 
 -- -----------------------------------------------------------------------------
 -- 1. Active-account gates on Scholar identity helpers
@@ -108,7 +148,7 @@ COMMENT ON FUNCTION public.is_school_admin() IS
   Inactive administrators do not satisfy Scholar admin RLS or RPCs.$comment$;
 
 -- -----------------------------------------------------------------------------
--- 2. Forbid self-mutation of privilege-bearing columns
+-- 2. Forbid untrusted mutation of privilege-bearing columns
 -- -----------------------------------------------------------------------------
 CREATE OR REPLACE FUNCTION public.forbid_self_privilege_mutation()
 RETURNS trigger
@@ -116,21 +156,37 @@ LANGUAGE plpgsql
 SECURITY INVOKER
 SET search_path = public
 AS $$
+DECLARE
+  v_uid uuid;
+  v_privilege_changed boolean;
 BEGIN
-  IF auth.uid() IS NULL THEN
-    RETURN NEW;
-  END IF;
+  v_privilege_changed :=
+       NEW.role IS DISTINCT FROM OLD.role
+    OR NEW.school_id IS DISTINCT FROM OLD.school_id
+    OR NEW.is_active IS DISTINCT FROM OLD.is_active;
 
   IF NEW.id IS DISTINCT FROM OLD.id THEN
     RAISE EXCEPTION 'Forbidden: identity key cannot be changed';
   END IF;
 
-  IF NEW.id = auth.uid() THEN
-    IF NEW.role IS DISTINCT FROM OLD.role
-       OR NEW.school_id IS DISTINCT FROM OLD.school_id
-       OR NEW.is_active IS DISTINCT FROM OLD.is_active THEN
-      RAISE EXCEPTION 'Forbidden: cannot modify privileged identity fields on your own account';
-    END IF;
+  -- Trusted provisioner: PostgreSQL role after authenticator SET ROLE.
+  -- Not auth.uid() IS NULL, not session_user, not a JWT GUC, not postgres.
+  IF current_user = 'service_role' THEN
+    RETURN NEW;
+  END IF;
+
+  IF NOT v_privilege_changed THEN
+    RETURN NEW;
+  END IF;
+
+  v_uid := auth.uid();
+
+  IF v_uid IS NULL THEN
+    RAISE EXCEPTION 'Forbidden: untrusted execution context cannot modify privileged identity fields';
+  END IF;
+
+  IF NEW.id = v_uid THEN
+    RAISE EXCEPTION 'Forbidden: cannot modify privileged identity fields on your own account';
   END IF;
 
   RETURN NEW;
@@ -138,16 +194,21 @@ END;
 $$;
 
 COMMENT ON FUNCTION public.forbid_self_privilege_mutation() IS
-  $comment$SHERIVS-001 BEFORE UPDATE guard. When the caller identity equals the
-  row id, role, school_id, and is_active must equal OLD. Other columns may
-  change. auth.uid() IS NULL is the service-role / owner provisioning path
-  and is left unchanged. Does not SELECT other rows. SECURITY INVOKER.$comment$;
+  $comment$SHERIVS-001 BEFORE UPDATE guard. Privilege-bearing columns role,
+  school_id, and is_active may change only when current_user is service_role
+  (documented supabaseAdmin provisioner) or when an identified JWT caller
+  updates a different row (RLS still applies). Identified self-updates of
+  those columns raise. auth.uid() IS NULL is not a trust predicate: unknown
+  non-service_role context fails closed. Does not SELECT other rows.
+  SECURITY INVOKER. postgres is intentionally not allowlisted.$comment$;
 
 DROP TRIGGER IF EXISTS trg_users_forbid_self_privilege_mutation ON public.users;
 CREATE TRIGGER trg_users_forbid_self_privilege_mutation
   BEFORE UPDATE ON public.users
   FOR EACH ROW
   EXECUTE FUNCTION public.forbid_self_privilege_mutation();
+
+COMMIT;
 
 -- =============================================================================
 -- End of proposed migration. Not applied. Not in the canonical 71-file pin.
