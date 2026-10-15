@@ -7,7 +7,7 @@
 **Date (authoring):** 2026-10-15  
 **Verdict:** **PASS WITH CONDITIONS**
 
-This mission corrects confirmed production-reachable demo UI and misleading hard-coded metrics in source. It does not deploy. It does not claim the live production site has changed.
+This mission corrects confirmed production-reachable demo UI and misleading hard-coded metrics in source. It does not deploy. It does not claim the live production site has changed. It does not infer the deployed value of `ALLOW_DEMO_PROVISIONING`.
 
 ---
 
@@ -18,13 +18,13 @@ Recorded from local git only.
 | Item | Value |
 |---|---|
 | Branch | `cursor/sherivs-production-demo-ui-metric-correction-5537` |
-| Implementation commit | `45def42ecafd53613809046f012352756379ff21` |
-| Test-fix commit | `7404298d5f1f8dd546cd33ec6e27f10448eca1d5` |
-| Documentation commit | `ec29dec` (this report) |
+| Implementation | `45def42ecafd53613809046f012352756379ff21` |
+| Comment hygiene test-fix | `7404298d5f1f8dd546cd33ec6e27f10448eca1d5` |
+| Additional focused tests | `9a526b65d08d2d14137f4e23af95dee6e79169ff` |
 | Base at branch start | `190955201514edc6932296b001f1f28729703aee` (environment-separation inventory) |
 | PR | https://github.com/vibeoraai-bit/coregrid-scholar-migration/pull/37 |
 
-No `.env`, Vercel, DNS, migration runner, or SQL files were modified.
+Working tree immediately before this documentation commit contained only this report. No `.env`, Vercel, DNS, migration runner, or SQL files were modified.
 
 ---
 
@@ -34,17 +34,19 @@ No `.env`, Vercel, DNS, migration runner, or SQL files were modified.
 |---|---|
 | `frontend/src/lib/runtime/scholar/demo-entry.ts` | **Added.** Explicit `?demoEntry=true` opt-in helper. Default hidden. Does not read `NODE_ENV`. |
 | `frontend/src/lib/runtime/scholar/honest-scores.ts` | **Added.** Attendance/fees/parent/staff/academic composition. Empty inputs are `null`, never 100 or 70. |
-| `frontend/src/components/public/platform-home.tsx` | **Added.** Public `/` landing using `/icons/icon-192.png`, `PLATFORM_NAME`, real `/auth` and `/coregrid` links. |
-| `frontend/src/routes/auth.tsx` | Demo CTA rendered only when `shouldShowPublicDemoEntry` is true; labelled isolated demo mode. Sign-in/sign-up/forgot unchanged. |
+| `frontend/src/components/public/platform-home.tsx` | **Added.** Public `/` landing using `/icons/icon-192.png`, existing `PLATFORM_NAME` chrome, real `/auth` and `/coregrid` links. |
+| `frontend/src/routes/auth.tsx` | Demo CTA rendered only when `shouldShowPublicDemoEntry` is true; labelled **Isolated demo mode**. Sign-in/sign-up/forgot unchanged. |
 | `frontend/src/routes/index.tsx` | Unauthenticated no-tenant `/` renders `PublicPlatformHome` instead of `CommandCentre`. Tenant `PublicSchoolSite` and signed-in workspace redirect preserved. Canonical host string unchanged. |
-| `frontend/src/routes/_authenticated/admin/intelligence.tsx` | Uses honest-scores; parent engagement from existing news-read/student counts; empty fees/attendance unavailable. |
-| `frontend/src/routes/_authenticated/admin/health-certificate.tsx` | Same composition; parent engagement unavailable (no new unscoped query). Empty states for missing components. |
+| `frontend/src/routes/_authenticated/admin/intelligence.tsx` | Uses honest-scores; parent engagement from existing news-read/student counts; empty fees/attendance unavailable. Feature lock unchanged. |
+| `frontend/src/routes/_authenticated/admin/health-certificate.tsx` | Same composition; parent engagement unavailable (no new unscoped query). Empty states for missing components. Feature lock unchanged. |
 | `frontend/src/routes/_authenticated/teacher/class-intelligence.tsx` | Risk from available attendance/grades only. No `feeScore = 100`, no empty attendance as 100, no grade default 60. |
-| `tests/unit/demo-entry.test.ts` | **Added.** |
-| `tests/unit/honest-scores.test.ts` | **Added.** |
-| `tests/unit/sherivs-production-demo-ui-correction.test.ts` | **Added.** Structural wiring tests. |
+| `tests/unit/demo-entry.test.ts` | **Added / extended.** Default hidden, explicit opt-in, no env-based UI visibility, auth flows preserved, server gate intact. |
+| `tests/unit/honest-scores.test.ts` | **Added.** Empty attendance, missing fees, missing inputs, populated data. |
+| `tests/unit/sherivs-production-demo-ui-correction.test.ts` | **Added / extended.** Public `/` wiring, metric placeholder removal, `school_id` filters, FeatureLocked gates. |
 
 Unchanged on purpose: `demo-provision.functions.ts` server gate, `.env.example`, `playwright.config.ts`, `frontend/src/lib/tenant.ts`, migration runner, canonical SQL, Vercel/DNS.
+
+No dedicated file named “Sherivs logo” exists in the tree. The existing public icon `public/icons/icon-192.png` is used.
 
 ---
 
@@ -59,7 +61,7 @@ Unchanged on purpose: `demo-provision.functions.ts` server gate, `.env.example`,
 | Server provisioner | Refuses unless `ALLOW_DEMO_PROVISIONING === "true"` | **Unchanged** |
 | Sign-in / sign-up / forgot | Present | Present |
 
-`NODE_ENV` is not used as production identity. The UI opt-in is not an environment-variable change and does not enable provisioning.
+`NODE_ENV` is not used as production identity. The UI opt-in is not an environment-variable change and does not enable provisioning. Service-role import remains after the server gate inside `provisionDemoEnterprise`.
 
 This mission does **not** infer the deployed production value of `ALLOW_DEMO_PROVISIONING`. If that flag is `"true"` in a live process, an operator who also adds `?demoEntry=true` can still call the provisioner. The production-facing default page does not show the button.
 
@@ -74,17 +76,19 @@ This mission does **not** infer the deployed production value of `ALLOW_DEMO_PRO
 
 The Command Centre component file remains in the repository for existing contract tests. It is not mounted on `/`.
 
-No dedicated file named “Sherivs logo” exists in the tree. The supplied public icon `public/icons/icon-192.png` is used. Domain routing (`PLATFORM_HOSTS`, reserved subs, canonical `universalschoolos.com` href) was not changed.
+Domain routing (`PLATFORM_HOSTS`, reserved subs, canonical `universalschoolos.com` href) was not changed.
 
 ### 3.3 Parent and teacher metrics
 
 | Path | Before | After |
 |---|---|---|
-| `/admin/intelligence` | `parentScore = 70`; empty fees → 100% | Parent rate from existing news-read / active-student counts, or unavailable. Empty fees/attendance/staff/grades → unavailable, omitted from the weighted overall. |
-| `/admin/health-certificate` | `parentScore = 70`; empty fees → 100%; empty attendance → 0% (still a number) | Parent score unavailable (no extra unscoped query). Other components use honest-scores. Overall gauge hidden when nothing is measurable. |
+| `/admin/intelligence` | `parentScore = 70`; empty fees → 100% | Parent rate from existing news-read / active-student counts, or unavailable. Empty fees/attendance/staff/grades → unavailable, omitted from the weighted overall. Feature-locked without school or capability. |
+| `/admin/health-certificate` | `parentScore = 70`; empty fees → 100%; empty attendance still produced a numeric overall | Parent score unavailable (no extra unscoped query). Other components use honest-scores. Overall gauge hidden when nothing is measurable. |
 | `/teacher/class-intelligence` | `attScore = srate ?? 100`; `grScore = savg ?? 60`; `feeScore = 100` | Risk only from available attendance and grades. Missing inputs → “Not enough data”. Fees omitted (this page does not load fee rows). |
 
 Authorization: admin pages still require the existing feature flags and `school_id` filters. Teacher queries still filter `school_id` and `teacher_id`. No schema change. No new database tooling.
+
+A repository-wide search of `frontend/` after the change finds no remaining `parentScore = 70`, `feeScore = 100`, `srate ?? 100`, or `savg ?? 60`.
 
 ---
 
@@ -104,16 +108,18 @@ npx vitest run \
   tests/unit/site-marketing.test.ts \
   tests/unit/foundation.test.ts \
   tests/unit/p08-enforcement-surface.test.ts \
-  tests/unit/command-centre-functions-invariants.test.ts
+  tests/unit/command-centre-functions-invariants.test.ts \
+  tests/unit/command-centre-contract-governance.test.ts
 ```
 
-**Result: Test Files 9 passed (9). Tests 97 passed (97).**
+**Result: Test Files 10 passed (10). Tests 109 passed (109).**
 
 Log: `/opt/cursor/artifacts/sherivs-production-demo-ui-metric-correction-vitest.log`
 
 Covered:
 
 - Demo entry default hidden; `?demoEntry=true` shown; loose values (`1`, `TRUE`, `NODE_ENV`) rejected.
+- Demo-entry helper executable code does not read `process.env`, `NODE_ENV`, or `ALLOW_DEMO_PROVISIONING`.
 - `/auth` still contains sign-in, sign-up, forgot-password.
 - Server gate `ALLOW_DEMO_PROVISIONING !== "true"` still throws before service-role import.
 - Empty attendance is not 100%.
@@ -122,8 +128,12 @@ Covered:
 - Valid populated attendance/grades/fees compute real rates.
 - `/` does not import or render `CommandCentre`.
 - `school_id` filters remain on the corrected portal queries.
+- Feature-locked cards and `enabled: !!schoolId && can*` gates remain (unauthorized / unavailable).
+- Authenticated `/command-centre` honest-substrate contract is unchanged.
 
 Vitest did not open a database socket. `foundation.test.ts` ran the local secrets scanner only.
+
+E2E already bans the public “sign in as enterprise demo” button (`tests/e2e/helpers.ts`). Those specs were not run (they require a live backend).
 
 ---
 
