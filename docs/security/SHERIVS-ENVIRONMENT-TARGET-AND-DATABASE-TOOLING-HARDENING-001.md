@@ -88,9 +88,8 @@ These refs were used only as offline validation constants. They were not contact
 Recorded after the evidence-report commit on this branch. See section 6 for implementation commits and the Git block at the end of this file after commit.
 
 Inspection HEAD before this report file: `d50567b0c33d747f2a21834fa8c469b2c5c92c8c`  
-Inspection tree before this report file: `0fd5f05fa192bb9bd62aa1ba0f6deef4959e75ba`
-
-The report commit updates HEAD; the committed copy of this document records that later SHA in the repository log.
+Inspection tree before this report file: `0fd5f05fa192bb9bd62aa1ba0f6deef4959e75ba`  
+Report commit (this document first landing): `773d7fc5f07d90b39efda92d03e67f633eec14ae`
 
 ---
 
