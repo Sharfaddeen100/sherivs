@@ -30,13 +30,20 @@ function createSupabaseFetch(supabaseKey: string): typeof fetch {
 }
 
 function createSupabaseClient() {
-  const resolved = resolvePublicSupabaseConfig({
-    viteUrl: import.meta.env.VITE_SUPABASE_URL,
-    viteKey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
-    serverUrl: typeof window === "undefined" ? process.env.SUPABASE_URL : undefined,
-    serverKey: typeof window === "undefined" ? process.env.SUPABASE_PUBLISHABLE_KEY : undefined,
-    isBrowser: typeof window !== "undefined",
-  });
+  let resolved;
+  try {
+    resolved = resolvePublicSupabaseConfig({
+      viteUrl: import.meta.env.VITE_SUPABASE_URL,
+      viteKey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+      serverUrl: typeof window === "undefined" ? process.env.SUPABASE_URL : undefined,
+      serverKey: typeof window === "undefined" ? process.env.SUPABASE_PUBLISHABLE_KEY : undefined,
+      isBrowser: typeof window !== "undefined",
+    });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.error(`[Supabase] ${message}`);
+    throw new Error(message);
+  }
 
   return createClient<Database>(resolved.url, resolved.publishableKey, {
     global: {
