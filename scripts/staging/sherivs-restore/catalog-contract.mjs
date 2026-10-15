@@ -29,7 +29,9 @@ export const CONTRACT_LIMITATIONS = Object.freeze([
   "non-idempotent CREATE statements must not be replayed against a partial catalog",
   "live catalog observation is required before execute; offline cannot prove emptiness",
   "CHECK comparison is whitespace/case-normalized expression text, not proven semantic equivalence (a > 0 vs 0 < a is a mismatch)",
-  "FOREIGN KEY REFERENCES table without column list is implicit-PK; referenced columns are compared only when both sides are explicit",
+  "FOREIGN KEY REFERENCES table without a column list is implicit-PK; effective referenced columns are the referenced relation PRIMARY KEY, or NOT_VERIFIED if that key cannot be resolved",
+  "observation undefined / omitted keys, SQL NULL (legally absent), empty strings, and present values are distinct states",
+  "function/table/column grant compare is explicit GRANT tuples from pinned SQL versus the observed grant list; inherited, OWNER, PUBLIC-default, and ALTER DEFAULT PRIVILEGES are not modeled as effective privilege equivalence",
   "pg_get_expr / format_type output is normalized (timestamptz, varchar) and may still differ from live catalog spelling",
   "function bodies, owners, tablespace, views, sequences, enums, extensions, publications, default privileges, and column defaults are not in this contract",
 ]);
@@ -37,7 +39,9 @@ export const CONTRACT_LIMITATIONS = Object.freeze([
 export const CATALOG_OBSERVE_LIMITATIONS = Object.freeze([
   "this process does not execute CATALOG_OBSERVE_SQL",
   "pg_get_constraintdef / pg_get_expr text is normalized, not executed",
-  "implicit primary-key REFERENCES cannot be resolved to column names without the referenced table PK",
+  "implicit primary-key REFERENCES require the referenced table PRIMARY KEY in the same catalog/contract; otherwise NOT_VERIFIED",
+  "SQL NULL USING / WITH CHECK is legally absent; a missing observation key is incomplete",
+  "function grant SQL uses COALESCE(proacl, acldefault('f', proowner)); that still is not ALTER DEFAULT PRIVILEGES equivalence",
   "owners, tablespaces, inheritance, identity/generated columns, collations, and default privileges are not represented",
   "unknown or unparseable observed rows must be marked unverified and block already_complete",
 ]);
@@ -186,7 +190,8 @@ export const CATALOG_OBSERVE_SQL = Object.freeze({
   tableGrants: `SELECT n.nspname AS schema,
                     c.relname AS table,
                     CASE WHEN g.grantee = 0 THEN 'public' ELSE r.rolname END AS grantee,
-                    g.privilege AS privilege
+                    g.privilege AS privilege,
+                    g.is_grantable AS grantable
                FROM pg_class c
                JOIN pg_namespace n ON n.oid = c.relnamespace
                CROSS JOIN LATERAL aclexplode(COALESCE(c.relacl, acldefault('r', c.relowner)))
@@ -197,7 +202,8 @@ export const CATALOG_OBSERVE_SQL = Object.freeze({
                     c.relname AS table,
                     a.attname AS column,
                     CASE WHEN g.grantee = 0 THEN 'public' ELSE r.rolname END AS grantee,
-                    g.privilege AS privilege
+                    g.privilege AS privilege,
+                    g.is_grantable AS grantable
                FROM pg_attribute a
                JOIN pg_class c ON c.oid = a.attrelid
                JOIN pg_namespace n ON n.oid = c.relnamespace
@@ -208,10 +214,12 @@ export const CATALOG_OBSERVE_SQL = Object.freeze({
                     p.proname AS name,
                     pg_get_function_identity_arguments(p.oid) AS args,
                     CASE WHEN g.grantee = 0 THEN 'public' ELSE r.rolname END AS grantee,
-                    g.privilege AS privilege
+                    g.privilege AS privilege,
+                    g.is_grantable AS grantable
                FROM pg_proc p
                JOIN pg_namespace n ON n.oid = p.pronamespace
-               CROSS JOIN LATERAL aclexplode(p.proacl) AS g(grantor, grantee, privilege, is_grantable)
+               CROSS JOIN LATERAL aclexplode(COALESCE(p.proacl, acldefault('f', p.proowner)))
+                 AS g(grantor, grantee, privilege, is_grantable)
                LEFT JOIN pg_roles r ON r.oid = g.grantee
               WHERE n.nspname = 'public'`,
   storageBuckets: `SELECT id, name, public, file_size_limit, allowed_mime_types
@@ -237,6 +245,128 @@ export const REQUIRED_OBSERVED_CLASSES = Object.freeze([
   "functionGrants",
   "storageBuckets",
 ]);
+
+/**
+ * Unused observe-SQL → comparator field map. This process does not execute
+ * the SQL. A later authorized mapper must populate every contract field;
+ * omitting a required key is incomplete, SQL NULL is legally absent.
+ */
+export const OBSERVE_SQL_FIELD_MAP = Object.freeze({
+  tables: {
+    sql: ["schema", "name", "rls_enabled", "rls_forced"],
+    contract: ["schema", "name", "rlsEnabled", "rlsForced"],
+  },
+  columns: {
+    sql: ["schema", "table", "name", "type", "nullable"],
+    contract: ["schema", "table", "name", "type", "nullable"],
+  },
+  constraints: {
+    sql: [
+      "schema",
+      "table",
+      "name",
+      "kind",
+      "definition",
+      "columns",
+      "referenced_schema",
+      "referenced_table",
+      "referenced_columns",
+      "on_delete",
+      "on_update",
+      "deferrable",
+      "initially_deferred",
+    ],
+    contract: [
+      "schema",
+      "table",
+      "name",
+      "kind",
+      "spec",
+      "columns",
+      "referencedSchema",
+      "referencedTable",
+      "referencedColumns",
+      "onDelete",
+      "onUpdate",
+      "deferrable",
+      "initiallyDeferred",
+    ],
+  },
+  indexes: {
+    sql: ["schema", "table", "name", "unique", "definition"],
+    contract: ["schema", "table", "name", "unique", "definition"],
+  },
+  functions: {
+    sql: ["schema", "name", "identity_args", "args", "returns", "security", "language", "volatility", "config"],
+    contract: ["schema", "name", "identityArgs", "args", "returns", "security", "language", "volatility", "searchPath"],
+  },
+  triggers: {
+    sql: ["schema", "table", "name", "timing", "events", "function"],
+    contract: ["schema", "table", "name", "timing", "events", "function"],
+  },
+  policies: {
+    sql: ["schema", "table", "name", "permissive", "command", "roles", "using", "with_check"],
+    contract: ["schema", "table", "name", "permissive", "command", "roles", "using", "withCheck"],
+  },
+  tableGrants: {
+    sql: ["schema", "table", "grantee", "privilege", "grantable"],
+    contract: ["schema", "table", "roles", "privileges", "grantable"],
+  },
+  columnGrants: {
+    sql: ["schema", "table", "column", "grantee", "privilege", "grantable"],
+    contract: ["schema", "table", "columns", "roles", "privileges", "grantable"],
+  },
+  functionGrants: {
+    sql: ["schema", "name", "args", "grantee", "privilege", "grantable"],
+    contract: ["schema", "name", "args", "roles", "privileges", "grantable"],
+  },
+  storageBuckets: {
+    sql: ["id", "name", "public", "file_size_limit", "allowed_mime_types"],
+    contract: ["id", "name", "public", "fileSizeLimit", "allowedMimeTypes"],
+  },
+  vendorHistory: {
+    sql: ["version"],
+    contract: ["versions"],
+  },
+});
+
+export const OBSERVATION_STATES = Object.freeze({
+  PRESENT: "present",
+  ABSENT: "absent",
+  MISSING: "missing",
+  UNKNOWN: "unknown",
+});
+
+export function hasOwn(obj, key) {
+  return Boolean(obj) && Object.prototype.hasOwnProperty.call(obj, key);
+}
+
+/**
+ * Distinguish present values, legally absent SQL NULL, omitted keys, and
+ * unknown/empty required scalars. `allowAbsent` is for USING / WITH CHECK.
+ */
+export function observationState(obj, key, options = {}) {
+  const allowAbsent = Boolean(options.allowAbsent);
+  const allowEmpty = Boolean(options.allowEmpty);
+  if (!hasOwn(obj, key)) {
+    return { state: OBSERVATION_STATES.MISSING, value: undefined, key };
+  }
+  const value = obj[key];
+  if (value === undefined) {
+    return { state: OBSERVATION_STATES.MISSING, value: undefined, key };
+  }
+  if (value === null) {
+    return {
+      state: allowAbsent ? OBSERVATION_STATES.ABSENT : OBSERVATION_STATES.MISSING,
+      value: null,
+      key,
+    };
+  }
+  if (typeof value === "string" && value.trim() === "" && !allowEmpty) {
+    return { state: OBSERVATION_STATES.UNKNOWN, value, key };
+  }
+  return { state: OBSERVATION_STATES.PRESENT, value, key };
+}
 
 function fail(code, detail) {
   const err = new Error(`${code}: ${detail}`);
@@ -343,6 +473,79 @@ function tableKeyOf(raw, fallback = "public.unknown") {
     return `${String(raw.schema).toLowerCase()}.${String(raw.name).toLowerCase()}`;
   }
   return String(fallback).toLowerCase();
+}
+
+export function tableRecordKey(table, fallback = "public.unknown") {
+  if (table?.key) return String(table.key).toLowerCase();
+  return tableKeyOf(table, fallback);
+}
+
+export function findTableRecord(tables, schema, name) {
+  const key = `${String(schema ?? "public").toLowerCase()}.${String(name ?? "").toLowerCase()}`;
+  const list = Array.isArray(tables) ? tables : [];
+  return (
+    list.find((t) => tableRecordKey(t, key) === key) ??
+    list.find((t) => String(t?.name ?? "").toLowerCase() === String(name ?? "").toLowerCase() &&
+      String(t?.schema ?? "public").toLowerCase() === String(schema ?? "public").toLowerCase()) ??
+    null
+  );
+}
+
+export function primaryKeyColumnsOf(tables, schema, name) {
+  const table = findTableRecord(tables, schema, name);
+  if (!table) {
+    return { columns: null, unverified: true, reason: "referenced table not present in contract" };
+  }
+  if (!Array.isArray(table.constraints)) {
+    return { columns: null, unverified: true, reason: "referenced table constraints missing from observation" };
+  }
+  const pks = [];
+  for (const raw of table.constraints) {
+    const normalized = normalizeConstraint(raw, tableRecordKey(table));
+    if (normalized.kind !== "PRIMARY KEY") continue;
+    if (normalized.unverified) {
+      return { columns: null, unverified: true, reason: normalized.reason ?? "referenced primary key unparseable" };
+    }
+    pks.push(normalized);
+  }
+  if (pks.length === 0) {
+    return { columns: null, unverified: true, reason: "referenced primary key not in contract" };
+  }
+  if (pks.length > 1) {
+    return { columns: null, unverified: true, reason: "referenced primary key ambiguous" };
+  }
+  return { columns: pks[0].columns, unverified: false, reason: null };
+}
+
+export function resolveForeignKeyReferencedColumns(constraint, tables) {
+  const cons = normalizeConstraint(constraint, constraint?.table);
+  if (cons.unverified || cons.kind !== "FOREIGN KEY") {
+    return {
+      columns: null,
+      unverified: true,
+      mode: cons.referencedColumnsMode ?? null,
+      reason: cons.reason ?? "not a foreign key",
+    };
+  }
+  if (cons.referencedColumnsMode === "explicit") {
+    if (!cons.referencedColumns?.length) {
+      return { columns: null, unverified: true, mode: "explicit", reason: "explicit referenced columns empty" };
+    }
+    return { columns: cons.referencedColumns, unverified: false, mode: "explicit", reason: null };
+  }
+  if (cons.referencedColumnsMode === "implicit-pk") {
+    const pk = primaryKeyColumnsOf(tables, cons.referencedSchema, cons.referencedTable);
+    if (pk.unverified) {
+      return { columns: null, unverified: true, mode: "implicit-pk", reason: pk.reason };
+    }
+    return { columns: pk.columns, unverified: false, mode: "implicit-pk-resolved", reason: null };
+  }
+  return {
+    columns: null,
+    unverified: true,
+    mode: cons.referencedColumnsMode,
+    reason: `unknown referencedColumnsMode ${cons.referencedColumnsMode}`,
+  };
 }
 
 /**
@@ -491,7 +694,7 @@ export function normalizeConstraint(raw, fallbackTable) {
   };
 }
 
-export function constraintsEquivalent(expectedRaw, observedRaw, tableKey) {
+export function constraintsEquivalent(expectedRaw, observedRaw, tableKey, context = {}) {
   const expected = normalizeConstraint(expectedRaw, tableKey);
   const observed = normalizeConstraint(observedRaw, observedRaw?.table ?? tableKey);
   if (expected.unverified || observed.unverified) {
@@ -528,10 +731,20 @@ export function constraintsEquivalent(expectedRaw, observedRaw, tableKey) {
   ) {
     return { match: false, unverified: false, field: "referencedTable", expected, observed };
   }
-  if (expected.referencedColumnsMode === "explicit" && observed.referencedColumnsMode === "explicit") {
-    if (!sameOrderedList(expected.referencedColumns ?? [], observed.referencedColumns ?? [])) {
-      return { match: false, unverified: false, field: "referencedColumns", expected, observed };
-    }
+  const expectedResolved = resolveForeignKeyReferencedColumns(expected, context.expectedTables);
+  const observedResolved = resolveForeignKeyReferencedColumns(observed, context.observedTables);
+  if (expectedResolved.unverified || observedResolved.unverified) {
+    return {
+      match: false,
+      unverified: true,
+      field: "referencedColumns",
+      reason: expectedResolved.reason ?? observedResolved.reason,
+      expected,
+      observed,
+    };
+  }
+  if (!sameOrderedList(expectedResolved.columns ?? [], observedResolved.columns ?? [])) {
+    return { match: false, unverified: false, field: "referencedColumns", expected, observed };
   }
   if (expected.onDelete !== observed.onDelete || expected.onUpdate !== observed.onUpdate) {
     return { match: false, unverified: false, field: "referentialAction", expected, observed };
@@ -539,7 +752,7 @@ export function constraintsEquivalent(expectedRaw, observedRaw, tableKey) {
   if (expected.deferrable !== observed.deferrable || expected.initiallyDeferred !== observed.initiallyDeferred) {
     return { match: false, unverified: false, field: "deferrability", expected, observed };
   }
-  return { match: true, unverified: false, expected, observed };
+  return { match: true, unverified: false, expected, observed, expectedResolved, observedResolved };
 }
 
 const TYPE_ONLY_ARG = /^(integer|int|int4|int2|int8|smallint|bigint|text|uuid|boolean|bool|numeric|decimal|real|double|float8|float4|varchar|character|char|timestamp|timestamptz|date|time|json|jsonb|bytea|name|regclass|anyelement|anyarray|record|void|trigger)\b/i;
@@ -662,7 +875,8 @@ export function normalizeFunction(raw) {
 function functionGrantKey(g) {
   const fn = String(g.function ?? g.name ?? "").toLowerCase();
   const args = g.args ? String(g.args).toLowerCase() : "";
-  return `${fn}${args}::${(g.roles ?? []).map((r) => String(r).toLowerCase()).sort().join(",")}::${(g.privileges ?? []).join(",")}`;
+  const grantable = g.grantable === true || g.is_grantable === true ? "grantable" : "";
+  return `${fn}${args}::${(g.roles ?? []).map((r) => String(r).toLowerCase()).sort().join(",")}::${(g.privileges ?? []).join(",")}::${grantable}`;
 }
 
 function stripPlainComments(sql) {
@@ -1374,14 +1588,19 @@ export function extractExpectedObjects(sqlByFilename = {}) {
     "functionVolatility",
     "functionSearchPath",
     "functionGrants",
+    "functionGrantBidirectional",
     "triggers",
+    "triggerDefinitions",
     "rls",
+    "forceRls",
     "policies",
     "policyPermissiveness",
     "policyExpressions",
+    "policyObservationCompleteness",
     "grants",
     "columnGrants",
     "storageBuckets",
+    "implicitPrimaryKeyForeignKeys",
   ];
 
   return {
@@ -1455,6 +1674,7 @@ export function compareCatalog(expected, catalog) {
   }
 
   const incomplete = [];
+  if (Array.isArray(catalog.shapeIncomplete)) incomplete.push(...catalog.shapeIncomplete);
   requireObserved(expected.tables ?? [], catalog.tables, "tables", incomplete);
   if ((expected.policies ?? []).length && catalog.policies == null) {
     incomplete.push("policies");
@@ -1524,16 +1744,22 @@ export function compareCatalog(expected, catalog) {
             columnMismatches.push({ table: table.key, column: col.name, reason: "missing" });
             continue;
           }
-          if (got.type && normalizeType(got.type) !== col.type) {
+          const typeObs = observationState(got, "type");
+          if (typeObs.state !== OBSERVATION_STATES.PRESENT) {
+            incomplete.push(`columnType:${table.key}.${col.name}`);
+          } else if (normalizeType(typeObs.value) !== col.type) {
             columnMismatches.push({
               table: table.key,
               column: col.name,
               reason: "type",
               expected: col.type,
-              observed: normalizeType(got.type),
+              observed: normalizeType(typeObs.value),
             });
           }
-          if (typeof got.nullable === "boolean" && got.nullable !== col.nullable) {
+          const nullObs = observationState(got, "nullable", { allowEmpty: true });
+          if (nullObs.state !== OBSERVATION_STATES.PRESENT || typeof got.nullable !== "boolean") {
+            incomplete.push(`columnNullable:${table.key}.${col.name}`);
+          } else if (got.nullable !== col.nullable) {
             columnMismatches.push({
               table: table.key,
               column: col.name,
@@ -1554,7 +1780,10 @@ export function compareCatalog(expected, catalog) {
           let unverified = false;
           observed.constraints.forEach((got, idx) => {
             if (matched || used.has(idx)) return;
-            const result = constraintsEquivalent(cons, got, table.key);
+            const result = constraintsEquivalent(cons, got, table.key, {
+              expectedTables: expected.tables,
+              observedTables: catalog.tables,
+            });
             if (result.unverified) unverified = true;
             else if (result.match) {
               matched = true;
@@ -1583,38 +1812,56 @@ export function compareCatalog(expected, catalog) {
       }
     }
     if (table.rlsEnabled || table.rlsForced) {
-      const enabled = observed.rlsEnabled ?? observed.rls?.enabled;
-      const forced = observed.rlsForced ?? observed.rls?.forced;
-      if (enabled == null && observed.rlsEnabled == null && observed.rls == null) {
-        incomplete.push(`rls:${table.key}`);
-      } else {
-        if (table.rlsEnabled && enabled === false) {
-          rlsMismatches.push({ table: table.key, field: "enabled" });
+      const enabledState = hasOwn(observed, "rlsEnabled")
+        ? observationState(observed, "rlsEnabled", { allowEmpty: true })
+        : observationState(observed.rls ?? {}, "enabled", { allowEmpty: true });
+      const forcedState = hasOwn(observed, "rlsForced")
+        ? observationState(observed, "rlsForced", { allowEmpty: true })
+        : observationState(observed.rls ?? {}, "forced", { allowEmpty: true });
+      if (table.rlsEnabled && enabledState.state !== OBSERVATION_STATES.PRESENT) {
+        incomplete.push(`rlsEnabled:${table.key}`);
+      } else if (table.rlsEnabled && enabledState.value === false) {
+        rlsMismatches.push({ table: table.key, field: "enabled" });
+      }
+      if (table.rlsForced && forcedState.state !== OBSERVATION_STATES.PRESENT) {
+        incomplete.push(`rlsForced:${table.key}`);
+      } else if (table.rlsForced && forcedState.value === false) {
+        rlsMismatches.push({ table: table.key, field: "forced" });
+      }
+    }
+    if ((table.grants ?? []).length && !hasOwn(observed, "grants") && observed.grants == null) {
+      incomplete.push(`grants:${table.key}`);
+    } else if (hasOwn(observed, "grants") || (table.grants ?? []).length) {
+      const gotList = observed.grants ?? [];
+      const got = new Set(gotList.map((g) => grantKey({ ...g, table: table.key })));
+      const exp = new Set((table.grants ?? []).map((g) => grantKey({ ...g, table: table.key })));
+      for (const g of table.grants ?? []) {
+        if (!got.has(grantKey({ ...g, table: table.key }))) {
+          grantMismatches.push({ table: table.key, grant: g, reason: "missing" });
         }
-        if (table.rlsForced && forced === false) {
-          rlsMismatches.push({ table: table.key, field: "forced" });
+      }
+      for (const g of gotList) {
+        const key = grantKey({ ...g, table: table.key });
+        if (!exp.has(key)) {
+          grantMismatches.push({ table: table.key, grant: g, reason: "unexpected" });
         }
       }
     }
-    if ((table.grants ?? []).length) {
-      if (!observed.grants) incomplete.push(`grants:${table.key}`);
-      else {
-        const got = new Set((observed.grants ?? []).map(grantKey));
-        for (const g of table.grants) {
-          if (!got.has(grantKey({ ...g, table: table.key }))) {
-            grantMismatches.push({ table: table.key, grant: g });
-          }
+    if ((table.columnGrants ?? []).length && !hasOwn(observed, "columnGrants") && observed.columnGrants == null) {
+      incomplete.push(`columnGrants:${table.key}`);
+    } else if (hasOwn(observed, "columnGrants") || (table.columnGrants ?? []).length) {
+      const gotList = observed.columnGrants ?? [];
+      const got = new Set(gotList.map((g) => grantKey({ ...g, table: table.key })));
+      const exp = new Set((table.columnGrants ?? []).map((g) => grantKey({ ...g, table: table.key })));
+      for (const g of table.columnGrants ?? []) {
+        if (!got.has(grantKey({ ...g, table: table.key }))) {
+          columnGrantMismatches.push({ table: table.key, grant: g, sensitive: true, reason: "missing" });
         }
       }
-    }
-    if ((table.columnGrants ?? []).length) {
-      if (!observed.columnGrants) incomplete.push(`columnGrants:${table.key}`);
-      else {
-        const got = new Set((observed.columnGrants ?? []).map(grantKey));
-        for (const g of table.columnGrants) {
-          if (!got.has(grantKey({ ...g, table: table.key }))) {
-            columnGrantMismatches.push({ table: table.key, grant: g, sensitive: true });
-          }
+      for (const g of gotList) {
+        const key = grantKey({ ...g, table: table.key });
+        if (!exp.has(key)) {
+          columnGrantMismatches.push({ table: table.key, grant: g, sensitive: true, reason: "unexpected" });
         }
       }
     }
@@ -1624,35 +1871,43 @@ export function compareCatalog(expected, catalog) {
   for (const policy of expected.policies ?? []) {
     const got = observedPolicies.get(policy.key);
     if (!got) continue;
-    const hasShape =
-      got.command != null ||
-      got.roles != null ||
-      got.using != null ||
-      got.withCheck != null ||
-      typeof got.permissive === "boolean";
-    if (!hasShape) {
-      incomplete.push(`policyShape:${policy.key}`);
-      continue;
-    }
-    if (got.command && String(got.command).toUpperCase() !== policy.command) {
+    const commandObs = observationState(got, "command");
+    const rolesObs = observationState(got, "roles", { allowEmpty: true });
+    const permissiveObs = observationState(got, "permissive", { allowEmpty: true });
+    const usingObs = observationState(got, "using", { allowAbsent: true });
+    const checkObs = observationState(got, "withCheck", { allowAbsent: true });
+    if (commandObs.state !== OBSERVATION_STATES.PRESENT) {
+      incomplete.push(`policyField:${policy.key}:command`);
+    } else if (String(commandObs.value).toUpperCase() !== policy.command) {
       policyMismatches.push({ key: policy.key, field: "command" });
     }
-    if (got.roles && !sameStringList(got.roles, policy.roles)) {
+    if (rolesObs.state !== OBSERVATION_STATES.PRESENT || !Array.isArray(got.roles)) {
+      incomplete.push(`policyField:${policy.key}:roles`);
+    } else if (!sameStringList(got.roles, policy.roles)) {
       policyMismatches.push({ key: policy.key, field: "roles" });
     }
-    if (got.using != null && normalizeExpr(got.using) !== (policy.using ?? "")) {
+    if (permissiveObs.state !== OBSERVATION_STATES.PRESENT || typeof got.permissive !== "boolean") {
+      incomplete.push(`policyField:${policy.key}:permissive`);
+    } else if (got.permissive !== (policy.permissive !== false)) {
+      policyMismatches.push({ key: policy.key, field: "permissive" });
+    }
+    if (usingObs.state === OBSERVATION_STATES.MISSING || usingObs.state === OBSERVATION_STATES.UNKNOWN) {
+      incomplete.push(`policyField:${policy.key}:using`);
+    } else if (usingObs.state === OBSERVATION_STATES.ABSENT) {
+      if (policy.using != null && String(policy.using).trim() !== "") {
+        policyMismatches.push({ key: policy.key, field: "using" });
+      }
+    } else if (normalizeExpr(usingObs.value) !== normalizeExpr(policy.using ?? "")) {
       policyMismatches.push({ key: policy.key, field: "using" });
     }
-    if (got.withCheck != null && normalizeExpr(got.withCheck) !== (policy.withCheck ?? "")) {
-      policyMismatches.push({ key: policy.key, field: "withCheck" });
-    }
-    const expectedPermissive = policy.permissive !== false;
-    if (typeof got.permissive === "boolean") {
-      if (got.permissive !== expectedPermissive) {
-        policyMismatches.push({ key: policy.key, field: "permissive" });
+    if (checkObs.state === OBSERVATION_STATES.MISSING || checkObs.state === OBSERVATION_STATES.UNKNOWN) {
+      incomplete.push(`policyField:${policy.key}:withCheck`);
+    } else if (checkObs.state === OBSERVATION_STATES.ABSENT) {
+      if (policy.withCheck != null && String(policy.withCheck).trim() !== "") {
+        policyMismatches.push({ key: policy.key, field: "withCheck" });
       }
-    } else if (expectedPermissive === false) {
-      policyMismatches.push({ key: policy.key, field: "permissive" });
+    } else if (normalizeExpr(checkObs.value) !== normalizeExpr(policy.withCheck ?? "")) {
+      policyMismatches.push({ key: policy.key, field: "withCheck" });
     }
   }
 
@@ -1674,17 +1929,35 @@ export function compareCatalog(expected, catalog) {
       functionMismatches.push({ key: exp.key, field: "unverified" });
       continue;
     }
-    if (got.security && got.security !== exp.security) {
+    const returnsObs = hasOwn(gotRaw, "returns")
+      ? observationState(gotRaw, "returns")
+      : hasOwn(gotRaw, "header")
+        ? { state: got.returns ? OBSERVATION_STATES.PRESENT : OBSERVATION_STATES.UNKNOWN, value: got.returns }
+        : { state: OBSERVATION_STATES.MISSING, value: undefined };
+    if (returnsObs.state !== OBSERVATION_STATES.PRESENT) {
+      incomplete.push(`functionReturns:${exp.key}`);
+    } else if (exp.returns && normalizeType(returnsObs.value) !== exp.returns) {
+      functionMismatches.push({
+        key: exp.key,
+        field: "returns",
+        expected: exp.returns,
+        observed: normalizeType(returnsObs.value),
+      });
+    }
+    const securityPresent = hasOwn(gotRaw, "security") || Boolean(gotRaw.header);
+    if (!securityPresent) {
+      incomplete.push(`functionSecurity:${exp.key}`);
+    } else if (got.security && got.security !== exp.security) {
       functionSecurityMismatches.push({
         key: exp.key,
         expected: exp.security,
         observed: got.security,
       });
     }
-    if (exp.returns && got.returns && exp.returns !== got.returns) {
-      functionMismatches.push({ key: exp.key, field: "returns", expected: exp.returns, observed: got.returns });
-    }
-    if (exp.volatility && got.volatility && exp.volatility !== got.volatility) {
+    const volatilityPresent = hasOwn(gotRaw, "volatility") || Boolean(gotRaw.header);
+    if (!volatilityPresent) {
+      incomplete.push(`functionVolatility:${exp.key}`);
+    } else if (exp.volatility && got.volatility && exp.volatility !== got.volatility) {
       functionMismatches.push({
         key: exp.key,
         field: "volatility",
@@ -1700,27 +1973,56 @@ export function compareCatalog(expected, catalog) {
         observed: got.searchPath,
       });
     }
-    if (exp.searchPath && !got.searchPath && gotRaw.config == null && got.searchPath == null) {
+    if (exp.searchPath && !got.searchPath && !hasOwn(gotRaw, "searchPath") && !hasOwn(gotRaw, "search_path") && gotRaw.config == null) {
       incomplete.push(`functionSearchPath:${exp.key}`);
     }
   }
 
   const functionGrantMismatches = [];
-  if ((expected.functionGrants ?? []).length) {
-    if (catalog.functionGrants == null) {
+  const expectedFunctionGrants = (expected.functionGrants ?? []).filter((g) => !g.revoke);
+  if (expectedFunctionGrants.length && catalog.functionGrants == null) {
+    incomplete.push("functionGrants");
+  } else if (catalog.functionGrants != null || expectedFunctionGrants.length) {
+    if (expectedFunctionGrants.length && catalog.functionGrants == null) {
       incomplete.push("functionGrants");
     } else {
-      const got = new Set((catalog.functionGrants ?? []).map(functionGrantKey));
-      for (const g of expected.functionGrants) {
-        if (g.revoke) continue;
+      const observedGrants = catalog.functionGrants ?? [];
+      const got = new Set(observedGrants.map(functionGrantKey));
+      const exp = new Set(expectedFunctionGrants.map(functionGrantKey));
+      for (const g of expectedFunctionGrants) {
         if (!got.has(functionGrantKey(g))) {
-          functionGrantMismatches.push(g);
+          functionGrantMismatches.push({ ...g, reason: "missing" });
+        }
+      }
+      for (const g of observedGrants) {
+        if (!exp.has(functionGrantKey(g))) {
+          functionGrantMismatches.push({ ...g, reason: "unexpected" });
         }
       }
     }
   }
 
   const missingTriggers = (expected.triggers ?? []).filter((t) => !observedTriggers.has(t.key));
+  const triggerMismatches = [];
+  for (const trig of expected.triggers ?? []) {
+    const got = observedTriggers.get(trig.key);
+    if (!got) continue;
+    for (const field of ["timing", "events", "function"]) {
+      const state = observationState(got, field);
+      if (state.state !== OBSERVATION_STATES.PRESENT) {
+        incomplete.push(`triggerField:${trig.key}:${field}`);
+      }
+    }
+    if (trig.timing && got.timing && String(got.timing).toUpperCase() !== String(trig.timing).toUpperCase()) {
+      triggerMismatches.push({ key: trig.key, field: "timing" });
+    }
+    if (trig.events && got.events && normalizeWs(got.events).toUpperCase() !== normalizeWs(trig.events).toUpperCase()) {
+      triggerMismatches.push({ key: trig.key, field: "events" });
+    }
+    if (trig.function && got.function && String(got.function).toLowerCase() !== String(trig.function).toLowerCase()) {
+      triggerMismatches.push({ key: trig.key, field: "function" });
+    }
+  }
   const missingIndexes = (expected.indexes ?? []).filter((i) => {
     if (!catalog.indexes) return false;
     return !observedIndexes.has(i.name);
@@ -1753,6 +2055,7 @@ export function compareCatalog(expected, catalog) {
     functionSecurityMismatches,
     functionGrantMismatches,
     missingTriggers,
+    triggerMismatches,
     missingIndexes,
     missingStorage,
     unverifiedRequired,
@@ -1791,6 +2094,7 @@ export function catalogBlocksCompletion(comparison) {
   }
   if (comparison.functionGrantMismatches?.length) return "CATALOG_FUNCTION_GRANT_MISMATCH";
   if (comparison.missingTriggers?.length) return "CATALOG_TRIGGER_MISSING";
+  if (comparison.triggerMismatches?.length) return "CATALOG_TRIGGER_MISMATCH";
   if (comparison.missingIndexes?.length) return "CATALOG_INDEX_MISSING";
   if (comparison.missingStorage?.length) return "CATALOG_STORAGE_MISMATCH";
   if (
@@ -1809,27 +2113,234 @@ export function observedCatalogFromExpected(expected) {
     tables: (expected.tables ?? []).map((t) => ({
       schema: t.schema,
       name: t.name,
-      columns: t.columns,
-      constraints: t.constraints,
-      rlsEnabled: t.rlsEnabled,
-      rlsForced: t.rlsForced,
-      grants: t.grants,
-      columnGrants: t.columnGrants,
+      columns: (t.columns ?? []).map((c) => ({
+        name: c.name,
+        type: c.type,
+        nullable: c.nullable,
+      })),
+      constraints: t.constraints ?? [],
+      rlsEnabled: Boolean(t.rlsEnabled),
+      rlsForced: Boolean(t.rlsForced),
+      grants: t.grants ?? [],
+      columnGrants: t.columnGrants ?? [],
     })),
     policies: (expected.policies ?? []).map((p) => ({
       name: p.name,
       table: p.table,
       command: p.command,
-      roles: p.roles,
-      using: p.using,
-      withCheck: p.withCheck,
+      roles: p.roles ?? [],
+      using: p.using ?? null,
+      withCheck: p.withCheck ?? null,
       permissive: p.permissive !== false,
     })),
-    functions: expected.functions ?? [],
+    functions: (expected.functions ?? []).map((f) => {
+      const n = normalizeFunction(f);
+      return {
+        schema: n.schema,
+        name: n.name,
+        args: n.args,
+        inputTypes: n.inputTypes,
+        returns: n.returns,
+        security: n.security,
+        volatility: n.volatility,
+        searchPath: n.searchPath,
+        language: n.language,
+      };
+    }),
     functionGrants: expected.functionGrants ?? [],
-    triggers: expected.triggers ?? [],
+    triggers: (expected.triggers ?? []).map((t) => ({
+      name: t.name,
+      table: t.table,
+      timing: t.timing ?? null,
+      events: t.events ?? null,
+      function: t.function ?? null,
+    })),
     indexes: expected.indexes ?? [],
     storageBuckets: expected.storageBuckets ?? [],
+  };
+}
+
+function firstDefined(row, ...keys) {
+  for (const key of keys) {
+    if (hasOwn(row, key)) return row[key];
+  }
+  return undefined;
+}
+
+/**
+ * Offline mapper from CATALOG_OBSERVE_SQL-shaped row bags to the catalog
+ * object compareCatalog consumes. Does not execute SQL. Missing class keys
+ * are incomplete. SQL NULL USING/WITH CHECK remains a present key with
+ * value null (legally absent).
+ */
+export function mapObservedRowsToCatalog(rows) {
+  if (!rows || typeof rows !== "object") {
+    return { status: "NOT_CHECKED", shapeIncomplete: ["catalog"] };
+  }
+  const incomplete = [];
+  const requireClass = (name) => {
+    if (!hasOwn(rows, name)) incomplete.push(name);
+    return hasOwn(rows, name);
+  };
+
+  requireClass("tables");
+  requireClass("columns");
+  requireClass("constraints");
+  requireClass("functions");
+  requireClass("policies");
+  requireClass("functionGrants");
+  requireClass("triggers");
+  requireClass("indexes");
+  requireClass("tableGrants");
+  requireClass("columnGrants");
+
+  const columnRows = rows.columns ?? [];
+  const constraintRows = rows.constraints ?? [];
+  const grantRows = rows.tableGrants ?? [];
+  const columnGrantRows = rows.columnGrants ?? [];
+
+  const tables = (rows.tables ?? []).map((t) => {
+    const schema = String(firstDefined(t, "schema", "nspname") ?? "public").toLowerCase();
+    const name = String(firstDefined(t, "name", "relname") ?? "").toLowerCase();
+    const key = `${schema}.${name}`;
+    const tableColumns = columnRows.filter(
+      (c) =>
+        String(firstDefined(c, "table", "relname") ?? "").toLowerCase() === name &&
+        String(firstDefined(c, "schema") ?? schema).toLowerCase() === schema,
+    );
+    const tableConstraints = constraintRows
+      .filter(
+        (c) =>
+          String(firstDefined(c, "table", "relname") ?? "").toLowerCase() === name &&
+          String(firstDefined(c, "schema") ?? schema).toLowerCase() === schema,
+      )
+      .map((c) => {
+        const kind = firstDefined(c, "kind", "contype");
+        const referencedColumns = firstDefined(c, "referenced_columns", "referencedColumns");
+        const hasRefCols = hasOwn(c, "referenced_columns") || hasOwn(c, "referencedColumns");
+        return {
+          name: firstDefined(c, "name", "conname") ?? null,
+          kind,
+          spec: firstDefined(c, "definition", "spec") ?? "",
+          columns: firstDefined(c, "columns") ?? null,
+          table: key,
+          referencedSchema: firstDefined(c, "referenced_schema", "referencedSchema") ?? null,
+          referencedTable: firstDefined(c, "referenced_table", "referencedTable") ?? null,
+          referencedColumns: hasRefCols ? referencedColumns ?? [] : undefined,
+          referencedColumnsMode:
+            String(kind ?? "").toUpperCase() === "FOREIGN KEY"
+              ? hasRefCols && Array.isArray(referencedColumns) && referencedColumns.length
+                ? "explicit"
+                : hasRefCols
+                  ? "explicit"
+                  : "implicit-pk"
+              : undefined,
+          onDelete: firstDefined(c, "on_delete", "onDelete") ?? null,
+          onUpdate: firstDefined(c, "on_update", "onUpdate") ?? null,
+          deferrable: firstDefined(c, "deferrable") ?? null,
+          initiallyDeferred: firstDefined(c, "initially_deferred", "initiallyDeferred") ?? null,
+        };
+      });
+    const grants = grantRows
+      .filter(
+        (g) =>
+          String(firstDefined(g, "table") ?? "").toLowerCase() === name &&
+          String(firstDefined(g, "schema") ?? schema).toLowerCase() === schema,
+      )
+      .map((g) => ({
+        table: key,
+        roles: [String(firstDefined(g, "grantee", "roles") ?? "public").toLowerCase()],
+        privileges: [String(firstDefined(g, "privilege", "privileges") ?? "").toUpperCase()],
+        columns: [],
+        grantable: Boolean(g.grantable),
+      }));
+    const mappedColumnGrants = columnGrantRows
+      .filter(
+        (g) =>
+          String(firstDefined(g, "table") ?? "").toLowerCase() === name &&
+          String(firstDefined(g, "schema") ?? schema).toLowerCase() === schema,
+      )
+      .map((g) => ({
+        table: key,
+        roles: [String(firstDefined(g, "grantee") ?? "public").toLowerCase()],
+        privileges: [String(firstDefined(g, "privilege") ?? "").toUpperCase()],
+        columns: [String(firstDefined(g, "column") ?? "").toLowerCase()],
+        grantable: Boolean(g.grantable),
+      }));
+    return {
+      schema,
+      name,
+      key,
+      rlsEnabled: firstDefined(t, "rls_enabled", "rlsEnabled") ?? null,
+      rlsForced: firstDefined(t, "rls_forced", "rlsForced") ?? null,
+      columns: tableColumns.map((c) => ({
+        name: String(firstDefined(c, "name") ?? "").toLowerCase(),
+        type: firstDefined(c, "type"),
+        nullable: firstDefined(c, "nullable"),
+      })),
+      constraints: tableConstraints,
+      grants,
+      columnGrants: mappedColumnGrants,
+    };
+  });
+
+  const policies = (rows.policies ?? []).map((p) => ({
+    name: firstDefined(p, "name", "polname"),
+    table: `${String(firstDefined(p, "schema") ?? "public").toLowerCase()}.${String(firstDefined(p, "table") ?? "").toLowerCase()}`,
+    command: firstDefined(p, "command"),
+    roles: firstDefined(p, "roles"),
+    permissive: firstDefined(p, "permissive"),
+    using: hasOwn(p, "using") ? p.using : hasOwn(p, "polqual") ? p.polqual : undefined,
+    withCheck: hasOwn(p, "with_check")
+      ? p.with_check
+      : hasOwn(p, "withCheck")
+        ? p.withCheck
+        : undefined,
+  }));
+
+  const functions = (rows.functions ?? []).map((f) => ({
+    schema: firstDefined(f, "schema") ?? "public",
+    name: firstDefined(f, "name"),
+    args: firstDefined(f, "identity_args", "identityArgs", "args"),
+    identityArgs: firstDefined(f, "identity_args", "identityArgs"),
+    returns: firstDefined(f, "returns"),
+    security: firstDefined(f, "security"),
+    language: firstDefined(f, "language"),
+    volatility: firstDefined(f, "volatility"),
+    config: firstDefined(f, "config"),
+    searchPath: firstDefined(f, "searchPath", "search_path"),
+  }));
+
+  const functionGrants = (rows.functionGrants ?? []).map((g) => ({
+    function: `${String(firstDefined(g, "schema") ?? "public").toLowerCase()}.${String(firstDefined(g, "name") ?? "").toLowerCase()}`,
+    name: firstDefined(g, "name"),
+    schema: firstDefined(g, "schema") ?? "public",
+    args: firstDefined(g, "args") ? `(${String(firstDefined(g, "args"))})` : "",
+    roles: [String(firstDefined(g, "grantee") ?? "public").toLowerCase()],
+    privileges: [String(firstDefined(g, "privilege") ?? "EXECUTE").toUpperCase()],
+    grantable: Boolean(g.grantable),
+  }));
+
+  const triggers = (rows.triggers ?? []).map((t) => ({
+    name: firstDefined(t, "name"),
+    table: `${String(firstDefined(t, "schema") ?? "public").toLowerCase()}.${String(firstDefined(t, "table") ?? "").toLowerCase()}`,
+    timing: firstDefined(t, "timing"),
+    events: firstDefined(t, "events"),
+    function: firstDefined(t, "function"),
+  }));
+
+  return {
+    status: "observed",
+    tables,
+    policies,
+    functions,
+    functionGrants,
+    triggers,
+    indexes: rows.indexes ?? [],
+    storageBuckets: rows.storageBuckets ?? [],
+    vendorHistory: rows.vendorHistory ?? [],
+    shapeIncomplete: incomplete,
+    mappedFromObservePlan: true,
   };
 }
 

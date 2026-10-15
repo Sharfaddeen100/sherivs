@@ -108,12 +108,16 @@ The private ledger is **not** sole completion authority. Execute reconciles:
    storage metadata where parseable)
 
 Missing policies, incorrect policy command / role / permissive mode,
-column/constraint/grant mismatches (constraint identity, not kind-only),
-same-name different-signature functions, function-grant mismatches, missing
-required functions or triggers, unexpected objects, and required objects
-that cannot be derived statically (NOT VERIFIED) all block
-`already_complete`. A contract match is **not** live schema equivalence and
-**not** application-security proof.
+omitted observation fields (column type, function returns, USING/WITH CHECK
+keys, RLS bits), column/constraint/grant mismatches (constraint identity,
+not kind-only), implicit-PK foreign keys that cannot resolve the referenced
+PRIMARY KEY, same-name different-signature functions, missing or unexpected
+function grants, missing required functions or triggers, unexpected objects,
+and required objects that cannot be derived statically (NOT VERIFIED) all
+block `already_complete`. A contract match is **not** live schema equivalence
+and **not** application-security proof. Implicit `REFERENCES table` is
+resolved against the referenced relation's PRIMARY KEY or fails closed. SQL
+NULL USING/WITH CHECK is legally absent; an omitted observation key is not.
 
 Partial failure default recovery: recreate staging. No automatic retry.
 

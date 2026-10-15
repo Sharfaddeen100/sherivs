@@ -61,11 +61,17 @@ import {
 import { reconcileRestoreState } from "../../scripts/staging/sherivs-restore/reconcile.mjs";
 import {
   CATALOG_OBSERVE_SQL,
+  OBSERVE_SQL_FIELD_MAP,
   catalogBlocksCompletion,
   compareCatalog,
+  constraintsEquivalent,
   extractExpectedObjects,
   functionIdentityKey,
+  mapObservedRowsToCatalog,
+  normalizeConstraint,
   observedCatalogFromExpected,
+  observationState,
+  resolveForeignKeyReferencedColumns,
 } from "../../scripts/staging/sherivs-restore/catalog-contract.mjs";
 import { catalogNotAssumedFromPriorReport, runOfflinePreflight } from "../../scripts/staging/sherivs-restore/preflight.mjs";
 import {
@@ -1823,6 +1829,14 @@ CREATE POLICY people_self ON public.people AS RESTRICTIVE
     expect(CATALOG_OBSERVE_SQL.policies).toMatch(/polpermissive/);
     expect(CATALOG_OBSERVE_SQL.policies).toMatch(/polroles/);
     expect(CATALOG_OBSERVE_SQL.functionGrants).toMatch(/proacl/);
+    expect(CATALOG_OBSERVE_SQL.functionGrants).toMatch(/acldefault\('f'/);
+    expect(CATALOG_OBSERVE_SQL.functionGrants).toMatch(/grantable/);
+    expect(OBSERVE_SQL_FIELD_MAP.policies.sql).toEqual(
+      expect.arrayContaining(["permissive", "command", "roles", "using", "with_check"]),
+    );
+    expect(OBSERVE_SQL_FIELD_MAP.constraints.sql).toEqual(
+      expect.arrayContaining(["referenced_columns", "columns", "kind"]),
+    );
     expect(CATALOG_OBSERVE_SQL.columnGrants).toMatch(/attacl/);
     expect(CATALOG_OBSERVE_SQL.tableGrants).toMatch(/relacl/);
     expect(CATALOG_OBSERVE_SQL.indexes).toMatch(/pg_index/);
@@ -1976,5 +1990,360 @@ CREATE POLICY people_self ON public.people AS RESTRICTIVE
       }),
     ).rejects.toMatchObject({ message: expect.stringMatching(/original-sql-ledger-error/) });
     expect(failing.closed).toEqual(failing.opened.map((o) => o.id));
+  });
+
+  it("implicit-PK matching explicit referenced primary key can complete", () => {
+    const sql = `
+CREATE TABLE public.people (id uuid PRIMARY KEY, ssn text UNIQUE);
+CREATE TABLE public.orders (
+  id uuid PRIMARY KEY,
+  user_id uuid NOT NULL REFERENCES public.people
+);
+`.trim();
+    const manifest = {
+      manifestId: "review-implicit-match",
+      sourceCommit: PINNED_SOURCE_COMMIT,
+      sourceTree: PINNED_SOURCE_TREE,
+      count: 1,
+      files: [{ seq: 1, filename: "20260101000000_implicit.sql", sha256: digest(sql) }],
+      sqlByFilename: { "20260101000000_implicit.sql": sql },
+    };
+    const expected = extractExpectedObjects(manifest.sqlByFilename);
+    const fk = expected.tables.find((t: { name: string }) => t.name === "orders").constraints.find(
+      (c: { kind: string }) => c.kind === "FOREIGN KEY",
+    );
+    expect(fk.referencedColumnsMode).toBe("implicit-pk");
+    const catalog = observedCatalogFromExpected(expected);
+    catalog.tables.find((t: { name: string }) => t.name === "orders").constraints = catalog.tables
+      .find((t: { name: string }) => t.name === "orders")
+      .constraints.map((c: { kind: string }) =>
+        c.kind === "FOREIGN KEY"
+          ? {
+              kind: "FOREIGN KEY",
+              table: "public.orders",
+              columns: ["user_id"],
+              referencedSchema: "public",
+              referencedTable: "people",
+              referencedColumns: ["id"],
+              referencedColumnsMode: "explicit",
+              onDelete: "NO ACTION",
+              onUpdate: "NO ACTION",
+              deferrable: false,
+              initiallyDeferred: false,
+            }
+          : c,
+      );
+    const decision = reconcileRestoreState({
+      manifest,
+      ledgerRows: completeLedger(manifest),
+      sqlByFilename: manifest.sqlByFilename,
+      expected,
+      vendorHistory: { status: "available", versions: ["20260101000000"] },
+      catalog,
+    });
+    expect(decision.action).toBe("already_complete");
+    expect(decision.schemaEquivalence).toBe(false);
+  });
+
+  it("implicit-PK versus observed explicit wrong key refuses already_complete", () => {
+    const sql = `
+CREATE TABLE public.people (id uuid PRIMARY KEY, ssn text UNIQUE);
+CREATE TABLE public.orders (
+  id uuid PRIMARY KEY,
+  user_id uuid NOT NULL REFERENCES public.people
+);
+`.trim();
+    const manifest = {
+      manifestId: "review-implicit-wrong",
+      sourceCommit: PINNED_SOURCE_COMMIT,
+      sourceTree: PINNED_SOURCE_TREE,
+      count: 1,
+      files: [{ seq: 1, filename: "20260101000000_implicit.sql", sha256: digest(sql) }],
+      sqlByFilename: { "20260101000000_implicit.sql": sql },
+    };
+    const expected = extractExpectedObjects(manifest.sqlByFilename);
+    const catalog = observedCatalogFromExpected(expected);
+    catalog.tables.find((t: { name: string }) => t.name === "orders").constraints = catalog.tables
+      .find((t: { name: string }) => t.name === "orders")
+      .constraints.map((c: { kind: string }) =>
+        c.kind === "FOREIGN KEY"
+          ? {
+              kind: "FOREIGN KEY",
+              table: "public.orders",
+              columns: ["user_id"],
+              referencedSchema: "public",
+              referencedTable: "people",
+              referencedColumns: ["ssn"],
+              referencedColumnsMode: "explicit",
+              onDelete: "NO ACTION",
+              onUpdate: "NO ACTION",
+              deferrable: false,
+              initiallyDeferred: false,
+            }
+          : c,
+      );
+    const decision = reconcileRestoreState({
+      manifest,
+      ledgerRows: completeLedger(manifest),
+      sqlByFilename: manifest.sqlByFilename,
+      expected,
+      vendorHistory: { status: "available", versions: ["20260101000000"] },
+      catalog,
+    });
+    expect(decision.ok).toBe(false);
+    expect(decision.reason).toBe("CATALOG_CONSTRAINT_MISMATCH");
+  });
+
+  it("missing referenced primary-key information fails closed as NOT_VERIFIED", () => {
+    const sql = `
+CREATE TABLE public.orders (
+  id uuid PRIMARY KEY,
+  user_id uuid NOT NULL REFERENCES public.people
+);
+`.trim();
+    const manifest = {
+      manifestId: "review-implicit-missing-pk",
+      sourceCommit: PINNED_SOURCE_COMMIT,
+      sourceTree: PINNED_SOURCE_TREE,
+      count: 1,
+      files: [{ seq: 1, filename: "20260101000000_implicit.sql", sha256: digest(sql) }],
+      sqlByFilename: { "20260101000000_implicit.sql": sql },
+    };
+    const expected = extractExpectedObjects(manifest.sqlByFilename);
+    expect(
+      resolveForeignKeyReferencedColumns(
+        expected.tables[0].constraints.find((c: { kind: string }) => c.kind === "FOREIGN KEY"),
+        expected.tables,
+      ).unverified,
+    ).toBe(true);
+    const catalog = observedCatalogFromExpected(expected);
+    const decision = reconcileRestoreState({
+      manifest,
+      ledgerRows: completeLedger(manifest),
+      sqlByFilename: manifest.sqlByFilename,
+      expected,
+      vendorHistory: { status: "available", versions: ["20260101000000"] },
+      catalog,
+    });
+    expect(decision.ok).toBe(false);
+    expect(decision.reason).toBe("CATALOG_CONSTRAINT_UNVERIFIED");
+  });
+
+  it("composite implicit-PK order is compared against the referenced primary key", () => {
+    const sql = `
+CREATE TABLE public.people (a int, b int, PRIMARY KEY (a, b));
+CREATE TABLE public.orders (
+  a int,
+  b int,
+  FOREIGN KEY (a, b) REFERENCES public.people
+);
+`.trim();
+    const expected = extractExpectedObjects({ "20260101000000_composite.sql": sql });
+    const fk = expected.tables.find((t: { name: string }) => t.name === "orders").constraints.find(
+      (c: { kind: string }) => c.kind === "FOREIGN KEY",
+    );
+    const match = constraintsEquivalent(
+      fk,
+      {
+        kind: "FOREIGN KEY",
+        table: "public.orders",
+        columns: ["a", "b"],
+        referencedSchema: "public",
+        referencedTable: "people",
+        referencedColumns: ["a", "b"],
+        referencedColumnsMode: "explicit",
+        onDelete: "NO ACTION",
+        onUpdate: "NO ACTION",
+      },
+      "public.orders",
+      { expectedTables: expected.tables, observedTables: expected.tables },
+    );
+    expect(match.match).toBe(true);
+    const swapped = constraintsEquivalent(
+      fk,
+      {
+        kind: "FOREIGN KEY",
+        table: "public.orders",
+        columns: ["a", "b"],
+        referencedSchema: "public",
+        referencedTable: "people",
+        referencedColumns: ["b", "a"],
+        referencedColumnsMode: "explicit",
+        onDelete: "NO ACTION",
+        onUpdate: "NO ACTION",
+      },
+      "public.orders",
+      { expectedTables: expected.tables, observedTables: expected.tables },
+    );
+    expect(swapped.match).toBe(false);
+    expect(swapped.unverified).toBe(false);
+    expect(swapped.field).toBe("referencedColumns");
+  });
+
+  it("implicit-PK referenced schema or relation mismatch refuses already_complete", () => {
+    const sql = `
+CREATE TABLE public.people (id uuid PRIMARY KEY);
+CREATE TABLE other.people (id uuid PRIMARY KEY);
+CREATE TABLE public.orders (
+  id uuid PRIMARY KEY,
+  user_id uuid NOT NULL REFERENCES public.people
+);
+`.trim();
+    const manifest = {
+      manifestId: "review-implicit-schema",
+      sourceCommit: PINNED_SOURCE_COMMIT,
+      sourceTree: PINNED_SOURCE_TREE,
+      count: 1,
+      files: [{ seq: 1, filename: "20260101000000_implicit.sql", sha256: digest(sql) }],
+      sqlByFilename: { "20260101000000_implicit.sql": sql },
+    };
+    const expected = extractExpectedObjects(manifest.sqlByFilename);
+    const catalog = observedCatalogFromExpected(expected);
+    catalog.tables.find((t: { name: string }) => t.name === "orders").constraints = catalog.tables
+      .find((t: { name: string }) => t.name === "orders")
+      .constraints.map((c: { kind: string }) =>
+        c.kind === "FOREIGN KEY"
+          ? { ...c, referencedSchema: "other", referencedTable: "people", spec: "(user_id) REFERENCES other.people (id)" }
+          : c,
+      );
+    const decision = reconcileRestoreState({
+      manifest,
+      ledgerRows: completeLedger(manifest),
+      sqlByFilename: manifest.sqlByFilename,
+      expected,
+      vendorHistory: { status: "available", versions: ["20260101000000"] },
+      catalog,
+    });
+    expect(decision.ok).toBe(false);
+    expect(decision.reason).toBe("CATALOG_CONSTRAINT_MISMATCH");
+  });
+
+  it("unknown foreign-key representation fails closed", () => {
+    const unknown = normalizeConstraint(
+      { kind: "FOREIGN KEY", spec: "REFERENCES", table: "public.orders" },
+      "public.orders",
+    );
+    expect(unknown.unverified).toBe(true);
+    const result = constraintsEquivalent(
+      { kind: "FOREIGN KEY", spec: "(user_id) REFERENCES people", table: "public.orders" },
+      { kind: "FOREIGN KEY", spec: "not-a-constraint", table: "public.orders" },
+      "public.orders",
+      { expectedTables: [], observedTables: [] },
+    );
+    expect(result.match).toBe(false);
+    expect(result.unverified).toBe(true);
+  });
+
+  it("omitted required observation fields cannot produce already_complete", () => {
+    const manifest = identityManifest();
+    const expected = extractExpectedObjects(manifest.sqlByFilename);
+
+    const omitType = observedCatalogFromExpected(expected);
+    omitType.tables.find((t: { name: string }) => t.name === "people").columns = omitType.tables
+      .find((t: { name: string }) => t.name === "people")
+      .columns.map((c: { name: string }) => (c.name === "id" ? { name: "id", nullable: false } : c));
+    expect(completeDecision(manifest, omitType).decision.reason).toBe("CATALOG_SHAPE_INCOMPLETE");
+
+    const omitReturns = observedCatalogFromExpected(expected);
+    omitReturns.functions = omitReturns.functions.map((f: { name: string; inputTypes?: string[] }) => {
+      if (functionIdentityKey(f) !== "public.touch_people(integer)") return f;
+      const { returns: _returns, ...rest } = f as { returns?: string };
+      return rest;
+    });
+    expect(completeDecision(manifest, omitReturns).decision.reason).toBe("CATALOG_SHAPE_INCOMPLETE");
+
+    const omitUsing = observedCatalogFromExpected(expected);
+    omitUsing.policies = omitUsing.policies.map((p: Record<string, unknown>) => {
+      const { using: _using, ...rest } = p;
+      return rest;
+    });
+    expect(completeDecision(manifest, omitUsing).decision.reason).toBe("CATALOG_SHAPE_INCOMPLETE");
+
+    const omitCommand = observedCatalogFromExpected(expected);
+    omitCommand.policies = omitCommand.policies.map((p: Record<string, unknown>) => {
+      const { command: _command, ...rest } = p;
+      return rest;
+    });
+    expect(completeDecision(manifest, omitCommand).decision.reason).toBe("CATALOG_SHAPE_INCOMPLETE");
+
+    const explicitNullUsing = observedCatalogFromExpected(expected);
+    explicitNullUsing.policies = explicitNullUsing.policies.map((p: Record<string, unknown>) => ({
+      ...p,
+      using: null,
+    }));
+    expect(completeDecision(manifest, explicitNullUsing).decision.reason).toBe("CATALOG_POLICY_MISMATCH");
+  });
+
+  it("unexpected function grants and grant options refuse already_complete", () => {
+    const manifest = identityManifest();
+    const expected = extractExpectedObjects(manifest.sqlByFilename);
+    const extra = observedCatalogFromExpected(expected);
+    extra.functionGrants = [
+      ...extra.functionGrants,
+      { function: "public.touch_people", args: "(integer)", roles: ["anon"], privileges: ["EXECUTE"] },
+    ];
+    expect(completeDecision(manifest, extra).decision.reason).toBe("CATALOG_FUNCTION_GRANT_MISMATCH");
+
+    const grantable = observedCatalogFromExpected(expected);
+    grantable.functionGrants = grantable.functionGrants.map((g: Record<string, unknown>) => ({
+      ...g,
+      grantable: true,
+    }));
+    expect(completeDecision(manifest, grantable).decision.reason).toBe("CATALOG_FUNCTION_GRANT_MISMATCH");
+  });
+
+  it("observationState distinguishes omitted, absent, empty, and present values", () => {
+    expect(observationState({}, "using", { allowAbsent: true }).state).toBe("missing");
+    expect(observationState({ using: null }, "using", { allowAbsent: true }).state).toBe("absent");
+    expect(observationState({ using: "" }, "using", { allowAbsent: true }).state).toBe("unknown");
+    expect(observationState({ using: "id = auth.uid()" }, "using", { allowAbsent: true }).state).toBe("present");
+    expect(observationState({ type: null }, "type").state).toBe("missing");
+  });
+
+  it("mapObservedRowsToCatalog marks incomplete observe bags and preserves SQL NULL expressions", () => {
+    const incomplete = mapObservedRowsToCatalog({ tables: [] });
+    expect(incomplete.shapeIncomplete).toEqual(
+      expect.arrayContaining(["columns", "constraints", "functions", "policies", "functionGrants"]),
+    );
+    const complete = mapObservedRowsToCatalog({
+      tables: [{ schema: "public", name: "people", rls_enabled: true, rls_forced: false }],
+      columns: [{ schema: "public", table: "people", name: "id", type: "uuid", nullable: false }],
+      constraints: [
+        {
+          schema: "public",
+          table: "people",
+          name: "people_pkey",
+          kind: "PRIMARY KEY",
+          definition: "PRIMARY KEY (id)",
+          columns: ["id"],
+        },
+      ],
+      functions: [],
+      policies: [
+        {
+          schema: "public",
+          table: "people",
+          name: "people_self",
+          permissive: false,
+          command: "SELECT",
+          roles: ["authenticated"],
+          using: "id = auth.uid()",
+          with_check: null,
+        },
+      ],
+      functionGrants: [],
+      triggers: [],
+      indexes: [],
+      tableGrants: [],
+      columnGrants: [],
+      storageBuckets: [],
+      vendorHistory: [],
+    });
+    expect(complete.shapeIncomplete).toEqual([]);
+    expect(complete.policies[0].using).toBe("id = auth.uid()");
+    expect(Object.prototype.hasOwnProperty.call(complete.policies[0], "withCheck")).toBe(true);
+    expect(complete.policies[0].withCheck).toBeNull();
+    expect(complete.tables[0].rlsEnabled).toBe(true);
+    expect(complete.tables[0].rlsForced).toBe(false);
   });
 });
