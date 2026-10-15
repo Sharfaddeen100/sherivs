@@ -9,9 +9,10 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { fromCrossJSON, toJSON } from "seroval";
+import { requireManagementTarget } from "./lib/sherivs-db-target.mjs";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
-const projectRef = "nwrflbpbhyiqdptmlccm";
+const { projectRef } = requireManagementTarget(process.env);
 const supabaseUrl = `https://${projectRef}.supabase.co`;
 const email = "foundation-loop-probe@example.invalid";
 const password = randomBytes(18).toString("base64url");

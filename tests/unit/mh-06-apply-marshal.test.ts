@@ -279,7 +279,11 @@ describe("MH-06 — canonical apply path is rehearsal-ready and CI-portable", ()
   });
 
   it("credentials-gates --verify-only before any catalog probe (offline refusal)", () => {
-    const run = runScript(["--verify-only"], offlineEnv());
+    const run = runScript(["--verify-only"], offlineEnv({
+      SHERIVS_DATABASE_TARGET: "production",
+      SHERIVS_PROJECT_REF: "nwrflbpbhyiqdptmlccm",
+      SHERIVS_CONFIRM_PRODUCTION: "nwrflbpbhyiqdptmlccm",
+    }));
     expect(run.status).toBe(2);
     expect(run.stderr).toContain("BLOCKED_NO_CREDENTIAL");
     expect(run.stdout).not.toContain("STATUS=VERIFY_PASS");

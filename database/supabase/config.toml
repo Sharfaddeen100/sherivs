@@ -1,1 +1,5 @@
+# Intentional documented pin for the historical canonical Supabase CLI project.
+# This is NOT an execution default for repository database scripts.
+# Protected scripts require SHERIVS_DATABASE_TARGET and an explicit project ref.
+# Do not treat this file as authorization to target production.
 project_id = "nwrflbpbhyiqdptmlccm"

@@ -24,6 +24,10 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import {
+  assertUrlMatchesTarget,
+  requireManagementTarget,
+} from "../lib/sherivs-db-target.mjs";
 
 const ROOT = fileURLToPath(new URL("../..", import.meta.url));
 const staticOnly = process.argv.includes("--static");
@@ -60,6 +64,13 @@ async function management(path) {
     throw new Error(`${path} → HTTP ${response.status}`);
   }
   return response.json();
+}
+
+if (!staticOnly) {
+  const resolved = requireManagementTarget(process.env, projectRef);
+  if (dbUrl) {
+    assertUrlMatchesTarget(dbUrl, resolved.target, "SUPABASE_DB_URL");
+  }
 }
 
 if (!staticOnly && checks.every((entry) => entry.ok)) {
