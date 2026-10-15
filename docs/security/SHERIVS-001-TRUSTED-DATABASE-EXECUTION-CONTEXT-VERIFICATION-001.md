@@ -55,6 +55,7 @@ Connecting would be production or staging access. Installing a vanilla PostgreSQ
 | Working tree at inspection | clean |
 | Uncommitted user changes | none |
 | Verification branch | `cursor/sherivs-001-trusted-db-exec-context-d80b` |
+| Report commit | `6c31999d350b3d9da3cb2bc78933385793ef3b05` |
 | Prior SQL-correction report | `docs/security/SHERIVS-001-PROPOSED-SQL-TRUSTED-ROLE-SKIP-AND-TRANSACTION-001.md` |
 | Prior independent review | `docs/security/SHERIVS-001-PROPOSED-SQL-INDEPENDENT-REVIEW-001.md` |
 | Identity-hardening report | `docs/security/SHERIVS-001-IDENTITY-AND-PRIVILEGE-ESCALATION-HARDENING-001.md` |
