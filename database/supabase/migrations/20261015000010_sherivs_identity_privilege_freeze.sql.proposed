@@ -1,0 +1,154 @@
+-- =============================================================================
+-- SHERIVS-001 — identity self-update freeze and active-account helper gates
+-- =============================================================================
+-- Status: AUTHORED, NOT APPLIED.
+-- This file is a proposed remediation. It MUST NOT enter the canonical
+-- staging-runner pin. The runner excludes `*.sql.proposed`.
+-- Do not execute this file from this mission. Do not db push / db reset /
+-- db restore. A file existing in Git is not proof of live catalog state.
+--
+-- Mission: SHERIVS-001-IDENTITY-AND-PRIVILEGE-ESCALATION-HARDENING-001
+-- Version-target classification: ACTIVE-V1 identity / Scholar RLS helpers.
+--
+-- Rollback (genuine inverse; also proposed, not applied):
+--   database/supabase/rollbacks/20261015000010_sherivs_identity_privilege_freeze.sql.proposed
+--
+-- Confirmed source defects (canonical history, not live catalog):
+--   1. PATH A — public.users UPDATE grant to `authenticated` plus policy
+--      "User updates self" (USING/WITH CHECK only `id = auth.uid()`) lets any
+--      authenticated principal change their own role, school_id, and
+--      is_active through PostgREST. Application Zod in profile.functions.ts
+--      is not a database boundary (INVARIANT 3 / 8).
+--   2. PATH E — public.is_school_admin(), public.get_my_school_id(), and
+--      public.get_my_role() (last Scholar DEFINER bodies: 20260620151525)
+--      do not require users.is_active = true. Inactive accounts still
+--      satisfy Scholar tenant RLS and Phase 08 RPCs.
+--
+-- Why a BEFORE UPDATE trigger (not column REVOKE, not WITH CHECK alone):
+--   • Column REVOKE UPDATE(role, school_id, is_active) FROM authenticated
+--     would also block legitimate school-admin JWT updates of OTHER users
+--     (hr.tsx, setTeacherActive). PostgreSQL has no school-admin role.
+--   • UPDATE WITH CHECK cannot see OLD. A subquery on public.users during
+--     WITH CHECK observes the new row, so "role = get_my_role()" is a
+--     tautology. The trigger compares NEW to OLD.
+--   • auth.uid() IS NULL leaves NEW unchanged so service-role / owner
+--     provisioning (staff-accounts, inviteTeacher, demo-provision) continues.
+--   • Self-updates of non-privileged columns (full_name, phone, push_token,
+--     digital_twin_opt_out, …) still succeed.
+--
+-- Not in this file (out of mission or not confirmed as a self-escalation):
+--   • Neutral cg_org_membership / cg_role_assignment policies already require
+--     is_tenant_admin(); users.role self-elevation does not grant that
+--     binding. Left to SHERIVS-002 grant review.
+--   • Table-level GRANT SELECT,INSERT,UPDATE,DELETE on users to authenticated
+--     is unchanged (SHERIVS-002).
+--   • Sensitive HR/financial/NIN/biometric columns are unchanged (SHERIVS-003).
+--   • news_reads parent-engagement query is unchanged (separate OPEN item).
+-- =============================================================================
+
+-- -----------------------------------------------------------------------------
+-- 1. Active-account gates on Scholar identity helpers
+--    Bodies otherwise match 20260620151525 (SECURITY DEFINER, search_path).
+-- -----------------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION public.get_my_school_id()
+RETURNS uuid
+LANGUAGE sql
+STABLE
+SECURITY DEFINER
+SET search_path = public
+AS $$
+  SELECT school_id
+    FROM public.users
+   WHERE id = auth.uid()
+     AND is_active = true;
+$$;
+
+COMMENT ON FUNCTION public.get_my_school_id() IS
+  $comment$SHERIVS-001: returns the caller school_id only when the users row is
+  active. SECURITY DEFINER, search_path=public, no parameters. NULL when
+  unauthenticated, missing, or inactive — fail closed for tenant RLS.$comment$;
+
+CREATE OR REPLACE FUNCTION public.get_my_role()
+RETURNS text
+LANGUAGE sql
+STABLE
+SECURITY DEFINER
+SET search_path = public
+AS $$
+  SELECT role
+    FROM public.users
+   WHERE id = auth.uid()
+     AND is_active = true;
+$$;
+
+COMMENT ON FUNCTION public.get_my_role() IS
+  $comment$SHERIVS-001: returns the caller role only when the users row is
+  active. SECURITY DEFINER, search_path=public, no parameters. NULL when
+  unauthenticated, missing, or inactive — fail closed for staff gates.$comment$;
+
+CREATE OR REPLACE FUNCTION public.is_school_admin()
+RETURNS boolean
+LANGUAGE sql
+STABLE
+SECURITY DEFINER
+SET search_path = public
+AS $$
+  SELECT EXISTS (
+    SELECT 1
+      FROM public.users
+     WHERE id = auth.uid()
+       AND role IN ('admin', 'principal')
+       AND is_active = true
+  );
+$$;
+
+COMMENT ON FUNCTION public.is_school_admin() IS
+  $comment$SHERIVS-001: true only for an active users row whose role is admin
+  or principal. SECURITY DEFINER, search_path=public, no parameters.
+  Inactive administrators do not satisfy Scholar admin RLS or RPCs.$comment$;
+
+-- -----------------------------------------------------------------------------
+-- 2. Forbid self-mutation of privilege-bearing columns
+-- -----------------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION public.forbid_self_privilege_mutation()
+RETURNS trigger
+LANGUAGE plpgsql
+SECURITY INVOKER
+SET search_path = public
+AS $$
+BEGIN
+  IF auth.uid() IS NULL THEN
+    RETURN NEW;
+  END IF;
+
+  IF NEW.id IS DISTINCT FROM OLD.id THEN
+    RAISE EXCEPTION 'Forbidden: identity key cannot be changed';
+  END IF;
+
+  IF NEW.id = auth.uid() THEN
+    IF NEW.role IS DISTINCT FROM OLD.role
+       OR NEW.school_id IS DISTINCT FROM OLD.school_id
+       OR NEW.is_active IS DISTINCT FROM OLD.is_active THEN
+      RAISE EXCEPTION 'Forbidden: cannot modify privileged identity fields on your own account';
+    END IF;
+  END IF;
+
+  RETURN NEW;
+END;
+$$;
+
+COMMENT ON FUNCTION public.forbid_self_privilege_mutation() IS
+  $comment$SHERIVS-001 BEFORE UPDATE guard. When the caller identity equals the
+  row id, role, school_id, and is_active must equal OLD. Other columns may
+  change. auth.uid() IS NULL is the service-role / owner provisioning path
+  and is left unchanged. Does not SELECT other rows. SECURITY INVOKER.$comment$;
+
+DROP TRIGGER IF EXISTS trg_users_forbid_self_privilege_mutation ON public.users;
+CREATE TRIGGER trg_users_forbid_self_privilege_mutation
+  BEFORE UPDATE ON public.users
+  FOR EACH ROW
+  EXECUTE FUNCTION public.forbid_self_privilege_mutation();
+
+-- =============================================================================
+-- End of proposed migration. Not applied. Not in the canonical 71-file pin.
+-- =============================================================================

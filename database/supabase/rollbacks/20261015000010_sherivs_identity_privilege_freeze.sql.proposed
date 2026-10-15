@@ -1,0 +1,43 @@
+-- =============================================================================
+-- Inverse of 20261015000010_sherivs_identity_privilege_freeze.sql.proposed
+-- Status: AUTHORED, NOT APPLIED. Do not execute from this mission.
+-- Restores the 20260620151525 SECURITY DEFINER helper bodies (no is_active
+-- filter) and drops the self-privilege trigger.
+-- =============================================================================
+
+BEGIN;
+
+DROP TRIGGER IF EXISTS trg_users_forbid_self_privilege_mutation ON public.users;
+DROP FUNCTION IF EXISTS public.forbid_self_privilege_mutation();
+
+CREATE OR REPLACE FUNCTION public.get_my_school_id()
+RETURNS uuid
+LANGUAGE sql
+STABLE
+SECURITY DEFINER
+SET search_path = public
+AS $$
+  SELECT school_id FROM public.users WHERE id = auth.uid();
+$$;
+
+CREATE OR REPLACE FUNCTION public.get_my_role()
+RETURNS text
+LANGUAGE sql
+STABLE
+SECURITY DEFINER
+SET search_path = public
+AS $$
+  SELECT role FROM public.users WHERE id = auth.uid();
+$$;
+
+CREATE OR REPLACE FUNCTION public.is_school_admin()
+RETURNS boolean
+LANGUAGE sql
+STABLE
+SECURITY DEFINER
+SET search_path = public
+AS $$
+  SELECT EXISTS (SELECT 1 FROM public.users WHERE id = auth.uid() AND role IN ('admin','principal'));
+$$;
+
+COMMIT;

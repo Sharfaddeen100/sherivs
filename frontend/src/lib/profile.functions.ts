@@ -10,15 +10,9 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { parseSelfProfilePatch } from "@/lib/identity-privilege";
 
-const ProfilePatch = z.object({
-  full_name: z.string().trim().min(2).max(120).optional(),
-  phone: z.string().trim().max(40).nullable().optional(),
-  address: z.string().trim().max(400).nullable().optional(),
-  emergency_contact_name: z.string().trim().max(120).nullable().optional(),
-  emergency_contact: z.string().trim().max(40).nullable().optional(),
-  avatar_url: z.string().trim().url().nullable().optional(),
-});
+export { parseSelfProfilePatch } from "@/lib/identity-privilege";
 
 export type MyProfile = {
   id: string;
@@ -50,7 +44,7 @@ export const getMyProfile = createServerFn({ method: "GET" })
 
 export const updateMyProfile = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .validator((i: unknown) => ProfilePatch.parse(i))
+  .validator((i: unknown) => parseSelfProfilePatch(i))
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
     if (Object.keys(data).length === 0) return { ok: true as const };

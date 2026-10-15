@@ -44,6 +44,7 @@ import {
 } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
+import { parseHrStaffPatch } from "@/lib/identity-privilege";
 
 export const Route = createFileRoute("/_authenticated/admin/hr")({
   ssr: false,
@@ -114,7 +115,7 @@ function money(n: number, cur = "NGN") {
 }
 
 function HRPage() {
-  const { profile } = useApp();
+  const { profile, authUser } = useApp();
   const schoolId = profile?.school_id ?? "";
   const qc = useQueryClient();
   const now = new Date();
@@ -201,7 +202,15 @@ function HRPage() {
     mutationFn: async (payload: Partial<StaffUser> & { id?: string }) => {
       if (!payload.id) throw new Error("Use user creation flow to add new staff");
       const { id, ...rest } = payload;
-      const { error } = await supabase.from("users").update(rest).eq("id", id);
+      const current = staffMap.get(id);
+      const patch = parseHrStaffPatch({
+        actorId: profile?.id ?? authUser?.id,
+        targetId: id,
+        patch: rest,
+        currentRole: current?.role ?? rest.role ?? null,
+        currentActive: current?.is_active ?? rest.is_active ?? null,
+      });
+      const { error } = await supabase.from("users").update(patch).eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {

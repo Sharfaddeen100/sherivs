@@ -4,6 +4,7 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { emailField, nonEmptyText, optionalText, phoneField } from "@/lib/validation";
 import { tokenMsRemaining } from "@/lib/auth-helpers";
 import { requireSchoolAdminScope } from "@/lib/security-role-gate";
+import { assertNotSelfAccountStatusChange } from "@/lib/identity-privilege";
 import { SystemClock, TimeAuthority } from "../../kernel/time-authority";
 import { writeAuditRecord } from "@/lib/server/write-audit";
 
@@ -127,6 +128,7 @@ export const setTeacherActive = createServerFn({ method: "POST" })
       lifecycle: null,
       sessionValid: typeof context?.claims?.exp === "number" && tokenMsRemaining(context.claims.exp) > 0,
     });
+    assertNotSelfAccountStatusChange(context.userId, data.userId);
     // RLS already restricts to same school
     const { error } = await context.supabase
       .from("users")
