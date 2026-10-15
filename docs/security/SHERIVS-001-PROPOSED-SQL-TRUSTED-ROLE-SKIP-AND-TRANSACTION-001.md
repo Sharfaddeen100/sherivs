@@ -51,9 +51,10 @@ No `git reset`, `git clean`, or discard was performed. Unrelated work was not ov
 | Correction branch | `cursor/sherivs-001-proposed-sql-trusted-role-txn-d80b` |
 | Implementation commit | `7c3010db13b74bea2ac0e9e99b1d8ff491075d72` |
 | Test-fix commit | `e07bdfee47e0e85695447a801e93b4d5c2a4ee94` |
+| Comment-stripper test commit | `504d57da8a139af915f2cf864f9ecfabee82e202` |
 | Report commit | `ba2c8b9229b1e4c72806b645a14cba19ad449bd5` |
 | Report SHA pin | `6720c8fc3a216084b7de0d2bf7cfc26d5eaa41a2` |
-| Final HEAD | named by the follow-up commit that records this pin SHA |
+| Final HEAD | comment-stripper follow-up report commit on this branch |
 | Pull request | https://github.com/vibeoraai-bit/coregrid-scholar-migration/pull/41 (draft, stacked on the independent-review branch) |
 
 ---
@@ -79,9 +80,11 @@ Both blockers were still present in `e511b0b` (trigger lines 120–122; no forwa
 
 ## 6. Exact files changed
 
-- `database/supabase/migrations/20261015000010_sherivs_identity_privilege_freeze.sql.proposed`
+- `database/supabase/migrations/20261015000010_sherivs_identity_privilege_freeze.sql.proposed` (SQL correction; hash unchanged by the comment-stripper follow-up)
 - `database/supabase/rollbacks/20261015000010_sherivs_identity_privilege_freeze.sql.proposed`
 - `tests/unit/sherivs-001-identity-privilege.test.ts`
+- `tests/unit/sherivs-sql-comment-strip.ts` (offline scanner; not a PostgreSQL parser)
+- `tests/unit/sherivs-sql-comment-strip.test.ts`
 - `docs/security/SHERIVS-001-PROPOSED-SQL-TRUSTED-ROLE-SKIP-AND-TRANSACTION-001.md` (this file)
 
 Not changed: application code, canonical `.sql` history, pin (`PINNED_MIGRATION_COUNT = 71`, `PINNED_SOURCE_COMMIT = d195ba861f80379b79533126653b9cee82a8e872`), environment configuration, secrets.
@@ -264,29 +267,71 @@ Command (no database env; no SQL execution; local vitest only):
 
 ```
 npx vitest run \
+  tests/unit/sherivs-sql-comment-strip.test.ts \
   tests/unit/sherivs-001-identity-privilege.test.ts \
   tests/unit/sherivs-db-target.test.ts \
   tests/unit/sherivs-staging-migration-runner.test.ts \
   tests/unit/security-role-gate.test.ts
 ```
 
-First run after the SQL rewrite: 2 failed / 210 passed. Failures were static assertions matching **comments** that document the `session_user` and `CREATE INDEX CONCURRENTLY` prohibitions. Assertions were tightened to comment-stripped statements (`e07bdfe`). SQL was not weakened.
+First run after the SQL rewrite: 2 failed / 210 passed. Failures were static assertions matching **comments** that document the `session_user` and `CREATE INDEX CONCURRENTLY` prohibitions. A follow-up (`e07bdfe`) used a naive `--[^\n]*` replacement, which can misread `--` inside strings or dollar-quoted bodies. That approach is replaced by `tests/unit/sherivs-sql-comment-strip.ts`, a character scanner that respects PostgreSQL quoting.
 
-Final run:
+Comment-stripper follow-up (this revision):
 
 | File | Passed | Failed |
 |---|---|---|
+| `tests/unit/sherivs-sql-comment-strip.test.ts` | 10 | 0 |
 | `tests/unit/sherivs-001-identity-privilege.test.ts` | 54 | 0 |
 | `tests/unit/sherivs-db-target.test.ts` | 23 | 0 |
 | `tests/unit/sherivs-staging-migration-runner.test.ts` | 108 | 0 |
 | `tests/unit/security-role-gate.test.ts` | 27 | 0 |
-| **Total** | **212** | **0** |
+| **Total** | **222** | **0** |
 
-`VITEST_EXIT:0`. Log: `/opt/cursor/artifacts/sherivs-001-trusted-role-txn-tests.log`.
+`VITEST_EXIT:0`. Log: `/opt/cursor/artifacts/sherivs-001-comment-strip-tests.log`.
 
-These tests prove **source strings, application parsers, and a simulated trigger matrix**. They do **not** prove the trigger runs in PostgreSQL. There is no offline PostgreSQL harness for this proposal. The proposed SQL and rollback were **not** executed. Supabase CLI was **not** used.
+These tests prove **source strings, application parsers, a simulated trigger matrix, and that B-1/B-2 assertions inspect comment-stripped / code-only SQL**. They do **not** prove the trigger runs in PostgreSQL. There is no offline PostgreSQL harness for this proposal. The proposed SQL and rollback were **not** executed. Supabase CLI was **not** used. Proposal SHA-256 remains `62aaad757e3b7ff79cf6fc89aaa3d604cd1fb151feadee6ea03f813361715416`.
 
 ---
+
+## 14a. Comment-stripping method and limitations
+
+Scanner: `tests/unit/sherivs-sql-comment-strip.ts`. It is **not** a PostgreSQL parser.
+
+Classification:
+
+- **code** — SQL/plpgsql tokens
+- **comment** — `--` to end of line; nested `/* */` (PostgreSQL nesting)
+- **literal** — `'...'` (`''` escapes), `"..."` (`""` escapes), `E'...'` / `e'...'` (backslash + `''`), dollar quotes `$tag$...$tag$`
+
+Two views used by assertions:
+
+- `stripSqlComments` — comments become spaces; literals kept. Used for positive matches that include string literals (`current_user = 'service_role'`, `RAISE EXCEPTION '...'`).
+- `executableSqlCode` — comments **and** literals become spaces. Used for negative statement matches (`session_user`, `CREATE INDEX CONCURRENTLY`) so documentation strings cannot satisfy or poison the check.
+
+SQL-level vs plpgsql-level: `--` inside `AS $$ ... $$` is **not** a SQL comment; it is function source. B-1 inspects the extracted trigger body with the same scanner as plpgsql.
+
+Representative cases in `tests/unit/sherivs-sql-comment-strip.test.ts` prove: line comments, real CONCURRENTLY statements, `--` inside strings, `--` inside dollar quotes, nested block comments, `/*` inside strings, COMMENT ON `$comment$` prose, `''` escapes, E-string escapes, and that an `IF auth.uid() IS NULL THEN RETURN NEW` bypass is still detected when it is executable.
+
+Limitations: unterminated quotes consume through EOF; dollar tags are ASCII; `U&`/`B`/`X`/`N` prefixes are not special-cased (the following quote is still a string); `standard_conforming_strings = off` is not modeled for non-E strings; psql meta-commands are not modeled. No PostgreSQL lexing was executed.
+
+Assertions were **not** weakened: B-1 now requires the null-uid branch to `RAISE EXCEPTION` (not `RETURN NEW`); B-2 scans SQL-level executable tokens for CONCURRENTLY/VACUUM/REINDEX and plpgsql bodies for `EXCEPTION WHEN OTHERS`.
+
+---
+
+## 14b. Independent B-1 and B-2 recheck (this follow-up)
+
+**B-1.** Executable plpgsql of `public.forbid_self_privilege_mutation` (dollar-quoted body, comments stripped):
+
+1. No `IF auth.uid() IS NULL THEN`. Null identity does not grant a skip.
+2. After privilege columns change and `current_user` is not `service_role`, `v_uid := auth.uid()` then `IF v_uid IS NULL THEN RAISE EXCEPTION 'Forbidden: untrusted execution context...'`.
+3. The only `RETURN NEW` before the uid check is `current_user = 'service_role'` or unchanged privilege columns.
+4. `session_user`, `current_setting(`, `request.jwt`, `auth.role(`, and `postgres` do not appear in executable plpgsql tokens.
+
+Trusted exception justification from **source**, not live PostgreSQL: `frontend/src/integrations/supabase/client.server.ts` uses `SUPABASE_SERVICE_ROLE_KEY`; canonical `GRANT ALL ON public.users TO service_role`; PostgREST authenticator `SET ROLE` is the documented mapping onto `current_user`. That mapping is **not** catalog-proven. It is a blocking architectural dependency **for apply**. It is not a reason to treat `auth.uid() IS NULL` as trusted.
+
+**B-2.** SQL-level executable tokens (comments and literals blanked) contain `BEGIN;` then the four `CREATE OR REPLACE FUNCTION` statements, `DROP TRIGGER`, `CREATE TRIGGER`, then `COMMIT;`. No later DDL. No `CREATE INDEX CONCURRENTLY`, `REINDEX`, or `VACUUM` as migration statements. Function bodies have no `EXCEPTION WHEN OTHERS`. All listed statements are transactional. Failure of a later statement cannot commit earlier DDL on a client that honors this file’s `BEGIN`/`COMMIT`. `scripts/db-apply.mjs` / `db-apply-one.mjs` submit the whole string without a pre-wrap. `scripts/staging/sherivs-restore/runner.mjs` still pre-wraps `BEGIN`/`query(sql)`/`COMMIT`; an inner `COMMIT` would close that outer transaction before the ledger insert. The file remains `*.sql.proposed`.
+
+Git diff for this follow-up is test helper, stripper tests, identity-test assertion wiring, and this report. Proposed SQL hash unchanged. No GRANT/REVOKE/policy weakening.
 
 ## 15. PostgreSQL behavior not verified
 
@@ -348,7 +393,11 @@ No production connection. No staging connection. No database connection. No SQL 
 
 **PASS WITH CONDITIONS.**
 
-B-1 is corrected: unidentified privilege-column writes fail closed; the only trusted provisioner named in executable SQL is `current_user = 'service_role'`; `auth.uid() IS NULL` is no longer a bypass. B-2 is corrected: the forward file is a single explicit transaction under the documented execution contract, with the runner-wrap incompatibility stated rather than papered over. Helper `is_active = true` gates, rollback inverse, pin exclusion, and offline tests remain consistent. Offline checks: 212 passed, exit 0.
+B-1 is corrected: unidentified privilege-column writes fail closed; the only trusted provisioner named in executable SQL is `current_user = 'service_role'`; `auth.uid() IS NULL` is no longer a bypass. Independent recheck of comment-stripped trigger plpgsql: there is no `IF auth.uid() IS NULL THEN`; `v_uid IS NULL` raises; `current_user = 'service_role'` remains the only named skip. Live `current_user` under the service-role key is still unmeasured — a **blocking architectural dependency for apply**, not a reason to restore the null-uid skip.
+
+B-2 is corrected: the forward file is a single explicit transaction under the documented execution contract, with the runner-wrap incompatibility stated rather than papered over. Independent recheck of SQL-level executable tokens: one `BEGIN;`, helper replacements, trigger drop/create, one `COMMIT;`, no CONCURRENTLY/VACUUM/REINDEX, no `EXCEPTION WHEN OTHERS` in function bodies. A statement failure aborts that transaction on a client that honors the file. `runner.mjs` pre-wrap remains incompatible.
+
+Helper `is_active = true` gates, rollback inverse, pin exclusion, and offline tests remain consistent. Offline checks after the comment-stripper follow-up: 222 passed, exit 0. Proposed SQL bytes were not changed by this follow-up.
 
 Conditions:
 
