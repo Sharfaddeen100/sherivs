@@ -41,6 +41,7 @@ Verified at inspection on `cursor/sherivs-001-disposable-postgres-verify-d80b` b
 | Working tree at inspection | clean |
 | This mission branch | `cursor/sherivs-001-external-isolated-db-verify-d80b` |
 | Qualifier correction commit | `d0ac023c8bd1f769b9abc63de14f690ef80dfc50` |
+| Offline-results report commit | `3e6fd6272fc903be3b4f64e829cc5bfa66af03e8` |
 | Proposed SQL | `database/supabase/migrations/20261015000010_sherivs_identity_privilege_freeze.sql.proposed` |
 | Proposed SHA-256 | `62aaad757e3b7ff79cf6fc89aaa3d604cd1fb151feadee6ea03f813361715416` (confirmed; **unchanged**) |
 | Rollback SHA-256 | `6a9363db98dd3c82036b315e67d38559a0db00583b8ea7de541375a334bfb7e4` (**unchanged**) |
