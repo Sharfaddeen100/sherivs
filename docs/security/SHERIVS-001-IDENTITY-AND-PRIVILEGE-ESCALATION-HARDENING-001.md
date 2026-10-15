@@ -70,13 +70,13 @@ No `git reset`, `git clean`, or discard was performed.
 
 ## 5. Final commit SHA
 
-Recorded after the report commit in section 5a below. Implementation and test-fix SHAs:
+Final branch HEAD after the SHA-pin commit is recorded in git log. Implementation, test-fix, and report SHAs:
 
 | Commit | SHA | Purpose |
 |---|---|---|
 | Implementation | `e44f58fa0560cf61edb1d924ca8844de27b05b52` | Privilege freeze helper, proposed SQL, call-site wiring, initial tests |
 | Test fix | `5428481736d654306fb350531edd2a7ed255b3c2` | GRANT/REVOKE assertions match SQL statements, not comments |
-| Report | this document's commit | Governance record |
+| Report | `7ebf82356cbb0fa2debfa4b14a4106336d3c77e8` | Governance record |
 
 ---
 
