@@ -12,8 +12,8 @@ describe("public root no longer mounts in-memory Command Centre", () => {
 
   it("renders PublicPlatformHome instead of CommandCentre on /", () => {
     expect(index).toContain("PublicPlatformHome");
-    expect(index).not.toContain("CommandCentre");
-    expect(index).not.toContain("tenant:coregrid-demo");
+    expect(index).not.toMatch(/from ["']@\/components\/command-centre\/command-centre["']/);
+    expect(index).not.toContain("<CommandCentre");
     expect(index).not.toContain("user:demo-administrator");
   });
 

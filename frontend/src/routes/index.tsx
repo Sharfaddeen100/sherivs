@@ -132,7 +132,7 @@ function Index() {
     return <PublicSchoolSite school={school} />;
   }
 
-  // Unauthenticated platform host: public brand home. The in-memory Command
-  // Centre (tenant:coregrid-demo) is not the production homepage.
+  // Unauthenticated platform host: public brand home. The in-memory demo
+  // Command Centre is not mounted on this production-facing route.
   return <PublicPlatformHome />;
 }
