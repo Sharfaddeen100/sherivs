@@ -17,6 +17,7 @@ This review evaluates the proposed SHERIVS-001 freeze independently. It does not
 |---|---|
 | Review started on | `cursor/sherivs-001-identity-privilege-hardening-d80b` |
 | Review branch | `cursor/sherivs-001-proposed-sql-independent-review-d80b` |
+| Review report commit | `84b65b88aded88d18e212dc2e70f5856eb82a405` |
 | Reviewed HEAD (implementation) | `d9d23e79eebbfb7538f6f7e3fff54c55e537e768` |
 | Reviewed tree | `1f4fb10ca6d9be0fe7440342079d155d73a7113e` |
 | Working tree at inspection | clean |
