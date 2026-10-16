@@ -64,6 +64,7 @@ No safeguard was weakened. Docker CLI was not installed. No image was pulled. No
 | Uncommitted user work | none |
 | This mission branch | `cursor/sherivs-001-external-postgrest-context-002-d80b` |
 | Report commit | `6c3850d6fa2bc7c513d3fb218ff904bb4d616805` |
+| Offline-results commit | `631e6605c02136871a4697ce81d763559ee704ed` |
 | OS | Ubuntu 24.04.5 LTS, Linux 6.12.94+, x86_64, uid 1000 |
 | Node | v22.14.0 |
 | Product brand | Sherivs |
