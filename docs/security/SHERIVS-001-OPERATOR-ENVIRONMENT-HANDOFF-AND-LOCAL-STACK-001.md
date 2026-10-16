@@ -42,6 +42,7 @@ Do not use the previously reported inspection HEAD as current. Actual values:
 | Working tree at inspection | clean |
 | Uncommitted user work | none |
 | This mission branch | `cursor/sherivs-001-operator-env-handoff-local-stack-d80b` |
+| Report commit | `cf8e8ed344b0ca3d006a1121b47821dfb6a9a9ba` |
 | OS | Ubuntu 24.04.5 LTS, Linux 6.12.94+, x86_64, uid 1000 |
 | Node | v22.14.0 |
 | Proposed migration | `database/supabase/migrations/20261015000010_sherivs_identity_privilege_freeze.sql.proposed` |
@@ -208,7 +209,18 @@ npx vitest run \
   tests/unit/security-role-gate.test.ts
 ```
 
-Results are recorded after the command runs. They are **not** local-stack or PostgREST evidence.
+| File | Passed | Failed |
+|---|---|---|
+| `sherivs-disposable-pg.test.ts` | 28 | 0 |
+| `sherivs-disposable-exec.test.ts` | 16 | 0 |
+| `sherivs-sql-comment-strip.test.ts` | 10 | 0 |
+| `sherivs-001-identity-privilege.test.ts` | 54 | 0 |
+| `sherivs-db-target.test.ts` | 23 | 0 |
+| `sherivs-staging-migration-runner.test.ts` | 108 | 0 |
+| `security-role-gate.test.ts` | 27 | 0 |
+| **Total** | **266** | **0** |
+
+`VITEST_EXIT:0`. These are **not** local-stack or PostgREST evidence. Qualifier/harness inspect outcomes are in §4.
 
 ---
 
