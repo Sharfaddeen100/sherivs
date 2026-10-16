@@ -52,6 +52,7 @@ No containers were created. No images were pulled. Docker CLI was not installed.
 | Working tree at inspection | clean |
 | Uncommitted user work | none |
 | This mission branch | `cursor/sherivs-001-external-postgrest-context-d80b` |
+| Report commit | `5a6a826c16b60c3d051a9d015680a188a619f7e2` |
 | OS | Ubuntu 24.04.5 LTS, Linux 6.12.94+, x86_64, uid 1000 |
 | Node | v22.14.0 |
 | Proposed SQL | `database/supabase/migrations/20261015000010_sherivs_identity_privilege_freeze.sql.proposed` |
@@ -275,9 +276,18 @@ npx vitest run \
   tests/unit/security-role-gate.test.ts
 ```
 
-Results are recorded after the command runs. They are **not** PostgreSQL or PostgREST results.
+| File | Passed | Failed |
+|---|---|---|
+| `sherivs-disposable-pg.test.ts` | 28 | 0 |
+| `sherivs-disposable-exec.test.ts` | 16 | 0 |
+| `sherivs-sql-comment-strip.test.ts` | 10 | 0 |
+| `sherivs-001-identity-privilege.test.ts` | 54 | 0 |
+| `sherivs-db-target.test.ts` | 23 | 0 |
+| `sherivs-staging-migration-runner.test.ts` | 108 | 0 |
+| `security-role-gate.test.ts` | 27 | 0 |
+| **Total** | **266** | **0** |
 
-Qualifier/harness inspect outcomes for this pod are in §3.4–§3.5.
+`VITEST_EXIT:0`. These are **not** PostgreSQL or PostgREST results. Qualifier/harness inspect outcomes for this pod are in §3.4–§3.5.
 
 ---
 
