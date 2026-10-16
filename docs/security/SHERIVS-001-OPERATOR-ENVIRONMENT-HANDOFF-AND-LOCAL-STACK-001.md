@@ -43,6 +43,7 @@ Do not use the previously reported inspection HEAD as current. Actual values:
 | Uncommitted user work | none |
 | This mission branch | `cursor/sherivs-001-operator-env-handoff-local-stack-d80b` |
 | Report commit | `cf8e8ed344b0ca3d006a1121b47821dfb6a9a9ba` |
+| Offline-results commit | `b477b671b500edd2b82b4455a455afda5d93abfb` |
 | OS | Ubuntu 24.04.5 LTS, Linux 6.12.94+, x86_64, uid 1000 |
 | Node | v22.14.0 |
 | Proposed migration | `database/supabase/migrations/20261015000010_sherivs_identity_privilege_freeze.sql.proposed` |
