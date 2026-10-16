@@ -63,6 +63,7 @@ No safeguard was weakened. Docker CLI was not installed. No image was pulled. No
 | Working tree at inspection | clean |
 | Uncommitted user work | none |
 | This mission branch | `cursor/sherivs-001-external-postgrest-context-002-d80b` |
+| Report commit | `6c3850d6fa2bc7c513d3fb218ff904bb4d616805` |
 | OS | Ubuntu 24.04.5 LTS, Linux 6.12.94+, x86_64, uid 1000 |
 | Node | v22.14.0 |
 | Product brand | Sherivs |
@@ -214,7 +215,18 @@ npx vitest run \
   tests/unit/security-role-gate.test.ts
 ```
 
-Results are recorded after the command runs. They are **not** PostgreSQL or PostgREST results.
+| File | Passed | Failed |
+|---|---|---|
+| `sherivs-disposable-pg.test.ts` | 28 | 0 |
+| `sherivs-disposable-exec.test.ts` | 16 | 0 |
+| `sherivs-sql-comment-strip.test.ts` | 10 | 0 |
+| `sherivs-001-identity-privilege.test.ts` | 54 | 0 |
+| `sherivs-db-target.test.ts` | 23 | 0 |
+| `sherivs-staging-migration-runner.test.ts` | 108 | 0 |
+| `security-role-gate.test.ts` | 27 | 0 |
+| **Total** | **266** | **0** |
+
+`VITEST_EXIT:0`. These are **not** PostgreSQL or PostgREST results. Qualifier/harness inspect outcomes are in §5.
 
 ### Local PostgreSQL tests
 
