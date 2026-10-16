@@ -49,6 +49,7 @@ Verified on `cursor/sherivs-001-local-supabase-readiness-d80b` before this branc
 | Working tree at inspection | clean |
 | Uncommitted user work | none |
 | This mission branch | `cursor/sherivs-001-operator-owned-supabase-bootstrap-d80b` |
+| Report commit | `8e06ec285eb5d7396970e0ce47245362d354f4dd` |
 | OS | Ubuntu 24.04.5 LTS, Linux 6.12.94+, x86_64, uid 1000 |
 | Node | v22.14.0 |
 | Proposed SQL SHA-256 | `62aaad757e3b7ff79cf6fc89aaa3d604cd1fb151feadee6ea03f813361715416` (confirmed; **unchanged**) |
@@ -302,7 +303,18 @@ npx vitest run \
   tests/unit/security-role-gate.test.ts
 ```
 
-Results are recorded after the command runs. They are **not** PostgreSQL results. Qualifier CLI exit 2 and harness inspect `connected: false` are recorded in §9–§10.
+| File | Passed | Failed |
+|---|---|---|
+| `sherivs-disposable-pg.test.ts` | 28 | 0 |
+| `sherivs-disposable-exec.test.ts` | 16 | 0 |
+| `sherivs-sql-comment-strip.test.ts` | 10 | 0 |
+| `sherivs-001-identity-privilege.test.ts` | 54 | 0 |
+| `sherivs-db-target.test.ts` | 23 | 0 |
+| `sherivs-staging-migration-runner.test.ts` | 108 | 0 |
+| `security-role-gate.test.ts` | 27 | 0 |
+| **Total** | **266** | **0** |
+
+`VITEST_EXIT:0`. These are **not** PostgreSQL results. Qualifier CLI exit 2 and harness inspect `connected: false` are recorded in §9–§10.
 
 ---
 
