@@ -37,6 +37,7 @@ Verified at inspection on `cursor/sherivs-001-disposable-exec-harness-d80b` befo
 | Working tree at inspection | clean |
 | This mission branch | `cursor/sherivs-001-local-supabase-readiness-d80b` |
 | Mixed-shell correction commit | `6ebd4a0d5dfcbe136211d4c5110eaef84cba4911` |
+| Offline-results report commit | `438a1e98987278febcff5460664609f02930efb2` |
 | Proposed SQL | `database/supabase/migrations/20261015000010_sherivs_identity_privilege_freeze.sql.proposed` |
 | Proposed SHA-256 | `62aaad757e3b7ff79cf6fc89aaa3d604cd1fb151feadee6ea03f813361715416` (confirmed; **unchanged**) |
 | Rollback SHA-256 | `6a9363db98dd3c82036b315e67d38559a0db00583b8ea7de541375a334bfb7e4` (confirmed; **unchanged**) |
