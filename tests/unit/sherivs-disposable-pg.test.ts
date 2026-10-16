@@ -127,6 +127,26 @@ describe("disposable PostgreSQL isolation qualifier (no sockets)", () => {
     expect(result.reasons.join(" ")).toMatch(/unscoped DATABASE_URL/);
   });
 
+  it("refuses a named disposable URL while DATABASE_URL is also set", () => {
+    const result = qualifyDisposablePostgres(developmentEnv({
+      DATABASE_URL: PRODUCTION_URL,
+    }));
+    expect(result.qualified).toBe(false);
+    expect(result.code).toBe("DISPOSABLE_MIXED_URL_ENV");
+    expect(result.candidate).toBe("SHERIVS_DISPOSABLE_DATABASE_URL");
+    expect(result.endpoint?.loopback).toBe(true);
+    expect(result.connects).toBe(false);
+  });
+
+  it("refuses a named disposable URL while staging URL variables are present", () => {
+    const result = qualifyDisposablePostgres(developmentEnv({
+      STAGING_DATABASE_URL: STAGING_URL,
+    }));
+    expect(result.qualified).toBe(false);
+    expect(result.code).toBe("DISPOSABLE_MIXED_URL_ENV");
+    expect(result.connects).toBe(false);
+  });
+
   it("assertDisposablePostgres throws without connecting", () => {
     expect(() => assertDisposablePostgres({})).toThrow(DisposablePgError);
   });

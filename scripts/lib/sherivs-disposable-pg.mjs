@@ -217,13 +217,29 @@ export function qualifyDisposablePostgres(env = process.env) {
       trimEnv(env, "PRODUCTION_DATABASE_URL") ||
       trimEnv(env, "SHERIVS_RLS_STAGING_URL"),
   );
+  const databaseUrlPresent = Boolean(trimEnv(env, "DATABASE_URL"));
+  const namedDisposableCandidate =
+    Boolean(classified.sourceName) && classified.sourceName !== "DATABASE_URL";
   const unscopedWhileLive = classified.sourceName === "DATABASE_URL" && liveUrlPresent;
+  const mixedLiveWithNamedDisposable = namedDisposableCandidate && liveUrlPresent;
+  const mixedNamedDisposableWithDatabaseUrl = namedDisposableCandidate && databaseUrlPresent;
   if (unscopedWhileLive) {
     reasons.push(
       "unscoped DATABASE_URL is not a disposable candidate while staging or production URL variables are present; set SHERIVS_DISPOSABLE_DATABASE_URL to a loopback endpoint",
     );
   }
+  if (mixedLiveWithNamedDisposable) {
+    reasons.push(
+      "staging or production URL variables are present alongside a named disposable candidate; isolate the shell so the qualifier and harness select the same target",
+    );
+  }
+  if (mixedNamedDisposableWithDatabaseUrl) {
+    reasons.push(
+      "DATABASE_URL is set alongside a named disposable URL; unset DATABASE_URL so the qualifier and harness cannot select different targets",
+    );
+  }
 
+  const mixedUrlEnv = mixedLiveWithNamedDisposable || mixedNamedDisposableWithDatabaseUrl;
   const qualified =
     target === DISPOSABLE_TARGET &&
     lifecycle.ok === true &&
@@ -231,13 +247,15 @@ export function qualifyDisposablePostgres(env = process.env) {
     classified.loopback === true &&
     classified.refs?.production !== true &&
     classified.refs?.staging !== true &&
-    !unscopedWhileLive;
+    !unscopedWhileLive &&
+    !mixedUrlEnv;
 
   let code = "DISPOSABLE_NOT_QUALIFIED";
   if (qualified) code = "DISPOSABLE_QUALIFIED";
   else if (targetMissing || target === "" || (target && target !== DISPOSABLE_TARGET)) {
     code = classified.code || "DISPOSABLE_NOT_QUALIFIED";
   } else if (!lifecycle.ok) code = lifecycle.code;
+  else if (mixedUrlEnv) code = "DISPOSABLE_MIXED_URL_ENV";
   else if (!classified.present || !classified.qualified || unscopedWhileLive) {
     code = unscopedWhileLive && classified.qualified
       ? "DISPOSABLE_UNSCOPED_WHILE_LIVE"
