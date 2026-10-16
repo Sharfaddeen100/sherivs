@@ -20,6 +20,7 @@ This document transfers SHERIVS-001 verification to an authorized external devel
 | Inspection HEAD | `5f655d76cdc854a501aeab308df6e21577dbf999` (confirmed) |
 | Working tree at inspection | clean |
 | This handoff branch | `cursor/sherivs-001-external-verification-handoff-d80b` |
+| Handoff commit | `1f8f8dcb42cd0790c0d3a7c22558ac7db2f6d4ce` |
 | Proposed SQL | `database/supabase/migrations/20261015000010_sherivs_identity_privilege_freeze.sql.proposed` |
 | Proposed SHA-256 | `62aaad757e3b7ff79cf6fc89aaa3d604cd1fb151feadee6ea03f813361715416` (confirmed) |
 | Rollback SHA-256 | `6a9363db98dd3c82036b315e67d38559a0db00583b8ea7de541375a334bfb7e4` |
@@ -214,9 +215,18 @@ npx vitest run \
   tests/unit/security-role-gate.test.ts
 ```
 
-Results are recorded after the command runs. They are **not** PostgreSQL results.
+| File | Passed | Failed |
+|---|---|---|
+| `sherivs-disposable-pg.test.ts` | 28 | 0 |
+| `sherivs-disposable-exec.test.ts` | 16 | 0 |
+| `sherivs-sql-comment-strip.test.ts` | 10 | 0 |
+| `sherivs-001-identity-privilege.test.ts` | 54 | 0 |
+| `sherivs-db-target.test.ts` | 23 | 0 |
+| `sherivs-staging-migration-runner.test.ts` | 108 | 0 |
+| `security-role-gate.test.ts` | 27 | 0 |
+| **Total** | **266** | **0** |
 
-Qualifier/harness inspect results for this pod are in §2.
+`VITEST_EXIT:0`. These are **not** PostgreSQL results. Qualifier/harness inspect results for this pod are in §2.
 
 ---
 
