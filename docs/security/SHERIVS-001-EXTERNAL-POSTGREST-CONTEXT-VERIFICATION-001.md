@@ -53,6 +53,7 @@ No containers were created. No images were pulled. Docker CLI was not installed.
 | Uncommitted user work | none |
 | This mission branch | `cursor/sherivs-001-external-postgrest-context-d80b` |
 | Report commit | `5a6a826c16b60c3d051a9d015680a188a619f7e2` |
+| Offline-results commit | `40ede832cc79495c775ac66961576981dfd87851` |
 | OS | Ubuntu 24.04.5 LTS, Linux 6.12.94+, x86_64, uid 1000 |
 | Node | v22.14.0 |
 | Proposed SQL | `database/supabase/migrations/20261015000010_sherivs_identity_privilege_freeze.sql.proposed` |
