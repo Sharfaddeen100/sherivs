@@ -5,6 +5,7 @@
 **Version-target classification:** ACTIVE-V1 identity verification only. No V2/V3 work.  
 **Date:** 2026-10-18  
 **Parent HEAD:** `0df303c7a29bfcaf02236efcee67a5ef2a5a95e7`  
+**Result commit:** `aee1c221631351748ee9596bb25254bcea018e8c`  
 **Final verdict:** **CONTEXTS A–D MEASURED**  
 **SHERIVS-001 status:** **OPEN**
 
