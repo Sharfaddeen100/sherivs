@@ -1,6 +1,9 @@
--- RENUMBERED for the SHERIVS rollout (was 20261020000010_sherivs_002_schools_secret_column_privilege). Ships as .sql.phase2 so `supabase db push`
--- skips it until the new app (explicit school column lists) is live: the OLD app selects
--- schools.* and would break. Phase 3 of docs/ops/ROLLOUT-SHERIVS-001-005.md renames it to .sql.
+-- ROLLOUT STEP 0 (docs/ops/ROLLOUT-SHERIVS-001-005.md). Renumbered twice: originally
+-- 20261020000010, then 20261020000120 (.sql.phase2), now 20261015000005 so it can ship
+-- FIRST and still sort BEFORE every SHERIVS release migration (db push refuses
+-- out-of-order history). It must go out only after the app release that reads
+-- public.schools with explicit column lists (SCHOOL_CLIENT_COLUMNS) is live: an app
+-- that still selects schools.* would get 42501 on those reads.
 -- =============================================================================
 -- SHERIVS-002 — public.schools: close the plaintext paystack_secret_key read
 -- =============================================================================

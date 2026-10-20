@@ -35,6 +35,10 @@ CREATE TABLE IF NOT EXISTS supabase_migrations.schema_migrations (
   statements text[],
   name text
 );
+-- The CLI (db push) connects as postgres; make sure it owns the ledger even if this
+-- script was run under another admin role.
+ALTER SCHEMA supabase_migrations OWNER TO postgres;
+ALTER TABLE supabase_migrations.schema_migrations OWNER TO postgres;
 
 INSERT INTO supabase_migrations.schema_migrations (version, name) VALUES
   ('20260620122048', '50e590c2-5911-4c98-8931-fb46a4b509f3'),

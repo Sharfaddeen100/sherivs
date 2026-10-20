@@ -1,7 +1,7 @@
 /**
  * Explicit column list for browser-side reads of public.schools.
  *
- * SHERIVS-002 (migration 20261020000120): anon/authenticated hold column-level
+ * SHERIVS-002 (migration 20261015000005): anon/authenticated hold column-level
  * SELECT on public.schools, with paystack_secret_key deliberately excluded.
  * `select("*")` therefore fails with 42501 for browser clients. Any column
  * added to public.schools later must be granted in a migration AND appended
