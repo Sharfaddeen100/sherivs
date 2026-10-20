@@ -157,14 +157,20 @@ GRANT ALL ON TABLE public.organization_memberships TO service_role;
 -- section makes every other environment match production exactly.
 -- ───────────────────────────────────────────────────────────────────────────
 
-CREATE OR REPLACE FUNCTION public.touch_updated_at() RETURNS trigger
+-- touch_updated_at: production stores this body with CRLF line endings; the repo is LF-only
+-- (.gitattributes), so rebuild the CRLF body at apply time for an exact match.
+DO $do_touch_updated_at$
+BEGIN
+  EXECUTE replace($cap_touch_updated_at$CREATE OR REPLACE FUNCTION public.touch_updated_at() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
 BEGIN
   NEW.updated_at = now();
   RETURN NEW;
 END;
-$$;
+$$$cap_touch_updated_at$, chr(10), chr(13) || chr(10));
+END
+$do_touch_updated_at$;
 
 GRANT ALL ON FUNCTION public.touch_updated_at() TO anon;
 
@@ -233,7 +239,11 @@ GRANT ALL ON FUNCTION public.get_my_school_id() TO authenticated;
 
 GRANT ALL ON FUNCTION public.get_my_school_id() TO service_role;
 
-CREATE OR REPLACE FUNCTION public.get_my_primary_workforce_position() RETURNS TABLE(id uuid, identity_ref text, kind_code text, kind_title text, family text, employment_type text, started_on date, ended_on date, status text, is_primary boolean, authority_group text)
+-- get_my_primary_workforce_position: production stores this body with CRLF line endings; the repo is LF-only
+-- (.gitattributes), so rebuild the CRLF body at apply time for an exact match.
+DO $do_get_my_primary_workforce_position$
+BEGIN
+  EXECUTE replace($cap_get_my_primary_workforce_position$CREATE OR REPLACE FUNCTION public.get_my_primary_workforce_position() RETURNS TABLE(id uuid, identity_ref text, kind_code text, kind_title text, family text, employment_type text, started_on date, ended_on date, status text, is_primary boolean, authority_group text)
     LANGUAGE sql STABLE SECURITY DEFINER
     SET search_path TO 'public'
     AS $$
@@ -248,7 +258,9 @@ CREATE OR REPLACE FUNCTION public.get_my_primary_workforce_position() RETURNS TA
     AND w.status IN ('active','on_leave')
   ORDER BY w.started_on DESC, w.created_at DESC
   LIMIT 1;
-$$;
+$$$cap_get_my_primary_workforce_position$, chr(10), chr(13) || chr(10));
+END
+$do_get_my_primary_workforce_position$;
 
 GRANT ALL ON FUNCTION public.get_my_primary_workforce_position() TO anon;
 
