@@ -7,7 +7,8 @@
 --
 -- What it does, in ONE transaction (all or nothing):
 --   1. guards: stops if this is not the expected pre-release production state;
---   2. ledger repair: records the 70 migrations already applied out of band;
+--   2. ledger repair: records the 72 migrations already applied out of band
+--      (70 through 20261003000042, plus 20261008000050 and 20261008000060);
 --   3. Paystack fix: migration 20261015000005 (anon/authenticated can no longer
 --      SELECT schools.paystack_secret_key; every other column stays readable);
 --   4. records 20261015000005 in the ledger, exactly as `supabase db push` would.
@@ -28,6 +29,9 @@ BEGIN
   END IF;
   IF to_regclass('public.organization_memberships') IS NULL THEN
     RAISE EXCEPTION 'STOP: organization_memberships missing; this is not the expected production state';
+  END IF;
+  IF to_regprocedure('public.create_organization_with_founder(text,text,text,text)') IS NULL THEN
+    RAISE EXCEPTION 'STOP: create_organization_with_founder missing (20261008000060); this is not the expected production state';
   END IF;
 END
 $guard$;
@@ -113,10 +117,12 @@ INSERT INTO supabase_migrations.schema_migrations (version, name) VALUES
   ('20261003000031', 'coregrid_delivery_evidence'),
   ('20261003000040', 'coregrid_school_media_bucket'),
   ('20261003000041', 'coregrid_transport_bus_reads'),
-  ('20261003000042', 'platform_capture_out_of_band_tables')
+  ('20261003000042', 'platform_capture_out_of_band_tables'),
+  ('20261008000050', 'coregrid_organization_memberships'),
+  ('20261008000060', 'organization_onboarding')
 ON CONFLICT (version) DO NOTHING;
 
--- Expect: 70 rows, last version 20261003000042.
+-- Expect: 72 rows, last version 20261008000060.
 
 -- ---- 20261015000005_sherivs_002_secret_column_privilege.sql (verbatim) ----
 DO $schools_column_privilege$
@@ -159,8 +165,8 @@ COMMIT;
 
 -- ---- Verification (read-only). Every "ok" must be true. ----
 SELECT check_name, ok FROM (VALUES
-  ('ledger has 71 versions (70 baseline + 0005)',
-     (SELECT count(*) FROM supabase_migrations.schema_migrations) = 71),
+  ('ledger has 73 versions (72 baseline + 0005)',
+     (SELECT count(*) FROM supabase_migrations.schema_migrations) = 73),
   ('Paystack fix recorded',
      EXISTS (SELECT 1 FROM supabase_migrations.schema_migrations WHERE version = '20261015000005')),
   ('anon cannot read paystack_secret_key',

@@ -2,17 +2,20 @@
 -- SHERIVS-005 LEDGER REPAIR (production, ONE-TIME, run BEFORE any `supabase db push`)
 --
 -- Production has no supabase_migrations ledger: its schema was built outside the
--- CLI. A `db push` without this would try to replay all 70 historical
--- migrations. This records the 70 migrations whose effects are ALREADY in
--- production (verified 2026-10-20: a local replay of exactly these 70 files
--- matches production's public schema statement-for-statement).
+-- CLI. A `db push` without this would try to replay all 72 historical
+-- migrations. This records the 72 migrations whose effects are ALREADY in
+-- production (verified 2026-10-20: a local replay of the first 70 files
+-- matches production's public schema statement-for-statement; 20261008000050
+-- and 20261008000060 were applied out of band on 2026-10-08 and verified
+-- read-only on 2026-10-20 against prod: table, constraints, indexes,
+-- triggers, RLS, policies, grants and pg_get_functiondef bodies all match).
 --
 -- It creates only the ledger (same shape the Supabase CLI uses) and inserts
 -- version rows. It does not touch any application table. Safe to re-run.
 -- It refuses to run if any SHERIVS migration object already exists.
 --
 -- Equivalent CLI (no link needed):
---   supabase migration repair --status applied --db-url "$DB_URL" <the 70 versions below>
+--   supabase migration repair --status applied --db-url "$DB_URL" <the 72 versions below>
 -- =============================================================================
 BEGIN;
 
@@ -25,6 +28,9 @@ BEGIN
   END IF;
   IF to_regclass('public.organization_memberships') IS NULL THEN
     RAISE EXCEPTION 'STOP: organization_memberships missing; this is not the expected production state';
+  END IF;
+  IF to_regprocedure('public.create_organization_with_founder(text,text,text,text)') IS NULL THEN
+    RAISE EXCEPTION 'STOP: create_organization_with_founder missing (20261008000060); this is not the expected production state';
   END IF;
 END
 $guard$;
@@ -110,10 +116,12 @@ INSERT INTO supabase_migrations.schema_migrations (version, name) VALUES
   ('20261003000031', 'coregrid_delivery_evidence'),
   ('20261003000040', 'coregrid_school_media_bucket'),
   ('20261003000041', 'coregrid_transport_bus_reads'),
-  ('20261003000042', 'platform_capture_out_of_band_tables')
+  ('20261003000042', 'platform_capture_out_of_band_tables'),
+  ('20261008000050', 'coregrid_organization_memberships'),
+  ('20261008000060', 'organization_onboarding')
 ON CONFLICT (version) DO NOTHING;
 
--- Expect: 70 rows, last version 20261003000042.
+-- Expect: 72 rows, last version 20261008000060.
 SELECT count(*) AS recorded, max(version) AS last_version FROM supabase_migrations.schema_migrations;
 
 COMMIT;
