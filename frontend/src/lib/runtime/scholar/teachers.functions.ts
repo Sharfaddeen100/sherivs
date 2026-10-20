@@ -39,7 +39,7 @@ export type InviteTeacherResult = {
 };
 
 function tempPassword() {
-  const rand = Math.random().toString(36).slice(2, 8);
+  const rand = crypto.randomUUID().replace(/-/g, "").slice(0, 10);
   return `Teach@${rand}${new Date(timeAuthority.now().atMs).getFullYear()}!`;
 }
 

@@ -94,7 +94,7 @@ const CLIENT_TENANT_FIELD_RE = /(?:school_id|schoolId|tenant_id|tenantId):\s*z\.
 const HANDLER_DATA_RE = /\.handler\(\s*(?:async\s+)?\(\s*\{\s*data\b/;
 const SUBSTRATE_RE = /\bsupabase\b|\.rpc\(|supabaseAdmin|asKernelAdmin/;
 const MUTATION_RE = /\.(insert|update|upsert)\(/;
-const WRITE_EVIDENCE_RE = /\.(insert|update|upsert)\(|\.rpc\(|updateUserById/;
+const WRITE_EVIDENCE_RE = /\.(insert|update|upsert)\(|\.rpc\(|updateUserById|settlePaystackCharge\(/;
 const VENDOR_SDK_RE = /from ["'](@supabase\/supabase-js|twilio|paystack)["']/;
 
 function serverFnBlocks(src: string): Map<string, string> {

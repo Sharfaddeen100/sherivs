@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/accordion";
 import { supabase } from "@/integrations/supabase/client";
 import type { SchoolRow } from "@/contexts/app-context";
+import { safeMapEmbedSrc } from "@/lib/security/request-safety";
 import {
   SectionBadge,
   GlassCard,
@@ -1293,8 +1294,8 @@ export function FindUsMapSection({ school }: { school: SchoolRow }) {
   if (!school.show_map_on_website) return null;
   const raw = (school.google_maps_embed_url as string | null) ?? "";
   if (!raw) return null;
-  const match = raw.match(/src=["']([^"']+)["']/);
-  const src = match ? match[1] : raw;
+  const src = safeMapEmbedSrc(raw);
+  if (!src) return null;
   return (
     <section id="find-us" className="relative py-20">
       <div className="mx-auto max-w-7xl px-6 md:px-8">
@@ -1345,8 +1346,7 @@ export function ContactSection({ school }: { school: SchoolRow }) {
   ];
   const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
   const rawEmbed = (school.google_maps_embed_url as string | null) ?? "";
-  const embedMatch = rawEmbed.match(/src=["']([^"']+)["']/);
-  const embedSrc = embedMatch ? embedMatch[1] : rawEmbed;
+  const embedSrc = safeMapEmbedSrc(rawEmbed) ?? "";
   const showMap = !!(school.show_map_on_website && embedSrc);
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
