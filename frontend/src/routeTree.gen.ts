@@ -27,7 +27,6 @@ import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as RulesRouteImport } from './routes/rules'
 import { Route as ScholarFoundationLoopRouteImport } from './routes/scholar-foundation-loop'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as SuperAdminBootstrapRouteImport } from './routes/super-admin-bootstrap'
 import { Route as siteAboutRouteImport } from './routes/(site)/about'
 import { Route as siteContactRouteImport } from './routes/(site)/contact'
 import { Route as siteCoregridRouteImport } from './routes/(site)/coregrid'
@@ -165,7 +164,6 @@ import { Route as AuthenticatedSuperAdminWorkspaceProjectionRouteImport } from '
 import { Route as AuthenticatedTeacherAiAssistantRouteImport } from './routes/_authenticated/teacher/ai-assistant'
 import { Route as AuthenticatedTeacherAttendanceRouteImport } from './routes/_authenticated/teacher/attendance'
 import { Route as AuthenticatedTeacherAttendanceWeekRouteImport } from './routes/_authenticated/teacher/attendance-week'
-import { Route as AuthenticatedTeacherBiometricEnrollmentRouteImport } from './routes/_authenticated/teacher/biometric-enrollment'
 import { Route as AuthenticatedTeacherCalendarRouteImport } from './routes/_authenticated/teacher/calendar'
 import { Route as AuthenticatedTeacherClassIntelligenceRouteImport } from './routes/_authenticated/teacher/class-intelligence'
 import { Route as AuthenticatedTeacherDashboardRouteImport } from './routes/_authenticated/teacher/dashboard'
@@ -264,11 +262,6 @@ const ScholarFoundationLoopRoute = ScholarFoundationLoopRouteImport.update({
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SuperAdminBootstrapRoute = SuperAdminBootstrapRouteImport.update({
-  id: '/super-admin-bootstrap',
-  path: '/super-admin-bootstrap',
   getParentRoute: () => rootRouteImport,
 } as any)
 const siteAboutRoute = siteAboutRouteImport.update({
@@ -1064,12 +1057,6 @@ const AuthenticatedTeacherAttendanceWeekRoute =
     path: '/attendance-week',
     getParentRoute: () => AuthenticatedTeacherRouteRoute,
   } as any)
-const AuthenticatedTeacherBiometricEnrollmentRoute =
-  AuthenticatedTeacherBiometricEnrollmentRouteImport.update({
-    id: '/biometric-enrollment',
-    path: '/biometric-enrollment',
-    getParentRoute: () => AuthenticatedTeacherRouteRoute,
-  } as any)
 const AuthenticatedTeacherCalendarRoute =
   AuthenticatedTeacherCalendarRouteImport.update({
     id: '/calendar',
@@ -1154,7 +1141,6 @@ export interface FileRoutesByFullPath {
   '/rules': typeof RulesRoute
   '/scholar-foundation-loop': typeof ScholarFoundationLoopRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/super-admin-bootstrap': typeof SuperAdminBootstrapRoute
   '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/bursar': typeof AuthenticatedBursarRouteRouteWithChildren
   '/command-centre': typeof AuthenticatedCommandCentreRouteRouteWithChildren
@@ -1291,7 +1277,6 @@ export interface FileRoutesByFullPath {
   '/teacher/ai-assistant': typeof AuthenticatedTeacherAiAssistantRoute
   '/teacher/attendance': typeof AuthenticatedTeacherAttendanceRoute
   '/teacher/attendance-week': typeof AuthenticatedTeacherAttendanceWeekRoute
-  '/teacher/biometric-enrollment': typeof AuthenticatedTeacherBiometricEnrollmentRoute
   '/teacher/calendar': typeof AuthenticatedTeacherCalendarRoute
   '/teacher/class-intelligence': typeof AuthenticatedTeacherClassIntelligenceRoute
   '/teacher/dashboard': typeof AuthenticatedTeacherDashboardRoute
@@ -1322,7 +1307,6 @@ export interface FileRoutesByTo {
   '/rules': typeof RulesRoute
   '/scholar-foundation-loop': typeof ScholarFoundationLoopRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/super-admin-bootstrap': typeof SuperAdminBootstrapRoute
   '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/bursar': typeof AuthenticatedBursarRouteRouteWithChildren
   '/driver': typeof AuthenticatedDriverRouteRouteWithChildren
@@ -1458,7 +1442,6 @@ export interface FileRoutesByTo {
   '/teacher/ai-assistant': typeof AuthenticatedTeacherAiAssistantRoute
   '/teacher/attendance': typeof AuthenticatedTeacherAttendanceRoute
   '/teacher/attendance-week': typeof AuthenticatedTeacherAttendanceWeekRoute
-  '/teacher/biometric-enrollment': typeof AuthenticatedTeacherBiometricEnrollmentRoute
   '/teacher/calendar': typeof AuthenticatedTeacherCalendarRoute
   '/teacher/class-intelligence': typeof AuthenticatedTeacherClassIntelligenceRoute
   '/teacher/dashboard': typeof AuthenticatedTeacherDashboardRoute
@@ -1492,7 +1475,6 @@ export interface FileRoutesById {
   '/rules': typeof RulesRoute
   '/scholar-foundation-loop': typeof ScholarFoundationLoopRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/super-admin-bootstrap': typeof SuperAdminBootstrapRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/_authenticated/bursar': typeof AuthenticatedBursarRouteRouteWithChildren
   '/_authenticated/command-centre': typeof AuthenticatedCommandCentreRouteRouteWithChildren
@@ -1629,7 +1611,6 @@ export interface FileRoutesById {
   '/_authenticated/teacher/ai-assistant': typeof AuthenticatedTeacherAiAssistantRoute
   '/_authenticated/teacher/attendance': typeof AuthenticatedTeacherAttendanceRoute
   '/_authenticated/teacher/attendance-week': typeof AuthenticatedTeacherAttendanceWeekRoute
-  '/_authenticated/teacher/biometric-enrollment': typeof AuthenticatedTeacherBiometricEnrollmentRoute
   '/_authenticated/teacher/calendar': typeof AuthenticatedTeacherCalendarRoute
   '/_authenticated/teacher/class-intelligence': typeof AuthenticatedTeacherClassIntelligenceRoute
   '/_authenticated/teacher/dashboard': typeof AuthenticatedTeacherDashboardRoute
@@ -1662,7 +1643,6 @@ export interface FileRouteTypes {
     | '/rules'
     | '/scholar-foundation-loop'
     | '/sitemap.xml'
-    | '/super-admin-bootstrap'
     | '/admin'
     | '/bursar'
     | '/command-centre'
@@ -1799,7 +1779,6 @@ export interface FileRouteTypes {
     | '/teacher/ai-assistant'
     | '/teacher/attendance'
     | '/teacher/attendance-week'
-    | '/teacher/biometric-enrollment'
     | '/teacher/calendar'
     | '/teacher/class-intelligence'
     | '/teacher/dashboard'
@@ -1830,7 +1809,6 @@ export interface FileRouteTypes {
     | '/rules'
     | '/scholar-foundation-loop'
     | '/sitemap.xml'
-    | '/super-admin-bootstrap'
     | '/admin'
     | '/bursar'
     | '/driver'
@@ -1966,7 +1944,6 @@ export interface FileRouteTypes {
     | '/teacher/ai-assistant'
     | '/teacher/attendance'
     | '/teacher/attendance-week'
-    | '/teacher/biometric-enrollment'
     | '/teacher/calendar'
     | '/teacher/class-intelligence'
     | '/teacher/dashboard'
@@ -1999,7 +1976,6 @@ export interface FileRouteTypes {
     | '/rules'
     | '/scholar-foundation-loop'
     | '/sitemap.xml'
-    | '/super-admin-bootstrap'
     | '/_authenticated/admin'
     | '/_authenticated/bursar'
     | '/_authenticated/command-centre'
@@ -2136,7 +2112,6 @@ export interface FileRouteTypes {
     | '/_authenticated/teacher/ai-assistant'
     | '/_authenticated/teacher/attendance'
     | '/_authenticated/teacher/attendance-week'
-    | '/_authenticated/teacher/biometric-enrollment'
     | '/_authenticated/teacher/calendar'
     | '/_authenticated/teacher/class-intelligence'
     | '/_authenticated/teacher/dashboard'
@@ -2170,7 +2145,6 @@ export interface RootRouteChildren {
   RulesRoute: typeof RulesRoute
   ScholarFoundationLoopRoute: typeof ScholarFoundationLoopRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
-  SuperAdminBootstrapRoute: typeof SuperAdminBootstrapRoute
   EventsIdRoute: typeof EventsIdRoute
   NewsIdRoute: typeof NewsIdRoute
   RealityClassRoute: typeof RealityClassRoute
@@ -2304,13 +2278,6 @@ declare module '@tanstack/react-router' {
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/super-admin-bootstrap': {
-      id: '/super-admin-bootstrap'
-      path: '/super-admin-bootstrap'
-      fullPath: '/super-admin-bootstrap'
-      preLoaderRoute: typeof SuperAdminBootstrapRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/(site)/about': {
@@ -3272,13 +3239,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedTeacherAttendanceWeekRouteImport
       parentRoute: typeof AuthenticatedTeacherRouteRoute
     }
-    '/_authenticated/teacher/biometric-enrollment': {
-      id: '/_authenticated/teacher/biometric-enrollment'
-      path: '/biometric-enrollment'
-      fullPath: '/teacher/biometric-enrollment'
-      preLoaderRoute: typeof AuthenticatedTeacherBiometricEnrollmentRouteImport
-      parentRoute: typeof AuthenticatedTeacherRouteRoute
-    }
     '/_authenticated/teacher/calendar': {
       id: '/_authenticated/teacher/calendar'
       path: '/calendar'
@@ -3718,7 +3678,6 @@ interface AuthenticatedTeacherRouteRouteChildren {
   AuthenticatedTeacherAiAssistantRoute: typeof AuthenticatedTeacherAiAssistantRoute
   AuthenticatedTeacherAttendanceRoute: typeof AuthenticatedTeacherAttendanceRoute
   AuthenticatedTeacherAttendanceWeekRoute: typeof AuthenticatedTeacherAttendanceWeekRoute
-  AuthenticatedTeacherBiometricEnrollmentRoute: typeof AuthenticatedTeacherBiometricEnrollmentRoute
   AuthenticatedTeacherCalendarRoute: typeof AuthenticatedTeacherCalendarRoute
   AuthenticatedTeacherClassIntelligenceRoute: typeof AuthenticatedTeacherClassIntelligenceRoute
   AuthenticatedTeacherDashboardRoute: typeof AuthenticatedTeacherDashboardRoute
@@ -3736,8 +3695,6 @@ const AuthenticatedTeacherRouteRouteChildren: AuthenticatedTeacherRouteRouteChil
     AuthenticatedTeacherAttendanceRoute: AuthenticatedTeacherAttendanceRoute,
     AuthenticatedTeacherAttendanceWeekRoute:
       AuthenticatedTeacherAttendanceWeekRoute,
-    AuthenticatedTeacherBiometricEnrollmentRoute:
-      AuthenticatedTeacherBiometricEnrollmentRoute,
     AuthenticatedTeacherCalendarRoute: AuthenticatedTeacherCalendarRoute,
     AuthenticatedTeacherClassIntelligenceRoute:
       AuthenticatedTeacherClassIntelligenceRoute,
@@ -3841,7 +3798,6 @@ const rootRouteChildren: RootRouteChildren = {
   RulesRoute: RulesRoute,
   ScholarFoundationLoopRoute: ScholarFoundationLoopRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
-  SuperAdminBootstrapRoute: SuperAdminBootstrapRoute,
   EventsIdRoute: EventsIdRoute,
   NewsIdRoute: NewsIdRoute,
   RealityClassRoute: RealityClassRoute,

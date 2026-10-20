@@ -21,10 +21,9 @@ import { randomBytes } from "node:crypto";
  *     Absent env vars ⇒ the case SKIPs with a typed reason naming the missing
  *     external dependency. A skip is PASS-grade; a faked pass is not.
  *
- * The "sign in as enterprise demo" button is BANNED from e2e: every invocation
- * rotates the demo tenant's account credentials and rewrites the demo school
- * row (frontend/src/lib/runtime/scholar/demo-provision.functions.ts) — tests
- * must never mutate the demo tenant. No password may ever be hard-coded again.
+ * There is no demo tenant or demo provisioning: every journey creates and
+ * removes its own tenant. No password may ever be hard-coded. e2e refuses to
+ * run against production (see playwright.config.ts).
  */
 
 /* ── Environment (names read; values never printed/logged) ────────────── */

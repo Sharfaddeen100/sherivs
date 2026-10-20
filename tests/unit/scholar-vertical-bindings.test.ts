@@ -201,19 +201,7 @@ function routeIdFor(path: string): string {
 }
 
 describe("Scholar vertical bindings — evidence is verifiable, not just cited", () => {
-  const surface = readFileSync(
-    join(ROOT, "frontend/src/components/command-centre/command-centre.tsx"),
-    "utf8",
-  );
   const routeTree = readFileSync(join(ROOT, "frontend/src/routeTree.gen.ts"), "utf8");
-
-  it("publishes the binding summary on the Command Centre", () => {
-    expect(surface).toContain("scholarVerticalBindingSummary");
-    expect(surface).toContain("<RuntimeBindingCard />");
-    expect(surface).toContain("bindings.byVertical");
-    expect(surface).toContain("bindings.unboundCapabilities");
-    expect(surface).toContain("bindings.registryRuntimeId");
-  });
 
   it("registers every route evidence path in the generated route tree", () => {
     const routeEvidence = SCHOLAR_VERTICAL_BINDINGS.flatMap((binding) => binding.evidence).filter(

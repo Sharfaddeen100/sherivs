@@ -1,11 +1,6 @@
 /**
- * Platform bootstrap + super-admin school ops.
- *
- * Server functions:
- *
- *  - claimFirstSuperAdmin  — public bootstrap. Only succeeds when zero
- *    super admins exist in the database. The caller must be signed in
- *    (we use that auth user as the new super admin).
+ * Super-admin school ops. (No super-admin bootstrap: super admins are
+ * granted only by an operator via docs/ops/sql/create-super-admin.sql.)
  *
  * School provisioning itself was migrated to the platform onboarding engine
  * (`provisionOrganization` in
@@ -23,72 +18,16 @@ import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { tokenMsRemaining } from "@/lib/auth-helpers";
 import { requirePlatformSuperAdmin } from "@/lib/security-role-gate";
-import { writeAuditRecord } from "@/lib/server/write-audit";
 import { generateInitialPassword } from "@/lib/onboarding/generated-credentials";
-import { nonEmptyText, subscriptionTier } from "@/lib/validation";
+import { subscriptionTier } from "@/lib/validation";
 
-const claimSchema = z.object({
-  fullName: nonEmptyText("Full name", 120),
-});
-
-/* ---------- public read: is the platform bootstrapped? ---------- */
-
-export const checkPlatformBootstrap = createServerFn({ method: "GET" }).handler(async () => {
-  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-  const { count, error } = await supabaseAdmin
-    .from("super_admins")
-    .select("id", { count: "exact", head: true });
-  if (error) throw new Error(error.message);
-  return { hasSuperAdmin: (count ?? 0) > 0 };
-});
-
-/* ---------- bootstrap: become the first super admin ---------- */
-
-export const claimFirstSuperAdmin = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
-  .validator((input: unknown) => claimSchema.parse(input))
-  .handler(async ({ data, context }) => {
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-
-    // Gate: only proceeds when zero super admins exist
-    const { count, error: countErr } = await supabaseAdmin
-      .from("super_admins")
-      .select("id", { count: "exact", head: true });
-    if (countErr) throw new Error(countErr.message);
-    if ((count ?? 0) > 0) {
-      throw new Error("Platform already has a super admin. Bootstrap is closed.");
-    }
-
-    // The caller (signed in via the bearer attacher) becomes the first super admin
-    const userId = context.userId;
-    const email = (context.claims as { email?: string })?.email ?? "";
-
-    const { error: insertErr } = await supabaseAdmin.from("super_admins").insert({
-      id: userId,
-      full_name: data.fullName,
-      email,
-      is_active: true,
-    });
-    if (insertErr) throw new Error(insertErr.message);
-
-    // §27.6 AUDIT — fail-closed separate audit record for the bootstrap
-    // claim. Control-plane scope: the claimant has no tenant and (by the
-    // bootstrap precondition) no canonical tenant user row, so WHO is the
-    // verified email claim + auth uid in the record payload.
-    await writeAuditRecord(supabaseAdmin, {
-      action: "bootstrap.claim_first_super_admin",
-      gate: "bootstrap-closed-precondition",
-      tenantId: null,
-      actorId: null,
-      actorEmail: email || null,
-      table: "super_admins",
-      recordId: userId,
-      outcome: "succeeded",
-      details: { actor_user_id: userId, full_name: data.fullName },
-    });
-
-    return { ok: true, id: userId, email };
-  });
+/* ---------- platform super admin ----------
+ * There is NO in-app path to become a super admin. Rows in public.super_admins
+ * are created only by an operator with database authority (service_role /
+ * postgres) via docs/ops/sql/create-super-admin.sql. The former public
+ * "claim the first super admin" bootstrap was removed (2026-10-20): it let any
+ * signed-in account claim the platform while the table was empty.
+ * ------------------------------------------------------------------------- */
 
 /* ---------- super-admin school ops ---------- */
 

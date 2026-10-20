@@ -74,27 +74,6 @@ function GeofenceSettingsPage() {
     },
   });
 
-  const teachers = useQuery({
-    queryKey: ["teacher-enrollment-status", schoolId],
-    enabled: !!schoolId,
-    queryFn: async () => {
-      const { data: staff, error } = await supabase
-        .from("users")
-        .select("id, full_name, email")
-        .eq("school_id", schoolId!)
-        .eq("role", "teacher")
-        .eq("is_active", true)
-        .order("full_name");
-      if (error) throw error;
-      const { data: bio } = await supabase
-        .from("teacher_biometrics")
-        .select("user_id, enrollment_status, device_model, enrolled_at")
-        .eq("school_id", schoolId!);
-      const map = new Map((bio ?? []).map((b) => [b.user_id, b]));
-      return (staff ?? []).map((t) => ({ ...t, bio: map.get(t.id) ?? null }));
-    },
-  });
-
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -156,23 +135,6 @@ function GeofenceSettingsPage() {
       void qc.invalidateQueries({ queryKey: ["school-geofences", schoolId] });
     },
     onError: (e) => toast.error(e instanceof Error ? e.message : "Could not delete boundary"),
-  });
-
-  const notify = useMutation({
-    mutationFn: async (teacher: { id: string; full_name: string }) => {
-      if (!schoolId) throw new Error("Missing school context");
-      const { error } = await supabase.from("notifications").insert({
-        school_id: schoolId,
-        user_id: teacher.id,
-        title: "Complete your biometric enrollment",
-        message:
-          "Please open the teacher portal and finish biometric enrollment so you can sign in for attendance.",
-        type: "system",
-      });
-      if (error) throw error;
-    },
-    onSuccess: () => toast.success("Enrollment reminder sent"),
-    onError: (e) => toast.error(e instanceof Error ? e.message : "Could not send reminder"),
   });
 
   const useMyLocation = () => {
@@ -330,74 +292,6 @@ function GeofenceSettingsPage() {
               </li>
             ))}
           </ul>
-        )}
-      </GlassCard>
-
-      <GlassCard className="p-5">
-        <h2 className="font-display text-base font-semibold">Teacher biometric enrollment</h2>
-        {teachers.isLoading ? (
-          <Skeleton className="mt-4 h-24 w-full rounded-xl" />
-        ) : teachers.isError ? (
-          <RetryBox onRetry={() => void teachers.refetch()} />
-        ) : (teachers.data ?? []).length === 0 ? (
-          <EmptyState
-            title="No active teachers"
-            description="Add teachers to track enrollment status."
-          />
-        ) : (
-          <div className="mt-4 overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-white/10 text-left text-xs uppercase tracking-wide text-[color:var(--text-secondary)]">
-                  <th className="py-2">Teacher</th>
-                  <th className="py-2">Status</th>
-                  <th className="py-2">Device</th>
-                  <th className="py-2 text-right">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {teachers.data!.map((t) => {
-                  const status = t.bio?.enrollment_status ?? "not_started";
-                  return (
-                    <tr key={t.id} className="border-b border-white/5">
-                      <td className="py-2">
-                        <div className="font-medium">{t.full_name}</div>
-                        <div className="text-xs text-[color:var(--text-secondary)]">{t.email}</div>
-                      </td>
-                      <td className="py-2">
-                        <span
-                          className={`rounded-full px-2 py-0.5 text-xs ${
-                            status === "enrolled"
-                              ? "bg-emerald-500/15 text-emerald-400"
-                              : status === "suspended"
-                                ? "bg-rose-500/15 text-rose-400"
-                                : "bg-amber-500/15 text-amber-400"
-                          }`}
-                        >
-                          {status === "not_started" ? "Not started" : status}
-                        </span>
-                      </td>
-                      <td className="py-2 text-xs text-[color:var(--text-secondary)]">
-                        {t.bio?.device_model ?? "—"}
-                      </td>
-                      <td className="py-2 text-right">
-                        {status !== "enrolled" && (
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            disabled={notify.isPending}
-                            onClick={() => notify.mutate({ id: t.id, full_name: t.full_name })}
-                          >
-                            Resend enrollment
-                          </Button>
-                        )}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
         )}
       </GlassCard>
 

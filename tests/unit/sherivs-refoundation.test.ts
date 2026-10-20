@@ -29,7 +29,7 @@ const SITE_PAGE = "frontend/src/routes/(site)/coregrid.tsx";
 const SHERIVS_HOME = "frontend/src/components/public/sherivs-home.tsx";
 const PLATFORM_PAGE = "frontend/src/routes/platform.tsx";
 const PLATFORM_ORG_PAGE = "frontend/src/routes/platform.org.tsx";
-const COMMAND_CENTRE = "frontend/src/components/command-centre/command-centre.tsx";
+const COMMAND_CENTRE = "frontend/src/routes/_authenticated/command-centre/index.tsx";
 
 describe("Platform identity", () => {
   it("presents the company as Sherivs", () => {
