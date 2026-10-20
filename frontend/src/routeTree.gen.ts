@@ -40,6 +40,7 @@ import { Route as AuthenticatedDriverRouteRouteImport } from './routes/_authenti
 import { Route as AuthenticatedHqRouteRouteImport } from './routes/_authenticated/hq/route'
 import { Route as AuthenticatedInternalRouteImport } from './routes/_authenticated/internal'
 import { Route as AuthenticatedMessagesRouteImport } from './routes/_authenticated/messages'
+import { Route as AuthenticatedMfaRouteImport } from './routes/_authenticated/mfa'
 import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authenticated/notifications'
 import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding'
 import { Route as AuthenticatedOrganizationsRouteImport } from './routes/_authenticated/organizations'
@@ -333,6 +334,11 @@ const AuthenticatedInternalRoute = AuthenticatedInternalRouteImport.update({
 const AuthenticatedMessagesRoute = AuthenticatedMessagesRouteImport.update({
   id: '/messages',
   path: '/messages',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedMfaRoute = AuthenticatedMfaRouteImport.update({
+  id: '/mfa',
+  path: '/mfa',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedNotificationsRoute =
@@ -1179,6 +1185,7 @@ export interface FileRoutesByFullPath {
   '/terms': typeof siteTermsRoute
   '/internal': typeof AuthenticatedInternalRoute
   '/messages': typeof AuthenticatedMessagesRoute
+  '/mfa': typeof AuthenticatedMfaRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/onboarding': typeof AuthenticatedOnboardingRoute
   '/organizations': typeof AuthenticatedOrganizationsRoute
@@ -1347,6 +1354,7 @@ export interface FileRoutesByTo {
   '/terms': typeof siteTermsRoute
   '/internal': typeof AuthenticatedInternalRoute
   '/messages': typeof AuthenticatedMessagesRoute
+  '/mfa': typeof AuthenticatedMfaRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/onboarding': typeof AuthenticatedOnboardingRoute
   '/organizations': typeof AuthenticatedOrganizationsRoute
@@ -1519,6 +1527,7 @@ export interface FileRoutesById {
   '/(site)/terms': typeof siteTermsRoute
   '/_authenticated/internal': typeof AuthenticatedInternalRoute
   '/_authenticated/messages': typeof AuthenticatedMessagesRoute
+  '/_authenticated/mfa': typeof AuthenticatedMfaRoute
   '/_authenticated/notifications': typeof AuthenticatedNotificationsRoute
   '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute
   '/_authenticated/organizations': typeof AuthenticatedOrganizationsRoute
@@ -1690,6 +1699,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/internal'
     | '/messages'
+    | '/mfa'
     | '/notifications'
     | '/onboarding'
     | '/organizations'
@@ -1858,6 +1868,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/internal'
     | '/messages'
+    | '/mfa'
     | '/notifications'
     | '/onboarding'
     | '/organizations'
@@ -2029,6 +2040,7 @@ export interface FileRouteTypes {
     | '/(site)/terms'
     | '/_authenticated/internal'
     | '/_authenticated/messages'
+    | '/_authenticated/mfa'
     | '/_authenticated/notifications'
     | '/_authenticated/onboarding'
     | '/_authenticated/organizations'
@@ -2408,6 +2420,13 @@ declare module '@tanstack/react-router' {
       path: '/messages'
       fullPath: '/messages'
       preLoaderRoute: typeof AuthenticatedMessagesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/mfa': {
+      id: '/_authenticated/mfa'
+      path: '/mfa'
+      fullPath: '/mfa'
+      preLoaderRoute: typeof AuthenticatedMfaRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/notifications': {
@@ -3786,6 +3805,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedTeacherRouteRoute: typeof AuthenticatedTeacherRouteRouteWithChildren
   AuthenticatedInternalRoute: typeof AuthenticatedInternalRoute
   AuthenticatedMessagesRoute: typeof AuthenticatedMessagesRoute
+  AuthenticatedMfaRoute: typeof AuthenticatedMfaRoute
   AuthenticatedNotificationsRoute: typeof AuthenticatedNotificationsRoute
   AuthenticatedOnboardingRoute: typeof AuthenticatedOnboardingRoute
   AuthenticatedOrganizationsRoute: typeof AuthenticatedOrganizationsRoute
@@ -3810,6 +3830,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedTeacherRouteRoute: AuthenticatedTeacherRouteRouteWithChildren,
   AuthenticatedInternalRoute: AuthenticatedInternalRoute,
   AuthenticatedMessagesRoute: AuthenticatedMessagesRoute,
+  AuthenticatedMfaRoute: AuthenticatedMfaRoute,
   AuthenticatedNotificationsRoute: AuthenticatedNotificationsRoute,
   AuthenticatedOnboardingRoute: AuthenticatedOnboardingRoute,
   AuthenticatedOrganizationsRoute: AuthenticatedOrganizationsRoute,

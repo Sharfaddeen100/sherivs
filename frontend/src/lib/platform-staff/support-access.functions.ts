@@ -15,12 +15,21 @@ import type { Database } from "@/integrations/supabase/types";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { tokenMsRemaining } from "@/lib/auth-helpers";
 import { requirePlatformSuperAdmin } from "@/lib/security-role-gate";
+import { assertInternalAal2 } from "@/lib/security/mfa-server";
 import { writeAuditRecord } from "@/lib/server/write-audit";
 import { SystemClock, TimeAuthority } from "@/lib/kernel/time-authority";
 
 const timeAuthority = new TimeAuthority(new SystemClock());
 
 export const SUPPORT_GRANT_MAX_HOURS = 8;
+
+export type SecurityAlert = {
+  kind: "failed_login_spike" | "super_admin_change" | "role_escalation";
+  subject: string;
+  event_count: number;
+  first_at: string;
+  last_at: string;
+};
 
 type Ctx = {
   supabase: Parameters<typeof requirePlatformSuperAdmin>[0];
@@ -29,6 +38,7 @@ type Ctx = {
 };
 
 async function assertSuper(context: Ctx) {
+  assertInternalAal2((context as { claims?: { aal?: unknown } }).claims);
   await requirePlatformSuperAdmin(context.supabase, {
     lifecycle: null,
     sessionValid:
@@ -50,6 +60,7 @@ type RpcClient = {
 
 /** Capability check through the caller's own session (database is the authority). */
 async function assertCapability(context: Ctx, capability: string) {
+  assertInternalAal2((context as { claims?: { aal?: unknown } }).claims);
   const { data, error } = await (context.supabase as unknown as RpcClient).rpc(
     "has_platform_capability",
     { p_capability: capability },
@@ -235,6 +246,12 @@ export const getAccessReview = createServerFn({ method: "GET" })
         .limit(100),
       db.from("super_admins").select("id, email, full_name, is_active"),
     ]);
+    // Security P2 (SHERIVS-010): alert scan. Absent until 0170 is applied —
+    // the review still renders, with alertsAvailable=false.
+    const alertsRes = await (db as unknown as RpcClient).rpc("security_alerts", {
+      p_hours: 24,
+      p_failed_login_threshold: 10,
+    });
     await writeAuditRecord(db, {
       action: "platform_access_review.view",
       gate: "has_platform_capability:platform.audit.read",
@@ -253,5 +270,7 @@ export const getAccessReview = createServerFn({ method: "GET" })
       })),
       activeGrants: grants.data ?? [],
       recentEvents: events.data ?? [],
+      alertsAvailable: !alertsRes.error,
+      alerts: (alertsRes.error ? [] : ((alertsRes.data ?? []) as SecurityAlert[])).slice(0, 100),
     };
   });

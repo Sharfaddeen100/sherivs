@@ -6,6 +6,7 @@ import {
   visibleInternalSections,
   type InternalWorkspaceSection,
 } from "@/lib/platform-staff/catalogue";
+import { InternalSecurityGate } from "@/components/security/internal-security-gate";
 import { RoleGuard } from "@/components/role-guard";
 import { useApp } from "@/contexts/app-context";
 import { PLATFORM_NAME } from "@/lib/platform";
@@ -48,11 +49,18 @@ function InternalGate() {
   if (superAdmin) {
     return (
       <RoleGuard allow={["super_admin"]}>
-        <InternalHome />
+        <InternalSecurityGate>
+          <InternalHome />
+        </InternalSecurityGate>
       </RoleGuard>
     );
   }
-  if (platformStaff) return <InternalHome />;
+  if (platformStaff)
+    return (
+      <InternalSecurityGate>
+        <InternalHome />
+      </InternalSecurityGate>
+    );
   return <Navigate to="/welcome" replace />;
 }
 
