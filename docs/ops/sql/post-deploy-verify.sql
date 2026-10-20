@@ -20,11 +20,11 @@ checks(name, ok) AS (
      has_column_privilege('anon','public.schools','name','SELECT') AND has_column_privilege('anon','public.schools','slug','SELECT')),
   ('identity freeze NOT applied (separate decision)',
      NOT EXISTS (SELECT 1 FROM supabase_migrations.schema_migrations WHERE version = '20261015000010')),
-  ('10 SHERIVS release migrations recorded iff step >= 1',
+  ('11 SHERIVS release migrations recorded iff step >= 1',
      ((SELECT count(*) FROM supabase_migrations.schema_migrations WHERE version IN
        ('20261020000020','20261020000030','20261020000040','20261020000050',
-        '20261020000060','20261020000070','20261020000090','20261020000100','20261020000110','20261020000130'))
-      = CASE WHEN (SELECT step FROM p) >= 1 THEN 10 ELSE 0 END)),
+        '20261020000060','20261020000070','20261020000090','20261020000100','20261020000110','20261020000130','20261020000140'))
+      = CASE WHEN (SELECT step FROM p) >= 1 THEN 11 ELSE 0 END)),
   ('cg_idempotency_record RLS on',
      (SELECT relrowsecurity FROM pg_class WHERE oid = 'public.cg_idempotency_record'::regclass)),
   ('website RPCs still public',

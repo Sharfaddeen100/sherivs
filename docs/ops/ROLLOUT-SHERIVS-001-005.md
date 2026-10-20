@@ -22,7 +22,7 @@ Production facts (read-only preflight, 2026-10-20):
 | 0d | Verify step 0: `post-deploy-verify.sql` with `step = 0` → **19/19 true** | SQL editor | n/a |
 | 0e | Rotate Paystack keys (they were readable) | Paystack dashboard → update the stored values | n/a |
 | 1a | Merge the release (#51→#56) to default → Vercel prod | GitHub | Vercel "Promote previous" |
-| 1b | `supabase db push`: the 10 SHERIVS migrations `20261020000020…0130` | Laptop CLI | rollbacks newest-first (6c) |
+| 1b | `supabase db push`: the 11 SHERIVS migrations `20261020000020…0140` (0140 may already be applied via `lock-super-admin-bootstrap.sql`; then 10, and use `--include-all`) | Laptop CLI | rollbacks newest-first (6c) |
 | 1c | Verify step 1: `post-deploy-verify.sql` with `step = 1` → **19/19 true** | SQL editor | n/a |
 | F | Identity freeze (`20261015000010…sql.proposed`): **separate decision, see §9** | n/a | its rollback |
 
@@ -68,13 +68,15 @@ preflight shows ledger ABSENT and no SHERIVS objects; dry-run lists exactly one 
 
 1. Merge the release PRs as described in §5 (release branch, merge commits, in order #51→#53→#54→#55→#56),
    then one PR to the default branch. Wait for Vercel prod Ready.
-2. `supabase db push --db-url "$PROD_DB_URL" --dry-run` must list exactly these 10:
-   `20261020000020, 0030, 0040, 0050, 0060, 0070, 0090, 0100, 0110, 0130`. Then push without `--dry-run`.
+2. `supabase db push --db-url "$PROD_DB_URL" --dry-run` must list exactly these 11:
+   `20261020000020, 0030, 0040, 0050, 0060, 0070, 0090, 0100, 0110, 0130, 0140`.
+   If `docs/ops/sql/lock-super-admin-bootstrap.sql` was already pasted on prod, 0140 is in the ledger:
+   the dry-run lists the other 10 and the CLI needs `--include-all` (they are older than 0140). Then push without `--dry-run`.
 3. SQL editor → `post-deploy-verify.sql` with `SELECT 1 AS step` → all 19 `t`.
 4. Smoke tests (§4).
 
 **Go for step 1:** step 0 verified (19/19) and stable ≥ 1 day or same-day with no errors; release CI green;
-dry-run lists exactly the 10; Muhammad decided on the freeze (§9).
+dry-run lists exactly the 11 (or 10 + `--include-all` if 0140 was pre-applied); Muhammad decided on the freeze (§9).
 **No-go:** any of those false; any unexpected file in the dry-run.
 
 ## 4. Smoke tests (after each step, one account per role)
@@ -99,7 +101,7 @@ Login or dashboard errors for any role, verify script shows `f`, website/admissi
 Vercel → Deployments → previous production deployment → "Promote to Production".
 
 ### 6c. Database
-- Step 1: run `database/supabase/rollbacks/2026102000*.sql` **newest first** (0130 → 0020), each followed by
+- Step 1: run `database/supabase/rollbacks/2026102000*.sql` **newest first** (0140 → 0020), each followed by
   `supabase migration repair --db-url "$PROD_DB_URL" --status reverted <version>`.
   The 0020 rollback is intentionally a no-op, because prod already had RLS on `cg_idempotency_record`.
 - Step 0: run `rollbacks/20261015000005_sherivs_002_secret_column_privilege.sql`, then
