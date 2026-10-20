@@ -69,12 +69,11 @@ describe("auth route wiring", () => {
     expect(auth).toContain("Need an account? Create one");
   });
 
-  it("hides the demo CTA unless shouldShowPublicDemoEntry is true", () => {
-    expect(auth).toContain("shouldShowPublicDemoEntry");
-    expect(auth).toContain("showDemoEntry");
-    expect(auth).toMatch(/showDemoEntry \? \(/);
-    expect(auth).toContain("Isolated demo mode");
-    expect(auth).toContain('data-demo-entry="explicit"');
+  it("mounts no public demo CTA or demo provisioning on /auth (master removed it)", () => {
+    expect(auth).not.toContain("provisionDemoEnterprise");
+    expect(auth).not.toContain("handleDemoLogin");
+    expect(auth).not.toContain("Sign in as Enterprise demo");
+    expect(auth).not.toMatch(/demo-provision\.functions/);
   });
 
   it("does not use NODE_ENV as production identity for the demo CTA", () => {

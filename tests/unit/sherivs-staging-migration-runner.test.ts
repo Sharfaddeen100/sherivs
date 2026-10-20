@@ -689,12 +689,17 @@ describe("SHERIVS staging-only migration runner (offline)", () => {
   it("working tree mismatch is documented and not used as the pin", () => {
     const working = inspectWorkingTree();
     expect(working.count).not.toBe(71);
-    expect(working.missingFromPin).toEqual(
+    // On master the membership/onboarding migrations are present, so the
+    // pinned 71 are all in the tree; the mismatch is the post-pin SHERIVS
+    // migrations, which the runner must never fold into the pin.
+    expect(working.missingFromPin).toEqual([]);
+    expect(working.extra).toEqual(
       expect.arrayContaining([
-        "20261008000050_coregrid_organization_memberships.sql",
-        "20261008000060_organization_onboarding.sql",
+        "20261015000005_sherivs_002_secret_column_privilege.sql",
+        "20261020000130_sherivs_006_membership_identity_freeze.sql",
       ]),
     );
+    expect(working.matchesPin).toBe(false);
     expect(gitLoaded.count).toBe(71);
   });
 

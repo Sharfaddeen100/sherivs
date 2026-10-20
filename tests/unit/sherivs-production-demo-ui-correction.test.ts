@@ -10,8 +10,8 @@ describe("public root no longer mounts in-memory Command Centre", () => {
   const index = read("frontend/src/routes/index.tsx");
   const home = read("frontend/src/components/public/platform-home.tsx");
 
-  it("renders PublicPlatformHome instead of CommandCentre on /", () => {
-    expect(index).toContain("PublicPlatformHome");
+  it("renders the neutral public home (SherivsHome) instead of CommandCentre on /", () => {
+    expect(index).toContain("<SherivsHome />");
     expect(index).not.toMatch(/from ["']@\/components\/command-centre\/command-centre["']/);
     expect(index).not.toContain("<CommandCentre");
     expect(index).not.toContain("user:demo-administrator");
@@ -29,7 +29,8 @@ describe("public root no longer mounts in-memory Command Centre", () => {
 
   it("preserves tenant public sites and authenticated workspace routing", () => {
     expect(index).toContain("PublicSchoolSite");
-    expect(index).toContain("scholarWorkspaceHome");
+    // master routes signed-in users via the resolved identity chain.
+    expect(index).toContain("identityFromAppState");
     expect(index).toContain('createFileRoute("/")');
   });
 });
