@@ -91,7 +91,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       // Try tenant profile first
       const { data: prof } = await supabase
         .from("users")
-        .select(SCHOOL_CLIENT_COLUMNS)
+        .select("*")
         .eq("id", currentSession.user.id)
         .maybeSingle();
 
