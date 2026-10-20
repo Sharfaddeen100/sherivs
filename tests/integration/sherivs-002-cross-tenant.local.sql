@@ -687,7 +687,20 @@ INSERT INTO sv2_over (tbl, col, expr, variant) VALUES
   ('cg_tool_runtime_tool', 'tool_id',           $x$('sv2-tool-' || md5(@@TENANT@@))$x$, 'base'),
   ('cg_tool_runtime_tool', 'risk_class',        $x$'low'$x$, 'base'),
   ('cg_worker_definition', 'classification',    $x$'human'$x$, 'base'),
-  ('cg_worker_definition', 'max_risk_class',    $x$'low'$x$, 'base');
+  ('cg_worker_definition', 'max_risk_class',    $x$'low'$x$, 'base'),
+  -- SHERIVS-003 (20261020000060) CHECK-constrained columns
+  ('consent_records', 'purpose',                $x$'photos_media'$x$, 'base'),
+  ('consent_records', 'status',                 $x$'granted'$x$, 'base'),
+  ('consent_records', 'capture_method',         $x$'admin_entered'$x$, 'base'),
+  ('consent_events', 'purpose',                 $x$'photos_media'$x$, 'base'),
+  ('consent_events', 'action',                  $x$'grant'$x$, 'base'),
+  ('consent_events', 'capture_method',          $x$'admin_entered'$x$, 'base'),
+  ('data_subject_requests', 'subject_type',     $x$'user'$x$, 'base'),
+  ('data_subject_requests', 'subject_student_id', $x$NULL::uuid$x$, 'base'),
+  ('data_subject_requests', 'request_type',     $x$'access_export'$x$, 'base'),
+  ('data_subject_requests', 'status',           $x$'received'$x$, 'base'),
+  ('security_incidents', 'severity',            $x$'low'$x$, 'base'),
+  ('security_incidents', 'status',              $x$'open'$x$, 'base');
 
 -- Generic seeding of every table keyed by school_id / tenant_id / tenant_ref.
 DO $seed_generic$

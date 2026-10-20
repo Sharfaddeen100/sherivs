@@ -163,6 +163,24 @@ export const placeTwinCall = createServerFn({ method: "POST" })
       sessionValid: typeof claims?.exp === "number" && tokenMsRemaining(claims.exp) > 0,
     });
 
+    // NDPA: an outbound call about a specific student needs the guardian's
+    // messaging consent (denied or missing => refuse, nothing is dialed or logged).
+    if (data.student_id) {
+      const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+      const { hasConsent } = await import("@/lib/compliance/consent.functions");
+      const allowed = await hasConsent(
+        supabaseAdmin as unknown as Parameters<typeof hasConsent>[0],
+        data.student_id,
+        "messaging_sms_whatsapp",
+        schoolId,
+      );
+      if (!allowed) {
+        throw new Error(
+          "Guardian consent for SMS/WhatsApp/voice messaging is not on record for this student (NDPA). Record consent first.",
+        );
+      }
+    }
+
     const { data: cfg } = await supabase
       .from("digital_twin_config")
       .select("id, is_active")

@@ -1,0 +1,41 @@
+import type { WriteAuditClient } from "@/lib/server/write-audit";
+
+/**
+ * Structural postgrest-compatible client used by the compliance server paths.
+ * Deliberately loose so tests can inject an in-memory fake; callers pass the
+ * service-role client only after their own authorization gate.
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- structural postgrest builder; narrowed per call site
+export type ComplianceDb = { from(table: string): any } & WriteAuditClient;
+
+export type DbError = { message: string } | null | undefined;
+
+export type ActorRow = {
+  id: string;
+  school_id: string | null;
+  role: string | null;
+  is_active: boolean | null;
+};
+
+export function isSchoolAdminOf(actor: ActorRow | null, schoolId: string): boolean {
+  return (
+    !!actor &&
+    actor.is_active !== false &&
+    (actor.role === "admin" || actor.role === "principal") &&
+    actor.school_id === schoolId
+  );
+}
+
+export async function loadActor(db: ComplianceDb, id: string): Promise<ActorRow | null> {
+  const res = await db
+    .from("users")
+    .select("id, school_id, role, is_active")
+    .eq("id", id)
+    .maybeSingle();
+  if (res?.error) throw new Error(`Failed to load actor: ${res.error.message}`);
+  return (res?.data as ActorRow | null) ?? null;
+}
+
+export function throwIfError(res: { error?: DbError } | null | undefined, what: string): void {
+  if (res?.error) throw new Error(`${what}: ${res.error.message}`);
+}
