@@ -13,10 +13,12 @@ import {
   DisposablePgError,
   DISPOSABLE_LIFECYCLE_ENV,
   DISPOSABLE_LIFECYCLE_ALLOWED,
+// @ts-expect-error — untyped plain-JS SHERIVS script imported into the TS unit suite (same pattern as tests/unit/h3-036-posture-adjudication.test.ts)
 } from "../../scripts/lib/sherivs-disposable-pg.mjs";
 import {
   PRODUCTION_PROJECT_REF,
   STAGING_PROJECT_REF,
+// @ts-expect-error — untyped plain-JS SHERIVS script imported into the TS unit suite (same pattern as tests/unit/h3-036-posture-adjudication.test.ts)
 } from "../../scripts/lib/sherivs-db-target.mjs";
 
 const ROOT = fileURLToPath(new URL("../..", import.meta.url));

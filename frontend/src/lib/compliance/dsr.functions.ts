@@ -4,6 +4,7 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { tokenMsRemaining } from "@/lib/auth-helpers";
 import { requireSchoolAdminScope } from "@/lib/security-role-gate";
 import { writeAuditRecord } from "@/lib/server/write-audit";
+import type { Json } from "@/integrations/supabase/types";
 import {
   DSR_REQUEST_TYPES,
   DSR_SUBJECT_TYPES,
@@ -253,7 +254,7 @@ export async function performExport(deps: AdminDeps & { input: { requestId: stri
   const req = await requireVerified(deps, deps.input.requestId, "access_export");
   const ref = await resolveSubject(db, req);
 
-  const data: Record<string, Record<string, unknown>[]> = {};
+  const data: Record<string, { [column: string]: Json }[]> = {};
   for (const src of planExport(ref)) {
     if (src.arrayMember) {
       const res = await db
@@ -262,7 +263,7 @@ export async function performExport(deps: AdminDeps & { input: { requestId: stri
         .eq("school_id", actorSchoolId);
       throwIfError(res, `Export read failed for ${src.table}`);
       const bucket = (data[src.table] ??= []);
-      for (const row of (res?.data ?? []) as Record<string, unknown>[]) {
+      for (const row of (res?.data ?? []) as { [column: string]: Json }[]) {
         const ids = Array.isArray(row[src.column]) ? (row[src.column] as unknown[]) : [];
         // Never expose co-passengers: only the bus/route the subject rides.
         if (ids.includes(src.subjectId)) {
@@ -279,7 +280,7 @@ export async function performExport(deps: AdminDeps & { input: { requestId: stri
     throwIfError(res, `Export read failed for ${src.table}`);
     const bucket = (data[src.table] ??= []);
     const seen = new Set(bucket.map((r) => r.id));
-    for (const row of (res?.data ?? []) as Record<string, unknown>[]) {
+    for (const row of (res?.data ?? []) as { [column: string]: Json }[]) {
       if (!seen.has(row.id)) bucket.push(row);
     }
   }

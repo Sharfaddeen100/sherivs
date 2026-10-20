@@ -12,6 +12,7 @@ import {
   STAGING_PROJECT_REF,
   TRANSPORT_FIRST,
   TRANSPORT_SECOND,
+// @ts-expect-error — untyped plain-JS SHERIVS script imported into the TS unit suite (same pattern as tests/unit/h3-036-posture-adjudication.test.ts)
 } from "../../scripts/staging/sherivs-restore/constants.mjs";
 import {
   loadApprovedManifest,
@@ -19,24 +20,29 @@ import {
   loadFromGitCommit,
   inspectWorkingTree,
   verifyLoadedFiles,
+// @ts-expect-error — untyped plain-JS SHERIVS script imported into the TS unit suite (same pattern as tests/unit/h3-036-posture-adjudication.test.ts)
 } from "../../scripts/staging/sherivs-restore/source.mjs";
 import {
   assertStagingTarget,
   collectForbiddenFallbacks,
   resolveStagingTarget,
+// @ts-expect-error — untyped plain-JS SHERIVS script imported into the TS unit suite (same pattern as tests/unit/h3-036-posture-adjudication.test.ts)
 } from "../../scripts/staging/sherivs-restore/target.mjs";
 import {
   buildPinnedClientConfig,
   inspectTlsPosture,
   parseDiscreteConnection,
   strictTlsConfig,
+// @ts-expect-error — untyped plain-JS SHERIVS script imported into the TS unit suite (same pattern as tests/unit/h3-036-posture-adjudication.test.ts)
 } from "../../scripts/staging/sherivs-restore/tls.mjs";
+// @ts-expect-error — untyped plain-JS SHERIVS script imported into the TS unit suite (same pattern as tests/unit/h3-036-posture-adjudication.test.ts)
 import { createLogger, redactText, redactUrl } from "../../scripts/staging/sherivs-restore/redact.mjs";
 import {
   LEDGER_STATUS,
   createMemoryLedger,
   createSqlLedger,
   evaluateLedger,
+// @ts-expect-error — untyped plain-JS SHERIVS script imported into the TS unit suite (same pattern as tests/unit/h3-036-posture-adjudication.test.ts)
 } from "../../scripts/staging/sherivs-restore/ledger.mjs";
 import {
   createLiveConnector,
@@ -44,6 +50,7 @@ import {
   demonstrateDriverSslOverwrite,
   inspectConstructedClientSsl,
   liveConnectorPlan,
+// @ts-expect-error — untyped plain-JS SHERIVS script imported into the TS unit suite (same pattern as tests/unit/h3-036-posture-adjudication.test.ts)
 } from "../../scripts/staging/sherivs-restore/connect.mjs";
 import {
   assertTrustedLockController,
@@ -57,7 +64,9 @@ import {
   LOCK_AUTHENTICITY,
   LOCK_STATES,
   advisoryLockPlan,
+// @ts-expect-error — untyped plain-JS SHERIVS script imported into the TS unit suite (same pattern as tests/unit/h3-036-posture-adjudication.test.ts)
 } from "../../scripts/staging/sherivs-restore/lock.mjs";
+// @ts-expect-error — untyped plain-JS SHERIVS script imported into the TS unit suite (same pattern as tests/unit/h3-036-posture-adjudication.test.ts)
 import { reconcileRestoreState } from "../../scripts/staging/sherivs-restore/reconcile.mjs";
 import {
   CATALOG_CLASS_STATES,
@@ -79,12 +88,16 @@ import {
   observationState,
   parseIndexShape,
   resolveForeignKeyReferencedColumns,
+// @ts-expect-error — untyped plain-JS SHERIVS script imported into the TS unit suite (same pattern as tests/unit/h3-036-posture-adjudication.test.ts)
 } from "../../scripts/staging/sherivs-restore/catalog-contract.mjs";
+// @ts-expect-error — untyped plain-JS SHERIVS script imported into the TS unit suite (same pattern as tests/unit/h3-036-posture-adjudication.test.ts)
 import { catalogNotAssumedFromPriorReport, runOfflinePreflight } from "../../scripts/staging/sherivs-restore/preflight.mjs";
 import {
   assertExecuteAuthorization,
   runRestore,
+// @ts-expect-error — untyped plain-JS SHERIVS script imported into the TS unit suite (same pattern as tests/unit/h3-036-posture-adjudication.test.ts)
 } from "../../scripts/staging/sherivs-restore/runner.mjs";
+// @ts-expect-error — untyped plain-JS SHERIVS script imported into the TS unit suite (same pattern as tests/unit/h3-036-posture-adjudication.test.ts)
 import { help, main as cliMain } from "../../scripts/staging/sherivs-restore/cli.mjs";
 
 const CA_PEM = `-----BEGIN CERTIFICATE-----
@@ -311,7 +324,7 @@ describe("SHERIVS staging-only migration runner (offline)", () => {
   });
 
   it("4. modified checksum fails", () => {
-    const loaded = gitLoaded.loaded.map((f, i) =>
+    const loaded = gitLoaded.loaded.map((f: any, i: any) =>
       i === 0 ? { ...f, bytes: Buffer.concat([f.bytes, Buffer.from("\n--tamper")]) } : f,
     );
     expect(() => verifyLoadedFiles(loaded, approved)).toThrow(/CHECKSUM_MISMATCH/);
@@ -459,7 +472,7 @@ describe("SHERIVS staging-only migration runner (offline)", () => {
   });
 
   it("18. a successful migration record must match its checksum and source", () => {
-    const matching = approved.files.map((f) => ({
+    const matching = approved.files.map((f: any) => ({
       filename: f.filename,
       status: LEDGER_STATUS.SUCCEEDED,
       completed_at: new Date().toISOString(),
@@ -471,7 +484,7 @@ describe("SHERIVS staging-only migration runner (offline)", () => {
       action: "already_complete",
       ok: true,
     });
-    const wrongCommit = matching.map((r, i) =>
+    const wrongCommit = matching.map((r: any, i: any) =>
       i === 0 ? { ...r, source_commit: "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb" } : r,
     );
     expect(evaluateLedger(wrongCommit, approved).reason).toBe("LEDGER_SOURCE_MISMATCH");
@@ -480,7 +493,7 @@ describe("SHERIVS staging-only migration runner (offline)", () => {
   it("19. failure stops execution immediately", async () => {
     const mini = miniManifest();
     const connector = createMockConnector({
-      onQuery: ({ label, sql }) => {
+      onQuery: ({ label, sql }: any) => {
         if (label.startsWith("apply:") && String(sql).includes("CREATE TABLE b")) {
           throw new Error("boom-on-b");
         }
@@ -500,19 +513,19 @@ describe("SHERIVS staging-only migration runner (offline)", () => {
     expect(result.stopped).toBe(true);
     expect(result.failed.filename).toBe(TRANSPORT_FIRST);
     expect(result.applied).toHaveLength(1);
-    const applyLabels = connector.opened.filter((o) => o.label.startsWith("apply:"));
-    expect(applyLabels.map((o) => o.label)).toEqual([
+    const applyLabels = connector.opened.filter((o: any) => o.label.startsWith("apply:"));
+    expect(applyLabels.map((o: any) => o.label)).toEqual([
       "apply:20260101000000_a.sql",
       `apply:${TRANSPORT_FIRST}`,
     ]);
-    expect(connector.closed).toEqual(connector.opened.map((o) => o.id));
+    expect(connector.closed).toEqual(connector.opened.map((o: any) => o.id));
   });
 
   it("20. a migration is never automatically retried after uncertain outcome", async () => {
     const mini = miniManifest();
     let applyB = 0;
     const connector = createMockConnector({
-      onQuery: ({ label, sql }) => {
+      onQuery: ({ label, sql }: any) => {
         if (label.startsWith("apply:") && String(sql).includes("CREATE TABLE b")) {
           applyB += 1;
           throw new Error("uncertain");
@@ -560,9 +573,9 @@ describe("SHERIVS staging-only migration runner (offline)", () => {
       ...executeHarness(),
     });
     expect(result.ok).toBe(true);
-    const applyOpens = connector.opened.filter((o) => o.label.startsWith("apply:"));
+    const applyOpens = connector.opened.filter((o: any) => o.label.startsWith("apply:"));
     expect(applyOpens).toHaveLength(3);
-    expect(new Set(applyOpens.map((o) => o.id)).size).toBe(3);
+    expect(new Set(applyOpens.map((o: any) => o.id)).size).toBe(3);
     const applyEvents = connector.events.filter((e: { label: string }) =>
       e.label.startsWith("apply:"),
     );
@@ -916,7 +929,7 @@ describe("SHERIVS staging-only migration runner (offline)", () => {
     const lock = createAdvisoryLock({ session, owner: "lossy" });
     let applyCreates = 0;
     const connector = createMockConnector({
-      onQuery: ({ label, sql }) => {
+      onQuery: ({ label, sql }: any) => {
         if (label.startsWith("apply:") && String(sql) === "COMMIT") {
           applyCreates += 1;
           if (applyCreates === 1) session.simulateConnectionLoss();
@@ -956,7 +969,7 @@ describe("SHERIVS staging-only migration runner (offline)", () => {
     expect(["LEDGER_AMBIGUOUS", "LEDGER_INCOMPLETE", "LEDGER_PARTIAL_PREFIX"]).toContain(
       second.decision.reason,
     );
-    const applyLabels = connector.opened.filter((o) => o.label.startsWith("apply:"));
+    const applyLabels = connector.opened.filter((o: any) => o.label.startsWith("apply:"));
     expect(applyLabels).toHaveLength(1);
   });
 
@@ -1103,7 +1116,7 @@ describe("SHERIVS staging-only migration runner (offline)", () => {
       vendorHistory: { status: "absent", versions: [] },
       catalog: {
         status: "observed",
-        tables: expected.tables.map((t) => ({ schema: t.schema, name: t.name })),
+        tables: expected.tables.map((t: any) => ({ schema: t.schema, name: t.name })),
         policies: [],
       },
     });
@@ -1200,7 +1213,7 @@ describe("SHERIVS staging-only migration runner (offline)", () => {
     expect(gitLoaded.count).toBe(71);
     expect(() => assertStagingTarget(PRODUCTION_URL)).toThrow(/TARGET_PRODUCTION_REF/);
     const sqlByFilename = Object.fromEntries(
-      gitLoaded.loaded.map((f) => [f.filename, f.bytes.toString("utf8")]),
+      gitLoaded.loaded.map((f: any) => [f.filename, f.bytes.toString("utf8")]),
     );
     const expected = extractExpectedObjects(sqlByFilename);
     expect(expected.tableCount).toBeGreaterThan(50);
@@ -1399,7 +1412,7 @@ describe("SHERIVS staging-only migration runner (offline)", () => {
     const rich = richManifest();
     const expected = extractExpectedObjects(rich.sqlByFilename);
     const catalog = observedCatalogFromExpected(expected);
-    catalog.policies = catalog.policies.map((p) => ({ ...p, command: "ALL", roles: ["public"] }));
+    catalog.policies = catalog.policies.map((p: any) => ({ ...p, command: "ALL", roles: ["public"] }));
     const decision = reconcileRestoreState({
       manifest: rich,
       ledgerRows: completeLedger(rich),
@@ -1545,7 +1558,7 @@ END $$;
   it("connection cleanup after connection failure", async () => {
     const mini = miniManifest();
     const connector = createMockConnector({
-      onOpen: ({ label }) => {
+      onOpen: ({ label }: any) => {
         if (label.includes(TRANSPORT_FIRST)) {
           throw Object.assign(new Error("connect-failed"), { code: "CONNECT_FAILED" });
         }
@@ -1562,14 +1575,14 @@ END $$;
     });
     expect(result.ok).toBe(false);
     expect(result.failed.error).toMatch(/connect-failed/);
-    expect(connector.closed).toEqual(connector.opened.map((o) => o.id));
+    expect(connector.closed).toEqual(connector.opened.map((o: any) => o.id));
     expect(connector.closed.length).toBeGreaterThan(0);
   });
 
   it("connection cleanup after migration failure", async () => {
     const mini = miniManifest();
     const connector = createMockConnector({
-      onQuery: ({ sql }) => {
+      onQuery: ({ sql }: any) => {
         if (String(sql).includes("CREATE TABLE b")) {
           throw Object.assign(new Error("apply-failed-b"), { code: "APPLY_FAILED" });
         }
@@ -1587,13 +1600,13 @@ END $$;
     });
     expect(result.ok).toBe(false);
     expect(result.failed.error).toMatch(/apply-failed-b/);
-    expect(connector.closed).toEqual(connector.opened.map((o) => o.id));
+    expect(connector.closed).toEqual(connector.opened.map((o: any) => o.id));
   });
 
   it("cleanup errors preserve the original migration error", async () => {
     const mini = miniManifest();
     const connector = createMockConnector({
-      onQuery: ({ sql }) => {
+      onQuery: ({ sql }: any) => {
         if (String(sql).includes("CREATE TABLE a")) {
           throw Object.assign(new Error("original-apply-error"), { code: "APPLY_FAILED" });
         }
@@ -1616,7 +1629,7 @@ END $$;
     expect(result.failed.error).toMatch(/original-apply-error/);
     expect(result.failed.error).not.toMatch(/close-also-failed/);
     expect(result.failed.closeError).toMatch(/close-also-failed/);
-    expect(connector.closed).toEqual(connector.opened.map((o) => o.id));
+    expect(connector.closed).toEqual(connector.opened.map((o: any) => o.id));
     expect(result.retried).toBe(false);
     expect(result.autoRetry).toBe(false);
   });
@@ -1666,7 +1679,9 @@ CREATE POLICY people_self ON public.people AS RESTRICTIVE
     };
   }
 
-  function completeDecision(manifest: ReturnType<typeof identityManifest>, catalog: Record<string, unknown>) {
+  function completeDecision(
+    manifest: Omit<ReturnType<typeof identityManifest>, "sqlByFilename"> & { sqlByFilename: Record<string, string> },
+    catalog: Record<string, unknown>) {
     const expected = extractExpectedObjects(manifest.sqlByFilename);
     return {
       expected,
@@ -1944,7 +1959,7 @@ CREATE POLICY people_self ON public.people AS RESTRICTIVE
   it("close-after-success is an uncertain outcome with no automatic retry", async () => {
     const mini = miniManifest();
     const connector = createMockConnector({
-      onClose: ({ label }) => {
+      onClose: ({ label }: any) => {
         if (label.includes("20260101000000_a.sql")) throw new Error("close-after-commit");
       },
     });
@@ -1963,7 +1978,7 @@ CREATE POLICY people_self ON public.people AS RESTRICTIVE
     expect(first.failed.phase).toBe("apply-close");
     expect(first.retried).toBe(false);
     expect(first.autoRetry).toBe(false);
-    expect(connector.closed).toEqual(connector.opened.map((o) => o.id));
+    expect(connector.closed).toEqual(connector.opened.map((o: any) => o.id));
 
     const second = await runRestore({
       mode: "execute",
@@ -1986,9 +2001,9 @@ CREATE POLICY people_self ON public.people AS RESTRICTIVE
     const connector = createMockConnector();
     const ledger = createSqlLedger(connector);
     await ledger.bootstrap();
-    expect(connector.opened.some((o) => o.label === "ledger-bootstrap")).toBe(true);
+    expect(connector.opened.some((o: any) => o.label === "ledger-bootstrap")).toBe(true);
     expect(connector.queries.some((q: { sql: string }) => /sherivs_staging_ledger/.test(q.sql))).toBe(true);
-    expect(connector.closed).toEqual(connector.opened.map((o) => o.id));
+    expect(connector.closed).toEqual(connector.opened.map((o: any) => o.id));
 
     await ledger.recordStarted({
       seq: 1,
@@ -2000,7 +2015,7 @@ CREATE POLICY people_self ON public.people AS RESTRICTIVE
     });
     expect(connector.queries.some((q: { sql: string }) => /INSERT INTO/.test(q.sql))).toBe(true);
 
-    await connector.withConnection("apply", async (client) => {
+    await connector.withConnection("apply", async (client: any) => {
       await ledger.markSucceededInTransaction(client, "20260101000000_a.sql", "attempt-1");
     });
     expect(connector.queries.some((q: { sql: string }) => /SET status/.test(q.sql) || /SUCCEEDED|succeeded/.test(q.sql))).toBe(
@@ -2008,7 +2023,7 @@ CREATE POLICY people_self ON public.people AS RESTRICTIVE
     );
 
     const failing = createMockConnector({
-      onQuery: ({ sql }) => {
+      onQuery: ({ sql }: any) => {
         if (String(sql).includes("INSERT INTO")) {
           throw Object.assign(new Error("original-sql-ledger-error"), { code: "LEDGER_WRITE_FAILED" });
         }
@@ -2029,7 +2044,7 @@ CREATE POLICY people_self ON public.people AS RESTRICTIVE
         attempt_id: "attempt-2",
       }),
     ).rejects.toMatchObject({ message: expect.stringMatching(/original-sql-ledger-error/) });
-    expect(failing.closed).toEqual(failing.opened.map((o) => o.id));
+    expect(failing.closed).toEqual(failing.opened.map((o: any) => o.id));
   });
 
   it("implicit-PK matching explicit referenced primary key can complete", () => {

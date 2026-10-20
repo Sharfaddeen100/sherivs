@@ -53,7 +53,7 @@ const AUDIT_TARGET_TABLE = "cg_execution_record";
 export interface WorkerLaunchAuditIntent {
   readonly action: string;
   readonly gate: string;
-  readonly outcome: "succeeded" | "failed";
+  readonly outcome: "succeeded" | "failed" | "denied";
   readonly table: string;
   readonly recordId: string | null;
   readonly tenantId: string | null;

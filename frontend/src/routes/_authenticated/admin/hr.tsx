@@ -44,7 +44,7 @@ import {
 } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
-import { parseHrStaffPatch } from "@/lib/identity-privilege";
+import { parseHrStaffPatch } from "@/lib/runtime/identity-privilege";
 import { useServerFn } from "@tanstack/react-start";
 import { updateStaffPrivilege } from "@/lib/runtime/scholar/staff-privilege.functions";
 

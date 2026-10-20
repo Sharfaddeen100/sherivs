@@ -17,11 +17,13 @@ import { describe, expect, it } from "vitest";
 import {
   PINNED_MIGRATION_COUNT,
   PINNED_SOURCE_COMMIT,
+// @ts-expect-error — untyped plain-JS SHERIVS script imported into the TS unit suite (same pattern as tests/unit/h3-036-posture-adjudication.test.ts)
 } from "../../scripts/staging/sherivs-restore/constants.mjs";
 import {
   inspectWorkingTree,
   verifyLoadedFiles,
   loadApprovedManifest,
+// @ts-expect-error — untyped plain-JS SHERIVS script imported into the TS unit suite (same pattern as tests/unit/h3-036-posture-adjudication.test.ts)
 } from "../../scripts/staging/sherivs-restore/source.mjs";
 import {
   IDENTITY_PRIVILEGE_REASONS,
@@ -31,7 +33,7 @@ import {
   parseHrStaffPatch,
   parseSelfProfilePatch,
   privilegedKeysIn,
-} from "@/lib/identity-privilege";
+} from "@/lib/runtime/identity-privilege";
 import { decideAccountAdministration, evaluateRoleGate } from "@/lib/security-role-gate";
 import { resolvePublicSupabaseConfig } from "../../frontend/src/integrations/supabase/public-config";
 import {

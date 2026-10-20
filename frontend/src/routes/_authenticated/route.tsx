@@ -5,6 +5,7 @@ import {
   Link,
   useNavigate,
   useRouter,
+  type ErrorComponentProps,
 } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { refreshPushTokenIfGranted } from "@/lib/push-client";
@@ -37,7 +38,7 @@ import { scholarWorkspaceLabelForMember } from "@/lib/runtime/scholar-workforce-
 import { getMyPrimaryWorkforcePosition } from "@/lib/runtime/scholar/workforce-positions.functions";
 import { useQuery } from "@tanstack/react-query";
 import { useCanManageAdmissions } from "@/components/admin-area-guard";
-import { admissionsOnlyNav } from "@/lib/admissions-access";
+import { admissionsOnlyNav } from "@/lib/runtime/scholar/admissions-access";
 import { useServerFn } from "@tanstack/react-start";
 
 export const Route = createFileRoute("/_authenticated")({
@@ -52,7 +53,9 @@ export const Route = createFileRoute("/_authenticated")({
   errorComponent: AuthenticatedRouteErrorComponent,
 });
 
-function AuthenticatedRouteErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
+function AuthenticatedRouteErrorComponent({ error: thrown, reset }: ErrorComponentProps) {
+  // TanStack Router types route errors as `unknown`; normalise before rendering.
+  const error = thrown instanceof Error ? thrown : new Error(String(thrown));
   const router = useRouter();
   return (
     <RouteErrorBoundary

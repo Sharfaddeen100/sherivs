@@ -21,14 +21,17 @@ import {
   decideDisposableExecution,
   planDisposableExecution,
   runDisposableExecution,
+// @ts-expect-error — untyped plain-JS SHERIVS script imported into the TS unit suite (same pattern as tests/unit/h3-036-posture-adjudication.test.ts)
 } from "../../scripts/lib/sherivs-disposable-exec.mjs";
 import {
   DISPOSABLE_LIFECYCLE_ALLOWED,
   DISPOSABLE_LIFECYCLE_ENV,
+// @ts-expect-error — untyped plain-JS SHERIVS script imported into the TS unit suite (same pattern as tests/unit/h3-036-posture-adjudication.test.ts)
 } from "../../scripts/lib/sherivs-disposable-pg.mjs";
 import {
   PRODUCTION_PROJECT_REF,
   STAGING_PROJECT_REF,
+// @ts-expect-error — untyped plain-JS SHERIVS script imported into the TS unit suite (same pattern as tests/unit/h3-036-posture-adjudication.test.ts)
 } from "../../scripts/lib/sherivs-db-target.mjs";
 
 const ROOT = fileURLToPath(new URL("../..", import.meta.url));
@@ -84,8 +87,8 @@ describe("disposable execution harness (no sockets, no SQL)", () => {
     expect(sha256File(PINNED_ROLLBACK.relativePath)).toBe(PINNED_ROLLBACK.sha256);
     const plan = planDisposableExecution(qualifiedEnv());
     expect(plan.artifacts).toHaveLength(2);
-    expect(plan.artifacts.every((item) => item.shaMatches)).toBe(true);
-    expect(plan.artifacts.every((item) => item.hasBegin && item.hasCommit)).toBe(true);
+    expect(plan.artifacts.every((item: any) => item.shaMatches)).toBe(true);
+    expect(plan.artifacts.every((item: any) => item.hasBegin && item.hasCommit)).toBe(true);
   });
 
   it("inspects without treating qualification as execute authorization", () => {

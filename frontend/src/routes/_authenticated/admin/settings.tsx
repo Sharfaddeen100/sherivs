@@ -6,7 +6,7 @@ import { z } from "zod";
 
 import { useApp } from "@/contexts/app-context";
 import { supabase } from "@/integrations/supabase/client";
-import { SCHOOL_CLIENT_COLUMNS } from "@/lib/school-columns";
+import { SCHOOL_CLIENT_COLUMNS } from "@/lib/runtime/scholar/school-columns";
 import { PortalPage } from "@/components/portal-shell";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
@@ -44,7 +44,7 @@ function SchoolSettingsPage() {
         .maybeSingle();
       if (!cancelled) {
         if (error) toast.error(error.message);
-        setFresh((data as SchoolRow) ?? null);
+        setFresh((data as unknown as SchoolRow | null) ?? null);
         setLoading(false);
       }
     })();
@@ -77,7 +77,7 @@ function SchoolSettingsPage() {
       .from("schools")
       .select(SCHOOL_CLIENT_COLUMNS)
       .eq("id", school.id).maybeSingle();
-    setFresh((data as SchoolRow) ?? null);
+    setFresh((data as unknown as SchoolRow | null) ?? null);
   };
 
   return (

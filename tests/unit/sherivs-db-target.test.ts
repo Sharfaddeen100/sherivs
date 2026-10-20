@@ -11,6 +11,7 @@ import {
   resolveExplicitTarget,
   resolveManagementProjectRef,
   resolvePostgresConnection,
+// @ts-expect-error — untyped plain-JS SHERIVS script imported into the TS unit suite (same pattern as tests/unit/h3-036-posture-adjudication.test.ts)
 } from "../../scripts/lib/sherivs-db-target.mjs";
 import { resolvePublicSupabaseConfig } from "../../frontend/src/integrations/supabase/public-config";
 
