@@ -6,6 +6,7 @@ import { z } from "zod";
 
 import { useApp } from "@/contexts/app-context";
 import { supabase } from "@/integrations/supabase/client";
+import { SCHOOL_CLIENT_COLUMNS } from "@/lib/school-columns";
 import { PortalPage } from "@/components/portal-shell";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
@@ -38,7 +39,7 @@ function SchoolSettingsPage() {
       setLoading(true);
       const { data, error } = await supabase
         .from("schools")
-        .select("*")
+        .select(SCHOOL_CLIENT_COLUMNS)
         .eq("id", school.id)
         .maybeSingle();
       if (!cancelled) {
@@ -72,7 +73,10 @@ function SchoolSettingsPage() {
 
   const onSaved = async () => {
     await refresh();
-    const { data } = await supabase.from("schools").select("*").eq("id", school.id).maybeSingle();
+    const { data } = await supabase
+      .from("schools")
+      .select(SCHOOL_CLIENT_COLUMNS)
+      .eq("id", school.id).maybeSingle();
     setFresh((data as SchoolRow) ?? null);
   };
 

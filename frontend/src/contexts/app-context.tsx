@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 import type { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { resolveTenantSlug } from "@/lib/tenant";
+import { SCHOOL_CLIENT_COLUMNS } from "@/lib/school-columns";
 import { type AppRole } from "@/lib/roles";
 import { scholarWorkspaceHome } from "@/lib/runtime/nav-registry";
 
@@ -98,7 +99,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         nextProfile = prof as UserProfile;
         const { data: sch } = await supabase
           .from("schools")
-          .select("*")
+          .select(SCHOOL_CLIENT_COLUMNS)
           .eq("id", prof.school_id)
           .maybeSingle();
         if (sch) nextSchool = sch as SchoolRow;
@@ -116,7 +117,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     if (!nextSchool && slug) {
       const { data: sch } = await supabase
         .from("schools")
-        .select("*")
+        .select(SCHOOL_CLIENT_COLUMNS)
         .eq("slug", slug)
         .eq("is_active", true)
         .maybeSingle();
