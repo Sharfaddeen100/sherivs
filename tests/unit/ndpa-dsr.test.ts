@@ -43,6 +43,26 @@ describe("ERASURE_POLICY", () => {
     expect(act("grades")).toEqual(["anonymize"]);
     expect(act("attendance")).toEqual(["anonymize"]);
   });
+  it("covers admissions, medical, discipline, boarding, library, study and transport", () => {
+    expect(act("admission_applications")).toEqual(["anonymize"]);
+    expect(act("clinic_visits")).toEqual(["anonymize"]);
+    expect(act("discipline_records")).toEqual(["anonymize"]);
+    for (const t of ["hostel_allocations", "hostel_attendance", "library_borrowings", "study_sessions"]) {
+      expect(act(t)).toEqual(["delete"]);
+    }
+    expect(act("transport_buses")).toEqual(["anonymize"]);
+    for (const t of ["admission_applications", "clinic_visits", "discipline_records", "hostel_allocations",
+      "hostel_attendance", "library_borrowings", "study_sessions", "transport_buses", "digital_twin_calls"]) {
+      expect(ERASURE_POLICY.find((r) => r.table === t)!.exportable, t).toBe(true);
+    }
+  });
+  it("clinical and discipline patches clear free text but keep dates/severity", () => {
+    const clinic = ERASURE_POLICY.find((r) => r.table === "clinic_visits")!.patch!("x");
+    for (const k of ["diagnosis", "complaint", "treatment", "notes"]) expect(clinic[k]).toBeNull();
+    expect(Object.keys(clinic).some((k) => /date|time/.test(k))).toBe(false);
+    const disc = ERASURE_POLICY.find((r) => r.table === "discipline_records")!.patch!("x");
+    expect(Object.keys(disc).some((k) => /severity|incident/.test(k))).toBe(false);
+  });
   it("financial anonymize patches never touch amounts", () => {
     for (const t of ["fees", "student_platform_fee_ledger"]) {
       const rule = ERASURE_POLICY.find((r) => r.table === t)!;
@@ -100,6 +120,44 @@ async function verifiedRequest(db: ReturnType<typeof createFakeDb>, type: "acces
 }
 
 describe("DSR execution (fake clients)", () => {
+  const extra = () => ({
+    ...seed(),
+    clinic_visits: [
+      { id: "c1", school_id: "A", student_id: "s1", diagnosis: "malaria", visit_date: "2026-01-01" },
+      { id: "c2", school_id: "A", student_id: "s2", diagnosis: "flu", visit_date: "2026-01-01" },
+      { id: "cB", school_id: "B", student_id: "sB", diagnosis: "cold", visit_date: "2026-01-01" },
+    ],
+    hostel_allocations: [
+      { id: "h1", school_id: "A", student_id: "s1" },
+      { id: "h2", school_id: "A", student_id: "s2" },
+      { id: "hB", school_id: "B", student_id: "sB" },
+    ],
+    transport_buses: [
+      { id: "b1", school_id: "A", bus_number: "1", route_name: "N", assigned_students: ["s1", "s2"] },
+      { id: "b2", school_id: "A", bus_number: "2", route_name: "S", assigned_students: ["s2"] },
+      { id: "bB", school_id: "B", bus_number: "3", route_name: "E", assigned_students: ["s1", "sB"] },
+    ],
+  });
+  it("new registry entries: export own rows only, erase/anonymize own rows only", async () => {
+    const exp = createFakeDb(extra());
+    const eid = await verifiedRequest(exp, "access_export");
+    const out = await performExport({ adminClient: exp, actorId: "adminA", actorSchoolId: "A", input: { requestId: eid } });
+    expect(out.data.clinic_visits.map((r) => r.id)).toEqual(["c1"]);
+    expect(out.data.hostel_allocations.map((r) => r.id)).toEqual(["h1"]);
+    expect(out.data.transport_buses).toEqual([{ id: "b1", bus_number: "1", route_name: "N" }]);
+    expect(JSON.stringify(out)).not.toMatch(/flu|cold/);
+
+    const db = createFakeDb(extra());
+    const id = await verifiedRequest(db, "erasure");
+    await performErasure({ adminClient: db, actorId: "adminA", actorSchoolId: "A", input: { requestId: id } });
+    expect(db.tables.clinic_visits.find((r) => r.id === "c1")!.diagnosis).toBeNull();
+    expect(db.tables.clinic_visits.find((r) => r.id === "c2")!.diagnosis).toBe("flu");
+    expect(db.tables.clinic_visits.find((r) => r.id === "cB")!.diagnosis).toBe("cold");
+    expect(db.tables.hostel_allocations.map((r) => r.id)).toEqual(["h2", "hB"]);
+    const buses = Object.fromEntries(db.tables.transport_buses.map((b) => [b.id, b.assigned_students]));
+    expect(buses).toEqual({ b1: ["s2"], b2: ["s2"], bB: ["s1", "sB"] });
+  });
+
   it("submit: guardian only for own child; due in 30 days; event + audit written", async () => {
     const db = createFakeDb(seed());
     await expect(

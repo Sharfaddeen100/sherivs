@@ -37,7 +37,9 @@ Enforcement points ("gates"): see *Consent gates* below.
 
 Judged **not student-specific** (no gate): `draftLessonPlan` (subject/topic only), `expense-insights` (school expenses), `timetable` AI (classes/teachers), `broadcastMessage` and `notifications-fanout` (in-app rows only; no SMS/WhatsApp channel is wired — the Twilio/Vapi adapters in `lib/communications/` have no callers yet).
 
-**Gaps (follow-up):** student media upload is a direct client-side storage upload (`components/admin/crud-list.tsx`, `routes/_authenticated/messages.tsx`, `routes/admissions.tsx`); there is no server path to attach a `photos_media` check to. When SMS/WhatsApp fan-out or a server media path is wired, use `hasConsent` / `filterConsentedStudents` from `consent.functions.ts` (skip denied students for messaging, refuse for AI/media).
+| Student photo/media upload | `uploadStudentMedia` / `performStudentMediaUpload` in `lib/compliance/student-media.functions.ts` (browser entry: `student-media.client.ts`) | `photos_media` | Refuses without a current grant; audited (denied + succeeded). Storage RLS (migration 20261020000070) denies direct authenticated writes under `<school_id>/students/` in `school-media`; website (`<school_id>/<file>`) and staff (`<school_id>/staff/...`) paths are unchanged |
+
+**Gaps (follow-up):** no student-photo UI exists in the repo yet (the `ImageUploadField` in `components/admin/crud-list.tsx` is website CMS media; `messages.tsx` uploads message attachments, `routes/admissions.tsx` uploads applicant documents) — when one is built it must call `uploadStudentPhoto`. Reads of the student prefix are still school-wide. When SMS/WhatsApp fan-out is wired, use `hasConsent` / `filterConsentedStudents` (skip denied students for messaging).
 
 ## AI features: DPIA checklist (complete before enabling any AI that sees personal data)
 

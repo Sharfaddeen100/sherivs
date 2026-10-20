@@ -89,8 +89,28 @@ describe.skipIf(!enabled)("SHERIVS-003 DSR end-to-end (local stack)", () => {
     return { schoolId: school.id, adminId: admin.id, parentId: parent.id, studentId: stu.id, parentEmail: parent.email };
   }
 
+  const busIds: Record<string, string> = {};
+
   async function seedRows(s: Side, studentId: string, tag: string, amount: number) {
     const ok = (r: { error: unknown }) => { if (r.error) throw r.error; };
+    const sc = s.schoolId;
+    ok(await svc.from("admission_applications").insert({
+      school_id: sc, student_id: studentId, application_number: `APP-${tag}-${RUN}`,
+      student_first_name: `First-${tag}`, student_last_name: `Last-${tag}`, student_date_of_birth: "2015-05-05",
+      student_address: `appaddr-${tag}`, applying_for_class: "JSS1", academic_year_applying: "2026",
+      parent_one_name: `P1-${tag}`, parent_one_relationship: "mother", parent_one_phone: `0801-${tag}`,
+      parent_one_email: `p1-${tag}@sv3.invalid`, medical_conditions: `appmed-${tag}`, decision_notes: `decide-${tag}`,
+    }));
+    ok(await svc.from("clinic_visits").insert({ school_id: sc, student_id: studentId, complaint: `complaint-${tag}`, diagnosis: `diag-${tag}`, treatment: `treat-${tag}`, notes: `cnotes-${tag}`, temperature: 37.2 }));
+    ok(await svc.from("discipline_records").insert({ school_id: sc, student_id: studentId, incident_type: "fighting", severity: "minor", description: `incident-${tag}`, action_taken: `action-${tag}`, notes: `dnotes-${tag}` }));
+    ok(await svc.from("hostel_allocations").insert({ school_id: sc, student_id: studentId, term: `hostel-${tag}` }));
+    ok(await svc.from("hostel_attendance").insert({ school_id: sc, student_id: studentId, date: "2026-10-01", notes: `hnotes-${tag}` }));
+    ok(await svc.from("library_borrowings").insert({ school_id: sc, student_id: studentId, notes: `lib-${tag}` }));
+    ok(await svc.from("study_sessions").insert({ school_id: sc, student_id: studentId, subject: `study-${tag}`, duration_minutes: 30 }));
+    ok(await svc.from("digital_twin_calls").insert({ school_id: sc, student_id: studentId, recipient_name: `rcpt-${tag}`, recipient_phone: `0802-${tag}`, call_transcript: `transcript-${tag}`, call_status: "completed" }));
+    const bus = await svc.from("transport_buses").insert({ school_id: sc, bus_number: `BUS-${tag}`, route_name: `route-${tag}`, assigned_students: [studentId] }).select("id").single();
+    if (bus.error) throw bus.error;
+    busIds[tag] = bus.data.id;
     ok(await svc.from("grades").insert({ school_id: s.schoolId, student_id: studentId, subject: "Math", term: "1", academic_year: "2026", grade_remark: `remark-${tag}` }));
     ok(await svc.from("attendance").insert({ school_id: s.schoolId, student_id: studentId, date: "2026-10-01", status: "present", note: `note-${tag}` }));
     ok(await svc.from("fees").insert({ school_id: s.schoolId, student_id: studentId, fee_type: "tuition", amount, paystack_reference: `ref-${tag}-${RUN}` }));
@@ -111,6 +131,8 @@ describe.skipIf(!enabled)("SHERIVS-003 DSR end-to-end (local stack)", () => {
     await seedRows(sides.A, sides.A.studentId, "A1", 5000);
     await seedRows(sides.A, studentA2, "A2", 7000);
     await seedRows(sides.B, sides.B.studentId, "B1", 9000);
+    const shared = await svc.from("transport_buses").update({ assigned_students: [sides.A.studentId, studentA2] }).eq("id", busIds.A1);
+    if (shared.error) throw shared.error;
   });
 
   afterAll(async () => {
@@ -161,6 +183,13 @@ describe.skipIf(!enabled)("SHERIVS-003 DSR end-to-end (local stack)", () => {
     expect(out.data.fees).toHaveLength(1);
     expect(json).toContain("remark-A1");
     expect(json).not.toMatch(/remark-A2|remark-B1|ref-A2|ref-B1|Addr B/);
+    for (const t of ["admission_applications", "clinic_visits", "discipline_records", "hostel_allocations",
+      "hostel_attendance", "library_borrowings", "study_sessions", "digital_twin_calls", "transport_buses"]) {
+      expect(out.data[t], t).toHaveLength(1);
+    }
+    expect(json).toMatch(/diag-A1/);
+    expect(out.data.transport_buses[0]).toEqual({ id: busIds.A1, bus_number: "BUS-A1", route_name: "route-A1" });
+    expect(json).not.toMatch(/-A2|-B1|ref-A2/);
     const { data: req } = await svc.from("data_subject_requests").select("status, result").eq("id", id).single();
     expect(req?.status).toBe("completed");
     expect(JSON.stringify(req?.result)).not.toContain("remark-A1");
@@ -184,6 +213,43 @@ describe.skipIf(!enabled)("SHERIVS-003 DSR end-to-end (local stack)", () => {
     expect(g).toEqual([{ grade_remark: "Fail" }]);
     const { data: att } = await svc.from("attendance").select("note").eq("student_id", A.studentId);
     expect(att).toEqual([{ note: null }]);
+
+    // new registry tables: A1 anonymized/deleted
+    const one = async (t: string, col: string, sid: string) =>
+      (await svc.from(t).select(col).eq("student_id", sid)).data as unknown as Record<string, unknown>[];
+    const adm = (await one("admission_applications", "student_first_name, student_address, parent_one_phone, medical_conditions, decision_notes, application_number", A.studentId))[0];
+    expect(adm).toMatchObject({ student_first_name: "Erased subject", student_address: null, medical_conditions: null, decision_notes: null });
+    expect(adm.application_number).toBe(`APP-A1-${RUN}`);
+    expect(String(adm.parent_one_phone)).not.toContain("0801-A1");
+    expect(await one("clinic_visits", "complaint, diagnosis, treatment, notes, temperature", A.studentId))
+      .toEqual([{ complaint: null, diagnosis: null, treatment: null, notes: null, temperature: 37.2 }]);
+    const disc = (await one("discipline_records", "description, action_taken, notes, severity", A.studentId))[0];
+    expect(disc).toMatchObject({ action_taken: null, notes: null, severity: "minor" });
+    expect(String(disc.description)).not.toContain("incident-A1");
+    for (const t of ["hostel_allocations", "hostel_attendance", "library_borrowings", "study_sessions"]) {
+      expect(await one(t, "id", A.studentId), t).toEqual([]);
+      expect(await one(t, "id", studentA2), `${t} A2`).toHaveLength(1);
+    }
+    const call = (await one("digital_twin_calls", "recipient_name, recipient_phone, call_transcript", A.studentId))[0];
+    expect(call).toMatchObject({ recipient_phone: null, call_transcript: null });
+    const { data: bus1 } = await svc.from("transport_buses").select("assigned_students").eq("id", busIds.A1).single();
+    expect(bus1?.assigned_students).toEqual([studentA2]);
+
+    // new registry tables: A2 and school B untouched
+    expect(await one("admission_applications", "student_first_name, medical_conditions", studentA2)).toEqual([{ student_first_name: "First-A2", medical_conditions: "appmed-A2" }]);
+    expect(await one("clinic_visits", "diagnosis", studentA2)).toEqual([{ diagnosis: "diag-A2" }]);
+    expect(await one("discipline_records", "action_taken", studentA2)).toEqual([{ action_taken: "action-A2" }]);
+    expect(await one("digital_twin_calls", "call_transcript", studentA2)).toEqual([{ call_transcript: "transcript-A2" }]);
+    const bB = sides.B.studentId;
+    expect(await one("admission_applications", "student_first_name", bB)).toEqual([{ student_first_name: "First-B1" }]);
+    expect(await one("clinic_visits", "diagnosis", bB)).toEqual([{ diagnosis: "diag-B1" }]);
+    for (const t of ["hostel_allocations", "hostel_attendance", "library_borrowings", "study_sessions"]) {
+      expect(await one(t, "id", bB), `${t} B`).toHaveLength(1);
+    }
+    const { data: busB } = await svc.from("transport_buses").select("assigned_students").eq("id", busIds.B1).single();
+    expect(busB?.assigned_students).toEqual([bB]);
+    const { data: busA2 } = await svc.from("transport_buses").select("assigned_students").eq("id", busIds.A2).single();
+    expect(busA2?.assigned_students).toEqual([studentA2]);
 
     // other student in same school
     const { data: s2 } = await svc.from("students").select("parent_name").eq("id", studentA2).single();

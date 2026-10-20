@@ -255,6 +255,22 @@ export async function performExport(deps: AdminDeps & { input: { requestId: stri
 
   const data: Record<string, Record<string, unknown>[]> = {};
   for (const src of planExport(ref)) {
+    if (src.arrayMember) {
+      const res = await db
+        .from(src.table)
+        .select(`id, bus_number, route_name, ${src.column}`)
+        .eq("school_id", actorSchoolId);
+      throwIfError(res, `Export read failed for ${src.table}`);
+      const bucket = (data[src.table] ??= []);
+      for (const row of (res?.data ?? []) as Record<string, unknown>[]) {
+        const ids = Array.isArray(row[src.column]) ? (row[src.column] as unknown[]) : [];
+        // Never expose co-passengers: only the bus/route the subject rides.
+        if (ids.includes(src.subjectId)) {
+          bucket.push({ id: row.id, bus_number: row.bus_number, route_name: row.route_name });
+        }
+      }
+      continue;
+    }
     const res = await db
       .from(src.table)
       .select("*")
@@ -289,6 +305,28 @@ export async function performErasure(deps: AdminDeps & { input: { requestId: str
 
   const applied: { table: string; column: string; action: string; affected: number }[] = [];
   for (const step of planErasure(ref)) {
+    if (step.arrayMember) {
+      const rows = await db
+        .from(step.table)
+        .select(`id, ${step.column}`)
+        .eq("school_id", actorSchoolId);
+      throwIfError(rows, `Erasure read failed for ${step.table}.${step.column}`);
+      let affected = 0;
+      for (const row of (rows?.data ?? []) as Record<string, unknown>[]) {
+        const ids = Array.isArray(row[step.column]) ? (row[step.column] as unknown[]) : [];
+        if (!ids.includes(step.subjectId)) continue;
+        const upd = await db
+          .from(step.table)
+          .update({ [step.column]: ids.filter((x) => x !== step.subjectId) })
+          .eq("id", row.id)
+          .eq("school_id", actorSchoolId)
+          .select("id");
+        throwIfError(upd, `Erasure failed for ${step.table}.${step.column}`);
+        affected += 1;
+      }
+      applied.push({ table: step.table, column: step.column, action: step.action, affected });
+      continue;
+    }
     const base =
       step.action === "delete"
         ? db.from(step.table).delete()

@@ -45,6 +45,8 @@ export interface ErasureRule {
   subject: "student" | "user";
   /** Columns matched against the subject id; each is applied as a separate statement. */
   keys: readonly string[];
+  /** jsonb array column holding subject ids (membership match, not equality). */
+  arrayKey?: string;
   /** Personal-field overwrite for action=anonymize. */
   patch?: (subjectId: string) => Record<string, unknown>;
   /** Included in access exports. */
@@ -63,7 +65,7 @@ export const ERASURE_POLICY: readonly ErasureRule[] = [
       date_of_birth: null, gender: null, blood_group: null, genotype: null, home_address: null,
       state_of_origin: null, lga: null, religion: null, medical_conditions: null,
       disability_notes: null, parent_name: null, parent_phone: null, parent_email: null,
-      parent_id: null, user_id: null, previous_school: null, is_active: false,
+      parent_id: null, user_id: null, previous_school: null, nationality: null, is_active: false,
     }),
     reason: "Row kept so child tables keep referential integrity; every identifying field cleared.",
   },
@@ -99,9 +101,70 @@ export const ERASURE_POLICY: readonly ErasureRule[] = [
     keys: ["student_id"], exportable: true,
     patch: () => ({
       recipient_name: ERASED, recipient_phone: null, call_transcript: null, call_summary: null,
-      call_recording_url: null,
+      call_recording_url: null, twilio_call_sid: null,
     }),
     reason: "Call content and recipient contact cleared; call metadata kept.",
+  },
+  {
+    table: "admission_applications", category: "admissions", action: "anonymize", subject: "student",
+    keys: ["student_id"], exportable: true,
+    patch: () => ({
+      student_first_name: ERASED, student_last_name: ERASED, student_date_of_birth: "1900-01-01",
+      student_gender: null, student_nationality: null, student_religion: null,
+      student_blood_group: null, student_genotype: null, student_address: null,
+      previous_school_name: null, previous_school_address: null, reason_for_leaving: null,
+      academic_achievements: null, discipline_explanation: null,
+      parent_one_name: ERASED, parent_one_relationship: "erased", parent_one_phone: "erased",
+      parent_one_email: "erased@erased.invalid", parent_one_occupation: null, parent_one_address: null,
+      parent_two_name: null, parent_two_relationship: null, parent_two_phone: null,
+      parent_two_email: null, parent_two_occupation: null, parent_two_address: null,
+      guardian_name: null, guardian_relationship: null, guardian_phone: null,
+      emergency_contact_name: null, emergency_contact_relationship: null, emergency_contact_phone: null,
+      medical_conditions: null, disabilities_or_special_needs: null, allergies_detail: null,
+      interview_notes: null, decision_notes: null, documents_uploaded: {}, interview_responses: {},
+      ai_review_result: null,
+    }),
+    reason: "Application row kept as an admissions-decision record; applicant and guardian PII cleared. Linked via admission_applications.student_id (stored objects in student-documents are not touched here).",
+  },
+  {
+    table: "clinic_visits", category: "medical", action: "anonymize", subject: "student",
+    keys: ["student_id"], exportable: true,
+    patch: () => ({
+      complaint: null, diagnosis: null, treatment: null, medication_given: null, notes: null,
+      attending_nurse: null, outcome: null,
+    }),
+    reason: "Health data is special-category: visit rows kept for clinic statistics, every clinical free-text field cleared.",
+  },
+  {
+    table: "discipline_records", category: "discipline", action: "anonymize", subject: "student",
+    keys: ["student_id"], exportable: true,
+    patch: () => ({ description: "[erased per data subject request]", action_taken: null, notes: null }),
+    reason: "Safeguarding record kept (type/severity/date); narrative and notes cleared.",
+  },
+  {
+    table: "hostel_allocations", category: "boarding", action: "delete", subject: "student",
+    keys: ["student_id"], exportable: true,
+    reason: "Room allocation has no retention duty.",
+  },
+  {
+    table: "hostel_attendance", category: "boarding", action: "delete", subject: "student",
+    keys: ["student_id"], exportable: true,
+    reason: "Night/morning check log has no retention duty.",
+  },
+  {
+    table: "library_borrowings", category: "library", action: "delete", subject: "student",
+    keys: ["student_id"], exportable: true,
+    reason: "Borrowing history has no retention duty.",
+  },
+  {
+    table: "study_sessions", category: "learning-activity", action: "delete", subject: "student",
+    keys: ["student_id"], exportable: true,
+    reason: "Self-study activity log has no retention duty.",
+  },
+  {
+    table: "transport_buses", category: "transport", action: "anonymize", subject: "student",
+    keys: [], arrayKey: "assigned_students", exportable: true,
+    reason: "Bus manifest is school operational data; only the subject's id is removed from assigned_students. Export lists the subject's bus/route only.",
   },
   {
     table: "consent_records", category: "consent-proof", action: "retain", subject: "student",
@@ -169,6 +232,8 @@ export interface ErasureStep {
   subjectId: string;
   action: Exclude<ErasureAction, "retain">;
   patch?: Record<string, unknown>;
+  /** Membership match inside a jsonb array column instead of equality. */
+  arrayMember?: boolean;
 }
 
 function ruleSubjectId(rule: ErasureRule, ref: SubjectRef): string | null {
@@ -182,6 +247,12 @@ export function planErasure(ref: SubjectRef): ErasureStep[] {
     if (rule.action === "retain") continue;
     const subjectId = ruleSubjectId(rule, ref);
     if (!subjectId) continue;
+    if (rule.arrayKey) {
+      steps.push({
+        table: rule.table, column: rule.arrayKey, subjectId,
+        action: rule.action as Exclude<ErasureAction, "retain">, arrayMember: true,
+      });
+    }
     for (const column of rule.keys) {
       steps.push({
         table: rule.table,
@@ -199,6 +270,7 @@ export interface ExportSource {
   table: string;
   column: string;
   subjectId: string;
+  arrayMember?: boolean;
 }
 
 export function planExport(ref: SubjectRef): ExportSource[] {
@@ -207,6 +279,7 @@ export function planExport(ref: SubjectRef): ExportSource[] {
     if (!rule.exportable) continue;
     const subjectId = ruleSubjectId(rule, ref);
     if (!subjectId) continue;
+    if (rule.arrayKey) out.push({ table: rule.table, column: rule.arrayKey, subjectId, arrayMember: true });
     for (const column of rule.keys) out.push({ table: rule.table, column, subjectId });
   }
   return out;

@@ -36,6 +36,8 @@ import { resolveMemberWorkspaceExperience } from "@/lib/experience/workspace-exp
 import { scholarWorkspaceLabelForMember } from "@/lib/runtime/scholar-workforce-nav";
 import { getMyPrimaryWorkforcePosition } from "@/lib/runtime/scholar/workforce-positions.functions";
 import { useQuery } from "@tanstack/react-query";
+import { useCanManageAdmissions } from "@/components/admin-area-guard";
+import { admissionsOnlyNav } from "@/lib/admissions-access";
 import { useServerFn } from "@tanstack/react-start";
 
 export const Route = createFileRoute("/_authenticated")({
@@ -75,6 +77,8 @@ function AuthenticatedLayout() {
       return getMyPrimaryPosition({ data: {} });
     },
   });
+
+  const canManageAdmissions = useCanManageAdmissions();
 
   // Keep the stored push subscription fresh for users who already opted in.
   useEffect(() => {
@@ -136,7 +140,10 @@ function AuthenticatedLayout() {
   // Sidebar chrome is resolved the same way: installed runtime contributions x the
   // viewer's authorized capabilities (org_admin collapsible groups, flat member workspaces).
   const sidebarSections = role
-    ? resolveWorkspaceNav(ALL_NAV_CONTRIBUTIONS, scholarCapabilitiesForRole(role))
+    ? [
+        ...resolveWorkspaceNav(ALL_NAV_CONTRIBUTIONS, scholarCapabilitiesForRole(role)),
+        ...admissionsOnlyNav(role, canManageAdmissions === true),
+      ]
     : [];
 
   return (
