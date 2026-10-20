@@ -38,7 +38,7 @@ checks(name, ok) AS (
      AND to_regclass('public.security_incidents') IS NOT NULL)),
   ('[step 1] school_tenant_map backfilled (one row per school that has a cg_tenant)',
      (SELECT step FROM p) < 1 OR (to_regclass('public.school_tenant_map') IS NOT NULL AND
-     (SELECT (xpath('/row/c/text()', query_to_xml('SELECT (SELECT count(*) FROM public.school_tenant_map) = (SELECT count(*) FROM public.cg_tenant t JOIN public.schools s ON s.id = t.id) AS c', false, false, '')))[1]::text = 'true'))),
+     (SELECT (xpath('//c/text()', query_to_xml('SELECT (SELECT count(*) FROM public.school_tenant_map) = (SELECT count(*) FROM public.cg_tenant t JOIN public.schools s ON s.id = t.id) AS c', false, false, '')))[1]::text = 'true'))),
   ('[step 1] old school-wide fees/students policies gone',
      (SELECT step FROM p) < 1 OR NOT EXISTS (SELECT 1 FROM pg_policies WHERE schemaname='public' AND policyname IN ('tenant_all_fees','tenant_all_students','platform_fee_ledger_school_access'))),
   ('[step 1] new fees/students policies present',

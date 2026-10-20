@@ -24,6 +24,10 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import {
+  assertUrlMatchesTarget,
+  requireManagementTarget,
+} from "../lib/sherivs-db-target.mjs";
 
 const ROOT = fileURLToPath(new URL("../..", import.meta.url));
 const staticOnly = process.argv.includes("--static");
@@ -43,9 +47,13 @@ const checks = [];
 const check = (id, ok, detail) => checks.push({ id, ok, detail });
 
 /** Secrets never reach the proof: only names and presence are recorded. */
-check("input:project-ref", projectRef.length > 0, "project reference supplied");
-check("input:access-token", accessToken.length > 0, "management access token present");
-check("input:database-url", dbUrl.length > 0, "database connection string present");
+// --static proves the contract without credentials (CI "no credentials" job):
+// input presence is reported, never required. Live mode still requires all three.
+const input = (id, present, detail) =>
+  check(id, present || staticOnly, present || !staticOnly ? detail : `${detail}: not supplied (not required in --static mode)`);
+input("input:project-ref", projectRef.length > 0, "project reference supplied");
+input("input:access-token", accessToken.length > 0, "management access token present");
+input("input:database-url", dbUrl.length > 0, "database connection string present");
 check(
   "input:retention-floor",
   Number.isFinite(minBackupDays) && minBackupDays >= 1,
@@ -60,6 +68,13 @@ async function management(path) {
     throw new Error(`${path} → HTTP ${response.status}`);
   }
   return response.json();
+}
+
+if (!staticOnly) {
+  const resolved = requireManagementTarget(process.env, projectRef);
+  if (dbUrl) {
+    assertUrlMatchesTarget(dbUrl, resolved.target, "SUPABASE_DB_URL");
+  }
 }
 
 if (!staticOnly && checks.every((entry) => entry.ok)) {

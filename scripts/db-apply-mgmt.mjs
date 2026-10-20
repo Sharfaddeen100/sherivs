@@ -3,8 +3,10 @@
  * CoreGrid — apply database migrations in order via the Supabase Management API.
  *
  * Usage:
- *   $env:SUPABASE_ACCESS_TOKEN="sbp_..." ; node scripts/db-apply-mgmt.mjs [project-ref]
+ *   SHERIVS_DATABASE_TARGET=staging SHERIVS_PROJECT_REF=<ref> \
+ *     SUPABASE_ACCESS_TOKEN="sbp_..." node scripts/db-apply-mgmt.mjs [project-ref]
  *
+ * Requires an explicit target and project ref. Production is not the default.
  * Reads the access token from the environment ONLY (never committed). Runs
  * each file in database/supabase/migrations/ (filename order) through
  * POST /v1/projects/{ref}/database/query. Stops at the first failure.
@@ -12,12 +14,13 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { requireManagementTarget } from "./lib/sherivs-db-target.mjs";
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
 const MIGRATIONS_DIR = join(ROOT, "database", "supabase", "migrations");
 
+const { projectRef } = requireManagementTarget(process.env, process.argv[2]);
 const token = process.env.SUPABASE_ACCESS_TOKEN;
-const projectRef = process.argv[2] ?? "nwrflbpbhyiqdptmlccm";
 if (!token) {
   console.error("SUPABASE_ACCESS_TOKEN is required.");
   process.exit(2);

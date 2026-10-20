@@ -68,14 +68,18 @@ export type CreateStaffAccountResult = {
   positionTitle: string | null;
 };
 
+function randomIndex(n: number): number {
+  return crypto.getRandomValues(new Uint32Array(1))[0] % n;
+}
+
 function randomPassword() {
   const alpha = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz";
   const num = "23456789";
   const sym = "!@#$";
   let p = "";
-  for (let i = 0; i < 8; i++) p += alpha[Math.floor(Math.random() * alpha.length)];
-  for (let i = 0; i < 3; i++) p += num[Math.floor(Math.random() * num.length)];
-  p += sym[Math.floor(Math.random() * sym.length)];
+  for (let i = 0; i < 8; i++) p += alpha[randomIndex(alpha.length)];
+  for (let i = 0; i < 3; i++) p += num[randomIndex(num.length)];
+  p += sym[randomIndex(sym.length)];
   return p;
 }
 
@@ -128,6 +132,16 @@ export const createStaffAccount = createServerFn({ method: "POST" })
     let reused = false;
 
     if (userId) {
+      // Cross-tenant takeover guard: an existing auth account may only be
+      // reused when it is unattached or already belongs to the caller's school.
+      // Platform super admins and members of other schools are never reusable.
+      const [{ data: superRow }, { data: userRow }] = await Promise.all([
+        supabaseAdmin.from("super_admins").select("id").eq("id", userId).maybeSingle(),
+        supabaseAdmin.from("users").select("school_id").eq("id", userId).maybeSingle(),
+      ]);
+      if (superRow || (userRow && schoolId && userRow.school_id !== schoolId)) {
+        throw new Error("An account with that email already exists and cannot be reused here");
+      }
       reused = true;
       const { error } = await supabaseAdmin.auth.admin.updateUserById(userId, {
         password,

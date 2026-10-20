@@ -16,6 +16,12 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { SystemClock, TimeAuthority } from "../../kernel/time-authority";
+import {
+  PAYSTACK_CURRENCY,
+  settlePaystackCharge,
+  type SettlementDb,
+} from "../../payments/paystack-settlement";
+import { canInitiateFeePayment } from "../../payments/fee-payment-access";
 
 /** J-023: time enters only via the kernel time-authority — no direct wall-clock sampling. */
 const timeAuthority = new TimeAuthority(new SystemClock());
@@ -34,6 +40,15 @@ function paystackSecret(): string {
   return k;
 }
 
+function isPaystackCheckoutUrl(raw: string): boolean {
+  try {
+    const u = new URL(raw);
+    return u.protocol === "https:" && u.hostname === "checkout.paystack.com";
+  } catch {
+    return false;
+  }
+}
+
 export const initFeePayment = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .validator((i: unknown) => initSchema.parse(i))
@@ -47,6 +62,9 @@ export const initFeePayment = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
     if (!fee) throw new Error("Fee not found or not visible to this user");
     if (fee.status === "paid") throw new Error("This invoice is already paid");
+    if (!(await canInitiateFeePayment(supabase, userId, fee))) {
+      throw new Error("Not allowed to pay this invoice");
+    }
 
     const outstanding = Number(fee.amount) - Number(fee.paid_amount ?? 0);
     if (outstanding <= 0) throw new Error("Nothing to pay on this invoice");
@@ -62,7 +80,7 @@ export const initFeePayment = createServerFn({ method: "POST" })
         email: data.email,
         amount: Math.round(outstanding * 100), // kobo
         reference,
-        currency: "NGN",
+        currency: PAYSTACK_CURRENCY,
         metadata: {
           fee_id: fee.id,
           student_id: fee.student_id,
@@ -77,6 +95,10 @@ export const initFeePayment = createServerFn({ method: "POST" })
     const body = (await res.json()) as PaystackInitResponse;
     if (!res.ok || !body.status || !body.data) {
       throw new Error(body.message || `Paystack init failed (${res.status})`);
+    }
+
+    if (!isPaystackCheckoutUrl(body.data.authorization_url)) {
+      throw new Error("Paystack returned an unexpected checkout URL");
     }
 
     const { error: upErr } = await supabase
@@ -107,25 +129,37 @@ export const verifyFeePayment = createServerFn({ method: "POST" })
     );
     const body = (await res.json()) as {
       status: boolean;
-      data?: { status: string; amount: number; metadata?: { fee_id?: string } };
+      data?: {
+        status: string;
+        amount: number;
+        currency?: string;
+        reference?: string;
+        metadata?: { fee_id?: string; school_id?: string } | null;
+      };
       message?: string;
     };
     if (!res.ok || !body.status || !body.data) {
       throw new Error(body.message || "Verification failed");
     }
-    const paid = body.data.status === "success";
-    const feeId = body.data.metadata?.fee_id;
-    if (paid && feeId) {
-      const { error } = await context.supabase
-        .from("fees")
-        .update({
-          status: "paid",
-          paid_amount: body.data.amount / 100,
-          paid_at: timeAuthority.now().at,
-        })
-        .eq("id", feeId)
-        .eq("paystack_reference", data.reference);
-      if (error) throw new Error(error.message);
-    }
+
+    // The caller must be able to see the invoice (RLS-scoped read) before the
+    // server settles it with elevated privileges.
+    const { data: visible } = await context.supabase
+      .from("fees")
+      .select("id")
+      .eq("paystack_reference", data.reference)
+      .maybeSingle();
+    if (!visible) throw new Error("Payment reference not found");
+
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const result = await settlePaystackCharge(supabaseAdmin as unknown as SettlementDb, {
+      reference: data.reference,
+      status: body.data.status,
+      amountKobo: body.data.amount,
+      currency: body.data.currency,
+      metadata: body.data.metadata,
+    });
+    if (result.outcome === "rejected") throw new Error("Payment verification failed");
+    const paid = result.outcome === "settled" || result.outcome === "duplicate";
     return { paid, reference: data.reference };
   });

@@ -32,7 +32,7 @@ terraform {
     }
     cloudflare = {
       source  = "cloudflare/cloudflare"
-      version = "~> 5.0"
+      version = "~> 4.52"
     }
   }
 
@@ -67,12 +67,16 @@ locals {
   }
 }
 
+# The provider roots below are composed as child modules and carry their own
+# provider blocks, so Terraform forbids `depends_on` on them. The gate still
+# holds: every precondition input is known at plan time, so a failing
+# precondition fails the whole plan and nothing is applied.
 resource "terraform_data" "environment_preconditions" {
   input = {
-    environment        = local.environment
+    environment           = local.environment
     required_secret_names = local.required_secret_names
-    unresolved_count   = length(local.unresolved_secrets)
-    operators          = var.operator_cidrs
+    unresolved_count      = length(local.unresolved_secrets)
+    operators             = var.operator_cidrs
   }
 
   lifecycle {
@@ -89,7 +93,7 @@ resource "terraform_data" "environment_preconditions" {
 
 # ── 1. Global traffic layer ─────────────────────────────────────────────────
 module "cloudflare" {
-  source = "../cloudflare"
+  source = "../../cloudflare"
 
   cloudflare_api_token  = var.cloudflare_api_token
   cloudflare_account_id = var.cloudflare_account_id
@@ -106,70 +110,62 @@ module "cloudflare" {
 
 # ── 2. Primary infrastructure ───────────────────────────────────────────────
 module "oci" {
-  source = "../oci"
+  source = "../../oci"
 
-  name_prefix            = local.name_prefix
-  environment            = local.environment
-  oci_tenancy_ocid       = var.oci_tenancy_ocid
-  oci_user_ocid          = var.oci_user_ocid
-  oci_fingerprint        = var.oci_fingerprint
-  oci_private_key_path   = var.oci_private_key_path
-  oci_region             = var.oci_region
-  oci_compartment_ocid   = var.oci_compartment_ocid
-  oci_availability_domains = var.oci_availability_domains
+  name_prefix                  = local.name_prefix
+  environment                  = local.environment
+  oci_tenancy_ocid             = var.oci_tenancy_ocid
+  oci_user_ocid                = var.oci_user_ocid
+  oci_fingerprint              = var.oci_fingerprint
+  oci_private_key_path         = var.oci_private_key_path
+  oci_region                   = var.oci_region
+  oci_compartment_ocid         = var.oci_compartment_ocid
+  oci_availability_domains     = var.oci_availability_domains
   oci_object_storage_namespace = var.oci_object_storage_namespace
-  oci_kms_key_id         = var.oci_kms_key_id
-  kubernetes_version     = var.kubernetes_version
-  secret_presence        = var.secret_presence
-  extra_tags             = local.common_tags
-
-  depends_on = [terraform_data.environment_preconditions]
+  oci_kms_key_id               = var.oci_kms_key_id
+  kubernetes_version           = var.kubernetes_version
+  secret_presence              = var.secret_presence
+  extra_tags                   = local.common_tags
 }
 
 # ── 3. Elastic compute fabric ───────────────────────────────────────────────
 module "hetzner" {
-  source = "../hetzner"
+  source = "../../hetzner"
 
-  name_prefix              = local.name_prefix
-  environment              = local.environment
-  hetzner_token            = var.hetzner_token
-  hetzner_ssh_public_key   = var.hetzner_ssh_public_key
-  worker_pool_name         = "workers-cpu"
-  worker_floor             = var.worker_floor
-  worker_server_type       = var.worker_server_type
-  worker_image             = var.worker_image
-  worker_location          = var.worker_location
-  control_plane_cidr       = var.vcn_cidr
-
-  depends_on = [module.oci]
+  name_prefix            = local.name_prefix
+  environment            = local.environment
+  hetzner_token          = var.hetzner_token
+  hetzner_ssh_public_key = var.hetzner_ssh_public_key
+  worker_pool_name       = "workers-cpu"
+  worker_floor           = var.worker_floor
+  worker_server_type     = var.worker_server_type
+  worker_image           = var.worker_image
+  worker_location        = var.worker_location
+  control_plane_cidr     = var.vcn_cidr
 }
 
 # ── 4. Global edge fabric ───────────────────────────────────────────────────
 module "vultr" {
-  source = "../vultr"
+  source = "../../vultr"
 
-  name_prefix     = local.name_prefix
-  environment     = local.environment
-  vultr_api_key   = var.vultr_api_key
-  edge_regions    = var.edge_regions
-  edge_plan       = var.edge_plan
-  edge_os_id      = var.edge_os_id
-  operator_cidr   = var.operator_cidrs[0]
-
-  depends_on = [module.oci]
+  name_prefix   = local.name_prefix
+  environment   = local.environment
+  vultr_api_key = var.vultr_api_key
+  edge_regions  = var.edge_regions
+  edge_plan     = var.edge_plan
+  edge_os_id    = var.edge_os_id
+  operator_cidr = var.operator_cidrs[0]
 }
 
 # ── 5. Reality data layer ───────────────────────────────────────────────────
 module "supabase" {
-  source = "../supabase"
+  source = "../../supabase"
 
-  environment           = local.environment
-  supabase_project_ref  = var.supabase_project_ref
-  supabase_access_token = var.supabase_access_token
-  supabase_db_url       = var.supabase_db_url
-  require_pitr          = true
+  environment               = local.environment
+  supabase_project_ref      = var.supabase_project_ref
+  supabase_access_token     = var.supabase_access_token
+  supabase_db_url           = var.supabase_db_url
+  require_pitr              = true
   min_backup_retention_days = var.min_backup_retention_days
-  proof_output_path     = "../../architecture/proofs/supabase-configuration.proof.json"
-
-  depends_on = [terraform_data.environment_preconditions]
+  proof_output_path         = "../../architecture/proofs/supabase-configuration.proof.json"
 }

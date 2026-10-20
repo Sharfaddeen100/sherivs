@@ -312,6 +312,7 @@ const SUITE_PARTITION: Readonly<Record<string, readonly string[]>> = {
     "org-profile.functions.ts",
     "portal-overview.functions.ts",
     "school-settings.functions.ts",
+    "staff-privilege.functions.ts",
     "teachers.functions.ts",
     "timetable.functions.ts",
     "workforce-positions.functions.ts",
@@ -342,11 +343,11 @@ describe("§27 invariant coverage ledger — Scholar server-function families", 
     .filter((f) => f.endsWith(".functions.ts"))
     .sort();
 
-  it("all 24 families exist on disk and are partitioned exactly once across the five suites", () => {
-    expect(onDisk).toHaveLength(24);
+  it("all 25 families exist on disk and are partitioned exactly once across the five suites", () => {
+    expect(onDisk).toHaveLength(25);
     const covered = Object.values(SUITE_PARTITION).flat();
-    expect(covered).toHaveLength(24);
-    expect(new Set(covered).size, "no family may be covered twice").toBe(24);
+    expect(covered).toHaveLength(25);
+    expect(new Set(covered).size, "no family may be covered twice").toBe(25);
     expect([...covered].sort()).toEqual(onDisk);
     for (const suite of Object.keys(SUITE_PARTITION)) {
       expect(() => readFileSync(join(ROOT, "tests/unit", suite), "utf8"), suite).not.toThrow();
