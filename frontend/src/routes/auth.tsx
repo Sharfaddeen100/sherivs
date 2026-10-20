@@ -17,7 +17,8 @@ type Mode = "signin" | "signup" | "forgot";
 
 function AuthPage() {
   const navigate = useNavigate();
-  const { loading, role, refresh, school, tenantSlug, profile, superAdmin } = useApp();
+  const { loading, role, refresh, school, tenantSlug, profile, superAdmin, platformStaff } =
+    useApp();
   const [mode, setMode] = useState<Mode>("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -31,12 +32,12 @@ function AuthPage() {
   // resolved identity chain — internal workforce → /internal, one membership
   // → its workspace, several → the organization selector, none → /welcome —
   // never unconditionally into a runtime workspace.
-  const contextIdentity = identityFromAppState({ superAdmin, profile, school });
+  const contextIdentity = identityFromAppState({ superAdmin, profile, school, platformStaff });
   useEffect(() => {
-    if (!loading && role) {
+    if (!loading && (role || platformStaff)) {
       navigate({ to: contextIdentity.destination, replace: true });
     }
-  }, [loading, role, contextIdentity.destination, navigate]);
+  }, [loading, role, platformStaff, contextIdentity.destination, navigate]);
 
   function reset() {
     setError(null);

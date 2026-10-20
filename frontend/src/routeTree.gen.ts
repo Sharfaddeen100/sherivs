@@ -155,6 +155,7 @@ import { Route as AuthenticatedSuperAdminRuntimeContractsRouteImport } from './r
 import { Route as AuthenticatedSuperAdminSchedulingIntelligenceRouteImport } from './routes/_authenticated/super-admin/scheduling-intelligence'
 import { Route as AuthenticatedSuperAdminSchoolsRouteImport } from './routes/_authenticated/super-admin/schools'
 import { Route as AuthenticatedSuperAdminSettingsRouteImport } from './routes/_authenticated/super-admin/settings'
+import { Route as AuthenticatedSuperAdminStaffRouteImport } from './routes/_authenticated/super-admin/staff'
 import { Route as AuthenticatedSuperAdminSupportRouteImport } from './routes/_authenticated/super-admin/support'
 import { Route as AuthenticatedSuperAdminTenantsRouteImport } from './routes/_authenticated/super-admin/tenants'
 import { Route as AuthenticatedSuperAdminTiersRouteImport } from './routes/_authenticated/super-admin/tiers'
@@ -1003,6 +1004,12 @@ const AuthenticatedSuperAdminSettingsRoute =
     path: '/settings',
     getParentRoute: () => AuthenticatedSuperAdminRouteRoute,
   } as any)
+const AuthenticatedSuperAdminStaffRoute =
+  AuthenticatedSuperAdminStaffRouteImport.update({
+    id: '/staff',
+    path: '/staff',
+    getParentRoute: () => AuthenticatedSuperAdminRouteRoute,
+  } as any)
 const AuthenticatedSuperAdminSupportRoute =
   AuthenticatedSuperAdminSupportRouteImport.update({
     id: '/support',
@@ -1268,6 +1275,7 @@ export interface FileRoutesByFullPath {
   '/super-admin/scheduling-intelligence': typeof AuthenticatedSuperAdminSchedulingIntelligenceRoute
   '/super-admin/schools': typeof AuthenticatedSuperAdminSchoolsRoute
   '/super-admin/settings': typeof AuthenticatedSuperAdminSettingsRoute
+  '/super-admin/staff': typeof AuthenticatedSuperAdminStaffRoute
   '/super-admin/support': typeof AuthenticatedSuperAdminSupportRoute
   '/super-admin/tenants': typeof AuthenticatedSuperAdminTenantsRoute
   '/super-admin/tiers': typeof AuthenticatedSuperAdminTiersRoute
@@ -1433,6 +1441,7 @@ export interface FileRoutesByTo {
   '/super-admin/scheduling-intelligence': typeof AuthenticatedSuperAdminSchedulingIntelligenceRoute
   '/super-admin/schools': typeof AuthenticatedSuperAdminSchoolsRoute
   '/super-admin/settings': typeof AuthenticatedSuperAdminSettingsRoute
+  '/super-admin/staff': typeof AuthenticatedSuperAdminStaffRoute
   '/super-admin/support': typeof AuthenticatedSuperAdminSupportRoute
   '/super-admin/tenants': typeof AuthenticatedSuperAdminTenantsRoute
   '/super-admin/tiers': typeof AuthenticatedSuperAdminTiersRoute
@@ -1602,6 +1611,7 @@ export interface FileRoutesById {
   '/_authenticated/super-admin/scheduling-intelligence': typeof AuthenticatedSuperAdminSchedulingIntelligenceRoute
   '/_authenticated/super-admin/schools': typeof AuthenticatedSuperAdminSchoolsRoute
   '/_authenticated/super-admin/settings': typeof AuthenticatedSuperAdminSettingsRoute
+  '/_authenticated/super-admin/staff': typeof AuthenticatedSuperAdminStaffRoute
   '/_authenticated/super-admin/support': typeof AuthenticatedSuperAdminSupportRoute
   '/_authenticated/super-admin/tenants': typeof AuthenticatedSuperAdminTenantsRoute
   '/_authenticated/super-admin/tiers': typeof AuthenticatedSuperAdminTiersRoute
@@ -1770,6 +1780,7 @@ export interface FileRouteTypes {
     | '/super-admin/scheduling-intelligence'
     | '/super-admin/schools'
     | '/super-admin/settings'
+    | '/super-admin/staff'
     | '/super-admin/support'
     | '/super-admin/tenants'
     | '/super-admin/tiers'
@@ -1935,6 +1946,7 @@ export interface FileRouteTypes {
     | '/super-admin/scheduling-intelligence'
     | '/super-admin/schools'
     | '/super-admin/settings'
+    | '/super-admin/staff'
     | '/super-admin/support'
     | '/super-admin/tenants'
     | '/super-admin/tiers'
@@ -2103,6 +2115,7 @@ export interface FileRouteTypes {
     | '/_authenticated/super-admin/scheduling-intelligence'
     | '/_authenticated/super-admin/schools'
     | '/_authenticated/super-admin/settings'
+    | '/_authenticated/super-admin/staff'
     | '/_authenticated/super-admin/support'
     | '/_authenticated/super-admin/tenants'
     | '/_authenticated/super-admin/tiers'
@@ -3176,6 +3189,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSuperAdminSettingsRouteImport
       parentRoute: typeof AuthenticatedSuperAdminRouteRoute
     }
+    '/_authenticated/super-admin/staff': {
+      id: '/_authenticated/super-admin/staff'
+      path: '/staff'
+      fullPath: '/super-admin/staff'
+      preLoaderRoute: typeof AuthenticatedSuperAdminStaffRouteImport
+      parentRoute: typeof AuthenticatedSuperAdminRouteRoute
+    }
     '/_authenticated/super-admin/support': {
       id: '/_authenticated/super-admin/support'
       path: '/support'
@@ -3628,6 +3648,7 @@ interface AuthenticatedSuperAdminRouteRouteChildren {
   AuthenticatedSuperAdminSchedulingIntelligenceRoute: typeof AuthenticatedSuperAdminSchedulingIntelligenceRoute
   AuthenticatedSuperAdminSchoolsRoute: typeof AuthenticatedSuperAdminSchoolsRoute
   AuthenticatedSuperAdminSettingsRoute: typeof AuthenticatedSuperAdminSettingsRoute
+  AuthenticatedSuperAdminStaffRoute: typeof AuthenticatedSuperAdminStaffRoute
   AuthenticatedSuperAdminSupportRoute: typeof AuthenticatedSuperAdminSupportRoute
   AuthenticatedSuperAdminTenantsRoute: typeof AuthenticatedSuperAdminTenantsRoute
   AuthenticatedSuperAdminTiersRoute: typeof AuthenticatedSuperAdminTiersRoute
@@ -3658,6 +3679,7 @@ const AuthenticatedSuperAdminRouteRouteChildren: AuthenticatedSuperAdminRouteRou
       AuthenticatedSuperAdminSchedulingIntelligenceRoute,
     AuthenticatedSuperAdminSchoolsRoute: AuthenticatedSuperAdminSchoolsRoute,
     AuthenticatedSuperAdminSettingsRoute: AuthenticatedSuperAdminSettingsRoute,
+    AuthenticatedSuperAdminStaffRoute: AuthenticatedSuperAdminStaffRoute,
     AuthenticatedSuperAdminSupportRoute: AuthenticatedSuperAdminSupportRoute,
     AuthenticatedSuperAdminTenantsRoute: AuthenticatedSuperAdminTenantsRoute,
     AuthenticatedSuperAdminTiersRoute: AuthenticatedSuperAdminTiersRoute,

@@ -44,6 +44,19 @@ export const resolveSherivsIdentity = createServerFn({ method: "GET" })
       return resolveIdentity({ isSherivsInternal: true, memberships: [] });
     }
 
+    // 1b. Internal Sherivs staff (SHERIVS-008): accept a pending invite (own
+    //     row only; grants nothing) and route ACTIVE staff to /internal.
+    await db.rpc("claim_platform_staff_invite");
+    const { data: staff } = await db
+      .from("platform_staff")
+      .select("id")
+      .eq("id", userId)
+      .eq("status", "active")
+      .maybeSingle();
+    if (staff) {
+      return resolveIdentity({ isSherivsInternal: true, memberships: [] });
+    }
+
     // 2. The membership SET (active only, primary first) — RLS-scoped to the
     //    caller's own rows. Substrate failure or emptiness falls back to the
     //    legacy single-membership path.

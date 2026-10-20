@@ -1,4 +1,11 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, Navigate } from "@tanstack/react-router";
+import {
+  capabilitiesForRoles,
+  isPlatformRoleCode,
+  PLATFORM_ROLE_LABELS,
+  visibleInternalSections,
+  type InternalWorkspaceSection,
+} from "@/lib/platform-staff/catalogue";
 import { RoleGuard } from "@/components/role-guard";
 import { useApp } from "@/contexts/app-context";
 import { PLATFORM_NAME } from "@/lib/platform";
@@ -32,24 +39,44 @@ import {
  */
 export const Route = createFileRoute("/_authenticated/internal")({
   ssr: false,
-  component: () => (
-    <RoleGuard allow={["super_admin"]}>
-      <InternalHome />
-    </RoleGuard>
-  ),
+  component: InternalGate,
 });
 
-interface InternalSection {
-  title: string;
-  description: string;
-  href: string;
+/** Super admins, or ACTIVE platform staff (SHERIVS-008); everyone else bounces. */
+function InternalGate() {
+  const { superAdmin, platformStaff } = useApp();
+  if (superAdmin) {
+    return (
+      <RoleGuard allow={["super_admin"]}>
+        <InternalHome />
+      </RoleGuard>
+    );
+  }
+  if (platformStaff) return <InternalHome />;
+  return <Navigate to="/welcome" replace />;
+}
+
+interface InternalSection extends Omit<InternalWorkspaceSection, "key"> {
+  key?: string;
   internal: boolean;
   icon: LucideIcon;
 }
 
 const SECTIONS: InternalSection[] = [
   {
+    title: "Staff",
+    description: "Invite internal Sherivs staff, assign platform roles, suspend or revoke access.",
+    href: "/super-admin/staff",
+    capability: "platform.staff.manage",
+    superAdminOnly: true,
+    internal: true,
+    icon: Users,
+  },
+  {
     title: "Sherivs Control",
+    capability: "platform.operations.read",
+    // Target surface is still super-admin gated (staff access lands in Phase 4).
+    superAdminOnly: true,
     description: "The governed operating surface: organizations, provisioning, phases, evidence.",
     href: "/command-centre",
     internal: true,
@@ -57,6 +84,9 @@ const SECTIONS: InternalSection[] = [
   },
   {
     title: "Jarvis",
+    capability: "platform.operations.read",
+    // Target surface is still super-admin gated (staff access lands in Phase 4).
+    superAdminOnly: true,
     description: "Executive intelligence coordinating missions, workforce, risk, and state.",
     href: "/command-centre",
     internal: true,
@@ -64,6 +94,9 @@ const SECTIONS: InternalSection[] = [
   },
   {
     title: "Missions",
+    capability: "platform.operations.read",
+    // Target surface is still super-admin gated (staff access lands in Phase 4).
+    superAdminOnly: true,
     description: "Mission registry and workforce delegation across the platform.",
     href: "/super-admin/worker-missions",
     internal: true,
@@ -71,6 +104,9 @@ const SECTIONS: InternalSection[] = [
   },
   {
     title: "AI Workforce",
+    capability: "platform.operations.read",
+    // Target surface is still super-admin gated (staff access lands in Phase 4).
+    superAdminOnly: true,
     description: "Agent governance: lifecycle, permissions, and verification boundaries.",
     href: "/super-admin/agent-governance",
     internal: true,
@@ -78,6 +114,9 @@ const SECTIONS: InternalSection[] = [
   },
   {
     title: "Engineering",
+    capability: "platform.engineering.read",
+    // Target surface is still super-admin gated (staff access lands in Phase 4).
+    superAdminOnly: true,
     description: "Kernel capability registry and phase contract coverage — internal architecture.",
     href: "/platform",
     internal: true,
@@ -85,6 +124,9 @@ const SECTIONS: InternalSection[] = [
   },
   {
     title: "Architecture",
+    capability: "platform.engineering.read",
+    // Target surface is still super-admin gated (staff access lands in Phase 4).
+    superAdminOnly: true,
     description: "The internal platform organization, generated from role reality.",
     href: "/platform/org",
     internal: true,
@@ -92,6 +134,9 @@ const SECTIONS: InternalSection[] = [
   },
   {
     title: "Infrastructure",
+    capability: "platform.config.read",
+    // Target surface is still super-admin gated (staff access lands in Phase 4).
+    superAdminOnly: true,
     description: "Platform configuration, infrastructure readiness, and preflight gates.",
     href: "/super-admin/platform-config",
     internal: true,
@@ -99,6 +144,9 @@ const SECTIONS: InternalSection[] = [
   },
   {
     title: "Security",
+    capability: "platform.security.read",
+    // Target surface is still super-admin gated (staff access lands in Phase 4).
+    superAdminOnly: true,
     description: "Trust fabric: security invariants, governance, and audit surfaces.",
     href: "/super-admin/trust-fabric",
     internal: true,
@@ -106,6 +154,9 @@ const SECTIONS: InternalSection[] = [
   },
   {
     title: "Product",
+    capability: "platform.engineering.read",
+    // Target surface is still super-admin gated (staff access lands in Phase 4).
+    superAdminOnly: true,
     description: "Runtime registry — what is installed, and what each runtime consumes.",
     href: "/runtime",
     internal: true,
@@ -113,6 +164,9 @@ const SECTIONS: InternalSection[] = [
   },
   {
     title: "Customers",
+    capability: "platform.tenants.read",
+    // Target surface is still super-admin gated (staff access lands in Phase 4).
+    superAdminOnly: true,
     description: "Tenant registry and customer support operations.",
     href: "/super-admin/tenants",
     internal: true,
@@ -120,6 +174,9 @@ const SECTIONS: InternalSection[] = [
   },
   {
     title: "Operations",
+    capability: "platform.finance.read",
+    // Target surface is still super-admin gated (staff access lands in Phase 4).
+    superAdminOnly: true,
     description: "Financial operations and platform billing.",
     href: "/super-admin/financial-operations",
     internal: true,
@@ -127,6 +184,9 @@ const SECTIONS: InternalSection[] = [
   },
   {
     title: "Company Intelligence",
+    capability: "platform.operations.read",
+    // Target surface is still super-admin gated (staff access lands in Phase 4).
+    superAdminOnly: true,
     description: "Reality classes — the platform's own generated organizational model.",
     href: "/reality/company",
     internal: true,
@@ -135,7 +195,13 @@ const SECTIONS: InternalSection[] = [
 ];
 
 function InternalHome() {
-  const { superAdmin } = useApp();
+  const { superAdmin, platformStaff } = useApp();
+  const roles = (platformStaff?.roles ?? []).filter(isPlatformRoleCode);
+  const sections = visibleInternalSections(SECTIONS, {
+    isSuperAdmin: Boolean(superAdmin),
+    capabilities: capabilitiesForRoles(roles),
+  });
+  const signedInAs = superAdmin?.full_name ?? platformStaff?.full_name;
 
   return (
     <div className="mx-auto w-full max-w-6xl px-4 py-10">
@@ -149,12 +215,28 @@ function InternalHome() {
         <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
           The internal {PLATFORM_NAME} operating environment — separate from the public company site
           and from every customer workspace.
-          {superAdmin?.full_name ? ` Signed in as ${superAdmin.full_name}.` : ""}
+          {signedInAs ? ` Signed in as ${signedInAs}.` : ""}
         </p>
       </header>
 
+      {!superAdmin && platformStaff && (
+        <section className="mt-8 uos-card p-5" aria-label="Your workspace">
+          <h2 className="font-display text-base font-semibold">Your workspace</h2>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Roles:{" "}
+            {roles.length ? roles.map((r) => PLATFORM_ROLE_LABELS[r]).join(", ") : "none assigned"}
+          </p>
+          {sections.length === 0 && (
+            <p className="mt-2 text-sm text-muted-foreground">
+              Your role surfaces are being opened to staff in stages. A super admin can assign
+              further roles from Staff.
+            </p>
+          )}
+        </section>
+      )}
+
       <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {SECTIONS.map((section) => (
+        {sections.map((section) => (
           <li key={section.title}>
             <Link
               to={section.href}
