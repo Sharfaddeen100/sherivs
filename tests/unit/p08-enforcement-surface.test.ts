@@ -72,8 +72,6 @@ const ADOPTED = [
 const DOCUMENTED_EXEMPT: Readonly<Record<string, string>> = {
   "runtime/scholar/bus-tracking.functions.ts":
     "driver self-scope only (writes filtered by driver_id = auth.uid()); RLS finding queued: transport_buses policy is school-wide, not driver-scoped (DB re-verify)",
-  "runtime/scholar/demo-provision.functions.ts":
-    "public demo provisioning, environment-gated (ALLOW_DEMO_PROVISIONING=false default, foundation-pinned); service-role fixtures only",
   "runtime/scholar/driver-portal.functions.ts":
     "driver self-scope only (own bus reads/writes by driver_id = auth.uid()); same transport_buses RLS finding as bus-tracking",
   "runtime/scholar/paystack.functions.ts":

@@ -1,5 +1,23 @@
 import { defineConfig, devices } from "@playwright/test";
 
+/**
+ * Production guard: e2e journeys create and delete tenants, auth users and
+ * audit rows. They must NEVER run against the production Supabase project or
+ * the production site. Point SUPABASE_URL / PLAYWRIGHT_BASE_URL at a local or
+ * dedicated non-production stack.
+ */
+const PRODUCTION_MARKERS = ["nwrflbpbhyiqdptmlccm", "sherivs.com"];
+const e2eTargets = [
+  process.env.SUPABASE_URL,
+  process.env.VITE_SUPABASE_URL,
+  process.env.PLAYWRIGHT_BASE_URL,
+].filter((v): v is string => typeof v === "string" && v.length > 0);
+if (e2eTargets.some((t) => PRODUCTION_MARKERS.some((m) => t.toLowerCase().includes(m)))) {
+  throw new Error(
+    "Refusing to run e2e against production. Use a local or non-production Supabase project and base URL.",
+  );
+}
+
 export default defineConfig({
   testDir: "./tests/e2e",
   timeout: 60_000,
@@ -38,7 +56,6 @@ export default defineConfig({
             process.env.SUPABASE_PUBLISHABLE_KEY ??
             process.env.SUPABASE_ANON_KEY ??
             "",
-          ALLOW_DEMO_PROVISIONING: process.env.ALLOW_DEMO_PROVISIONING ?? "true",
         },
       },
 });

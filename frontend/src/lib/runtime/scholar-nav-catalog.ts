@@ -294,14 +294,6 @@ export const SCHOLAR_NAV_CONTRIBUTIONS: readonly NavContribution[] = [
         orderHint: 1,
       },
       {
-        key: "r001.teacher.biometric",
-        label: "Biometric Enrollment",
-        iconKey: "biometric",
-        url: "/teacher/biometric-enrollment",
-        capabilities: ["r001:teacher.biometric"],
-        orderHint: 2,
-      },
-      {
         key: "r001.teacher.attendance",
         label: "Mark Attendance",
         iconKey: "attendance",

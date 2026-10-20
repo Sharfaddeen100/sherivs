@@ -277,25 +277,10 @@ function defineFamilySuite(fam: FamilySpec): void {
  * Family manifest (environment-gated family).
  * ─────────────────────────────────────────────────────────────────────────*/
 
-defineFamilySuite({
-  family: "demo-provision.functions.ts",
-  functions: [
-    {
-      fn: "provisionDemoEnterprise",
-      method: "POST",
-      input: "none",
-      gate: "environment",
-      audit: "write-through",
-      auditMarkers: [/ensureSchool\(/, /\.from\("super_admins"\)/],
-      note: "creates live fixture rows (school, auth users, classes, bus, subscription) with fixed credentials — must never run silently",
-    },
-  ],
-  findings: [
-    "§27.1/§27.3 finding: provisionDemoEnterprise allows anonymous entry and performs no tenant/role authorization BY DESIGN — the control is the environment gate (ALLOW_DEMO_PROVISIONING !== 'true' throws; default OFF in every environment), documented in the p08-enforcement-surface DOCUMENTED_EXEMPT ledger and Phase 01 §34/§45 fixture isolation. Recorded, not accommodated.",
-    "§27.6 finding: demo provisioning leaves no separate audit record — the fixture rows themselves are the record. Recorded, not accommodated.",
-    "§32 note (out of §27 scope) — CLOSED by MH-02 (2026-10-02): the family's helpers previously used untyped `any` Supabase payloads; every helper now threads an explicit SupabaseAdminClient type derived from the sanctioned substrate module (type-only import, no vendor SDK reference). Verified by tests/unit/mh-02-validation-hardening.test.ts.",
-  ],
-});
+// The environment-gated family is EMPTY: demo-provision.functions.ts (the
+// only member) was removed with all demo provisioning (2026-10-20). The
+// suite file stays as the home of the coverage ledger below.
+void defineFamilySuite;
 
 /* ───────────────────────────────────────────────────────────────────────────
  * Part 2 — the coverage ledger: the five M-R-121 T2 suites partition the
@@ -335,7 +320,7 @@ const SUITE_PARTITION: Readonly<Record<string, readonly string[]>> = {
     "driver-portal.functions.ts",
     "paystack.functions.ts",
   ],
-  "scholar-invariant-environment-gated.test.ts": ["demo-provision.functions.ts"],
+  "scholar-invariant-environment-gated.test.ts": [],
 };
 
 describe("§27 invariant coverage ledger — Scholar server-function families", () => {
@@ -343,26 +328,20 @@ describe("§27 invariant coverage ledger — Scholar server-function families", 
     .filter((f) => f.endsWith(".functions.ts"))
     .sort();
 
-  it("all 25 families exist on disk and are partitioned exactly once across the five suites", () => {
-    expect(onDisk).toHaveLength(25);
+  it("all 24 families exist on disk and are partitioned exactly once across the five suites", () => {
+    expect(onDisk).toHaveLength(24);
     const covered = Object.values(SUITE_PARTITION).flat();
-    expect(covered).toHaveLength(25);
-    expect(new Set(covered).size, "no family may be covered twice").toBe(25);
+    expect(covered).toHaveLength(24);
+    expect(new Set(covered).size, "no family may be covered twice").toBe(24);
     expect([...covered].sort()).toEqual(onDisk);
     for (const suite of Object.keys(SUITE_PARTITION)) {
       expect(() => readFileSync(join(ROOT, "tests/unit", suite), "utf8"), suite).not.toThrow();
     }
   });
 
-  it("every family authenticates through requireSupabaseAuth (demo-provision is the sole declared exception)", () => {
+  it("every family authenticates through requireSupabaseAuth", () => {
     for (const family of onDisk) {
       const src = readFileSync(join(SCHOLAR_DIR, family), "utf8");
-      if (family === "demo-provision.functions.ts") {
-        expect(src, "demo-provision must carry the environment gate instead").toMatch(
-          /ALLOW_DEMO_PROVISIONING/,
-        );
-        continue;
-      }
       expect(src, `${family}: must import the auth middleware`).toMatch(/requireSupabaseAuth/);
     }
   });
@@ -387,9 +366,9 @@ describe("§27 invariant coverage ledger — Scholar server-function families", 
           CLIENT_TENANT_FIELD_RE,
         );
       }
-      // Platform-authority families (provisioning, demo-provision) may address
+      // The platform-authority family (provisioning) may address
       // TARGET tenants/resources by validated client id under their own gates.
-      if (family !== "provisioning.functions.ts" && family !== "demo-provision.functions.ts") {
+      if (family !== "provisioning.functions.ts") {
         for (const block of serverFnBlocks(src).values()) {
           expect(block, `${family}: must never query by a client-supplied tenant id`).not.toMatch(
             EQ_CLIENT_TENANT_RE,

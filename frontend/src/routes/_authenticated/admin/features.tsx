@@ -38,7 +38,6 @@ const FEATURE_GROUPS: { title: string; features: { key: FeatureKey; label: strin
     features: [
       { key: "manual_attendance", label: "Manual attendance" },
       { key: "qr_attendance", label: "QR attendance" },
-      { key: "face_biometrics", label: "Face biometrics" },
       { key: "geofence", label: "Geofence check-in" },
       { key: "offline_attendance", label: "Offline attendance" },
     ],
