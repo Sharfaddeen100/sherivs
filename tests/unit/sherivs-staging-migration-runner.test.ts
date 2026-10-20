@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { mkdtempSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { spawnSync } from "node:child_process";
 import { afterAll, afterEach, beforeAll, describe, expect, it } from "vitest";
 import pg from "pg";
 import {
@@ -285,6 +286,11 @@ describe("SHERIVS staging-only migration runner (offline)", () => {
       throw new Error("NETWORK_DISABLED: offline tests must not open a database session");
     };
     approved = loadApprovedManifest();
+    // CI checks out with fetch-depth 1, so the pinned source commit may be
+    // absent locally. Fetch exactly that commit (read-only) when it is missing.
+    if (spawnSync("git", ["cat-file", "-e", `${PINNED_SOURCE_COMMIT}^{commit}`]).status !== 0) {
+      spawnSync("git", ["fetch", "--quiet", "--depth=1", "origin", PINNED_SOURCE_COMMIT], { stdio: "inherit" });
+    }
     gitLoaded = loadFromGitCommit();
   });
 
