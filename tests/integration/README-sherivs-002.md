@@ -38,7 +38,7 @@ Seeding: victim (B) rows have every visibility flag FALSE so public policies can
 ## Expected classifications
 
 - `schools` active-row SELECT, published website tables, `school-media` anon read and `admission_applications` INSERT appear as `PUBLIC_BY_DESIGN`.
-- `schools.paystack_secret_key` and `cg_idempotency_record` leaked in run 1; migrations `20261020000010` / `20261020000020` must be applied to the disposable stack for them to PASS.
+- `schools.paystack_secret_key` and `cg_idempotency_record` leaked in run 1; migrations `20261020000120` / `20261020000020` must be applied to the disposable stack for them to PASS.
 
 Save the output into the "Cross-tenant test results" section of `docs/security/SHERIVS-002-TENANT-ISOLATION-001.md`.
 

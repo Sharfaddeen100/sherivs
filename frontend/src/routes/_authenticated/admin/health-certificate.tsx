@@ -15,7 +15,7 @@ import {
   attendanceRate,
   composeWeightedScore,
   feeCollectionRate,
-  roundScore
+  roundScore,
   staffAttendanceRate,
   unavailableNote,
 } from "@/lib/runtime/scholar/honest-scores";

@@ -4,7 +4,7 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { tokenMsRemaining } from "@/lib/auth-helpers";
 import { requireSchoolAdminScope } from "@/lib/security-role-gate";
 import { decideStaffPrivilegeChange } from "@/lib/staff-privilege-change";
-import { writeAuditRecord, type WriteAuditClient } from "@/lib/server/write-audit";
+import type { WriteAuditClient } from "@/lib/server/write-audit";
 
 /**
  * Server path for users.role / is_active changes. The DB freeze trigger only
@@ -46,6 +46,9 @@ async function loadUser(admin: PrivilegeAdminClient, id: string): Promise<UserRo
 }
 
 export async function performStaffPrivilegeChange(deps: PerformStaffPrivilegeDeps) {
+  // Dynamic import keeps the server-only audit writer out of the client bundle
+  // (this module is imported by the admin/hr route for the server-fn RPC stub).
+  const { writeAuditRecord } = await import("@/lib/server/write-audit");
   const { adminClient, actorId, actorSchoolId, input } = deps;
   const [actor, target] = await Promise.all([
     loadUser(adminClient, actorId),
