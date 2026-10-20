@@ -64,6 +64,24 @@ interface InternalSection extends Omit<InternalWorkspaceSection, "key"> {
 
 const SECTIONS: InternalSection[] = [
   {
+    title: "Support access",
+    description: "Time-limited, audited read access to one customer organization.",
+    href: "/internal/support",
+    capability: "platform.support.handle",
+    superAdminOnly: false,
+    internal: true,
+    icon: Users,
+  },
+  {
+    title: "Access review",
+    description: "Who holds platform access, live support grants, and the staff audit trail.",
+    href: "/internal/access-review",
+    capability: "platform.audit.read",
+    superAdminOnly: false,
+    internal: true,
+    icon: Shield,
+  },
+  {
     title: "Staff",
     description: "Invite internal Sherivs staff, assign platform roles, suspend or revoke access.",
     href: "/super-admin/staff",

@@ -124,6 +124,8 @@ import { Route as AuthenticatedDriverStudentsRouteImport } from './routes/_authe
 import { Route as AuthenticatedHqDashboardRouteImport } from './routes/_authenticated/hq/dashboard'
 import { Route as AuthenticatedHqFinanceRouteImport } from './routes/_authenticated/hq/finance'
 import { Route as AuthenticatedHqReportsRouteImport } from './routes/_authenticated/hq/reports'
+import { Route as AuthenticatedInternalAccessReviewRouteImport } from './routes/_authenticated/internal_.access-review'
+import { Route as AuthenticatedInternalSupportRouteImport } from './routes/_authenticated/internal_.support'
 import { Route as AuthenticatedParentAiAssistantRouteImport } from './routes/_authenticated/parent/ai-assistant'
 import { Route as AuthenticatedParentAttendanceRouteImport } from './routes/_authenticated/parent/attendance'
 import { Route as AuthenticatedParentBusTrackingRouteImport } from './routes/_authenticated/parent/bus-tracking'
@@ -820,6 +822,18 @@ const AuthenticatedHqReportsRoute = AuthenticatedHqReportsRouteImport.update({
   path: '/reports',
   getParentRoute: () => AuthenticatedHqRouteRoute,
 } as any)
+const AuthenticatedInternalAccessReviewRoute =
+  AuthenticatedInternalAccessReviewRouteImport.update({
+    id: '/internal_/access-review',
+    path: '/internal/access-review',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedInternalSupportRoute =
+  AuthenticatedInternalSupportRouteImport.update({
+    id: '/internal_/support',
+    path: '/internal/support',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedParentAiAssistantRoute =
   AuthenticatedParentAiAssistantRouteImport.update({
     id: '/ai-assistant',
@@ -1244,6 +1258,8 @@ export interface FileRoutesByFullPath {
   '/hq/dashboard': typeof AuthenticatedHqDashboardRoute
   '/hq/finance': typeof AuthenticatedHqFinanceRoute
   '/hq/reports': typeof AuthenticatedHqReportsRoute
+  '/internal/access-review': typeof AuthenticatedInternalAccessReviewRoute
+  '/internal/support': typeof AuthenticatedInternalSupportRoute
   '/parent/ai-assistant': typeof AuthenticatedParentAiAssistantRoute
   '/parent/attendance': typeof AuthenticatedParentAttendanceRoute
   '/parent/bus-tracking': typeof AuthenticatedParentBusTrackingRoute
@@ -1410,6 +1426,8 @@ export interface FileRoutesByTo {
   '/hq/dashboard': typeof AuthenticatedHqDashboardRoute
   '/hq/finance': typeof AuthenticatedHqFinanceRoute
   '/hq/reports': typeof AuthenticatedHqReportsRoute
+  '/internal/access-review': typeof AuthenticatedInternalAccessReviewRoute
+  '/internal/support': typeof AuthenticatedInternalSupportRoute
   '/parent/ai-assistant': typeof AuthenticatedParentAiAssistantRoute
   '/parent/attendance': typeof AuthenticatedParentAttendanceRoute
   '/parent/bus-tracking': typeof AuthenticatedParentBusTrackingRoute
@@ -1580,6 +1598,8 @@ export interface FileRoutesById {
   '/_authenticated/hq/dashboard': typeof AuthenticatedHqDashboardRoute
   '/_authenticated/hq/finance': typeof AuthenticatedHqFinanceRoute
   '/_authenticated/hq/reports': typeof AuthenticatedHqReportsRoute
+  '/_authenticated/internal_/access-review': typeof AuthenticatedInternalAccessReviewRoute
+  '/_authenticated/internal_/support': typeof AuthenticatedInternalSupportRoute
   '/_authenticated/parent/ai-assistant': typeof AuthenticatedParentAiAssistantRoute
   '/_authenticated/parent/attendance': typeof AuthenticatedParentAttendanceRoute
   '/_authenticated/parent/bus-tracking': typeof AuthenticatedParentBusTrackingRoute
@@ -1749,6 +1769,8 @@ export interface FileRouteTypes {
     | '/hq/dashboard'
     | '/hq/finance'
     | '/hq/reports'
+    | '/internal/access-review'
+    | '/internal/support'
     | '/parent/ai-assistant'
     | '/parent/attendance'
     | '/parent/bus-tracking'
@@ -1915,6 +1937,8 @@ export interface FileRouteTypes {
     | '/hq/dashboard'
     | '/hq/finance'
     | '/hq/reports'
+    | '/internal/access-review'
+    | '/internal/support'
     | '/parent/ai-assistant'
     | '/parent/attendance'
     | '/parent/bus-tracking'
@@ -2084,6 +2108,8 @@ export interface FileRouteTypes {
     | '/_authenticated/hq/dashboard'
     | '/_authenticated/hq/finance'
     | '/_authenticated/hq/reports'
+    | '/_authenticated/internal_/access-review'
+    | '/_authenticated/internal_/support'
     | '/_authenticated/parent/ai-assistant'
     | '/_authenticated/parent/attendance'
     | '/_authenticated/parent/bus-tracking'
@@ -2972,6 +2998,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHqReportsRouteImport
       parentRoute: typeof AuthenticatedHqRouteRoute
     }
+    '/_authenticated/internal_/access-review': {
+      id: '/_authenticated/internal_/access-review'
+      path: '/internal/access-review'
+      fullPath: '/internal/access-review'
+      preLoaderRoute: typeof AuthenticatedInternalAccessReviewRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/internal_/support': {
+      id: '/_authenticated/internal_/support'
+      path: '/internal/support'
+      fullPath: '/internal/support'
+      preLoaderRoute: typeof AuthenticatedInternalSupportRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/parent/ai-assistant': {
       id: '/_authenticated/parent/ai-assistant'
       path: '/ai-assistant'
@@ -3752,6 +3792,8 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedRuntimeRoute: typeof AuthenticatedRuntimeRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
   AuthenticatedWelcomeRoute: typeof AuthenticatedWelcomeRoute
+  AuthenticatedInternalAccessReviewRoute: typeof AuthenticatedInternalAccessReviewRoute
+  AuthenticatedInternalSupportRoute: typeof AuthenticatedInternalSupportRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -3774,6 +3816,9 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedRuntimeRoute: AuthenticatedRuntimeRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
   AuthenticatedWelcomeRoute: AuthenticatedWelcomeRoute,
+  AuthenticatedInternalAccessReviewRoute:
+    AuthenticatedInternalAccessReviewRoute,
+  AuthenticatedInternalSupportRoute: AuthenticatedInternalSupportRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =

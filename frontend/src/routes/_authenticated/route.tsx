@@ -103,7 +103,8 @@ function AuthenticatedLayout() {
   // the internal environment; every other surface stays closed to them.
   if (!profile && !superAdmin && platformStaff) {
     const pathname = location.pathname.replace(/\/+$/, "") || "/";
-    if (pathname !== "/internal") return <Navigate to="/internal" replace />;
+    if (pathname !== "/internal" && !pathname.startsWith("/internal/"))
+      return <Navigate to="/internal" replace />;
     return <Outlet />;
   }
 
