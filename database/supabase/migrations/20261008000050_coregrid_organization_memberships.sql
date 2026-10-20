@@ -158,6 +158,7 @@ ALTER TABLE public.organization_memberships FORCE ROW LEVEL SECURITY;
 -- A member reads their own membership set; an organization administrator
 -- reads their ACTIVE organization's set (staff administration); internal
 -- Sherivs workforce reads all. Nobody else reads anything.
+DROP POLICY IF EXISTS organization_memberships_select ON public.organization_memberships;
 CREATE POLICY organization_memberships_select ON public.organization_memberships
   FOR SELECT
   USING (
@@ -170,6 +171,7 @@ CREATE POLICY organization_memberships_select ON public.organization_memberships
 -- internal workforce may create memberships — and the WITH CHECK pins the
 -- created row to that organization. A client can never grant ITSELF a
 -- membership in an organization it cannot administer.
+DROP POLICY IF EXISTS organization_memberships_insert ON public.organization_memberships;
 CREATE POLICY organization_memberships_insert ON public.organization_memberships
   FOR INSERT
   WITH CHECK (
@@ -177,6 +179,7 @@ CREATE POLICY organization_memberships_insert ON public.organization_memberships
     OR (public.is_school_admin() AND school_id = public.get_my_school_id())
   );
 
+DROP POLICY IF EXISTS organization_memberships_update ON public.organization_memberships;
 CREATE POLICY organization_memberships_update ON public.organization_memberships
   FOR UPDATE
   USING (
@@ -188,6 +191,7 @@ CREATE POLICY organization_memberships_update ON public.organization_memberships
     OR (public.is_school_admin() AND school_id = public.get_my_school_id())
   );
 
+DROP POLICY IF EXISTS organization_memberships_delete ON public.organization_memberships;
 CREATE POLICY organization_memberships_delete ON public.organization_memberships
   FOR DELETE
   USING (
