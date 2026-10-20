@@ -25,12 +25,10 @@ export const HR_STAFF_PATCH_COLUMNS = [
   "full_name",
   "email",
   "phone",
-  "role",
   "subject_specialty",
   "employment_type",
   "salary",
   "date_enrolled",
-  "is_active",
   "avatar_url",
 ] as const;
 
@@ -90,19 +88,17 @@ export type HrStaffPatch = Partial<{
   full_name: unknown;
   email: unknown;
   phone: unknown;
-  role: unknown;
   subject_specialty: unknown;
   employment_type: unknown;
   salary: unknown;
   date_enrolled: unknown;
-  is_active: unknown;
   avatar_url: unknown;
 }>;
 
 /**
  * Allowlist an HR staff UPDATE and refuse privilege-bearing self-mutation.
- * school_id is never a legitimate HR field. Role / is_active may be set on
- * another user in the actor's school; they may not be changed on self.
+ * school_id is never a legitimate HR field. role / is_active are stripped from
+ * the returned client patch (server path only) and refused on self when changed.
  */
 export function parseHrStaffPatch(input: HrStaffPatchInput): HrStaffPatch {
   const actorId = input.actorId?.trim() ?? "";
@@ -121,33 +117,34 @@ export function parseHrStaffPatch(input: HrStaffPatchInput): HrStaffPatch {
     throw new Error(IDENTITY_PRIVILEGE_REASONS.schoolReassignment);
   }
 
+  const privileged: Record<string, unknown> = {};
   const outbound: HrStaffPatch = {};
   for (const [key, value] of Object.entries(input.patch)) {
     if (key === "id") continue;
+    if (key === "role" || key === "is_active") {
+      privileged[key] = value;
+      continue;
+    }
     if (!HR_ALLOWED.has(key)) {
       throw new Error(IDENTITY_PRIVILEGE_REASONS.unknownField);
     }
     outbound[key as keyof HrStaffPatch] = value;
   }
 
-  const self = actorId === targetId;
-  if (self) {
-    if (
-      Object.prototype.hasOwnProperty.call(outbound, "role") &&
-      input.currentRole != null &&
-      outbound.role !== input.currentRole
-    ) {
+  // role / is_active are service_role-only (freeze trigger): never part of the
+  // client write. Self-changes are refused here; others go through
+  // updateStaffPrivilege.
+  if (actorId === targetId) {
+    if ("role" in privileged && input.currentRole != null && privileged.role !== input.currentRole) {
       throw new Error(IDENTITY_PRIVILEGE_REASONS.selfRole);
     }
     if (
-      Object.prototype.hasOwnProperty.call(outbound, "is_active") &&
+      "is_active" in privileged &&
       input.currentActive != null &&
-      outbound.is_active !== input.currentActive
+      privileged.is_active !== input.currentActive
     ) {
       throw new Error(IDENTITY_PRIVILEGE_REASONS.selfActive);
     }
-    delete outbound.role;
-    delete outbound.is_active;
   }
 
   return outbound;

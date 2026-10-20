@@ -152,7 +152,11 @@ describe("write-audit hook — call-site discipline (§27.6 adoption)", () => {
       "teachers.functions.ts": [
         /await writeAuditRecord\(/,
         /action:\s*"teacher\.invite"/,
-        /action:\s*"teacher\.set_active"/,
+      ],
+      "staff-privilege.functions.ts": [
+        /await writeAuditRecord\(/,
+        /action:\s*"staff\.privilege_change"/,
+        /gate:\s*"requireSchoolAdminScope"/,
       ],
       "facilities.functions.ts": [
         /await writeAuditRecord\(/,

@@ -205,7 +205,7 @@ describe("TEST 4 — legitimate profile editing", () => {
     });
   });
 
-  it("lets an admin update another staff member's role and employment fields", () => {
+  it("strips role from the client patch (server path only) and keeps employment fields", () => {
     expect(
       parseHrStaffPatch({
         actorId: "admin-1",
@@ -220,7 +220,6 @@ describe("TEST 4 — legitimate profile editing", () => {
       }),
     ).toEqual({
       full_name: "Bea",
-      role: "bursar",
       salary: 100,
       employment_type: "full-time",
     });
