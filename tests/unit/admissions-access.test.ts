@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { admissionsOnlyNav, decideAdminAreaAccess, isAdmissionsPath } from "@/lib/admissions-access";
+import { admissionsOnlyNav, decideAdminAreaAccess, isAdmissionsPath } from "@/lib/runtime/scholar/admissions-access";
 
 const base = { superAdmin: false, pathname: "/admin/admissions", canManageAdmissions: true as boolean | null };
 

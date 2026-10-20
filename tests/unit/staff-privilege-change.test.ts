@@ -5,7 +5,7 @@ import { describe, expect, it } from "vitest";
 import {
   ASSIGNABLE_STAFF_ROLES,
   decideStaffPrivilegeChange,
-} from "@/lib/staff-privilege-change";
+} from "@/lib/runtime/scholar/staff-privilege-change";
 import { performStaffPrivilegeChange } from "@/lib/runtime/scholar/staff-privilege.functions";
 
 const SCHOOL_A = "school-a";

@@ -3,7 +3,7 @@ import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { tokenMsRemaining } from "@/lib/auth-helpers";
 import { requireSchoolAdminScope } from "@/lib/security-role-gate";
-import { decideStaffPrivilegeChange } from "@/lib/staff-privilege-change";
+import { decideStaffPrivilegeChange } from "@/lib/runtime/scholar/staff-privilege-change";
 import type { WriteAuditClient } from "@/lib/server/write-audit";
 
 /**

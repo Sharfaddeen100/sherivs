@@ -10,9 +10,9 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
-import { parseSelfProfilePatch } from "@/lib/identity-privilege";
+import { parseSelfProfilePatch } from "@/lib/runtime/identity-privilege";
 
-export { parseSelfProfilePatch } from "@/lib/identity-privilege";
+export { parseSelfProfilePatch } from "@/lib/runtime/identity-privilege";
 
 export type MyProfile = {
   id: string;

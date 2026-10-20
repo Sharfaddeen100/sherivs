@@ -3,7 +3,7 @@ import { useLocation } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useApp } from "@/contexts/app-context";
 import { supabase } from "@/integrations/supabase/client";
-import { decideAdminAreaAccess, ADMIN_ROLES } from "@/lib/admissions-access";
+import { decideAdminAreaAccess, ADMIN_ROLES } from "@/lib/runtime/scholar/admissions-access";
 import { RoleGuard } from "@/components/role-guard";
 
 type RpcClient = { rpc(fn: string): PromiseLike<{ data: unknown; error: { message: string } | null }> };

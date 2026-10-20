@@ -4,7 +4,7 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { emailField, nonEmptyText, optionalText, phoneField } from "@/lib/validation";
 import { tokenMsRemaining } from "@/lib/auth-helpers";
 import { requireSchoolAdminScope } from "@/lib/security-role-gate";
-import { assertNotSelfAccountStatusChange } from "@/lib/identity-privilege";
+import { assertNotSelfAccountStatusChange } from "@/lib/runtime/identity-privilege";
 import { SystemClock, TimeAuthority } from "../../kernel/time-authority";
 import { performStaffPrivilegeChange, type PrivilegeAdminClient } from "./staff-privilege.functions";
 import { writeAuditRecord } from "@/lib/server/write-audit";

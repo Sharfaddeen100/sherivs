@@ -10,6 +10,7 @@
  * Fail closed. Do not guess actor or target identity.
  */
 import { z } from "zod";
+import type { Database } from "@/integrations/supabase/types";
 
 export const PRIVILEGED_USER_COLUMNS = [
   "role",
@@ -84,16 +85,17 @@ export type HrStaffPatchInput = {
   currentActive?: boolean | null;
 };
 
-export type HrStaffPatch = Partial<{
-  full_name: unknown;
-  email: unknown;
-  phone: unknown;
-  subject_specialty: unknown;
-  employment_type: unknown;
-  salary: unknown;
-  date_enrolled: unknown;
-  avatar_url: unknown;
-}>;
+export type HrStaffPatch = Pick<
+  Database["public"]["Tables"]["users"]["Update"],
+  | "full_name"
+  | "email"
+  | "phone"
+  | "subject_specialty"
+  | "employment_type"
+  | "salary"
+  | "date_enrolled"
+  | "avatar_url"
+>;
 
 /**
  * Allowlist an HR staff UPDATE and refuse privilege-bearing self-mutation.
@@ -128,7 +130,7 @@ export function parseHrStaffPatch(input: HrStaffPatchInput): HrStaffPatch {
     if (!HR_ALLOWED.has(key)) {
       throw new Error(IDENTITY_PRIVILEGE_REASONS.unknownField);
     }
-    outbound[key as keyof HrStaffPatch] = value;
+    (outbound as Record<string, unknown>)[key] = value;
   }
 
   // role / is_active are service_role-only (freeze trigger): never part of the
