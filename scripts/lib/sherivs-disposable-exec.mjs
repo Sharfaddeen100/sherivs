@@ -70,7 +70,7 @@ export const FORBIDDEN_SQL_ENV_NAMES = Object.freeze([
 export const PINNED_FORWARD = Object.freeze({
   id: "forward",
   relativePath: "database/supabase/migrations/20261015000010_sherivs_identity_privilege_freeze.sql.proposed",
-  sha256: "62aaad757e3b7ff79cf6fc89aaa3d604cd1fb151feadee6ea03f813361715416",
+  sha256: "0dcb2613e889a9f52e3a5001b432dc3299a6bc59596e857d4f76ffc72f48640d",
 });
 
 export const PINNED_ROLLBACK = Object.freeze({

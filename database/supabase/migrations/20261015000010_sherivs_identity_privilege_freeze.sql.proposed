@@ -28,25 +28,49 @@
 --
 -- Why a BEFORE UPDATE trigger (not column REVOKE, not WITH CHECK alone):
 --   • Column REVOKE UPDATE(role, school_id, is_active) FROM authenticated
---     would also block legitimate school-admin JWT updates of OTHER users
---     (hr.tsx, setTeacherActive). PostgreSQL has no school-admin role.
+--     would be coarser and leave no row-level audit message. Under the new
+--     rule the trigger is the single gate: only service_role may change
+--     these columns, for self or for any other row.
 --   • UPDATE WITH CHECK cannot see OLD. A subquery on public.users during
 --     WITH CHECK observes the new row, so "role = get_my_role()" is a
 --     tautology. The trigger compares NEW to OLD.
 --   • Self-updates of non-privileged columns (full_name, phone, push_token,
 --     digital_twin_opt_out, …) still succeed.
 --
--- B-1 trusted execution context (replaces auth.uid() IS NULL RETURN NEW):
---   Privileged-column UPDATE is allowed for the PostgreSQL role
---   current_user = 'service_role' only. That value is the role after the
---   authenticator SET ROLE, not a caller-controlled JWT GUC, not
---   session_user (which stays `authenticator` for both user and service
---   JWTs), and not `postgres` (SECURITY DEFINER owner would otherwise
---   inherit a silent bypass).
---   An absent JWT subject (auth.uid() IS NULL) is NOT proof of trust.
---   Unidentified, non-service_role privilege-column mutation fails closed.
---   Identified JWT self-updates of role / school_id / is_active raise.
---   Identified JWT updates of a different row are left to RLS.
+-- B-1 trusted execution context (ONLY service_role):
+--   Privileged-column UPDATE (role, school_id, is_active) is allowed solely
+--   when current_user = 'service_role'. Every other PostgreSQL role,
+--   including authenticated, anon, and postgres/table owner, raises
+--   'Forbidden: only service_role may modify privileged identity fields
+--   (role, school_id, is_active)' whenever one of those columns changes.
+--   Changing id always raises. Updates that touch no privileged column
+--   (full_name, phone, ...) pass through to RLS as before.
+--
+--   Deliberately NOT trusted: request.jwt.claim.role, request.jwt.claims,
+--   request.jwt.claim.sub, auth.uid(), auth.role(), and session_user. Any
+--   session (including postgres) can set_config() those GUCs, so they are
+--   caller-controlled. current_user is the effective PostgreSQL role and
+--   cannot be forged without actually holding SET ROLE service_role.
+--   The earlier "identified JWT updating a DIFFERENT row is left to RLS"
+--   branch is removed. Closed residual: a postgres session that set
+--   request.jwt.claim.sub to another user could change role via that branch.
+--
+--   Consequence: school-admin JWT updates of OTHER users' role, school_id,
+--   or is_active (e.g. hr.tsx, setTeacherActive) now fail from the browser
+--   client and MUST go through a server path using the service_role client
+--   (authenticate, resolve tenant, authorize school admin, validate, audit).
+--
+-- FORCE ROW LEVEL SECURITY decision (public.users): NOT added.
+--   ALTER TABLE public.users FORCE ROW LEVEL SECURITY would subject the
+--   table owner (postgres) to RLS. The SECURITY DEFINER helpers
+--   get_my_school_id, get_my_role, is_school_admin, and is_super_admin are
+--   owned by postgres and SELECT public.users; today they bypass RLS as
+--   owner. Policies on public.users call those same helpers, so under FORCE
+--   they would re-enter the policy that calls them (infinite recursion) or
+--   return no rows and break every tenant RLS check. It is also unnecessary
+--   for this fix: the trigger fires for owners regardless of RLS, and
+--   postgres is no longer allowlisted. Revisit only after helpers are
+--   moved to a BYPASSRLS non-owner role.
 --
 -- B-2 transactional execution contract:
 --   This file wraps helper replacement and trigger installation in one
@@ -82,6 +106,8 @@
 --   • news_reads parent-engagement query is unchanged (separate OPEN item).
 --   • postgres / table-owner DBA repair is not a silent skip. Owner repair
 --     requires SET ROLE service_role (if granted) or DISABLE TRIGGER.
+--   • Server paths for school-admin changes to other users' role/school_id/
+--     is_active (hr.tsx, setTeacherActive) are application work, not here.
 -- =============================================================================
 
 BEGIN;
@@ -157,50 +183,38 @@ SECURITY INVOKER
 SET search_path = public
 AS $$
 DECLARE
-  v_uid uuid;
   v_privilege_changed boolean;
 BEGIN
+  IF NEW.id IS DISTINCT FROM OLD.id THEN
+    RAISE EXCEPTION 'Forbidden: identity key cannot be changed';
+  END IF;
+
+  IF current_user = 'service_role' THEN
+    RETURN NEW;
+  END IF;
+
   v_privilege_changed :=
        NEW.role IS DISTINCT FROM OLD.role
     OR NEW.school_id IS DISTINCT FROM OLD.school_id
     OR NEW.is_active IS DISTINCT FROM OLD.is_active;
 
-  IF NEW.id IS DISTINCT FROM OLD.id THEN
-    RAISE EXCEPTION 'Forbidden: identity key cannot be changed';
-  END IF;
-
-  -- Trusted provisioner: PostgreSQL role after authenticator SET ROLE.
-  -- Not auth.uid() IS NULL, not session_user, not a JWT GUC, not postgres.
-  IF current_user = 'service_role' THEN
-    RETURN NEW;
-  END IF;
-
   IF NOT v_privilege_changed THEN
     RETURN NEW;
   END IF;
 
-  v_uid := auth.uid();
-
-  IF v_uid IS NULL THEN
-    RAISE EXCEPTION 'Forbidden: untrusted execution context cannot modify privileged identity fields';
-  END IF;
-
-  IF NEW.id = v_uid THEN
-    RAISE EXCEPTION 'Forbidden: cannot modify privileged identity fields on your own account';
-  END IF;
-
-  RETURN NEW;
+  RAISE EXCEPTION 'Forbidden: only service_role may modify privileged identity fields (role, school_id, is_active)';
 END;
 $$;
 
 COMMENT ON FUNCTION public.forbid_self_privilege_mutation() IS
   $comment$SHERIVS-001 BEFORE UPDATE guard. Privilege-bearing columns role,
-  school_id, and is_active may change only when current_user is service_role
-  (documented supabaseAdmin provisioner) or when an identified JWT caller
-  updates a different row (RLS still applies). Identified self-updates of
-  those columns raise. auth.uid() IS NULL is not a trust predicate: unknown
-  non-service_role context fails closed. Does not SELECT other rows.
-  SECURITY INVOKER. postgres is intentionally not allowlisted.$comment$;
+  school_id, and is_active may change only when current_user is service_role.
+  All other roles (authenticated, anon, postgres/owner) raise, for self or
+  other rows. Request JWT GUCs, auth.uid(), and session_user are not trusted
+  because a session can set_config them. Closes the residual where postgres
+  carrying another user's request.jwt.claim.sub could change role. School-admin
+  changes to other users must use a service_role server path. Does not SELECT
+  other rows. SECURITY INVOKER.$comment$;
 
 DROP TRIGGER IF EXISTS trg_users_forbid_self_privilege_mutation ON public.users;
 CREATE TRIGGER trg_users_forbid_self_privilege_mutation

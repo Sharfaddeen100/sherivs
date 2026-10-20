@@ -112,19 +112,7 @@ function simulateForbidSelfPrivilegeMutation(input: {
   if (!privilegeChanged) {
     return { ok: true };
   }
-  if (input.authUid === null) {
-    return {
-      ok: false,
-      message: "Forbidden: untrusted execution context cannot modify privileged identity fields",
-    };
-  }
-  if (input.next.id === input.authUid) {
-    return {
-      ok: false,
-      message: "Forbidden: cannot modify privileged identity fields on your own account",
-    };
-  }
-  return { ok: true };
+  return { ok: false, message: "Forbidden: only service_role may modify privileged identity fields (role, school_id, is_active)" };
 }
 
 const SELF = {
@@ -301,13 +289,9 @@ describe("TEST 8 — trigger side effects", () => {
     expect(proposed).toContain("NEW.role IS DISTINCT FROM OLD.role");
     expect(proposed).toContain("NEW.school_id IS DISTINCT FROM OLD.school_id");
     expect(proposed).toContain("NEW.is_active IS DISTINCT FROM OLD.is_active");
-    expect(proposed).toContain("NEW.id = v_uid");
     expect(proposed).toContain("current_user = 'service_role'");
     expect(proposed).toContain(
-      "RAISE EXCEPTION 'Forbidden: cannot modify privileged identity fields on your own account'",
-    );
-    expect(proposed).toContain(
-      "RAISE EXCEPTION 'Forbidden: untrusted execution context cannot modify privileged identity fields'",
+      "RAISE EXCEPTION 'Forbidden: only service_role may modify privileged identity fields (role, school_id, is_active)'",
     );
     expect(proposed).toMatch(/SECURITY INVOKER/);
   });
@@ -543,11 +527,11 @@ describe("proposed migration inventory and rollback inverse", () => {
 });
 
 describe("B-1 trusted execution context (static source)", () => {
-  it("does not treat auth.uid() IS NULL as an automatic privilege-mutation bypass", () => {
-    expect(triggerWithoutComments).not.toMatch(/IF\s+auth\.uid\(\)\s+IS\s+NULL\s+THEN/i);
-    expect(triggerExecutable).not.toMatch(/IF\s+auth\.uid\(\)\s+IS\s+NULL\s+THEN/i);
-    expect(triggerWithoutComments).toMatch(
-      /IF\s+v_uid\s+IS\s+NULL\s+THEN\s+RAISE EXCEPTION 'Forbidden: untrusted execution context cannot modify privileged identity fields'/,
+  it("has no auth.uid() branch and always raises for untrusted privilege changes", () => {
+    expect(triggerExecutable).not.toMatch(/auth\.uid\s*\(/);
+    expect(triggerWithoutComments).not.toContain("v_uid");
+    expect(triggerWithoutComments).toContain(
+      "RAISE EXCEPTION 'Forbidden: only service_role may modify privileged identity fields (role, school_id, is_active)'",
     );
   });
 
@@ -561,12 +545,7 @@ describe("B-1 trusted execution context (static source)", () => {
     expect(triggerExecutable).not.toMatch(/postgres/);
   });
 
-  it("fails closed when privilege columns change outside the trusted role and without a subject", () => {
-    expect(triggerWithoutComments).toContain("v_uid := auth.uid();");
-    expect(triggerWithoutComments).toMatch(/IF\s+v_uid\s+IS\s+NULL\s+THEN/);
-    expect(triggerWithoutComments).toContain(
-      "RAISE EXCEPTION 'Forbidden: untrusted execution context cannot modify privileged identity fields'",
-    );
+  it("fails closed when privilege columns change outside the trusted role", () => {
     expect(triggerExecutable).toMatch(/RAISE EXCEPTION/);
   });
 });
@@ -621,18 +600,18 @@ describe("B-1 privilege-mutation matrix (simulated — not PostgreSQL)", () => {
     });
     expect(result).toEqual({
       ok: false,
-      message: "Forbidden: untrusted execution context cannot modify privileged identity fields",
+      message: "Forbidden: only service_role may modify privileged identity fields (role, school_id, is_active)",
     });
   });
 
-  it("CASE 6: authenticated administrator updating another user is trigger-permitted", () => {
+  it("CASE 6: authenticated administrator updating another user is rejected", () => {
     const result = simulateForbidSelfPrivilegeMutation({
       currentUser: "authenticated",
       authUid: SELF.id,
       old: OTHER,
       next: { ...OTHER, role: "admin", is_active: false },
     });
-    expect(result).toEqual({ ok: true });
+    expect(result.ok).toBe(false);
   });
 
   it("CASE 7: service_role provisioning of privilege columns is trigger-permitted", () => {
@@ -662,7 +641,7 @@ describe("B-1 privilege-mutation matrix (simulated — not PostgreSQL)", () => {
     expect(result.ok).toBe(false);
   });
 
-  it("CASE 9: DEFINER owner is not a trusted provisioner; self-writes still freeze", () => {
+  it("CASE 9: DEFINER owner is not a trusted provisioner for self or other rows", () => {
     const selfWrite = simulateForbidSelfPrivilegeMutation({
       currentUser: "postgres",
       authUid: SELF.id,
@@ -676,7 +655,7 @@ describe("B-1 privilege-mutation matrix (simulated — not PostgreSQL)", () => {
       old: OTHER,
       next: { ...OTHER, role: "admin" },
     });
-    expect(otherWrite).toEqual({ ok: true });
+    expect(otherWrite.ok).toBe(false);
   });
 
   it("CASE 10: unknown execution context fails closed on privilege columns", () => {
