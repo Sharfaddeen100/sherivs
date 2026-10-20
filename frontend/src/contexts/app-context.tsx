@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import type { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
+import { SCHOOL_CLIENT_COLUMNS } from "@/lib/runtime/scholar/school-columns";
 import { resolveTenantDomain, resolveTenantSlug } from "@/lib/tenant";
 import { type AppRole } from "@/lib/roles";
 import { runtimeWorkspaceHome } from "@/lib/runtime/nav-registry";
@@ -98,10 +99,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
         nextProfile = prof as UserProfile;
         const { data: sch } = await supabase
           .from("schools")
-          .select("*")
+          .select(SCHOOL_CLIENT_COLUMNS)
           .eq("id", prof.school_id)
           .maybeSingle();
-        if (sch) nextSchool = sch as SchoolRow;
+        if (sch) nextSchool = sch as unknown as SchoolRow;
       } else {
         const { data: sa } = await supabase
           .from("super_admins")
@@ -116,11 +117,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
     if (!nextSchool && slug) {
       const { data: sch } = await supabase
         .from("schools")
-        .select("*")
+        .select(SCHOOL_CLIENT_COLUMNS)
         .eq("slug", slug)
         .eq("is_active", true)
         .maybeSingle();
-      if (sch) nextSchool = sch as SchoolRow;
+      if (sch) nextSchool = sch as unknown as SchoolRow;
     }
 
     // Plane B: custom-domain lookup — an organization's own registered
@@ -130,11 +131,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
     if (!nextSchool && !slug && tenantDomain) {
       const { data: sch } = await supabase
         .from("schools")
-        .select("*")
+        .select(SCHOOL_CLIENT_COLUMNS)
         .eq("domain", tenantDomain)
         .eq("is_active", true)
         .maybeSingle();
-      if (sch) nextSchool = sch as SchoolRow;
+      if (sch) nextSchool = sch as unknown as SchoolRow;
     }
 
     setProfile(nextProfile);
