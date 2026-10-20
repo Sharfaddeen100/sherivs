@@ -22,8 +22,11 @@
 -- leak. For the by-design public tables (published website content, active
 -- sports) a SECOND B row with the flag TRUE is seeded and its visibility is
 -- recorded as PUBLIC_BY_DESIGN. Also PUBLIC_BY_DESIGN: schools active-row SELECT,
--- admission_applications INSERT (public application form) and storage
--- school-media anon SELECT (website media) - these are classified, not fixed.
+-- admission_applications INSERT (public application form) - classified, not fixed.
+-- Step 2 (20261020000040): school-media anon SELECT is NO LONGER by design (a
+-- visible object is a LEAK); admissions/student-documents are registrar/admin
+-- only; extra sections INTRA-SCHOOL ADMISSIONS, STORAGE and MULTI-ARG FUZZ run
+-- after the main sweep.
 --
 -- COLUMN-SECRET check: any text/bytea/json column named like
 -- secret|password|private_key|api_key|service_key|token that anon/authenticated
@@ -478,7 +481,7 @@ BEGIN
     ops := jsonb_build_array(
       jsonb_build_object('op','CONTROL','kind','count','sql',
         format('SELECT count(*) FROM storage.objects WHERE bucket_id = ''school-media'' AND name LIKE %L', p_att::text || '/%')),
-      jsonb_build_object('op','SELECT[public]','kind','count','sql',
+      jsonb_build_object('op','SELECT','kind','count','sql',
         format('SELECT count(*) FROM storage.objects WHERE bucket_id = ''school-media'' AND name LIKE %L', p_vic::text || '/%')),
       jsonb_build_object('op','UPDATE','kind','dml','sql',
         format('UPDATE storage.objects SET name = name WHERE bucket_id = ''school-media'' AND name LIKE %L', p_vic::text || '/%')),
@@ -808,6 +811,409 @@ BEGIN
 END
 $sweep$;
 
+-- ===================== SHERIVS-002 STEP 2 EXTRA SECTIONS =====================
+-- Helpers: run one statement as a role/identity and return to superuser.
+CREATE FUNCTION sv2_test.probe(p_uid uuid, p_role text, p_sql text, p_kind text) RETURNS jsonb
+LANGUAGE plpgsql AS $f$
+DECLARE r jsonb;
+BEGIN
+  PERFORM set_config('request.jwt.claims',
+    CASE WHEN p_uid IS NULL THEN '{"role":"anon"}'
+         ELSE json_build_object('sub', p_uid, 'role', 'authenticated')::text END, true);
+  PERFORM set_config('request.jwt.claim.sub', coalesce(p_uid::text, ''), true);
+  PERFORM set_config('request.jwt.claim.role', p_role, true);
+  EXECUTE format('SET LOCAL ROLE %I', p_role);
+  r := sv2_test.try(p_sql, p_kind);
+  RESET ROLE;
+  RETURN r;
+END
+$f$;
+
+CREATE FUNCTION sv2_test.tenant_digest(p_tbl text, p_tcol text, p_tenant uuid) RETURNS text
+LANGUAGE plpgsql AS $f$
+DECLARE d text;
+BEGIN
+  EXECUTE format('SELECT count(*)::text || '':'' || coalesce(md5(string_agg(t::text, ''|'' ORDER BY t::text)), '''') FROM public.%I t WHERE %I::text = %L',
+                 p_tbl, p_tcol, p_tenant::text) INTO d;
+  RETURN d;
+END
+$f$;
+
+-- Extra school-A identities that must not collide with the (label, role) users.
+CREATE TEMP TABLE sv2_extra (tag text PRIMARY KEY, user_id uuid NOT NULL);
+
+SET LOCAL session_replication_role = replica;
+
+DO $seed_extra$
+DECLARE
+  a uuid; b uuid; uid uuid; t record;
+BEGIN
+  SELECT id INTO a FROM sv2_schools WHERE label = 'A';
+  SELECT id INTO b FROM sv2_schools WHERE label = 'B';
+  -- tag, home school, role, position tenant (NULL = none), status, ended_on offset (days)
+  FOR t IN SELECT * FROM (VALUES
+      ('registrar',         a, 'teacher', a,    'active', NULL::int),
+      ('registrar_ended',   a, 'student', a,    'ended',  -1),
+      ('registrar_expired', a, 'parent',  a,    'active', -1),
+      ('registrar_foreign', a, 'bursar',  b,    'active', NULL::int)
+    ) v(tag, home, role, ptenant, pstatus, endoff) LOOP
+    uid := gen_random_uuid();
+    INSERT INTO auth.users (id, email, aud, role)
+      VALUES (uid, 'sv2-a-' || t.tag || '@example.invalid', 'authenticated', 'authenticated');
+    INSERT INTO public.users (id, school_id, full_name, email, role)
+      VALUES (uid, t.home, 'SV2 A ' || t.tag, 'sv2-a-' || t.tag || '@example.invalid', t.role);
+    INSERT INTO sv2_extra VALUES (t.tag, uid);
+    IF to_regclass('public.cg_role_assignment') IS NOT NULL THEN
+      INSERT INTO public.cg_role_assignment (tenant_ref, identity_ref, role_id)
+        VALUES (t.home::text, uid::text, 'role:member');
+    END IF;
+    INSERT INTO public.cg_workforce_position
+      (tenant_ref, runtime_ref, kind_code, identity_ref, started_on, ended_on, status)
+    VALUES (t.ptenant::text, 'runtime:scholar', 'registrar', uid::text,
+            CURRENT_DATE - 10,
+            CASE WHEN t.endoff IS NULL THEN NULL ELSE CURRENT_DATE + t.endoff END,
+            t.pstatus);
+  END LOOP;
+EXCEPTION WHEN OTHERS THEN
+  INSERT INTO sv2_results VALUES ('intra-school admissions', '-', 'SEED', 'ERROR',
+    'registrar seed failed ' || SQLSTATE || ' ' || left(SQLERRM, 300));
+END
+$seed_extra$;
+
+-- Storage fixtures for the student-documents bucket (admission uploads).
+DO $seed_docs$
+BEGIN
+  IF to_regclass('storage.objects') IS NOT NULL THEN
+    INSERT INTO storage.buckets (id, name, public) VALUES ('student-documents', 'student-documents', false)
+      ON CONFLICT (id) DO NOTHING;
+    INSERT INTO storage.objects (bucket_id, name)
+      SELECT 'student-documents', 'admissions/' || id::text || '/doc.pdf' FROM sv2_schools;
+  END IF;
+EXCEPTION WHEN OTHERS THEN
+  INSERT INTO sv2_results VALUES ('storage.objects[student-documents]', '-', 'SEED', 'ERROR',
+    SQLSTATE || ' ' || left(SQLERRM, 300));
+END
+$seed_docs$;
+
+SET LOCAL session_replication_role = origin;
+
+-- ---------- (a) INTRA-SCHOOL admissions: only admin/principal/registrar ------
+DO $intra$
+DECLARE
+  a uuid; b uuid; u record; r jsonb; n_a bigint; n_b bigint; actor text;
+  ex record;
+BEGIN
+  SELECT id INTO a FROM sv2_schools WHERE label = 'A';
+  SELECT id INTO b FROM sv2_schools WHERE label = 'B';
+  SELECT count(*) INTO n_a FROM public.admission_applications WHERE school_id = a;
+  IF n_a = 0 THEN
+    INSERT INTO sv2_results VALUES ('intra-school admissions', '-', 'SEED', 'ERROR',
+      'no seeded admission_applications row for school A; section inconclusive');
+    RETURN;
+  END IF;
+
+  -- Roles that must see/update nothing.
+  FOR u IN SELECT 'A:' || role AS actor, user_id FROM sv2_users
+            WHERE label = 'A' AND role IN ('teacher','parent','student','driver','bursar')
+          UNION ALL
+          SELECT 'A:' || tag, user_id FROM sv2_extra WHERE tag <> 'registrar'
+          ORDER BY 1 LOOP
+    r := sv2_test.probe(u.user_id, 'authenticated',
+      format('SELECT count(*) FROM public.admission_applications WHERE school_id = %L', a::text), 'count');
+    INSERT INTO sv2_results VALUES ('intra-school admissions', u.actor, 'SELECT',
+      CASE WHEN r->>'kind' = 'ok' AND (r->>'n')::bigint = 0 THEN 'PASS'
+           WHEN r->>'kind' = 'ok' THEN 'LEAK' ELSE 'ERROR' END,
+      CASE WHEN r->>'kind' = 'ok' THEN 'rows=' || (r->>'n') ELSE r::text END);
+    r := sv2_test.probe(u.user_id, 'authenticated',
+      format('UPDATE public.admission_applications SET status = status WHERE school_id = %L', a::text), 'dml');
+    INSERT INTO sv2_results VALUES ('intra-school admissions', u.actor, 'UPDATE',
+      CASE WHEN r->>'kind' = 'ok' AND (r->>'n')::bigint = 0 THEN 'PASS'
+           WHEN r->>'kind' = 'ok' THEN 'LEAK'
+           WHEN r->>'state' = '42501' THEN 'PASS' ELSE 'ERROR' END,
+      CASE WHEN r->>'kind' = 'ok' THEN 'rows=' || (r->>'n') ELSE r::text END);
+  END LOOP;
+
+  -- Roles that must work: admin, principal of A, and the seeded registrar.
+  FOR u IN SELECT 'A:' || role AS actor, user_id FROM sv2_users WHERE label = 'A' AND role IN ('admin','principal')
+          UNION ALL SELECT 'A:registrar', user_id FROM sv2_extra WHERE tag = 'registrar'
+          ORDER BY 1 LOOP
+    r := sv2_test.probe(u.user_id, 'authenticated',
+      format('SELECT count(*) FROM public.admission_applications WHERE school_id = %L', a::text), 'count');
+    INSERT INTO sv2_results VALUES ('intra-school admissions', u.actor, 'OWN_SELECT_ADMISSIONS',
+      CASE WHEN r->>'kind' = 'ok' AND (r->>'n')::bigint >= 1 THEN 'PASS' ELSE 'ERROR' END,
+      CASE WHEN r->>'kind' = 'ok' THEN 'rows=' || (r->>'n') ELSE r::text END
+        || CASE WHEN r->>'kind' = 'ok' AND (r->>'n')::bigint >= 1 THEN '' ELSE ' : admissions admin broken' END);
+    r := sv2_test.probe(u.user_id, 'authenticated',
+      format('UPDATE public.admission_applications SET status = status WHERE school_id = %L', a::text), 'dml');
+    INSERT INTO sv2_results VALUES ('intra-school admissions', u.actor, 'UPDATE_ADMISSIONS',
+      CASE WHEN r->>'kind' = 'ok' AND (r->>'n')::bigint >= 1 THEN 'PASS' ELSE 'ERROR' END,
+      CASE WHEN r->>'kind' = 'ok' THEN 'rows=' || (r->>'n') ELSE r::text END
+        || CASE WHEN r->>'kind' = 'ok' AND (r->>'n')::bigint >= 1 THEN '' ELSE ' : admissions admin broken' END);
+  END LOOP;
+
+  -- Cross-tenant: admin/principal/registrar of A must not touch B's applications.
+  FOR u IN SELECT 'A:' || role AS actor, user_id FROM sv2_users WHERE label = 'A' AND role IN ('admin','principal')
+          UNION ALL SELECT 'A:registrar', user_id FROM sv2_extra WHERE tag = 'registrar'
+          ORDER BY 1 LOOP
+    r := sv2_test.probe(u.user_id, 'authenticated',
+      format('SELECT count(*) FROM public.admission_applications WHERE school_id = %L', b::text), 'count');
+    INSERT INTO sv2_results VALUES ('intra-school admissions', u.actor, 'SELECT[victim]',
+      CASE WHEN r->>'kind' = 'ok' AND (r->>'n')::bigint = 0 THEN 'PASS'
+           WHEN r->>'kind' = 'ok' THEN 'LEAK' ELSE 'ERROR' END,
+      CASE WHEN r->>'kind' = 'ok' THEN 'rows=' || (r->>'n') ELSE r::text END);
+    r := sv2_test.probe(u.user_id, 'authenticated',
+      format('UPDATE public.admission_applications SET status = status WHERE school_id = %L', b::text), 'dml');
+    INSERT INTO sv2_results VALUES ('intra-school admissions', u.actor, 'UPDATE[victim]',
+      CASE WHEN r->>'kind' = 'ok' AND (r->>'n')::bigint = 0 THEN 'PASS'
+           WHEN r->>'kind' = 'ok' THEN 'LEAK'
+           WHEN r->>'state' = '42501' THEN 'PASS' ELSE 'ERROR' END,
+      CASE WHEN r->>'kind' = 'ok' THEN 'rows=' || (r->>'n') ELSE r::text END);
+  END LOOP;
+END
+$intra$;
+
+-- ---------- (b) storage: school-media no longer public; student-documents ----
+DO $stor$
+DECLARE
+  a uuid; b uuid; u record; r jsonb; sql_a text; sql_b text; sql_m text; ok boolean;
+BEGIN
+  IF to_regclass('storage.objects') IS NULL THEN RETURN; END IF;
+  SELECT id INTO a FROM sv2_schools WHERE label = 'A';
+  SELECT id INTO b FROM sv2_schools WHERE label = 'B';
+  sql_m := format('SELECT count(*) FROM storage.objects WHERE bucket_id = ''school-media'' AND name = %L', a::text || '/a.txt');
+  sql_a := format('SELECT count(*) FROM storage.objects WHERE bucket_id = ''student-documents'' AND name = %L', 'admissions/' || a::text || '/doc.pdf');
+  sql_b := format('SELECT count(*) FROM storage.objects WHERE bucket_id = ''student-documents'' AND name = %L', 'admissions/' || b::text || '/doc.pdf');
+
+  -- anon must not read school-media any more.
+  r := sv2_test.probe(NULL, 'anon', sql_m, 'count');
+  INSERT INTO sv2_results VALUES ('storage.objects[school-media]', 'anon', 'SELECT[a-object]',
+    CASE WHEN r->>'kind' = 'ok' AND (r->>'n')::bigint = 0 THEN 'PASS'
+         WHEN r->>'kind' = 'ok' THEN 'LEAK' ELSE 'PASS' END,
+    CASE WHEN r->>'kind' = 'ok' THEN 'rows=' || (r->>'n') ELSE 'denied: ' || r::text END);
+
+  -- own-school member still reads it.
+  FOR u IN SELECT 'A:' || role AS actor, user_id FROM sv2_users WHERE label = 'A' AND role IN ('teacher','parent','admin') ORDER BY 1 LOOP
+    r := sv2_test.probe(u.user_id, 'authenticated', sql_m, 'count');
+    INSERT INTO sv2_results VALUES ('storage.objects[school-media]', u.actor, 'OWN_SELECT_OBJECT',
+      CASE WHEN r->>'kind' = 'ok' AND (r->>'n')::bigint >= 1 THEN 'PASS' ELSE 'ERROR' END,
+      CASE WHEN r->>'kind' = 'ok' THEN 'rows=' || (r->>'n') ELSE r::text END);
+  END LOOP;
+
+  -- student-documents: non-admissions A actors must read nothing.
+  FOR u IN SELECT 'A:' || role AS actor, user_id FROM sv2_users
+            WHERE label = 'A' AND role IN ('teacher','parent','student','driver','bursar')
+          UNION ALL SELECT 'A:' || tag, user_id FROM sv2_extra WHERE tag <> 'registrar'
+          ORDER BY 1 LOOP
+    r := sv2_test.probe(u.user_id, 'authenticated', sql_a, 'count');
+    INSERT INTO sv2_results VALUES ('storage.objects[student-documents]', u.actor, 'SELECT',
+      CASE WHEN r->>'kind' = 'ok' AND (r->>'n')::bigint = 0 THEN 'PASS'
+           WHEN r->>'kind' = 'ok' THEN 'LEAK' ELSE 'PASS' END,
+      CASE WHEN r->>'kind' = 'ok' THEN 'rows=' || (r->>'n') ELSE 'denied: ' || r::text END);
+  END LOOP;
+
+  -- admin / principal / registrar of A read A's docs, never B's.
+  FOR u IN SELECT 'A:' || role AS actor, user_id FROM sv2_users WHERE label = 'A' AND role IN ('admin','principal')
+          UNION ALL SELECT 'A:registrar', user_id FROM sv2_extra WHERE tag = 'registrar'
+          ORDER BY 1 LOOP
+    r := sv2_test.probe(u.user_id, 'authenticated', sql_a, 'count');
+    INSERT INTO sv2_results VALUES ('storage.objects[student-documents]', u.actor, 'OWN_SELECT_DOC',
+      CASE WHEN r->>'kind' = 'ok' AND (r->>'n')::bigint >= 1 THEN 'PASS' ELSE 'ERROR' END,
+      CASE WHEN r->>'kind' = 'ok' THEN 'rows=' || (r->>'n') ELSE r::text END);
+    r := sv2_test.probe(u.user_id, 'authenticated', sql_b, 'count');
+    INSERT INTO sv2_results VALUES ('storage.objects[student-documents]', u.actor, 'SELECT[victim]',
+      CASE WHEN r->>'kind' = 'ok' AND (r->>'n')::bigint = 0 THEN 'PASS'
+           WHEN r->>'kind' = 'ok' THEN 'LEAK' ELSE 'PASS' END,
+      CASE WHEN r->>'kind' = 'ok' THEN 'rows=' || (r->>'n') ELSE 'denied: ' || r::text END);
+  END LOOP;
+
+  r := sv2_test.probe(NULL, 'anon', sql_a, 'count');
+  INSERT INTO sv2_results VALUES ('storage.objects[student-documents]', 'anon', 'SELECT',
+    CASE WHEN r->>'kind' = 'ok' AND (r->>'n')::bigint = 0 THEN 'PASS'
+         WHEN r->>'kind' = 'ok' THEN 'LEAK' ELSE 'PASS' END,
+    CASE WHEN r->>'kind' = 'ok' THEN 'rows=' || (r->>'n') ELSE 'denied: ' || r::text END);
+END
+$stor$;
+
+-- ---------- (c) MULTI-ARG SECURITY DEFINER fuzz ------------------------------
+-- Every public SECURITY DEFINER function with at least one IN argument is called as each school-A actor with school
+-- B's ids. Exception = PASS; rows/true/side effect on B = LEAK; empty = PASS.
+-- Side effects are detected by comparing a digest of every tenant-keyed table's
+-- B rows before/after, inside a subtransaction that is always rolled back.
+SET LOCAL session_replication_role = replica;
+DO $seed_b$
+DECLARE b uuid; b_admin uuid;
+BEGIN
+  SELECT id INTO b FROM sv2_schools WHERE label = 'B';
+  SELECT user_id INTO b_admin FROM sv2_users WHERE label = 'B' AND role = 'admin';
+  INSERT INTO public.cg_workforce_position (tenant_ref, runtime_ref, kind_code, identity_ref, started_on, status)
+    VALUES (b::text, 'runtime:scholar', 'registrar', b_admin::text, CURRENT_DATE - 5, 'active')
+    ON CONFLICT DO NOTHING;
+  INSERT INTO public.cg_org_profile (tenant_ref, runtime_ref, profile_key, payload)
+    VALUES (b::text, 'runtime:scholar', 'sv2-profile', '{}'::jsonb) ON CONFLICT DO NOTHING;
+  INSERT INTO public.cg_role_grant (tenant_ref, role_id, capability, granted_by)
+    VALUES (b::text, 'role:member', 'sv2-cap', 'sv2') ON CONFLICT DO NOTHING;
+EXCEPTION WHEN OTHERS THEN
+  INSERT INTO sv2_results VALUES ('fuzz', '-', 'SEED', 'ERROR', 'tenant-B cg_ seeds failed ' || SQLSTATE || ' ' || left(SQLERRM, 300));
+END
+$seed_b$;
+SET LOCAL session_replication_role = origin;
+
+CREATE TEMP TABLE sv2_bstate (tbl text PRIMARY KEY, tcol text NOT NULL, digest text);
+INSERT INTO sv2_bstate
+  SELECT tbl, tcol, sv2_test.tenant_digest(tbl, tcol, (SELECT id FROM sv2_schools WHERE label = 'B'))
+    FROM sv2_cfg WHERE status = 'ready';
+
+DO $fuzz$
+DECLARE
+  a uuid; b uuid; b_slug text; b_admin uuid; b_assign uuid; b_grant uuid; b_pos uuid;
+  pat text; f record; u record; i int; nm text; ty oid; md text;
+  args text[]; matched boolean; call text; n bigint := 0; txt text := ''; err text; msg text;
+  changed text; outc text; det text; pre_del boolean; nfn int := 0;
+  idents text[]; has_role boolean; v text; lit text; nerr int;
+BEGIN
+  SELECT id INTO a FROM sv2_schools WHERE label = 'A';
+  SELECT id INTO b FROM sv2_schools WHERE label = 'B';
+  b_slug := 'sv2-school-b';
+  SELECT user_id INTO b_admin FROM sv2_users WHERE label = 'B' AND role = 'admin';
+  SELECT id INTO b_assign FROM public.cg_role_assignment WHERE tenant_ref = b::text AND identity_ref = b_admin::text LIMIT 1;
+  SELECT id INTO b_grant FROM public.cg_role_grant WHERE tenant_ref = b::text AND revoked_on IS NULL LIMIT 1;
+  SELECT id INTO b_pos FROM public.cg_workforce_position WHERE tenant_ref = b::text LIMIT 1;
+  IF b_assign IS NULL OR b_grant IS NULL OR b_pos IS NULL THEN
+    INSERT INTO sv2_results VALUES ('fuzz', '-', 'SEED', 'ERROR',
+      format('tenant-B row ids missing: assignment=%s grant=%s position=%s', b_assign IS NOT NULL, b_grant IS NOT NULL, b_pos IS NOT NULL));
+  END IF;
+  SELECT '(' || string_agg(x, '|') || ')' INTO pat FROM (
+    SELECT b::text AS x UNION ALL SELECT user_id::text FROM sv2_users WHERE label = 'B'
+    UNION ALL SELECT b_slug
+    UNION ALL SELECT x::text FROM unnest(ARRAY[b_assign, b_grant, b_pos]) x WHERE x IS NOT NULL) s;
+
+  FOR f IN
+    SELECT p.oid, p.proname, p.prorettype, p.proretset, p.proargnames, p.proargmodes,
+           coalesce(p.proallargtypes::oid[], string_to_array(p.proargtypes::text, ' ')::oid[]) AS atypes
+      FROM pg_proc p
+      JOIN pg_namespace n ON n.oid = p.pronamespace AND n.nspname = 'public'
+     WHERE p.prosecdef AND p.prokind = 'f'
+       AND NOT EXISTS (SELECT 1 FROM pg_depend d WHERE d.objid = p.oid AND d.deptype = 'e')
+     ORDER BY p.proname, p.oid
+  LOOP
+    -- IN/INOUT/VARIADIC args only; OUT/TABLE columns are skipped.
+    matched := false; has_role := false;
+    FOR i IN 1..coalesce(array_length(f.atypes, 1), 0) LOOP
+      IF coalesce(f.proargmodes[i], 'i') NOT IN ('i','b','v') THEN CONTINUE; END IF;
+      matched := true;
+      IF lower(coalesce(f.proargnames[i], '')) ~ 'role' AND f.atypes[i] = 'text'::regtype::oid THEN has_role := true; END IF;
+    END LOOP;
+    IF NOT matched THEN CONTINUE; END IF;
+
+    IF f.proname IN ('public_teachers', 'public_school_stats') THEN
+      INSERT INTO sv2_results VALUES ('fuzz:' || f.proname, 'A:*', 'FUZZ', 'PUBLIC_BY_DESIGN',
+        'documented public website function (slug-addressed), not called');
+      CONTINUE;
+    END IF;
+    nfn := nfn + 1;
+    pre_del := (f.proname = 'seed_default_staff_types' AND to_regclass('public.school_staff_types') IS NOT NULL);
+
+   FOREACH v IN ARRAY CASE WHEN has_role THEN ARRAY['role:administrator','role:member'] ELSE ARRAY['role:administrator'] END LOOP
+    args := '{}';
+    FOR i IN 1..coalesce(array_length(f.atypes, 1), 0) LOOP
+      IF coalesce(f.proargmodes[i], 'i') NOT IN ('i','b','v') THEN CONTINUE; END IF;
+      nm := lower(coalesce(f.proargnames[i], '')); ty := f.atypes[i];
+      lit := CASE
+        WHEN ty = 'date'::regtype::oid THEN format('%L', current_date::text)
+        WHEN ty = 'timestamptz'::regtype::oid THEN format('%L', now()::text)
+        WHEN ty IN ('int4'::regtype::oid, 'int2'::regtype::oid, 'int8'::regtype::oid) THEN format('%L', '10')
+        WHEN ty = 'boolean'::regtype::oid THEN format('%L', 'false')
+        WHEN ty IN ('jsonb'::regtype::oid, 'json'::regtype::oid) THEN format('%L', '{}')
+        WHEN ty IN ('uuid'::regtype::oid, 'text'::regtype::oid) THEN
+          CASE
+            WHEN nm ~ 'slug' THEN format('%L', b_slug)
+            WHEN nm ~ 'tenant|school' THEN format('%L', b::text)
+            WHEN nm ~ 'identity|user_id' THEN format('%L', b_admin::text)
+            WHEN nm ~ 'assignment' THEN format('%L', b_assign::text)
+            WHEN nm ~ 'grant' THEN format('%L', b_grant::text)
+            WHEN nm ~ 'position' THEN format('%L', b_pos::text)
+            WHEN nm ~ 'runtime' THEN format('%L', 'runtime:scholar')
+            WHEN nm ~ 'profile_key' THEN format('%L', 'sv2-profile')
+            WHEN nm ~ 'kind' THEN format('%L', 'registrar')
+            WHEN nm ~ 'role' THEN format('%L', v)
+            WHEN nm ~ 'capability' THEN format('%L', 'sv2-cap')
+            ELSE NULL END
+        ELSE NULL END;
+      IF lit IS NULL THEN
+        args := args || coalesce(sv2_test.default_expr(ty, -1), 'NULL::' || format_type(ty, NULL));
+      ELSE
+        args := args || format('%s::%s', lit, format_type(ty, NULL));
+      END IF;
+    END LOOP;
+    call := format('public.%I(%s)', f.proname, array_to_string(args, ', '));
+
+    FOR u IN SELECT 'A:' || role AS actor, user_id FROM sv2_users WHERE label = 'A'
+             UNION ALL SELECT 'A:' || tag, user_id FROM sv2_extra WHERE tag = 'registrar'
+             ORDER BY 1 LOOP
+      n := 0; txt := ''; err := NULL; msg := NULL; changed := NULL;
+      BEGIN
+        IF pre_del THEN DELETE FROM public.school_staff_types WHERE school_id = b; END IF;
+        PERFORM set_config('request.jwt.claims', json_build_object('sub', u.user_id, 'role', 'authenticated')::text, true);
+        PERFORM set_config('request.jwt.claim.sub', u.user_id::text, true);
+        PERFORM set_config('request.jwt.claim.role', 'authenticated', true);
+        SET LOCAL ROLE authenticated;
+        IF f.proretset THEN
+          EXECUTE format('SELECT count(*), coalesce(string_agg(to_jsonb(t)::text, ''|''), '''') FROM %s t', call) INTO n, txt;
+        ELSIF f.prorettype = 'void'::regtype THEN
+          EXECUTE format('SELECT %s', call);
+        ELSE
+          EXECUTE format('SELECT CASE WHEN r IS NULL THEN 0 ELSE 1 END, coalesce(to_jsonb(r)::text, '''') FROM (SELECT %s AS r) s', call) INTO n, txt;
+        END IF;
+        RESET ROLE;
+        SELECT string_agg(s.tbl, ',') INTO changed FROM sv2_bstate s
+         WHERE sv2_test.tenant_digest(s.tbl, s.tcol, b) IS DISTINCT FROM s.digest
+           AND NOT (pre_del AND s.tbl = 'school_staff_types');
+        IF pre_del AND EXISTS (SELECT 1 FROM public.school_staff_types WHERE school_id = b) THEN
+          changed := coalesce(changed || ',', '') || 'school_staff_types(seeded for victim)';
+        END IF;
+        RAISE EXCEPTION 'sv2-sentinel' USING ERRCODE = 'SV002';
+      EXCEPTION
+        WHEN SQLSTATE 'SV002' THEN NULL;
+        WHEN OTHERS THEN err := SQLSTATE; msg := left(SQLERRM, 200);
+      END;
+      RESET ROLE;
+
+      IF err IS NOT NULL THEN
+        IF err IN ('42501', 'P0001') OR msg ~* 'forbidden|not authori|permission denied|denied' THEN
+          outc := 'PASS'; det := 'exception [' || err || '] ' || msg;
+        ELSE
+          outc := 'ERROR'; det := 'harness call error [' || err || '] ' || msg || ' :: ' || left(call, 200);
+        END IF;
+      ELSIF changed IS NOT NULL THEN
+        outc := 'LEAK'; det := 'side effect on tenant B: ' || changed;
+      ELSIF f.proretset AND n > 0 THEN
+        outc := 'LEAK'; det := 'returned rows=' || n;
+      ELSIF NOT f.proretset AND f.prorettype <> 'void'::regtype AND n > 0 THEN
+        IF txt = 'true' OR txt ~ pat THEN
+          outc := 'LEAK'; det := 'returned ' || left(txt, 120);
+        ELSIF txt IN ('false', '0') THEN
+          outc := 'PASS'; det := 'returned ' || txt;
+        ELSE
+          outc := 'ERROR'; det := 'non-empty scalar result, triage: ' || left(txt, 120);
+        END IF;
+      ELSE
+        outc := 'PASS'; det := 'empty result, no effect on tenant B';
+      END IF;
+      INSERT INTO sv2_results VALUES ('fuzz:' || f.proname, u.actor, 'FUZZ', outc, det);
+    END LOOP;
+   END LOOP;
+  END LOOP;
+  INSERT INTO sv2_results VALUES ('fuzz', '-', 'FUZZ_INVENTORY', 'INFO', nfn || ' multi-arg SECURITY DEFINER functions fuzzed');
+  SELECT count(*) INTO nerr FROM sv2_results WHERE op = 'FUZZ' AND outcome = 'ERROR';
+  IF nfn < 14 THEN
+    RAISE EXCEPTION 'FUZZ COVERAGE: only % functions fuzzed, expected >= 14', nfn;
+  END IF;
+  IF nerr > 0 THEN
+    RAISE EXCEPTION 'FUZZ HARNESS ERRORS: % FUZZ rows are ERROR', nerr;
+  END IF;
+END
+$fuzz$;
+
 -- ------------------------------------------------- column-secret check -----
 -- Secret-looking text/bytea/json columns that anon/authenticated can SELECT.
 -- LEAK only when a victim row was actually visible to that role in the sweep
@@ -913,6 +1319,11 @@ BEGIN
   SELECT count(*) INTO mapbad FROM sv2_results WHERE op = 'TENANT_MAP' AND outcome <> 'PASS';
   IF mapbad > 0 THEN
     RAISE EXCEPTION 'TENANT MAPPING INCONCLUSIVE: % get_my_tenant_id()/cg_tenant checks failed', mapbad;
+  END IF;
+
+  SELECT count(*) INTO skipped FROM sv2_results WHERE op = 'FUZZ' AND outcome = 'ERROR';
+  IF skipped > 0 THEN
+    RAISE EXCEPTION 'FUZZ ERRORS FOUND: %', skipped;
   END IF;
 
   IF n > 0 THEN

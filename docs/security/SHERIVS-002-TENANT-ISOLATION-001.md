@@ -146,3 +146,37 @@ Published public-website content is intentionally readable by anyone: the eight 
 - **Two tenant models (section 1)** are not reconciled. That is a design task, not a leak fix.
 - **46 RLS-on-zero-policy tables** are deny-all to client roles; only service-role/definer paths work. Safe by default; any future client feature needs an explicit policy.
 - Column-level SELECT grants on `schools` shift maintenance: new columns are invisible to clients until granted.
+
+## SHERIVS-002 step 2 — admissions PII and school-media privacy
+
+Version-target classification: **V1** (organizational capability envelope). Verified only on a local disposable loopback stack (`supabase db reset --local` replaying 74 migrations, plus the identity freeze `.sql.proposed`).
+
+**Migration** `20261020000040_sherivs_002_admissions_and_media_privacy.sql` (rollback in `database/supabase/rollbacks/`):
+
+1. `public.can_manage_admissions()` — `SECURITY DEFINER STABLE`, `search_path=public`, executable by `authenticated` only. True iff the caller's `users` row is active and (role `admin`/`principal`, or an active, not-ended `cg_workforce_position` with `runtime_ref='runtime:scholar'`, `kind_code='registrar'`, `tenant_ref = school_id::text`, `identity_ref = auth.uid()::text`).
+2. `admission_applications` SELECT/UPDATE policies now require `(school_id = get_my_school_id() AND can_manage_admissions()) OR is_super_admin()`. The public pending-only INSERT (`20261020000030`) is unchanged; there is no DELETE policy or grant.
+3. Storage: `"school-media public read"` (anon) dropped; own-school read/insert/update/delete kept. `"admins read student documents"` now needs `is_super_admin()` or (school folder match AND `can_manage_admissions()`).
+
+**Website images**: `ImageUploadField` (`frontend/src/components/admin/crud-list.tsx`) stores 10-year signed URLs, which are validated by the storage API token and not by RLS, so existing images keep rendering. No frontend/mobile code uses `getPublicUrl` or `storage/v1/object/public` for `school-media`, so no public bucket was created and no code path changed.
+
+**Frontend**: `/admin/*` is wrapped in `RoleGuard allow={["admin","principal"]}`; `admin/admissions.tsx` reads/updates through the browser client, so RLS is the enforcement. No server function reads `admission_applications` (only `demo-provision.functions.ts` uses `supabaseAdmin`, and it does not touch that table). A registrar (non-admin role) is permitted by RLS but has no UI route; exposing one is a follow-up, not V1 scope here.
+
+**Harness additions** (`tests/integration/sherivs-002-cross-tenant.local.sql`, final `NO LEAKS`/`LEAKS FOUND` contract kept):
+- Intra-school admissions: teacher/parent/student/driver/bursar plus ended, expired and foreign-tenant registrar positions must see 0 rows and update 0 (else LEAK `intra-school admissions`); admin, principal and an active registrar must see ≥1 and update (else ERROR `admissions admin broken`); none may touch school B.
+- Storage: anon read of a `school-media` A object must be 0 (LEAK otherwise; no longer PUBLIC_BY_DESIGN); own-school members still read it; `student-documents` is readable only by A admin/principal/registrar.
+- Multi-arg SECURITY DEFINER fuzz: every public definer function with a uuid/text arg named like `p_tenant`/`_school_id`/`p_identity`/`p_assignment_id`/`p_grant_id`/`p_position_id`/`_slug` is called as each A actor with B's ids; exception = PASS, rows/`true`/B-state change (digest of every tenant-keyed table, rolled back in a subtransaction) = LEAK. `public_teachers`/`public_school_stats` are PUBLIC_BY_DESIGN; `seed_default_staff_types(B)` is expected to LEAK (no caller check, `GRANT EXECUTE ... authenticated`) until fixed in a follow-up.
+
+**Results:** sweep exit 0, `NO LEAKS`.
+- Counts: PASS 4789, LEAK 0, ERROR 0, SKIPPED 0, PUBLIC_BY_DESIGN 83, INFO 1048.
+- Coverage: 15 multi-argument SECURITY DEFINER functions fuzzed as each school-A role and the registrar. The admissions, registrar and storage sections all ran.
+- `sherivs-002-admission-insert.local.sql`: ALL PASS.
+
+**Fix 5: `20261020000050_sherivs_002_seed_staff_types_guard.sql`.** The fuzz found a real leak. `seed_default_staff_types(_school_id)` had no caller check, and EXECUTE was granted to anon and authenticated, so anyone could write the 38 default staff types into any school. As a school-A teacher, it wrote 38 rows into school B. Now only `service_role`, a super admin, or an active admin or principal of that same school may call it (others get 42501), and anon EXECUTE is revoked. The negative control is that run 8, made before this migration, reported LEAK for 8 actors.
+
+**Harness fix:** the first fuzz version scored SQL syntax errors (42601) as PASS and skipped 6 functions. The fuzz now builds typed arguments, only counts authorization errors as PASS, counts any other exception as ERROR, and requires at least 14 functions fuzzed.
+
+**PostgREST checks on the local stack:**
+- Admissions: anon submission returned 201. The admin read 1 application and could change its status. A teacher and a parent read 0 and changed 0 rows; the status stayed `pending`.
+- `school-media`: anon with a signed URL got 200. Anon without a token was rejected (400). A parent of the same school got 200.
+
+The earlier "school-media public read" and "admission_applications intra-tenant exposure" residual risks above are resolved by this step.
