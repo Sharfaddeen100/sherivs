@@ -165,7 +165,6 @@ import { Route as AuthenticatedSuperAdminWorkspaceProjectionRouteImport } from '
 import { Route as AuthenticatedTeacherAiAssistantRouteImport } from './routes/_authenticated/teacher/ai-assistant'
 import { Route as AuthenticatedTeacherAttendanceRouteImport } from './routes/_authenticated/teacher/attendance'
 import { Route as AuthenticatedTeacherAttendanceWeekRouteImport } from './routes/_authenticated/teacher/attendance-week'
-import { Route as AuthenticatedTeacherBiometricEnrollmentRouteImport } from './routes/_authenticated/teacher/biometric-enrollment'
 import { Route as AuthenticatedTeacherCalendarRouteImport } from './routes/_authenticated/teacher/calendar'
 import { Route as AuthenticatedTeacherClassIntelligenceRouteImport } from './routes/_authenticated/teacher/class-intelligence'
 import { Route as AuthenticatedTeacherDashboardRouteImport } from './routes/_authenticated/teacher/dashboard'
@@ -1064,12 +1063,6 @@ const AuthenticatedTeacherAttendanceWeekRoute =
     path: '/attendance-week',
     getParentRoute: () => AuthenticatedTeacherRouteRoute,
   } as any)
-const AuthenticatedTeacherBiometricEnrollmentRoute =
-  AuthenticatedTeacherBiometricEnrollmentRouteImport.update({
-    id: '/biometric-enrollment',
-    path: '/biometric-enrollment',
-    getParentRoute: () => AuthenticatedTeacherRouteRoute,
-  } as any)
 const AuthenticatedTeacherCalendarRoute =
   AuthenticatedTeacherCalendarRouteImport.update({
     id: '/calendar',
@@ -1291,7 +1284,6 @@ export interface FileRoutesByFullPath {
   '/teacher/ai-assistant': typeof AuthenticatedTeacherAiAssistantRoute
   '/teacher/attendance': typeof AuthenticatedTeacherAttendanceRoute
   '/teacher/attendance-week': typeof AuthenticatedTeacherAttendanceWeekRoute
-  '/teacher/biometric-enrollment': typeof AuthenticatedTeacherBiometricEnrollmentRoute
   '/teacher/calendar': typeof AuthenticatedTeacherCalendarRoute
   '/teacher/class-intelligence': typeof AuthenticatedTeacherClassIntelligenceRoute
   '/teacher/dashboard': typeof AuthenticatedTeacherDashboardRoute
@@ -1458,7 +1450,6 @@ export interface FileRoutesByTo {
   '/teacher/ai-assistant': typeof AuthenticatedTeacherAiAssistantRoute
   '/teacher/attendance': typeof AuthenticatedTeacherAttendanceRoute
   '/teacher/attendance-week': typeof AuthenticatedTeacherAttendanceWeekRoute
-  '/teacher/biometric-enrollment': typeof AuthenticatedTeacherBiometricEnrollmentRoute
   '/teacher/calendar': typeof AuthenticatedTeacherCalendarRoute
   '/teacher/class-intelligence': typeof AuthenticatedTeacherClassIntelligenceRoute
   '/teacher/dashboard': typeof AuthenticatedTeacherDashboardRoute
@@ -1629,7 +1620,6 @@ export interface FileRoutesById {
   '/_authenticated/teacher/ai-assistant': typeof AuthenticatedTeacherAiAssistantRoute
   '/_authenticated/teacher/attendance': typeof AuthenticatedTeacherAttendanceRoute
   '/_authenticated/teacher/attendance-week': typeof AuthenticatedTeacherAttendanceWeekRoute
-  '/_authenticated/teacher/biometric-enrollment': typeof AuthenticatedTeacherBiometricEnrollmentRoute
   '/_authenticated/teacher/calendar': typeof AuthenticatedTeacherCalendarRoute
   '/_authenticated/teacher/class-intelligence': typeof AuthenticatedTeacherClassIntelligenceRoute
   '/_authenticated/teacher/dashboard': typeof AuthenticatedTeacherDashboardRoute
@@ -1799,7 +1789,6 @@ export interface FileRouteTypes {
     | '/teacher/ai-assistant'
     | '/teacher/attendance'
     | '/teacher/attendance-week'
-    | '/teacher/biometric-enrollment'
     | '/teacher/calendar'
     | '/teacher/class-intelligence'
     | '/teacher/dashboard'
@@ -1966,7 +1955,6 @@ export interface FileRouteTypes {
     | '/teacher/ai-assistant'
     | '/teacher/attendance'
     | '/teacher/attendance-week'
-    | '/teacher/biometric-enrollment'
     | '/teacher/calendar'
     | '/teacher/class-intelligence'
     | '/teacher/dashboard'
@@ -2136,7 +2124,6 @@ export interface FileRouteTypes {
     | '/_authenticated/teacher/ai-assistant'
     | '/_authenticated/teacher/attendance'
     | '/_authenticated/teacher/attendance-week'
-    | '/_authenticated/teacher/biometric-enrollment'
     | '/_authenticated/teacher/calendar'
     | '/_authenticated/teacher/class-intelligence'
     | '/_authenticated/teacher/dashboard'
@@ -3272,13 +3259,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedTeacherAttendanceWeekRouteImport
       parentRoute: typeof AuthenticatedTeacherRouteRoute
     }
-    '/_authenticated/teacher/biometric-enrollment': {
-      id: '/_authenticated/teacher/biometric-enrollment'
-      path: '/biometric-enrollment'
-      fullPath: '/teacher/biometric-enrollment'
-      preLoaderRoute: typeof AuthenticatedTeacherBiometricEnrollmentRouteImport
-      parentRoute: typeof AuthenticatedTeacherRouteRoute
-    }
     '/_authenticated/teacher/calendar': {
       id: '/_authenticated/teacher/calendar'
       path: '/calendar'
@@ -3718,7 +3698,6 @@ interface AuthenticatedTeacherRouteRouteChildren {
   AuthenticatedTeacherAiAssistantRoute: typeof AuthenticatedTeacherAiAssistantRoute
   AuthenticatedTeacherAttendanceRoute: typeof AuthenticatedTeacherAttendanceRoute
   AuthenticatedTeacherAttendanceWeekRoute: typeof AuthenticatedTeacherAttendanceWeekRoute
-  AuthenticatedTeacherBiometricEnrollmentRoute: typeof AuthenticatedTeacherBiometricEnrollmentRoute
   AuthenticatedTeacherCalendarRoute: typeof AuthenticatedTeacherCalendarRoute
   AuthenticatedTeacherClassIntelligenceRoute: typeof AuthenticatedTeacherClassIntelligenceRoute
   AuthenticatedTeacherDashboardRoute: typeof AuthenticatedTeacherDashboardRoute
@@ -3736,8 +3715,6 @@ const AuthenticatedTeacherRouteRouteChildren: AuthenticatedTeacherRouteRouteChil
     AuthenticatedTeacherAttendanceRoute: AuthenticatedTeacherAttendanceRoute,
     AuthenticatedTeacherAttendanceWeekRoute:
       AuthenticatedTeacherAttendanceWeekRoute,
-    AuthenticatedTeacherBiometricEnrollmentRoute:
-      AuthenticatedTeacherBiometricEnrollmentRoute,
     AuthenticatedTeacherCalendarRoute: AuthenticatedTeacherCalendarRoute,
     AuthenticatedTeacherClassIntelligenceRoute:
       AuthenticatedTeacherClassIntelligenceRoute,

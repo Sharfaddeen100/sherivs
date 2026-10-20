@@ -25,7 +25,6 @@ const ROW_GROUPS: { title: string; rows: { key: FeatureKey; label: string }[] }[
     title: "Attendance",
     rows: [
       { key: "qr_attendance", label: "QR attendance" },
-      { key: "face_biometrics", label: "Face biometrics" },
       { key: "geofence", label: "Geofence" },
       { key: "offline_attendance", label: "Offline attendance" },
     ],

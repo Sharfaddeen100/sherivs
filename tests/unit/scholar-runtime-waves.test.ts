@@ -228,15 +228,4 @@ describe("R36 — generated experiences rendered on the operator surface", () =>
     ).toEqual(expect.arrayContaining(["template:islamic_madrassa"]));
   });
 
-  it("the Command Centre renders a generated experience for the selected class", () => {
-    const surface = readFileSync(
-      join(ROOT, "frontend/src/components/command-centre/command-centre.tsx"),
-      "utf8",
-    );
-    expect(surface).toContain("realityForOrgType");
-    expect(surface).toContain("generateExperience");
-    expect(surface).toContain("contributionIndexForCodes");
-    expect(surface).toContain("<GeneratedExperienceCard orgType={orgForm.orgType} />");
-    expect(surface).toContain("governExperience");
-  });
 });

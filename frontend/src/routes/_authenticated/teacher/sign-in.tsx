@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { CheckCircle2, MapPin, ScanFace, ShieldAlert, XCircle } from "lucide-react";
+import { CheckCircle2, MapPin, ShieldAlert, XCircle } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useApp } from "@/contexts/app-context";
@@ -15,7 +15,7 @@ export const Route = createFileRoute("/_authenticated/teacher/sign-in")({
   component: TeacherSignInPage,
 });
 
-type Step = 1 | 2 | 3 | 4;
+type Step = 1 | 2 | 3;
 type Fix = { latitude: number; longitude: number; accuracy: number };
 
 function TeacherSignInPage() {
@@ -30,7 +30,6 @@ function TeacherSignInPage() {
   const [locError, setLocError] = useState<string | null>(null);
   const [inside, setInside] = useState<boolean | null>(null);
   const [distance, setDistance] = useState<number | null>(null);
-  const [scanProgress, setScanProgress] = useState(0);
   const [outcome, setOutcome] = useState<{ ok: boolean; message: string; time?: string } | null>(
     null,
   );
@@ -46,21 +45,6 @@ function TeacherSignInPage() {
         .eq("is_active", true);
       if (error) throw error;
       return data ?? [];
-    },
-  });
-
-  const biometrics = useQuery({
-    queryKey: ["teacher-biometrics", schoolId, userId],
-    enabled: !!schoolId && !!userId,
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("teacher_biometrics")
-        .select("id, enrollment_status, device_id, face_template_hash")
-        .eq("school_id", schoolId!)
-        .eq("user_id", userId!)
-        .maybeSingle();
-      if (error) throw error;
-      return data;
     },
   });
 
@@ -84,17 +68,19 @@ function TeacherSignInPage() {
   const locked = (failures.data ?? 0) >= 3;
 
   const logVerification = useCallback(
-    async (result: "success" | "failed", opts: { faceVerified: boolean; reason?: string }) => {
+    async (result: "success" | "failed", opts: { reason?: string } = {}) => {
       if (!schoolId || !userId) return;
       await supabase.from("attendance_verification_log").insert({
         school_id: schoolId,
         user_id: userId,
-        verification_type: "qr_face",
+        // Location-based self sign-in. No face/biometric check exists, so
+        // face_verified is never claimed.
+        verification_type: "manual",
         latitude: fix?.latitude ?? null,
         longitude: fix?.longitude ?? null,
         accuracy_meters: fix?.accuracy ?? null,
         within_geofence: inside ?? false,
-        face_verified: opts.faceVerified,
+        face_verified: false,
         device_id: parseDeviceInfo().deviceId,
         result,
         failure_reason: opts.reason ?? null,
@@ -175,16 +161,11 @@ function TeacherSignInPage() {
         gps_latitude: fix?.latitude ?? null,
         gps_longitude: fix?.longitude ?? null,
         inside_geofence: inside ?? false,
-        face_matched: true,
-        verified: true,
+        face_matched: false,
+        verified: inside === true,
       });
       if (error) throw error;
-      await logVerification("success", { faceVerified: true });
-      await supabase
-        .from("teacher_biometrics")
-        .update({ last_verified_at: new Date().toISOString() })
-        .eq("school_id", schoolId)
-        .eq("user_id", userId);
+      await logVerification("success");
       return new Date();
     },
     onSuccess: (when) => {
@@ -194,61 +175,31 @@ function TeacherSignInPage() {
         message: `Good morning, ${profile?.full_name ?? "there"}.`,
         time: when.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
       });
-      setStep(4);
+      setStep(3);
     },
     onError: (e) => {
       toast.error(e instanceof Error ? e.message : "Could not record attendance");
       setOutcome({ ok: false, message: "We couldn't record your attendance. Please try again." });
-      setStep(4);
+      setStep(3);
     },
   });
 
-  // Step 3 — simulated face scan.
-  useEffect(() => {
-    if (step !== 3) return;
-    setScanProgress(0);
-    const start = Date.now();
-    const id = window.setInterval(() => {
-      const p = Math.min(100, ((Date.now() - start) / 2000) * 100);
-      setScanProgress(p);
-      if (p >= 100) {
-        window.clearInterval(id);
-        if (biometrics.data?.enrollment_status !== "enrolled") {
-          toast.error("Biometrics not enrolled yet");
-          void navigate({ to: "/teacher/biometric-enrollment" });
-          return;
-        }
-        // Compare the scan against the enrolled face template for this device.
-        const scannedHash = `sim_${parseDeviceInfo().deviceId.slice(0, 8)}`;
-        const enrolledHash = biometrics.data?.face_template_hash;
-        if (enrolledHash && enrolledHash !== scannedHash) {
-          toast.error("Face verification did not match your enrolled template");
-          void onFail("face_template_mismatch");
-          return;
-        }
-        record.mutate();
-      }
-    }, 60);
-    return () => window.clearInterval(id);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [step, biometrics.data?.enrollment_status]);
-
   // Auto redirect after success.
   useEffect(() => {
-    if (step !== 4 || !outcome?.ok) return;
+    if (step !== 3 || !outcome?.ok) return;
     const t = window.setTimeout(() => void navigate({ to: "/teacher/dashboard" }), 3000);
     return () => window.clearTimeout(t);
   }, [step, outcome?.ok, navigate]);
 
   const onFail = async (reason: string) => {
-    await logVerification("failed", { faceVerified: false, reason });
+    await logVerification("failed", { reason });
     void failures.refetch();
     setOutcome({ ok: false, message: "Please ensure you are inside school premises." });
-    setStep(4);
+    setStep(3);
   };
 
   return (
-    <PortalPage title="Attendance sign-in" subtitle="Location and identity verification">
+    <PortalPage title="Attendance sign-in" subtitle="Location check">
       <Stepper step={step} />
 
       {locked && (
@@ -311,37 +262,18 @@ function TeacherSignInPage() {
           <div className="mx-auto grid size-20 place-items-center rounded-full bg-[color:var(--tenant-primary,#0d9488)]/15 font-display text-2xl font-bold">
             {(profile?.full_name ?? "?").slice(0, 1).toUpperCase()}
           </div>
-          <h2 className="mt-4 font-display text-lg font-semibold">Identity Verification</h2>
+          <h2 className="mt-4 font-display text-lg font-semibold">Confirm sign-in</h2>
           <p className="mt-1 text-sm">{profile?.full_name}</p>
           <p className="mt-1 text-sm text-[color:var(--text-secondary)]">
-            Confirm your identity to record attendance
+            You are on campus. Confirm to record your attendance
           </p>
-          <Button className="mt-5" onClick={() => setStep(3)}>
-            Confirm &amp; Record Attendance
+          <Button className="mt-5" onClick={() => record.mutate()} disabled={record.isPending}>
+            {record.isPending ? "Recording…" : "Record attendance"}
           </Button>
         </GlassCard>
       )}
 
-      {!locked && step === 3 && (
-        <GlassCard className="p-6 text-center">
-          <h2 className="font-display text-lg font-semibold">Face Verification</h2>
-          <p className="mt-1 text-sm text-[color:var(--text-secondary)]">
-            Hold your face in front of the camera
-          </p>
-          <ScanBox />
-          <div className="mx-auto mt-4 h-2 w-full max-w-sm overflow-hidden rounded-full bg-white/10">
-            <div
-              className="h-full rounded-full bg-[color:var(--tenant-primary,#0d9488)] transition-[width] duration-100"
-              style={{ width: `${scanProgress}%` }}
-            />
-          </div>
-          <p className="mt-2 text-xs text-[color:var(--text-secondary)]">
-            {Math.round(scanProgress)}%
-          </p>
-        </GlassCard>
-      )}
-
-      {step === 4 && outcome && (
+      {step === 3 && outcome && (
         <GlassCard className="p-8 text-center">
           {outcome.ok ? (
             <>
@@ -378,21 +310,8 @@ function TeacherSignInPage() {
   );
 }
 
-function ScanBox() {
-  return (
-    <div className="relative mx-auto mt-5 grid h-48 w-full max-w-sm place-items-center overflow-hidden rounded-2xl border border-white/10 bg-black/30">
-      <ScanFace className="size-14 text-white/30" />
-      <div
-        className="absolute inset-x-0 h-0.5 bg-[color:var(--tenant-primary,#0d9488)]/80"
-        style={{ animation: "uos-scanline 2s linear infinite" }}
-      />
-      <style>{`@keyframes uos-scanline{0%{top:8%}100%{top:92%}}`}</style>
-    </div>
-  );
-}
-
 function Stepper({ step }: { step: Step }) {
-  const labels = ["Location", "Identity", "Face", "Result"];
+  const labels = ["Location", "Confirm", "Result"];
   return (
     <div className="flex flex-wrap items-center gap-2 text-xs">
       {labels.map((l, i) => {

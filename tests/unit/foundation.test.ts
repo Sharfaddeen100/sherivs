@@ -179,14 +179,12 @@ describe("Phase 01 — tracked MCP configuration hygiene (§34)", () => {
 });
 
 describe("Phase 01 — development-fixture reality isolation (§45)", () => {
-  it("environment-gates the demo provisioning server function", () => {
-    const src = readFileSync(join(ROOT, "frontend/src/lib/runtime/scholar/demo-provision.functions.ts"), "utf8");
-    expect(src).toContain("ALLOW_DEMO_PROVISIONING");
-    expect(src).toContain('!== "true"');
+  it("ships no demo provisioning server function", () => {
+    expect(existsSync(join(ROOT, "frontend/src/lib/runtime/scholar/demo-provision.functions.ts"))).toBe(false);
   });
 
-  it("documents the demo provisioning flag as disabled by default", () => {
+  it("documents no demo provisioning flag", () => {
     const example = readFileSync(join(ROOT, ".env.example"), "utf8");
-    expect(example).toMatch(/ALLOW_DEMO_PROVISIONING=false/);
+    expect(example).not.toMatch(/ALLOW_DEMO_PROVISIONING/);
   });
 });

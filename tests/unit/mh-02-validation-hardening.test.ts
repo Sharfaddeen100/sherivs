@@ -28,7 +28,6 @@ import {
 const ROOT = fileURLToPath(new URL("../..", import.meta.url));
 const SCHOLAR_DIR = join(ROOT, "frontend/src/lib/runtime/scholar");
 const DIGITAL_TWIN_SRC = join(SCHOLAR_DIR, "digital-twin.functions.ts");
-const DEMO_PROVISION_SRC = join(SCHOLAR_DIR, "demo-provision.functions.ts");
 
 /** Valid baseline payloads — the strict contracts must keep accepting these. */
 const VALID_CONFIG = {
@@ -162,12 +161,6 @@ describe("MH-02 — §32 zero-any pin over the two function files", () => {
     const src = readFileSync(DIGITAL_TWIN_SRC, "utf8");
     expect(src).toMatch(/TwinPayloadEnvelope/);
     expect(src).toMatch(/TwilioCallResponse/);
-    for (const re of ANY_RE) expect(src, `forbidden pattern ${re}`).not.toMatch(re);
-  });
-
-  it("demo-provision.functions.ts has no any", () => {
-    const src = readFileSync(DEMO_PROVISION_SRC, "utf8");
-    expect(src).toMatch(/type SupabaseAdminClient/);
     for (const re of ANY_RE) expect(src, `forbidden pattern ${re}`).not.toMatch(re);
   });
 });
