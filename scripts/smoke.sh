@@ -21,7 +21,6 @@ check "/" "200|307" "marketing root"
 check "/?school=unknown-slug" "200|404" "unknown tenant slug"
 check "/login" "200|307" "login page"
 check "/auth" "200" "auth page"
-check "/super-admin-bootstrap" "200" "bootstrap"
 
 echo "→ CMS empty-state pages (anonymous request, should still render or redirect)"
 for slug in unknown-slug demo test; do

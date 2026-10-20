@@ -334,24 +334,6 @@ defineFamilySuite({
   },
   functions: [
     {
-      fn: "checkPlatformBootstrap",
-      method: "GET",
-      input: "none",
-      gate: "bootstrap-public",
-      audit: "pure-read",
-      note: "recorded finding: public bootstrap liveness probe — returns only a derived boolean, no tenant data",
-    },
-    {
-      fn: "claimFirstSuperAdmin",
-      method: "POST",
-      input: "zod",
-      gate: "bootstrap-count",
-      audit: "explicit-event",
-      auditMarkers: [/\.from\("super_admins"\)/, /writeAuditRecord\(/],
-      extra: [/Bootstrap is closed/],
-      note: "authorization = bootstrap-closed precondition (only proceeds when zero super admins exist); caller's own auth identity is used; §27.6 closed via the shared write-audit hook (frontend/src/lib/server/write-audit.ts, control-plane-scope fail-closed audit record)",
-    },
-    {
       fn: "updateSchoolPlan",
       method: "POST",
       input: "zod",
@@ -372,7 +354,6 @@ defineFamilySuite({
   ],
   findings: [
     "§27.2 note: provisioning is a platform-authority family — its super-admin functions address TARGET tenants by client-supplied, UUID-validated id; authorization is the platform super-admin gate (requirePlatformSuperAdmin) and every write is audited to super_admin_logs, so the client id is a resource selector, never an authorization input. Recorded as the declared clientTenantSelector exception.",
-    "§27.1 finding: checkPlatformBootstrap allows anonymous entry by design (public bootstrap liveness probe). Exposure is bounded to a derived boolean (hasSuperAdmin) over the service-role client; no tenant data is returned. Recorded, not accommodated.",
   ],
 });
 

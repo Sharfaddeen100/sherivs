@@ -30,13 +30,6 @@ describe("onboarding provision_organization — audit actor resolution (F-13 T5 
   it("degrades to actorId: null + verified email claim when no canonical row exists", () => {
     expect(src).toMatch(/actorId: actorHasCanonicalRow \? context\.userId : null/);
     expect(src).toMatch(/actorEmail/);
-    // The bootstrap claim audit is the declared precedent for the shape.
-    const claim = readFileSync(
-      join(ROOT, "frontend/src/lib/runtime/scholar/provisioning.functions.ts"),
-      "utf8",
-    );
-    expect(claim).toMatch(/actorId: null/);
-    expect(claim).toMatch(/actorEmail: email/);
   });
 
   it("keeps the audit fail-closed (writeAuditRecord throw contract unchanged)", () => {

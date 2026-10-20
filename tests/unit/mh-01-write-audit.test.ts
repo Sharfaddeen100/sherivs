@@ -168,11 +168,6 @@ describe("write-audit hook — call-site discipline (§27.6 adoption)", () => {
         /action:\s*"staff_account\.reset_password"/,
         /gate:\s*"decideAccountAdministration"/,
       ],
-      "provisioning.functions.ts": [
-        /await writeAuditRecord\(/,
-        /action:\s*"bootstrap\.claim_first_super_admin"/,
-        /gate:\s*"bootstrap-closed-precondition"/,
-      ],
     };
     for (const [file, markers] of Object.entries(expectations)) {
       const src = readFileSync(join(SCHOLAR_DIR, file), "utf8");
