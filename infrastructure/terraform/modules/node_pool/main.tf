@@ -25,7 +25,7 @@ resource "oci_containerengine_node_pool" "this" {
   node_shape         = var.node_shape
 
   node_config_details {
-    size             = var.min_size
+    size = var.min_size
     placement_configs {
       availability_domain = var.availability_domain
       subnet_id           = var.private_subnet_id
@@ -55,7 +55,7 @@ resource "oci_containerengine_node_pool" "this" {
   }
 
   node_eviction_node_pool_settings {
-    eviction_grace_duration = "PT1H"
+    eviction_grace_duration              = "PT1H"
     is_force_delete_after_grace_duration = false
   }
 
