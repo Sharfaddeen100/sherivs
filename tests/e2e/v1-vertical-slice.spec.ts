@@ -457,18 +457,15 @@ test.describe("V1 vertical slice — longest fully-real journey", () => {
     }
   });
 
-  test("T3 platform bootstrap gate is observable and fail-closed", async ({ page }) => {
+  test("T3 there is no in-app super-admin self-claim page", async ({ page }) => {
+    // SHERIVS-007: /super-admin-bootstrap was removed. Super admins are granted
+    // only by an operator (service role / docs/ops/sql/create-super-admin.sql).
     await page.goto("/super-admin-bootstrap");
-    const claimForm = page.getByLabel("Full name");
-    const locked = page.getByText(/bootstrap complete/i);
-    await expect(claimForm.or(locked).first()).toBeVisible({ timeout: 30_000 });
-    state.platformUnbootstrapped = await claimForm.isVisible().catch(() => false);
-    if (!state.platformUnbootstrapped) {
-      await expect(locked).toBeVisible();
-    }
+    await expect(page.getByRole("button", { name: /become super admin/i })).toHaveCount(0);
+    state.platformUnbootstrapped = false;
   });
 
-  test("T4 first super admin is claimed through the real auth + bootstrap flow", async ({
+  test("T4 a super admin is granted through the operator (service-role) path", async ({
     page,
   }) => {
     test.skip(!backendConfigured, BACKEND_SKIP);
@@ -476,14 +473,10 @@ test.describe("V1 vertical slice — longest fully-real journey", () => {
       !state.backendReachable,
       "SKIP: the configured Supabase auth backend is unreachable from this environment.",
     );
-    test.skip(
-      state.platformUnbootstrapped === false,
-      "SKIP: platform already bootstrapped — /super-admin-bootstrap is locked and e2e holds no legitimate super-admin credentials; claiming another identity would fake authority (org-provisioning steps are therefore skipped, not faked).",
-    );
     test.skip(state.probe === null, FIXTURE_SKIP);
     test.skip(
-      !state.selfServeSignupDone && !fixtureCapable,
-      "SKIP: self-serve signup (T2) did not complete and no service-role key is configured to seed a claim identity through the real auth admin API; the platform would remain unclaimed rather than fake authority.",
+      !fixtureCapable,
+      "SKIP: granting a super admin requires the operator (service-role) channel; there is no in-app self-claim path to exercise instead.",
     );
 
     // Claim identity. Preferred: the T2 self-serve account (full §37 signup
@@ -521,41 +514,30 @@ test.describe("V1 vertical slice — longest fully-real journey", () => {
       state.claimIdentitySource = "admin-seeded";
     }
 
-    // The bootstrap page reuses an existing auth identity: signUp (no session
-    // for an existing confirmed user) → the page's real password sign-in
-    // fallback → claimFirstSuperAdmin (zero-count server-side gate).
-    await page.goto("/super-admin-bootstrap");
-    await page.getByLabel("Full name").fill("F13 E2E Platform Owner");
-    await page.getByLabel("Email").fill(claimEmail);
-    await page.getByLabel("Password").fill(claimPassword);
-    await page.getByRole("button", { name: /become super admin/i }).click();
-    const errBox = page
-      .locator("form")
-      .getByText(/failed|already|confirm|limit|invalid/i)
-      .first();
-    const dashboard = page.waitForURL(/\/super-admin\/dashboard/, { timeout: 45_000 });
-    const outcome = await Promise.race([
-      dashboard.then(() => "dashboard" as const),
-      errBox
-        .textContent()
-        .then((t) => `error:${t}`)
-        .catch(() => null),
-    ]);
-    if (outcome !== "dashboard") {
-      test.skip(
-        true,
-        `SKIP: real bootstrap claim did not complete (auth backend signal: ${outcome ?? "timeout"}); the gate is fail-closed and no fake path exists.`,
-      );
-    }
-    await expect(page).toHaveURL(/\/super-admin\/dashboard/);
-    state.superAdminEmail = claimEmail;
-    state.superAdminPassword = claimPassword;
+    // Operator grant (the ONLY path): service-role insert into super_admins,
+    // exactly what docs/ops/sql/create-super-admin.sql does in production.
+    const operator = createClient(SUPABASE_URL, SERVICE_ROLE_KEY, {
+      auth: { persistSession: false, autoRefreshToken: false },
+    });
     if (state.claimIdentitySource === "self-serve") {
       const rows = (await managementQuery(
         `SELECT id FROM auth.users WHERE email = '${claimEmail}' LIMIT 1;`,
       )) as Array<{ id: string }>;
       state.superAdminAuthUserId = rows[0]?.id ?? null;
     }
+    test.skip(!state.superAdminAuthUserId, "SKIP: claim identity id could not be resolved.");
+    const granted = await operator.from("super_admins").insert({
+      id: state.superAdminAuthUserId!,
+      full_name: "F13 E2E Platform Owner",
+      email: claimEmail,
+      is_active: true,
+    });
+    if (granted.error) {
+      test.skip(true, `SKIP: operator grant failed (${granted.error.message}); not faked.`);
+    }
+    await authSignIn(page, claimEmail, claimPassword);
+    state.superAdminEmail = claimEmail;
+    state.superAdminPassword = claimPassword;
   });
 
   test("T5 super admin onboards an organization through the real onboarding engine", async ({

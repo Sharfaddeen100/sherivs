@@ -27,7 +27,6 @@ import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as RulesRouteImport } from './routes/rules'
 import { Route as ScholarFoundationLoopRouteImport } from './routes/scholar-foundation-loop'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as SuperAdminBootstrapRouteImport } from './routes/super-admin-bootstrap'
 import { Route as siteAboutRouteImport } from './routes/(site)/about'
 import { Route as siteContactRouteImport } from './routes/(site)/contact'
 import { Route as siteCoregridRouteImport } from './routes/(site)/coregrid'
@@ -263,11 +262,6 @@ const ScholarFoundationLoopRoute = ScholarFoundationLoopRouteImport.update({
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SuperAdminBootstrapRoute = SuperAdminBootstrapRouteImport.update({
-  id: '/super-admin-bootstrap',
-  path: '/super-admin-bootstrap',
   getParentRoute: () => rootRouteImport,
 } as any)
 const siteAboutRoute = siteAboutRouteImport.update({
@@ -1147,7 +1141,6 @@ export interface FileRoutesByFullPath {
   '/rules': typeof RulesRoute
   '/scholar-foundation-loop': typeof ScholarFoundationLoopRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/super-admin-bootstrap': typeof SuperAdminBootstrapRoute
   '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/bursar': typeof AuthenticatedBursarRouteRouteWithChildren
   '/command-centre': typeof AuthenticatedCommandCentreRouteRouteWithChildren
@@ -1314,7 +1307,6 @@ export interface FileRoutesByTo {
   '/rules': typeof RulesRoute
   '/scholar-foundation-loop': typeof ScholarFoundationLoopRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/super-admin-bootstrap': typeof SuperAdminBootstrapRoute
   '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/bursar': typeof AuthenticatedBursarRouteRouteWithChildren
   '/driver': typeof AuthenticatedDriverRouteRouteWithChildren
@@ -1483,7 +1475,6 @@ export interface FileRoutesById {
   '/rules': typeof RulesRoute
   '/scholar-foundation-loop': typeof ScholarFoundationLoopRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/super-admin-bootstrap': typeof SuperAdminBootstrapRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/_authenticated/bursar': typeof AuthenticatedBursarRouteRouteWithChildren
   '/_authenticated/command-centre': typeof AuthenticatedCommandCentreRouteRouteWithChildren
@@ -1652,7 +1643,6 @@ export interface FileRouteTypes {
     | '/rules'
     | '/scholar-foundation-loop'
     | '/sitemap.xml'
-    | '/super-admin-bootstrap'
     | '/admin'
     | '/bursar'
     | '/command-centre'
@@ -1819,7 +1809,6 @@ export interface FileRouteTypes {
     | '/rules'
     | '/scholar-foundation-loop'
     | '/sitemap.xml'
-    | '/super-admin-bootstrap'
     | '/admin'
     | '/bursar'
     | '/driver'
@@ -1987,7 +1976,6 @@ export interface FileRouteTypes {
     | '/rules'
     | '/scholar-foundation-loop'
     | '/sitemap.xml'
-    | '/super-admin-bootstrap'
     | '/_authenticated/admin'
     | '/_authenticated/bursar'
     | '/_authenticated/command-centre'
@@ -2157,7 +2145,6 @@ export interface RootRouteChildren {
   RulesRoute: typeof RulesRoute
   ScholarFoundationLoopRoute: typeof ScholarFoundationLoopRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
-  SuperAdminBootstrapRoute: typeof SuperAdminBootstrapRoute
   EventsIdRoute: typeof EventsIdRoute
   NewsIdRoute: typeof NewsIdRoute
   RealityClassRoute: typeof RealityClassRoute
@@ -2291,13 +2278,6 @@ declare module '@tanstack/react-router' {
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/super-admin-bootstrap': {
-      id: '/super-admin-bootstrap'
-      path: '/super-admin-bootstrap'
-      fullPath: '/super-admin-bootstrap'
-      preLoaderRoute: typeof SuperAdminBootstrapRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/(site)/about': {
@@ -3818,7 +3798,6 @@ const rootRouteChildren: RootRouteChildren = {
   RulesRoute: RulesRoute,
   ScholarFoundationLoopRoute: ScholarFoundationLoopRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
-  SuperAdminBootstrapRoute: SuperAdminBootstrapRoute,
   EventsIdRoute: EventsIdRoute,
   NewsIdRoute: NewsIdRoute,
   RealityClassRoute: RealityClassRoute,
