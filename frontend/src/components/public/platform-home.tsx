@@ -6,9 +6,7 @@ import { PLATFORM_NAME, PLATFORM_PAGE_DESCRIPTION, PLATFORM_TAGLINE } from "@/li
  * school is resolved. This is the production-facing Sherivs/CoreGrid landing:
  * existing brand chrome, real routes, no in-memory Command Centre, no
  * fictional operational metrics.
- *
- * The in-memory Command Centre remains in the codebase as isolated demo
- * machinery and is not mounted here.
+
  */
 export function PublicPlatformHome() {
   return (
