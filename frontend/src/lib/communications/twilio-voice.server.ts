@@ -39,6 +39,7 @@ import {
   type TelephonyCallResult,
   type TelephonyProviderRegistry,
 } from "./telephony-adapter-contract";
+import { hasTwilioApiKeyPair, twilioBasicAuthHeader, twilioRestAuthFromEnv, type TwilioRestAuth } from "./twilio-auth.server";
 
 /** J-023: time enters only via the kernel time-authority — no direct wall-clock sampling. */
 const timeAuthority = new TimeAuthority(new SystemClock());
@@ -74,6 +75,13 @@ export interface TwilioVoiceConfig {
   connectionKey: string;
   /** Caller id (TWILIO_FROM_NUMBER). */
   fromNumber: string;
+  /**
+   * Direct Twilio REST auth (preferred): set when TWILIO_ACCOUNT_SID +
+   * TWILIO_API_KEY (SK…) + TWILIO_API_SECRET are present and no gateway
+   * override is configured. Calls then go to Accounts/{sid}/Calls.json with
+   * Basic SK:secret instead of the legacy bearer gateway.
+   */
+  rest?: TwilioRestAuth;
 }
 
 /**
@@ -82,6 +90,18 @@ export interface TwilioVoiceConfig {
  * is absent — the adapter's fail-closed signal.
  */
 export function twilioVoiceConfigFromEnv(env: ServerEnv): TwilioVoiceConfig | null {
+  if (hasTwilioApiKeyPair(env) && !env[TWILIO_GATEWAY_URL_ENV] && env[TWILIO_FROM_NUMBER_ENV]) {
+    const rest = twilioRestAuthFromEnv(env);
+    if (rest) {
+      return {
+        gatewayUrl: DEFAULT_TWILIO_GATEWAY_URL,
+        gatewayKey: rest.username,
+        connectionKey: rest.username,
+        fromNumber: env[TWILIO_FROM_NUMBER_ENV] as string,
+        rest,
+      };
+    }
+  }
   const gatewayKey = env[TWILIO_GATEWAY_BEARER_FALLBACK_ENV] || env[TWILIO_API_KEY_ENV];
   const connectionKey = env[TWILIO_API_KEY_ENV];
   const fromNumber = env[TWILIO_FROM_NUMBER_ENV];
@@ -160,13 +180,15 @@ export function createTwilioVoiceAdapter(
 
       let response: Response;
       try {
-        response = await fetch(`${config.gatewayUrl}/Calls.json`, {
+        const url = config.rest
+          ? `${DEFAULT_TWILIO_GATEWAY_URL}/Accounts/${encodeURIComponent(config.rest.accountSid)}/Calls.json`
+          : `${config.gatewayUrl}/Calls.json`;
+        const headers: Record<string, string> = config.rest
+          ? { Authorization: twilioBasicAuthHeader(config.rest) }
+          : { Authorization: `Bearer ${config.gatewayKey}`, "X-Connection-Api-Key": config.connectionKey };
+        response = await fetch(url, {
           method: "POST",
-          headers: {
-            Authorization: `Bearer ${config.gatewayKey}`,
-            "X-Connection-Api-Key": config.connectionKey,
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
+          headers: { ...headers, "Content-Type": "application/x-www-form-urlencoded" },
           body: new URLSearchParams({
             To: command.recipientPhone,
             From: config.fromNumber,
