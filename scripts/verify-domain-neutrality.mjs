@@ -279,8 +279,11 @@ if (NEW.length > 0) {
       "Domain code belongs in the owning runtime namespace, not the universal surface. " +
       "The baseline cannot be extended (shrink-only ratchet); relocate the code.",
   );
-  process.exit(1);
+  // Set exitCode instead of exiting immediately: an immediate exit drops stdout queued
+  // for a pipe (CI runs this through `tee`), which cut the STATUS verdict line
+  // and made the tamper tripwire report UNREADABLE.
+  process.exitCode = 1;
+} else {
+  console.log("STATUS=PASS — no new domain-neutrality violations beyond the honest quarantine baseline.");
+  process.exitCode = 0;
 }
-
-console.log("STATUS=PASS — no new domain-neutrality violations beyond the honest quarantine baseline.");
-process.exit(0);
