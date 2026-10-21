@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { ArrowLeft, ArrowRight, Check, Upload, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { resolveTenantSlug } from "@/lib/tenant";
+import { customTenantColors } from "@/lib/brand/tenant-colors";
 
 type SearchParams = { school?: string };
 
@@ -252,8 +253,9 @@ function AdmissionsPage() {
 
   // Set tenant color
   useEffect(() => {
-    if (school?.primary_color) {
-      document.documentElement.style.setProperty("--tenant-primary", school.primary_color);
+    const custom = customTenantColors(school?.primary_color, null).primary;
+    if (custom) {
+      document.documentElement.style.setProperty("--tenant-primary", custom);
     }
   }, [school?.primary_color]);
 

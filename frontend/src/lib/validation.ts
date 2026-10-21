@@ -33,7 +33,7 @@ export const optionalEmail = emailField
 export const hexColor = z
   .string()
   .trim()
-  .regex(/^#[0-9a-fA-F]{6}$/, "Use a 6-digit hex color like #1d4ed8");
+  .regex(/^#[0-9a-fA-F]{6}$/, "Use a 6-digit hex color like #184efd");
 
 export const optionalHexColor = hexColor
   .optional()

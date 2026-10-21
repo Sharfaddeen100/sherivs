@@ -36,7 +36,7 @@ type Slot = {
 };
 
 const PERIOD_COLORS = [
-  "border-teal-400/40 bg-teal-400/10 text-teal-200",
+  "border-brand-400/40 bg-brand-400/10 text-brand-200",
   "border-amber-400/40 bg-amber-400/10 text-amber-200",
   "border-sky-400/40 bg-sky-400/10 text-sky-200",
   "border-violet-400/40 bg-violet-400/10 text-violet-200",

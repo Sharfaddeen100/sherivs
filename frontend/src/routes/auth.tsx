@@ -19,6 +19,7 @@ import {
   loginErrorMessage,
   newPasswordServerMessage,
 } from "@/lib/security/auth-feedback";
+import { SherivsLogo } from "@/components/brand/sherivs-logo";
 
 export const Route = createFileRoute("/auth")({
   ssr: false,
@@ -178,6 +179,11 @@ function AuthPage() {
     <div className="min-h-dvh grid place-items-center px-4">
       <div className="w-full max-w-md uos-card p-8">
         <div className="mb-6">
+          {!school && (
+            <Link to="/" aria-label={`${PLATFORM_NAME} home`} className="mb-6 inline-flex">
+              <SherivsLogo size={36} wordmarkClassName="text-xl" />
+            </Link>
+          )}
           {school && (
             <div className="mb-4 flex items-center gap-3">
               {school.logo_url ? (

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -17,9 +17,12 @@ describe("public root no longer mounts in-memory Command Centre", () => {
     expect(index).not.toContain("user:demo-administrator");
   });
 
-  it("uses the existing public icon asset and real auth/overview routes", () => {
-    expect(home).toContain("/icons/icon-192.png");
-    expect(home).toContain('alt={`${PLATFORM_NAME} logo`}');
+  it("uses the shared Sherivs logo component (real public brand assets) and real auth/overview routes", () => {
+    expect(home).toContain("<SherivsMark");
+    const logo = readFileSync(join(ROOT, "frontend/src/components/brand/sherivs-logo.tsx"), "utf8");
+    expect(logo).toContain("/brand/sherivs-mark-");
+    for (const px of [64, 128, 256]) expect(existsSync(join(ROOT, `public/brand/sherivs-mark-${px}.png`))).toBe(true);
+    expect(logo).toContain('`${PLATFORM_NAME} logo`');
     expect(home).toContain('to="/auth"');
     expect(home).toContain('to="/coregrid"');
     expect(home).not.toContain("tenant:coregrid-demo");

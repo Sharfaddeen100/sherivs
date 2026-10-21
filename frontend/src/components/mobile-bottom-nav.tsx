@@ -61,7 +61,7 @@ function BottomNav({ items, label }: { items: readonly WorkspaceNavItem[]; label
               aria-current={active ? "page" : undefined}
               aria-label={item.label}
               className={`flex min-w-[48px] flex-col items-center gap-0.5 rounded-xl px-3 py-2 transition-colors duration-150 ${
-                active ? "text-teal-400" : "text-white/40"
+                active ? "text-brand-300" : "text-white/40"
               }`}
             >
               <Icon className="size-5" />
