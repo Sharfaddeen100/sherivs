@@ -87,8 +87,8 @@ function FindAccountPage() {
   }
 
   return (
-    <div className="min-h-dvh grid place-items-center px-4 py-8">
-      <div className="w-full max-w-md uos-card p-6 sm:p-8">
+    <div className="auth-shell">
+      <div className="auth-card uos-card" data-testid="auth-card">
         <Link to="/" aria-label="Sherivs home" className="mb-6 inline-flex">
           <SherivsLogo size={36} wordmarkClassName="text-xl" />
         </Link>
