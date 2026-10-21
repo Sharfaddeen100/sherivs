@@ -14,13 +14,14 @@
   /* Optional enhancements only; the email is fully styled inline. */
   @media (max-width:620px) { .sv-card { padding:28px 22px !important; } .sv-outer { padding:16px 10px !important; } }
   @media (prefers-color-scheme: dark) {
-    .sv-bg { background-color:#0b1215 !important; }
-    .sv-card { background-color:#111b1f !important; border-color:#1f2d33 !important; }
+    .sv-bg { background-color:#0b1020 !important; }
+    .sv-card { background-color:#121a2e !important; border-color:#24304d !important; }
     .sv-h1, .sv-word { color:#f3f4f6 !important; }
     .sv-text { color:#d1d5db !important; }
     .sv-muted { color:#9ca3af !important; }
-    .sv-note { background-color:#0f2a28 !important; border-color:#134e4a !important; color:#99f6e4 !important; }
-    .sv-code { background-color:#0f2a28 !important; color:#f3f4f6 !important; border-color:#134e4a !important; }
+    .sv-note { background-color:#101a3d !important; border-color:#1e2f6b !important; color:#c7d6ff !important; }
+    .sv-link { color:#7dd3fc !important; }
+    .sv-code { background-color:#101a3d !important; color:#f3f4f6 !important; border-color:#1e2f6b !important; }
   }
   [data-ogsc] .sv-h1, [data-ogsc] .sv-word { color:#f3f4f6 !important; }
   [data-ogsc] .sv-text { color:#d1d5db !important; }
@@ -37,40 +38,43 @@
           <td style="padding:0 4px 20px 4px;">
             <table role="presentation" border="0" cellspacing="0" cellpadding="0">
               <tr>
-                <td style="vertical-align:middle;"><a href="https://sherivs.com" target="_blank" style="text-decoration:none;"><img src="https://app.sherivs.com/email/sherivs-logo.png" width="40" height="40" alt="Sherivs" style="display:block;border:0;outline:none;width:40px;height:40px;border-radius:10px;"></a></td>
+                <td style="vertical-align:middle;"><a href="https://sherivs.com" target="_blank" style="text-decoration:none;"><img src="https://app.sherivs.com/email/sherivs-logo.png" width="48" height="48" alt="Sherivs logo" style="display:block;border:0;outline:none;width:48px;height:48px;"></a></td>
                 <td class="sv-word" style="vertical-align:middle;padding-left:10px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:22px;line-height:28px;font-weight:700;letter-spacing:-0.3px;color:#111827;">Sherivs</td>
               </tr>
             </table>
           </td>
         </tr>
         <tr>
-          <td class="sv-card" style="background-color:#ffffff;border:1px solid #e5e7eb;border-radius:16px;padding:36px 36px;">
+          <td height="6" bgcolor="#184efd" style="height:6px;line-height:6px;font-size:6px;mso-line-height-rule:exactly;background-color:#184efd;background-image:linear-gradient(90deg,#24bffd 0%,#184efd 50%,#a872fc 100%);border-radius:16px 16px 0 0;">&nbsp;</td>
+        </tr>
+        <tr>
+          <td class="sv-card" style="background-color:#ffffff;border:1px solid #e5e7eb;border-top:0;border-radius:0 0 16px 16px;padding:36px 36px;">
             <h1 class="sv-h1" style="margin:0 0 16px 0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:24px;line-height:32px;font-weight:700;letter-spacing:-0.3px;color:#111827;">Confirm your new email address</h1>
 <p class="sv-text" style="margin:0px 0 16px 0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:16px;line-height:24px;color:#374151;">We received a request to change the email address on your Sherivs account from <strong>{{ .Email }}</strong> to <strong>{{ .NewEmail }}</strong>.</p><p class="sv-text" style="margin:0px 0 16px 0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:16px;line-height:24px;color:#374151;">Confirm the change to start using your new address to sign in.</p><table role="presentation" border="0" cellspacing="0" cellpadding="0" style="margin:8px 0 8px 0;">
   <tr>
-    <td align="center" bgcolor="#0d9488" style="border-radius:10px;background-color:#0d9488;">
+    <td align="center" bgcolor="#184efd" style="border-radius:10px;background-color:#184efd;">
       <!--[if mso]>
-      <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="{{ .ConfirmationURL }}" style="height:48px;v-text-anchor:middle;width:260px;" arcsize="21%" stroke="f" fillcolor="#0d9488">
+      <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="{{ .ConfirmationURL }}" style="height:48px;v-text-anchor:middle;width:260px;" arcsize="21%" stroke="f" fillcolor="#184efd">
         <w:anchorlock/>
         <center style="color:#ffffff;font-family:Arial,sans-serif;font-size:16px;font-weight:bold;">Confirm email change</center>
       </v:roundrect>
       <![endif]-->
       <!--[if !mso]><!-- -->
-      <a href="{{ .ConfirmationURL }}" target="_blank" style="display:inline-block;padding:14px 28px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:16px;line-height:20px;font-weight:600;color:#ffffff;text-decoration:none;border-radius:10px;background-color:#0d9488;mso-hide:all;">Confirm email change</a>
+      <a href="{{ .ConfirmationURL }}" target="_blank" style="display:inline-block;padding:14px 28px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:16px;line-height:20px;font-weight:600;color:#ffffff;text-decoration:none;border-radius:10px;background-color:#184efd;mso-hide:all;">Confirm email change</a>
       <!--<![endif]-->
     </td>
   </tr>
 </table><p style="margin:20px 0 0 0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:13px;line-height:20px;color:#6b7280;">Button not working? Copy and paste this link into your browser:</p>
-<p style="margin:4px 0 0 0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:13px;line-height:20px;word-break:break-all;"><a href="{{ .ConfirmationURL }}" target="_blank" style="color:#0f766e;text-decoration:underline;">{{ .ConfirmationURL }}</a></p><table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="margin:24px 0 0 0;">
-  <tr><td class="sv-note" style="background-color:#f0fdfa;border:1px solid #ccfbf1;border-radius:10px;padding:14px 16px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:13px;line-height:20px;color:#115e59;">This link expires in 1 hour and can be used once.<br>If you didn't request this change, you can ignore this email and your email address will stay the same. If you think someone else has access to your account, reset your password and contact <a href="mailto:Info@sherivs.com" style="color:#115e59;">Info@sherivs.com</a>.</td></tr>
+<p style="margin:4px 0 0 0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:13px;line-height:20px;word-break:break-all;"><a href="{{ .ConfirmationURL }}" target="_blank" class="sv-link" style="color:#0d37ca;text-decoration:underline;">{{ .ConfirmationURL }}</a></p><table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="margin:24px 0 0 0;">
+  <tr><td class="sv-note" style="background-color:#eff4ff;border:1px solid #dbe4ff;border-radius:10px;padding:14px 16px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:13px;line-height:20px;color:#1e3a8a;">This link expires in 1 hour and can be used once.<br>If you didn't request this change, you can ignore this email and your email address will stay the same. If you think someone else has access to your account, reset your password and contact <a href="mailto:Info@sherivs.com" class="sv-link" style="color:#1e3a8a;">Info@sherivs.com</a>.</td></tr>
 </table>
           </td>
         </tr>
         <tr>
           <td style="padding:24px 8px 0 8px;text-align:center;">
             <p class="sv-muted" style="margin:0 0 6px 0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:13px;line-height:20px;color:#6b7280;"><strong>Sherivs</strong>, the school operating system for Nigeria</p>
-            <p class="sv-muted" style="margin:0 0 6px 0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:13px;line-height:20px;color:#6b7280;">Need help? <a href="mailto:Info@sherivs.com" style="color:#0f766e;text-decoration:underline;">Info@sherivs.com</a></p>
-            <p class="sv-muted" style="margin:0 0 6px 0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:13px;line-height:20px;color:#6b7280;"><a href="https://sherivs.com" target="_blank" style="color:#0f766e;text-decoration:underline;">sherivs.com</a> &nbsp;&middot;&nbsp; <a href="https://sherivs.com/privacy" target="_blank" style="color:#0f766e;text-decoration:underline;">Privacy</a></p>
+            <p class="sv-muted" style="margin:0 0 6px 0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:13px;line-height:20px;color:#6b7280;">Need help? <a href="mailto:Info@sherivs.com" class="sv-link" style="color:#0d37ca;text-decoration:underline;">Info@sherivs.com</a></p>
+            <p class="sv-muted" style="margin:0 0 6px 0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:13px;line-height:20px;color:#6b7280;"><a href="https://sherivs.com" target="_blank" class="sv-link" style="color:#0d37ca;text-decoration:underline;">sherivs.com</a> &nbsp;&middot;&nbsp; <a href="https://sherivs.com/privacy" target="_blank" class="sv-link" style="color:#0d37ca;text-decoration:underline;">Privacy</a></p>
             <p class="sv-muted" style="margin:12px 0 0 0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:12px;line-height:18px;color:#9ca3af;">&copy; 2026 Sherivs. You received this email because of an action on your Sherivs account.</p>
           </td>
         </tr>
