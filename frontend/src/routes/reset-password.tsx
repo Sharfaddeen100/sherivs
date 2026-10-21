@@ -1,3 +1,4 @@
+import { passwordPolicyError, PASSWORD_MIN_LENGTH } from "@/lib/security/password-policy";
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -49,7 +50,8 @@ function ResetPasswordPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
-    if (password.length < 8) return setError("Password must be at least 8 characters.");
+    const pwErr = passwordPolicyError(password);
+    if (pwErr) return setError(pwErr);
     if (password !== confirm) return setError("Passwords do not match.");
     setBusy(true);
     try {
@@ -133,7 +135,7 @@ function ResetPasswordPage() {
               <input
                 required
                 type="password"
-                minLength={8}
+                minLength={PASSWORD_MIN_LENGTH}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="uos-input"
@@ -147,7 +149,7 @@ function ResetPasswordPage() {
               <input
                 required
                 type="password"
-                minLength={8}
+                minLength={PASSWORD_MIN_LENGTH}
                 value={confirm}
                 onChange={(e) => setConfirm(e.target.value)}
                 className="uos-input"

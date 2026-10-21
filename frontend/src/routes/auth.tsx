@@ -7,6 +7,9 @@ import { scholarWorkspaceHome } from "@/lib/runtime/nav-registry";
 import { PLATFORM_NAME } from "@/lib/platform";
 import { resolveSherivsIdentity } from "@/lib/identity/resolve-identity.functions";
 import { identityFromAppState } from "@/lib/identity/context";
+import { Turnstile, captchaRequired } from "@/components/security/turnstile";
+import { turnstileEnabled } from "@/lib/security/turnstile-config";
+import { passwordPolicyError, PASSWORD_MIN_LENGTH } from "@/lib/security/password-policy";
 
 export const Route = createFileRoute("/auth")({
   ssr: false,
@@ -25,6 +28,9 @@ function AuthPage() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [info, setInfo] = useState<string | null>(null);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [captchaNonce, setCaptchaNonce] = useState(0);
+  const [captchaUnavailable, setCaptchaUnavailable] = useState(false);
   const resolveIdentity = useServerFn(resolveSherivsIdentity);
 
   // Identity-based post-auth routing (§11): signed-in users are routed by the
@@ -45,11 +51,23 @@ function AuthPage() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setBusy(true);
     reset();
+    if (mode === "signup") {
+      const pwErr = passwordPolicyError(password, email);
+      if (pwErr) return setError(pwErr);
+    }
+    if (captchaRequired(turnstileEnabled(), captchaToken, captchaUnavailable)) {
+      return setError("Please complete the security check.");
+    }
+    const captcha = captchaToken ?? undefined;
+    setBusy(true);
     try {
       if (mode === "signin") {
-        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+          options: { captchaToken: captcha },
+        });
         if (error) {
           // Audit the failure (fire-and-forget, never block UX)
           void fetch("/api/public/audit/password-reset", {
@@ -107,11 +125,12 @@ function AuthPage() {
           options: {
             data: { full_name: fullName, tenant_slug: tenantSlug ?? null },
             emailRedirectTo: `${window.location.origin}/auth`,
+            captchaToken: captcha,
           },
         });
         if (error) throw error;
         setInfo(
-          "Account created. An organization admin must link your account to an organization before you can access a workspace.",
+          "Account created. Check your email and click the link to confirm your address. Access to a workspace is granted by your organization or by Sherivs.",
         );
       } else {
         // forgot password — call audit FIRST so the server can enforce rate-limit.
@@ -131,6 +150,7 @@ function AuthPage() {
         }
         const { error } = await supabase.auth.resetPasswordForEmail(email, {
           redirectTo: `${window.location.origin}/reset-password`,
+          captchaToken: captcha,
         });
         if (error) throw error;
         setInfo(
@@ -141,6 +161,9 @@ function AuthPage() {
       setError(err instanceof Error ? err.message : "Authentication failed");
     } finally {
       setBusy(false);
+      // Turnstile tokens are single-use: always fetch a fresh one.
+      setCaptchaToken(null);
+      setCaptchaNonce((n) => n + 1);
     }
   }
 
@@ -211,7 +234,7 @@ function AuthPage() {
               <input
                 required
                 type="password"
-                minLength={8}
+                minLength={mode === "signup" ? PASSWORD_MIN_LENGTH : undefined}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="uos-input"
@@ -234,6 +257,19 @@ function AuthPage() {
               </button>
             </div>
           )}
+
+          {mode === "signup" && (
+            <p className="-mt-2 text-xs text-muted-foreground">
+              At least {PASSWORD_MIN_LENGTH} characters, with a lowercase letter, an uppercase
+              letter and a digit.
+            </p>
+          )}
+
+          <Turnstile
+            onToken={setCaptchaToken}
+            onUnavailable={() => setCaptchaUnavailable(true)}
+            resetKey={`${mode}:${captchaNonce}`}
+          />
 
           {error && (
             <div className="rounded-md border border-destructive/40 bg-destructive/10 px-3 py-2 text-sm text-destructive-foreground">
