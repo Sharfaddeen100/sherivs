@@ -7,7 +7,9 @@
  * ADAPTER only (Constitution §24), reached through one bounded fetch here.
  *
  * Fail-closed credential law (battery discipline, exit-2 semantics):
- * - Credentials come from the environment only — `TWILIO_ACCOUNT_SID`,
+ * - Preferred REST auth is an API key pair (`TWILIO_API_KEY` = SK… key SID +
+ *   `TWILIO_API_SECRET`, Basic `SK:secret`); see twilio-auth.server.ts.
+ *   Otherwise credentials come from the environment — `TWILIO_ACCOUNT_SID`,
  *   `TWILIO_AUTH_TOKEN`, `TWILIO_FROM_NUMBER` (Basic-auth scheme
  *   `SID:AUTH_TOKEN`, the canonical Twilio REST credential pair). Never
  *   hardcoded, never logged (§30).
@@ -34,6 +36,7 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
 import { z } from "zod";
 import { SystemClock, TimeAuthority } from "../kernel/time-authority";
+import { hasTwilioApiKeyPair, twilioRestAuthFromEnv, type TwilioAuthScheme } from "./twilio-auth.server";
 
 /** J-023: time enters only via the kernel time-authority — no direct wall-clock sampling. */
 const sendTimeAuthority = new TimeAuthority(new SystemClock());
@@ -45,6 +48,8 @@ export const TWILIO_SMS_PROVIDER_ID = "twilio-sms";
 export const TWILIO_ACCOUNT_SID_ENV = "TWILIO_ACCOUNT_SID";
 export const TWILIO_AUTH_TOKEN_ENV = "TWILIO_AUTH_TOKEN";
 export const TWILIO_FROM_NUMBER_ENV = "TWILIO_FROM_NUMBER";
+export const TWILIO_API_KEY_ENV = "TWILIO_API_KEY";
+export const TWILIO_API_SECRET_ENV = "TWILIO_API_SECRET";
 
 /** The credential references the registry exposes — pointers, never values. */
 export const TWILIO_ACCOUNT_SID_REFERENCE = `env://${TWILIO_ACCOUNT_SID_ENV}`;
@@ -69,15 +74,20 @@ function isNonBlank(value: string | null | undefined): value is string {
  */
 export interface TwilioSmsConfig {
   accountSid: string;
+  /** Basic-auth username: the API key SID (preferred) or the account SID. */
+  authUsername: string;
+  /** Basic-auth password: the API secret (preferred) or the auth token. */
   authToken: string;
+  authScheme: TwilioAuthScheme;
   fromNumber: string;
 }
 
 /** Missing environment variable names for the Twilio SMS adapter, in gate order. */
 export function missingTwilioSmsEnvVars(env: ServerEnv): readonly string[] {
-  return [TWILIO_ACCOUNT_SID_ENV, TWILIO_AUTH_TOKEN_ENV, TWILIO_FROM_NUMBER_ENV].filter(
-    (name) => !isNonBlank(env[name]),
-  );
+  const credentialVars = hasTwilioApiKeyPair(env)
+    ? [TWILIO_ACCOUNT_SID_ENV]
+    : [TWILIO_ACCOUNT_SID_ENV, TWILIO_AUTH_TOKEN_ENV];
+  return [...credentialVars, TWILIO_FROM_NUMBER_ENV].filter((name) => !isNonBlank(env[name]));
 }
 
 /**
@@ -86,9 +96,13 @@ export function missingTwilioSmsEnvVars(env: ServerEnv): readonly string[] {
  */
 export function twilioSmsConfigFromEnv(env: ServerEnv): TwilioSmsConfig | null {
   if (missingTwilioSmsEnvVars(env).length > 0) return null;
+  const auth = twilioRestAuthFromEnv(env);
+  if (!auth) return null;
   return {
-    accountSid: env[TWILIO_ACCOUNT_SID_ENV] as string,
-    authToken: env[TWILIO_AUTH_TOKEN_ENV] as string,
+    accountSid: auth.accountSid,
+    authUsername: auth.username,
+    authToken: auth.password,
+    authScheme: auth.scheme,
     fromNumber: env[TWILIO_FROM_NUMBER_ENV] as string,
   };
 }
@@ -170,7 +184,7 @@ export function createTwilioSmsSender(
       return {
         outcome: "undeliverable",
         code: "provider_not_configured",
-        reason: `BLOCKED_NO_CREDENTIAL: Twilio SMS requires ${TWILIO_ACCOUNT_SID_ENV}, ${TWILIO_AUTH_TOKEN_ENV} and ${TWILIO_FROM_NUMBER_ENV}; no SMS was sent and no provider call was attempted`,
+        reason: `BLOCKED_NO_CREDENTIAL: Twilio SMS requires ${TWILIO_ACCOUNT_SID_ENV}, ${TWILIO_API_KEY_ENV}+${TWILIO_API_SECRET_ENV} (or ${TWILIO_AUTH_TOKEN_ENV}) and ${TWILIO_FROM_NUMBER_ENV}; no SMS was sent and no provider call was attempted`,
       };
     }
 
@@ -197,7 +211,7 @@ export function createTwilioSmsSender(
       response = await fetchImpl(endpoint, {
         method: "POST",
         headers: {
-          Authorization: `Basic ${Buffer.from(`${config.accountSid}:${config.authToken}`).toString("base64")}`,
+          Authorization: `Basic ${Buffer.from(`${config.authUsername ?? config.accountSid}:${config.authToken}`).toString("base64")}`,
           "Content-Type": "application/x-www-form-urlencoded",
         },
         body: new URLSearchParams(parsedPayload.data).toString(),

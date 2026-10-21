@@ -15,6 +15,8 @@ import { Toaster } from "@/components/ui/sonner";
 import { RouteProgressBar } from "@/components/route-progress-bar";
 import { THEME_BOOTSTRAP_SCRIPT } from "@/lib/theme";
 import { SherivsLogo } from "@/components/brand/sherivs-logo";
+import { AnalyticsConsent } from "@/components/analytics/analytics-consent";
+import { captureClientError } from "@/lib/observability/sentry-browser";
 
 function NotFoundComponent() {
   return (
@@ -43,6 +45,7 @@ function NotFoundComponent() {
 
 function ErrorComponent({ error, reset }: { error: unknown; reset?: () => void }) {
   console.error(error);
+  captureClientError(error);
   const message = error instanceof Error ? error.message : "An unexpected error occurred.";
   return (
     <div className="flex min-h-dvh items-center justify-center px-4">
@@ -152,6 +155,7 @@ function RootComponent() {
         <RouteProgressBar />
         <Outlet />
         <Toaster richColors closeButton position="top-right" />
+        <AnalyticsConsent />
       </AppProvider>
     </QueryClientProvider>
   );

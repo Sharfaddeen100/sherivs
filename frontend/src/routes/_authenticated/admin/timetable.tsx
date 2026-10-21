@@ -253,7 +253,9 @@ function AdminTimetablePage() {
 
       {draft && (
         <div className="mb-4 flex flex-col gap-2 rounded-md border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm sm:flex-row sm:items-center sm:justify-between">
-          <span className="text-amber-200">Draft — not yet saved.</span>
+          <span className="text-amber-200">
+            AI-generated draft — not yet saved. Check every slot before you save or publish.
+          </span>
           <div className="flex flex-wrap gap-2">
             <Button
               size="sm"
