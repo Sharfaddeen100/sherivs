@@ -107,10 +107,3 @@ export function decideHostRoute(input: {
   if (isConsolePath(pathname)) return { kind: "console_elsewhere" };
   return { kind: "allow" };
 }
-
-/** Post-login destination: on the console host it is always the console. */
-export function postLoginDestination(hostKind: ExperienceHostKind, destination: string): string {
-  if (hostKind === "internal") return CONSOLE_HOME_PATH;
-  if (hostKind !== "local" && isConsolePath(destination)) return "/";
-  return destination;
-}

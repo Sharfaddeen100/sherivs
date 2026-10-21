@@ -1,5 +1,48 @@
+import type { ReactElement } from "react";
+import { Navigate, useLocation, useNavigate } from "@tanstack/react-router";
 import { SherivsLogo } from "@/components/brand/sherivs-logo";
-import { CONSOLE_ORIGIN } from "@/lib/experience/console-host-routing";
+import { useApp } from "@/contexts/app-context";
+import {
+  CONSOLE_ORIGIN,
+  currentEffectiveHostKind,
+  decideHostRoute,
+  isConsoleOperator,
+} from "@/lib/experience/console-host-routing";
+
+/**
+ * Console host gate for the authenticated shell. Returns the element to render
+ * instead of the shell (redirect / not authorised / not served here), or null
+ * when the current host and path are fine. Routing only, not authorization.
+ */
+export function useConsoleHostGate(loading: boolean): ReactElement | null {
+  const app = useApp();
+  const location = useLocation();
+  const navigate = useNavigate();
+  if (loading) return null;
+  const decision = decideHostRoute({
+    hostKind: currentEffectiveHostKind(),
+    pathname: location.pathname,
+    signedIn: Boolean(app.authUser),
+    isConsoleOperator: isConsoleOperator(app),
+  });
+  switch (decision.kind) {
+    case "redirect":
+      return <Navigate to={decision.to} replace />;
+    case "console_elsewhere":
+      return <ConsoleNotServedHere />;
+    case "not_authorised":
+      return (
+        <ConsoleNotAuthorised
+          onSignOut={async () => {
+            await app.signOut();
+            navigate({ to: "/auth", replace: true });
+          }}
+        />
+      );
+    default:
+      return null;
+  }
+}
 
 /** Shown on the console host to signed-in users who are not internal staff. */
 export function ConsoleNotAuthorised({ onSignOut }: { onSignOut: () => void }) {

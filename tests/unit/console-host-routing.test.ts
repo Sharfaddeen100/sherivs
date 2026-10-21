@@ -6,7 +6,6 @@ import {
   isConsolePath,
   isConsoleSurfacePath,
   parseHostKindOverride,
-  postLoginDestination,
 } from "@/lib/experience/console-host-routing";
 
 const operator = { signedIn: true, isConsoleOperator: true };
@@ -85,13 +84,6 @@ describe("console host routing", () => {
     expect(decideHostRoute({ hostKind: "local", pathname: "/internal", ...operator }).kind).toBe(
       "allow",
     );
-  });
-
-  it("routes post-login by host", () => {
-    expect(postLoginDestination("internal", "/admin")).toBe("/internal");
-    expect(postLoginDestination("app", "/internal")).toBe("/");
-    expect(postLoginDestination("app", "/admin")).toBe("/admin");
-    expect(postLoginDestination("local", "/internal")).toBe("/internal");
   });
 
   it("treats super admins and platform staff as operators", () => {
