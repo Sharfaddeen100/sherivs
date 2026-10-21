@@ -26,6 +26,16 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import { isFeatureActive, type TierName } from "@/lib/subscription-tiers";
+import {
+  academicAverage,
+  attendanceRate,
+  composeWeightedScore,
+  feeCollectionRate,
+  parentEngagementRate,
+  roundScore,
+  staffAttendanceRate,
+  unavailableNote,
+} from "@/lib/runtime/scholar/honest-scores";
 
 export const Route = createFileRoute("/_authenticated/admin/intelligence")({
   ssr: false,
@@ -107,17 +117,10 @@ function IntelligencePage() {
       ]);
 
       const attRows = attendance.data ?? [];
-      const presentCount = attRows.filter(
-        (a: any) => a.status === "present" || a.status === "late",
-      ).length;
-      const attendanceScore = attRows.length > 0 ? (presentCount / attRows.length) * 100 : 0;
+      const attendanceScore = attendanceRate(attRows);
 
       const gradeRows = grades.data ?? [];
-      const academicScore =
-        gradeRows.length > 0
-          ? gradeRows.reduce((s: number, g: any) => s + (Number(g.total_score) || 0), 0) /
-            gradeRows.length
-          : 0;
+      const academicScore = academicAverage(gradeRows);
 
       const feeRows = fees.data ?? [];
       const totalBilled = feeRows.reduce((s: number, f: any) => s + (Number(f.amount) || 0), 0);
@@ -126,47 +129,74 @@ function IntelligencePage() {
         0,
       );
       const outstanding = Math.max(0, totalBilled - totalCollected);
-      const feeScore = totalBilled > 0 ? (totalCollected / totalBilled) * 100 : 100;
+      const feeScore = feeCollectionRate(totalBilled, totalCollected);
 
       const teacherRows = teachers.data ?? [];
       const totalTeachers = teacherRows.length;
       const uniqueTeachers = new Set(
         (staffLogs.data ?? []).map((l: any) => l.teacher_id).filter(Boolean),
       ).size;
-      const staffScore = totalTeachers > 0 ? (uniqueTeachers / totalTeachers) * 100 : 0;
-
-      const parentScore = 70;
-
-      const overall = Math.round(
-        attendanceScore * 0.25 +
-          academicScore * 0.25 +
-          feeScore * 0.2 +
-          staffScore * 0.15 +
-          parentScore * 0.15,
-      );
+      const staffScore = staffAttendanceRate(totalTeachers, uniqueTeachers);
 
       const studentRows = students.data ?? [];
       const activeStudents = studentRows.filter((s: any) => s.is_active).length;
       const uniqueReaders = new Set(
         (newsReads.data ?? []).map((r: any) => r.user_id).filter(Boolean),
       ).size;
-      const parentEngagementRate = activeStudents > 0 ? (uniqueReaders / activeStudents) * 100 : 0;
+      const parentScore = parentEngagementRate(activeStudents, uniqueReaders);
+
+      const composed = composeWeightedScore([
+        {
+          id: "attendance",
+          label: "Student Attendance",
+          score: attendanceScore,
+          weight: 25,
+          note: attendanceScore === null ? unavailableNote("attendance") : undefined,
+        },
+        {
+          id: "academics",
+          label: "Academic Performance",
+          score: academicScore,
+          weight: 25,
+          note: academicScore === null ? unavailableNote("academics") : undefined,
+        },
+        {
+          id: "fees",
+          label: "Fee Collection",
+          score: feeScore,
+          weight: 20,
+          note: feeScore === null ? unavailableNote("fees") : undefined,
+        },
+        {
+          id: "staff",
+          label: "Staff Attendance",
+          score: staffScore,
+          weight: 15,
+          note: staffScore === null ? unavailableNote("staff") : undefined,
+        },
+        {
+          id: "parents",
+          label: "Parent Engagement",
+          score: parentScore,
+          weight: 15,
+          note: parentScore === null ? unavailableNote("parents") : undefined,
+        },
+      ]);
 
       const sportsCount = sports.count ?? 0;
       const atRiskCount = (atRiskTeachers.data ?? []).length;
 
       return {
-        components: [
-          { label: "Student Attendance", score: Math.round(attendanceScore), weight: 25 },
-          { label: "Academic Performance", score: Math.round(academicScore), weight: 25 },
-          { label: "Fee Collection", score: Math.round(feeScore), weight: 20 },
-          { label: "Staff Attendance", score: Math.round(staffScore), weight: 15 },
-          { label: "Parent Engagement", score: parentScore, weight: 15 },
-        ],
-        overall: Math.min(100, Math.max(0, overall)),
+        components: composed.components.map((c) => ({
+          label: c.label,
+          score: roundScore(c.score),
+          weight: c.weight,
+          note: c.note,
+        })),
+        overall: roundScore(composed.overall),
         outstanding,
         totalBilled,
-        parentEngagementRate,
+        parentEngagementRate: parentScore,
         sportsCount,
         atRiskCount,
       };
@@ -176,7 +206,7 @@ function IntelligencePage() {
   const opportunities = useMemo<Opportunity[]>(() => {
     if (!q.data) return [];
     const out: Opportunity[] = [];
-    if (q.data.parentEngagementRate < 40) {
+    if (q.data.parentEngagementRate !== null && q.data.parentEngagementRate < 40) {
       out.push({
         id: "parents",
         severity: "amber",
@@ -300,31 +330,38 @@ function EconomyScoreSection({
   data,
 }: {
   data: {
-    overall: number;
-    components: { label: string; score: number; weight: number }[];
+    overall: number | null;
+    components: { label: string; score: number | null; weight: number; note?: string }[];
   };
 }) {
+  const overall = data.overall;
   const color =
-    data.overall >= 80
-      ? "text-emerald-400"
-      : data.overall >= 60
-        ? "text-amber-400"
-        : "text-rose-400";
+    overall === null
+      ? "text-white/70"
+      : overall >= 80
+        ? "text-emerald-400"
+        : overall >= 60
+          ? "text-amber-400"
+          : "text-rose-400";
   const interp =
-    data.overall >= 80
-      ? "Excellent — performing at the highest level"
-      : data.overall >= 60
-        ? "Good — some areas need attention"
-        : data.overall >= 40
-          ? "Fair — multiple areas require focus"
-          : "Critical — urgent intervention needed";
+    overall === null
+      ? "Unavailable — not enough records to compute a school score"
+      : overall >= 80
+        ? "Excellent — performing at the highest level"
+        : overall >= 60
+          ? "Good — some areas need attention"
+          : overall >= 40
+            ? "Fair — multiple areas require focus"
+            : "Critical — urgent intervention needed";
 
   return (
     <div className="glass-card p-6">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
           <div className="text-xs uppercase tracking-wider text-white/50">School Economy Score</div>
-          <div className={`mt-2 text-6xl font-bold tabular-nums ${color}`}>{data.overall}</div>
+          <div className={`mt-2 text-6xl font-bold tabular-nums ${color}`}>
+            {overall === null ? "—" : overall}
+          </div>
           <div className="mt-1 text-sm text-white/60">{interp}</div>
         </div>
         <div className="text-xs text-white/40">Last updated: just now</div>
@@ -332,19 +369,28 @@ function EconomyScoreSection({
       <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
         {data.components.map((c) => {
           const fill =
-            c.score >= 80 ? "bg-emerald-500" : c.score >= 60 ? "bg-amber-500" : "bg-rose-500";
+            c.score === null
+              ? "bg-white/20"
+              : c.score >= 80
+                ? "bg-emerald-500"
+                : c.score >= 60
+                  ? "bg-amber-500"
+                  : "bg-rose-500";
           return (
             <div key={c.label}>
               <div className="flex justify-between text-xs text-white/60 mb-1">
                 <span>{c.label}</span>
-                <span className="font-medium text-white">{c.score}%</span>
+                <span className="font-medium text-white">
+                  {c.score === null ? "Unavailable" : `${c.score}%`}
+                </span>
               </div>
               <div className="h-1.5 rounded-full bg-white/10 overflow-hidden">
                 <div
                   className={`h-full ${fill}`}
-                  style={{ width: `${Math.min(100, Math.max(0, c.score))}%` }}
+                  style={{ width: c.score === null ? "0%" : `${Math.min(100, Math.max(0, c.score))}%` }}
                 />
               </div>
+              {c.note ? <p className="mt-1 text-[10px] text-white/40">{c.note}</p> : null}
             </div>
           );
         })}

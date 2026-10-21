@@ -7,13 +7,30 @@ import { scholarWorkspaceHome } from "@/lib/runtime/nav-registry";
 import { PLATFORM_NAME } from "@/lib/platform";
 import { resolveSherivsIdentity } from "@/lib/identity/resolve-identity.functions";
 import { identityFromAppState } from "@/lib/identity/context";
+import { Turnstile, captchaRequired } from "@/components/security/turnstile";
+import { PasswordInput } from "@/components/security/password-input";
+import { PasswordStrengthMeter } from "@/components/security/password-strength-meter";
+import { turnstileEnabled } from "@/lib/security/turnstile-config";
+import { PASSWORD_MIN_LENGTH } from "@/lib/security/password-policy";
+import { newPasswordError } from "@/lib/security/password-strength";
+import {
+  createLoginBackoff,
+  formatSeconds,
+  loginErrorMessage,
+  newPasswordServerMessage,
+} from "@/lib/security/auth-feedback";
+import { SherivsLogo } from "@/components/brand/sherivs-logo";
 
 export const Route = createFileRoute("/auth")({
   ssr: false,
   component: AuthPage,
 });
 
-type Mode = "signin" | "signup" | "forgot";
+type Mode = "signin" | "signup";
+
+const backoff = createLoginBackoff(
+  typeof window !== "undefined" ? window.localStorage : undefined,
+);
 
 function AuthPage() {
   const navigate = useNavigate();
@@ -25,6 +42,17 @@ function AuthPage() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [info, setInfo] = useState<string | null>(null);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [captchaNonce, setCaptchaNonce] = useState(0);
+  const [captchaUnavailable, setCaptchaUnavailable] = useState(false);
+  const [waitMs, setWaitMs] = useState(() => backoff.remainingMs());
+
+  // Count down any active backoff after repeated failed sign-ins.
+  useEffect(() => {
+    if (waitMs <= 0) return;
+    const id = setInterval(() => setWaitMs(backoff.remainingMs()), 1000);
+    return () => clearInterval(id);
+  }, [waitMs > 0]);
   const resolveIdentity = useServerFn(resolveSherivsIdentity);
 
   // Identity-based post-auth routing (§11): signed-in users are routed by the
@@ -45,11 +73,27 @@ function AuthPage() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setBusy(true);
     reset();
+    if (mode === "signin" && backoff.remainingMs() > 0) {
+      setWaitMs(backoff.remainingMs());
+      return;
+    }
+    if (mode === "signup") {
+      const pwErr = newPasswordError(password, email);
+      if (pwErr) return setError(pwErr);
+    }
+    if (captchaRequired(turnstileEnabled(), captchaToken, captchaUnavailable)) {
+      return setError("Please complete the security check.");
+    }
+    const captcha = captchaToken ?? undefined;
+    setBusy(true);
     try {
       if (mode === "signin") {
-        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+          options: { captchaToken: captcha },
+        });
         if (error) {
           // Audit the failure (fire-and-forget, never block UX)
           void fetch("/api/public/audit/password-reset", {
@@ -57,8 +101,12 @@ function AuthPage() {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ event: "login_failed", email }),
           }).catch(() => {});
-          throw error;
+          const wait = backoff.recordFailure();
+          setWaitMs(wait);
+          throw new Error(loginErrorMessage(error));
         }
+        backoff.reset();
+        setWaitMs(0);
 
         // Tenant-aware sign-in: if visiting on a tenant slug, verify the user
         // belongs to that school.
@@ -107,50 +155,35 @@ function AuthPage() {
           options: {
             data: { full_name: fullName, tenant_slug: tenantSlug ?? null },
             emailRedirectTo: `${window.location.origin}/auth`,
+            captchaToken: captcha,
           },
         });
-        if (error) throw error;
+        if (error) throw new Error(newPasswordServerMessage(error));
         setInfo(
-          "Account created. An organization admin must link your account to an organization before you can access a workspace.",
-        );
-      } else {
-        // forgot password — call audit FIRST so the server can enforce rate-limit.
-        const auditRes = await fetch("/api/public/audit/password-reset", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ event: "password_reset_requested", email }),
-        });
-        if (auditRes.status === 429) {
-          const body = (await auditRes.json().catch(() => null)) as {
-            retry_after_ms?: number;
-          } | null;
-          const { formatDuration } = await import("@/lib/auth-helpers");
-          throw new Error(
-            `Too many reset requests. Please try again in ${formatDuration(body?.retry_after_ms ?? 60_000)}.`,
-          );
-        }
-        const { error } = await supabase.auth.resetPasswordForEmail(email, {
-          redirectTo: `${window.location.origin}/reset-password`,
-        });
-        if (error) throw error;
-        setInfo(
-          "If an account exists for that email, we've sent a password-reset link. Check your inbox.",
+          "Account created. Check your email and click the link to confirm your address. Access to a workspace is granted by your organization or by Sherivs.",
         );
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Authentication failed");
     } finally {
       setBusy(false);
+      // Turnstile tokens are single-use: always fetch a fresh one.
+      setCaptchaToken(null);
+      setCaptchaNonce((n) => n + 1);
     }
   }
 
-  const title =
-    mode === "signin" ? "Sign in" : mode === "signup" ? "Create account" : "Reset your password";
+  const title = mode === "signin" ? "Sign in" : "Create account";
 
   return (
-    <div className="min-h-dvh grid place-items-center px-4">
-      <div className="w-full max-w-md uos-card p-8">
+    <div className="auth-shell">
+      <div className="auth-card uos-card" data-testid="auth-card">
         <div className="mb-6">
+          {!school && (
+            <Link to="/" aria-label={`${PLATFORM_NAME} home`} className="mb-6 inline-flex">
+              <SherivsLogo size={36} wordmarkClassName="text-xl" />
+            </Link>
+          )}
           {school && (
             <div className="mb-4 flex items-center gap-3">
               {school.logo_url ? (
@@ -178,9 +211,7 @@ function AuthPage() {
           )}
           <h1 className="font-display text-2xl font-bold">{title}</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            {mode === "forgot"
-              ? "Enter the email tied to your account and we'll send you a reset link."
-              : `Sign in to ${PLATFORM_NAME} — your organization's operating environment.`}
+            {`Sign in to ${PLATFORM_NAME} — your organization's operating environment.`}
           </p>
         </div>
 
@@ -206,37 +237,37 @@ function AuthPage() {
               autoComplete="email"
             />
           </Field>
-          {mode !== "forgot" && (
-            <Field label="Password">
-              <input
-                required
-                type="password"
-                minLength={8}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="uos-input"
-                autoComplete={mode === "signin" ? "current-password" : "new-password"}
-              />
-            </Field>
-          )}
+          <Field label="Password">
+            <PasswordInput
+              required
+              minLength={mode === "signup" ? PASSWORD_MIN_LENGTH : undefined}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              autoComplete={mode === "signin" ? "current-password" : "new-password"}
+              name="password"
+            />
+          </Field>
 
-          {mode === "signin" && (
-            <div className="flex justify-end -mt-2">
-              <button
-                type="button"
-                onClick={() => {
-                  setMode("forgot");
-                  reset();
-                }}
-                className="text-xs text-muted-foreground hover:text-foreground underline-offset-2 hover:underline"
-              >
-                Forgot password?
-              </button>
+          {mode === "signup" && <PasswordStrengthMeter password={password} email={email} />}
+
+          <Turnstile
+            onToken={setCaptchaToken}
+            onUnavailable={() => setCaptchaUnavailable(true)}
+            resetKey={`${mode}:${captchaNonce}`}
+          />
+
+          {mode === "signin" && waitMs > 0 && (
+            <div
+              role="status"
+              className="rounded-md border border-amber-500/40 bg-amber-500/10 px-3 py-2 text-sm"
+            >
+              Too many unsuccessful attempts. For your security, please wait{" "}
+              <strong>{formatSeconds(waitMs)}</strong> before trying again, or reset your password.
             </div>
           )}
 
           {error && (
-            <div className="rounded-md border border-destructive/40 bg-destructive/10 px-3 py-2 text-sm text-destructive-foreground">
+            <div role="alert" className="rounded-md border border-destructive/40 bg-destructive/10 px-3 py-2 text-sm text-destructive-foreground">
               {error}
             </div>
           )}
@@ -248,17 +279,27 @@ function AuthPage() {
 
           <button
             type="submit"
-            disabled={busy}
-            className="w-full rounded-md bg-primary px-4 py-2.5 font-semibold text-primary-foreground disabled:opacity-60"
+            disabled={busy || (mode === "signin" && waitMs > 0)}
+            className="w-full rounded-md bg-primary px-4 py-3 font-semibold text-primary-foreground disabled:opacity-60"
           >
             {busy
               ? "Please wait…"
               : mode === "signin"
                 ? "Sign in"
-                : mode === "signup"
-                  ? "Create account"
-                  : "Send reset link"}
+                : "Create account"}
           </button>
+
+          {mode === "signin" && (
+            <div className="text-center">
+              <Link
+                to="/forgot-password"
+                search={email ? { email } : {}}
+                className="text-sm font-medium text-primary underline-offset-2 hover:underline"
+              >
+                Forgotten password?
+              </Link>
+            </div>
+          )}
         </form>
 
         <div className="mt-6 space-y-2 text-center text-sm">
@@ -284,18 +325,6 @@ function AuthPage() {
               className="block w-full text-muted-foreground hover:text-foreground"
             >
               Already have an account? Sign in
-            </button>
-          )}
-          {mode === "forgot" && (
-            <button
-              type="button"
-              onClick={() => {
-                setMode("signin");
-                reset();
-              }}
-              className="block w-full text-muted-foreground hover:text-foreground"
-            >
-              ← Back to sign in
             </button>
           )}
           <Link to="/" className="block text-xs text-muted-foreground hover:text-foreground">

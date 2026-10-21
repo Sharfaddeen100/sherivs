@@ -54,6 +54,7 @@ import { createHash } from "node:crypto";
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { requireManagementTarget } from "./lib/sherivs-db-target.mjs";
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
 const MIGRATIONS_DIR = join(ROOT, "database", "supabase", "migrations");
@@ -73,7 +74,6 @@ const MODE = flags.includes("--manifest")
   : flags.includes("--verify-only")
     ? "verify-only"
     : "apply";
-const projectRef = positionals[0] ?? "nwrflbpbhyiqdptmlccm";
 
 if (unknownFlags.length > 0 || positionals.length > 1) {
   console.error(
@@ -82,6 +82,11 @@ if (unknownFlags.length > 0 || positionals.length > 1) {
   );
   process.exit(2);
 }
+
+const projectRef =
+  MODE === "manifest"
+    ? positionals[0] ?? ""
+    : requireManagementTarget(process.env, positionals[0]).projectRef;
 
 const token = process.env.SUPABASE_ACCESS_TOKEN;
 if (MODE !== "manifest" && !token) {

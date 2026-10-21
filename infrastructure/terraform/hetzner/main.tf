@@ -43,19 +43,19 @@ resource "hcloud_firewall" "workers" {
   name = "${var.name_prefix}-${var.environment}-workers"
 
   rule {
-    direction  = "in"
-    protocol   = "tcp"
-    port       = "6443"
-    source_ips = [var.control_plane_cidr]
+    direction   = "in"
+    protocol    = "tcp"
+    port        = "6443"
+    source_ips  = [var.control_plane_cidr]
     description = "worker join / API access from the private fabric"
   }
 
   rule {
-    direction  = "out"
-    protocol   = "tcp"
-    port       = "443"
+    direction       = "out"
+    protocol        = "tcp"
+    port            = "443"
     destination_ips = ["0.0.0.0/0", "::/0"]
-    description = "outbound APIs only"
+    description     = "outbound APIs only"
   }
 }
 
@@ -65,11 +65,11 @@ resource "hcloud_firewall" "workers" {
 resource "hcloud_server" "worker" {
   count = var.worker_floor
 
-  name        = "${var.name_prefix}-${var.environment}-worker-${count.index + 1}"
-  server_type = var.worker_server_type
-  image       = var.worker_image
-  location    = var.worker_location
-  ssh_keys    = [hcloud_ssh_key.worker.id]
+  name         = "${var.name_prefix}-${var.environment}-worker-${count.index + 1}"
+  server_type  = var.worker_server_type
+  image        = var.worker_image
+  location     = var.worker_location
+  ssh_keys     = [hcloud_ssh_key.worker.id]
   firewall_ids = [hcloud_firewall.workers.id]
 
   network {

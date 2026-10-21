@@ -5,7 +5,7 @@ output "environment" {
 
 output "missing_secrets" {
   description = "Required secrets still absent at plan time (must be empty to apply)."
-  value       = local.missing_secrets
+  value       = local.unresolved_secrets
 }
 
 output "cluster_id" {

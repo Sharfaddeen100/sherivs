@@ -1,6 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
 import { PASSWORD_RESET_RATE_LIMIT, passwordResetRetryAfterMs } from "@/lib/auth-helpers";
+import { SystemClock, TimeAuthority } from "@/lib/kernel/time-authority";
+import { clientIpFromHeaders } from "@/lib/security/request-safety";
+
+const timeAuthority = new TimeAuthority(new SystemClock());
+
+/** Unauthenticated endpoint that writes audit rows: cap per source address. */
+const AUDIT_INGEST_LIMIT = { maxRequests: 30, windowMs: 60_000 } as const;
 
 const AUDIT_EVENTS = [
   "password_reset_requested",
@@ -19,6 +26,19 @@ export const Route = createFileRoute("/api/public/audit/password-reset")({
   server: {
     handlers: {
       POST: async ({ request }) => {
+        const { checkPublicRateLimit } = await import("@/lib/security/public-rate-limit.server");
+        const limited = await checkPublicRateLimit(
+          "audit-password-reset",
+          clientIpFromHeaders(request.headers),
+          AUDIT_INGEST_LIMIT,
+        );
+        if (!limited.allowed) {
+          return Response.json(
+            { ok: false, rate_limited: true, retry_after_ms: limited.retryAfterSeconds * 1000 },
+            { status: 429, headers: { "Retry-After": String(limited.retryAfterSeconds) } },
+          );
+        }
+
         let parsed;
         try {
           parsed = BodySchema.parse(await request.json());
@@ -59,7 +79,7 @@ export const Route = createFileRoute("/api/public/audit/password-reset")({
 
           // Rate limit only the *request* event (completion can't be abused).
           if (parsed.event === "password_reset_requested") {
-            const since = new Date(Date.now() - PASSWORD_RESET_RATE_LIMIT.windowMs).toISOString();
+            const since = new Date(timeAuthority.now().atMs - PASSWORD_RESET_RATE_LIMIT.windowMs).toISOString();
 
             // Count recent attempts for this email AND this IP. Either over-limit blocks.
             const filters: Array<Promise<{ data: { created_at: string | null }[] | null }>> = [];

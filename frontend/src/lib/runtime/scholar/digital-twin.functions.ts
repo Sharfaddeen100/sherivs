@@ -19,6 +19,7 @@ import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { tokenMsRemaining } from "@/lib/auth-helpers";
 import { requireSchoolAdminScope } from "@/lib/security-role-gate";
+import { escapeXmlText } from "@/lib/security/request-safety";
 import type { Json } from "@/integrations/supabase/types";
 import { SystemClock, TimeAuthority } from "../../kernel/time-authority";
 
@@ -129,7 +130,7 @@ export const CallInput = z.object({
   call_type: z.enum(["attendance_alert", "fees_reminder", "announcement", "custom"]),
   trigger_event: z.string().trim().max(120).optional(),
   recipient_name: z.string().trim().min(1).max(160),
-  recipient_phone: z.string().trim().min(6).max(32),
+  recipient_phone: z.string().trim().regex(/^\+?[0-9]{7,15}$/, "Use digits with an optional leading +"),
   recipient_role: z.enum(["parent", "teacher", "student", "other"]).default("parent"),
   student_id: z.string().uuid().nullable().optional(),
   script: z.string().trim().min(1).max(4000),
@@ -162,6 +163,24 @@ export const placeTwinCall = createServerFn({ method: "POST" })
       lifecycle: null,
       sessionValid: typeof claims?.exp === "number" && tokenMsRemaining(claims.exp) > 0,
     });
+
+    // NDPA: an outbound call about a specific student needs the guardian's
+    // messaging consent (denied or missing => refuse, nothing is dialed or logged).
+    if (data.student_id) {
+      const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+      const { hasConsent } = await import("@/lib/compliance/consent.functions");
+      const allowed = await hasConsent(
+        supabaseAdmin as unknown as Parameters<typeof hasConsent>[0],
+        data.student_id,
+        "messaging_sms_whatsapp",
+        schoolId,
+      );
+      if (!allowed) {
+        throw new Error(
+          "Guardian consent for SMS/WhatsApp/voice messaging is not on record for this student (NDPA). Record consent first.",
+        );
+      }
+    }
 
     const { data: cfg } = await supabase
       .from("digital_twin_config")
@@ -204,9 +223,7 @@ export const placeTwinCall = createServerFn({ method: "POST" })
       };
     }
 
-    const twiml = `<Response><Say voice="alice">${data.script
-      .replace(/</g, "&lt;")
-      .replace(/&/g, "&amp;")}</Say></Response>`;
+    const twiml = `<Response><Say voice="alice">${escapeXmlText(data.script)}</Say></Response>`;
 
     const resp = await fetch(`${GATEWAY_URL}/Calls.json`, {
       method: "POST",

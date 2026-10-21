@@ -50,13 +50,13 @@ resource "vultr_firewall_rule" "no_ssh_from_world" {
 resource "vultr_instance" "edge" {
   for_each = toset(var.edge_regions)
 
-  label       = "${var.name_prefix}-${var.environment}-edge-${each.key}"
-  region      = each.key
-  plan        = var.edge_plan
-  os_id       = var.edge_os_id
-  hostname    = "${var.name_prefix}-edge-${each.key}"
+  label             = "${var.name_prefix}-${var.environment}-edge-${each.key}"
+  region            = each.key
+  plan              = var.edge_plan
+  os_id             = var.edge_os_id
+  hostname          = "${var.name_prefix}-edge-${each.key}"
   firewall_group_id = vultr_firewall_group.edge.id
-  enable_ipv6 = true
+  enable_ipv6       = true
 
   tags = [
     "coregrid:environment=${var.environment}",

@@ -1,6 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useApp } from "@/contexts/app-context";
 import { PLATFORM_NAME } from "@/lib/platform";
+import { SherivsMark } from "@/components/brand/sherivs-logo";
 
 /**
  * Unlinked-account state (§11 — new/pending customer).
@@ -21,9 +22,7 @@ function WelcomePage() {
   return (
     <div className="mx-auto grid min-h-[70vh] w-full max-w-xl place-items-center px-4 py-12">
       <div className="uos-card w-full p-8 text-center">
-        <div className="mx-auto grid size-12 place-items-center rounded-xl uos-tenant-bg font-display text-lg font-bold text-primary-foreground">
-          S
-        </div>
+        <SherivsMark size={56} className="mx-auto" />
         <h1 className="mt-6 font-display text-2xl font-bold tracking-tight">
           Welcome to {PLATFORM_NAME}
         </h1>

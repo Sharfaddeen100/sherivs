@@ -5,6 +5,7 @@ import { ArrowLeft, AlertTriangle, Trophy } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useApp } from "@/contexts/app-context";
 import { PortalPage } from "@/components/portal-shell";
+import { attendanceRate, studentRiskFromAvailable } from "@/lib/runtime/scholar/honest-scores";
 
 export const Route = createFileRoute("/_authenticated/teacher/class-intelligence")({
   ssr: false,
@@ -91,31 +92,28 @@ function ClassIntelligence() {
         ? g.reduce((a, r) => a + Number(r.total_score ?? 0), 0) / g.length
         : null;
       const a = bulk.data.attendance.filter((r) => r.class_id === c.id);
-      const present = a.filter((r) => r.status === "present" || r.status === "late").length;
-      const rate = a.length ? Math.round((present / a.length) * 100) : null;
+      const rate = attendanceRate(a);
+      const roundedRate = rate === null ? null : Math.round(rate);
       const studentRisk = st.map((s) => {
         const sg = g.filter((r) => r.student_id === s.id);
         const savg = sg.length
           ? sg.reduce((x, r) => x + Number(r.total_score ?? 0), 0) / sg.length
           : null;
         const sa = a.filter((r) => r.student_id === s.id);
-        const sp = sa.filter((r) => r.status === "present" || r.status === "late").length;
-        const srate = sa.length ? Math.round((sp / sa.length) * 100) : null;
-        const attScore = srate ?? 100;
-        const grScore = savg ?? 60;
-        const feeScore = 100;
-        const risk = Math.max(
-          0,
-          Math.min(100, 100 - (attScore * 0.4 + grScore * 0.35 + feeScore * 0.25)),
-        );
-        return { ...s, avg: savg, rate: srate, risk };
+        const srate = attendanceRate(sa);
+        const roundedStudentRate = srate === null ? null : Math.round(srate);
+        const { risk } = studentRiskFromAvailable({
+          attendanceRate: srate,
+          gradeAverage: savg,
+        });
+        return { ...s, avg: savg, rate: roundedStudentRate, risk };
       });
-      const atRisk = studentRisk.filter((s) => s.risk > 60).length;
+      const atRisk = studentRisk.filter((s) => s.risk !== null && s.risk > 60).length;
       const top = [...studentRisk]
         .filter((s) => s.avg != null)
         .sort((a, b) => (b.avg ?? 0) - (a.avg ?? 0))
         .slice(0, 3);
-      return { ...c, studentCount: st.length, avg, rate, atRisk, top, studentRisk };
+      return { ...c, studentCount: st.length, avg, rate: roundedRate, atRisk, top, studentRisk };
     });
   }, [bulk.data, myClasses.data]);
 
@@ -146,7 +144,7 @@ function ClassIntelligence() {
               <div className="rounded-md border border-border p-3">
                 <p className="text-[10px] uppercase text-muted-foreground">Attendance</p>
                 <p className="font-mono">
-                  {selectedClass.rate == null ? "—" : `${selectedClass.rate}%`}
+                  {selectedClass.rate == null ? "—" : `${Math.round(selectedClass.rate)}%`}
                 </p>
               </div>
               <div className="rounded-md border border-border p-3">
@@ -173,16 +171,18 @@ function ClassIntelligence() {
                 </thead>
                 <tbody className="divide-y divide-border">
                   {selectedClass.studentRisk
-                    .sort((a, b) => b.risk - a.risk)
+                    .sort((a, b) => (b.risk ?? -1) - (a.risk ?? -1))
                     .map((s) => {
                       const level =
-                        s.risk > 75
-                          ? { label: "Critical", cls: "bg-rose-500/15 text-rose-300" }
-                          : s.risk > 60
-                            ? { label: "High", cls: "bg-amber-500/15 text-amber-300" }
-                            : s.risk > 40
-                              ? { label: "Medium", cls: "bg-yellow-500/15 text-yellow-300" }
-                              : { label: "Low", cls: "bg-emerald-500/15 text-emerald-300" };
+                        s.risk == null
+                          ? { label: "Not enough data", cls: "bg-muted text-muted-foreground" }
+                          : s.risk > 75
+                            ? { label: "Critical", cls: "bg-rose-500/15 text-rose-300" }
+                            : s.risk > 60
+                              ? { label: "High", cls: "bg-amber-500/15 text-amber-300" }
+                              : s.risk > 40
+                                ? { label: "Medium", cls: "bg-yellow-500/15 text-yellow-300" }
+                                : { label: "Low", cls: "bg-emerald-500/15 text-emerald-300" };
                       return (
                         <tr key={s.id}>
                           <td className="p-3 font-medium">{s.name}</td>

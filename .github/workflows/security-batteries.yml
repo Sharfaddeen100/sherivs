@@ -76,6 +76,9 @@ env:
   # SUPABASE_URL and accepts no positional ref (a positional argument is
   # ignored by design) — the ref is pinned here for the restore drill's CLI.
   CANONICAL_PROJECT_REF: nwrflbpbhyiqdptmlccm
+  SHERIVS_DATABASE_TARGET: production
+  SHERIVS_PROJECT_REF: nwrflbpbhyiqdptmlccm
+  SHERIVS_CONFIRM_PRODUCTION: nwrflbpbhyiqdptmlccm
 
 jobs:
   rls-isolation-battery:
