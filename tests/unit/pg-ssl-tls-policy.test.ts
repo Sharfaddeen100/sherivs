@@ -57,4 +57,11 @@ describe("pgSslConfig TLS posture", () => {
       rejectUnauthorized: true,
     });
   });
+
+  it("refuses to default to an unscoped DATABASE_URL", () => {
+    process.env.DATABASE_URL = "postgresql://u:p@h:5432/db";
+    expect(() => pgSslConfig(undefined)).toThrow(/explicit connection string/);
+    expect(() => pgSslConfig("")).toThrow(/explicit connection string/);
+    delete process.env.DATABASE_URL;
+  });
 });

@@ -99,7 +99,7 @@ const PAYMENT_METHODS = ["Cash", "Bank Transfer", "Card", "Cheque", "Other"] as 
 const RECURRING_FREQUENCIES = ["Weekly", "Monthly", "Quarterly", "Annual"] as const;
 
 const PIE_COLORS = [
-  "#0d9488",
+  "#184efd",
   "#f59e0b",
   "#8b5cf6",
   "#ef4444",
@@ -405,7 +405,7 @@ function AdminExpensesPage() {
                 formatter={(v: number) => [naira(v), "Total"]}
                 labelFormatter={(l) => `Month: ${l}`}
               />
-              <Bar dataKey="amount" fill="#0d9488" radius={[6, 6, 0, 0]} />
+              <Bar dataKey="amount" fill="#184efd" radius={[6, 6, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>

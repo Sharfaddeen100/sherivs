@@ -7,6 +7,8 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { tokenMsRemaining } from "@/lib/auth-helpers";
+import { requireStaffContext } from "@/lib/security-role-gate";
 
 const dispatchSchema = z.object({
   userIds: z.array(z.string().uuid()).min(1).max(500),
@@ -17,6 +19,11 @@ export const dispatchPushToUsers = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .validator((input: unknown) => dispatchSchema.parse(input))
   .handler(async ({ data, context }) => {
+    // Pushing to other users is a staff capability, never open to any member.
+    await requireStaffContext(context.supabase, "teaching_staff", {
+      lifecycle: null,
+      sessionValid: typeof context?.claims?.exp === "number" && tokenMsRemaining(context.claims.exp) > 0,
+    });
     const { deliverPushToUsers } = await import("@/lib/push.server");
     const result = await deliverPushToUsers(context.supabase, data.userIds);
     return {

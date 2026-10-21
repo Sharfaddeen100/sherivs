@@ -162,6 +162,7 @@ import { readFileSync, readdirSync, mkdirSync, writeFileSync, appendFileSync } f
 import { randomBytes } from "node:crypto";
 import { join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { requireManagementTarget } from "./lib/sherivs-db-target.mjs";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
 const artifactsDir = "/opt/cursor/artifacts";
@@ -700,6 +701,7 @@ async function resolveServiceKey() {
 }
 
 async function ensureCredentials() {
+  requireManagementTarget(process.env, projectRef || undefined);
   if (!token) {
     try {
       const envFile = readFileSync(join(root, ".env.local"), "utf8");

@@ -23,14 +23,17 @@ import { join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { buildSync } from "esbuild";
 import { createClient } from "@supabase/supabase-js";
+import { assertUrlMatchesTarget, requireManagementTarget } from "./lib/sherivs-db-target.mjs";
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
+const { target } = requireManagementTarget(process.env);
 const url = process.env.SUPABASE_URL;
 const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 if (!url || !serviceKey) {
   console.error("SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are required.");
   process.exit(2);
 }
+assertUrlMatchesTarget(url, target, "SUPABASE_URL");
 
 const LIMIT = Number(process.env.EVENT_FABRIC_LIMIT ?? 25);
 const MAX_ATTEMPTS = Number(process.env.EVENT_FABRIC_MAX_ATTEMPTS ?? 3);

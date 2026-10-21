@@ -44,6 +44,9 @@ import {
 } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
+import { parseHrStaffPatch } from "@/lib/runtime/identity-privilege";
+import { useServerFn } from "@tanstack/react-start";
+import { updateStaffPrivilege } from "@/lib/runtime/scholar/staff-privilege.functions";
 
 export const Route = createFileRoute("/_authenticated/admin/hr")({
   ssr: false,
@@ -114,7 +117,7 @@ function money(n: number, cur = "NGN") {
 }
 
 function HRPage() {
-  const { profile } = useApp();
+  const { profile, authUser } = useApp();
   const schoolId = profile?.school_id ?? "";
   const qc = useQueryClient();
   const now = new Date();
@@ -197,12 +200,35 @@ function HRPage() {
   const pendingLeave = (leaveQ.data ?? []).filter((l) => l.status === "pending").length;
   const monthTotal = (payrollQ.data ?? []).reduce((s, p) => s + (p.net_salary || 0), 0);
 
+  const updatePrivilege = useServerFn(updateStaffPrivilege);
   const saveStaff = useMutation({
     mutationFn: async (payload: Partial<StaffUser> & { id?: string }) => {
       if (!payload.id) throw new Error("Use user creation flow to add new staff");
       const { id, ...rest } = payload;
-      const { error } = await supabase.from("users").update(rest).eq("id", id);
-      if (error) throw error;
+      const current = staffMap.get(id);
+      const patch = parseHrStaffPatch({
+        actorId: profile?.id ?? authUser?.id,
+        targetId: id,
+        patch: rest,
+        currentRole: current?.role ?? rest.role ?? null,
+        currentActive: current?.is_active ?? rest.is_active ?? null,
+      });
+      if (Object.keys(patch).length > 0) {
+        const { error } = await supabase.from("users").update(patch).eq("id", id);
+        if (error) throw error;
+      }
+      // role / is_active are service_role-only: go through the server path.
+      const roleChanged = rest.role !== undefined && rest.role !== current?.role;
+      const activeChanged = rest.is_active !== undefined && rest.is_active !== current?.is_active;
+      if (roleChanged || activeChanged) {
+        await updatePrivilege({
+          data: {
+            userId: id,
+            ...(roleChanged ? { role: rest.role as string } : {}),
+            ...(activeChanged ? { isActive: Boolean(rest.is_active) } : {}),
+          },
+        });
+      }
     },
     onSuccess: () => {
       toast.success("Staff updated");

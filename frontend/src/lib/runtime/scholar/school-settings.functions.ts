@@ -11,6 +11,7 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { tokenMsRemaining } from "@/lib/auth-helpers";
 import { requireSchoolAdminScope } from "@/lib/security-role-gate";
 import { writeAuditRecord } from "@/lib/server/write-audit";
+import { safeMapEmbedSrc } from "@/lib/security/request-safety";
 import {
   nonEmptyText,
   optionalText,
@@ -120,13 +121,9 @@ const locationSchema = z.object({
     .optional()
     .or(z.literal(""))
     .transform((v) => (v ? v : null))
-    .refine(
-      (v) =>
-        v === null ||
-        /^https:\/\/(www\.)?google\.[a-z.]+\/maps\/embed/.test(v) ||
-        /^<iframe[\s\S]+google\.[a-z.]+\/maps\/embed/.test(v),
-      { message: "Use a Google Maps embed URL or full <iframe> snippet" },
-    ),
+    .refine((v) => v === null || safeMapEmbedSrc(v) !== null, {
+      message: "Use a Google Maps embed URL or full <iframe> snippet",
+    }),
   show_map_on_website: z.boolean(),
 });
 

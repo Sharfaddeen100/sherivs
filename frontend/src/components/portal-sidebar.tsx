@@ -67,6 +67,7 @@ import { useUnreadMessagesCount } from "@/lib/messages-unread";
 import { ROUTE_PROGRESS_EVENT } from "@/components/route-progress-bar";
 import { cn } from "@/lib/utils";
 import type { WorkspaceNavItem, WorkspaceNavSection } from "@/lib/workspace-engine/navigation";
+import { SherivsLogo, SherivsMark } from "@/components/brand/sherivs-logo";
 
 /** Icon registry: data uses keys; this is the ONLY place keys meet components. */
 const ICON_REGISTRY: Record<string, ElementType> = {
@@ -352,6 +353,23 @@ export function PortalSidebar({ sections }: { sections: readonly WorkspaceNavSec
             </>
           )}
         </button>
+        {collapsed ? (
+          <div className="grid place-items-center py-1">
+            <SherivsMark size={24} />
+          </div>
+        ) : (
+          <a
+            href="https://sherivs.com"
+            target="_blank"
+            rel="noreferrer"
+            className="flex items-center gap-2 rounded-md px-2 py-1 text-[11px] text-muted-foreground hover:text-foreground"
+          >
+            <SherivsMark size={20} decorative />
+            <span>
+              Powered by <span className="font-display font-semibold">Sherivs</span>
+            </span>
+          </a>
+        )}
         {!collapsed && (
           <div className="mt-auto border-t border-border/60 px-3 pt-3 pb-1">
             <div className="mt-2 flex items-center justify-between gap-2">

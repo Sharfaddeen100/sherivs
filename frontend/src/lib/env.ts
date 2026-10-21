@@ -6,6 +6,7 @@
 import { registryServerOnlyEnvVars } from "./providers/provider-credentials";
 
 export type AppEnvironment = "local" | "development" | "test" | "staging" | "production";
+export type EnvironmentClassification = AppEnvironment | "unknown";
 
 export const APP_ENVIRONMENTS: readonly AppEnvironment[] = [
   "local",
@@ -75,11 +76,14 @@ export const REQUIRED_VARS: Record<AppEnvironment, readonly string[]> = {
   ],
 };
 
-/** Classify raw env value. Unknown -> "development" (fail-safe). */
-export function classifyEnvironment(raw: string | undefined): AppEnvironment {
-  if (!raw) return "development";
+/**
+ * Classify raw env value. Missing, empty, or unrecognized values stay
+ * "unknown". Unknown is not development.
+ */
+export function classifyEnvironment(raw: string | undefined): EnvironmentClassification {
+  if (!raw || raw.trim() === "") return "unknown";
   const n = raw.trim().toLowerCase();
-  return APP_ENVIRONMENTS.includes(n as AppEnvironment) ? (n as AppEnvironment) : "development";
+  return APP_ENVIRONMENTS.includes(n as AppEnvironment) ? (n as AppEnvironment) : "unknown";
 }
 
 /** Missing required var names for the given environment. */

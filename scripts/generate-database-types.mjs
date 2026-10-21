@@ -28,6 +28,7 @@ import { spawnSync } from "node:child_process";
 import { readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { requireManagementTarget } from "./lib/sherivs-db-target.mjs";
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -35,8 +36,6 @@ const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const OUTPUT_TARGET = "packages/contracts/src/database.ts";
 /** Superseded output location; kept here ONLY as a write-guard reference. */
 const LEGACY_OUTPUT_PATH = "frontend/src/integrations/supabase/types.ts";
-/** Canonical Supabase project (public project ref, not a secret). */
-const CANONICAL_PROJECT_REF = "nwrflbpbhyiqdptmlccm";
 const SCHEMA = "public";
 
 const checkOnly = process.argv.includes("--check");
@@ -46,24 +45,14 @@ function fail(message) {
   process.exit(1);
 }
 
+const { projectRef } = requireManagementTarget(process.env, process.env.SUPABASE_PROJECT_ID);
+
 if (!process.env.SUPABASE_ACCESS_TOKEN) {
   fail(
     "SUPABASE_ACCESS_TOKEN is not set. Export a Supabase personal access token " +
       "(Supabase Dashboard → Account → Access Tokens) and retry.",
   );
 }
-
-function resolveProjectRef() {
-  if (process.env.SUPABASE_PROJECT_ID) return process.env.SUPABASE_PROJECT_ID;
-  const url = process.env.SUPABASE_URL;
-  if (url) {
-    const ref = url.replace(/^https?:\/\//, "").split(".")[0];
-    if (ref && /^[a-z0-9]{20}$/.test(ref)) return ref;
-  }
-  return CANONICAL_PROJECT_REF;
-}
-
-const projectRef = resolveProjectRef();
 const targetAbs = join(repoRoot, OUTPUT_TARGET);
 
 if (resolve(targetAbs) === resolve(join(repoRoot, LEGACY_OUTPUT_PATH))) {

@@ -812,8 +812,8 @@ export function CommandPalette({ open, onClose }: { open: boolean; onClose: () =
                     onClick={row.onSelect}
                     className="flex h-12 w-full items-center gap-3 border-l-2 px-4 text-left transition-colors"
                     style={{
-                      borderLeftColor: isActive ? "var(--tenant-primary, #0d9488)" : "transparent",
-                      background: isActive ? "rgba(13,148,136,0.15)" : "transparent",
+                      borderLeftColor: isActive ? "var(--tenant-primary, #184efd)" : "transparent",
+                      background: isActive ? "rgba(24,78,253,0.15)" : "transparent",
                     }}
                     onMouseOver={(e) => {
                       if (!isActive) e.currentTarget.style.background = "rgba(255,255,255,0.06)";

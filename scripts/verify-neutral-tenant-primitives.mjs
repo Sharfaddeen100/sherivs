@@ -31,9 +31,10 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { requireManagementTarget } from "./lib/sherivs-db-target.mjs";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
-const projectRef = process.argv[2] ?? "nwrflbpbhyiqdptmlccm";
+const { projectRef } = requireManagementTarget(process.env, process.argv[2]);
 
 let token = process.env.SUPABASE_ACCESS_TOKEN ?? "";
 if (!token) {

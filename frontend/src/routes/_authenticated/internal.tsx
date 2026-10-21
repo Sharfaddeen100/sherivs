@@ -24,6 +24,7 @@ import {
   Sparkles,
   Users,
 } from "lucide-react";
+import { SherivsLogo } from "@/components/brand/sherivs-logo";
 
 /**
  * Sherivs internal operating environment (PLANE 4) — the internal HQ.
@@ -232,6 +233,7 @@ function InternalHome() {
   return (
     <div className="mx-auto w-full max-w-6xl px-4 py-10">
       <header className="max-w-2xl">
+        <SherivsLogo size={40} wordmarkClassName="text-xl" className="mb-6" />
         <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
           {PLATFORM_NAME} internal
         </p>

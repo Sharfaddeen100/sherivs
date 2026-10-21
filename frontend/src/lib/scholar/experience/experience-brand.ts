@@ -25,7 +25,7 @@ export interface BrandIdentity {
 const DEFAULT_BRAND: BrandIdentity = {
   name: "Organization",
   logoUrl: null,
-  primaryColor: "#1d4ed8",
+  primaryColor: "#184efd",
   secondaryColor: "#0f172a",
   fontFamily: "Inter",
   tone: "formal",
