@@ -1,7 +1,13 @@
 # Nightly encrypted off-server backup of the production Supabase database.
 #
-# - READ-ONLY: the session runs with default_transaction_read_only=on, so the
-#   dump cannot write even if the URL's role could.
+# - READ-ONLY: Supabase's session pooler (Supavisor) does not forward startup
+#   options, so PGOPTIONS=-c default_transaction_read_only=on is silently
+#   dropped (the first run proved it: the session reported "off"). Instead:
+#     * pg_dump runs with --serializable-deferrable, i.e. its whole dump is one
+#       SERIALIZABLE, READ ONLY, DEFERRABLE transaction (pg_dump never issues
+#       writes, and the server would reject any inside that transaction);
+#     * a pre-flight psql session issues SET default_transaction_read_only=on
+#       itself, confirms it took effect, and proves a write is refused.
 # - Encrypted with gpg (AES256, symmetric) using BACKUP_PASSPHRASE before it
 #   leaves the runner; only ciphertext is uploaded (artifact, 90-day retention).
 # - Verified: the decrypted temp copy must be non-empty and pg_restore -l must
@@ -52,7 +58,6 @@ jobs:
         env:
           DB_URL: ${{ secrets.PROD_DB_URL_BACKUP }}
           BACKUP_PASSPHRASE: ${{ secrets.BACKUP_PASSPHRASE }}
-          PGOPTIONS: "-c default_transaction_read_only=on"
           PGCONNECT_TIMEOUT: "20"
         run: |
           set -euo pipefail
@@ -65,11 +70,20 @@ jobs:
           cleanup() { rm -rf "$WORK"; }
           trap cleanup EXIT
 
-          # Prove the session is read-only before dumping.
-          ro="$("$BIN/psql" "$DB_URL" -Atc "show default_transaction_read_only")"
-          [ "$ro" = "on" ] || { echo "::error::session is not read-only ($ro)"; exit 1; }
+          # Pre-flight: in-session read-only must take effect through the pooler
+          # and a write must be refused.
+          ro="$("$BIN/psql" "$DB_URL" -X -At -v ON_ERROR_STOP=1 \
+            -c "SET default_transaction_read_only = on" -c "SHOW default_transaction_read_only" | tail -n 1)"
+          [ "$ro" = "on" ] || { echo "::error::could not make the session read-only ($ro)"; exit 1; }
+          if "$BIN/psql" "$DB_URL" -X -At -v ON_ERROR_STOP=1 \
+              -c "SET default_transaction_read_only = on" \
+              -c "CREATE TEMP TABLE backup_ro_probe (i int)" >/dev/null 2>"$WORK/probe.err"; then
+            echo "::error::write was NOT refused in a read-only session"; exit 1
+          fi
+          grep -q "read-only transaction" "$WORK/probe.err" || { echo "::error::unexpected probe error"; cat "$WORK/probe.err"; exit 1; }
 
-          "$BIN/pg_dump" "$DB_URL" --format=custom --no-owner --no-privileges \
+          # The dump itself: one SERIALIZABLE, READ ONLY, DEFERRABLE transaction.
+          "$BIN/pg_dump" "$DB_URL" --serializable-deferrable --format=custom --no-owner --no-privileges \
             --schema=public --schema=auth --schema=storage \
             --file "$WORK/db.dump"
 
@@ -84,8 +98,9 @@ jobs:
           size="$(stat -c %s "$WORK/verify.dump")"
           [ "$size" -gt 0 ] || { echo "::error::decrypted dump is empty"; exit 1; }
           "$BIN/pg_restore" -l "$WORK/verify.dump" > "$WORK/toc.txt"
-          tables="$(grep -cE '^[0-9]+; [0-9]+ [0-9]+ TABLE ' "$WORK/toc.txt" || true)"
-          data="$(grep -cE '^[0-9]+; [0-9]+ [0-9]+ TABLE DATA ' "$WORK/toc.txt" || true)"
+          # TOC lines: "<id>; <oid> <oid> TABLE <schema> <name> ..." vs "... TABLE DATA ...".
+          tables="$(awk '$4 == "TABLE" && $5 != "DATA"' "$WORK/toc.txt" | wc -l)"
+          data="$(awk '$4 == "TABLE" && $5 == "DATA"' "$WORK/toc.txt" | wc -l)"
           rm -f "$WORK/verify.dump"
           [ "$tables" -gt 0 ] || { echo "::error::no tables in dump"; exit 1; }
           enc_size="$(stat -c %s "$OUT/sherivs-prod-$STAMP.dump.gpg")"
