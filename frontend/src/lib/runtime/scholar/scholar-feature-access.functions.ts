@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — feature access + generated-experience server functions.
+ * Sherivs Scholar — feature access + generated-experience server functions.
  *
  * APIs are APIs (Constitution §27): authenticate, resolve the tenant, authorize
  * through the canonical gates, validate input against platform vocabulary,

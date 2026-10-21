@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-080 phase-46 twin-civilization ADVERSARIAL VERIFICATION
+ * Sherivs — H3-080 phase-46 twin-civilization ADVERSARIAL VERIFICATION
  * (mission G-080, Squad G verifier role). Read-only adversarial suite
  * against the completed contract module
  * `frontend/src/lib/twin-civilization/contracts.ts` (landed by G-066).

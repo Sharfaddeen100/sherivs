@@ -1,5 +1,5 @@
 /**
- * CoreGrid — usage-ledger tests (V5.3 Part 49: attribution completeness,
+ * Sherivs — usage-ledger tests (V5.3 Part 49: attribution completeness,
  * config-driven estimation, aggregation, budget denial as discriminated union).
  */
 import { describe, expect, it } from "vitest";

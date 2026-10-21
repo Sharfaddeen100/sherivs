@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — persistence, marketplace and experience-memory laws
+ * Sherivs Scholar — persistence, marketplace and experience-memory laws
  * (WAVE-R37 + R38).
  *
  * R37: assignments and grants are tenant policy data that the feature gate

@@ -1,8 +1,8 @@
 /**
- * Official Supabase DB-type generator for the CoreGrid contracts package.
+ * Official Supabase DB-type generator for the Sherivs contracts package.
  *
  * Single source of truth: `packages/contracts/src/database.ts` (consumed by the
- * web frontend and the Expo mobile app via `@coregrid/contracts`). This script
+ * web frontend and the Expo mobile app via `@sherivs/contracts`). This script
  * is the ONLY sanctioned way to regenerate those types.
  *
  * Legacy note (R-wave follow-up): the pre-R-wave output path

@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-048 audit query-surface contract tests (Squad F, F-048).
+ * Sherivs — H3-048 audit query-surface contract tests (Squad F, F-048).
  * Proves the audit READ contract is tenant-bound, time-bounded,
  * actor-scoped, structurally refuses unbounded queries and cross-tenant
  * filters, returns deep-frozen read-only views, and never binds a store

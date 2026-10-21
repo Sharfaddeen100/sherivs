@@ -1,5 +1,5 @@
 /**
- * CoreGrid — per-event security contract suite (V1CAP-044 / J-022 /
+ * Sherivs — per-event security contract suite (V1CAP-044 / J-022 /
  * MISSION-R-81).
  *
  * Proves, at unit level, that:

@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-056 phase-36 memory & knowledge contract tests (mission G-056).
+ * Sherivs — H3-056 phase-36 memory & knowledge contract tests (mission G-056).
  *
  * Proves, against the pure contract in
  * `frontend/src/lib/memory-knowledge/contracts.ts`:

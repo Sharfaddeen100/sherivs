@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Phase 05 Core Application Runtime unit tests.
+ * Sherivs Scholar — Phase 05 Core Application Runtime unit tests.
  *
  * Validates:
  * - Execution context validation (Sections DA, DB, DD).

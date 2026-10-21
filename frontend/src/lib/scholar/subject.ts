@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — subject model (Phase-04 §19, upgrade target).
+ * Sherivs Scholar — subject model (Phase-04 §19, upgrade target).
  *
  * Subjects are not hard-coded. Each subject may carry identity, code,
  * description, curriculum relationship, department, level applicability,

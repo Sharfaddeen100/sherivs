@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — assignment model + lifecycle (Phase-04 §47–48).
+ * Sherivs Scholar — assignment model + lifecycle (Phase-04 §47–48).
  *
  * Assignments support individual, group, practical, project, research and
  * field work forms (§47) through one definition shape, and follow an explicit

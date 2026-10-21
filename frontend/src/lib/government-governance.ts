@@ -1,4 +1,4 @@
-// ─── CoreGrid Phase 20 — Government Education Cloud ──────────────────
+// ─── Sherivs Phase 20 — Government Education Cloud ──────────────────
 // government-governance.ts — Compliance, security, audit, deployment,
 //                            AI governance, SLOs, acceptance criteria
 // ──────────────────────────────────────────────────────────────────────

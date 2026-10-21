@@ -1,5 +1,5 @@
 /**
- * CoreGrid — the financial journal (Phase 13, domain-neutral).
+ * Sherivs — the financial journal (Phase 13, domain-neutral).
  *
  * The blueprint's final principle: money is state that requires proof, not merely
  * data in a database. This module is that proof layer. It keeps three things that

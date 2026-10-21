@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Academic Learning Intelligence Mastery Engine
+ * Sherivs — Academic Learning Intelligence Mastery Engine
  * (Phase 11, Sections W, X, Y).
  *
  * Implements `architecture/phase-11-academic-intelligence.md`:

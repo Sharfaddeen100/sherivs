@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-014 (J-020) Event Kernel Semantics Engineer.
+ * Sherivs — H3-014 (J-020) Event Kernel Semantics Engineer.
  *
  * Semantics proofs for the event kernel (cg_event consumption) against
  * `frontend/src/lib/kernel/event-semantics.ts` and its substrate

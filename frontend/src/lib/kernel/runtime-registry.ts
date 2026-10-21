@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 33 Universal Kernel: domain-runtime registry lifecycle.
+ * Sherivs — Phase 33 Universal Kernel: domain-runtime registry lifecycle.
  *
  * Pure logic over `cg_domain_runtime` rows and the runtime-manifest status
  * lifecycle (`kernel/domain-manifest.ts`). A server function validates a

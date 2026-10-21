@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Academic Learning Intelligence: assessment intelligence.
+ * Sherivs — Academic Learning Intelligence: assessment intelligence.
  *
  * The blueprint (§R–§V) asks for more than storing marks: an assessment declares what it is
  * meant to measure, a blueprint proves it measures it, and a question carries its competency,

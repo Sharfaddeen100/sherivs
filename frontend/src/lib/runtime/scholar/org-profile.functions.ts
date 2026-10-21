@@ -1,5 +1,5 @@
 /**
- * CoreGrid — organization-profile server functions (org-admin scope).
+ * Sherivs — organization-profile server functions (org-admin scope).
  *
  * Reads and writes a tenant's profile through the domain-neutral org-profile
  * RPCs (cg_org_profile substrate). The tenant boundary is resolved server-side

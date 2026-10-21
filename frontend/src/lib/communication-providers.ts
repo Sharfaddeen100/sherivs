@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Communication provider adapter registry (Phase 10).
+ * Sherivs — Communication provider adapter registry (Phase 10).
  *
  * The platform is provider-independent BY CONSTRUCTION: every external
  * communication provider sits behind an adapter, and those adapters are described

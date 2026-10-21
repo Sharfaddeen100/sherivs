@@ -1,5 +1,5 @@
 /**
- * CoreGrid — M-R-121 T2: §27 per-function invariant suites (Constitution §27).
+ * Sherivs — M-R-121 T2: §27 per-function invariant suites (Constitution §27).
  *
  * Part 1 — the environment-gated family (demo-provision): a public, fixture
  * provisioning function whose entire §27 posture rests on an explicit

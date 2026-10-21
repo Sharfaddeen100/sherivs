@@ -1,5 +1,5 @@
 /**
- * CoreGrid — MISSION H2-26: legacy durable payment-table reconciliation
+ * Sherivs — MISSION H2-26: legacy durable payment-table reconciliation
  * contract tests (J-044, COND-009, ADR-005 tombstone discipline).
  *
  * Credential-free and pure (BLK-4): exercises the classification classes

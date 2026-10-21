@@ -1,5 +1,5 @@
 /**
- * CoreGrid Institutional Onboarding, Administration & Workforce Identity Platform —
+ * Sherivs Institutional Onboarding, Administration & Workforce Identity Platform —
  * Attendance identity orchestration domain.
  *
  * Implements `architecture/phase-25-institutional-onboarding-administration-workforce-identity-platform.md`:
@@ -463,7 +463,7 @@ export function assessAttendanceRisk(input: {
 
 /* ─────────────────────────────────────────────────────────────
  * Admin biometric controls (Section CD)
- * Subject to CoreGrid platform and legal requirements.
+ * Subject to Sherivs platform and legal requirements.
  * ────────────────────────────────────────────────────────────*/
 
 export interface BiometricControlPolicy {

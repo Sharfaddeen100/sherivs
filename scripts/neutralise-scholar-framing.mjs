@@ -1,15 +1,15 @@
 #!/usr/bin/env node
 /**
- * CoreGrid — kernel framing law: only a runtime layer may name a runtime.
+ * Sherivs — kernel framing law: only a runtime layer may name a runtime.
  *
- * CoreGrid is the platform. Scholar is runtime-001: an application built ON the
+ * Sherivs is the platform. Scholar is runtime-001: an application built ON the
  * kernel, never the owner of it (owner decision, 2026-09-16). A kernel or
- * capability module that introduces itself as "CoreGrid Scholar — …" claims a
+ * capability module that introduces itself as "Sherivs Scholar — …" claims a
  * scope it does not have, and that framing quietly teaches every later phase
  * that the platform *is* one application.
  *
  * The law, machine-enforced by `tests/unit/platform-neutrality.test.ts`:
- *   inside frontend/src and scripts/, the phrase "CoreGrid Scholar" may appear
+ *   inside frontend/src and scripts/, the phrase "Sherivs Scholar" may appear
  *   only under the runtime layer —
  *     lib/scholar/**  ·  lib/scholar-*.ts  ·  lib/runtime/scholar*.ts
  *     routes/_authenticated/scholar/**  ·  a script verifying runtime-001's config

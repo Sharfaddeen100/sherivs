@@ -1,5 +1,5 @@
 /**
- * CoreGrid — SLO/SLI set contract tests (V1CAP-077, MISSION-R-102 T2).
+ * Sherivs — SLO/SLI set contract tests (V1CAP-077, MISSION-R-102 T2).
  * Catalogue shape, pure evaluation (met/violated boundaries, insufficient
  * data, foreign/invalid sample accounting), and error-budget burn arithmetic.
  */

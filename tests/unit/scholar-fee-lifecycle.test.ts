@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — fee lifecycle adapter tests (Phase 13 consumption).
+ * Sherivs Scholar — fee lifecycle adapter tests (Phase 13 consumption).
  */
 import { describe, expect, it } from "vitest";
 import {

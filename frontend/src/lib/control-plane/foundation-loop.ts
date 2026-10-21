@@ -10,15 +10,15 @@ import type {
   FoundationEvidenceRow,
   FoundationExecutionRow,
   FoundationVerificationRow,
-} from "@coregrid/contracts";
-// Row contracts are declared ONCE in @coregrid/contracts and re-exported here
+} from "@sherivs/contracts";
+// Row contracts are declared ONCE in @sherivs/contracts and re-exported here
 // (§23) — the mobile app consumes the same declarations, so the persisted row
 // shapes cannot drift between web and mobile.
 export type {
   FoundationEvidenceRow,
   FoundationExecutionRow,
   FoundationVerificationRow,
-} from "@coregrid/contracts";
+} from "@sherivs/contracts";
 import {
   admitExecution,
   decideVerification,

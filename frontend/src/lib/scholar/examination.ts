@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — examination engine (Phase-04 §49).
+ * Sherivs Scholar — examination engine (Phase-04 §49).
  *
  * Internal examinations, continuous assessment, practical examinations, oral
  * examinations, external examination events and institution-defined

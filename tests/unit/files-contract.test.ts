@@ -1,5 +1,5 @@
 /**
- * CoreGrid — file-contract tests (fail-closed validation, hostile filenames).
+ * Sherivs — file-contract tests (fail-closed validation, hostile filenames).
  */
 import { describe, expect, it } from "vitest";
 import {

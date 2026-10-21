@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Experience engine: catalog (data).
+ * Sherivs Scholar — Experience engine: catalog (data).
  *
  * Public digital presence and internal application are GENERATED from an
  * organization's reality. This module is the data behind that generation:

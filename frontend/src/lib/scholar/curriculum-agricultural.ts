@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — agricultural education (Phase-04 §14).
+ * Sherivs Scholar — agricultural education (Phase-04 §14).
  *
  * Crop production, livestock, fisheries, agricultural science, farm
  * practicals, agricultural projects, field work, farm facilities and

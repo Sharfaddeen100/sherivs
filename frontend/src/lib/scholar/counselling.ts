@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — counselling (Phase-04 §54).
+ * Sherivs Scholar — counselling (Phase-04 §54).
  *
  * Counselling models counsellors, appointments, cases, referrals and
  * interventions. §54 requires STRICT ACCESS CONTROLS for sensitive counselling

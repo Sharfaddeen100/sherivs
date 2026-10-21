@@ -1,4 +1,4 @@
-// ─── CoreGrid Phase 23 — Web Platform ───────────────────────────────
+// ─── Sherivs Phase 23 — Web Platform ───────────────────────────────
 // web-storage.ts — Browser storage, IndexedDB, service worker, PWA,
 //                  offline web, sync, conflict management, files
 // ──────────────────────────────────────────────────────────────────────

@@ -1,5 +1,5 @@
 /**
- * CoreGrid Developer Platform — API platform and schema domain.
+ * Sherivs Developer Platform — API platform and schema domain.
  *
  * Implements `architecture/phase-28-developer-platform.md`:
  * - API catalog (22): discoverable API catalog.

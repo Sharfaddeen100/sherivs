@@ -1,5 +1,5 @@
 /**
- * CoreGrid — capability-overlap matching depth for delegation contracts
+ * Sherivs — capability-overlap matching depth for delegation contracts
  * (H3 wave Squad B, mission B-017 / J-028).
  *
  * WHAT: the matching depth that sits between the PERSISTENT capability

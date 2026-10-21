@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * CoreGrid — H3 wave, team H3-043 (Payment Rail Drill Engineer), mission
+ * Sherivs — H3 wave, team H3-043 (Payment Rail Drill Engineer), mission
  * E-043 (Squad E, BLK-4 launch-gate drill, GOV-P63).
  *
  * Credential-gated Paystack TEST-MODE payment-rail drill round. The drill
@@ -68,7 +68,7 @@
  * - the drill must never be executed outside a coordinator-serialized window
  *   (docs/runbooks/payment-rail-drill.md §3) and never with live keys.
  *
- * Artifacts (directory from COREGRID_ARTIFACTS_DIR, default
+ * Artifacts (directory from SHERIVS_ARTIFACTS_DIR, default
  * /opt/cursor/artifacts — secret-free by construction):
  *   payments-drill-test-round.json / .log   (TEST-MODE round)
  *   payments-drill-rehearsal.json  / .log   (offline rehearsal)
@@ -86,7 +86,7 @@ import { createJiti } from "jiti";
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
 const DEFAULT_ARTIFACTS_DIR = "/opt/cursor/artifacts";
-const ARTIFACTS_DIR = process.env.COREGRID_ARTIFACTS_DIR ?? DEFAULT_ARTIFACTS_DIR;
+const ARTIFACTS_DIR = (process.env.SHERIVS_ARTIFACTS_DIR ?? process.env.COREGRID_ARTIFACTS_DIR) ?? DEFAULT_ARTIFACTS_DIR;
 const CREDENTIAL_ENV_NAME = "PAYSTACK_SECRET_KEY";
 const BASE_URL_ENV_NAME = "PAYSTACK_BASE_URL";
 

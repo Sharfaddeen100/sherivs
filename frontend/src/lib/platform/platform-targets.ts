@@ -1,5 +1,5 @@
 /**
- * CoreGrid — platform & browser target registry (Phases 22/23 platform code).
+ * Sherivs — platform & browser target registry (Phases 22/23 platform code).
  *
  * Code, per platform target and per browser, for the delivery surfaces the
  * phase documents list: iOS, Android, Web, PWA, native desktop (Windows,

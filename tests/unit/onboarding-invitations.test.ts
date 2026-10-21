@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 25 wave-2 tests: domain-neutral invitations/activation
+ * Sherivs — Phase 25 wave-2 tests: domain-neutral invitations/activation
  * + onboarding progress/resume.
  */
 import { describe, expect, it } from "vitest";

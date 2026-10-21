@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — safeguarding (Phase-04 §56).
+ * Sherivs Scholar — safeguarding (Phase-04 §56).
  *
  * Safeguarding supports CONTROLLED cases, incident reports, escalation,
  * responsible officers and restricted evidence. Everything here is

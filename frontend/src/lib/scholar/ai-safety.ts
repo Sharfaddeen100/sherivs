@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — AI safety boundary (Phase-04 §117, 146, O3).
+ * Sherivs Scholar — AI safety boundary (Phase-04 §117, 146, O3).
  *
  * AI cannot invent student records, invent school policies, invent
  * permissions, alter authoritative grades without authorization or override

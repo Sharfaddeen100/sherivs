@@ -1,5 +1,5 @@
 /**
- * CoreGrid — time-source authority suite (V1CAP-045 / J-023 / MISSION-R-15).
+ * Sherivs — time-source authority suite (V1CAP-045 / J-023 / MISSION-R-15).
  *
  * Proves, at unit level, that:
  *  1. the authority is the single clock contract: time is injected

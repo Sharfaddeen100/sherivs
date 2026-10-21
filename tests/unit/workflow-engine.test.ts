@@ -1,5 +1,5 @@
 /**
- * CoreGrid Workflow Engine tests (V5.3 Part 17, MISSION-V1-008).
+ * Sherivs Workflow Engine tests (V5.3 Part 17, MISSION-V1-008).
  *
  * Validates the pure in-memory evaluator in frontend/src/lib/workflow/
  * workflow-engine.ts. Security negatives are mandatory (Constitution §31):

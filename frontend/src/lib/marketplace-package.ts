@@ -1,5 +1,5 @@
 /**
- * CoreGrid Marketplace Platform — product packaging and security domain.
+ * Sherivs Marketplace Platform — product packaging and security domain.
  *
  * Implements `architecture/phase-27-marketplace.md`:
  * - Product packaging (26-30): standardized package metadata; package manifest
@@ -15,7 +15,7 @@
  *   security (provenance and integrity), package signing, signature verification
  *   at installation, security certification for high-risk products.
  * - Compatibility engine (162): product compatible with tenant configuration,
- *   CoreGrid version, APIs, installed products, policies, devices.
+ *   Sherivs version, APIs, installed products, policies, devices.
  * - Conflict detection (163): incompatible versions, permission conflicts, API
  *   conflicts, dependency conflicts, policy conflicts before activation.
  * - Installation simulation (164) dry run: preview installation effects before
@@ -190,9 +190,9 @@ export function hasExcessiveDataAccess(
  * ────────────────────────────────────────────────────────────*/
 
 export interface CompatibilityInput {
-  /** Minimum required CoreGrid version. */
-  requiredCoreGridVersion: string;
-  currentCoreGridVersion: string;
+  /** Minimum required Sherivs version. */
+  requiredSherivsVersion: string;
+  currentSherivsVersion: string;
   /** Required APIs. */
   requiredApis: string[];
   availableApis: string[];
@@ -213,14 +213,14 @@ export interface CompatibilityResult {
 
 /**
  * Compatibility (Section 162): determine whether a product is compatible with
- * tenant configuration, CoreGrid version, APIs, installed products, policies,
+ * tenant configuration, Sherivs version, APIs, installed products, policies,
  * and devices.
  */
 export function evaluateCompatibility(input: CompatibilityInput): CompatibilityResult {
   const reasons: string[] = [];
-  if (!isCoreGridVersionCompatible(input.requiredCoreGridVersion, input.currentCoreGridVersion)) {
+  if (!isSherivsVersionCompatible(input.requiredSherivsVersion, input.currentSherivsVersion)) {
     reasons.push(
-      `Requires Sherivs >= ${input.requiredCoreGridVersion}, found ${input.currentCoreGridVersion}`,
+      `Requires Sherivs >= ${input.requiredSherivsVersion}, found ${input.currentSherivsVersion}`,
     );
   }
   for (const api of input.requiredApis) {
@@ -236,7 +236,7 @@ export function evaluateCompatibility(input: CompatibilityInput): CompatibilityR
   return { compatible: reasons.length === 0, reasons };
 }
 
-function isCoreGridVersionCompatible(required: string, current: string): boolean {
+function isSherivsVersionCompatible(required: string, current: string): boolean {
   const r = required.split(".").map(Number);
   const c = current.split(".").map(Number);
   for (let i = 0; i < r.length; i++) {

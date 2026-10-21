@@ -1,7 +1,7 @@
 /**
- * CoreGrid Mobile — identity (worker/agent) read contracts.
+ * Sherivs Mobile — identity (worker/agent) read contracts.
  *
- * Row shapes are the SINGLE-SOURCE contracts from `@coregrid/contracts`
+ * Row shapes are the SINGLE-SOURCE contracts from `@sherivs/contracts`
  * (formerly mirrored by hand from the web's identity-registry server
  * functions — that mirror class is retired, Constitution §23). The list
  * response is validated fail-closed: tenant scoping is asserted against the
@@ -9,8 +9,8 @@
  * than rendered.
  */
 import { z } from "zod";
-import type { IdentitySummary as SharedIdentitySummary } from "@coregrid/contracts";
-import { IDENTITY_KINDS, IDENTITY_STATES } from "@coregrid/contracts";
+import type { IdentitySummary as SharedIdentitySummary } from "@sherivs/contracts";
+import { IDENTITY_KINDS, IDENTITY_STATES } from "@sherivs/contracts";
 
 export const identitySummarySchema = z.object({
   id: z.string().uuid(),

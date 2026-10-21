@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Organization onboarding & reality discovery finalization
+ * Sherivs — Organization onboarding & reality discovery finalization
  * (MISSION-R-43 / V1CAP-090/091, wave 3; tenant-isolation context V1CAP-012).
  *
  * The governed path from an EMPTY tenant to a DISCOVERED OPERATIONAL REALITY,

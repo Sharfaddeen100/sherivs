@@ -1,5 +1,5 @@
 /**
- * CoreGrid Mobile — authentication client (mirrors the web app's auth
+ * Sherivs Mobile — authentication client (mirrors the web app's auth
  * semantics, §23 / Phase 22 §P).
  *
  * - sign-in: Supabase `signInWithPassword` over the shared project
@@ -14,41 +14,41 @@
  *   the caller (§26).
  */
 import { userProfileSchema, organizationSchema, superAdminProfileSchema, type Organization, type ResolvedActor } from "./contracts/profile-contracts";
-import type { CoreGridSupabaseClient } from "./client";
+import type { SherivsSupabaseClient } from "./client";
 import { fromSupabaseError } from "./errors";
 
-export type CoreGridSession = NonNullable<Awaited<ReturnType<CoreGridSupabaseClient["auth"]["getSession"]>>["data"]["session"]>;
+export type SherivsSession = NonNullable<Awaited<ReturnType<SherivsSupabaseClient["auth"]["getSession"]>>["data"]["session"]>;
 
 export async function signInWithPassword(
-  client: CoreGridSupabaseClient,
+  client: SherivsSupabaseClient,
   email: string,
   password: string,
-): Promise<CoreGridSession> {
+): Promise<SherivsSession> {
   const { data, error } = await client.auth.signInWithPassword({ email, password });
   if (error) throw fromSupabaseError(error);
   if (!data.session) throw fromSupabaseError({ message: "sign-in returned no session" });
   return data.session;
 }
 
-export async function signOut(client: CoreGridSupabaseClient): Promise<void> {
+export async function signOut(client: SherivsSupabaseClient): Promise<void> {
   const { error } = await client.auth.signOut();
   if (error) throw fromSupabaseError(error);
 }
 
-export async function getSession(client: CoreGridSupabaseClient): Promise<CoreGridSession | null> {
+export async function getSession(client: SherivsSupabaseClient): Promise<SherivsSession | null> {
   const { data, error } = await client.auth.getSession();
   if (error) throw fromSupabaseError(error);
   return data.session;
 }
 
-export async function getAccessToken(client: CoreGridSupabaseClient): Promise<string | null> {
+export async function getAccessToken(client: SherivsSupabaseClient): Promise<string | null> {
   const { data, error } = await client.auth.getSession();
   if (error) throw fromSupabaseError(error);
   return data.session?.access_token ?? null;
 }
 
 export async function resolveActor(
-  client: CoreGridSupabaseClient,
+  client: SherivsSupabaseClient,
   userId: string,
 ): Promise<ResolvedActor> {
   const { data: profileRow, error: profileError } = await client
@@ -91,7 +91,7 @@ export async function resolveActor(
  * RLS-governed queries — no client-side tenant invention (§26 / Phase 22 §R).
  */
 export async function listSelectableOrganizations(
-  client: CoreGridSupabaseClient,
+  client: SherivsSupabaseClient,
   actor: ResolvedActor,
 ): Promise<readonly Organization[]> {
   if (actor.kind === "user") {

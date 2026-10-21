@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Hermes executive orchestrator, pure contract
+ * Sherivs — Hermes executive orchestrator, pure contract
  * (MISSION V1-002, team HERMES).
  *
  * Hermes is the GOVERNED coordinator of the V1 mission substrate — the

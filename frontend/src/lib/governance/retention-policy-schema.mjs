@@ -1,5 +1,5 @@
 /**
- * CoreGrid — V1CAP-066 retention policy schedule: SINGLE-SOURCE contract schema
+ * Sherivs — V1CAP-066 retention policy schedule: SINGLE-SOURCE contract schema
  * (MH-08; ADR-005_RETENTION_VS_IMMUTABLE_AUDIT.md, "Retention schedule requirement").
  *
  * This module is the ONE canonical home of the schedule's schema and the ADR-005

@@ -1,5 +1,5 @@
 /**
- * CoreGrid — V1CAP-066 retention policy schedule typed contract
+ * Sherivs — V1CAP-066 retention policy schedule typed contract
  * (ADR-005_RETENTION_VS_IMMUTABLE_AUDIT.md, "Retention schedule requirement").
  *
  * MH-08: the canonical schema and the ADR-005 invariants live EXACTLY ONCE, in

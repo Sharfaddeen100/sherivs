@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Cluster B tests (Phase-04 §26–29, 52, 110–111).
+ * Sherivs Scholar — Cluster B tests (Phase-04 §26–29, 52, 110–111).
  * Student/staff context over P02 identity, workload, student groups, guardians.
  */
 import { describe, expect, it } from "vitest";

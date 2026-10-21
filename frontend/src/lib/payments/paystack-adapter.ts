@@ -1,9 +1,9 @@
 /**
- * CoreGrid — Paystack payment adapter (V5.3 Part 21).
+ * Sherivs — Paystack payment adapter (V5.3 Part 21).
  *
  * Implements the `PaymentAdapter` contract for Paystack. Paystack is an
  * implementation dependency only: wire formats are translated into
- * CoreGrid vocabulary at the boundary and never leak inward.
+ * Sherivs vocabulary at the boundary and never leak inward.
  *
  * Signature scheme (Paystack docs): HMAC-SHA512 of the RAW request body
  * with the secret key, hex-encoded, carried in `x-paystack-signature`.

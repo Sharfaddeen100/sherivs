@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * CoreGrid — phase completion auditor (the executable Phase Completion Gate).
+ * Sherivs — phase completion auditor (the executable Phase Completion Gate).
  *
  * PURPOSE
  * The Constitution defines the five-level maturity model and the Phase Completion

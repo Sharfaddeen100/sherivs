@@ -1,5 +1,5 @@
 /**
- * CoreGrid environment validation.
+ * Sherivs environment validation.
  * Pure helpers - no process.env reads, so unit-testable.
  */
 

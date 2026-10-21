@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-058 evolution-engine contract tests (mission G-058).
+ * Sherivs — H3-058 evolution-engine contract tests (mission G-058).
  * Phase-38 substrate surface: no-second-engine binding (ADR PLATFORM-004),
  * AGENTS §8 self-improvement law (improvement ≠ permission expansion), the
  * AGENTS §21 governed gate chain, proposer/approver independence, staged

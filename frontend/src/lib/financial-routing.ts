@@ -1,5 +1,5 @@
 /**
- * CoreGrid — payment routing and provider neutrality (Phase 13, domain-neutral).
+ * Sherivs — payment routing and provider neutrality (Phase 13, domain-neutral).
  *
  * FinOS never depends on one payment provider and never hard-codes one. A provider
  * is a profile that declares what it can do; routing is a decision over those

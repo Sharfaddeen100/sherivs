@@ -2,7 +2,7 @@
  * Phase 17 — Automation Engine contract (seeded authoring).
  *
  * Workflow orchestration above the runtime transport: triggers, conditions,
- * actions and governance, so events across CoreGrid produce governed work.
+ * actions and governance, so events across Sherivs produce governed work.
  */
 
 import { definePhaseContractFromSeed } from "./define-phase";

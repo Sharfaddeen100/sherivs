@@ -1,5 +1,5 @@
 /**
- * CoreGrid — audit READ query-surface contract (H3 wave Squad F, mission
+ * Sherivs — audit READ query-surface contract (H3 wave Squad F, mission
  * F-048).
  *
  * WHAT: the typed envelope that every audit READ request must satisfy before

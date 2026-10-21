@@ -24,7 +24,7 @@ function errorText(error: unknown): string | null {
 
 /**
  * The internal surface every person receives: workspaces, dashboards and (when
- * they staff the platform organization) CoreGrid departments. Everything is
+ * they staff the platform organization) Sherivs departments. Everything is
  * composed from the roles the SERVER resolved — this page never asserts a role,
  * a feature code or a tenant, and it states an empty result instead of filling it.
  */

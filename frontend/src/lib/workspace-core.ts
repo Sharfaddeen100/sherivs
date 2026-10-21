@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 06 Workspace Engine core domain model (platform interaction
+ * Sherivs — Phase 06 Workspace Engine core domain model (platform interaction
  * layer; domain runtimes consume it).
  *
  * Implements `architecture/phase-06-workspace-engine.md`:
@@ -136,7 +136,7 @@ export function isWorkspaceEntityInTenant(
  * ────────────────────────────────────────────────────────────*/
 
 /**
- * CoreGrid supports multiple workspace classes (Section G).
+ * Sherivs supports multiple workspace classes (Section G).
  * These are workspace types, not separate architectural engines (Section G).
  */
 export type WorkspaceType =
@@ -635,7 +635,7 @@ export type ProvisionDefaultWorkspaceResult =
   { ok: true; workspace: Workspace; created: boolean } | { ok: false; error: string };
 
 /**
- * CoreGrid may provision default workspaces based on institution type, user role,
+ * Sherivs may provision default workspaces based on institution type, user role,
  * tenant configuration, and enabled capabilities (Section GY).
  * Provisioning must be idempotent (Section HA).
  */

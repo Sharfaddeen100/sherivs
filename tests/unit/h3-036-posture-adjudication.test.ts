@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-036 posture-adjudication consistency tests (Squad D).
+ * Sherivs — H3-036 posture-adjudication consistency tests (Squad D).
  * Adjudicates the RLS posture of cg_event_security_denial,
  * cg_event_security_redaction and cg_event_route_queue as
  * zero-policy-by-design, and proves the decisions' internal consistency:

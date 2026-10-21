@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — streams (Phase-04 §24).
+ * Sherivs Scholar — streams (Phase-04 §24).
  *
  * Streams are configuration: science, arts, commercial, technical, vocational
  * and agricultural are the documented vocabulary of African secondary schools,

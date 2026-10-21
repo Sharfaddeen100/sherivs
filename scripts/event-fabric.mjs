@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * CoreGrid — event-fabric delivery pass (S3, one-shot worker).
+ * Sherivs — event-fabric delivery pass (S3, one-shot worker).
  *
  * Governed, observable one-pass delivery over the live `cg_event` outbox:
  *   1. summary of queue state;

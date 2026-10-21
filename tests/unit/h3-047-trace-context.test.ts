@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-047 trace-context propagation tests (Squad F, mission F-047).
+ * Sherivs — H3-047 trace-context propagation tests (Squad F, mission F-047).
  *
  * Proves the trace propagation contract: cryptographic generation where
  * available; propagation across async boundaries ONLY via explicit parameter

@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H2-11 multi-tenant actor tenancy resolution tests (pure, offline).
+ * Sherivs — H2-11 multi-tenant actor tenancy resolution tests (pure, offline).
  *
  * Proves the V1 contract in frontend/src/lib/tenancy/tenant-resolution.ts:
  *   - no active-tenant declaration            -> deny

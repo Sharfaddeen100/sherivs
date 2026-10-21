@@ -1,7 +1,7 @@
 /**
- * CoreGrid — Communication Steward (Phase 10).
+ * Sherivs — Communication Steward (Phase 10).
  *
- * Every organization that joins the platform can subscribe to CoreGrid
+ * Every organization that joins the platform can subscribe to Sherivs
  * communication, and what it receives is not an inbox: it receives a **Steward** —
  * an autonomous communication operator that answers calls, places calls, replies on
  * WhatsApp, writes email, updates presence and status, publishes to social channels,

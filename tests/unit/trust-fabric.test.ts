@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Trust-fabric wiring suite (J-008 / V1CAP-022 / COND-007,
+ * Sherivs — Trust-fabric wiring suite (J-008 / V1CAP-022 / COND-007,
  * MISSION-R-83, ADR-002 Option A).
  *
  * Validates `frontend/src/lib/security/trust-fabric.ts` and its additive seam

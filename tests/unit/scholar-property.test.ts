@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — property tests (Phase-04 §170, O6).
+ * Sherivs Scholar — property tests (Phase-04 §170, O6).
  *
  * Mandated invariants, exercised across representative samples:
  * 1. An unauthorized user cannot access an educational entity.

@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3 wave, team H3-044 (Communication Probe Engineer), mission
+ * Sherivs — H3 wave, team H3-044 (Communication Probe Engineer), mission
  * E-044 (Squad E — Launch-gate drills, BLK-5). OFFLINE gate tests for
  * scripts/verify-communication-live.drill.mjs — no database, no network
  * service is ever contacted by these tests, and the live handshake path is
@@ -51,8 +51,8 @@ import {
 const ROOT = fileURLToPath(new URL("../..", import.meta.url));
 const SCRIPT = join(ROOT, "scripts", "verify-communication-live.drill.mjs");
 
-const CREDENTIAL_NAME = "COREGRID_COMMUNICATION_PROVIDER_CREDENTIAL";
-const SANDBOX_NAME = "COREGRID_COMMUNICATION_SANDBOX_TARGET";
+const CREDENTIAL_NAME = "SHERIVS_COMMUNICATION_PROVIDER_CREDENTIAL";
+const SANDBOX_NAME = "SHERIVS_COMMUNICATION_SANDBOX_TARGET";
 const SENTINEL_CREDENTIAL = "cg-h3-044-sentinel-credential-value";
 
 function offlineEnv(extra: Record<string, string> = {}): NodeJS.ProcessEnv {

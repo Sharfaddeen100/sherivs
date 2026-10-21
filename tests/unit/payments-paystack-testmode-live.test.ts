@@ -1,5 +1,5 @@
 /**
- * CoreGrid — MISSION-R-32 LIVE Paystack TEST-MODE verification (credential-gated).
+ * Sherivs — MISSION-R-32 LIVE Paystack TEST-MODE verification (credential-gated).
  *
  * Executes one real initialize + verify round against api.paystack.co with
  * the injected sk_test key, proving: test-key-class gate passes for a real

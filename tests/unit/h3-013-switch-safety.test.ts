@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3 B-013 / J-012 tests: runtime guard for tenant/reality
+ * Sherivs — H3 B-013 / J-012 tests: runtime guard for tenant/reality
  * switches (`frontend/src/lib/context/switch-safety-runtime.ts`).
  *
  * The runtime composes the pure switch-safety contract (`./switch-safety`,

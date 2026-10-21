@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Jarvis V1 escalation ladder (V5.3 Part 15).
+ * Sherivs — Jarvis V1 escalation ladder (V5.3 Part 15).
  *
  * A pure escalation ladder for incidents Jarvis may raise as the platform
  * observability interface. Severity maps deterministically onto a governance

@@ -1,5 +1,5 @@
 /**
- * CoreGrid Phase 02 — Identity Platform unit tests.
+ * Sherivs Phase 02 — Identity Platform unit tests.
  *
  * Covers:
  * - Identity lifecycle state machine (G5)

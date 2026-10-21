@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Cluster I tests (Phase-04 §45–51, 133).
+ * Sherivs Scholar — Cluster I tests (Phase-04 §45–51, 133).
  * Lesson resources, assignments, examinations, exam security, practical exams,
  * event-contract idempotency.
  */

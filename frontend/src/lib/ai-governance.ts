@@ -1,5 +1,5 @@
 /**
- * CoreGrid AI Intelligence Layer — AI governance domain.
+ * Sherivs AI Intelligence Layer — AI governance domain.
  *
  * Implements `architecture/phase-26-ai-intelligence-layer.md`:
  * - High-risk AI classification (93): low/medium/high/critical. High-risk action
@@ -535,7 +535,7 @@ export interface AiKillSwitch {
 
 /**
  * AI kill switch (Section 181): critical AI capabilities may be disabled
- * independently without shutting down CoreGrid (capability isolation, 182).
+ * independently without shutting down Sherivs (capability isolation, 182).
  */
 export function disableAiCapability(
   sw: AiKillSwitch,

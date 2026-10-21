@@ -1,5 +1,5 @@
 /**
- * CoreGrid Mobile V1-010 — offline/reconnection controller tests.
+ * Sherivs Mobile V1-010 — offline/reconnection controller tests.
  *
  * Validates the pure connectivity state machine (Phase 22 §M/§N/§AF):
  * honest state reporting, exponential backoff with cap, manual retry,

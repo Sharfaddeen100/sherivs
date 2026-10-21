@@ -1,5 +1,5 @@
 /**
- * CoreGrid — data migration discipline (Phase 14, domain-neutral).
+ * Sherivs — data migration discipline (Phase 14, domain-neutral).
  *
  * A migration is the only place where stored reality changes shape, so it is the only
  * place where a mistake is permanent. This engine makes the discipline executable:

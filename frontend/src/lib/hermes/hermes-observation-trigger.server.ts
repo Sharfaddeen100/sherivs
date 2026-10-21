@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Hermes event-observation runtime trigger (server wiring)
+ * Sherivs — Hermes event-observation runtime trigger (server wiring)
  * (V1 wave follow-up, team T-E / HERMES-WIRE; completes R4's recorded
  * remaining work: "wire the runtime trigger").
  *

@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Controlled Automation Engine action domain model
+ * Sherivs — Controlled Automation Engine action domain model
  * (Phase 17, Sections Y, Z, AA, AB, BP, BQ, BR, BS, BT, BU, BV, BW, BX,
  * BY, BZ, CA, CB, CC, CD, CE, CF).
  *

@@ -1,5 +1,5 @@
 /**
- * CoreGrid — lease / concurrency control contract tests (J-031 / V1CAP-055).
+ * Sherivs — lease / concurrency control contract tests (J-031 / V1CAP-055).
  *
  * Validates: concurrent acquire serialization, bounded TTL, renewal,
  * fencing-token monotonicity (stale holder writes rejected), no-resurrection

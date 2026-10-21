@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H2-11 multi-tenant actor tenancy resolution (V1 contract).
+ * Sherivs — H2-11 multi-tenant actor tenancy resolution (V1 contract).
  *
  * Problem this solves (NEUTRAL_TENANT_PRIMITIVES.md §8 risk 4):
  *   `get_my_tenant_id()` answers "THE actor's tenant". A principal with

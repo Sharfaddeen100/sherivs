@@ -1,5 +1,5 @@
 /**
- * CoreGrid — reliability contract for mandatory idempotency keys on
+ * Sherivs — reliability contract for mandatory idempotency keys on
  * consequential commands (J-030; §36 payment precedent; §12 provenance).
  *
  * The payments replay guard (`payments/replay-guard.ts`) proves the pattern

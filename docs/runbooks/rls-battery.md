@@ -55,7 +55,7 @@ Live-battery env vars:
 | `SUPABASE_ACCESS_TOKEN` | yes (or in `.env.local`) | management API SQL channel; read from env then `.env.local` fallback (`:638–649`); missing → exit 2 (`:650–654`) |
 | `SUPABASE_PUBLISHABLE_KEY` / `SUPABASE_ANON_KEY` | optional | env anon key; validated structurally against the project ref, role `anon`, unexpired (`:603–609`); otherwise the project's own legacy anon key is fetched through the already-authorized management API — no new credentials (`:610–623`) |
 | `SUPABASE_SERVICE_ROLE_KEY` | optional | used ONLY for the §(e) opt-in contrast and the cross-tenant probe seed path (`:625–636`, `:980–983`) |
-| `COREGRID_BATTERY_ALLOW_SERVICE_ROLE=1` | opt-in | enables section (e) service-role contrast; "Service-role usage is explicit and logged, never default" (`:64–68`, `:1518–1545`) |
+| `SHERIVS_BATTERY_ALLOW_SERVICE_ROLE=1` | opt-in | enables section (e) service-role contrast; "Service-role usage is explicit and logged, never default" (`:64–68`, `:1518–1545`) |
 
 The key values are never printed; only provenance (source, claims, 10-char prefix) is
 logged (`:658–663`, `:1195`). Evidence is additionally scrubbed of token/JWT shapes

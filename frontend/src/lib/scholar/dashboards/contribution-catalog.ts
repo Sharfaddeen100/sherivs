@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — dashboard contribution catalog (WAVE-R34).
+ * Sherivs Scholar — dashboard contribution catalog (WAVE-R34).
  *
  * A dashboard is not a page someone designs: it is the set of CONTRIBUTIONS
  * whose feature code the actor has enabled and whose workspace the actor's roles

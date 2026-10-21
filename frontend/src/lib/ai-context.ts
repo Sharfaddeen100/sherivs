@@ -1,5 +1,5 @@
 /**
- * CoreGrid AI Intelligence Layer — AI context domain (prompts, retrieval,
+ * Sherivs AI Intelligence Layer — AI context domain (prompts, retrieval,
  * grounding, evidence, context management).
  *
  * Implements `architecture/phase-26-ai-intelligence-layer.md`:

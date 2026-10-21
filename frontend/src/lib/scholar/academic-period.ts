@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — academic periods (Phase-04 §30, §35 boundary).
+ * Sherivs Scholar — academic periods (Phase-04 §30, §35 boundary).
  *
  * Academic periods are CONFIGURABLE (never fixed): annual, semester, term,
  * trimester, quarter or a custom period, organised in nested ranges. The

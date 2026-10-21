@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Analytics & Decision Intelligence decision domain
+ * Sherivs — Analytics & Decision Intelligence decision domain
  * (Phase 18, Sections BB, BC, BD, BE, BF, BG, BH, BI, BJ, BK, BL, BM, BN,
  * BO, BP, BQ, BR, BS, BT, BU, BV, BW, BX, BY, BZ, EY, EZ, FA, FB, FC, FD,
  * FE, FF).

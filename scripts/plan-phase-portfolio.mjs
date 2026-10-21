@@ -1,5 +1,5 @@
 /**
- * CoreGrid — phase portfolio upgrade plan generator.
+ * Sherivs — phase portfolio upgrade plan generator.
  *
  * Reads the derived phase-completion status (architecture/phase-completion-status.md) and
  * writes the per-phase plan for the blueprint upgrade: what each phase has, and what it

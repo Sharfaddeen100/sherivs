@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — student welfare (Phase-04 §55).
+ * Sherivs Scholar — student welfare (Phase-04 §55).
  *
  * Welfare supports cases, referrals, support services, emergency contacts and
  * institutional interventions. Welfare data is sensitive; access is governed by

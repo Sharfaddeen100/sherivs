@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — AI operations adapter tests (Phase 26 consumption).
+ * Sherivs Scholar — AI operations adapter tests (Phase 26 consumption).
  */
 import { describe, expect, it } from "vitest";
 import {

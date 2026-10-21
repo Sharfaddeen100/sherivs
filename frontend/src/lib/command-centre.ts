@@ -1,5 +1,5 @@
 /**
- * CoreGrid — command centre operational projection (V1CAP-089 / J-048 /
+ * Sherivs — command centre operational projection (V1CAP-089 / J-048 /
  * MISSION-R-110), closing the completeness loop's Outcome -> Observation tail
  * for human operators (phase 19 is the sole registered owner of that node).
  *

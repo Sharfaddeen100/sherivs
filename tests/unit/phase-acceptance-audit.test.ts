@@ -1,5 +1,5 @@
 /**
- * CoreGrid — phase acceptance probe tests (wave AUDIT-P01).
+ * Sherivs — phase acceptance probe tests (wave AUDIT-P01).
  *
  * A pasted phase document states acceptance criteria; the probe resolves each one
  * against real artefacts and classifies it. These tests keep that probe honest:

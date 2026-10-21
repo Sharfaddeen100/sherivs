@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 06 workspace projection: engine (neutral) + Scholar adapter.
+ * Sherivs — Phase 06 workspace projection: engine (neutral) + Scholar adapter.
  *
  * The engine is tested with synthetic inputs only — it must work for any runtime,
  * which is what neutrality means in practice. The adapter is tested against the real

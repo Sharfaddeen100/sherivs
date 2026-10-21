@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * CoreGrid — H3 wave, team H3-041 (AI Live Drill Engineer), mission E-041
+ * Sherivs — H3 wave, team H3-041 (AI Live Drill Engineer), mission E-041
  * (Squad E — launch-gate drills, BLK-2, GOV-P63).
  *
  * Credential-gated governed end-to-end inference drill for the BLK-2 AI
@@ -59,7 +59,7 @@
  *                           embed credentials.
  *   AI_DRILL_MODEL          required. The model id for the drill invocation.
  *                           Missing or empty -> exit 2 (BLOCKED_NO_CONFIGURATION).
- *   COREGRID_ARTIFACTS_DIR  optional evidence directory (default
+ *   SHERIVS_ARTIFACTS_DIR  optional evidence directory (default
  *                           /opt/cursor/artifacts).
  *
  * Exit codes: 0 PASS / PLAN_OK · 1 DRILL_FINDING · 2 BLOCKED_NO_CREDENTIAL /
@@ -75,7 +75,7 @@ import { fileURLToPath } from "node:url";
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
 const DEFAULT_ARTIFACTS_DIR = "/opt/cursor/artifacts";
-const ARTIFACTS_DIR = process.env.COREGRID_ARTIFACTS_DIR ?? DEFAULT_ARTIFACTS_DIR;
+const ARTIFACTS_DIR = (process.env.SHERIVS_ARTIFACTS_DIR ?? process.env.COREGRID_ARTIFACTS_DIR) ?? DEFAULT_ARTIFACTS_DIR;
 const DEFAULT_GATEWAY_URL = "https://api.openai.com/v1";
 /** Hard bound for the single governed attempt (mirrors the gateway policy's 60s budget). */
 const DRILL_TIMEOUT_MS = 60_000;

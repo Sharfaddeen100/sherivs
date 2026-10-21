@@ -2,7 +2,7 @@
  * Phase 15 — Hardware Integration contract (seeded authoring).
  *
  * Devices and telemetry: registration, lifecycle, command dispatch and
- * telemetry intake, so physical reality reaches CoreGrid through governed
+ * telemetry intake, so physical reality reaches Sherivs through governed
  * adapters rather than bespoke integrations.
  */
 

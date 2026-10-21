@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Core Application Runtime observability.
+ * Sherivs — Core Application Runtime observability.
  *
  * Implements `architecture/phase-05-core-application-runtime.md`:
  * - Structured logs with correlation (Sections I–J, 35 AGENTS.md).

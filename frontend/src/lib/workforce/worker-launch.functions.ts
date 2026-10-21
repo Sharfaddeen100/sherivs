@@ -1,5 +1,5 @@
 /**
- * CoreGrid — worker mission launch surface (team WORKFORCE-SURFACE, R7;
+ * Sherivs — worker mission launch surface (team WORKFORCE-SURFACE, R7;
  * client/server split enforced by the import-protection build gate).
  *
  * The operational HTTP/UI entry point for launching a governed worker

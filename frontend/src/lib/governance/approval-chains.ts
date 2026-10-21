@@ -1,5 +1,5 @@
 /**
- * CoreGrid — human approval chains wired to high-risk actions (J-032,
+ * Sherivs — human approval chains wired to high-risk actions (J-032,
  * MISSION H2-20; Constitution §7, §12, §16, §21).
  *
  * This module closes the REQUIRE_APPROVAL gap in the completeness loop

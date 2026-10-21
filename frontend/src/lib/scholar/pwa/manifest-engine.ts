@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — PWA manifest generation (WAVE-R35).
+ * Sherivs Scholar — PWA manifest generation (WAVE-R35).
  *
  * The web app manifest is GENERATED from reality too: the app name and theme
  * come from the brand, and the shortcuts come from the sections the

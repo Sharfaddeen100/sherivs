@@ -1,5 +1,5 @@
 /**
- * CoreGrid — MISSION H2-04: batch-A/B substrate RLS policy layer.
+ * Sherivs — MISSION H2-04: batch-A/B substrate RLS policy layer.
  *
  * Pins the authored migration 20261002000015_coregrid_v1_substrate_policies.sql
  * (+ its genuine inverse rollback) and the declarative posture JSON consumed

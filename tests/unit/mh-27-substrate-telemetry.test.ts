@@ -1,5 +1,5 @@
 /**
- * CoreGrid — substrate telemetry collector tests (MISSION H2-27, §29).
+ * Sherivs — substrate telemetry collector tests (MISSION H2-27, §29).
  * Synthetic AdapterPolicyEvent streams over the collector: aggregation
  * correctness (per-provider/per-operation health), redaction by construction
  * (no payload content or secrets ever reach state or the emitters), degraded-

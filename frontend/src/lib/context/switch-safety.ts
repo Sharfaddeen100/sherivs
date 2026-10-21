@@ -1,5 +1,5 @@
 /**
- * CoreGrid — contract-level context-switch safety (MISSION-H2-22 / J-012, G-070).
+ * Sherivs — contract-level context-switch safety (MISSION-H2-22 / J-012, G-070).
  *
  * A switch between tenants/realities is a FIRST-CLASS operation on the
  * session's resolved context, not an ambient reassignment. This module owns

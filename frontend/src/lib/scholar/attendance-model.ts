@@ -1,7 +1,7 @@
 import { isValidIsoDate } from "./academic-period";
 
 /**
- * CoreGrid Scholar — attendance model (Phase-04 §38).
+ * Sherivs Scholar — attendance model (Phase-04 §38).
  *
  * Attendance covers students, staff, classes, events, practicals and boarding
  * (§38) — the contexts are typed configuration and no context is presumed for

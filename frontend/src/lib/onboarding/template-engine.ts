@@ -1,5 +1,5 @@
 /**
- * CoreGrid — institution template engine (domain-neutral).
+ * Sherivs — institution template engine (domain-neutral).
  *
  * Given what an organization SAYS it does (selected feature keys), this engine
  * RECOMMENDS matching institution templates. It never forces anything: a

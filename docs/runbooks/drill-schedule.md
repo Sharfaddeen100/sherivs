@@ -193,7 +193,7 @@ GOVERNED NOT EXECUTED.
   canonical access** (policy-backed probes seed through the privileged management
   channel; it must not run concurrently with a canonical apply or the recovery drill).
   Offline surfaces (`--help`, `--dry-parse-scope`) are ungated and run anywhere.
-  Service-role usage is opt-in behind `COREGRID_BATTERY_ALLOW_SERVICE_ROLE=1` and
+  Service-role usage is opt-in behind `SHERIVS_BATTERY_ALLOW_SERVICE_ROLE=1` and
   printed as used — never the default, never left on.
 - **Evidence ledger.** The ratification dossier
   `architecture/coregrid-mvp-architecture/ratification/RLS_ISOLATION_BATTERY.md`

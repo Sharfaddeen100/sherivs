@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * CoreGrid — live tenant-isolation spec (Tenant A cannot access Tenant B).
+ * Sherivs — live tenant-isolation spec (Tenant A cannot access Tenant B).
  *
  * Mandatory gate (Constitution §31): Tenant A ≠ Tenant B, enforced on the LIVE
  * database. The spec builds two disposable tenant fixtures (schools A/B +

@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Cluster J tests (Phase-04 §53–56).
+ * Sherivs Scholar — Cluster J tests (Phase-04 §53–56).
  * SEN accommodations, counselling (strict access), welfare, safeguarding.
  */
 import { describe, expect, it } from "vitest";

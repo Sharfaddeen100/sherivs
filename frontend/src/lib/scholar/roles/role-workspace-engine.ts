@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Educational Reality Role Engine: workspace engine.
+ * Sherivs Scholar — Educational Reality Role Engine: workspace engine.
  *
  * Workspace generation is derived from ROLES, never from a role-name branch:
  * a person holding several roles receives the union of the workspaces those

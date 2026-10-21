@@ -1,5 +1,5 @@
 /**
- * CoreGrid — provider integration health tests (mission §18).
+ * Sherivs — provider integration health tests (mission §18).
  *
  * Proves the fail-closed state semantics with injected fetches (no network):
  * 1. NOT_CONFIGURED with ZERO fetch when a credential is absent.

@@ -4,7 +4,7 @@ import { SystemClock, TimeAuthority } from "../kernel/time-authority";
 const timeAuthority = new TimeAuthority(new SystemClock());
 
 /**
- * CoreGrid — Phase 25 (platform layer): organization membership lifecycle.
+ * Sherivs — Phase 25 (platform layer): organization membership lifecycle.
  *
  * Domain-neutral workforce lifecycle contracts for the ENTIRE ecosystem.
  * A "workforce member" here is any actor granted organizational membership:

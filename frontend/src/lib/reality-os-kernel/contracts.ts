@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 51 Universal Reality OS Kernel: kernel-composition contracts
+ * Sherivs — Phase 51 Universal Reality OS Kernel: kernel-composition contracts
  * (H3 wave Squad G, mission G-071; Constitution §7, §9, §12, §16, §21, §24;
  * architecture/phase-51-universal-reality-operating-system-kernel.md and
  * architecture/phase-acceptance/phase-51-universal-reality-operating-system-kernel.json).

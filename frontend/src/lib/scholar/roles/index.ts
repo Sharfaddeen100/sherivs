@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Educational Reality Role Engine.
+ * Sherivs Scholar — Educational Reality Role Engine.
  *
  * A universal educational reality role architecture: WHO can exist inside an
  * educational reality (government, regulatory, institutional, teaching,

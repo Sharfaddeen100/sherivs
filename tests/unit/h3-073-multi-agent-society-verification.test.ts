@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-073 phase-35 multi-agent-society ADVERSARIAL VERIFICATION
+ * Sherivs — H3-073 phase-35 multi-agent-society ADVERSARIAL VERIFICATION
  * (Squad G mission G-073, Verifier).
  *
  * Adversarial suite against the COMPLETED contract module

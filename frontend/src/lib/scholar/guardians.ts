@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — parent/guardian relationships + family structure
+ * Sherivs Scholar — parent/guardian relationships + family structure
  * (Phase-04 §110–111).
  *
  * Parents and guardians hold CONTROLLED relationships to students: every

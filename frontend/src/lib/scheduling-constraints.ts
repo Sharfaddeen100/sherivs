@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Scheduling & Timetable Intelligence Constraint Engine
+ * Sherivs — Scheduling & Timetable Intelligence Constraint Engine
  * (Phase 12, Sections N, O, P, Q, S, T, U).
  *
  * Implements `architecture/phase-12-scheduling-intelligence.md`:

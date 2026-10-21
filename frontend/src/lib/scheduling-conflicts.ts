@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Scheduling & Timetable Intelligence: the conflict engine.
+ * Sherivs — Scheduling & Timetable Intelligence: the conflict engine.
  *
  * A conflict is not an error message: it is a first-class record naming what collided, which
  * constraint was violated, how severe it is, and what could be done. The rule the blueprint

@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 33 Universal Kernel: canonical object type registry
+ * Sherivs — Phase 33 Universal Kernel: canonical object type registry
  * (V1CAP-003 / J-002 / MISSION-R-11).
  *
  * THE type allowlist over kernel writes. A persistent kernel object may carry

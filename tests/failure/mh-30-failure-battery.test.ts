@@ -1,5 +1,5 @@
 /**
- * CoreGrid — MH-30 consolidated failure-injection battery (AGENTS §31
+ * Sherivs — MH-30 consolidated failure-injection battery (AGENTS §31
  * "failure tests" pillar; J-045 failure-semantics contract).
  *
  * The per-adapter suites (tests/unit/adapter-*.test.ts,

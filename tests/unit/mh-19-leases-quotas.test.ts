@@ -1,5 +1,5 @@
 /**
- * CoreGrid — reliability lease & quota contract tests (J-031 / V1CAP-055).
+ * Sherivs — reliability lease & quota contract tests (J-031 / V1CAP-055).
  *
  * MISSION H2-19. Validates the fail-closed admission contract over the
  * deterministic AdapterClock (`adapters/failure-policy.ts` pattern):

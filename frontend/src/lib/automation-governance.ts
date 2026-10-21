@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Controlled Automation Engine governance domain model
+ * Sherivs — Controlled Automation Engine governance domain model
  * (Phase 17, Sections AU, AV, AW, AX, AY, AZ, BA, BB, BC, BD, BE, BF, BG,
  * BH, BI, BJ, CS, CT, CU, CV, CW, CX, CZ, DA, DB, DC, DD, CJ, CK, CL, CM,
  * CN, CO, CP, CQ, CR, DR, DU, DV, DW, FB, FC, FD, FF, FG).

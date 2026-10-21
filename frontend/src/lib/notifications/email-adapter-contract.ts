@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Email adapter contract (V5.3 Part 20).
+ * Sherivs — Email adapter contract (V5.3 Part 20).
  *
  * Pure provider-agnostic contract for email sending, plus a record-only stub
  * adapter. NO implementation and NO network I/O lives here: concrete providers

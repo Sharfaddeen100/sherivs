@@ -1,5 +1,5 @@
 /**
- * CoreGrid — AI gateway (V5.3 MISSION-V1-010: intelligence gateway +
+ * Sherivs — AI gateway (V5.3 MISSION-V1-010: intelligence gateway +
  * metering-minimal, Constitution §20/§21, Parts 24/31/49).
  *
  * The centralized entry point for every AI operation: authorization of

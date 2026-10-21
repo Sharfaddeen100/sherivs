@@ -1,5 +1,5 @@
 /**
- * CoreGrid — general mission execution path, pure contract (MISSION V1-004).
+ * Sherivs — general mission execution path, pure contract (MISSION V1-004).
  *
  * Generalizes the ONE DB-persisted executable mission pattern — the
  * foundation loop (`control-plane/foundation-loop.ts` +

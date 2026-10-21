@@ -1,5 +1,5 @@
 /**
- * CoreGrid — service-role storage client factory (MISSION-R-103, V1CAP-0xx).
+ * Sherivs — service-role storage client factory (MISSION-R-103, V1CAP-0xx).
  *
  * Composition root for Supabase Storage access through the tenant-scoped
  * adapter (`storage-adapter.server.ts`) under service-role credentials.

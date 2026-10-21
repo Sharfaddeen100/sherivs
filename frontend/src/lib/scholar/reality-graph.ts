@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — reality graph (Phase-04 §71–73, §123).
+ * Sherivs Scholar — reality graph (Phase-04 §71–73, §123).
  *
  * The runtime represents organisational, educational and resource graphs as
  * typed edges (§71–73) using the §123 relationship vocabulary: teaches,

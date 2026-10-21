@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * CoreGrid — Foundation secrets scanner (Phase 01, §34/§81).
+ * Sherivs — Foundation secrets scanner (Phase 01, §34/§81).
  *
  * Scans git-tracked files for high-risk secret material and fails the build if
  * any is found. Intentionally conservative: it reports evidence for human

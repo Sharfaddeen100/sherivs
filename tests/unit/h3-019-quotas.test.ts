@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-019 resource-quota contract tests (mission B-019 / J-031).
+ * Sherivs — H3-019 resource-quota contract tests (mission B-019 / J-031).
  * Fail-closed quota exhaustion semantics layered on the lease contracts:
  * undeclared principals admit nowhere, exhaustion is a typed deny with
  * structured detail, lease-backed consumption requires a live fencing token,

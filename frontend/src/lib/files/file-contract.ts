@@ -1,5 +1,5 @@
 /**
- * CoreGrid — file/document contract (MISSION-V1-012 files, V5.3 Part 22).
+ * Sherivs — file/document contract (MISSION-V1-012 files, V5.3 Part 22).
  *
  * Pure validation + sharing model for the V1-minimal files service. Every
  * non-allow path is an explicit DENY (fail closed): unknown purposes,

@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Hermes event→observation adapter (V1 remediation wave, team
+ * Sherivs — Hermes event→observation adapter (V1 remediation wave, team
  * R4 / HERMES-PORT; follow-up of V1-002).
  *
  * The EVENT half of the Hermes observation surface: Hermes observations no

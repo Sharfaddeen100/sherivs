@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Cluster E tests (Phase-04 §30–34).
+ * Sherivs Scholar — Cluster E tests (Phase-04 §30–34).
  * Academic periods, school calendar, flexible hours and multi-shift operation.
  */
 import { describe, expect, it } from "vitest";

@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 06 Workspace Engine membership and roles (platform layer).
+ * Sherivs — Phase 06 Workspace Engine membership and roles (platform layer).
  *
  * Implements `architecture/phase-06-workspace-engine.md`:
  * - A workspace may have many members (Section P).

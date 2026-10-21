@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-054 phase-34 cognitive-architecture contract tests
+ * Sherivs — H3-054 phase-34 cognitive-architecture contract tests
  * (mission G-054). Zod validation of the cognitive substrate surface:
  * derived labelling, explained confidence, evidence-cited verification and
  * hallucination flagging, chain-of-thought guarding, hypothesis lifecycle,

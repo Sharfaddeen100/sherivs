@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — safe defaults + no-assumption state (Phase-04 §161–162).
+ * Sherivs Scholar — safe defaults + no-assumption state (Phase-04 §161–162).
  *
  * Safe defaults are TRANSPARENT, EDITABLE and NON-DESTRUCTIVE — and they never
  * invent an institution structure. If the system does not know something it

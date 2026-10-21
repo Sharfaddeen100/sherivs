@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Phase 07 AI Agent System unit tests (agent-memory).
+ * Sherivs Scholar — Phase 07 AI Agent System unit tests (agent-memory).
  *
  * Validates:
  * - Memory access authorization by category and classification (Sections AR, AS).

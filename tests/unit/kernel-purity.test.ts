@@ -1,10 +1,10 @@
 /**
- * CoreGrid — P33 Universal Reality Kernel purity enforcement.
+ * Sherivs — P33 Universal Reality Kernel purity enforcement.
  *
  * Implements the Scholar Independence Test and the Runtime Installation Test
  * (Constitution §111/§117, Correction Order §12) as a mechanical guard:
  *
- * - Scholar Independence: if the Scholar runtime disappeared, CoreGrid must
+ * - Scholar Independence: if the Scholar runtime disappeared, Sherivs must
  *   remain architecturally valid. The kernel substrate therefore contains no
  *   domain vocabulary — not even the name of a domain runtime.
  * - Runtime Installation: healthcare, government, agriculture, manufacturing,
@@ -219,7 +219,7 @@ describe("P33 universal kernel — dependency boundary (platform CoreGrid first)
     .map((name) => join(SCHOLAR_RUNTIME_DIR, name));
   /**
    * The runtime's entry contracts must consume a kernel contract directly
-   * (installed on CoreGrid, never standalone).
+   * (installed on Sherivs, never standalone).
    */
   const KERNEL_CONSUMING_SCHOLAR_MODULES = [
     join(ROOT, "frontend/src/lib/runtime/scholar.ts"),

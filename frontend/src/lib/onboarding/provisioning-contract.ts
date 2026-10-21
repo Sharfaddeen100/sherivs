@@ -1,5 +1,5 @@
 /**
- * CoreGrid — V1-008: the neutral organization-provisioning contract.
+ * Sherivs — V1-008: the neutral organization-provisioning contract.
  *
  * The platform-level onboarding engine provisions, as ONE transactional unit:
  * an organization record, its workspaces, its people's memberships, the

@@ -1,5 +1,5 @@
 /**
- * CoreGrid — V1CAP-40 placeholder-page disposition tests (mission V1-011).
+ * Sherivs — V1CAP-40 placeholder-page disposition tests (mission V1-011).
  *
  * §57 no-product-theatre law, enforced structurally:
  *  - the typed disposition registry is complete, non-contradictory, and cites

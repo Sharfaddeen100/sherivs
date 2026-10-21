@@ -1,5 +1,5 @@
 /**
- * CoreGrid — client platform classification tests (Phase 22/23 wiring).
+ * Sherivs — client platform classification tests (Phase 22/23 wiring).
  */
 import { describe, expect, it } from "vitest";
 import {

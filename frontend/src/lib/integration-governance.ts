@@ -1,5 +1,5 @@
 /**
- * CoreGrid Integration Fabric — integration governance, drift, resilience, and
+ * Sherivs Integration Fabric — integration governance, drift, resilience, and
  * normalization domain.
  *
  * Implements `architecture/phase-29-coregrid-integration.md`:

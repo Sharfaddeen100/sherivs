@@ -1,5 +1,5 @@
 /**
- * CoreGrid — verification independence enforcement (J-035 / MISSION H2-17).
+ * Sherivs — verification independence enforcement (J-035 / MISSION H2-17).
  *
  * J-035 (STREAM_J_GAP_DISCOVERY): "a worker (AI or human) cannot verify its
  * own output in the loop". E-050 — an AI worker must not validate its own

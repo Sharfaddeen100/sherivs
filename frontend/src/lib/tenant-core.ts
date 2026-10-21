@@ -1,8 +1,8 @@
 /**
- * CoreGrid Multi-Tenancy Platform — Tenant Core domain model.
+ * Sherivs Multi-Tenancy Platform — Tenant Core domain model.
  *
  * Implements `architecture/phase-03-multi-tenancy.md`:
- * - A tenant is an independently governed logical environment within CoreGrid.
+ * - A tenant is an independently governed logical environment within Sherivs.
  * - Tenant IDs are canonical and stable (Invariant 09).
  * - Tenant names are mutable metadata (Invariant 10).
  * - Identity and tenancy are separate concepts (Invariant 03).
@@ -96,7 +96,7 @@ export function tenantId(raw: string): TenantId {
   return raw as TenantId;
 }
 
-export interface CoreGridTenant {
+export interface SherivsTenant {
   /** Canonical, immutable tenant ID (Invariant 09). */
   id: TenantId;
   type: TenantType;
@@ -334,7 +334,7 @@ export function hasTenantBoundary(resource: Pick<TenantResource, "tenantId">): b
 }
 
 /** Invariant 05: Tenant isolation applies to synchronous and asynchronous operations. */
-export function isTenantUsable(tenant: Pick<CoreGridTenant, "status">): boolean {
+export function isTenantUsable(tenant: Pick<SherivsTenant, "status">): boolean {
   return tenant.status === "ACTIVE" || tenant.status === "RESTRICTED";
 }
 

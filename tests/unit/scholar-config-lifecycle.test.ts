@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — A6/A7/A8 tests (§84–85, §161–162, §159–160).
+ * Sherivs Scholar — A6/A7/A8 tests (§84–85, §161–162, §159–160).
  * Simulation, safe defaults and discovery are all configuration-pure.
  */
 import { describe, expect, it } from "vitest";

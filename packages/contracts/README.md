@@ -1,4 +1,4 @@
-# @coregrid/contracts
+# @sherivs/contracts
 
 Single source of truth for the contracts shared between the CoreGrid web
 application (`frontend/`) and the Expo mobile application (`mobile/`)
@@ -19,8 +19,8 @@ The package is consumed as **TypeScript source** — no build step, no runtime
 dependencies, no bundler plugins — through **plain node_modules resolution**
 via npm `file:` dependencies:
 
-- root `package.json` (`frontend`): `"@coregrid/contracts": "file:packages/contracts"`
-- `mobile/package.json` (Expo): `"@coregrid/contracts": "file:../packages/contracts"`
+- root `package.json` (`frontend`): `"@sherivs/contracts": "file:packages/contracts"`
+- `mobile/package.json` (Expo): `"@sherivs/contracts": "file:../packages/contracts"`
 
 npm installs both as symlinks under each project's `node_modules`, so:
 

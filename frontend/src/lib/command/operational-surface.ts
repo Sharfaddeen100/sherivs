@@ -1,5 +1,5 @@
 /**
- * CoreGrid — governed command centre operational surface contract
+ * Sherivs — governed command centre operational surface contract
  * (J-048: rebuild of the withdrawn L4 alerts/incidents operational surface).
  *
  * The L4 surface was withdrawn because the existing command modules coordinate

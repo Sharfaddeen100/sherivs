@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * CoreGrid — provider authentication health drill (launch-gate discipline).
+ * Sherivs — provider authentication health drill (launch-gate discipline).
  *
  * Credential-gated, read-only provider authentication battery for every V1
  * capability provider (§18 health vocabulary). Built in the exemplar drills'
@@ -28,7 +28,7 @@
  * never printed, logged, or written to any artifact — including error paths.
  * The battery module's reports are secret-free by construction.
  *
- * Artifacts (directory from COREGRID_ARTIFACTS_DIR, default
+ * Artifacts (directory from SHERIVS_ARTIFACTS_DIR, default
  * /opt/cursor/artifacts — secret-free by construction):
  *   provider-health-battery.json / .log   (live battery)
  *   provider-health-rehearsal.json / .log (offline rehearsal)
@@ -48,7 +48,7 @@ import { createJiti } from "jiti";
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
 const DEFAULT_ARTIFACTS_DIR = "/opt/cursor/artifacts";
-const ARTIFACTS_DIR = process.env.COREGRID_ARTIFACTS_DIR ?? DEFAULT_ARTIFACTS_DIR;
+const ARTIFACTS_DIR = (process.env.SHERIVS_ARTIFACTS_DIR ?? process.env.COREGRID_ARTIFACTS_DIR) ?? DEFAULT_ARTIFACTS_DIR;
 
 // ── mode / argument parsing (BEFORE the credential gate) ─────────────────────
 const argv = process.argv.slice(2);

@@ -1,5 +1,5 @@
 /**
- * CoreGrid — AI gateway tests (V5.3 MISSION-V1-010: fail-closed decisions,
+ * Sherivs — AI gateway tests (V5.3 MISSION-V1-010: fail-closed decisions,
  * rate-limit boundaries, budget denial, unconfigured-key denial, attribution
  * completeness, and redaction — no key material in any log output).
  */

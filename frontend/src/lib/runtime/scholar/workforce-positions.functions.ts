@@ -1,5 +1,5 @@
 /**
- * CoreGrid — workforce-position server functions (org-admin HR surface).
+ * Sherivs — workforce-position server functions (org-admin HR surface).
  *
  * Wraps the RPC layer of migration 20260907000300 with the canonical
  * school-admin scope gate. The tenant boundary is resolved server-side from

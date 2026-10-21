@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Phase 18 Analytics & Decision Intelligence unit tests
+ * Sherivs Scholar — Phase 18 Analytics & Decision Intelligence unit tests
  * (analytics-core).
  *
  * Validates:

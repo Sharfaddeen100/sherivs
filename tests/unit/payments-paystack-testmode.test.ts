@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Paystack TEST-MODE live client tests (MISSION-R-32).
+ * Sherivs — Paystack TEST-MODE live client tests (MISSION-R-32).
  *
  * All provider I/O runs through an injected transport — no test touches the
  * network. Security focus (AGENTS §36 + §26): test-key-class enforcement,

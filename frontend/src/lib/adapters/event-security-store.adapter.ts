@@ -1,5 +1,5 @@
 /**
- * CoreGrid — DB-backed substrate adapter for the per-event security contract
+ * Sherivs — DB-backed substrate adapter for the per-event security contract
  * (V1CAP-044 / J-022 / MISSION-R-81), persisting kernel/event-security.ts
  * contracts and gate audit records into the tables authored by
  * database/supabase/migrations/20261002000006_coregrid_v1_event_security.sql.

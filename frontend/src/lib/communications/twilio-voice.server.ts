@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Twilio voice adapter (V1-009, team COMMS).
+ * Sherivs — Twilio voice adapter (V1-009, team COMMS).
  *
  * The concrete Twilio implementation of the provider-agnostic
  * `TelephonyAdapter` contract (`communications/telephony-adapter-contract.ts`).

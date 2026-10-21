@@ -1,5 +1,5 @@
 /**
- * CoreGrid Institutional Onboarding, Administration & Workforce Identity Platform —
+ * Sherivs Institutional Onboarding, Administration & Workforce Identity Platform —
  * Institutional administration governance domain.
  *
  * Implements `architecture/phase-25-institutional-onboarding-administration-workforce-identity-platform.md`:

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * CoreGrid Cloud Fabric — credential & scope preflight (read-only doctor).
+ * Sherivs Cloud Fabric — credential & scope preflight (read-only doctor).
  *
  * Purpose: turn "the owner supplied credentials" into a VERIFIED fact before a
  * plan is ever run. It never writes, never creates, never mutates — it reads.

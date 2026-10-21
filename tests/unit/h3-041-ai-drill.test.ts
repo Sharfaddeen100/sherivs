@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3 wave, team H3-041 (AI Live Drill Engineer), mission E-041.
+ * Sherivs — H3 wave, team H3-041 (AI Live Drill Engineer), mission E-041.
  * OFFLINE gate proofs for scripts/verify-ai-gateway-live.drill.mjs WITHOUT
  * touching any network service, any database, and WITHOUT ever executing a
  * live inference (no real credential is used; the drill is only ever spawned

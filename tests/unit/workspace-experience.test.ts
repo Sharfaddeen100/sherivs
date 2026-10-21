@@ -1,5 +1,5 @@
 /**
- * CoreGrid — workspace experience resolver tests (Phase 24).
+ * Sherivs — workspace experience resolver tests (Phase 24).
  */
 import { describe, expect, it } from "vitest";
 import {

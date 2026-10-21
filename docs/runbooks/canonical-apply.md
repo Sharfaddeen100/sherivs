@@ -68,7 +68,7 @@ is the plan half (`:10–14`). Unknown flags or a second positional are rejected
 | Env var | Required | Role (cite) |
 | --- | --- | --- |
 | `SUPABASE_ACCESS_TOKEN` | yes for apply/verify-only | Management API bearer; read at `:86`; absence exits with code 2 before anything runs (`:87–90`) |
-| `COREGRID_ARTIFACTS_DIR` | optional | artifacts directory override (defaults to `/opt/cursor/artifacts`) so CI runners can redirect evidence without touching the script (`:29–32`, `:62–63`) |
+| `SHERIVS_ARTIFACTS_DIR` | optional | artifacts directory override (defaults to `/opt/cursor/artifacts`) so CI runners can redirect evidence without touching the script (`:29–32`, `:62–63`) |
 | argv[1] `project-ref` | optional | Overrides the default project ref (`:76`) |
 
 The token is transported in the `Authorization` header only and is never printed

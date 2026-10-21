@@ -1,5 +1,5 @@
 /**
- * CoreGrid — structured logging tests (V5.3 Part 30 observability-minimal).
+ * Sherivs — structured logging tests (V5.3 Part 30 observability-minimal).
  * Covers redaction (fail-closed), levels, field ordering/omission, and
  * safe error serialization with no stack traces.
  */

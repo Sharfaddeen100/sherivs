@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — space model: buildings, blocks, rooms (Phase-04 §60–62).
+ * Sherivs Scholar — space model: buildings, blocks, rooms (Phase-04 §60–62).
  *
  * An administrator may define buildings and blocks with identity, purpose,
  * capacity, facilities, rooms, devices and environmental conditions (§61);

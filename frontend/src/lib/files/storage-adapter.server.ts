@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Supabase storage adapter for tenant-scoped files
+ * Sherivs — Supabase storage adapter for tenant-scoped files
  * (MISSION-V1-012 files, V5.3 Part 22).
  *
  * Thin adapter over the EXISTING Supabase storage stack

@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-074 adversarial verification suite, phase 36 memory-knowledge
+ * Sherivs — H3-074 adversarial verification suite, phase 36 memory-knowledge
  * (Squad G, Verifier role; campaign H3-WAVE-CAMPAIGN.md, mission G-074).
  *
  * Adversarial verification against the COMPLETED contract module

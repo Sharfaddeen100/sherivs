@@ -1,5 +1,5 @@
 /**
- * CoreGrid — R39 role-assignment substrate proof tests.
+ * Sherivs — R39 role-assignment substrate proof tests.
  *
  * The R37 migration is authored, not applied (no database runner in this
  * environment). These tests make the claim verifiable anyway:

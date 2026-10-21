@@ -1,5 +1,5 @@
 /**
- * CoreGrid — DOMAIN RUNTIME CERTIFICATION suite (MISSION-R-120, wave 2;
+ * Sherivs — DOMAIN RUNTIME CERTIFICATION suite (MISSION-R-120, wave 2;
  * V1CAP-092 / V1CAP-093 / V1CAP-007).
  *
  * Recertifies BOTH installed domain runtimes against the reconstructed

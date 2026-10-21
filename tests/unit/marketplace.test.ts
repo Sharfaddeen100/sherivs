@@ -472,8 +472,8 @@ describe("marketplace-package — Manifests & Security (26, 27, 28, 29, 30, 31-4
 describe("marketplace-package — Compatibility & Conflict (162, 163, 164, 165)", () => {
   it("compatibility passes with matching version and APIs", () => {
     const r = evaluateCompatibility({
-      requiredCoreGridVersion: "2.0.0",
-      currentCoreGridVersion: "2.5.0",
+      requiredSherivsVersion: "2.0.0",
+      currentSherivsVersion: "2.5.0",
       requiredApis: ["transport"],
       availableApis: ["transport", "finance"],
       requiredPolicies: ["allowed.transport"],
@@ -485,8 +485,8 @@ describe("marketplace-package — Compatibility & Conflict (162, 163, 164, 165)"
   });
   it("compatibility fails on missing API", () => {
     const r = evaluateCompatibility({
-      requiredCoreGridVersion: "2.0.0",
-      currentCoreGridVersion: "2.5.0",
+      requiredSherivsVersion: "2.0.0",
+      currentSherivsVersion: "2.5.0",
       requiredApis: ["transport"],
       availableApis: ["finance"],
       requiredPolicies: [],
@@ -498,8 +498,8 @@ describe("marketplace-package — Compatibility & Conflict (162, 163, 164, 165)"
   });
   it("detects installed product conflicts", () => {
     const r = evaluateCompatibility({
-      requiredCoreGridVersion: "2.0.0",
-      currentCoreGridVersion: "2.5.0",
+      requiredSherivsVersion: "2.0.0",
+      currentSherivsVersion: "2.5.0",
       requiredApis: [],
       availableApis: [],
       requiredPolicies: [],

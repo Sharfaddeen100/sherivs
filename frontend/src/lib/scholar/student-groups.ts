@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — student grouping (Phase-04 §52).
+ * Sherivs Scholar — student grouping (Phase-04 §52).
  *
  * Dynamic grouping may consider subject, level, ability, practical
  * requirements, language, support requirements and schedule — all through

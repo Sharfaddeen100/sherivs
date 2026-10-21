@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — cross-subject learning (Phase-04 §20).
+ * Sherivs Scholar — cross-subject learning (Phase-04 §20).
  *
  * Subjects relate to one another (prerequisite → successor, support,
  * integration, shared competency, custom). The relationship vocabulary is

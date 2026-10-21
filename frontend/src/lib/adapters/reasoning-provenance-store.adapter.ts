@@ -1,5 +1,5 @@
 /**
- * CoreGrid — DB-backed substrate adapter for the reasoning-provenance contract
+ * Sherivs — DB-backed substrate adapter for the reasoning-provenance contract
  * (J-015 / V1CAP-029 / MISSION-R-33), persisting ai-gateway/reasoning-provenance.ts
  * intelligence snapshots into the table authored by
  * database/supabase/migrations/20261002000009_coregrid_v1_reasoning_provenance.sql.

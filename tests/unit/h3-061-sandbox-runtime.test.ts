@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-061 sandbox-runtime contract tests (mission G-061).
+ * Sherivs — H3-061 sandbox-runtime contract tests (mission G-061).
  *
  * Proves the phase-41 substrate contracts are Zod-typed, fail-closed,
  * and domain-neutral, and that the §9 truth boundary is enforced by

@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Phase 08 Security Engine unit tests (security-session).
+ * Sherivs Scholar — Phase 08 Security Engine unit tests (security-session).
  *
  * Validates:
  * - Session security evaluation: expiration, idle timeout, absolute

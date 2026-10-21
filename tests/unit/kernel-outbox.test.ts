@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 33 Universal Kernel: event outbox state-machine tests.
+ * Sherivs — Phase 33 Universal Kernel: event outbox state-machine tests.
  */
 
 import { describe, expect, it } from "vitest";

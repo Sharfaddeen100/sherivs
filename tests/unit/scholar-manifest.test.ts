@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar runtime manifest tests (Phase 04 reframe).
+ * Sherivs Scholar runtime manifest tests (Phase 04 reframe).
  *
  * Scholar is registered on the universal kernel through the generic
  * domain-runtime manifest contract. These tests pin the Scholar manifest

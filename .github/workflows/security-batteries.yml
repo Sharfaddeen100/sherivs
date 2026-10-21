@@ -100,7 +100,7 @@ jobs:
       # credential every unauthenticated client shares).
       SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
       # Optional and DORMANT by default: the service-role contrast section only
-      # runs when COREGRID_BATTERY_ALLOW_SERVICE_ROLE=1 is set (opt-in). The
+      # runs when SHERIVS_BATTERY_ALLOW_SERVICE_ROLE=1 is set (opt-in). The
       # key is mapped here so an opt-in requires no workflow edit beyond
       # exporting that env var in the run step.
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}

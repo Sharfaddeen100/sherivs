@@ -1,5 +1,5 @@
 /**
- * CoreGrid Evolution Experiments — innovation sandbox, controlled
+ * Sherivs Evolution Experiments — innovation sandbox, controlled
  * experiments, A/B testing, progressive rollout, canary deployment, feature
  * flags, and tenant-safe experimentation.
  *

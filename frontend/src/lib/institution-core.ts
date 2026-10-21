@@ -1,11 +1,11 @@
 /**
- * CoreGrid Institutional Onboarding, Administration & Workforce Identity Platform —
+ * Sherivs Institutional Onboarding, Administration & Workforce Identity Platform —
  * Institutional entity domain.
  *
  * Implements `architecture/phase-25-institutional-onboarding-administration-workforce-identity-platform.md`:
  * - Institution creation model (Section D): Institution → Profile, Tenant reference,
  *   Institutional Identity, Default Administrative Policy Set, Initial Administrator.
- * - CoreGrid Platform vs Institution Authority (Section E): the initial administrator
+ * - Sherivs Platform vs Institution Authority (Section E): the initial administrator
  *   becomes the institution's primary administrative authority subject to platform
  *   controls; an administrator can never override platform-level security controls.
  * - Institutional profile (Section F): legal name, display name, institution type,
@@ -466,7 +466,7 @@ export type CreateInstitutionResult =
   | { ok: false; error: string };
 
 /**
- * Institution creation (Section D). The CoreGrid platform team creates an institution;
+ * Institution creation (Section D). The Sherivs platform team creates an institution;
  * the initial administrator becomes the primary administrative authority subject to
  * platform-level controls (Section E). An institution cannot be created without a
  * legal name, an official email domain, a country, and an initial administrator.

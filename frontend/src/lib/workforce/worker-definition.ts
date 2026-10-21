@@ -1,9 +1,9 @@
 /**
- * CoreGrid — persistent governed worker definition substrate
+ * Sherivs — persistent governed worker definition substrate
  * (V1CAP-048 / J-027 / MISSION-R-40, wave 2).
  *
  * CTO RULING-3 (binding): workers are governed actors, an extension of the
- * CoreGrid actor/delegation model — NOT merely LLM/process/container/script.
+ * Sherivs actor/delegation model — NOT merely LLM/process/container/script.
  * PERSISTENT (this module): definition, capability declarations, authority
  * boundary, delegation history. EPHEMERAL (owned by
  * `agent-runtime/ephemeral-lifecycle.ts`): the runtime instance. A worker

@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-060 Universal Runtime Fabric registration-contract tests
+ * Sherivs — H3-060 Universal Runtime Fabric registration-contract tests
  * (mission G-060, phase 40). Proves the fail-closed semantics of the fabric's
  * neutral runtime registration surface:
  *   - installation is admission to `proposed` only, never self-activation;

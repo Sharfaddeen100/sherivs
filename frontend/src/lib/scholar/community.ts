@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — community mode & school networks (Phase-04 §91–93).
+ * Sherivs Scholar — community mode & school networks (Phase-04 §91–93).
  *
  * Schools may operate community learning centres or shared facilities (§91);
  * a facility may serve multiple programmes/classes/institutions (§92); a

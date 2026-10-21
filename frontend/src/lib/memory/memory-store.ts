@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 36 durable practical/organizational memory tier
+ * Sherivs — Phase 36 durable practical/organizational memory tier
  * (V1CAP-034/035/036, J-016/J-017, MISSION-R-36, wave 2).
  *
  * D1 ownership (DOSSIER_D1_MEMORY_OWNER.md): phase 36 is the canonical owner

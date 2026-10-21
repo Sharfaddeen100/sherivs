@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Core Application Runtime integration adapters.
+ * Sherivs — Core Application Runtime integration adapters.
  *
  * Implements `architecture/phase-05-core-application-runtime.md`:
  * - Integration runtime (Section BJ): integrations use adapters.
@@ -8,7 +8,7 @@
  * - Adapter contracts (Section BL): every external integration exposes an
  *   internal normalized interface.
  * - Anti-corruption layer (Section BM): external data models must not
- *   automatically become CoreGrid's canonical models.
+ *   automatically become Sherivs's canonical models.
  * - Data transformation (Section BN): integration adapters may transform data.
  */
 
@@ -125,8 +125,8 @@ export function createIntegrationRegistry(): IntegrationRegistry {
  * ────────────────────────────────────────────────────────────*/
 
 /**
- * Transforms external data into CoreGrid's canonical shape (Section BM).
- * External data models must not automatically become CoreGrid's canonical models.
+ * Transforms external data into Sherivs's canonical shape (Section BM).
+ * External data models must not automatically become Sherivs's canonical models.
  */
 export function transformExternalToCanonical<T>(
   external: unknown,
@@ -136,7 +136,7 @@ export function transformExternalToCanonical<T>(
 }
 
 /**
- * Transforms CoreGrid data into an external provider's expected shape (Section BN).
+ * Transforms Sherivs data into an external provider's expected shape (Section BN).
  */
 export function transformCanonicalToExternal<T>(
   canonical: unknown,

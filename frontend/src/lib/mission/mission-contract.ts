@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Mission object contract (J-025 / V1CAP-046, MISSION-R-50).
+ * Sherivs — Mission object contract (J-025 / V1CAP-046, MISSION-R-50).
  *
  * The Mission is a FIRST-CLASS governed object, generalizing (never
  * duplicating) the live-verified foundation loop substrate

@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — student identity + educational context (Phase-04 §26–27).
+ * Sherivs Scholar — student identity + educational context (Phase-04 §26–27).
  *
  * §26: the runtime CONSUMES the authoritative identity from Phase 02
  * (`cg_identity` via `identity-registry.ts`) and ADDS educational context —

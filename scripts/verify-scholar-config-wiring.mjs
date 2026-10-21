@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * CoreGrid — live Scholar config wiring verification (Phase 04 first vertical).
+ * Sherivs — live Scholar config wiring verification (Phase 04 first vertical).
  *
  * Replicates the DB path of `scholar-institution-config.functions.ts` using
  * the REAL pure contracts (school-builder A3, blueprint A4, kernel

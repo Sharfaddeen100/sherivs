@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Educational Reality Role Engine: catalog group data.
+ * Sherivs Scholar — Educational Reality Role Engine: catalog group data.
  *
  * The directive's reality catalog, expressed as GROUPS (not as engine logic).
  * A group declares which reality gives its roles a home using the EXISTING
@@ -1025,7 +1025,7 @@ export const INSTITUTION_TYPE_GROUPS: readonly RoleGroup[] = [
 ];
 
 /* ─────────────────────────────────────────────────────────────
- * CoreGrid platform organization (the platform is a living organization)
+ * Sherivs platform organization (the platform is a living organization)
  * ────────────────────────────────────────────────────────────*/
 
 export const COREGRID_INTERNAL_GROUPS: readonly RoleGroup[] = [

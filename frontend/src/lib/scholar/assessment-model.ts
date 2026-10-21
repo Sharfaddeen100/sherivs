@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — assessment model (Phase-04 §40, upgrade target of the
+ * Sherivs Scholar — assessment model (Phase-04 §40, upgrade target of the
  * legacy education-assessment domain layer).
  *
  * Assessment kinds — assignment, quiz, test, examination, practical, oral,

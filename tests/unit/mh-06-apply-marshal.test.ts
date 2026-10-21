@@ -1,5 +1,5 @@
 /**
- * CoreGrid — MH-06 canonical apply-path rehearsal tests (Database Operations
+ * Sherivs — MH-06 canonical apply-path rehearsal tests (Database Operations
  * Marshal). These tests prove that scripts/apply-canonical-hardening.mjs is
  * rehearsal-ready and CI-portable WITHOUT touching any database:
  *

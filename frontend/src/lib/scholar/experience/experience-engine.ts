@@ -1,8 +1,8 @@
 /**
- * CoreGrid Scholar — Experience & website generation engine.
+ * Sherivs Scholar — Experience & website generation engine.
  *
  * Reality in, digital environment out: an organization does not pick modules, it
- * declares its reality, and CoreGrid generates its public presence and its
+ * declares its reality, and Sherivs generates its public presence and its
  * internal application from that reality.
  *
  * No static application rule: there is no `SchoolDashboard.tsx` /

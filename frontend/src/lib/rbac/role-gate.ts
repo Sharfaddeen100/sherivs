@@ -1,5 +1,5 @@
 /**
- * CoreGrid — neutral runtime role-gate core (V1-006).
+ * Sherivs — neutral runtime role-gate core (V1-006).
  *
  * The runtime-agnostic half of the Phase 08 canonical role gate: lifecycle/
  * session enforcement (fail closed) plus a generic, binding-driven gate

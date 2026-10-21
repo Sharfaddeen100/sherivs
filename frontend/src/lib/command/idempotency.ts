@@ -1,5 +1,5 @@
 /**
- * CoreGrid — platform-wide command idempotency contract (J-030 / V1CAP-054).
+ * Sherivs — platform-wide command idempotency contract (J-030 / V1CAP-054).
  *
  * G-063: mandatory idempotency keys on consequential commands are "the
  * difference between a demo and a production platform." The foundation loop

@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — programme definition (Phase-04 §21, upgrade target of the
+ * Sherivs Scholar — programme definition (Phase-04 §21, upgrade target of the
  * legacy academic programme layer).
  *
  * A programme defines purpose, duration, curriculum, levels, required

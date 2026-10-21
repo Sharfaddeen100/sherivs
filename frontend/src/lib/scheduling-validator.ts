@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Scheduling & Timetable Intelligence Independent
+ * Sherivs — Scheduling & Timetable Intelligence Independent
  * Validator, quality scoring, and schedule lifecycle (Phase 12, Sections BB,
  * BE, BK, BL, BM, G, H).
  *

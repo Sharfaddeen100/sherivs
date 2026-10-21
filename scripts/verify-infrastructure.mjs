@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * CoreGrid Cloud Fabric — infrastructure verifier (wave CF-3).
+ * Sherivs Cloud Fabric — infrastructure verifier (wave CF-3).
  *
  * Proves the fabric's SOURCE invariants, exactly like the runtime waves prove
  * theirs. No cloud credentials, no terraform/kubectl required.

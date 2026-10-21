@@ -1,5 +1,5 @@
 /**
- * CoreGrid — data platform intelligence report (L4).
+ * Sherivs — data platform intelligence report (L4).
  *
  * This is the phase's own evidence surface. It does not describe the data platform: it
  * EXECUTES it. Every check below calls a real engine with real input and records what it

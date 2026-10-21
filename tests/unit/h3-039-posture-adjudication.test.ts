@@ -1,5 +1,5 @@
 /**
- * CoreGrid — MISSION H3-039: RLS posture adjudication for the knowledge-currency
+ * Sherivs — MISSION H3-039: RLS posture adjudication for the knowledge-currency
  * governance tables (Squad D, knowledge family).
  *
  * Asserts the internal consistency of H3-039's decisions — that the adjudicated

@@ -1,5 +1,5 @@
 /**
- * CoreGrid Phase Catalog — the canonical 51-phase architecture map used by
+ * Sherivs Phase Catalog — the canonical 51-phase architecture map used by
  * the Command Centre's dynamic workspace.
  *
  * Mirrors `REGISTRY.md` (authoritative phase sequence) and `PROGRESS.md`

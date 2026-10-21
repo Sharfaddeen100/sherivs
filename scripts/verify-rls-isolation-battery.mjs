@@ -62,7 +62,7 @@
  *                            (CROSS_TENANT_PROBE_STAGE_NOT_DECLARED), never
  *                            a silent pass.
  *   (e) SERVICE_ROLE_CONTRAST — opt-in only (env
- *                            COREGRID_BATTERY_ALLOW_SERVICE_ROLE=1): one
+ *                            SHERIVS_BATTERY_ALLOW_SERVICE_ROLE=1): one
  *                            probe with SUPABASE_SERVICE_ROLE_KEY to
  *                            demonstrate the ONLY privileged data path is
  *                            the explicit service role. Service-role usage
@@ -1862,12 +1862,12 @@ async function runBattery() {
   // ---------------------------------------------------------------------------
   // (e) Service-role contrast — explicit and logged, NEVER default.
   // ---------------------------------------------------------------------------
-  if (process.env.COREGRID_BATTERY_ALLOW_SERVICE_ROLE === "1") {
+  if ((process.env.SHERIVS_BATTERY_ALLOW_SERVICE_ROLE ?? process.env.COREGRID_BATTERY_ALLOW_SERVICE_ROLE) === "1") {
     const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY ?? (await resolveServiceKey());
     if (!serviceKey) {
       report("SKIP service-role contrast requested but no service key is resolvable.");
     } else {
-      report("SERVICE_ROLE_USED_EXPLICITLY — opt-in via COREGRID_BATTERY_ALLOW_SERVICE_ROLE=1; contrasting the only privileged data path (never default).");
+      report("SERVICE_ROLE_USED_EXPLICITLY — opt-in via SHERIVS_BATTERY_ALLOW_SERVICE_ROLE=1; contrasting the only privileged data path (never default).");
       const res = await fetch(`${supabaseUrl}/rest/v1/cg_entity?select=*&limit=1`, {
         headers: { apikey: serviceKey, Authorization: `Bearer ${serviceKey}` },
       });
@@ -1885,7 +1885,7 @@ async function runBattery() {
       report(`INFO service_role contrast status=${res.status} evidence="${results.serviceRoleContrast.bodyPreview}"`);
     }
   } else {
-    report("SKIP service-role contrast not requested (opt-in: COREGRID_BATTERY_ALLOW_SERVICE_ROLE=1). Service-role usage stays explicit and logged, never default.");
+    report("SKIP service-role contrast not requested (opt-in: SHERIVS_BATTERY_ALLOW_SERVICE_ROLE=1). Service-role usage stays explicit and logged, never default.");
   }
 
   // ---------------------------------------------------------------------------

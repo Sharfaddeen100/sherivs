@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-046 tests: typed metrics registry
+ * Sherivs — H3-046 tests: typed metrics registry
  * (`frontend/src/lib/observability/metrics-registry.ts`).
  *
  * The suite proves:

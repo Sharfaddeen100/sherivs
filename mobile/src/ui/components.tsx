@@ -1,5 +1,5 @@
 /**
- * CoreGrid Mobile — shared UI primitives (Phase 22 §J). React Native core
+ * Sherivs Mobile — shared UI primitives (Phase 22 §J). React Native core
  * components only; the mobile foundation introduces no new UI framework.
  */
 import { Pressable, RefreshControl, StyleSheet, Text, TextInput, View, type TextInputProps, type ViewStyle } from "react-native";

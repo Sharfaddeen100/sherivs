@@ -1,5 +1,5 @@
 /**
- * CoreGrid — installed runtime navigation contribution (runtime layer).
+ * Sherivs — installed runtime navigation contribution (runtime layer).
  *
  * A runtime publishes the navigation it owns as DATA: capability-coded items with no UI
  * logic, resolved by the kernel's workspace engine. This file is one runtime's

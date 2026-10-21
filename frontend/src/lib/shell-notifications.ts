@@ -1,5 +1,5 @@
 /**
- * CoreGrid — platform shell notifications surface contract (ADR-003, GAP-008).
+ * Sherivs — platform shell notifications surface contract (ADR-003, GAP-008).
  *
  * The bell in the global shell renders from THIS contract, never from raw
  * store rows: records are admitted only when they match the viewer context

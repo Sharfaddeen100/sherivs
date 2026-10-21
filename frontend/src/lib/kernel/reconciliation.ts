@@ -1,5 +1,5 @@
 /**
- * CoreGrid — state reconciliation & contradiction engine over cg_observation
+ * Sherivs — state reconciliation & contradiction engine over cg_observation
  * (V1CAP-005 / J-004 / MISSION-R-14), composed over the bi-temporal law of
  * kernel/reality.ts and the dedup/ordering vocabulary of
  * kernel/event-semantics.ts.

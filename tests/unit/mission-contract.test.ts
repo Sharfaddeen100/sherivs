@@ -1,5 +1,5 @@
 /**
- * CoreGrid Mission object contract tests (J-025 / V1CAP-046, MISSION-R-50).
+ * Sherivs Mission object contract tests (J-025 / V1CAP-046, MISSION-R-50).
  *
  * Validates the pure contract in frontend/src/lib/mission/mission-contract.ts:
  * - a mission missing ANY required element is rejected (fail closed);

@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — school knowledge model + structured facts (Phase-04
+ * Sherivs Scholar — school knowledge model + structured facts (Phase-04
  * §122–123).
  *
  * The runtime provides structured institutional facts to the Knowledge Graph

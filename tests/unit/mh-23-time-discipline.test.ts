@@ -1,5 +1,5 @@
 /**
- * CoreGrid — J-023 time-source discipline (MISSION H2-23).
+ * Sherivs — J-023 time-source discipline (MISSION H2-23).
  *
  * Static invariant suite for the single-clock law: the kernel time-authority
  * (`frontend/src/lib/kernel/time-authority.ts`) is the ONLY place production

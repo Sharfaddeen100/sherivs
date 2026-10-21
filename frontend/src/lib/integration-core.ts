@@ -1,15 +1,15 @@
 /**
- * CoreGrid Integration Fabric — integration, connector, connection, and
+ * Sherivs Integration Fabric — integration, connector, connection, and
  * credential domain.
  *
  * Implements `architecture/phase-29-coregrid-integration.md`:
- * - Subsystem identity (1): the interoperability layer connecting CoreGrid with
+ * - Subsystem identity (1): the interoperability layer connecting Sherivs with
  *   external software, institutional/government/education/financial systems,
  *   communication/identity/cloud providers, hardware ecosystems, databases,
  *   APIs, partner and legacy systems — without allowing those systems to become
- *   architectural authorities over CoreGrid.
+ *   architectural authorities over Sherivs.
  * - Integration model (F): External System → Connection → Connector →
- *   Protocol Adapter → Transformation → Validation → CoreGrid Contract.
+ *   Protocol Adapter → Transformation → Validation → Sherivs Contract.
  * - Integration types (G): API/REST/GraphQL/SOAP/RPC, event, webhook,
  *   message-queue, database, file/SFTP, email/SMS, hardware, cloud, identity,
  *   payment, government, education-system integration.
@@ -187,8 +187,8 @@ export interface Connector {
   /** Default rate limit per minute (Section AI). */
   rateLimitPerMinute: number;
   retryBehavior: string;
-  /** Minimum CoreGrid version compatibility. */
-  compatibleCoreGridVersion: string;
+  /** Minimum Sherivs version compatibility. */
+  compatibleSherivsVersion: string;
   lifecycleState: ConnectorLifecycleState;
   createdAt: string;
 }
@@ -207,7 +207,7 @@ export function createConnector(input: {
   transformations?: string[];
   rateLimitPerMinute?: number;
   retryBehavior?: string;
-  compatibleCoreGridVersion?: string;
+  compatibleSherivsVersion?: string;
   lifecycleState?: ConnectorLifecycleState;
   now?: string;
 }): { ok: true; connector: Connector } | { ok: false; error: string } {
@@ -236,7 +236,7 @@ export function createConnector(input: {
       transformations: input.transformations ?? [],
       rateLimitPerMinute: input.rateLimitPerMinute ?? 60,
       retryBehavior: input.retryBehavior ?? "exponential_backoff",
-      compatibleCoreGridVersion: input.compatibleCoreGridVersion ?? "",
+      compatibleSherivsVersion: input.compatibleSherivsVersion ?? "",
       lifecycleState: input.lifecycleState ?? "draft",
       createdAt: input.now ?? timeAuthority.now().at,
     },

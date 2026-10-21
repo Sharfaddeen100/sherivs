@@ -1,1 +1,1 @@
-export type { Database, Json } from "@coregrid/contracts";
+export type { Database, Json } from "@sherivs/contracts";

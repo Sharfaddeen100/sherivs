@@ -1,5 +1,5 @@
 /**
- * CoreGrid Enterprise Governance — provisioning, rollout, kill switches,
+ * Sherivs Enterprise Governance — provisioning, rollout, kill switches,
  * policy/configuration versioning, service catalog, readiness levels,
  * bottleneck governance, scale limits, mass-event protection, recovery
  * ordering, and autonomy contracts.

@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Cluster O core tests (§131–132, 116–118, 176–180).
+ * Sherivs Scholar — Cluster O core tests (§131–132, 116–118, 176–180).
  * Operation contracts, AI context object, AI safety boundary, evolution guards.
  */
 import { describe, expect, it } from "vitest";

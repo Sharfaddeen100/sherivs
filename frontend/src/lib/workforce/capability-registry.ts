@@ -1,5 +1,5 @@
 /**
- * CoreGrid — worker capability registry & delegation-contract matching
+ * Sherivs — worker capability registry & delegation-contract matching
  * (V1CAP-049 / J-028 / MISSION-R-41, wave 3).
  *
  * E-035: workers only CLAIM, DECLARE, and EXERCISE capabilities — never

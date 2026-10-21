@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-068 phase-48 knowledge graph contract tests (mission G-068).
+ * Sherivs — H3-068 phase-48 knowledge graph contract tests (mission G-068).
  *
  * Proves, against the pure contract in
  * `frontend/src/lib/knowledge-graph/contracts.ts`:

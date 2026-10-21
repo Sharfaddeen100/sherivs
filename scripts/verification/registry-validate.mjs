@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * CoreGrid Architectural Registry Validator
+ * Sherivs Architectural Registry Validator
  *
  * Validates architecture/registry.json machine-auditable metadata (§72, §120-13):
  * - JSON parses; schemaVersion present.

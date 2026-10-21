@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 33 Universal Reality Kernel: typed reality contracts.
+ * Sherivs — Phase 33 Universal Reality Kernel: typed reality contracts.
  *
  * Typed contracts for the kernel substrate tables (cg_entity, cg_relationship,
  * cg_event, cg_observation) authored in the kernel substrate migration
@@ -122,7 +122,7 @@ export function areDistinctEntityIds(sourceId: string, targetId: string): boolea
  * schema_version, tenant_id, status, created_by/updated_by, provenance,
  * policy_context, trace_id, correlation_id and an explicit causation root
  * (causation_id, parent_event_id, or a declared origin). "No anonymous
- * persistent object exists inside CoreGrid."
+ * persistent object exists inside Sherivs."
  *
  * Fail-closed contract: validation REJECTS any object missing envelope
  * fields. The object-type registry gate (MISSION-R-11) is injected through

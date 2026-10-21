@@ -1,5 +1,5 @@
 /**
- * CoreGrid Identity Lifecycle Engine.
+ * Sherivs Identity Lifecycle Engine.
  *
  * Implements `architecture/phase-02-identity.md` G5 (Identity Lifecycle Engine):
  * - Lifecycle transitions are policy-controlled.
@@ -9,7 +9,7 @@
  */
 
 import type {
-  CoreGridIdentity,
+  SherivsIdentity,
   IdentityEvent,
   IdentityEventType,
   IdentityId,
@@ -26,7 +26,7 @@ const timeAuthority = new TimeAuthority(new SystemClock());
  * ────────────────────────────────────────────────────────────*/
 
 export interface LifecycleTransitionRequest {
-  identity: CoreGridIdentity;
+  identity: SherivsIdentity;
   from: IdentityLifecycleState;
   to: IdentityLifecycleState;
   /** Who is performing the transition (Invariant 09). */
@@ -38,7 +38,7 @@ export interface LifecycleTransitionRequest {
 }
 
 export type LifecycleTransitionResult =
-  { ok: true; identity: CoreGridIdentity; event: IdentityEvent } | { ok: false; error: string };
+  { ok: true; identity: SherivsIdentity; event: IdentityEvent } | { ok: false; error: string };
 
 /* ─────────────────────────────────────────────────────────────
  * Lifecycle engine
@@ -73,7 +73,7 @@ export function transitionIdentityLifecycle(
   }
 
   // 4. Apply the transition.
-  const updated: CoreGridIdentity = {
+  const updated: SherivsIdentity = {
     ...req.identity,
     lifecycle: req.to,
     updatedAt: now,
@@ -118,14 +118,14 @@ function lifecycleEventType(to: IdentityLifecycleState): IdentityEventType {
  * Convenience helpers
  * ────────────────────────────────────────────────────────────*/
 
-export function isIdentityActive(id: Pick<CoreGridIdentity, "lifecycle">): boolean {
+export function isIdentityActive(id: Pick<SherivsIdentity, "lifecycle">): boolean {
   return id.lifecycle === "active";
 }
 
-export function isIdentitySuspended(id: Pick<CoreGridIdentity, "lifecycle">): boolean {
+export function isIdentitySuspended(id: Pick<SherivsIdentity, "lifecycle">): boolean {
   return id.lifecycle === "suspended";
 }
 
-export function isIdentityDeleted(id: Pick<CoreGridIdentity, "lifecycle">): boolean {
+export function isIdentityDeleted(id: Pick<SherivsIdentity, "lifecycle">): boolean {
   return id.lifecycle === "deleted" || id.lifecycle === "archived";
 }

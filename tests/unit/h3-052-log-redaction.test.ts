@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-052 Log Redaction Auditor tests (Squad F, mission F-052).
+ * Sherivs — H3-052 Log Redaction Auditor tests (Squad F, mission F-052).
  *
  * AGENTS §29 sweep proving that no password/token/secret material reaches a
  * log line from the cited server-side modules, and that the redaction

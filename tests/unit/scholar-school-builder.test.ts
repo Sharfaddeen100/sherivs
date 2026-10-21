@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — school builder tests (Phase-04 §79–80).
+ * Sherivs Scholar — school builder tests (Phase-04 §79–80).
  * The builder composes parts and delegates structural validation to A1/A2 —
  * an institution can never be saved structurally inconsistent.
  */

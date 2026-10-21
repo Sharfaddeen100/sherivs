@@ -1,5 +1,5 @@
 /**
- * CoreGrid — phase 47 substrate surface: autonomous engineering
+ * Sherivs — phase 47 substrate surface: autonomous engineering
  * self-improvement contracts (H3 wave Squad G, mission G-067; Contract
  * Architect, phase 47).
  *

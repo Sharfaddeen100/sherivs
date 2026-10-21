@@ -3,7 +3,7 @@ import { SystemClock, TimeAuthority } from "./kernel/time-authority";
 /** J-023: time enters only via the kernel time-authority — no direct wall-clock sampling. */
 const timeAuthority = new TimeAuthority(new SystemClock());
 
-// ─── CoreGrid Phase 21 — Global Cloud Fabric ─────────────────────────
+// ─── Sherivs Phase 21 — Global Cloud Fabric ─────────────────────────
 // cloud-byoc.ts — Bring Your Own Cloud: registration, trust, credentials,
 //                 networking, storage, encryption, observability
 // ──────────────────────────────────────────────────────────────────────

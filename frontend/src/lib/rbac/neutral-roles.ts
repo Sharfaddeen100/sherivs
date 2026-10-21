@@ -1,5 +1,5 @@
 /**
- * CoreGrid — neutral core role vocabulary (V1-006 platform authorization layer).
+ * Sherivs — neutral core role vocabulary (V1-006 platform authorization layer).
  *
  * The platform's RBAC substrate: every role here is domain-neutral. Education
  * (runtime-001) and restaurant (second-domain fixture) roles are NOT defined

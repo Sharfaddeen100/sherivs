@@ -1,5 +1,5 @@
 /**
- * CoreGrid — V1-008: the neutral organization-provisioning engine.
+ * Sherivs — V1-008: the neutral organization-provisioning engine.
  *
  * Given a Zod-validated organization request and a registered
  * DomainProvisioningContribution, provisions — as ONE transactional unit —

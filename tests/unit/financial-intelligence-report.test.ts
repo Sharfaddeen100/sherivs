@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 13 financial intelligence report tests (L4 evidence).
+ * Sherivs — Phase 13 financial intelligence report tests (L4 evidence).
  *
  * These assertions hold the report to its own claims:
  * - every rule names a module and a suite that EXIST in the repository;

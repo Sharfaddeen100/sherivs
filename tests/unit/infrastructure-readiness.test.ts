@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Cloud Fabric readiness tests (CF-4/CF-7 entry gates).
+ * Sherivs — Cloud Fabric readiness tests (CF-4/CF-7 entry gates).
  *
  * The fabric may only be applied once its gates are OPEN — and "open" must be a
  * verified fact, not an assumption. This suite proves:

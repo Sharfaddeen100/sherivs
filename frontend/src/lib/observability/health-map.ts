@@ -1,5 +1,5 @@
 /**
- * CoreGrid — dependency health inventory contract (H3 wave, mission F-049).
+ * Sherivs — dependency health inventory contract (H3 wave, mission F-049).
  *
  * WHAT: a declarative map of the dependency checks a deployment declares —
  * for each one: its name, its criticality tier, and a reference to the check

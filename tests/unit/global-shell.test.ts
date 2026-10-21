@@ -1,5 +1,5 @@
 /**
- * CoreGrid — global shell tests (MISSION-R-111 / V1CAP-085, GAP-008 + ADR-003).
+ * Sherivs — global shell tests (MISSION-R-111 / V1CAP-085, GAP-008 + ADR-003).
  *
  * Covers the platform-owned shell contracts:
  *  1. registry-driven navigation (empty registry -> honest empty nav)

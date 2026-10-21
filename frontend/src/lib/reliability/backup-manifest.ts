@@ -1,5 +1,5 @@
 /**
- * CoreGrid — backup manifest contract (Squad A / A-003, M-R-101 groundwork).
+ * Sherivs — backup manifest contract (Squad A / A-003, M-R-101 groundwork).
  *
  * A backup set is only as trustworthy as the manifest that describes it.
  * This module defines the typed, Zod-validated shape of a valid backup

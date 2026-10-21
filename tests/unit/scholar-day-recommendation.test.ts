@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — dynamic school-day recommendation tests.
+ * Sherivs Scholar — dynamic school-day recommendation tests.
  */
 import { describe, expect, it } from "vitest";
 import {

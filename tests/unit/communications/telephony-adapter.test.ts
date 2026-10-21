@@ -1,5 +1,5 @@
 /**
- * CoreGrid — V1-009: TelephonyAdapter contract tests (Twilio + Vapi stub).
+ * Sherivs — V1-009: TelephonyAdapter contract tests (Twilio + Vapi stub).
  *
  * Proves:
  * 1. Contract compliance — both adapters satisfy `TelephonyAdapter`, and the

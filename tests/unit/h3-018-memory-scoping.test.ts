@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-018 memory-scoping enforcement tests (mission B-018 / J-029).
+ * Sherivs — H3-018 memory-scoping enforcement tests (mission B-018 / J-029).
  *
  * Proves, against the pure contract in
  * `frontend/src/lib/context/memory-scope-enforcement.ts`:

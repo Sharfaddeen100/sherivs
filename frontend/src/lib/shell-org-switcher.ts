@@ -1,5 +1,5 @@
 /**
- * CoreGrid — platform shell org/workspace switcher contract (ADR-003, GAP-008).
+ * Sherivs — platform shell org/workspace switcher contract (ADR-003, GAP-008).
  *
  * The switcher is platform chrome over the verified workspace engine
  * (`workspace-core.ts`) and org-model substrate. Its security posture is the

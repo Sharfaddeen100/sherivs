@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Phase 14 Data Platform unit tests (data-core).
+ * Sherivs Scholar — Phase 14 Data Platform unit tests (data-core).
  *
  * Validates:
  * - Data classification ranking (I).

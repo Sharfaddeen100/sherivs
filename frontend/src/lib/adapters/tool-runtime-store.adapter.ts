@@ -1,5 +1,5 @@
 /**
- * CoreGrid — DB-backed substrate adapter for the tool-runtime contract
+ * Sherivs — DB-backed substrate adapter for the tool-runtime contract
  * (J-008 / V1CAP-056 / MISSION-R-62), persisting
  * workforce/tool-runtime.ts governed-tool registrations and invocation
  * records into the tables authored by

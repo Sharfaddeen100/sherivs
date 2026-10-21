@@ -48,10 +48,12 @@ export const ALLOWED_POOLER_HOST_SUFFIX = ".pooler.supabase.com";
 export const ALLOWED_POOLER_USER = `postgres.${STAGING_PROJECT_REF}`;
 
 export const CA_ENV_NAMES = Object.freeze([
-  "COREGRID_DB_CA_CERT",
+  "SHERIVS_DB_CA_CERT",
+  "COREGRID_DB_CA_CERT", // former name, still honoured
   "STAGING_DB_CA_CERT",
 ]);
-export const INSECURE_TLS_ENV = "COREGRID_DB_INSECURE_TLS";
+export const INSECURE_TLS_ENV = "SHERIVS_DB_INSECURE_TLS";
+export const LEGACY_INSECURE_TLS_ENV = "COREGRID_DB_INSECURE_TLS"; // former name, still honoured
 
 /** Only these URL query keys are accepted. Values are still validated. */
 export const ALLOWED_URL_QUERY_KEYS = Object.freeze(["sslmode"]);

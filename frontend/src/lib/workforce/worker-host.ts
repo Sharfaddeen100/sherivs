@@ -1,5 +1,5 @@
 /**
- * CoreGrid — governed worker execution host (MISSION V1-003, team WORKFORCE).
+ * Sherivs — governed worker execution host (MISSION V1-003, team WORKFORCE).
  *
  * Drives ONE host cycle for one claimed execution through the governed
  * worker lifecycle:

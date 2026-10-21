@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 33 Universal Kernel: event outbox delivery state machine.
+ * Sherivs — Phase 33 Universal Kernel: event outbox delivery state machine.
  *
  * Pure logic over the `cg_event` delivery states (`kernel/reality.ts`). A
  * server function records an event with `state = 'pending'`; this module

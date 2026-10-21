@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 01 Foundation: the §59/§60 limits map must not lie (P01-3).
+ * Sherivs — Phase 01 Foundation: the §59/§60 limits map must not lie (P01-3).
  *
  * The Phase 01 document demands rate limits at ten levels (§59) and resource
  * budgets (§60). Those capabilities already exist with canonical owners (Phase 05

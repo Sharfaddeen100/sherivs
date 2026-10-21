@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — class model (Phase-04 §23).
+ * Sherivs Scholar — class model (Phase-04 §23).
  *
  * A class may define: identity, level, programme, academic period, campus,
  * room, teacher assignments, student membership (identity lives in Phase 02),

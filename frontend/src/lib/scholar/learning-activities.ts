@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — learning activities (Phase-04 §44).
+ * Sherivs Scholar — learning activities (Phase-04 §44).
  *
  * Activities may include classroom lessons, practicals, laboratories,
  * workshops, field trips, farm activities, community activities, religious

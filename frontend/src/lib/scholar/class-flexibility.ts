@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — class flexibility (Phase-04 §25).
+ * Sherivs Scholar — class flexibility (Phase-04 §25).
  *
  * A learner may belong to DIFFERENT groups for DIFFERENT activities: the
  * mathematics set, the football team, the examination room and the boarding

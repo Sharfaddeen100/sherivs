@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Phase 08 Security Engine unit tests (security-risk).
+ * Sherivs Scholar — Phase 08 Security Engine unit tests (security-risk).
  *
  * Validates:
  * - Risk scoring from combined signals (Section K.2, K.3).

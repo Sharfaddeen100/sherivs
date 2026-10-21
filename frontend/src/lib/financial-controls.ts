@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Payment, Billing & Financial Operating System financial
+ * Sherivs — Payment, Billing & Financial Operating System financial
  * controls (Phase 13, Sections FC, FD, FE, and the financial invariants).
  *
  * Implements `architecture/phase-13-financial-system.md`:
@@ -204,7 +204,7 @@ export interface FinancialHistory {
 
 /**
  * Financial state reconstruction (FE): given the audit trail and the current
- * state, CoreGrid can answer who created an object, why, what changed, who
+ * state, Sherivs can answer who created an object, why, what changed, who
  * changed it, and what the current state is. Historical states are
  * reconstructable from the ordered immutable event trail.
  */

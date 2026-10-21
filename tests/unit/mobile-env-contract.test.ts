@@ -1,5 +1,5 @@
 /**
- * CoreGrid Mobile V1-010 — environment contract tests.
+ * Sherivs Mobile V1-010 — environment contract tests.
  *
  * Validates the fail-closed environment contract: valid configurations
  * parse, invalid ones are rejected with the full violation list, secrets
@@ -54,7 +54,7 @@ describe("mobile environment contract", () => {
       expect(message).toContain("EXPO_PUBLIC_APP_ENV");
       expect(message).toContain("EXPO_PUBLIC_SUPABASE_URL");
       expect(message).toContain("EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY");
-      expect(message).toContain("EXPO_PUBLIC_COREGRID_WEB_BASE_URL");
+      expect(message).toContain("EXPO_PUBLIC_SHERIVS_WEB_BASE_URL");
     }
   });
 

@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — marketplace install gate (WAVE-R38).
+ * Sherivs Scholar — marketplace install gate (WAVE-R38).
  *
  * Installing is a gated act: the tenant must exist, the feature code must be
  * known, it must not already be installed, and an ACTIVE entitlement must cover

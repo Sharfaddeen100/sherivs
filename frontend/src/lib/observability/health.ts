@@ -1,5 +1,5 @@
 /**
- * CoreGrid — pure health report builder (V5.3 Part 30 / LAUNCH_BLOCKER).
+ * Sherivs — pure health report builder (V5.3 Part 30 / LAUNCH_BLOCKER).
  *
  * The report is a fixed whitelist of fields (status, ts, uptime_s, memory,
  * version, checks). It never reads or emits environment variables, connection

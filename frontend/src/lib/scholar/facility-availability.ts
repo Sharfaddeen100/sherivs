@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — facility availability, scheduling & conflicts
+ * Sherivs Scholar — facility availability, scheduling & conflicts
  * (Phase-04 §74–76).
  *
  * Facilities declare availability, capacity, restrictions, equipment and

@@ -1,5 +1,5 @@
 /**
- * CoreGrid — MISSION H3-027: V1 file-plane substrate (L-T-011).
+ * Sherivs — MISSION H3-027: V1 file-plane substrate (L-T-011).
  *
  * Pins the authored migration 20261003000016_coregrid_v1_file_substrate.sql
  * and its genuine-inverse rollback. OFFLINE unit suite: SQL text assertions

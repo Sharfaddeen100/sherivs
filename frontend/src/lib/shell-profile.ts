@@ -1,5 +1,5 @@
 /**
- * CoreGrid — platform shell profile menu contract (ADR-003, GAP-008).
+ * Sherivs — platform shell profile menu contract (ADR-003, GAP-008).
  *
  * The profile menu is platform chrome: its identity block and destinations
  * are derived here from server-resolved session data, with platform-owned

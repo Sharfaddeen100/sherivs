@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Cluster D education-mode tests (§11–16).
+ * Sherivs Scholar — Cluster D education-mode tests (§11–16).
  * Religious, traditional, vocational, agricultural, technical, entrepreneurship.
  */
 import { describe, expect, it } from "vitest";

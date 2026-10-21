@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Knowledge freshness, invalidation & source reliability registry
+ * Sherivs — Knowledge freshness, invalidation & source reliability registry
  * (J-019 / V1CAP-040 / MISSION-R-71, wave 3).
  *
  * This layer COMPOSES WITH the phase-36 durable memory tier

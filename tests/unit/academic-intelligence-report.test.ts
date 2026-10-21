@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 11: the academic intelligence report tests.
+ * Sherivs — Phase 11: the academic intelligence report tests.
  *
  * The report is this phase's L4 evidence, so it is held to the phase's own standard: it must
  * exercise the engines rather than describe them, tie every rule to an implementation and a

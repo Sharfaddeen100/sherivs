@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-012 context-package completeness tests (mission B-012, J-011).
+ * Sherivs — H3-012 context-package completeness tests (mission B-012, J-011).
  *
  * Proves that a context package is accepted ONLY when `memory_scope`,
  * `data_scope`, `risk_level` and `trace_id` are all present and well-formed;

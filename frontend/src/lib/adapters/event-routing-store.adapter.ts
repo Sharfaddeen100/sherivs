@@ -1,5 +1,5 @@
 /**
- * CoreGrid — DB-backed substrate adapter for the event routing contract
+ * Sherivs — DB-backed substrate adapter for the event routing contract
  * (V1CAP-043 / J-021 / MISSION-R-63), persisting kernel/event-routing.ts
  * subscriptions, queues, cursors and outcomes into the tables authored by
  * database/supabase/migrations/20261002000007_coregrid_v1_event_routing.sql.

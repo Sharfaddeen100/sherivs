@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — school-profile contract tests (persistence, R-24).
+ * Sherivs Scholar — school-profile contract tests (persistence, R-24).
  */
 import { describe, expect, it } from "vitest";
 import {

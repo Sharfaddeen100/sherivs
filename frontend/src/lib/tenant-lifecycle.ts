@@ -1,5 +1,5 @@
 /**
- * CoreGrid Tenant Lifecycle Engine (G3).
+ * Sherivs Tenant Lifecycle Engine (G3).
  *
  * Implements `architecture/phase-03-multi-tenancy.md`:
  * - Controls tenant state transitions (H2).
@@ -10,7 +10,7 @@
  */
 
 import type {
-  CoreGridTenant,
+  SherivsTenant,
   TenantEvent,
   TenantEventType,
   TenantId,
@@ -27,7 +27,7 @@ const timeAuthority = new TimeAuthority(new SystemClock());
  * ────────────────────────────────────────────────────────────*/
 
 export interface TenantLifecycleTransitionRequest {
-  tenant: CoreGridTenant;
+  tenant: SherivsTenant;
   from: TenantStatus;
   to: TenantStatus;
   /** Who is performing the transition (attributable). */
@@ -39,7 +39,7 @@ export interface TenantLifecycleTransitionRequest {
 }
 
 export type TenantLifecycleTransitionResult =
-  { ok: true; tenant: CoreGridTenant; event: TenantEvent } | { ok: false; error: string };
+  { ok: true; tenant: SherivsTenant; event: TenantEvent } | { ok: false; error: string };
 
 /* ─────────────────────────────────────────────────────────────
  * Lifecycle engine
@@ -74,7 +74,7 @@ export function transitionTenantLifecycle(
   }
 
   // 4. Apply the transition.
-  const updated: CoreGridTenant = {
+  const updated: SherivsTenant = {
     ...req.tenant,
     status: req.to,
     updatedAt: now,
@@ -122,19 +122,19 @@ function tenantEventType(to: TenantStatus): TenantEventType {
  * Convenience helpers
  * ────────────────────────────────────────────────────────────*/
 
-export function isTenantActive(tenant: Pick<CoreGridTenant, "status">): boolean {
+export function isTenantActive(tenant: Pick<SherivsTenant, "status">): boolean {
   return tenant.status === "ACTIVE";
 }
 
-export function isTenantSuspended(tenant: Pick<CoreGridTenant, "status">): boolean {
+export function isTenantSuspended(tenant: Pick<SherivsTenant, "status">): boolean {
   return tenant.status === "SUSPENDED";
 }
 
-export function isTenantTerminated(tenant: Pick<CoreGridTenant, "status">): boolean {
+export function isTenantTerminated(tenant: Pick<SherivsTenant, "status">): boolean {
   return tenant.status === "TERMINATED" || tenant.status === "TERMINATING";
 }
 
-export function isTenantMigrating(tenant: Pick<CoreGridTenant, "status">): boolean {
+export function isTenantMigrating(tenant: Pick<SherivsTenant, "status">): boolean {
   return tenant.status === "MIGRATING";
 }
 

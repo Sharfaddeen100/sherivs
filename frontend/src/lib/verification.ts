@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Verification independence enforcement
+ * Sherivs — Verification independence enforcement
  * (J-038 / V1CAP-060 / MISSION-R-92).
  *
  * E-027 structural law: a verification record whose verifier identity equals —

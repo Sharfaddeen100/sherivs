@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — school builder (Phase-04 §79–80).
+ * Sherivs Scholar — school builder (Phase-04 §79–80).
  *
  * The administrator constructs the institution's operating model through
  * configuration: educational structure, organisation, schedules, shifts,

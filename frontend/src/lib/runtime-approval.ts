@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Core Application Runtime approval state.
+ * Sherivs — Core Application Runtime approval state.
  *
  * Implements `architecture/phase-05-core-application-runtime.md`:
  * - Human oversight (Section CI): sensitive operations may require human approval.

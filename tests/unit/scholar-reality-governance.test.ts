@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — A9/A10 tests (§163–167, §166–168).
+ * Sherivs Scholar — A9/A10 tests (§163–167, §166–168).
  * Reality drift detection + configuration governance, both configuration-pure.
  */
 import { describe, expect, it } from "vitest";

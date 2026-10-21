@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — competency model + mastery (Phase-04 §102–103).
+ * Sherivs Scholar — competency model + mastery (Phase-04 §102–103).
  *
  * Competencies may be academic, technical, practical, vocational, behavioural
  * or professional (plus institution-defined domains). Mastery supports

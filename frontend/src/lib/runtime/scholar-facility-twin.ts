@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — facility digital-twin binding (Phase 16 consumption).
+ * Sherivs Scholar — facility digital-twin binding (Phase 16 consumption).
  *
  * Scholar CONSUMES the domain-neutral Phase-16 twin contracts: twin KINDS,
  * observation SOURCES and observation QUALITIES are the kernel vocabulary.

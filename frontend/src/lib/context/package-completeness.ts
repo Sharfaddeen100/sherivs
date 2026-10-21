@@ -1,5 +1,5 @@
 /**
- * CoreGrid — context-package completeness checker (J-011 / H3 mission B-012).
+ * Sherivs — context-package completeness checker (J-011 / H3 mission B-012).
  *
  * The governed assembler (`../context-assembly`) states four scope fields on
  * every assembled package: `memoryScope`, `dataScope`, `riskLevel` and

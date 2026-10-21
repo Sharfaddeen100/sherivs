@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — kernel-capability ↔ Scholar-vertical binding map.
+ * Sherivs Scholar — kernel-capability ↔ Scholar-vertical binding map.
  *
  * Which Scholar vertical realizes which kernel capability, with the evidence
  * path proving the binding is authored (a live route or a runtime module). The

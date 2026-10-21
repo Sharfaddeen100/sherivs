@@ -1,5 +1,5 @@
 /**
- * CoreGrid — kernel phase-contract registry (domain-neutral barrel).
+ * Sherivs — kernel phase-contract registry (domain-neutral barrel).
  *
  * The assembled set of authored phase contracts. `validatePhaseContracts`
  * checks every contract and the cross-phase connection graph together, so a

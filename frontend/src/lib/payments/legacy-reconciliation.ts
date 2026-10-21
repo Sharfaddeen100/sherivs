@@ -1,5 +1,5 @@
 /**
- * CoreGrid — legacy durable payment-table reconciliation contract
+ * Sherivs — legacy durable payment-table reconciliation contract
  * (MISSION H2-26, J-044 / L-H-020 / COND-009).
  *
  * The corpus (STREAM H implementation map, financial-system entry) flags the

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * CoreGrid — Vercel project environment provisioning (authorized operator flow).
+ * Sherivs — Vercel project environment provisioning (authorized operator flow).
  *
  * Authority: DECISIONS.md #204 (PLATFORM-013) — the operator explicitly
  * requested autonomous Vercel environment setup on 2026-10-06 using the

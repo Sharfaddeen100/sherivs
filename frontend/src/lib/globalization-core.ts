@@ -1,11 +1,11 @@
 /**
- * CoreGrid Globalization — locale, language, culture, identity, and
+ * Sherivs Globalization — locale, language, culture, identity, and
  * accessibility domain foundation.
  *
  * Implements `architecture/phase-30-globalization.md`:
  * - Globalization principle (C): One Core Architecture + Regional
  *   Configuration + Jurisdictional Rules + Localization + Institutional
- *   Context = Global CoreGrid — never a separate CoreGrid per country.
+ *   Context = Global Sherivs — never a separate Sherivs per country.
  * - Globalization vs localization (F) and internationalization (G).
  * - Locale model (H), resolution (I), priority (J): institutional policy >
  *   user preference > device > browser > platform default, each candidate

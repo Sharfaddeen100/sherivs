@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — physical ↔ digital mapping (Phase-04 §70).
+ * Sherivs Scholar — physical ↔ digital mapping (Phase-04 §70).
  *
  * Every supported physical entity should carry a digital identity/reference.
  * This module records those mappings as pure configuration. The authoritative

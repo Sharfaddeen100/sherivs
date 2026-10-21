@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — blueprint tests (Phase-04 §81–82,128–129).
+ * Sherivs Scholar — blueprint tests (Phase-04 §81–82,128–129).
  */
 import { describe, expect, it } from "vitest";
 import {

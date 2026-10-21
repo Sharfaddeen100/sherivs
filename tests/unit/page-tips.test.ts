@@ -1,5 +1,5 @@
 /**
- * CoreGrid — per-page guidance registry tests.
+ * Sherivs — per-page guidance registry tests.
  */
 import { describe, expect, it } from "vitest";
 import { findTipsForPath, PAGE_TIPS } from "../../frontend/src/lib/guidance/page-tips";

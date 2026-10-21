@@ -1,5 +1,5 @@
 /**
- * CoreGrid — universal organization model (V1-minimal, MISSION-V1-006).
+ * Sherivs — universal organization model (V1-minimal, MISSION-V1-006).
  *
  * Pure, domain-neutral organization structure per V5.3 Part 7.2: organizations
  * are dynamically configurable trees of OrgUnits (organization | department |

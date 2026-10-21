@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Cluster M tests (Phase-04 §77, 134–141).
+ * Sherivs Scholar — Cluster M tests (Phase-04 §77, 134–141).
  * Operating policies, purpose-limited privacy, child data, audit/retention.
  */
 import { describe, expect, it } from "vitest";

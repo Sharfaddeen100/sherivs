@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — configuration governance (Phase-04 §166–168).
+ * Sherivs Scholar — configuration governance (Phase-04 §166–168).
  *
  * Major configuration changes require: PREVIEW (§166 human override context) ·
  * VALIDATION (A5) · AUTHORIZATION (P08 roles — never client-supplied) ·

@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — fail-closed feature gate.
+ * Sherivs Scholar — fail-closed feature gate.
  *
  * The one place that answers "may this actor use this feature?": unknown code,
  * missing identity, missing tenant, a feature the institution's reality does not

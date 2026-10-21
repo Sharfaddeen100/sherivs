@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Scheduling & Timetable Intelligence: quality, disruption and comparison.
+ * Sherivs — Scheduling & Timetable Intelligence: quality, disruption and comparison.
  *
  * Optimization is worthless if the result is infeasible, unauditable, inexplicable or
  * operationally impossible. This module therefore scores a plan on independent dimensions

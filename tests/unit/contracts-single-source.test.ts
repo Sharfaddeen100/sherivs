@@ -2,7 +2,7 @@
  * Single-source contract structural test (Constitution §23).
  *
  * The cross-surface contracts live in ONE physical source
- * (`packages/contracts`, specifier `@coregrid/contracts`). Vocabulary drift
+ * (`packages/contracts`, specifier `@sherivs/contracts`). Vocabulary drift
  * between web and mobile is impossible by construction — there is no second
  * declaration to drift against. This suite therefore proves the STRUCTURE
  * that makes drift impossible:
@@ -25,7 +25,7 @@ import {
   IDENTITY_KINDS,
   IDENTITY_STATES,
   VERIFICATION_DECISIONS,
-} from "@coregrid/contracts";
+} from "@sherivs/contracts";
 
 const repoRoot = resolve(import.meta.dirname, "../..");
 const read = (rel: string): string => readFileSync(join(repoRoot, rel), "utf8");
@@ -67,7 +67,7 @@ function listTsFiles(root: string): string[] {
   return out;
 }
 
-describe("shared contract package is the single source (@coregrid/contracts)", () => {
+describe("shared contract package is the single source (@sherivs/contracts)", () => {
   it("declares each canonical vocabulary exactly once — only in packages/contracts", () => {
     const declaration = new RegExp(
       `const (?:${VOCABULARY_NAMES.join("|")}) =`,
@@ -87,13 +87,13 @@ describe("shared contract package is the single source (@coregrid/contracts)", (
 
   it("every web contract module consumes the package", () => {
     for (const file of FRONTEND_CONTRACT_MODULES) {
-      expect(read(file).includes('"@coregrid/contracts"'), `${file} must import from the package`).toBe(true);
+      expect(read(file).includes('"@sherivs/contracts"'), `${file} must import from the package`).toBe(true);
     }
   });
 
   it("every mobile contract consumer imports the package", () => {
     for (const file of MOBILE_CONSUMERS) {
-      expect(read(file).includes('"@coregrid/contracts"'), `${file} must import from the package`).toBe(true);
+      expect(read(file).includes('"@sherivs/contracts"'), `${file} must import from the package`).toBe(true);
     }
   });
 
@@ -145,7 +145,7 @@ describe("the DB type generator is officially wired into the contracts package (
 
   it("the legacy output path remains a one-line re-export of the package", () => {
     const legacy = read(LEGACY_PATH).trim();
-    expect(legacy).toBe('export type { Database, Json } from "@coregrid/contracts";');
+    expect(legacy).toBe('export type { Database, Json } from "@sherivs/contracts";');
     expect(read(LEGACY_PATH).split("\n")).toHaveLength(2);
   });
 

@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Vapi voice adapter stub (V1-009, team COMMS).
+ * Sherivs — Vapi voice adapter stub (V1-009, team COMMS).
  *
  * The Vapi implementation of the `TelephonyAdapter` contract, shipped in V1
  * as a CREDENTIAL-GATED STUB: the contract, the env credential gate and the

@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — school import (Phase-04 §158).
+ * Sherivs Scholar — school import (Phase-04 §158).
  *
  * Existing schools may be imported from spreadsheets, CSV, existing SIS, HR
  * systems, government systems or manual configuration. Import jobs are typed

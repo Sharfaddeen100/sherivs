@@ -1,5 +1,5 @@
 /**
- * CoreGrid — installed runtime navigation (runtime layer registry).
+ * Sherivs — installed runtime navigation (runtime layer registry).
  *
  * The kernel's workspace engine renders navigation CONTRIBUTIONS; it owns none. This
  * module is the runtime layer's list of what is installed, so the platform shell resolves

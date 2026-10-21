@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Canonical CoreObject envelope conformance (V1CAP-002, MISSION-R-10).
+ * Sherivs — Canonical CoreObject envelope conformance (V1CAP-002, MISSION-R-10).
  *
  * Proves, at unit level, that:
  *  1. the envelope contract is fail-closed — an anonymous persistent kernel

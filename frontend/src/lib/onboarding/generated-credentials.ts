@@ -1,5 +1,5 @@
 /**
- * CoreGrid — generated-once credentials for provisioned accounts
+ * Sherivs — generated-once credentials for provisioned accounts
  * (V1-008; AGENTS.md §29 OBSERVABILITY, §30 SECRETS).
  *
  * A provisioned account's initial password is created AT PROVISIONING TIME

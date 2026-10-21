@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 10 Communication Platform: the Communication Steward report.
+ * Sherivs — Phase 10 Communication Platform: the Communication Steward report.
  *
  * This is the phase's L4 evidence. Nothing here is asserted in prose: the module
  * provisions real organizations, writes real mandates, and runs the decision engine over

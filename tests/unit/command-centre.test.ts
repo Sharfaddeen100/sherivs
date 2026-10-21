@@ -1,5 +1,5 @@
 /**
- * CoreGrid — command centre operational projection tests (V1CAP-089 / J-048 /
+ * Sherivs — command centre operational projection tests (V1CAP-089 / J-048 /
  * MISSION-R-110). Covers the projection contract's loop-closure laws:
  *  1. projection correctness (alerts → declared incident grouping, severity
  *     and lifecycle discipline)

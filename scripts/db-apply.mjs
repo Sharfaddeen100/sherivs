@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * CoreGrid — apply database migrations in order via node-postgres.
+ * Sherivs — apply database migrations in order via node-postgres.
  *
  * Usage:
  *   SHERIVS_DATABASE_TARGET=development DATABASE_URL="postgresql://..." \

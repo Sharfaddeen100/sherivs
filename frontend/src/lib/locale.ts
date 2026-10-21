@@ -1,5 +1,5 @@
 /**
- * CoreGrid — locale resolution (domain-neutral, i18n foundation).
+ * Sherivs — locale resolution (domain-neutral, i18n foundation).
  *
  * Language-negotiation over the supported locale set. English ships today;
  * adding a locale is a data change in the same style as every other platform

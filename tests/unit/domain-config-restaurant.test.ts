@@ -1,5 +1,5 @@
 /**
- * CoreGrid — V5.3 Part 64 proof: the restaurant domain validates against the
+ * Sherivs — V5.3 Part 64 proof: the restaurant domain validates against the
  * SAME fail-closed validator as the Scholar domain, with zero shared entity
  * types (V5.3 Part 46 NO DOMAIN CONTAMINATION).
  */

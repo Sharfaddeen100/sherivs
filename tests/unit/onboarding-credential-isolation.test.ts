@@ -1,5 +1,5 @@
 /**
- * CoreGrid — V1-008: credential-isolation proof suite (AGENTS.md §29/§30).
+ * Sherivs — V1-008: credential-isolation proof suite (AGENTS.md §29/§30).
  *
  * Proves the step-3 objective — fixed demo credentials are eliminated from
  * every production-reachable path:

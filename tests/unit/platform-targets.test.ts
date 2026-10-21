@@ -1,5 +1,5 @@
 /**
- * CoreGrid — platform & browser target registry tests (Phases 22/23).
+ * Sherivs — platform & browser target registry tests (Phases 22/23).
  */
 import { describe, expect, it } from "vitest";
 import {

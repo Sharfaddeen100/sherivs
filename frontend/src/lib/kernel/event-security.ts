@@ -1,5 +1,5 @@
 /**
- * CoreGrid — per-event security contract (V1CAP-044 / J-022 / MISSION-R-81).
+ * Sherivs — per-event security contract (V1CAP-044 / J-022 / MISSION-R-81).
  *
  * G-044 states event security per-event in the corpus, but no stream carries
  * or enforces it. Events are the currency of Evidence; an event without

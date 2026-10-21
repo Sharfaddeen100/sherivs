@@ -1,5 +1,5 @@
 /**
- * CoreGrid — resource-quota contract layered on the reliability lease
+ * Sherivs — resource-quota contract layered on the reliability lease
  * contracts (H3 wave Squad B, mission B-019 / J-031).
  *
  * WHAT: metered resource-quota admission — a typed ceiling on how much of a

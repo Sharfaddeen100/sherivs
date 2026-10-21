@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 13 financial intelligence report (L4).
+ * Sherivs — Phase 13 financial intelligence report (L4).
  *
  * This is the phase's own evidence surface. It does not describe the financial
  * engine: it EXECUTES it. Every check below calls the real engine with real input
@@ -11,7 +11,7 @@
  * the phase has NOT closed — stated as unfinished work rather than omitted.
  *
  * The report also expresses the same capability in several organizations' own
- * vocabulary, because FinOS belongs to CoreGrid and not to one kind of institution:
+ * vocabulary, because FinOS belongs to Sherivs and not to one kind of institution:
  * nothing here may present a single institution's process as the default.
  */
 import { money } from "./financial-core";

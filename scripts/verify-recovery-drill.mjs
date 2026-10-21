@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * CoreGrid — H3 wave, team H3-001 (Recovery Drill Runner Engineer), mission
+ * Sherivs — H3 wave, team H3-001 (Recovery Drill Runner Engineer), mission
  * A-001 (Squad A — Recovery & Resilience, M-R-101 groundwork).
  *
  * Recovery-drill verification runner, built in the battery exemplar's image
@@ -29,9 +29,9 @@
  * squad modules are deliberately not imported). Credential values are never
  * printed, logged, or written to any artifact. No eval, no dynamic code.
  *
- * Manifest store: COREGRID_RECOVERY_MANIFESTS_DIR (defaulting to
+ * Manifest store: SHERIVS_RECOVERY_MANIFESTS_DIR (defaulting to
  * architecture/proofs/recovery/manifests in-repo). Artifacts directory:
- * COREGRID_ARTIFACTS_DIR (defaulting to /opt/cursor/artifacts).
+ * SHERIVS_ARTIFACTS_DIR (defaulting to /opt/cursor/artifacts).
  *
  * Usage:
  *   node scripts/verify-recovery-drill.mjs --rehearse [project-ref]
@@ -50,9 +50,9 @@ import { requireManagementTarget } from "./lib/sherivs-db-target.mjs";
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
 const DEFAULT_ARTIFACTS_DIR = "/opt/cursor/artifacts";
-const ARTIFACTS_DIR = process.env.COREGRID_ARTIFACTS_DIR ?? DEFAULT_ARTIFACTS_DIR;
+const ARTIFACTS_DIR = (process.env.SHERIVS_ARTIFACTS_DIR ?? process.env.COREGRID_ARTIFACTS_DIR) ?? DEFAULT_ARTIFACTS_DIR;
 const DEFAULT_MANIFESTS_DIR = join(ROOT, "architecture", "proofs", "recovery", "manifests");
-const MANIFESTS_DIR = process.env.COREGRID_RECOVERY_MANIFESTS_DIR ?? DEFAULT_MANIFESTS_DIR;
+const MANIFESTS_DIR = (process.env.SHERIVS_RECOVERY_MANIFESTS_DIR ?? process.env.COREGRID_RECOVERY_MANIFESTS_DIR) ?? DEFAULT_MANIFESTS_DIR;
 
 // ── mode / argument parsing ──────────────────────────────────────────────────
 const argv = process.argv.slice(2);

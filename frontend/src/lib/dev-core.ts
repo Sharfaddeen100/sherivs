@@ -1,5 +1,5 @@
 /**
- * CoreGrid Developer Platform — developer, organization, and project domain.
+ * Sherivs Developer Platform — developer, organization, and project domain.
  *
  * Implements `architecture/phase-28-developer-platform.md`:
  * - Subsystem identity (1): the engineering environment through which developers
@@ -7,7 +7,7 @@
  *   applications, extensions, connectors, educational capabilities, hardware
  *   integrations, dashboards, workflows, and other CoreGrid-compatible capabilities.
  * - Phase 28 builds products; Phase 27 distributes them (5).
- * - Developer types (6): CoreGrid engineers, independent/startup/enterprise/
+ * - Developer types (6): Sherivs engineers, independent/startup/enterprise/
  *   school/university/government developers, AI/agent/automation/integration/
  *   hardware/educational-content/research developers, system integrators.
  * - Developer organizations (7-8): owners, administrators, developers, reviewers,
@@ -20,7 +20,7 @@
  * - Project manifest (19): machine-readable manifest with project identity,
  *   version, type, APIs, dependencies, permissions, data requirements,
  *   configuration, events, webhooks, environments, compatibility, security.
- * - CoreGrid SDK (20-21): official SDKs; strongly typed abstractions.
+ * - Sherivs SDK (20-21): official SDKs; strongly typed abstractions.
  * - Developer identity (CU): integrates with Phase 02, does not replace identity
  *   authority. Developer authorization (CV) respects Phase 08 security contracts.
  * - Tenant context (CW), developer data isolation (CX), production access (CY)
@@ -284,8 +284,8 @@ export interface ProjectManifest {
   events: string[];
   webhooks: string[];
   environments: string[];
-  /** Minimum CoreGrid version compatibility. */
-  compatibleCoreGridVersion: string;
+  /** Minimum Sherivs version compatibility. */
+  compatibleSherivsVersion: string;
   securityRequirements: string[];
 }
 
@@ -302,13 +302,13 @@ export function createProjectManifest(input: {
   events?: string[];
   webhooks?: string[];
   environments?: string[];
-  compatibleCoreGridVersion?: string;
+  compatibleSherivsVersion?: string;
   securityRequirements?: string[];
 }): { ok: true; manifest: ProjectManifest } | { ok: false; error: string } {
   if (!input.version.trim()) {
     return { ok: false, error: "Manifest version is required" };
   }
-  if (!input.compatibleCoreGridVersion && input.environments?.includes("production")) {
+  if (!input.compatibleSherivsVersion && input.environments?.includes("production")) {
     return { ok: false, error: "Production manifests must declare Sherivs compatibility" };
   }
   return {
@@ -326,7 +326,7 @@ export function createProjectManifest(input: {
       events: input.events ?? [],
       webhooks: input.webhooks ?? [],
       environments: input.environments ?? ["development"],
-      compatibleCoreGridVersion: input.compatibleCoreGridVersion ?? "",
+      compatibleSherivsVersion: input.compatibleSherivsVersion ?? "",
       securityRequirements: input.securityRequirements ?? [],
     },
   };

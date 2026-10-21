@@ -1,5 +1,5 @@
 /**
- * CoreGrid Mobile — application runtime composition root.
+ * Sherivs Mobile — application runtime composition root.
  *
  * Owns the single instances of: the parsed environment contract, the
  * session-secure storage adapter (expo-secure-store → iOS Keychain /
@@ -9,9 +9,9 @@
  */
 import * as SecureStore from "expo-secure-store";
 import {
-  createCoreGridSupabaseClient,
+  createSherivsSupabaseClient,
   createKernelSupabaseClient,
-  type CoreGridSupabaseClient,
+  type SherivsSupabaseClient,
   type KernelSupabaseClient,
   type SessionStorageAdapter,
 } from "@/api/client";
@@ -25,5 +25,5 @@ const secureStorage: SessionStorageAdapter = {
   removeItem: (key) => SecureStore.deleteItemAsync(key),
 };
 
-export const supabase: CoreGridSupabaseClient = createCoreGridSupabaseClient(mobileEnv, secureStorage);
+export const supabase: SherivsSupabaseClient = createSherivsSupabaseClient(mobileEnv, secureStorage);
 export const kernelSupabase: KernelSupabaseClient = createKernelSupabaseClient(mobileEnv, secureStorage);

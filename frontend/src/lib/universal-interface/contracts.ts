@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 43 Universal Interface & Connectivity Intelligence
+ * Sherivs — Phase 43 Universal Interface & Connectivity Intelligence
  * substrate contracts (H3 wave Squad G, mission G-063; Constitution §7, §9,
  * §12, §15, §16, §21, §34; architecture/phase-43-universal-interface-
  * connectivity-intelligence.md).

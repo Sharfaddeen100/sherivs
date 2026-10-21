@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Cluster C tests (Phase-04 §22–25).
+ * Sherivs Scholar — Cluster C tests (Phase-04 §22–25).
  * Cohorts, classes, streams, class flexibility and the kernel structure graph.
  */
 import { describe, expect, it } from "vitest";

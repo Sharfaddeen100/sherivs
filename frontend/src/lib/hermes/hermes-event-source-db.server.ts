@@ -1,5 +1,5 @@
 /**
- * CoreGrid — DB-backed Hermes event source (server wiring)
+ * Sherivs — DB-backed Hermes event source (server wiring)
  * (V1 remediation wave, team R4 / HERMES-PORT; follow-up of V1-002).
  *
  * Wires the event→observation adapter (`hermes-event-source.ts`) to the

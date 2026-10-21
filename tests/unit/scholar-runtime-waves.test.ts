@@ -1,7 +1,7 @@
 /**
- * CoreGrid Scholar — runtime waves R32/R34/R35/R36 laws.
+ * Sherivs Scholar — runtime waves R32/R34/R35/R36 laws.
  *
- * R32: CoreGrid is a living organization — its departments are generated from the
+ * R32: Sherivs is a living organization — its departments are generated from the
  *      COREGRID_INTERNAL roles and its widgets are data.
  * R34: dashboards come from enabled feature codes + authorized role categories;
  *      no widget exists without the feature that owns it.

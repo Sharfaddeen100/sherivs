@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 33 Universal Reality Kernel: reality contract tests.
+ * Sherivs — Phase 33 Universal Reality Kernel: reality contract tests.
  *
  * Two layers of verification:
  *  1. SQL coherence — every enumerated value exported by the typed contracts

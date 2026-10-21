@@ -1,5 +1,5 @@
 /**
- * Phase 29 — CoreGrid Integration contract (seeded authoring).
+ * Phase 29 — Sherivs Integration contract (seeded authoring).
  *
  * Adapters and interoperability: register external systems, transform between
  * their shape and ours, run connections and govern what may be exchanged.

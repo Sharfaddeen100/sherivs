@@ -1,5 +1,5 @@
 /**
- * CoreGrid — runtime switch-safety guard (H3 B-013 / J-012).
+ * Sherivs — runtime switch-safety guard (H3 B-013 / J-012).
  *
  * Runtime layer on top of the pure switch-safety contract
  * (`./switch-safety`, imported READ-ONLY — this module composes it, it does

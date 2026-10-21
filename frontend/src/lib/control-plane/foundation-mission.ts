@@ -1,5 +1,5 @@
 /**
- * CoreGrid Foundation Mission 001 — in-memory control-plane slice.
+ * Sherivs Foundation Mission 001 — in-memory control-plane slice.
  *
  * Owners recorded in
  * architecture/COREGRID_FOUNDATION_MISSION_001_AUTHORITY_DECISION.json:
@@ -17,7 +17,7 @@ import type {
   ExecutionStatus,
   ExternalEffect,
   VerificationDecision,
-} from "@coregrid/contracts";
+} from "@sherivs/contracts";
 
 export const STATUS_SEMANTICS = {
   COMPLETE: "An approved scope has an evidenced outcome for that scope only.",
@@ -36,7 +36,7 @@ export type ClaimStatus = keyof typeof STATUS_SEMANTICS;
 export const MISSION_LIFECYCLES = ["proposed", "authorized", "revoked", "closed"] as const;
 export type MissionLifecycle = (typeof MISSION_LIFECYCLES)[number];
 
-// Canonical execution vocabulary — declared ONCE in @coregrid/contracts and
+// Canonical execution vocabulary — declared ONCE in @sherivs/contracts and
 // re-exported here (§23). The mobile app consumes the same declarations, so
 // contract drift between web and mobile is impossible by construction.
 export {
@@ -44,12 +44,12 @@ export {
   EXECUTION_STATUSES,
   EXTERNAL_EFFECTS,
   VERIFICATION_DECISIONS,
-} from "@coregrid/contracts";
+} from "@sherivs/contracts";
 export type {
   EvidenceLifecycle,
   ExternalEffect,
   VerificationDecision as VerificationDecisionName,
-} from "@coregrid/contracts";
+} from "@sherivs/contracts";
 export const CONFORMANCE_DECISIONS = ["conformant", "nonconformant", "not_assessed"] as const;
 
 export interface MissionIntent {

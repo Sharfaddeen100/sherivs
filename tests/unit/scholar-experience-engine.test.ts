@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Experience & website generation engine laws.
+ * Sherivs Scholar — Experience & website generation engine laws.
  *
  * The directive's Block 2 promises, locked as tests:
  *  - an organization's reality GENERATES its public presence and internal

@@ -1,5 +1,5 @@
 /**
- * CoreGrid — V1-008: the domain-provisioning contribution registry.
+ * Sherivs — V1-008: the domain-provisioning contribution registry.
  *
  * The registration half of the onboarding engine's DomainDefinition pattern
  * (modeled on `rbac/domain-contribution.ts`): a domain declares ONCE how its

@@ -1,5 +1,5 @@
 /**
- * CoreGrid — governed context assembly (V1-minimal, MISSION-V1-010; extended
+ * Sherivs — governed context assembly (V1-minimal, MISSION-V1-010; extended
  * additively by MISSION-R-30 / J-011 + J-012, V1CAP-023/024).
  *
  * Composes the AI context domain vocabulary from `ai-context.ts` (trust

@@ -1,5 +1,5 @@
 /**
- * CoreGrid — kernel substrate admin-client surface.
+ * Sherivs — kernel substrate admin-client surface.
  *
  * The generated `Database` type does not yet include the cg_* substrate
  * tables (migration 20260903000000_coregrid_universal_kernel_substrate.sql

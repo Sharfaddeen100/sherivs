@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * CoreGrid registry drift hook (MISSION-R-04 / J-038).
+ * Sherivs registry drift hook (MISSION-R-04 / J-038).
  *
  * Compares the machine-operable registry's declared state against the
  * governed evolution baseline (architecture/COREGRID_EVOLUTION_BASELINE_2026-09-30.json)

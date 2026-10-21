@@ -1,5 +1,5 @@
 /**
- * CoreGrid — AI Agent System memory interface.
+ * Sherivs — AI Agent System memory interface.
  *
  * Implements `architecture/phase-07-ai-agent-system.md`:
  * - Phase 07 consumes memory services; it does not own the complete Memory &

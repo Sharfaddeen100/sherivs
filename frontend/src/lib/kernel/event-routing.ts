@@ -1,5 +1,5 @@
 /**
- * CoreGrid — tenant-scoped event routing & subscriptions (V1CAP-043 / J-021 /
+ * Sherivs — tenant-scoped event routing & subscriptions (V1CAP-043 / J-021 /
  * MISSION-R-63), composed over the per-event security contract (V1CAP-044 /
  * J-022 / MISSION-R-81) and the event kernel semantics (V1CAP-042 / J-020 /
  * MISSION-R-15).

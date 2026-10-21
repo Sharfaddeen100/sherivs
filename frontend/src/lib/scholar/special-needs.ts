@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — special educational needs (Phase-04 §53).
+ * Sherivs Scholar — special educational needs (Phase-04 §53).
  *
  * Accommodations are configurable: additional time, alternative assessment,
  * accessibility resources, specialized classrooms, support staff and

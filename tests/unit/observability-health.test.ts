@@ -1,5 +1,5 @@
 /**
- * CoreGrid — health report tests (V5.3 Part 30 / LAUNCH_BLOCKER).
+ * Sherivs — health report tests (V5.3 Part 30 / LAUNCH_BLOCKER).
  * Covers the ok/degraded/failing roll-up, fail-closed normalization of bad
  * check results, throwing/async checks, and the exact leak-free payload shape.
  */

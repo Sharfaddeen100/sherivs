@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — practical examinations (Phase-04 §51).
+ * Sherivs Scholar — practical examinations (Phase-04 §51).
  *
  * Practical examinations run in laboratories, workshops, farms, kitchens,
  * clinics and technical rooms — venues are configuration. A practical session

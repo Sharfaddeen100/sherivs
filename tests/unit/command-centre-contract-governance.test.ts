@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Command Centre contract-governance view (Phase 19 displays, Phase 08
+ * Sherivs — Command Centre contract-governance view (Phase 19 displays, Phase 08
  * authorizes).
  *
  * K-8 binds the kernel contract chain into the surface operators already use.

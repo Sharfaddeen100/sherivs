@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 02 identity actor context (live server-function primitive).
+ * Sherivs — Phase 02 identity actor context (live server-function primitive).
  *
  * Bridges the authenticated session (supabase claims: `sub`, `email`) and the
  * `users` row (role, school_id, is_active) into one validated IdentityActor

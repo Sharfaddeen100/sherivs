@@ -1,5 +1,5 @@
 /**
- * CoreGrid — phase-contract coverage snapshot + platform-surface publishing.
+ * Sherivs — phase-contract coverage snapshot + platform-surface publishing.
  *
  * The contract layer is only trustworthy if what the platform SHOWS is exactly
  * what the validator ENFORCES. These tests assert that:

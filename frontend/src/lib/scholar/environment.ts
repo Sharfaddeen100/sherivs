@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — environment model (Phase-04 §69).
+ * Sherivs Scholar — environment model (Phase-04 §69).
  *
  * Temperature, occupancy, lighting, power, connectivity, air quality, noise
  * and environmental alerts are represented WHERE Phase 15 hardware integration

@@ -4,7 +4,7 @@ import { SystemClock, TimeAuthority } from "./kernel/time-authority";
 const timeAuthority = new TimeAuthority(new SystemClock());
 
 /**
- * CoreGrid Localization Content — translation, terminology, content variant,
+ * Sherivs Localization Content — translation, terminology, content variant,
  * and localized content governance domain.
  *
  * Implements `architecture/phase-30-globalization.md`:

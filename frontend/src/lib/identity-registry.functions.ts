@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 02 identity registry server functions (L2 consumption).
+ * Sherivs — Phase 02 identity registry server functions (L2 consumption).
  *
  * Registers identities in `cg_identity` through the pure `identity-registry`
  * contract. Tenant-scoped: the canonical school-admin gate resolves the actor's
@@ -24,8 +24,8 @@ import {
   type IdentityState,
 } from "@/lib/identity-registry";
 import { SystemClock, TimeAuthority } from "./kernel/time-authority";
-import type { IdentitySummary, ListIdentitiesResult } from "@coregrid/contracts";
-// Read contracts are declared ONCE in @coregrid/contracts and re-exported here
+import type { IdentitySummary, ListIdentitiesResult } from "@sherivs/contracts";
+// Read contracts are declared ONCE in @sherivs/contracts and re-exported here
 // (§23) — the mobile identity client validates against the same declarations.
 export type { IdentitySummary, ListIdentitiesResult };
 

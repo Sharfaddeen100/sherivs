@@ -1,5 +1,5 @@
 /**
- * CoreGrid — cost attribution: usage-ledger roll-up to mission & tenant
+ * Sherivs — cost attribution: usage-ledger roll-up to mission & tenant
  * (J-043 / V1CAP-078, MISSION-R-70; E-051 workforce economics, AGENTS §20
  * gateway cost tracking).
  *

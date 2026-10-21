@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — configuration validator tests (Phase-04 §83).
+ * Sherivs Scholar — configuration validator tests (Phase-04 §83).
  */
 import { describe, expect, it } from "vitest";
 import {

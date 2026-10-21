@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 02 universal identity registry: typed contract for
+ * Sherivs — Phase 02 universal identity registry: typed contract for
  * `cg_identity` (C2 Identity Registry, L2 model 20260904020000).
  *
  * Mirrors the database truth (CHECK clauses, defaults) so application code
@@ -12,10 +12,10 @@
 import {
   IDENTITY_KINDS,
   IDENTITY_STATES,
-} from "@coregrid/contracts";
-import type { IdentityKind, IdentityState } from "@coregrid/contracts";
-export { IDENTITY_KINDS, IDENTITY_STATES } from "@coregrid/contracts";
-export type { IdentityKind, IdentityState } from "@coregrid/contracts";
+} from "@sherivs/contracts";
+import type { IdentityKind, IdentityState } from "@sherivs/contracts";
+export { IDENTITY_KINDS, IDENTITY_STATES } from "@sherivs/contracts";
+export type { IdentityKind, IdentityState } from "@sherivs/contracts";
 
 export function isIdentityKind(value: unknown): value is IdentityKind {
   return (IDENTITY_KINDS as readonly unknown[]).includes(value);

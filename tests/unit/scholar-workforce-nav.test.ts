@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Scholar workforce-kind → chrome resolution invariants (R-3).
+ * Sherivs — Scholar workforce-kind → chrome resolution invariants (R-3).
  *
  * Pins the SHRINK-ONLY safety contract: a staff member's real post can drive
  * their own chrome/labels but can never escalate capability beyond the coarse

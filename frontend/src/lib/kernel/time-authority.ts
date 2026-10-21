@@ -1,5 +1,5 @@
 /**
- * CoreGrid — single time-source authority (V1CAP-045 / J-023 / MISSION-R-15).
+ * Sherivs — single time-source authority (V1CAP-045 / J-023 / MISSION-R-15).
  *
  * THE authoritative clock contract for the platform. E-015 names time
  * primitives and the assurance invariant that event ordering IS the ordering

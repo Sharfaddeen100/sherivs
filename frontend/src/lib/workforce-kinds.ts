@@ -1,5 +1,5 @@
 /**
- * CoreGrid — domain-neutral workforce-kind contract (Phase 25 Workforce
+ * Sherivs — domain-neutral workforce-kind contract (Phase 25 Workforce
  * Identity / Phase 02 workforce reality).
  *
  * A workforce KIND is the canonical post a person can hold inside an

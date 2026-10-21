@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Educational Reality Role Engine: workspace catalog.
+ * Sherivs Scholar — Educational Reality Role Engine: workspace catalog.
  *
  * Workspaces are the composed working surfaces a role set unlocks (Phase 06
  * workspace engine consumes this). They are DATA keyed by role category — a

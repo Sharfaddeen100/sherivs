@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Paystack adapter tests (V5.3 Part 21).
+ * Sherivs — Paystack adapter tests (V5.3 Part 21).
  * Signature verification (HMAC-SHA512 over raw body), webhook translation,
  * idempotency key handling — plus forgery/tamper negative cases (§31).
  */

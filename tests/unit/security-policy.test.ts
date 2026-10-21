@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Phase 08 Security Engine unit tests (security-policy).
+ * Sherivs Scholar — Phase 08 Security Engine unit tests (security-policy).
  *
  * Validates:
  * - Policy creation validation (Section J.2).

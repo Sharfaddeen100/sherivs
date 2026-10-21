@@ -1,5 +1,5 @@
 /**
- * CoreGrid — client platform detection (Phase 22/23 platform wiring).
+ * Sherivs — client platform detection (Phase 22/23 platform wiring).
  *
  * Pure, SSR-safe detection helpers that classify the ACTUAL runtime browser
  * into the Phase 22 (`platform-core`/`platform-device`) and Phase 23

@@ -1,5 +1,5 @@
 /**
- * CoreGrid — R41 marketplace + platform-organization surface tests.
+ * Sherivs — R41 marketplace + platform-organization surface tests.
  *
  * Laws covered:
  *  - the catalog is published FROM reality (one listing per installed feature

@@ -1,5 +1,5 @@
 /**
- * CoreGrid — legacy subscription-tier → neutral entitlement reconciliation
+ * Sherivs — legacy subscription-tier → neutral entitlement reconciliation
  * (mission H3-091 / J-044, Squad I — Payments & economics).
  *
  * The legacy commercial catalog (`../subscription-tiers.ts`) is a deprecated

@@ -1,5 +1,5 @@
 /**
- * CoreGrid — notification contract tests (state machine, receipts, policy, tenant).
+ * Sherivs — notification contract tests (state machine, receipts, policy, tenant).
  */
 import { describe, expect, it } from "vitest";
 import {

@@ -1,5 +1,5 @@
 /**
- * CoreGrid — state reconciliation & contradiction engine suite
+ * Sherivs — state reconciliation & contradiction engine suite
  * (V1CAP-005 / J-004 / MISSION-R-14).
  *
  * Proves, at unit level, that:

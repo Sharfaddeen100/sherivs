@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — API/event contracts (Phase-04 §131–132, O1).
+ * Sherivs Scholar — API/event contracts (Phase-04 §131–132, O1).
  *
  * Phase 04 connects other systems through authoritative educational contracts.
  * This module is the typed OPERATION REGISTRY for the runtime's server

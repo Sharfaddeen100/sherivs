@@ -1,5 +1,5 @@
 /**
- * CoreGrid — payment contract tests (V5.3 Part 21).
+ * Sherivs — payment contract tests (V5.3 Part 21).
  * Fail-closed registry, reference validation, intent envelope, event vocabulary.
  */
 import { describe, expect, it } from "vitest";

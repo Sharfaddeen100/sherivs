@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 13 tax engine unit tests (financial-tax).
+ * Sherivs — Phase 13 tax engine unit tests (financial-tax).
  *
  * The laws under test (Phase 13 BG–BK):
  * - the rule that applied is resolved by jurisdiction, category and instant, and a

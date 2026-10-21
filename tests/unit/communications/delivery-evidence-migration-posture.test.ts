@@ -1,5 +1,5 @@
 /**
- * CoreGrid — R6 delivery-evidence migration posture test (follow-up to
+ * Sherivs — R6 delivery-evidence migration posture test (follow-up to
  * V1-009, team COMMS).
  *
  * Text-level posture verification of the delivery-evidence substrate's

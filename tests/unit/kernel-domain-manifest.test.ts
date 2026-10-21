@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 33 Universal Reality Kernel: domain-runtime manifest tests.
+ * Sherivs — Phase 33 Universal Reality Kernel: domain-runtime manifest tests.
  *
  * The kernel accepts any domain runtime through a validated manifest. These
  * tests pin the structural contract: ids, versions, statuses, ontology

@@ -1,17 +1,17 @@
 /**
- * CoreGrid Integration Fabric — transformation, validation, event, sync, and
+ * Sherivs Integration Fabric — transformation, validation, event, sync, and
  * reconciliation domain.
  *
  * Implements `architecture/phase-29-coregrid-integration.md`:
  * - Data transformation (S): external schemas rarely match; mapping to canonical.
- * - Canonical data model (T): CoreGrid maintains canonical contracts for
+ * - Canonical data model (T): Sherivs maintains canonical contracts for
  *   person/organization/student/staff/course/class/attendance/payment/invoice/
  *   device/event/message — consuming authoritative schemas from other phases.
  * - Field mapping (U): direct, rename, type conversion, conditional, calculated,
  *   normalization, enrichment, filtering.
  * - Transformation engine (V): JSON, XML, CSV, YAML, form data, binary.
  * - Validation (W): every incoming payload validated before entering an
- *   authoritative CoreGrid subsystem (schema, type, required fields, identity,
+ *   authoritative Sherivs subsystem (schema, type, required fields, identity,
  *   tenant, authorization, integrity, business constraints).
  * - Invalid data (X): route to rejection, quarantine, dead-letter queue, or
  *   manual review — never silently enter production.
@@ -25,9 +25,9 @@
  *   breakers, rate-limit management (AI), polling (AJ).
  * - Synchronization (AK-AM): incremental, full, bidirectional.
  * - Source of truth (AN): every synchronized field has an explicit authority
- *   model; no ambiguous ownership. Conflict resolution (AO): CoreGrid wins,
+ *   model; no ambiguous ownership. Conflict resolution (AO): Sherivs wins,
  *   external wins, latest timestamp, source priority, manual resolution.
- * - Reconciliation (AP-AQ): compare CoreGrid vs external state; identify missing,
+ * - Reconciliation (AP-AQ): compare Sherivs vs external state; identify missing,
  *   duplicates, mismatches, stale, unauthorized changes; reports.
  */
 
@@ -89,7 +89,7 @@ export interface IntegrationMapping {
   integrationRef: string;
   /** External field path. */
   externalField: string;
-  /** CoreGrid canonical field path. */
+  /** Sherivs canonical field path. */
   coregridField: string;
   kind: MappingKind;
   /** Mapping expression for conditional/calculated kinds. */
@@ -430,7 +430,7 @@ export interface ReconciliationResult {
 }
 
 /**
- * Reconciliation (AP): compare CoreGrid state vs external state and identify
+ * Reconciliation (AP): compare Sherivs state vs external state and identify
  * missing, duplicates, mismatches, stale records, unauthorized changes.
  */
 export function reconcile(input: {

@@ -3,7 +3,7 @@
  *
  * This module is the SINGLE SOURCE OF TRUTH for the closed value sets shared
  * by the web application (frontend/) and the mobile application (mobile/).
- * Both surfaces import these declarations from `@coregrid/contracts`; there
+ * Both surfaces import these declarations from `@sherivs/contracts`; there
  * is no second declaration to drift against, so contract drift is impossible
  * by construction (replacing the former two-directional mirror pins).
  *

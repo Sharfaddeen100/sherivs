@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — curriculum-per-school-type gating (dynamic display).
+ * Sherivs Scholar — curriculum-per-school-type gating (dynamic display).
  *
  * Maps the school-profile features (R-13) onto the curriculum modules the
  * Scholar runtime can surface. Gating is DATA-DRIVEN and shrink-only for

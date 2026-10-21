@@ -1,10 +1,10 @@
 /**
- * CoreGrid — Phase 40 Universal Runtime Fabric: registration contracts
+ * Sherivs — Phase 40 Universal Runtime Fabric: registration contracts
  * (H3 wave Squad G, mission G-060, Contract Architect role).
  *
  * WHAT: the typed, fail-closed contract surface for the fabric's substrate
  * operation — neutral runtime registration. Under RULING-1 (runtimes are
- * data to the platform, never platform content) a runtime joins CoreGrid as
+ * data to the platform, never platform content) a runtime joins Sherivs as
  * a declaration over a stable contract: installing, suspending, resuming or
  * retiring it is a data operation that never rewrites the kernel and never
  * grants a runtime privileges the declaration does not carry.

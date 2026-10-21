@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Core Application Runtime resilience primitives.
+ * Sherivs — Core Application Runtime resilience primitives.
  *
  * Implements `architecture/phase-05-core-application-runtime.md`:
  * - Circuit breakers (Section X): external dependencies support circuit-breaking.

@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — marketplace listing publisher (WAVE-R38).
+ * Sherivs Scholar — marketplace listing publisher (WAVE-R38).
  *
  * An organization's reality already declares which features it has. This module
  * PUBLISHES the marketplace catalog for that reality using the existing P27

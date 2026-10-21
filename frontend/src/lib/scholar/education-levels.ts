@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — educational level registry (Phase-04 §5).
+ * Sherivs Scholar — educational level registry (Phase-04 §5).
  *
  * An institution defines its OWN educational levels. No fixed grade hierarchy
  * exists anywhere in this module: nursery / kindergarten / primary / lower and

@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-042 deployment monitoring gate tests (mission E-042, BLK-3).
+ * Sherivs — H3-042 deployment monitoring gate tests (mission E-042, BLK-3).
  *
  * Proves the serving-URL monitoring gate laws, fully OFFLINE (mocked
  * transport; zero network, zero database, zero secrets):

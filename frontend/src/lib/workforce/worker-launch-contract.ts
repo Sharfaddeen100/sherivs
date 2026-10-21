@@ -1,5 +1,5 @@
 /**
- * CoreGrid — worker mission launch CONTRACT (client-safe).
+ * Sherivs — worker mission launch CONTRACT (client-safe).
  *
  * Everything the route, the server function module and the server runtime
  * module share: the request schema, the typed outcome vocabulary, the

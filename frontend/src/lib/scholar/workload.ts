@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — teacher workload (Phase-04 §29).
+ * Sherivs Scholar — teacher workload (Phase-04 §29).
  *
  * Workload models teaching hours, preparation, assessment, supervision,
  * duties, meetings and extracurricular responsibilities as a transparent,

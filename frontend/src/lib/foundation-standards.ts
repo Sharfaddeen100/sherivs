@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 01 Foundation standards (machine-readable, consumable).
+ * Sherivs — Phase 01 Foundation standards (machine-readable, consumable).
  *
  * Phase 01 owns conventions and verification, never domain state. This module is
  * the machine-readable form of that ownership: the capability id, the verification

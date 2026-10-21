@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Educational Reality Role Engine: engine laws.
+ * Sherivs Scholar — Educational Reality Role Engine: engine laws.
  *
  * These tests lock the architectural promises the directive makes:
  *  - roles are data-driven (feature keys + templates), never `if (role === …)`;

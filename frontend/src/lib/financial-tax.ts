@@ -1,5 +1,5 @@
 /**
- * CoreGrid — financial tax (Phase 13, domain-neutral).
+ * Sherivs — financial tax (Phase 13, domain-neutral).
  *
  * Tax is jurisdiction data, not code. An organization declares tax rule versions
  * per jurisdiction and charge category, and FinOS resolves the version that applied

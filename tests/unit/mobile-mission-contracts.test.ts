@@ -1,5 +1,5 @@
 /**
- * CoreGrid Mobile V1-010 — mission/identity/evidence read-contract tests.
+ * Sherivs Mobile V1-010 — mission/identity/evidence read-contract tests.
  *
  * Validates the mobile mirrors of the web foundation-loop row contracts
  * (cg_execution_record, cg_verification_result, cg_foundation_evidence —

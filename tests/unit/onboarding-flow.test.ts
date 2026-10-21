@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 25 domain-neutral onboarding tests.
+ * Sherivs — Phase 25 domain-neutral onboarding tests.
  * Any organization type (school/company/agency/community) flows through the
  * SAME governed pipeline; any future runtime can be activated.
  */

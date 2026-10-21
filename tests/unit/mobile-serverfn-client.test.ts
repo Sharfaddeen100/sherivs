@@ -1,5 +1,5 @@
 /**
- * CoreGrid Mobile V1-010 — server-function URL contract client tests.
+ * Sherivs Mobile V1-010 — server-function URL contract client tests.
  *
  * Validates the mobile client against the repository's verified TanStack
  * Start server-function HTTP contract (scripts/exercise-foundation-loop.mjs):

@@ -1,5 +1,5 @@
 /**
- * CoreGrid — email adapter contract tests (stub never claims success).
+ * Sherivs — email adapter contract tests (stub never claims success).
  */
 import { describe, expect, it } from "vitest";
 import {

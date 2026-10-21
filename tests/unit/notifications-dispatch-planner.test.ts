@@ -1,5 +1,5 @@
 /**
- * CoreGrid — dispatch planner tests (fail-closed, explicit omissions).
+ * Sherivs — dispatch planner tests (fail-closed, explicit omissions).
  */
 import { describe, expect, it } from "vitest";
 import {

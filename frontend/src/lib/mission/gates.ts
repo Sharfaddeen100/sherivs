@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Mission gate machinery (J-026 / MISSION-R-51, V1CAP-046).
+ * Sherivs — Mission gate machinery (J-026 / MISSION-R-51, V1CAP-046).
  *
  * Implements the DEFINITION / SECURITY / VERIFICATION / CLOSURE gate
  * taxonomy declared (declaratively) by `mission-contract.ts#MissionGateKind`.

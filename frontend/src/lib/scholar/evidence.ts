@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — evidence model + learning evidence graph
+ * Sherivs Scholar — evidence model + learning evidence graph
  * (Phase-04 §100–101).
  *
  * Educational evidence may include assignments, exams, projects, practicals,

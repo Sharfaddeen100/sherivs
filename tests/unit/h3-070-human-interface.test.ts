@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-070 phase-50 human-interface contract tests
+ * Sherivs — H3-070 phase-50 human-interface contract tests
  * (mission G-070). Zod validation of the human loop-closure substrate
  * surface: server-attested views only, no client authority claims, human
  * loop closure fail-closed, approval surfaces as typed views of server

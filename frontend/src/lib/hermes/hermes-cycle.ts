@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Hermes cycle driver: `runHermesCycle`
+ * Sherivs — Hermes cycle driver: `runHermesCycle`
  * (MISSION V1-002, team HERMES).
  *
  * ONE governed orchestrator cycle over REAL state, in library form:

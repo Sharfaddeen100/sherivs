@@ -1,5 +1,5 @@
 /**
- * CoreGrid — MISSION H3-035 (Squad D): zero-policy posture adjudication for
+ * Sherivs — MISSION H3-035 (Squad D): zero-policy posture adjudication for
  * cg_memory_access_log, cg_reconciliation_verdict, cg_event_security.
  *
  * Asserts the INTERNAL CONSISTENCY of the three decision docs authored under

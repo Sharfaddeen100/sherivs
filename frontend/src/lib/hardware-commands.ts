@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Hardware Command domain model
+ * Sherivs — Hardware Command domain model
  * (Phase 15, Sections AH, AI, AJ, AK, AL, AM, AN, AO, AP, AQ).
  *
  * Implements `architecture/phase-15-hardware-integration.md`:

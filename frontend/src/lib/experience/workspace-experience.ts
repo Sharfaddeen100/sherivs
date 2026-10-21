@@ -1,5 +1,5 @@
 /**
- * CoreGrid — workspace experience resolver (Phase 24 Experience wave).
+ * Sherivs — workspace experience resolver (Phase 24 Experience wave).
  *
  * Domain-neutral member experience: localized (i18n-extensible, `en` shipped)
  * time-of-day greeting resolved against the member's REAL post title (primary

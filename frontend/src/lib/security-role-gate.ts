@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 08 Security Engine: canonical runtime role gate.
+ * Sherivs — Phase 08 Security Engine: canonical runtime role gate.
  *
  * Single enforcement module for role-scoped server functions. The supported
  * role kinds evaluate through the Phase 08 security gateway

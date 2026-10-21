@@ -1,5 +1,5 @@
 /**
- * CoreGrid — ephemeral mission runner plan unit tests (V5.3 Part 14).
+ * Sherivs — ephemeral mission runner plan unit tests (V5.3 Part 14).
  *
  * Validates:
  * - Happy-path RunPlan production from existing mission vocabulary.

@@ -1,5 +1,5 @@
 /**
- * CoreGrid — storage-adapter tests (mocked Supabase client, no network).
+ * Sherivs — storage-adapter tests (mocked Supabase client, no network).
  *
  * Security focus (Constitution §31): the tenant path convention must hold
  * even against a hostile or missing RLS policy — cross-tenant paths,

@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — per-feature capability codes and the fail-closed gate
+ * Sherivs Scholar — per-feature capability codes and the fail-closed gate
  * (WAVE-R33).
  *
  * Laws under test:

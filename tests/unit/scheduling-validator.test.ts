@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Phase 12 Scheduling & Timetable Intelligence unit tests
+ * Sherivs Scholar — Phase 12 Scheduling & Timetable Intelligence unit tests
  * (scheduling-validator).
  *
  * Validates:

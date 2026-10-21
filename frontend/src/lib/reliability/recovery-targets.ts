@@ -1,5 +1,5 @@
 /**
- * CoreGrid — recovery-target declaration contract: RTO/RPO per record family
+ * Sherivs — recovery-target declaration contract: RTO/RPO per record family
  * (M-R-101 groundwork; H3 wave Squad A, mission A-002).
  *
  * WHAT: A Zod-validated contract binding record families to recovery

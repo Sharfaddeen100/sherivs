@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — school facilities + declared capabilities
+ * Sherivs Scholar — school facilities + declared capabilities
  * (Phase-04 §59, 63, upgrade target of education-facilities).
  *
  * Facilities are typed configuration (classroom, laboratory, workshop,

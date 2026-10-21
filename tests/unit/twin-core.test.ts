@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Phase 16 Digital Twin Platform unit tests
+ * Sherivs Scholar — Phase 16 Digital Twin Platform unit tests
  * (twin-core).
  *
  * Validates:

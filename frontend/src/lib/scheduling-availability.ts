@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Scheduling & Timetable Intelligence Availability Engine
+ * Sherivs — Scheduling & Timetable Intelligence Availability Engine
  * (Phase 12, Sections L, M).
  *
  * Implements `architecture/phase-12-scheduling-intelligence.md`:

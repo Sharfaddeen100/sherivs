@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Phase 08 Security Engine unit tests
+ * Sherivs Scholar — Phase 08 Security Engine unit tests
  * (security-agent-controls: the Phase 07/08 boundary).
  *
  * Validates:

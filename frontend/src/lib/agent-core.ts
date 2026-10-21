@@ -1,5 +1,5 @@
 /**
- * CoreGrid — AI Agent System core identity and lifecycle.
+ * Sherivs — AI Agent System core identity and lifecycle.
  *
  * Implements `architecture/phase-07-ai-agent-system.md`:
  * - Agent definition: a controlled software entity capable of action within

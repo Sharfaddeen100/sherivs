@@ -1,5 +1,5 @@
 /**
- * CoreGrid — substrate telemetry adoption depth tests (MISSION H3-053, §29/§31).
+ * Sherivs — substrate telemetry adoption depth tests (MISSION H3-053, §29/§31).
  *
  * Companion to tests/unit/mh-27-substrate-telemetry.test.ts (ground truth):
  * that suite proves straight-line aggregation, basic redaction, episode

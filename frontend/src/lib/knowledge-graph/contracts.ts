@@ -1,5 +1,5 @@
 /**
- * CoreGrid — phase 48 Civilization Knowledge Graph substrate contracts
+ * Sherivs — phase 48 Civilization Knowledge Graph substrate contracts
  * (H3 wave, Squad G, mission G-068 — Contract Architect).
  *
  * WHAT: the typed, Zod-validated contract surface for the phase-48 knowledge

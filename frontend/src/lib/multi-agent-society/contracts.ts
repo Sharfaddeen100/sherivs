@@ -1,5 +1,5 @@
 /**
- * CoreGrid — phase 35 Autonomous Agent Civilization OS: governed
+ * Sherivs — phase 35 Autonomous Agent Civilization OS: governed
  * multi-agent society contracts (H3 wave Squad G, mission G-055,
  * Contract Architect).
  *

@@ -1,5 +1,5 @@
 /**
- * CoreGrid — serving-URL deployment monitoring gate (BLK-3 launch gate).
+ * Sherivs — serving-URL deployment monitoring gate (BLK-3 launch gate).
  *
  * Mission E-042 (team H3-042, Deployment Monitor Engineer). This module is a
  * pure, typed, READ-ONLY contract: it observes a deployment's serving URL(s)

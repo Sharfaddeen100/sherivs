@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Cluster D core curriculum tests (§7–10, 19–21, 178).
+ * Sherivs Scholar — Cluster D core curriculum tests (§7–10, 19–21, 178).
  */
 import { describe, expect, it } from "vitest";
 import {

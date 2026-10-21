@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Phase 15 Hardware Integration Platform unit tests
+ * Sherivs Scholar — Phase 15 Hardware Integration Platform unit tests
  * (hardware-core).
  *
  * Validates:

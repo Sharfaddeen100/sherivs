@@ -1,4 +1,4 @@
-// ─── CoreGrid Phase 21 — Global Cloud Fabric ─────────────────────────
+// ─── Sherivs Phase 21 — Global Cloud Fabric ─────────────────────────
 // cloud-governance.ts — Observability, SLOs, cost, security, compliance,
 //                       CI/CD, policy-as-code, infra agents, control plane
 // ──────────────────────────────────────────────────────────────────────

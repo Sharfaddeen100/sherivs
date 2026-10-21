@@ -1,5 +1,5 @@
 /**
- * CoreGrid — command centre platform reads (V1-012 honest-substrate disposition).
+ * Sherivs — command centre platform reads (V1-012 honest-substrate disposition).
  *
  * The /command-centre surface is the CONTROL-PLANE operations projection
  * (phase 19). Its projection records — open alerts, incidents, observation

@@ -1,5 +1,5 @@
 /**
- * CoreGrid Integration Fabric — integration operations, observability, and
+ * Sherivs Integration Fabric — integration operations, observability, and
  * data-governance domain.
  *
  * Implements `architecture/phase-29-coregrid-integration.md`:
@@ -8,8 +8,8 @@
  *   failed, degraded integrations, pending sync, reconciliation failures.
  * - Integration logging (CH): every significant operation includes correlation
  *   ID, tenant, connector, operation, timestamp, result, error classification —
- *   sensitive payloads protected. Distributed tracing (CI): CoreGrid Request →
- *   Integration → External API → Response → CoreGrid. Metrics (CJ): success/
+ *   sensitive payloads protected. Distributed tracing (CI): Sherivs Request →
+ *   Integration → External API → Response → Sherivs. Metrics (CJ): success/
  *   failure rate, latency, throughput, retries, dead letters, sync lag.
  *   Alerting (CK): authentication failures, error spikes, sync drift, provider
  *   outage, certificate expiry, rate-limit exhaustion.

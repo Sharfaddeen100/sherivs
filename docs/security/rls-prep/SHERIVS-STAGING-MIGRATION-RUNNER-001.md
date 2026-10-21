@@ -90,8 +90,8 @@ Input report consumed (not modified):
 ### 2.3 TLS
 
 - Requires `rejectUnauthorized: true`.
-- Requires pinned CA via `COREGRID_DB_CA_CERT` or `STAGING_DB_CA_CERT`.
-- Refuses `COREGRID_DB_INSECURE_TLS=1`.
+- Requires pinned CA via `SHERIVS_DB_CA_CERT` or `STAGING_DB_CA_CERT`.
+- Refuses `SHERIVS_DB_INSECURE_TLS=1`.
 - Refuses `sslmode=disable` / `ssl=false`.
 - Does not call `scripts/lib/pg-ssl.mjs` (that helper still has insecure
   escapes for other scripts).

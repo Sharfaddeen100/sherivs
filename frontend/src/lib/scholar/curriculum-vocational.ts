@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — vocational education (Phase-04 §13).
+ * Sherivs Scholar — vocational education (Phase-04 §13).
  *
  * Trades, apprenticeships, workshops, practical training, competency
  * requirements, practical examinations, industry placements, certifications

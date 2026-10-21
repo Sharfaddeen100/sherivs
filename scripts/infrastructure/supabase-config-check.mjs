@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * CoreGrid Cloud Fabric — Supabase data-layer configuration check (CF-7).
+ * Sherivs Cloud Fabric — Supabase data-layer configuration check (CF-7).
  *
  * READ-ONLY. Assertions, in order:
  *
@@ -35,12 +35,12 @@ const staticOnly = process.argv.includes("--static");
 const projectRef = process.env.SUPABASE_PROJECT_REF ?? "";
 const accessToken = process.env.SUPABASE_ACCESS_TOKEN ?? "";
 const dbUrl = process.env.SUPABASE_DB_URL ?? "";
-const environment = process.env.COREGRID_ENVIRONMENT ?? "unknown";
-const requirePitr = (process.env.COREGRID_REQUIRE_PITR ?? "true") === "true";
-const minBackupDays = Number(process.env.COREGRID_MIN_BACKUP_DAYS ?? "7");
+const environment = (process.env.SHERIVS_ENVIRONMENT ?? process.env.COREGRID_ENVIRONMENT) ?? "unknown";
+const requirePitr = ((process.env.SHERIVS_REQUIRE_PITR ?? process.env.COREGRID_REQUIRE_PITR) ?? "true") === "true";
+const minBackupDays = Number((process.env.SHERIVS_MIN_BACKUP_DAYS ?? process.env.COREGRID_MIN_BACKUP_DAYS) ?? "7");
 const proofPath = join(
   ROOT,
-  process.env.COREGRID_CONFIG_PROOF ?? "architecture/proofs/supabase-configuration.proof.json",
+  (process.env.SHERIVS_CONFIG_PROOF ?? process.env.COREGRID_CONFIG_PROOF) ?? "architecture/proofs/supabase-configuration.proof.json",
 );
 
 const checks = [];

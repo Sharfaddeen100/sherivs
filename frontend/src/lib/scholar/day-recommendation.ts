@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — dynamic school-day recommendation (Phase-04 extension).
+ * Sherivs Scholar — dynamic school-day recommendation (Phase-04 extension).
  *
  * Builds VALIDATED day routines from what an African school actually runs:
  * any opening/closing pair (12:00, 13:00, 14:00, 17:00, 18:00 closings are

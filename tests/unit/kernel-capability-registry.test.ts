@@ -1,5 +1,5 @@
 /**
- * CoreGrid — kernel capability registry tests (domain-neutral snapshot).
+ * Sherivs — kernel capability registry tests (domain-neutral snapshot).
  */
 import { describe, expect, it } from "vitest";
 import {

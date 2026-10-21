@@ -1,5 +1,5 @@
 /**
- * CoreGrid Global Formats — currency, tax, measurement, number, data format,
+ * Sherivs Global Formats — currency, tax, measurement, number, data format,
  * document/report/audit/log/API, communication, payment, and integration
  * localization domain.
  *

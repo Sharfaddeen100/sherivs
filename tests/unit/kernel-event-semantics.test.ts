@@ -1,5 +1,5 @@
 /**
- * CoreGrid — event kernel semantics suite (V1CAP-042 / J-020 / MISSION-R-15).
+ * Sherivs — event kernel semantics suite (V1CAP-042 / J-020 / MISSION-R-15).
  *
  * Proves, at unit level, that:
  *  1. the taxonomy is declarative and extensible per domain with neutral

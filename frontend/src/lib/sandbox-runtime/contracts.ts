@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 41 Reality Simulation & Autonomous Sandbox Engine contracts
+ * Sherivs — Phase 41 Reality Simulation & Autonomous Sandbox Engine contracts
  * (Squad G / mission G-061, Contract Architect).
  *
  * This module defines the typed, Zod-validated substrate surface for

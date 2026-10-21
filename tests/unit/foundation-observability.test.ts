@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 01 Foundation: observability behaviour proofs (work item P01-1).
+ * Sherivs — Phase 01 Foundation: observability behaviour proofs (work item P01-1).
  *
  * The Phase 01 document requires observability by default (§47): logs, metrics,
  * traces, audit and health, correlated by request/trace id, with no secrets or

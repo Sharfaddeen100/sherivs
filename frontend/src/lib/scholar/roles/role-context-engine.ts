@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Educational Reality Role Engine: context engine.
+ * Sherivs Scholar — Educational Reality Role Engine: context engine.
  *
  * Resolves WHO is working, IN WHICH TENANT, WITH WHICH ROLES, AT WHICH TIME into
  * the context a surface or workspace generator needs. It is deliberately

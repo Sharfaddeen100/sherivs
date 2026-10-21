@@ -1,4 +1,4 @@
-// ─── CoreGrid Phase 24 — Experience & Design Intelligence ────────────
+// ─── Sherivs Phase 24 — Experience & Design Intelligence ────────────
 // experience-accessibility.ts — Accessibility system, motion, loading,
 //                               empty states, offline, onboarding, help
 // ──────────────────────────────────────────────────────────────────────

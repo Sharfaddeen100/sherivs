@@ -1,5 +1,5 @@
 /**
- * CoreGrid — memory-scope enforcement across session/mission/long-term tiers
+ * Sherivs — memory-scope enforcement across session/mission/long-term tiers
  * (H3 wave, Squad B, mission B-018 / J-029 — Memory Scoping Enforcer).
  *
  * WHAT: a pure, Zod-validated contract that bounds every memory access by a

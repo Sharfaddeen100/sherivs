@@ -1,5 +1,5 @@
 /**
- * CoreGrid — MISSION H2-14 threat-mitigation registry machine check.
+ * Sherivs — MISSION H2-14 threat-mitigation registry machine check.
  *
  * Parses architecture/coregrid-mvp-architecture/security/THREAT_MITIGATIONS_LT.md
  * and asserts the roadmap-bounded threat bundle L-T-001..014 is COMPLETE and

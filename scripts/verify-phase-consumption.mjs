@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * CoreGrid — Scholar phase-consumption audit (Phases 01–51).
+ * Sherivs — Scholar phase-consumption audit (Phases 01–51).
  *
  * For every phase: does runtime-001 (Scholar) consume it? Is it already built?
  * Outputs: CONSUMED/BUILT, CONSUMED/GAP (next to build, domain-neutral in the

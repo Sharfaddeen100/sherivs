@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 02 cg_identity typed contract tests (P02 L2).
+ * Sherivs — Phase 02 cg_identity typed contract tests (P02 L2).
  *
  * Pins the pure contract of `identity-registry.ts` AND its coherence with the
  * live migration SQL (20260904020000_coregrid_l2_identity_tenancy.sql) so the

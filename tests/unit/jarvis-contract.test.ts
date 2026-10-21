@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Jarvis V1 contract tests (V5.3 Part 15 boundary, fail-closed).
+ * Sherivs — Jarvis V1 contract tests (V5.3 Part 15 boundary, fail-closed).
  *
  * Security negatives are mandatory (Constitution §31): every Part 15 MUST-NOT
  * must be an enforced deny code, unknown capability codes must fail closed,

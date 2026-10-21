@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-029 memory-retrieval authorization tests (mission C-029 /
+ * Sherivs — H3-029 memory-retrieval authorization tests (mission C-029 /
  * L-T-015, Memory Retrieval Defender).
  *
  * Adversarial proof that memory retrieval is authorization-gated with NO

@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 37 Simulation & Future Intelligence Engine contracts
+ * Sherivs — Phase 37 Simulation & Future Intelligence Engine contracts
  * (Squad G / mission G-057, Contract Architect).
  *
  * This module defines the typed, Zod-validated substrate surface for

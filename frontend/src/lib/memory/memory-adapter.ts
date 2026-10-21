@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Memory tier persistence adapter contract (MISSION V1-005).
+ * Sherivs — Memory tier persistence adapter contract (MISSION V1-005).
  *
  * This module closes the adapter boundary documented in `memory-store.ts`
  * ("an adapter layer (future, service-role) will persist these rows into the

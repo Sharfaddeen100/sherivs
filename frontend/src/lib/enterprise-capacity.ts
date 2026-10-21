@@ -1,5 +1,5 @@
 /**
- * CoreGrid Enterprise Capacity — quotas, quota hierarchy, rate limiting,
+ * Sherivs Enterprise Capacity — quotas, quota hierarchy, rate limiting,
  * backpressure, queue architecture, and event stream contracts.
  *
  * Implements `architecture/phase-31-enterprise-scale.md`:

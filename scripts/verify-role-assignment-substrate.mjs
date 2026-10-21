@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * CoreGrid — role-assignment substrate verifier (WAVE-R39).
+ * Sherivs — role-assignment substrate verifier (WAVE-R39).
  *
  * Proves the R37 substrate (`20260907000800_coregrid_role_assignment_substrate.sql`)
  * against two evidence classes and writes a machine-readable proof artifact:
@@ -321,7 +321,7 @@ if (hasAnyDatabaseUrl) {
       check(
         "live:transport",
         false,
-        `could not open a strictly-verified TLS channel (${err instanceof Error ? err.message : String(err)}) — provision COREGRID_DB_CA_CERT with the Supabase project CA; verification is never disabled for convenience`,
+        `could not open a strictly-verified TLS channel (${err instanceof Error ? err.message : String(err)}) — provision SHERIVS_DB_CA_CERT with the Supabase project CA; verification is never disabled for convenience`,
       );
     }
     if (client) {

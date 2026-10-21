@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — cohort model (Phase-04 §22).
+ * Sherivs Scholar — cohort model (Phase-04 §22).
  *
  * A school organises learners through many overlapping containers: intake,
  * cohort, class, stream, group, house, tutorial group, practical group and

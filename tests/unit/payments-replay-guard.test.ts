@@ -1,5 +1,5 @@
 /**
- * CoreGrid — replay-guard tests (V5.3 Part 21).
+ * Sherivs — replay-guard tests (V5.3 Part 21).
  * Idempotent event acceptance: duplicate ids and out-of-tolerance
  * timestamps rejected; acceptance is pure (no hidden mutation). §31.
  */

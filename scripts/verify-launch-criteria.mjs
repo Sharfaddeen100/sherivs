@@ -848,7 +848,7 @@ export function checkRlsBatteryRecorded(root, artifactPath) {
   if (!/FINDINGS:\s*\*\*0\*\*/.test(md)) {
     return { ok: false, detail: "ratification record does not record FINDINGS 0" };
   }
-  const artifact = artifactPath ?? process.env.COREGRID_RLS_BATTERY_RESULTS ?? BATTERY_ARTIFACT_DEFAULT;
+  const artifact = artifactPath ?? (process.env.SHERIVS_RLS_BATTERY_RESULTS ?? process.env.COREGRID_RLS_BATTERY_RESULTS) ?? BATTERY_ARTIFACT_DEFAULT;
   if (!existsSync(artifact)) {
     return {
       ok: true,

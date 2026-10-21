@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — CoreGrid internal operating workspace (WAVE-R32).
+ * Sherivs Scholar — Sherivs internal operating workspace (WAVE-R32).
  *
  * Generates the platform organization's workspaces from the roles an actor
  * actually holds (COREGRID_INTERNAL groups). No fixed dashboards: a CTO sees

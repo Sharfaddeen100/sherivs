@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 06 Workspace Engine: composition projection (DOMAIN-NEUTRAL).
+ * Sherivs — Phase 06 Workspace Engine: composition projection (DOMAIN-NEUTRAL).
  *
  * The workspace is a projection of authority (Phase 01 §13). This module computes
  * that projection from *inputs* — a key, a label, the viewer's capability set and

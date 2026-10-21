@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-057 simulation-engine contract tests (mission G-057).
+ * Sherivs — H3-057 simulation-engine contract tests (mission G-057).
  *
  * Proves the phase-37 substrate contracts are Zod-typed, fail-closed,
  * and domain-neutral, and that the §9 truth boundary is enforced by

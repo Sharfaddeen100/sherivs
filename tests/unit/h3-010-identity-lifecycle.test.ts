@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-010 (J-009) Identity Lifecycle Proof Engineer.
+ * Sherivs — H3-010 (J-009) Identity Lifecycle Proof Engineer.
  *
  * Exhaustive proof that revoked / suspended / expired identities FAIL CLOSED
  * through `frontend/src/lib/authorization.ts` (engine read-only — proven, not

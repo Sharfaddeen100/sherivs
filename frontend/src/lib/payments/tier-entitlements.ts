@@ -1,5 +1,5 @@
 /**
- * CoreGrid — TenantId-keyed tier entitlement bridge (MISSION-R-73, J-044).
+ * Sherivs — TenantId-keyed tier entitlement bridge (MISSION-R-73, J-044).
  *
  * Reconciles the legacy subscription-tiers vocabulary
  * (`../subscription-tiers.ts` — Scholar billing vocabulary hard-wired to the

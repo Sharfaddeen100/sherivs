@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — resource management + inventory relationship
+ * Sherivs Scholar — resource management + inventory relationship
  * (Phase-04 §64–65).
  *
  * Resources include books, devices, furniture, equipment, tools, vehicles and

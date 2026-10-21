@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 24 wave-1 tests: experience-platform contracts —
+ * Sherivs — Phase 24 wave-1 tests: experience-platform contracts —
  * semantic tokens/theming, capability-derived IA, accessibility defaults,
  * policy-governed personalization.
  */

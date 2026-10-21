@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Phase 07 AI Agent System unit tests (agent-plans).
+ * Sherivs Scholar — Phase 07 AI Agent System unit tests (agent-plans).
  *
  * Validates:
  * - Plan creation and validation (Sections AJ, AK).

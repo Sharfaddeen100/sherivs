@@ -1,5 +1,5 @@
 /**
- * CoreGrid — kernel phase-contract + engineering-section dictionary tests.
+ * Sherivs — kernel phase-contract + engineering-section dictionary tests.
  *
  * Verifies the Foundation (Phase 01) contract layer that every later phase and
  * every runtime (Scholar first, neutral domains through reserved seats) is

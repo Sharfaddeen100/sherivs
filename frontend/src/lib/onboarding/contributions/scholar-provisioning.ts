@@ -1,5 +1,5 @@
 /**
- * CoreGrid — V1-008: Scholar (runtime-001) provisioning contribution.
+ * Sherivs — V1-008: Scholar (runtime-001) provisioning contribution.
  *
  * The V1-006 application pattern (`domain-config/scholar-authorization.ts`)
  * carried over to ORGANIZATION PROVISIONING: the education runtime declares

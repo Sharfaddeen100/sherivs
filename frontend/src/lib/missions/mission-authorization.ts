@@ -1,5 +1,5 @@
 /**
- * CoreGrid — mission execution authorization contribution (MISSION V1-004).
+ * Sherivs — mission execution authorization contribution (MISSION V1-004).
  *
  * The mission domain's contribution to the NEUTRAL RBAC core
  * (`rbac/domain-contribution.ts` + `rbac/neutral-roles.ts`), following the
@@ -31,7 +31,7 @@ import {
   type IdentityLifecycleState,
   type Permission,
 } from "../identity";
-import { authorize, makeAuthorizationRequest, type CoreGridRole } from "../authorization";
+import { authorize, makeAuthorizationRequest, type SherivsRole } from "../authorization";
 import {
   registerDomainAuthorization,
   domainRole,
@@ -178,7 +178,7 @@ export function authorizeMissionOperation(input: {
       scope,
     ),
     {
-      role: domainRole(actor.role) as CoreGridRole,
+      role: domainRole(actor.role) as SherivsRole,
       // Delegation grants arrive as schema-validated strings; the brand
       // conversions are the sanctioned boundary casts (same pattern as the
       // actorId cast above). Unknown actions simply never match a grant.

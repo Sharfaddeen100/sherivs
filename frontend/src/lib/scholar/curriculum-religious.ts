@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — religious education configuration (Phase-04 §11).
+ * Sherivs Scholar — religious education configuration (Phase-04 §11).
  *
  * Islamic education, Qur'anic education, Christian education, church-based
  * schooling, madrasa structures, faith-based institutions, traditional

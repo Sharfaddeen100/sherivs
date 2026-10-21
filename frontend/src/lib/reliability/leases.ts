@@ -1,5 +1,5 @@
 /**
- * CoreGrid — reliability lease & quota contract over shared resources and
+ * Sherivs — reliability lease & quota contract over shared resources and
  * agents (J-031 / V1CAP-055; E-058 RUNTIME leases; G-022 bounded scarce
  * computation).
  *

@@ -1,5 +1,5 @@
 /**
- * CoreGrid — DB-backed substrate adapter for the evidence capture lifecycle
+ * Sherivs — DB-backed substrate adapter for the evidence capture lifecycle
  * (J-034 / V1CAP-059 / MISSION-R-90 + J-033 / V1CAP-058 / MISSION-R-91),
  * persisting evidence/capture.ts records and lifecycle acts into the tables
  * authored by

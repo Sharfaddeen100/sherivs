@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — entrepreneurship education (Phase-04 §16).
+ * Sherivs Scholar — entrepreneurship education (Phase-04 §16).
  *
  * Business projects, enterprise creation, financial literacy, cooperative
  * projects, market simulations, student businesses and practical

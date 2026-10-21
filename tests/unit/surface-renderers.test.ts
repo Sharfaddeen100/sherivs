@@ -1,5 +1,5 @@
 /**
- * CoreGrid — R40 surface renderer tests.
+ * Sherivs — R40 surface renderer tests.
  *
  * The served surfaces (generated site, served manifest, generated runtime) are
  * thin renderers over view-models, so the LAWS they must not break are tested

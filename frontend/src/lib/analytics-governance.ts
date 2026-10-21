@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Analytics & Decision Intelligence governance domain
+ * Sherivs — Analytics & Decision Intelligence governance domain
  * (Phase 18, Sections AC, AD, AE, AF, AG, DD, DE, DF, DG, DH, DI, DJ, DK,
  * DM, DN, DO, DP, DQ, EE, EF, EG, EH, EL, EM, EN, EO, EP, EQ, ER, CH, CI,
  * CJ, CK, CL, CM, CN, CO, CP, CQ, CR, CW, CX, CY, DA, DB, GN, GO, GP, GQ,

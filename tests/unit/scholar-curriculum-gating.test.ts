@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — curriculum gating tests.
+ * Sherivs Scholar — curriculum gating tests.
  */
 import { describe, expect, it } from "vitest";
 import {

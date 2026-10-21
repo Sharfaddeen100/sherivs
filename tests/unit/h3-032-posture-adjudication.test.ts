@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-032 Posture Adjudication Engineer (Squad D, mission D-032).
+ * Sherivs — H3-032 Posture Adjudication Engineer (Squad D, mission D-032).
  *
  * Internal-consistency proof for the three tables adjudicated by this team:
  * `cg_observation`, `cg_workspace`, `cg_workspace_member`. The suite asserts

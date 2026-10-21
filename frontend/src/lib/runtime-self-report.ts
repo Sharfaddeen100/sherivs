@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 05 Core Application Runtime: self-report.
+ * Sherivs — Phase 05 Core Application Runtime: self-report.
  *
  * The runtime owns the execution fabric and nothing else (document section
  * "HC. FINAL SCOPE LOCK": it executes capabilities, it does not own them). This

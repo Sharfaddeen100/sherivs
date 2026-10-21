@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — curriculum evolution (Phase-04 §178).
+ * Sherivs Scholar — curriculum evolution (Phase-04 §178).
  *
  * A new curriculum must never destroy historical curriculum records. This
  * module supplies the non-destructive supersede operation over

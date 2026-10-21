@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-092 Paystack failure-semantics tests (mission I-092,
+ * Sherivs — H3-092 Paystack failure-semantics tests (mission I-092,
  * Squad I — Payments & economics).
  *
  * Pins the REAL failure paths of the Paystack adapter stack (read-only on

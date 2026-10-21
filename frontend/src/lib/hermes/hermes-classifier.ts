@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Hermes action classifier (MISSION V1-002, bounded self-healing).
+ * Sherivs — Hermes action classifier (MISSION V1-002, bounded self-healing).
  *
  * The fail-closed policy gate between Hermes' assessments and Hermes' acts.
  * EVERY proposed action passes through `classifyHermesAction` before the

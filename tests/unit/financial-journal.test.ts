@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 13 financial journal unit tests (financial-journal).
+ * Sherivs — Phase 13 financial journal unit tests (financial-journal).
  *
  * The laws under test (Phase 13 BB–BW):
  * - the journal is append-only: no duplicate identity, no sequence hole, no

@@ -1,5 +1,5 @@
 /**
- * CoreGrid — prompt-injection & malicious-artifact defense contracts
+ * Sherivs — prompt-injection & malicious-artifact defense contracts
  * (J-036, mission B-022; Constitution §12, §19, §20, §21, §29).
  *
  * Posture: AI output and any content that did not originate from the

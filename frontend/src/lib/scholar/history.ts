@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — temporal reality, history and snapshots (Phase-04
+ * Sherivs Scholar — temporal reality, history and snapshots (Phase-04
  * §124–127).
  *
  * Relationships carry validity periods (§124); the system preserves historical

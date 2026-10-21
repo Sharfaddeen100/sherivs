@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Phase-04 completion test (§199, O9).
+ * Sherivs Scholar — Phase-04 completion test (§199, O9).
  *
  * The §199 standard: give the platform a completely UNFAMILIAR African
  * educational institution — no interview, no code — and it must configure

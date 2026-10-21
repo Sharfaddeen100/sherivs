@@ -1,5 +1,5 @@
 /**
- * CoreGrid Future Evolution — capability registry, evolution lifecycle,
+ * Sherivs Future Evolution — capability registry, evolution lifecycle,
  * core principles, scope protection, and architectural change protocol.
  *
  * Implements `architecture/phase-32-future-evolution.md`:

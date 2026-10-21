@@ -1,5 +1,5 @@
 /**
- * CoreGrid — minimal structured logging (V5.3 Part 30 observability-minimal).
+ * Sherivs — minimal structured logging (V5.3 Part 30 observability-minimal).
  *
  * One JSON line per event on the console: `ts`, `level`, `msg` plus optional
  * `tenant_id`, `component`, `duration_ms`, `err` and any extra caller fields.

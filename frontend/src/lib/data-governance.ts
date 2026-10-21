@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Data Platform lineage, retention, archival, masking,
+ * Sherivs — Data Platform lineage, retention, archival, masking,
  * pseudonymization, query governance, and residency (Phase 14, Sections AK,
  * AL, AW, BA, BG, BH, BK, BN, BU).
  *

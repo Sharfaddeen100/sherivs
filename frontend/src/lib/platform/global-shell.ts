@@ -1,5 +1,5 @@
 /**
- * CoreGrid — platform global shell ownership contract (ADR-010, J-047 / GAP-008).
+ * Sherivs — platform global shell ownership contract (ADR-010, J-047 / GAP-008).
  *
  * RULING ARTIFACT: the global shell (navigation, org/tenant switcher, global
  * search, notifications, profile) is owned by the PLATFORM layer. Domain

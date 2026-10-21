@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3 wave, team H3-043 (Payment Rail Drill Engineer), mission
+ * Sherivs — H3 wave, team H3-043 (Payment Rail Drill Engineer), mission
  * E-043 (BLK-4 payment-rail drill). OFFLINE gate tests for
  * scripts/verify-payments-live.drill.mjs — WITHOUT touching any database or
  * network service, and WITHOUT ever executing a live TEST-MODE round:

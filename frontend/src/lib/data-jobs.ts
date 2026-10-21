@@ -1,5 +1,5 @@
 /**
- * CoreGrid — data job contracts (Phase 14, domain-neutral).
+ * Sherivs — data job contracts (Phase 14, domain-neutral).
  *
  * Batch work is where data platforms break their own promises: a partially applied batch,
  * a resumed job that repeats its first half, a webhook burst that overwhelms a table, a

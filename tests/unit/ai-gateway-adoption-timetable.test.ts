@@ -1,5 +1,5 @@
 /**
- * CoreGrid — AI gateway adoption test: timetable.functions.ts.
+ * Sherivs — AI gateway adoption test: timetable.functions.ts.
  *
  * Proves the timetable draft generation routes its model invocation through
  * `invokeAiGateway` (§20 centralization), carries full attribution

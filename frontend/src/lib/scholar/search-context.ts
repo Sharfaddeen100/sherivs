@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — educational memory/search context (Phase-04 §119–121).
+ * Sherivs Scholar — educational memory/search context (Phase-04 §119–121).
  *
  * Educational search must understand educational entities — "Show SS2
  * mathematics students", "Which laboratories are free tomorrow?", "Which

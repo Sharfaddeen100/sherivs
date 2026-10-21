@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-076 adversarial verification suite (mission G-076).
+ * Sherivs — H3-076 adversarial verification suite (mission G-076).
  * Verifier, phase 39 governance-alignment: attacks the COMPLETED contract
  * module `frontend/src/lib/governance-alignment/contracts.ts` (H3-059,
  * READ-ONLY import) along six adversarial axes:

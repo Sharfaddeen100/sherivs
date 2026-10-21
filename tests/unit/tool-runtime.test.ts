@@ -1,5 +1,5 @@
 /**
- * CoreGrid — governed tool runtime & sandbox tests
+ * Sherivs — governed tool runtime & sandbox tests
  * (J-008 / V1CAP-056, MISSION-R-62, wave 3).
  *
  * Validates the sandbox law of

@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3 wave, team H3-037 (Posture Adjudication Engineer,
+ * Sherivs — H3 wave, team H3-037 (Posture Adjudication Engineer,
  * routing/evidence family), mission D-037.
  *
  * Internal-consistency proof for the Squad D posture adjudication of exactly
