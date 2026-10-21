@@ -8,10 +8,8 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { Navigate, useNavigate } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
-import { SystemClock, TimeAuthority } from "@/lib/kernel/time-authority";
 import { mfaRequiredFromEnv, satisfiesAal2, sessionExpiryReason } from "@/lib/security/mfa-policy";
 
-const timeAuthority = new TimeAuthority(new SystemClock());
 const START_KEY = "sherivs.internal.sessionStart";
 const ACTIVITY_KEY = "sherivs.internal.lastActivity";
 
@@ -35,7 +33,10 @@ export function InternalSecurityGate({ children }: { children: ReactNode }) {
   }, [required]);
 
   useEffect(() => {
-    const now = () => timeAuthority.now().atMs;
+    // Browser wall clock: this is a client-side UX timer (the server enforces
+    // AAL2 / session rules). The kernel TimeAuthority imports node:crypto and
+    // must not be bundled into client code.
+    const now = () => Date.now();
     if (!sessionStorage.getItem(START_KEY)) sessionStorage.setItem(START_KEY, String(now()));
     const touch = () => sessionStorage.setItem(ACTIVITY_KEY, String(now()));
     touch();
