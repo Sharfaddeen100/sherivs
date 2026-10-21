@@ -15,6 +15,7 @@ import { generateText, Output } from "ai";
 import { tokenMsRemaining } from "@/lib/auth-helpers";
 import { requirePlatformSuperAdmin } from "@/lib/security-role-gate";
 import { invokeAiGateway } from "@/lib/ai-gateway.server";
+import { AI_SYSTEM_RULE, aiGuardLimits, guardAiOutput } from "@/lib/ai/ai-guard.server";
 import { SystemClock, TimeAuthority } from "@/lib/kernel/time-authority";
 import { createDbMissionExecutionPorts } from "@/lib/missions/mission-execution-db.server";
 import { createDbMissionLeasePort } from "@/lib/missions/mission-lease-db.server";
@@ -52,9 +53,7 @@ const DEFAULT_QUARANTINE_THRESHOLD = 3;
 /** Production substrate: the sanctioned service-role DB adapters, unmodified. */
 export type WorkerLaunchAdminClient = Parameters<typeof createWorkerRegistryDb>[0];
 
-export async function buildWorkerLaunchSubstrate(
-  admin: WorkerLaunchAdminClient,
-): Promise<{
+export async function buildWorkerLaunchSubstrate(admin: WorkerLaunchAdminClient): Promise<{
   registry: Pick<WorkerRegistryDb, "resolveWorkerAuthority" | "quarantineWorker">;
   missions: WorkerHostMissionPorts;
 }> {
@@ -85,7 +84,11 @@ export async function buildWorkerLaunchDeps(input: {
   actorId: string;
   actorEmail: string | null;
 }): Promise<WorkerLaunchDeps> {
-  const actorRow = await input.admin.from("users").select("id").eq("id", input.actorId).maybeSingle();
+  const actorRow = await input.admin
+    .from("users")
+    .select("id")
+    .eq("id", input.actorId)
+    .maybeSingle();
   if (actorRow.error) throw new Error(actorRow.error.message);
   const actorHasCanonicalRow = actorRow.data != null;
   const { registry, missions } = await buildWorkerLaunchSubstrate(input.admin);
@@ -148,6 +151,13 @@ export function buildAiGatewayExecutor(input: {
       "Report a bounded summary and the concrete findings for this action.",
     ].join("\n");
 
+    let limits: Awaited<ReturnType<typeof aiGuardLimits>>;
+    try {
+      limits = await aiGuardLimits(execution.tenantId);
+    } catch (err) {
+      return { outcome: "failed", reason: `ai_guard_deny: ${(err as Error).message}` };
+    }
+
     const outcome = await invokeAiGateway<z.infer<typeof workerMissionOutputSchema>>({
       tenantRef: execution.tenantId,
       actorRef: workerId,
@@ -156,10 +166,12 @@ export function buildAiGatewayExecutor(input: {
       model: process.env.AI_WORKER_MODEL ?? WORKER_MISSION_MODEL_DEFAULT,
       provider: "ai-gateway",
       purpose: "workflow_assistance",
+      ...limits,
       invoke: async (provider, context) => {
         const { output, usage } = await generateText({
           model: provider(context.model),
           output: Output.object({ schema: workerMissionOutputSchema }),
+          system: AI_SYSTEM_RULE,
           prompt,
         });
         return {
@@ -175,6 +187,13 @@ export function buildAiGatewayExecutor(input: {
         outcome: "failed",
         reason: `ai_gateway_deny:${outcome.code}: ${outcome.reason}`,
       };
+    }
+
+    // Output screening: a blocked model output is a failed cycle, never evidence.
+    try {
+      guardAiOutput(workerMissionOutputSchema.parse(outcome.payload), outcome.usage.model);
+    } catch (err) {
+      return { outcome: "failed", reason: `ai_output_rejected: ${(err as Error).message}` };
     }
 
     const evidence: MissionEvidenceInput = {
@@ -238,8 +257,7 @@ export async function executeWorkerMissionLaunch(
       // flags the identity lifecycle unverified (never silent); session
       // validity is attested from the verified token's exp claim.
       lifecycle: null,
-      sessionValid:
-        typeof input.claims?.exp === "number" && tokenMsRemaining(input.claims.exp) > 0,
+      sessionValid: typeof input.claims?.exp === "number" && tokenMsRemaining(input.claims.exp) > 0,
     });
   } catch (error) {
     const reason = error instanceof Error ? error.message : "platform super admin gate denied";
@@ -294,7 +312,12 @@ export async function executeWorkerMissionLaunch(
       extra: { worker_authority_reason: authority.reason.slice(0, 300) },
     });
     await deps.audit(entry);
-    return { outcome: "denied", code: "worker_not_launchable", reason: authority.reason, audit: toAuditIntent(entry) };
+    return {
+      outcome: "denied",
+      code: "worker_not_launchable",
+      reason: authority.reason,
+      audit: toAuditIntent(entry),
+    };
   }
 
   /* 5a. Credential gate — typed BLOCKED_NO_CREDENTIAL, no wake attempted. */
@@ -359,9 +382,7 @@ export async function executeWorkerMissionLaunch(
       workerId: data.workerId,
       runtimeInstanceId: deps.newRuntimeInstanceId(),
       executionId: data.executionId,
-      execute:
-        deps.executor ??
-        buildAiGatewayExecutor({ execution, workerId: data.workerId }),
+      execute: deps.executor ?? buildAiGatewayExecutor({ execution, workerId: data.workerId }),
     },
   );
 

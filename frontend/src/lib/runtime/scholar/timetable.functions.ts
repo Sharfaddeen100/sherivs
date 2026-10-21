@@ -10,6 +10,7 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { tokenMsRemaining } from "@/lib/auth-helpers";
 import { requireSchoolAdminScope } from "@/lib/security-role-gate";
 import { invokeAiGateway } from "@/lib/ai-gateway.server";
+import { aiGuardLimits, buildGuardedPrompt, guardAiOutput } from "@/lib/ai/ai-guard.server";
 
 const TIMETABLE_MODEL = "google/gemini-3-flash-preview";
 
@@ -59,15 +60,23 @@ export const generateTimetableDraft = createServerFn({ method: "POST" })
       .maybeSingle();
     if (!klass || klass.school_id !== schoolId) throw new Error("Class not found in your school");
 
-    const prompt = `You are a school timetable planner. Build a 5-day weekly schedule (Mon–Fri) for class "${klass.name}" (${klass.grade_level ?? "general"}).
+    // Class name and subject names are user-entered: fenced as untrusted data.
+    const { system, prompt } = buildGuardedPrompt(
+      `You are a school timetable planner. Build a 5-day weekly schedule (Mon–Fri) for the class described below.
 Constraints:
 - ${data.periods_per_day} periods per school day, each ${data.period_minutes} minutes, starting at ${String(data.start_hour).padStart(2, "0")}:00.
-- Subjects to distribute fairly across the week: ${data.subjects.join(", ")}.
+- Distribute the listed subjects fairly across the week; use only those subject names.
 - ${data.include_break ? "Insert a 20-minute break after period 3 each day (is_break=true, break_label='Break', subject='Break')." : "No break period."}
 - No subject should appear more than 2 times in a single day.
 - Spread heavy subjects (Maths, English, Sciences) earlier in the day when possible.
 Return JSON with shape { "slots": [{day_of_week, period_number, start_time, end_time, subject, is_break, break_label}] }.
-Times must be HH:MM 24h. day_of_week is lowercase (monday..friday).`;
+Times must be HH:MM 24h. day_of_week is lowercase (monday..friday).`,
+      {
+        Class: `${klass.name} (${klass.grade_level ?? "general"})`,
+        Subjects: data.subjects.join(", "),
+      },
+    );
+    const limits = await aiGuardLimits(schoolId);
 
     let draft: z.infer<typeof draftSchema>;
     try {
@@ -79,10 +88,12 @@ Times must be HH:MM 24h. day_of_week is lowercase (monday..friday).`;
         model: TIMETABLE_MODEL,
         provider: "ai-gateway",
         purpose: "drafting",
+        ...limits,
         invoke: async (provider) => {
           const { output, usage } = await generateText({
             model: provider(TIMETABLE_MODEL),
             output: Output.object({ schema: draftSchema }),
+            system,
             prompt,
           });
           return {
@@ -107,7 +118,16 @@ Times must be HH:MM 24h. day_of_week is lowercase (monday..friday).`;
       throw new Error(msg);
     }
 
-    return { class_id: data.class_id, school_id: schoolId, slots: draft.slots };
+    // Output check: only requested subjects (or Break) may appear.
+    const allowed = new Set([...data.subjects.map((x) => x.trim().toLowerCase()), "break"]);
+    const slots = draft.slots.filter((sl) => allowed.has(String(sl.subject).trim().toLowerCase()));
+    const guarded = guardAiOutput({ slots }, TIMETABLE_MODEL);
+    return {
+      class_id: data.class_id,
+      school_id: schoolId,
+      slots: guarded.slots,
+      aiProvenance: guarded.aiProvenance,
+    };
   });
 
 const saveInput = z.object({

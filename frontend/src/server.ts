@@ -1,4 +1,5 @@
 import "./lib/error-capture";
+import { captureServerError, withServerSentry } from "./lib/observability/sentry.server";
 
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
@@ -39,7 +40,7 @@ async function normalizeCatastrophicSsrResponse(response: Response): Promise<Res
   });
 }
 
-export default {
+export default withServerSentry({
   async fetch(request: Request, env: unknown, ctx: unknown) {
     const startedAt = Date.now();
     // Pathname only — query strings can carry tokens and must never be logged.
@@ -69,6 +70,7 @@ export default {
         err: error,
       });
       console.error(error);
+      captureServerError(error);
       return withSecurityHeaders(
         new Response(renderErrorPage(), {
           status: 500,
@@ -77,4 +79,4 @@ export default {
       );
     }
   },
-};
+});

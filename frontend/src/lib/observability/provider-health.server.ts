@@ -28,6 +28,7 @@
  * surface (no third-party contact from a public endpoint).
  */
 
+import { twilioRestAuthFromEnv } from "../communications/twilio-auth.server";
 import { SystemClock, TimeAuthority } from "../kernel/time-authority";
 
 /** J-023: time enters only via the kernel time-authority — no direct wall-clock sampling. */
@@ -227,14 +228,19 @@ export async function checkPaystackHealth(env: ServerEnv, fetchImpl: FetchLike =
 /** Twilio — read-only GET /2010-04-01/Accounts/{sid}.json with Basic auth. */
 export async function checkTwilioHealth(env: ServerEnv, fetchImpl: FetchLike = fetch): Promise<ProviderHealthReport> {
   const startedAt = healthTimeAuthority.now().atMs;
-  if (!isNonBlank(env.TWILIO_ACCOUNT_SID) || !isNonBlank(env.TWILIO_AUTH_TOKEN)) {
-    return notConfigured("twilio", ["TWILIO_ACCOUNT_SID", "TWILIO_AUTH_TOKEN"]);
+  const auth = twilioRestAuthFromEnv(env);
+  if (!auth) {
+    return notConfigured("twilio", ["TWILIO_ACCOUNT_SID", "TWILIO_API_KEY+TWILIO_API_SECRET or TWILIO_AUTH_TOKEN"]);
   }
 
-  const accountSid = env.TWILIO_ACCOUNT_SID as string;
-  const basic = Buffer.from(`${accountSid}:${env.TWILIO_AUTH_TOKEN as string}`).toString("base64");
+  const accountSid = auth.accountSid;
+  const basic = Buffer.from(`${auth.username}:${auth.password}`).toString("base64");
   const outcome = await probe(
-    `https://api.twilio.com/2010-04-01/Accounts/${encodeURIComponent(accountSid)}.json`,
+    // Standard API keys cannot read the Accounts resource itself (401), so the
+    // key-pair scheme probes the read-only Balance sub-resource instead.
+    auth.scheme === "api_key"
+      ? `https://api.twilio.com/2010-04-01/Accounts/${encodeURIComponent(accountSid)}/Balance.json`
+      : `https://api.twilio.com/2010-04-01/Accounts/${encodeURIComponent(accountSid)}.json`,
     { Authorization: `Basic ${basic}` },
     fetchImpl,
   );

@@ -113,7 +113,9 @@ function TeacherLessonPlans() {
         description: desc,
         homework_assignment: s.homework_assignment || draft.homework,
       }));
-      toast.success("Draft inserted — review and edit before saving.");
+      toast.success(
+        `${draft.aiProvenance?.notice ?? "AI-generated draft."} Inserted — review and edit before saving.`,
+      );
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "AI draft failed");
     } finally {
