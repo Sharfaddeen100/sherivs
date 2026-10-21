@@ -284,7 +284,7 @@ void defineFamilySuite;
 
 /* ───────────────────────────────────────────────────────────────────────────
  * Part 2 — the coverage ledger: the five M-R-121 T2 suites partition the
- * 23 Scholar server-function families exhaustively.
+ * 24 Scholar server-function families exhaustively.
  * ─────────────────────────────────────────────────────────────────────────*/
 
 const SUITE_PARTITION: Readonly<Record<string, readonly string[]>> = {
@@ -297,6 +297,7 @@ const SUITE_PARTITION: Readonly<Record<string, readonly string[]>> = {
     "org-profile.functions.ts",
     "portal-overview.functions.ts",
     "school-settings.functions.ts",
+    "staff-privilege.functions.ts",
     "teachers.functions.ts",
     "timetable.functions.ts",
     "workforce-positions.functions.ts",
@@ -327,11 +328,11 @@ describe("§27 invariant coverage ledger — Scholar server-function families", 
     .filter((f) => f.endsWith(".functions.ts"))
     .sort();
 
-  it("all 23 families exist on disk and are partitioned exactly once across the five suites", () => {
-    expect(onDisk).toHaveLength(23);
+  it("all 24 families exist on disk and are partitioned exactly once across the five suites", () => {
+    expect(onDisk).toHaveLength(24);
     const covered = Object.values(SUITE_PARTITION).flat();
-    expect(covered).toHaveLength(23);
-    expect(new Set(covered).size, "no family may be covered twice").toBe(23);
+    expect(covered).toHaveLength(24);
+    expect(new Set(covered).size, "no family may be covered twice").toBe(24);
     expect([...covered].sort()).toEqual(onDisk);
     for (const suite of Object.keys(SUITE_PARTITION)) {
       expect(() => readFileSync(join(ROOT, "tests/unit", suite), "utf8"), suite).not.toThrow();

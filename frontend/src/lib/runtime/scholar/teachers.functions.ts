@@ -4,7 +4,9 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { emailField, nonEmptyText, optionalText, phoneField } from "@/lib/validation";
 import { tokenMsRemaining } from "@/lib/auth-helpers";
 import { requireSchoolAdminScope } from "@/lib/security-role-gate";
+import { assertNotSelfAccountStatusChange } from "@/lib/runtime/identity-privilege";
 import { SystemClock, TimeAuthority } from "../../kernel/time-authority";
+import { performStaffPrivilegeChange, type PrivilegeAdminClient } from "./staff-privilege.functions";
 import { writeAuditRecord } from "@/lib/server/write-audit";
 
 /** J-023: time enters only via the kernel time-authority — no direct wall-clock sampling. */
@@ -37,7 +39,7 @@ export type InviteTeacherResult = {
 };
 
 function tempPassword() {
-  const rand = Math.random().toString(36).slice(2, 8);
+  const rand = crypto.randomUUID().replace(/-/g, "").slice(0, 10);
   return `Teach@${rand}${new Date(timeAuthority.now().atMs).getFullYear()}!`;
 }
 
@@ -127,24 +129,25 @@ export const setTeacherActive = createServerFn({ method: "POST" })
       lifecycle: null,
       sessionValid: typeof context?.claims?.exp === "number" && tokenMsRemaining(context.claims.exp) > 0,
     });
-    // RLS already restricts to same school
-    const { error } = await context.supabase
+    assertNotSelfAccountStatusChange(context.userId, data.userId);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    // Teacher-only restriction (same school) before delegating the privileged write.
+    const { data: teacher } = await supabaseAdmin
       .from("users")
-      .update({ is_active: data.isActive })
+      .select("id")
       .eq("id", data.userId)
-      .eq("role", "teacher");
-    if (error) throw new Error(error.message);
+      .eq("school_id", schoolId)
+      .eq("role", "teacher")
+      .maybeSingle();
+    if (!teacher) throw new Error("TARGET_NOT_FOUND: Teacher not found");
 
-    // §27.6 AUDIT — fail-closed separate audit record for the status write.
-    await writeAuditRecord(context.supabase, {
-      action: "teacher.set_active",
-      gate: "requireSchoolAdminScope",
-      tenantId: schoolId,
+    // Audit (§27.6) is written fail-closed inside performStaffPrivilegeChange.
+    await performStaffPrivilegeChange({
+      userClient: context.supabase,
+      adminClient: supabaseAdmin as unknown as PrivilegeAdminClient,
       actorId: context.userId,
-      table: "users",
-      recordId: data.userId,
-      outcome: "succeeded",
-      details: { isActive: data.isActive },
+      actorSchoolId: schoolId,
+      input: { userId: data.userId, isActive: data.isActive },
     });
 
     return { ok: true };

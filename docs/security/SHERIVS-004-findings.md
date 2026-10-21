@@ -1,0 +1,36 @@
+# SHERIVS-004 Security Findings (V1 scope)
+
+Branch `cursor/sherivs-004-security-hardening`. Tests: `tests/unit/sherivs-004-security-hardening.test.ts`.
+
+| # | Sev | Location | Exploit sketch | Status |
+|---|-----|----------|----------------|--------|
+| 1 | Critical | `staff-accounts.functions.ts` `createStaffAccount` | School admin supplies the email of an existing auth user (other tenant / super admin); function resets password and grants role -> cross-tenant takeover | Fixed + test (refuses super_admins and users in another school) |
+| 2 | High | `routes/api/public/webhooks/paystack.ts`, `paystack.functions.ts` `verifyFeePayment` | Fee marked paid without checking amount/currency/reference; `paid_amount=amount/100` trusted; replay re-applied | Fixed + test: single `settlePaystackCharge` checks status, reference, fee_id/school_id metadata, NGN, amount == outstanding*100; compare-and-set write makes replays no-ops. Webhook fails closed (503) if secret missing, constant-time HMAC-SHA512 over raw body, 256KB cap, IP rate limit. Paystack key handling unchanged |
+| 3 | **High** | RLS `tenant_all_fees`, `tenant_all_students`, `platform_fee_ledger_school_access` (FOR ALL, school-only) | Any parent/student marks fees paid, edits any student, reads every student's fees and personal data in the school | **Fixed + SQL test**: migration `20261020000090_sherivs_004_in_school_role_rls.sql`. Reads are now limited to staff, a linked parent or the student; writes to admin/principal/bursar (fees), admin/principal/registrar (students), super admin (ledger). The `users` self-escalation still depends on the identity freeze (`.sql.proposed`, **not applied in production**). |
+| 4 | Medium | `initFeePayment` | Any member initiates payment for any fee id in school (IDOR) | Fixed + test (`canInitiateFeePayment`: finance staff, mapped parent, student self); authorization_url host pinned to checkout.paystack.com |
+| 5 | Medium | `push.functions.ts` `dispatchPushToUsers` | Any member pushes notifications to arbitrary users | Fixed (requires teaching_staff context) + test |
+| 6 | Medium | `validation.ts urlField`, `school-settings` map embed, `public/sections.tsx` iframes | `javascript:` URL / arbitrary iframe src in public site | Fixed + test (http(s)-only; `safeMapEmbedSrc`) |
+| 7 | Medium | `server.ts` | No HSTS/nosniff/frame/referrer/permissions headers | Fixed + test (enforced baseline). CSP is **Report-Only** (cannot verify Supabase/Paystack/inline breakage) -> not enforced |
+| 8 | Medium | `audit.password-reset.ts` | Unauthenticated flood; client-supplied user_id/email allows audit forgery | Partial: 30/min IP limit + timeAuthority. Forgery not fixed (endpoint is pre-auth by design); needs signed/Supabase-hook origin |
+| 9 | Low/Med | `digital-twin.functions.ts` TwiML | Wrong escape order -> XML injection; unvalidated phone | Fixed + test |
+| 10 | Low | `staff-accounts`, `teachers` temp passwords | `Math.random` predictable | Fixed (`crypto`) |
+| 11 | Medium | `provisionDemoEnterprise` | Unauthenticated; gated only by `ALLOW_DEMO_PROVISIONING` env | Not fixed: by design, covered by existing tests; must stay off in prod |
+| 12 | Low | `checkPlatformBootstrap` | Public; reveals whether a super admin exists | Not fixed (needed for bootstrap UX) |
+| 13 | Low | Admissions / OTP | No server-side limiter (Supabase-native flows) | Not fixed: enforce via Supabase Auth rate limits; helper `checkPublicRateLimit` available |
+| 14 | Low | `public-rate-limit.server.ts` | In-process limiter not shared across instances unless REDIS_REST_* set | Documented |
+| 15 | Low | `createStaffAccount` | Still resets password of existing same-school user / upserts roles | Not fixed (admin-intended behavior; same-school only now) |
+| 16 | Low | sidebar `document.cookie` | No Secure/HttpOnly flags | Not fixed (UI preference only; no secret) |
+| 17 | Info | Other items | No open redirects, no user-controlled SSRF (outbound hosts fixed/env), `dangerouslySetInnerHTML` only chart CSS + theme constant, no CORS headers (same-origin), uploads validated (type/size/consent) in `uploadStudentMedia`; no Resend/Twilio/Vapi inbound webhook routes exist | OK |
+
+Notes: `cg_idempotency_record` not reused; idempotency = unique `paystack_reference` + compare-and-set. Paystack gives no timestamp, so replay window relies on idempotency. 
+
+## Added in review (operator pass)
+
+| # | Sev | Location | Exploit sketch | Status |
+|---|-----|----------|----------------|--------|
+| 18 | **Critical (rotation)** | git history, commit `144e60c9` (2026-08-15): `.env` (deleted in `01dca86`) and `.mcp.json` | Committed Supabase **service_role** JWT and anon JWT for project `qimawwdlgjtudzufgeox` (also as `VITE_SUPABASE_SERVICE_ROLE_KEY`, i.e. intended for the client bundle), an NVIDIA API key, a `ghp_` GitHub PAT, and a second service-role value in `.mcp.json`. HEAD is clean and the repo is private, but anyone with repo or clone access can read them | **Needs the owner**: rotate the service-role/JWT secret of `qimawwdlgjtudzufgeox` (or delete the project if it is retired), revoke the PAT, rotate the NVIDIA key. Optional history purge (`git filter-repo`) only after rotation. Liveness was not tested (that would require using the key). |
+| 19 | **High** | ~40 tables with FOR ALL `school_id = get_my_school_id()` policies (attendance, clinic_visits, discipline_records, staff_payroll, subscriptions, website content, hostel, library, parent_student_map, ...) | Any school member (parent/student/alumni/driver) writes them via PostgREST; a parent links themselves to any child through `parent_student_map` and then reads that child | **Fixed + SQL test**: migration `20261020000100` adds RESTRICTIVE writer-role policies per table family (admin / fin / link / staff). Reads unchanged. |
+| 20 | Medium | grants | anon and authenticated held TRUNCATE (which bypasses RLS) on every public table; anon held INSERT/UPDATE/DELETE everywhere; anon could EXECUTE role/workforce management RPCs | **Fixed + SQL test**: migration `20261020000110` (anon keeps only the explicit admissions form insert and the public website RPCs). |
+| 21 | **High** (dependency) | `@tanstack/react-start` <=1.168.59 / `start-server-core` <=1.169.38: unauthenticated reflected XSS (GHSA-qx66-fv34-fjm8); seroval, undici, js-yaml, busboy, source-map-js (high, DoS/smuggling) | Remote XSS against any visitor | **Not fixed**: patched versions are within the existing semver ranges, but `npm update` / `npm audit fix` crash on this repo with npm `ERR_INVALID_ARG_TYPE`. Regenerate the lockfile manually (e.g. a fresh `npm install` on a clean machine) and re-run tests. Mobile: 19 high / 11 moderate (Expo toolchain; mostly build-time). |
+| 22 | Info | Supabase posture | No `USING(true)` / `WITH CHECK(true)` policies remain; every public SECURITY DEFINER function pins `search_path`; every public table has RLS enabled | OK |
+| 23 | Medium | `notifications` insert (`notif_insert_tenant`), `audit_logs` insert, `ai_interaction_log`, `study_sessions` | Any school member can insert notifications addressed to any user in their school (phishing or spam), and can forge audit-log rows | Not fixed: these are written by every role from the client today; needs moving to server functions. |

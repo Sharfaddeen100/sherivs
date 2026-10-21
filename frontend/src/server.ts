@@ -3,6 +3,7 @@ import "./lib/error-capture";
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
 import { logStructured } from "./lib/observability/structured-log";
+import { withSecurityHeaders } from "./lib/security/security-headers";
 
 type ServerEntry = {
   fetch: (request: Request, env: unknown, ctx: unknown) => Promise<Response> | Response;
@@ -56,7 +57,7 @@ export default {
         path,
         status: normalized.status,
       });
-      return normalized;
+      return withSecurityHeaders(normalized);
     } catch (error) {
       logStructured({
         level: "error",
@@ -68,10 +69,12 @@ export default {
         err: error,
       });
       console.error(error);
-      return new Response(renderErrorPage(), {
-        status: 500,
-        headers: { "content-type": "text/html; charset=utf-8" },
-      });
+      return withSecurityHeaders(
+        new Response(renderErrorPage(), {
+          status: 500,
+          headers: { "content-type": "text/html; charset=utf-8" },
+        }),
+      );
     }
   },
 };

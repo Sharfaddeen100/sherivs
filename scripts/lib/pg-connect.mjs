@@ -24,6 +24,7 @@
  */
 import net from "node:net";
 import { pgSslConfig } from "./pg-ssl.mjs";
+import { assertUrlMatchesTarget, resolveExplicitTarget } from "./sherivs-db-target.mjs";
 
 const POOLER_REGION_ENV = "COREGRID_DB_POOLER_REGION";
 const DEFAULT_POOLER_REGION = "eu-west-1";
@@ -87,8 +88,10 @@ export function poolerUrlsFor(connectionString, region = process.env[POOLER_REGI
  * The caller owns closing the client.
  */
 export async function connectCoregridPostgres(connectionString, pgModule, log = console.error) {
+  const target = resolveExplicitTarget(process.env);
+  assertUrlMatchesTarget(connectionString, target, "connectionString");
   const ssl = pgSslConfig(connectionString);
-  if (!ssl) throw new Error("DATABASE_URL explicitly disables TLS — refusing (pg-ssl.mjs policy)");
+  if (!ssl) throw new Error("connection string explicitly disables TLS — refusing (pg-ssl.mjs policy)");
 
   const url = new URL(connectionString);
   const directHost = url.hostname;

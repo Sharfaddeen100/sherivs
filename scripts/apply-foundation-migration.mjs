@@ -6,10 +6,11 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { requireManagementTarget } from "./lib/sherivs-db-target.mjs";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
+const { projectRef } = requireManagementTarget(process.env, process.argv[2]);
 const token = process.env.SUPABASE_ACCESS_TOKEN;
-const projectRef = process.argv[2] ?? "nwrflbpbhyiqdptmlccm";
 const file = "database/supabase/migrations/20260929000000_coregrid_foundation_mission_001.sql";
 
 if (!token) {

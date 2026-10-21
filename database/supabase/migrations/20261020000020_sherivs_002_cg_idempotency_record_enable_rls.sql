@@ -1,0 +1,30 @@
+-- =============================================================================
+-- SHERIVS-002 — public.cg_idempotency_record: ENABLE row level security
+-- =============================================================================
+-- Status: AUTHORED, NOT APPLIED outside the local disposable stack used for the
+-- SHERIVS-002 cross-tenant harness. Do not apply to a hosted/linked project
+-- without the coordinator's serialized canonical apply.
+--
+-- Finding (harness run 1): 20261003000017 declared the table "policy-backed,
+-- tenant-scoped, FORCE ROW LEVEL SECURITY" and created three tenant policies,
+-- but never issued ALTER TABLE ... ENABLE ROW LEVEL SECURITY. FORCE alone is
+-- inert while RLS is disabled, so the policies were not evaluated and
+-- `authenticated` (SELECT/INSERT/UPDATE granted by 20261003000018) could read
+-- and write idempotency records of every tenant.
+--
+-- Fix: ENABLE RLS (FORCE is already set). The policies
+-- idempotency_record_select_own_tenant / _insert_tenant_admin /
+-- _replace_expired now govern authenticated; anon has no privileges.
+--
+-- Dependency check: the only non-client path is
+-- public.cg_prune_expired_idempotency_records(timestamptz, integer), a
+-- SECURITY DEFINER function owned by the migration owner (postgres, which holds
+-- BYPASSRLS/superuser), executable by service_role only. service_role also has
+-- BYPASSRLS. Neither relies on RLS being off. If the owner were ever changed
+-- to a role without BYPASSRLS, FORCE RLS plus the absent DELETE policy would
+-- make the prune delete zero rows — keep the owner as postgres.
+--
+-- Idempotent.
+-- =============================================================================
+
+ALTER TABLE public.cg_idempotency_record ENABLE ROW LEVEL SECURITY;

@@ -3,9 +3,10 @@
  * CoreGrid — run a SQL verification/query file via node-postgres.
  *
  * Usage:
- *   $env:DATABASE_URL="postgresql://..." ; node scripts/db-run.mjs database/queries/rls-isolation-check.sql
+ *   SHERIVS_DATABASE_TARGET=development DATABASE_URL="postgresql://..." \
+ *     node scripts/db-run.mjs database/queries/rls-isolation-check.sql
  *
- * Reads DATABASE_URL from the environment ONLY. The argument is either a path
+ * Requires an explicit SHERIVS_DATABASE_TARGET. The argument is either a path
  * to a SQL file (existing files always win) or, if no such file exists and the
  * argument does not end in ".sql", a literal inline SQL statement. Executes
  * it as one multi-statement query and prints any returned rows as JSON lines.
@@ -15,6 +16,7 @@ import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import pg from "pg";
 import { pgSslConfig } from "./lib/pg-ssl.mjs";
+import { requirePostgresTarget } from "./lib/sherivs-db-target.mjs";
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
 const target = process.argv[2];
@@ -22,11 +24,8 @@ if (!target) {
   console.error('Usage: node scripts/db-run.mjs <path-to-sql-file | "inline SQL">');
   process.exit(2);
 }
-const dbUrl = process.env.DATABASE_URL;
-if (!dbUrl) {
-  console.error("DATABASE_URL is required (postgres connection string).");
-  process.exit(2);
-}
+const resolved = requirePostgresTarget();
+const dbUrl = resolved.connectionString;
 
 const sqlFile = join(ROOT, target);
 let sql;
