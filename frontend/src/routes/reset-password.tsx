@@ -107,8 +107,8 @@ function ResetPasswordPage() {
   }
 
   return (
-    <div className="min-h-dvh grid place-items-center px-4 py-8">
-      <div className="w-full max-w-md uos-card p-6 sm:p-8">
+    <div className="auth-shell">
+      <div className="auth-card uos-card" data-testid="auth-card">
         <h1 className="font-display text-2xl font-bold">
           {invalid ? "Link not valid" : "Choose a new password"}
         </h1>
