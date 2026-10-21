@@ -1,4 +1,5 @@
 import { createFileRoute, Navigate } from "@tanstack/react-router";
+import { InternalSecurityGate } from "@/components/security/internal-security-gate";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useState } from "react";
 import { useApp } from "@/contexts/app-context";
@@ -12,7 +13,7 @@ import { capabilitiesForRoles, isPlatformRoleCode } from "@/lib/platform-staff/c
  */
 export const Route = createFileRoute("/_authenticated/internal_/access-review")({
   ssr: false,
-  component: AccessReviewPage,
+  component: GatedAccessReviewPage,
 });
 
 type Review = Awaited<ReturnType<typeof getAccessReview>>;
@@ -40,6 +41,24 @@ function AccessReviewPage() {
       {error && <p className="text-destructive">{error}</p>}
       {review && (
         <>
+          <section className="uos-card p-5">
+            <h2 className="font-display font-semibold">Security alerts (last 24h)</h2>
+            {!review.alertsAvailable && (
+              <p className="mt-2 text-muted-foreground">
+                Alert scan unavailable (migration 0170 not applied yet).
+              </p>
+            )}
+            {review.alertsAvailable && review.alerts.length === 0 && (
+              <p className="mt-2 text-muted-foreground">No alerts.</p>
+            )}
+            <ul className="mt-2 space-y-1">
+              {review.alerts.map((a) => (
+                <li key={`${a.kind}:${a.subject}:${a.last_at}`} className="text-destructive">
+                  {a.kind} — {a.subject} — {a.event_count} event(s), last {a.last_at}
+                </li>
+              ))}
+            </ul>
+          </section>
           <section className="uos-card p-5">
             <h2 className="font-display font-semibold">Super admins</h2>
             <ul className="mt-2 space-y-1">
@@ -84,5 +103,13 @@ function AccessReviewPage() {
         </>
       )}
     </div>
+  );
+}
+
+function GatedAccessReviewPage() {
+  return (
+    <InternalSecurityGate>
+      <AccessReviewPage />
+    </InternalSecurityGate>
   );
 }

@@ -1,4 +1,5 @@
 import { createFileRoute, Navigate } from "@tanstack/react-router";
+import { InternalSecurityGate } from "@/components/security/internal-security-gate";
 import { useServerFn } from "@tanstack/react-start";
 import { useCallback, useEffect, useState } from "react";
 import { useApp } from "@/contexts/app-context";
@@ -18,7 +19,7 @@ import { capabilitiesForRoles, isPlatformRoleCode } from "@/lib/platform-staff/c
  */
 export const Route = createFileRoute("/_authenticated/internal_/support")({
   ssr: false,
-  component: SupportPage,
+  component: GatedSupportPage,
 });
 
 type Grant = Awaited<ReturnType<typeof listSupportGrants>>[number];
@@ -204,5 +205,13 @@ function SupportPage() {
         </section>
       )}
     </div>
+  );
+}
+
+function GatedSupportPage() {
+  return (
+    <InternalSecurityGate>
+      <SupportPage />
+    </InternalSecurityGate>
   );
 }

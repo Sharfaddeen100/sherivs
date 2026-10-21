@@ -15,6 +15,7 @@ import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { tokenMsRemaining } from "@/lib/auth-helpers";
 import { requirePlatformSuperAdmin } from "@/lib/security-role-gate";
+import { assertInternalAal2 } from "@/lib/security/mfa-server";
 import { writeAuditRecord } from "@/lib/server/write-audit";
 import { SystemClock, TimeAuthority } from "@/lib/kernel/time-authority";
 import { PLATFORM_ROLE_CODES, canTransition, type PlatformStaffStatus } from "./catalogue";
@@ -26,6 +27,7 @@ type GateContext = {
 };
 
 async function assertSuper(context: GateContext) {
+  assertInternalAal2((context as { claims?: { aal?: unknown } }).claims);
   await requirePlatformSuperAdmin(context.supabase, {
     lifecycle: null,
     sessionValid:
