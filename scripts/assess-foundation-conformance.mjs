@@ -10,9 +10,10 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { requireManagementTarget } from "./lib/sherivs-db-target.mjs";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
-const projectRef = "nwrflbpbhyiqdptmlccm";
+const { projectRef } = requireManagementTarget(process.env);
 
 function read(relativePath) {
   return readFileSync(join(root, relativePath), "utf8");

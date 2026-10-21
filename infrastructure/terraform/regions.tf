@@ -19,12 +19,12 @@ locals {
   coregrid_region_records = {
     # ── Primary fabric (OCI) ────────────────────────────────────────────────
     "oci:eu-frankfurt-1" = {
-      provider                  = "oci"
-      geographical_area         = "europe"
-      jurisdiction              = "EU"
-      sovereign                 = false
+      provider                   = "oci"
+      geographical_area          = "europe"
+      jurisdiction               = "EU"
+      sovereign                  = false
       permitted_for_tenancy_data = true
-      role                      = "primary-control-plane"
+      role                       = "primary-control-plane"
     }
     "oci:uk-london-1" = {
       provider                   = "oci"

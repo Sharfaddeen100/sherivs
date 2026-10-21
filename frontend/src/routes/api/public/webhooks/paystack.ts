@@ -5,23 +5,33 @@
  * signature ourselves. Paystack signs the raw request body with HMAC-SHA512
  * using the merchant secret key and sends `x-paystack-signature`.
  *
- * On `charge.success`, we mark the fee row paid by reference.
+ * On `charge.success`, the shared settlement path marks the fee paid only when
+ * reference, currency and amount match the server-side fee row (SHERIVS-004).
+ * Paystack sends no signed timestamp, so replay protection is idempotent
+ * compare-and-set settlement keyed by the unique `paystack_reference`.
  */
 import { createFileRoute } from "@tanstack/react-router";
-import { createHmac, timingSafeEqual } from "crypto";
 import { z } from "zod";
+import { SystemClock, TimeAuthority } from "@/lib/kernel/time-authority";
+import { settlePaystackCharge, type SettlementDb } from "@/lib/payments/paystack-settlement";
+import { clientIpFromHeaders } from "@/lib/security/request-safety";
+import { verifyHmacHexSignature } from "@/lib/security/webhook-signature.server";
 
 /**
  * Bounded event contract (§26): an authenticated-but-malformed payload is
  * refused, never parsed with a blind cast. Only the fields the handler
  * consumes survive; anything else is ignored, not trusted.
  */
+const timeAuthority = new TimeAuthority(new SystemClock());
+const MAX_BODY_BYTES = 256 * 1024;
+
 const PaystackEventSchema = z.object({
   event: z.string().max(64),
   data: z
     .object({
       reference: z.string().min(1).max(200).optional(),
       amount: z.number().int().nonnegative().max(100_000_000).optional(),
+      currency: z.string().max(8).optional(),
       status: z.string().max(32).optional(),
       metadata: z
         .object({
@@ -42,13 +52,23 @@ export const Route = createFileRoute("/api/public/webhooks/paystack")({
         const secret = process.env.PAYSTACK_SECRET_KEY;
         if (!secret) return new Response("Payments not configured", { status: 503 });
 
-        const raw = await request.text();
-        const signature = request.headers.get("x-paystack-signature") ?? "";
-        const expected = createHmac("sha512", secret).update(raw).digest("hex");
+        const ip = clientIpFromHeaders(request.headers);
+        const { checkPublicRateLimit } = await import("@/lib/security/public-rate-limit.server");
+        const limited = await checkPublicRateLimit("paystack-webhook", ip, {
+          maxRequests: 600,
+          windowMs: 60_000,
+        });
+        if (!limited.allowed) {
+          return new Response("Too many requests", {
+            status: 429,
+            headers: { "Retry-After": String(limited.retryAfterSeconds) },
+          });
+        }
 
-        const sig = Buffer.from(signature);
-        const exp = Buffer.from(expected);
-        if (sig.length !== exp.length || !timingSafeEqual(sig, exp)) {
+        const raw = await request.text();
+        if (raw.length > MAX_BODY_BYTES) return new Response("Payload too large", { status: 413 });
+        const signature = request.headers.get("x-paystack-signature");
+        if (!verifyHmacHexSignature(raw, signature, secret)) {
           return new Response("Invalid signature", { status: 401 });
         }
 
@@ -63,34 +83,50 @@ export const Route = createFileRoute("/api/public/webhooks/paystack")({
 
         const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
-        const schoolId = event.data?.metadata?.school_id ?? null;
+        let schoolId: string | null = null;
+        let processingStatus = "ignored";
+        let errorMessage: string | null = null;
+
+        if (event.event === "charge.success" && event.data?.reference) {
+          try {
+            const result = await settlePaystackCharge(supabaseAdmin as unknown as SettlementDb, {
+              reference: event.data.reference,
+              status: event.data.status,
+              amountKobo: event.data.amount,
+              currency: event.data.currency,
+              metadata: event.data.metadata,
+            });
+            // School id comes from the matched fee row, never from the payload.
+            schoolId = "schoolId" in result ? (result.schoolId ?? null) : null;
+            processingStatus = result.outcome;
+            if (result.outcome === "rejected" || result.outcome === "ignored") {
+              errorMessage = result.reason;
+            }
+          } catch (err) {
+            await supabaseAdmin.from("webhook_logs").insert({
+              school_id: null,
+              provider: "paystack",
+              event_type: event.event,
+              payload: { reference: event.data.reference },
+              processing_status: "error",
+              error_message: err instanceof Error ? err.message.slice(0, 300) : "settlement error",
+              processed_at: timeAuthority.now().at,
+            });
+            // Non-2xx so Paystack redelivers; settlement is idempotent.
+            return new Response("Processing error", { status: 500 });
+          }
+        }
+
         if (schoolId) {
           await supabaseAdmin.from("webhook_logs").insert({
             school_id: schoolId,
             provider: "paystack",
             event_type: event.event,
             payload: JSON.parse(JSON.stringify(event)),
-            processing_status: "received",
+            processing_status: processingStatus,
+            error_message: errorMessage,
+            processed_at: timeAuthority.now().at,
           });
-        }
-
-        if (event.event === "charge.success" && event.data?.reference) {
-          const feeId = event.data.metadata?.fee_id;
-          const amount = event.data.amount ? event.data.amount / 100 : null;
-          // Idempotency note: the update is keyed by the provider reference, so
-          // a provider redelivery rewrites the same terminal state — the
-          // financial effect stays exactly-once in substance.
-          const upd = {
-            status: "paid",
-            paid_at: new Date().toISOString(),
-            ...(amount != null ? { paid_amount: amount } : {}),
-          };
-          const query = supabaseAdmin
-            .from("fees")
-            .update(upd)
-            .eq("paystack_reference", event.data.reference);
-          if (feeId) await query.eq("id", feeId);
-          else await query;
         }
         return new Response("ok");
       },

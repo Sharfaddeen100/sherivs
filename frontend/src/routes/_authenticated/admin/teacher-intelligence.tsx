@@ -76,7 +76,7 @@ const HEALTH_LEVELS = [
     label: "Good",
     min: 60,
     max: 79,
-    color: "bg-teal-500/15 text-teal-600 border-teal-500/30",
+    color: "bg-brand-500/15 text-brand-600 border-brand-500/30",
   },
   {
     key: "support",
@@ -772,7 +772,7 @@ function HealthGauge({ score, colorClass }: { score: number; colorClass: string 
     score >= 80
       ? "stroke-emerald-500"
       : score >= 60
-        ? "stroke-teal-500"
+        ? "stroke-brand-500"
         : score >= 40
           ? "stroke-amber-500"
           : "stroke-red-500";

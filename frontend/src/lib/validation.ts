@@ -33,7 +33,7 @@ export const optionalEmail = emailField
 export const hexColor = z
   .string()
   .trim()
-  .regex(/^#[0-9a-fA-F]{6}$/, "Use a 6-digit hex color like #1d4ed8");
+  .regex(/^#[0-9a-fA-F]{6}$/, "Use a 6-digit hex color like #184efd");
 
 export const optionalHexColor = hexColor
   .optional()
@@ -45,6 +45,7 @@ export const urlField = z
   .trim()
   .url("Enter a valid URL")
   .max(2048)
+  .refine((v) => /^https?:\/\//i.test(v), "URL must start with http:// or https://")
   .optional()
   .or(z.literal(""))
   .transform((v) => (v ? v : null));

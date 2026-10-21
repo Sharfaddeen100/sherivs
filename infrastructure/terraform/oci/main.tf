@@ -34,26 +34,26 @@ provider "oci" {
 module "network" {
   source = "../modules/network"
 
-  name_prefix          = var.name_prefix
-  environment          = var.environment
-  compartment_ocid     = var.oci_compartment_ocid
-  vcn_cidr             = var.vcn_cidr
-  public_subnet_cidr   = var.public_subnet_cidr
-  private_subnet_cidr  = var.private_subnet_cidr
-  extra_tags           = var.extra_tags
+  name_prefix         = var.name_prefix
+  environment         = var.environment
+  compartment_ocid    = var.oci_compartment_ocid
+  vcn_cidr            = var.vcn_cidr
+  public_subnet_cidr  = var.public_subnet_cidr
+  private_subnet_cidr = var.private_subnet_cidr
+  extra_tags          = var.extra_tags
 }
 
 module "kubernetes" {
   source = "../modules/kubernetes"
 
-  name_prefix             = var.name_prefix
-  environment             = var.environment
-  compartment_ocid        = var.oci_compartment_ocid
-  vcn_id                  = module.network.vcn_id
-  private_subnet_id       = module.network.private_subnet_id
-  public_subnet_id        = module.network.public_subnet_id
-  kubernetes_version      = var.kubernetes_version
-  extra_tags              = var.extra_tags
+  name_prefix        = var.name_prefix
+  environment        = var.environment
+  compartment_ocid   = var.oci_compartment_ocid
+  vcn_id             = module.network.vcn_id
+  private_subnet_id  = module.network.private_subnet_id
+  public_subnet_id   = module.network.public_subnet_id
+  kubernetes_version = var.kubernetes_version
+  extra_tags         = var.extra_tags
 }
 
 module "system_pool" {

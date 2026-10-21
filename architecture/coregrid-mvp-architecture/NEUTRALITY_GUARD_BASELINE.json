@@ -6173,6 +6173,1012 @@
         16
       ],
       "firstSnippet": "-- anon and authenticated read EVERY column of every active school, including"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000030_sherivs_002_admission_insert_check.sql",
+      "kind": "vocabulary",
+      "token": "admission",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 1,
+      "lines": [
+        2
+      ],
+      "firstSnippet": "-- SHERIVS-002: tighten the public admission-application INSERT policy."
+    },
+    {
+      "file": "database/supabase/migrations/20261020000030_sherivs_002_admission_insert_check.sql",
+      "kind": "vocabulary",
+      "token": "school",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 3,
+      "lines": [
+        8,
+        10,
+        11
+      ],
+      "firstSnippet": "-- school (intended) but ALSO pre-set reviewer-owned fields (status ="
+    },
+    {
+      "file": "database/supabase/migrations/20261020000030_sherivs_002_admission_insert_check.sql",
+      "kind": "structural",
+      "token": "school_id",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 1,
+      "lines": [
+        31
+      ],
+      "firstSnippet": "WHERE s.id = admission_applications.school_id"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000040_sherivs_002_admissions_and_media_privacy.sql",
+      "kind": "vocabulary",
+      "token": "school",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 15,
+      "lines": [
+        2,
+        8,
+        9,
+        12,
+        14,
+        15,
+        18,
+        19,
+        25,
+        31,
+        69,
+        70,
+        72,
+        80,
+        101
+      ],
+      "firstSnippet": "-- SHERIVS-002 step 2: admissions PII is registrar/admin-only; school-media is"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000040_sherivs_002_admissions_and_media_privacy.sql",
+      "kind": "vocabulary",
+      "token": "teacher",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 1,
+      "lines": [
+        8
+      ],
+      "firstSnippet": "--   1. admission_applications SELECT/UPDATE were school-wide: any teacher,"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000040_sherivs_002_admissions_and_media_privacy.sql",
+      "kind": "vocabulary",
+      "token": "student",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 5,
+      "lines": [
+        9,
+        17,
+        102,
+        104,
+        108
+      ],
+      "firstSnippet": "--      parent, student, driver or bursar of the school could read applicant /"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000040_sherivs_002_admissions_and_media_privacy.sql",
+      "kind": "vocabulary",
+      "token": "bursar",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 1,
+      "lines": [
+        9
+      ],
+      "firstSnippet": "--      parent, student, driver or bursar of the school could read applicant /"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000040_sherivs_002_admissions_and_media_privacy.sql",
+      "kind": "vocabulary",
+      "token": "guardian",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 1,
+      "lines": [
+        10
+      ],
+      "firstSnippet": "--      guardian PII and change decisions. Now limited to"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000040_sherivs_002_admissions_and_media_privacy.sql",
+      "kind": "vocabulary",
+      "token": "principal",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 2,
+      "lines": [
+        11,
+        49
+      ],
+      "firstSnippet": "--      public.can_manage_admissions() (admin, principal, or an active"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000040_sherivs_002_admissions_and_media_privacy.sql",
+      "kind": "vocabulary",
+      "token": "admission",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 1,
+      "lines": [
+        18
+      ],
+      "firstSnippet": "--      authenticated member of the school read admission documents. Now limited"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000040_sherivs_002_admissions_and_media_privacy.sql",
+      "kind": "structural",
+      "token": "school_id",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 5,
+      "lines": [
+        47,
+        53,
+        76,
+        84,
+        88
+      ],
+      "firstSnippet": "AND u.school_id IS NOT NULL"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000040_sherivs_002_admissions_and_media_privacy.sql",
+      "kind": "vocabulary",
+      "token": "scholar",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 1,
+      "lines": [
+        55
+      ],
+      "firstSnippet": "AND w.runtime_ref  = 'runtime:scholar'"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000040_sherivs_002_admissions_and_media_privacy.sql",
+      "kind": "vocabulary",
+      "token": "get_my_school_id",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 4,
+      "lines": [
+        76,
+        84,
+        88,
+        112
+      ],
+      "firstSnippet": "(school_id = public.get_my_school_id() AND public.can_manage_admissions())"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000050_sherivs_002_seed_staff_types_guard.sql",
+      "kind": "vocabulary",
+      "token": "teacher",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 5,
+      "lines": [
+        7,
+        23,
+        24,
+        25,
+        26
+      ],
+      "firstSnippet": "-- school_staff_types rows into ANY school. A school-A teacher wrote 38 rows"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000050_sherivs_002_seed_staff_types_guard.sql",
+      "kind": "vocabulary",
+      "token": "school",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 9,
+      "lines": [
+        7,
+        8,
+        10,
+        28,
+        31,
+        34,
+        36,
+        39,
+        49
+      ],
+      "firstSnippet": "-- school_staff_types rows into ANY school. A school-A teacher wrote 38 rows"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000050_sherivs_002_seed_staff_types_guard.sql",
+      "kind": "vocabulary",
+      "token": "principal",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 2,
+      "lines": [
+        9,
+        37
+      ],
+      "firstSnippet": "-- After: only service_role, a super admin, or an active admin/principal of"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000050_sherivs_002_seed_staff_types_guard.sql",
+      "kind": "vocabulary",
+      "token": "library",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 1,
+      "lines": [
+        26
+      ],
+      "firstSnippet": "['Teaching','Library Teacher'], ['Teaching','ICT Teacher'],"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000050_sherivs_002_seed_staff_types_guard.sql",
+      "kind": "vocabulary",
+      "token": "bursar",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 1,
+      "lines": [
+        38
+      ],
+      "firstSnippet": "['Management','Bursar'], ['Management','Accountant'],"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000050_sherivs_002_seed_staff_types_guard.sql",
+      "kind": "vocabulary",
+      "token": "get_my_school_id",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 1,
+      "lines": [
+        47
+      ],
+      "firstSnippet": "OR (public.is_school_admin() AND _school_id = public.get_my_school_id())"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000050_sherivs_002_seed_staff_types_guard.sql",
+      "kind": "vocabulary",
+      "token": "is_school_admin",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 1,
+      "lines": [
+        47
+      ],
+      "firstSnippet": "OR (public.is_school_admin() AND _school_id = public.get_my_school_id())"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000050_sherivs_002_seed_staff_types_guard.sql",
+      "kind": "structural",
+      "token": "school_id",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 1,
+      "lines": [
+        55
+      ],
+      "firstSnippet": "(school_id, staff_type_category, staff_type, order_index)"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000060_sherivs_003_ndpa_foundations.sql",
+      "kind": "structural",
+      "token": "school_id",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 30,
+      "lines": [
+        5,
+        25,
+        41,
+        56,
+        60,
+        70,
+        76,
+        80,
+        83,
+        101,
+        102,
+        107,
+        108,
+        114,
+        135,
+        141,
+        148,
+        154,
+        158,
+        162,
+        166,
+        187,
+        192,
+        196,
+        202,
+        209,
+        212,
+        226,
+        245,
+        255
+      ],
+      "firstSnippet": "-- Adds (all school_id-scoped, RLS enabled, client writes revoked):"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000060_sherivs_003_ndpa_foundations.sql",
+      "kind": "vocabulary",
+      "token": "guardian",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 2,
+      "lines": [
+        6,
+        81
+      ],
+      "firstSnippet": "--   consent_records / consent_events                 purpose-based guardian consent"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000060_sherivs_003_ndpa_foundations.sql",
+      "kind": "vocabulary",
+      "token": "student",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 6,
+      "lines": [
+        77,
+        84,
+        115,
+        131,
+        159,
+        196
+      ],
+      "firstSnippet": "RAISE EXCEPTION 'consent_records: student does not belong to school' USING ERRCODE = '23514';"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000060_sherivs_003_ndpa_foundations.sql",
+      "kind": "vocabulary",
+      "token": "school",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 6,
+      "lines": [
+        77,
+        81,
+        84,
+        155,
+        159,
+        163
+      ],
+      "firstSnippet": "RAISE EXCEPTION 'consent_records: student does not belong to school' USING ERRCODE = '23514';"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000060_sherivs_003_ndpa_foundations.sql",
+      "kind": "vocabulary",
+      "token": "get_my_school_id",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 6,
+      "lines": [
+        101,
+        107,
+        187,
+        192,
+        202,
+        245
+      ],
+      "firstSnippet": "OR (public.is_school_admin() AND school_id = public.get_my_school_id())"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000060_sherivs_003_ndpa_foundations.sql",
+      "kind": "vocabulary",
+      "token": "is_school_admin",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 5,
+      "lines": [
+        101,
+        107,
+        187,
+        202,
+        245
+      ],
+      "firstSnippet": "OR (public.is_school_admin() AND school_id = public.get_my_school_id())"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000060_sherivs_003_ndpa_foundations.sql",
+      "kind": "vocabulary",
+      "token": "attendance",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 2,
+      "lines": [
+        275,
+        277
+      ],
+      "firstSnippet": "SELECT 'attendance-activity'::text, 'attendance'::text, count(*), min(a.date)::timestamptz,"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000060_sherivs_003_ndpa_foundations.sql",
+      "kind": "vocabulary",
+      "token": "fees",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 2,
+      "lines": [
+        282,
+        283
+      ],
+      "firstSnippet": "SELECT 'financial', 'fees', count(*), min(f.created_at), 'RP-FINAN-EDU 2555d'"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000070_sherivs_003b_ndpa_completion.sql",
+      "kind": "vocabulary",
+      "token": "student",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 1,
+      "lines": [
+        9
+      ],
+      "firstSnippet": "--      student media prefix <school_id>/students/... of the school-media bucket."
+    },
+    {
+      "file": "database/supabase/migrations/20261020000070_sherivs_003b_ndpa_completion.sql",
+      "kind": "vocabulary",
+      "token": "school",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 19,
+      "lines": [
+        9,
+        13,
+        15,
+        36,
+        37,
+        38,
+        41,
+        44,
+        50,
+        53,
+        58,
+        64,
+        67,
+        81,
+        89,
+        115,
+        116,
+        120,
+        121
+      ],
+      "firstSnippet": "--      student media prefix <school_id>/students/... of the school-media bucket."
+    },
+    {
+      "file": "database/supabase/migrations/20261020000070_sherivs_003b_ndpa_completion.sql",
+      "kind": "structural",
+      "token": "school_id",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 8,
+      "lines": [
+        9,
+        12,
+        77,
+        81,
+        83,
+        97,
+        118,
+        164
+      ],
+      "firstSnippet": "--      student media prefix <school_id>/students/... of the school-media bucket."
+    },
+    {
+      "file": "database/supabase/migrations/20261020000070_sherivs_003b_ndpa_completion.sql",
+      "kind": "vocabulary",
+      "token": "scholar",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 3,
+      "lines": [
+        13,
+        81,
+        158
+      ],
+      "firstSnippet": "--   3. public.school_tenant_map: explicit Scholar school <-> CoreGrid tenant"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000070_sherivs_003b_ndpa_completion.sql",
+      "kind": "vocabulary",
+      "token": "principal",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 2,
+      "lines": [
+        15,
+        120
+      ],
+      "firstSnippet": "--      a school admin/principal of the mapped school as tenant administrator"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000070_sherivs_003b_ndpa_completion.sql",
+      "kind": "vocabulary",
+      "token": "get_my_school_id",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 6,
+      "lines": [
+        45,
+        54,
+        59,
+        68,
+        118,
+        164
+      ],
+      "firstSnippet": "AND (storage.foldername(name))[1] = public.get_my_school_id()::text"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000070_sherivs_003b_ndpa_completion.sql",
+      "kind": "vocabulary",
+      "token": "is_school_admin",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 1,
+      "lines": [
+        159
+      ],
+      "firstSnippet": "IF p_role_ref = 'role:administrator' AND public.is_school_admin() THEN"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000090_sherivs_004_in_school_role_rls.sql",
+      "kind": "vocabulary",
+      "token": "school",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 6,
+      "lines": [
+        2,
+        6,
+        11,
+        13,
+        14,
+        15
+      ],
+      "firstSnippet": "-- SHERIVS-004: in-school role RLS for fees, students and the platform fee ledger."
+    },
+    {
+      "file": "database/supabase/migrations/20261020000090_sherivs_004_in_school_role_rls.sql",
+      "kind": "vocabulary",
+      "token": "fee",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 3,
+      "lines": [
+        2,
+        7,
+        77
+      ],
+      "firstSnippet": "-- SHERIVS-004: in-school role RLS for fees, students and the platform fee ledger."
+    },
+    {
+      "file": "database/supabase/migrations/20261020000090_sherivs_004_in_school_role_rls.sql",
+      "kind": "vocabulary",
+      "token": "fees",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 8,
+      "lines": [
+        2,
+        8,
+        11,
+        14,
+        49,
+        50,
+        51,
+        56
+      ],
+      "firstSnippet": "-- SHERIVS-004: in-school role RLS for fees, students and the platform fee ledger."
+    },
+    {
+      "file": "database/supabase/migrations/20261020000090_sherivs_004_in_school_role_rls.sql",
+      "kind": "vocabulary",
+      "token": "get_my_school_id",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 9,
+      "lines": [
+        6,
+        33,
+        53,
+        58,
+        60,
+        66,
+        71,
+        74,
+        81
+      ],
+      "firstSnippet": "-- were FOR ALL with school_id = get_my_school_id(): ANY member of a school (parent,"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000090_sherivs_004_in_school_role_rls.sql",
+      "kind": "structural",
+      "token": "school_id",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 9,
+      "lines": [
+        6,
+        33,
+        53,
+        58,
+        60,
+        66,
+        71,
+        74,
+        81
+      ],
+      "firstSnippet": "-- were FOR ALL with school_id = get_my_school_id(): ANY member of a school (parent,"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000090_sherivs_004_in_school_role_rls.sql",
+      "kind": "vocabulary",
+      "token": "student",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 5,
+      "lines": [
+        7,
+        8,
+        12,
+        13,
+        27
+      ],
+      "firstSnippet": "-- student, driver, ...) could mark any fee paid, edit any student record, and read"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000090_sherivs_004_in_school_role_rls.sql",
+      "kind": "vocabulary",
+      "token": "teacher",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 3,
+      "lines": [
+        11,
+        54,
+        67
+      ],
+      "firstSnippet": "--   read  fees    : school staff (admin, principal, bursar, hq, teacher) of the school;"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000090_sherivs_004_in_school_role_rls.sql",
+      "kind": "vocabulary",
+      "token": "bursar",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 8,
+      "lines": [
+        11,
+        14,
+        16,
+        54,
+        58,
+        60,
+        67,
+        81
+      ],
+      "firstSnippet": "--   read  fees    : school staff (admin, principal, bursar, hq, teacher) of the school;"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000090_sherivs_004_in_school_role_rls.sql",
+      "kind": "vocabulary",
+      "token": "principal",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 11,
+      "lines": [
+        11,
+        14,
+        15,
+        16,
+        54,
+        58,
+        60,
+        67,
+        72,
+        75,
+        81
+      ],
+      "firstSnippet": "--   read  fees    : school staff (admin, principal, bursar, hq, teacher) of the school;"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000090_sherivs_004_in_school_role_rls.sql",
+      "kind": "vocabulary-literal",
+      "token": "parent",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 1,
+      "lines": [
+        39
+      ],
+      "firstSnippet": "OR (s.parent_email IS NOT NULL AND public.my_active_role() = 'parent'"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000090_sherivs_004_in_school_role_rls.sql",
+      "kind": "vocabulary-literal",
+      "token": "driver",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 1,
+      "lines": [
+        67
+      ],
+      "firstSnippet": "AND (public.my_active_role() IN ('admin','principal','bursar','hq','teacher','driver')"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000100_sherivs_004_in_school_write_roles.sql",
+      "kind": "vocabulary",
+      "token": "school",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 3,
+      "lines": [
+        2,
+        5,
+        8
+      ],
+      "firstSnippet": "-- SHERIVS-004: in-school write restrictions (RESTRICTIVE policies)."
+    },
+    {
+      "file": "database/supabase/migrations/20261020000100_sherivs_004_in_school_write_roles.sql",
+      "kind": "vocabulary",
+      "token": "get_my_school_id",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 1,
+      "lines": [
+        4
+      ],
+      "firstSnippet": "-- Before: ~40 tables had FOR ALL policies of the form school_id = get_my_school_id(),"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000100_sherivs_004_in_school_write_roles.sql",
+      "kind": "structural",
+      "token": "school_id",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 1,
+      "lines": [
+        4
+      ],
+      "firstSnippet": "-- Before: ~40 tables had FOR ALL policies of the form school_id = get_my_school_id(),"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000100_sherivs_004_in_school_write_roles.sql",
+      "kind": "vocabulary",
+      "token": "student",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 1,
+      "lines": [
+        5
+      ],
+      "firstSnippet": "-- so ANY member of a school (parent, student, alumni, driver) could insert/update/"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000100_sherivs_004_in_school_write_roles.sql",
+      "kind": "vocabulary",
+      "token": "attendance",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 1,
+      "lines": [
+        6
+      ],
+      "firstSnippet": "-- delete e.g. attendance, clinic visits, discipline, payroll, website content, and"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000100_sherivs_004_in_school_write_roles.sql",
+      "kind": "vocabulary",
+      "token": "discipline",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 2,
+      "lines": [
+        6,
+        10
+      ],
+      "firstSnippet": "-- delete e.g. attendance, clinic visits, discipline, payroll, website content, and"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000100_sherivs_004_in_school_write_roles.sql",
+      "kind": "vocabulary",
+      "token": "payroll",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 1,
+      "lines": [
+        6
+      ],
+      "firstSnippet": "-- delete e.g. attendance, clinic visits, discipline, payroll, website content, and"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000100_sherivs_004_in_school_write_roles.sql",
+      "kind": "vocabulary",
+      "token": "library",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 1,
+      "lines": [
+        10
+      ],
+      "firstSnippet": "--   admin  : admin/principal            (website, HR, health, discipline, hostel, library, billing)"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000100_sherivs_004_in_school_write_roles.sql",
+      "kind": "vocabulary",
+      "token": "hostel",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 1,
+      "lines": [
+        10
+      ],
+      "firstSnippet": "--   admin  : admin/principal            (website, HR, health, discipline, hostel, library, billing)"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000100_sherivs_004_in_school_write_roles.sql",
+      "kind": "vocabulary",
+      "token": "principal",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 1,
+      "lines": [
+        10
+      ],
+      "firstSnippet": "--   admin  : admin/principal            (website, HR, health, discipline, hostel, library, billing)"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000100_sherivs_004_in_school_write_roles.sql",
+      "kind": "vocabulary",
+      "token": "bursar",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 41,
+      "lines": [
+        11,
+        13,
+        205,
+        207,
+        209,
+        213,
+        215,
+        217,
+        229,
+        231,
+        233,
+        237,
+        239,
+        241,
+        245,
+        247,
+        249,
+        253,
+        255,
+        257,
+        261,
+        263,
+        265,
+        269,
+        271,
+        273,
+        277,
+        279,
+        281,
+        285,
+        287,
+        289,
+        293,
+        295,
+        297,
+        301,
+        303,
+        305,
+        309,
+        311,
+        313
+      ],
+      "firstSnippet": "--   fin    : admin/principal/bursar     (expenses, budgets)"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000100_sherivs_004_in_school_write_roles.sql",
+      "kind": "vocabulary",
+      "token": "teacher",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 34,
+      "lines": [
+        13,
+        229,
+        231,
+        233,
+        237,
+        239,
+        241,
+        245,
+        247,
+        249,
+        253,
+        255,
+        257,
+        261,
+        263,
+        265,
+        269,
+        271,
+        273,
+        277,
+        279,
+        281,
+        285,
+        287,
+        289,
+        293,
+        295,
+        297,
+        301,
+        303,
+        305,
+        309,
+        311,
+        313
+      ],
+      "firstSnippet": "--   staff  : admin/principal/bursar/hq/teacher (attendance, lessons, timetables, calendar, news)"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000110_sherivs_004_privilege_hardening.sql",
+      "kind": "vocabulary",
+      "token": "school",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 1,
+      "lines": [
+        8
+      ],
+      "firstSnippet": "--      could satisfy (one not keyed on auth.uid()/school/super-admin helpers). Public forms that do have an anon"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000110_sherivs_004_privilege_hardening.sql",
+      "kind": "vocabulary",
+      "token": "get_my_school_id",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 2,
+      "lines": [
+        11,
+        37
+      ],
+      "firstSnippet": "--      predicates used inside RLS policies (is_super_admin, get_my_school_id, ...)"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000110_sherivs_004_privilege_hardening.sql",
+      "kind": "vocabulary",
+      "token": "is_school_admin",
+      "streamIRef": "SHERIVS-RLS-001",
+      "occurrences": 1,
+      "lines": [
+        37
+      ],
+      "firstSnippet": "'(uid\\(\\)|get_my_school_id|is_super_admin|is_school_admin|my_active_role|can_manage_admissions)')))"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000130_sherivs_006_membership_identity_freeze.sql",
+      "kind": "vocabulary",
+      "token": "school",
+      "streamIRef": "SHERIVS-006",
+      "occurrences": 2,
+      "lines": [
+        5,
+        42
+      ],
+      "firstSnippet": "-- school and role through public.organization_memberships. That stays, but two"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000130_sherivs_006_membership_identity_freeze.sql",
+      "kind": "structural",
+      "token": "school_id",
+      "streamIRef": "SHERIVS-006",
+      "occurrences": 8,
+      "lines": [
+        7,
+        15,
+        32,
+        37,
+        43,
+        101,
+        103,
+        110
+      ],
+      "firstSnippet": "--   1. any signed-in user could UPDATE their own users.school_id / role /"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000130_sherivs_006_membership_identity_freeze.sql",
+      "kind": "vocabulary",
+      "token": "get_my_school_id",
+      "streamIRef": "SHERIVS-006",
+      "occurrences": 4,
+      "lines": [
+        12,
+        26,
+        41,
+        62
+      ],
+      "firstSnippet": "--   * get_my_school_id / get_my_role / my_active_role / is_school_admin all"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000130_sherivs_006_membership_identity_freeze.sql",
+      "kind": "vocabulary",
+      "token": "is_school_admin",
+      "streamIRef": "SHERIVS-006",
+      "occurrences": 3,
+      "lines": [
+        12,
+        73,
+        78
+      ],
+      "firstSnippet": "--   * get_my_school_id / get_my_role / my_active_role / is_school_admin all"
+    },
+    {
+      "file": "database/supabase/migrations/20261020000130_sherivs_006_membership_identity_freeze.sql",
+      "kind": "vocabulary",
+      "token": "principal",
+      "streamIRef": "SHERIVS-006",
+      "occurrences": 2,
+      "lines": [
+        77,
+        80
+      ],
+      "firstSnippet": "AS $$ SELECT COALESCE(public.get_my_role() IN ('admin', 'principal'), false) $$;"
     }
   ]
 }

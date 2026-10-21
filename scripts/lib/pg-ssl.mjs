@@ -65,7 +65,12 @@ function resolveCa(env = process.env) {
  *   pass to `new pg.Client(...)`, or `undefined` when TLS is explicitly
  *   disabled in the connection string itself.
  */
-export function pgSslConfig(connectionString = process.env.DATABASE_URL ?? "") {
+export function pgSslConfig(connectionString) {
+  if (connectionString == null || String(connectionString).trim() === "") {
+    throw new Error(
+      "pgSslConfig requires an explicit connection string; unscoped DATABASE_URL is not a default",
+    );
+  }
   if (
     /(?:[?&])sslmode=disable(?:[&'"]|$)/.test(connectionString) ||
     /(?:[?&])ssl=(?:false|0)(?:[&'"]|$)/.test(connectionString)

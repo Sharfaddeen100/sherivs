@@ -214,8 +214,8 @@ function TeacherSignInPage() {
 
       {!locked && step === 1 && (
         <GlassCard className="p-6 text-center">
-          <div className="mx-auto grid size-20 place-items-center rounded-full bg-[color:var(--tenant-primary,#0d9488)]/15">
-            <MapPin className="size-9 animate-pulse text-[color:var(--tenant-primary,#0d9488)]" />
+          <div className="mx-auto grid size-20 place-items-center rounded-full bg-[color:var(--tenant-primary,#184efd)]/15">
+            <MapPin className="size-9 animate-pulse text-[color:var(--tenant-primary,#184efd)]" />
           </div>
           <h2 className="mt-4 font-display text-lg font-semibold">Verifying Your Location</h2>
           <p className="mt-1 text-sm text-[color:var(--text-secondary)]">
@@ -259,7 +259,7 @@ function TeacherSignInPage() {
 
       {!locked && step === 2 && (
         <GlassCard className="p-6 text-center">
-          <div className="mx-auto grid size-20 place-items-center rounded-full bg-[color:var(--tenant-primary,#0d9488)]/15 font-display text-2xl font-bold">
+          <div className="mx-auto grid size-20 place-items-center rounded-full bg-[color:var(--tenant-primary,#184efd)]/15 font-display text-2xl font-bold">
             {(profile?.full_name ?? "?").slice(0, 1).toUpperCase()}
           </div>
           <h2 className="mt-4 font-display text-lg font-semibold">Confirm sign-in</h2>
@@ -323,7 +323,7 @@ function Stepper({ step }: { step: Step }) {
             key={l}
             className={`rounded-full border px-3 py-1 ${
               active
-                ? "border-[color:var(--tenant-primary,#0d9488)] text-[color:var(--tenant-primary,#0d9488)]"
+                ? "border-[color:var(--tenant-primary,#184efd)] text-[color:var(--tenant-primary,#184efd)]"
                 : done
                   ? "border-emerald-500/40 text-emerald-400"
                   : "border-white/10 text-[color:var(--text-secondary)]"

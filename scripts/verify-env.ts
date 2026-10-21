@@ -8,6 +8,12 @@ import { classifyEnvironment, environmentIssues } from "../frontend/src/lib/env"
 
 const env = process.env as Record<string, string | undefined>;
 const environment = classifyEnvironment(env.NODE_ENV ?? env.APP_ENV);
+if (environment === "unknown") {
+  console.error(
+    "[FAIL] Environment is unknown. Set NODE_ENV or APP_ENV to local, development, test, staging, or production. Unknown is not development.",
+  );
+  process.exit(1);
+}
 const issues = environmentIssues(env, environment);
 
 if (issues.length > 0) {
