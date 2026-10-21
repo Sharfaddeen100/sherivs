@@ -3,6 +3,7 @@
  * and a client-side backoff after repeated failures. The client backoff is UX
  * only; Supabase Auth rate limits are the real control.
  */
+import { PASSWORD_RULE_SUMMARY } from "./password-policy";
 
 type AuthErrorLike = { message?: string; status?: number; code?: string } | null | undefined;
 
@@ -25,7 +26,7 @@ export function newPasswordServerMessage(err: AuthErrorLike & { reasons?: string
   if (code === "weak_password") {
     if (err?.reasons?.includes("pwned"))
       return "This password has appeared in a data breach. Please choose a different one.";
-    return "That password doesn't meet the requirements. Please choose a stronger one.";
+    return `That password doesn't meet the requirements. ${PASSWORD_RULE_SUMMARY}`;
   }
   if (code === "same_password") return "Your new password must be different from your current one.";
   if (code === "reauthentication_needed" || code === "current_password_mismatch")

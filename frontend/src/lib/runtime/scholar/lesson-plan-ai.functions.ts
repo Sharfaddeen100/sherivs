@@ -10,6 +10,12 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { tokenMsRemaining } from "@/lib/auth-helpers";
 import { requireStaffContext } from "@/lib/security-role-gate";
 import { invokeAiGateway, type AiGatewayOutcome } from "@/lib/ai-gateway.server";
+import {
+  aiGuardLimits,
+  buildGuardedPrompt,
+  guardAiOutput,
+  type AiLabelled,
+} from "@/lib/ai/ai-guard.server";
 
 const LESSON_PLAN_MODEL = "google/gemini-3-flash-preview";
 
@@ -43,7 +49,7 @@ export type LessonPlanDraft = z.infer<typeof Schema>;
 export const draftLessonPlan = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .validator((i: unknown) => Input.parse(i))
-  .handler(async ({ data, context }): Promise<LessonPlanDraft> => {
+  .handler(async ({ data, context }): Promise<AiLabelled<LessonPlanDraft>> => {
     // Canonical Phase 08 teaching-staff gate (admin/principal/teacher).
     // Lesson-plan generation consumes the workspace AI gateway — cost-bearing,
     // so it is restricted to staff rather than any authenticated user.
@@ -53,21 +59,26 @@ export const draftLessonPlan = createServerFn({ method: "POST" })
     // session validity is attested from the verified token's exp claim.
     const staff = await requireStaffContext(context.supabase, "teaching_staff", {
       lifecycle: null,
-      sessionValid: typeof context?.claims?.exp === "number" && tokenMsRemaining(context.claims.exp) > 0,
+      sessionValid:
+        typeof context?.claims?.exp === "number" && tokenMsRemaining(context.claims.exp) > 0,
     });
 
     const duration = data.duration_minutes ?? 40;
-    const prompt = [
-      `Draft a single classroom lesson plan.`,
-      `Subject: ${data.subject}`,
-      `Topic: ${data.topic}`,
-      data.grade_level ? `Grade / level: ${data.grade_level}` : "",
-      `Total duration: ${duration} minutes.`,
-      data.notes ? `Teacher notes: ${data.notes}` : "",
-      `Return concise, age-appropriate objectives, a list of materials, a sequence of activities whose minutes sum to roughly ${duration}, an assessment idea, and a short homework task.`,
-    ]
-      .filter(Boolean)
-      .join("\n");
+    // Teacher-supplied text is untrusted: redacted, screened and fenced.
+    const { system, prompt } = buildGuardedPrompt(
+      [
+        `Draft a single classroom lesson plan.`,
+        `Total duration: ${duration} minutes.`,
+        `Return concise, age-appropriate objectives, a list of materials, a sequence of activities whose minutes sum to roughly ${duration}, an assessment idea, and a short homework task.`,
+      ].join("\n"),
+      {
+        Subject: data.subject,
+        Topic: data.topic,
+        "Grade / level": data.grade_level,
+        "Teacher notes": data.notes,
+      },
+    );
+    const limits = await aiGuardLimits(staff.schoolId);
 
     let outcome: AiGatewayOutcome<LessonPlanDraft>;
     try {
@@ -79,10 +90,12 @@ export const draftLessonPlan = createServerFn({ method: "POST" })
         model: LESSON_PLAN_MODEL,
         provider: "ai-gateway",
         purpose: "drafting",
+        ...limits,
         invoke: async (provider) => {
           const { output, usage } = await generateText({
             model: provider(LESSON_PLAN_MODEL),
             output: Output.object({ schema: Schema }),
+            system,
             prompt,
           });
           return {
@@ -107,5 +120,5 @@ export const draftLessonPlan = createServerFn({ method: "POST" })
       }
       throw new Error(outcome.reason);
     }
-    return outcome.payload;
+    return guardAiOutput(Schema.parse(outcome.payload), LESSON_PLAN_MODEL);
   });

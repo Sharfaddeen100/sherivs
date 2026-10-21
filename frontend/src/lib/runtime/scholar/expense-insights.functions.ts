@@ -11,6 +11,12 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { tokenMsRemaining } from "@/lib/auth-helpers";
 import { requireStaffContext } from "@/lib/security-role-gate";
 import { invokeAiGateway, type AiGatewayOutcome } from "@/lib/ai-gateway.server";
+import {
+  aiGuardLimits,
+  buildGuardedPrompt,
+  guardAiOutput,
+  type AiProvenance,
+} from "@/lib/ai/ai-guard.server";
 import { SystemClock, TimeAuthority } from "../../kernel/time-authority";
 
 /** J-023: time enters only via the kernel time-authority — no direct wall-clock sampling. */
@@ -37,7 +43,7 @@ export type ExpenseInsights = z.infer<typeof InsightSchema>;
 
 export const getExpenseInsights = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .handler(async ({ context }): Promise<ExpenseInsights> => {
+  .handler(async ({ context }): Promise<ExpenseInsights & { aiProvenance?: AiProvenance }> => {
     // Canonical Phase 08 finance-staff gate (admin/principal/bursar). Replaces
     // the legacy inline users.role read + check.
     // Lifecycle threading (DEFECT-1 follow-through): the JWT carries no
@@ -46,7 +52,8 @@ export const getExpenseInsights = createServerFn({ method: "POST" })
     // session validity is attested from the verified token's exp claim.
     const staff = await requireStaffContext(context.supabase, "finance_staff", {
       lifecycle: null,
-      sessionValid: typeof context?.claims?.exp === "number" && tokenMsRemaining(context.claims.exp) > 0,
+      sessionValid:
+        typeof context?.claims?.exp === "number" && tokenMsRemaining(context.claims.exp) > 0,
     });
     const cutoff = new Date(timeAuthority.now().atMs - 90 * 86400_000).toISOString().slice(0, 10);
 
@@ -85,16 +92,18 @@ export const getExpenseInsights = createServerFn({ method: "POST" })
       };
     }
 
-    const prompt = [
-      "You are a school finance analyst. Currency: Nigerian Naira (₦).",
-      "Given the following 90-day expense aggregates per category and monthly budgets,",
-      "produce a short headline, a 2-3 sentence summary, alerts for any category whose",
-      "monthly average exceeds 90% of its budget (critical at >100%, warn at >90%, info otherwise),",
-      "and up to 6 cost-saving recommendations.",
-      "",
-      "DATA:",
-      JSON.stringify(summary, null, 2),
-    ].join("\n");
+    // Category names are user-entered records: fenced as untrusted data.
+    const { system, prompt } = buildGuardedPrompt(
+      [
+        "You are a school finance analyst. Currency: Nigerian Naira (₦).",
+        "Given the following 90-day expense aggregates per category and monthly budgets,",
+        "produce a short headline, a 2-3 sentence summary, alerts for any category whose",
+        "monthly average exceeds 90% of its budget (critical at >100%, warn at >90%, info otherwise),",
+        "and up to 6 cost-saving recommendations. Use only the numbers in the data.",
+      ].join("\n"),
+      { DATA: JSON.stringify(summary, null, 2) },
+    );
+    const limits = await aiGuardLimits(staff.schoolId);
 
     let outcome: AiGatewayOutcome<ExpenseInsights>;
     try {
@@ -106,10 +115,12 @@ export const getExpenseInsights = createServerFn({ method: "POST" })
         model: EXPENSE_INSIGHTS_MODEL,
         provider: "ai-gateway",
         purpose: "summarization",
+        ...limits,
         invoke: async (provider) => {
           const { output, usage } = await generateText({
             model: provider(EXPENSE_INSIGHTS_MODEL),
             output: Output.object({ schema: InsightSchema }),
+            system,
             prompt,
           });
           return {
@@ -131,5 +142,5 @@ export const getExpenseInsights = createServerFn({ method: "POST" })
       }
       throw new Error(outcome.reason);
     }
-    return outcome.payload;
+    return guardAiOutput(InsightSchema.parse(outcome.payload), EXPENSE_INSIGHTS_MODEL);
   });

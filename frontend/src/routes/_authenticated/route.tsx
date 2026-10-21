@@ -43,6 +43,7 @@ import { useCanManageAdmissions } from "@/components/admin-area-guard";
 import { admissionsOnlyNav } from "@/lib/runtime/scholar/admissions-access";
 import { useServerFn } from "@tanstack/react-start";
 import { SherivsLogo, SherivsMark } from "@/components/brand/sherivs-logo";
+import { useConsoleHostGate } from "@/components/security/console-host-screens";
 
 export const Route = createFileRoute("/_authenticated")({
   ssr: false,
@@ -99,6 +100,10 @@ function AuthenticatedLayout() {
     if (!profile?.id) return;
     void refreshPushTokenIfGranted(profile.id);
   }, [profile?.id]);
+
+  // Console host routing (console.sherivs.com) — routing only, not authorization.
+  const hostGate = useConsoleHostGate(loading);
+  if (hostGate) return hostGate;
 
   if (loading) {
     return (
