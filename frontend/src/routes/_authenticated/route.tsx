@@ -42,6 +42,16 @@ import { useCanManageAdmissions } from "@/components/admin-area-guard";
 import { admissionsOnlyNav } from "@/lib/runtime/scholar/admissions-access";
 import { useServerFn } from "@tanstack/react-start";
 import { SherivsLogo, SherivsMark } from "@/components/brand/sherivs-logo";
+import { Navigate as HostNavigate } from "@tanstack/react-router";
+import {
+  currentEffectiveHostKind,
+  decideHostRoute,
+  isConsoleOperator,
+} from "@/lib/experience/console-host-routing";
+import {
+  ConsoleNotAuthorised,
+  ConsoleNotServedHere,
+} from "@/components/security/console-host-screens";
 
 export const Route = createFileRoute("/_authenticated")({
   ssr: false,
@@ -74,6 +84,7 @@ function AuthenticatedRouteErrorComponent({ error, reset }: { error: unknown; re
 
 function AuthenticatedLayout() {
   const { profile, superAdmin, school, role, loading, signOut, authUser, refresh } = useApp();
+  const appState = useApp();
   const navigate = useNavigate();
   const location = useLocation();
   const getMyPrimaryPosition = useServerFn(getMyPrimaryWorkforcePosition);
@@ -106,6 +117,27 @@ function AuthenticatedLayout() {
           <span className="text-sm text-muted-foreground">Loading your workspace…</span>
         </div>
       </div>
+    );
+  }
+
+  // Console host routing (console.sherivs.com). Routing only — the console
+  // pages keep their own role / capability / MFA guards.
+  const hostDecision = decideHostRoute({
+    hostKind: currentEffectiveHostKind(),
+    pathname: location.pathname,
+    signedIn: Boolean(authUser),
+    isConsoleOperator: isConsoleOperator(appState),
+  });
+  if (hostDecision.kind === "redirect") return <HostNavigate to={hostDecision.to} replace />;
+  if (hostDecision.kind === "console_elsewhere") return <ConsoleNotServedHere />;
+  if (hostDecision.kind === "not_authorised") {
+    return (
+      <ConsoleNotAuthorised
+        onSignOut={async () => {
+          await signOut();
+          navigate({ to: "/auth", replace: true });
+        }}
+      />
     );
   }
 

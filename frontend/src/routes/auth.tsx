@@ -1,4 +1,8 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import {
+  currentEffectiveHostKind,
+  postLoginDestination,
+} from "@/lib/experience/console-host-routing";
 import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
@@ -28,9 +32,7 @@ export const Route = createFileRoute("/auth")({
 
 type Mode = "signin" | "signup";
 
-const backoff = createLoginBackoff(
-  typeof window !== "undefined" ? window.localStorage : undefined,
-);
+const backoff = createLoginBackoff(typeof window !== "undefined" ? window.localStorage : undefined);
 
 function AuthPage() {
   const navigate = useNavigate();
@@ -62,7 +64,10 @@ function AuthPage() {
   const contextIdentity = identityFromAppState({ superAdmin, profile, school });
   useEffect(() => {
     if (!loading && role) {
-      navigate({ to: contextIdentity.destination, replace: true });
+      navigate({
+        to: postLoginDestination(currentEffectiveHostKind(), contextIdentity.destination),
+        replace: true,
+      });
     }
   }, [loading, role, contextIdentity.destination, navigate]);
 
@@ -144,7 +149,10 @@ function AuthPage() {
         // fallback if the server round-trip fails.
         try {
           const identity = await resolveIdentity();
-          await navigate({ to: identity.destination, replace: true });
+          await navigate({
+            to: postLoginDestination(currentEffectiveHostKind(), identity.destination),
+            replace: true,
+          });
         } catch {
           // context effect handles routing — never block sign-in on resolution
         }
@@ -267,7 +275,10 @@ function AuthPage() {
           )}
 
           {error && (
-            <div role="alert" className="rounded-md border border-destructive/40 bg-destructive/10 px-3 py-2 text-sm text-destructive-foreground">
+            <div
+              role="alert"
+              className="rounded-md border border-destructive/40 bg-destructive/10 px-3 py-2 text-sm text-destructive-foreground"
+            >
               {error}
             </div>
           )}
@@ -282,11 +293,7 @@ function AuthPage() {
             disabled={busy || (mode === "signin" && waitMs > 0)}
             className="w-full rounded-md bg-primary px-4 py-3 font-semibold text-primary-foreground disabled:opacity-60"
           >
-            {busy
-              ? "Please wait…"
-              : mode === "signin"
-                ? "Sign in"
-                : "Create account"}
+            {busy ? "Please wait…" : mode === "signin" ? "Sign in" : "Create account"}
           </button>
 
           {mode === "signin" && (
