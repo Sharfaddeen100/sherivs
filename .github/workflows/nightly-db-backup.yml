@@ -1,0 +1,107 @@
+# Nightly encrypted off-server backup of the production Supabase database.
+#
+# - READ-ONLY: the session runs with default_transaction_read_only=on, so the
+#   dump cannot write even if the URL's role could.
+# - Encrypted with gpg (AES256, symmetric) using BACKUP_PASSPHRASE before it
+#   leaves the runner; only ciphertext is uploaded (artifact, 90-day retention).
+# - Verified: the decrypted temp copy must be non-empty and pg_restore -l must
+#   list its tables; the plaintext is deleted in every outcome.
+#
+# Secrets: PROD_DB_URL_BACKUP (use the Supabase SESSION POOLER URI,
+# *.pooler.supabase.com:5432 — the direct db.<ref>.supabase.co host is IPv6
+# only on the Free plan and GitHub runners have no IPv6), BACKUP_PASSPHRASE.
+# Restore: gpg --decrypt file.dump.gpg > file.dump && pg_restore -l file.dump
+name: Nightly encrypted DB backup
+
+on:
+  schedule:
+    - cron: "7 1 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nightly-db-backup
+  cancel-in-progress: false
+
+jobs:
+  backup:
+    name: pg_dump (read-only) + gpg + artifact
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check secrets are configured
+        env:
+          DB_URL: ${{ secrets.PROD_DB_URL_BACKUP }}
+          PASSPHRASE: ${{ secrets.BACKUP_PASSPHRASE }}
+        run: |
+          [ -n "$DB_URL" ] || { echo "::error::PROD_DB_URL_BACKUP secret is not set"; exit 1; }
+          [ -n "$PASSPHRASE" ] || { echo "::error::BACKUP_PASSPHRASE secret is not set"; exit 1; }
+
+      - name: Install pg_dump 17 (PGDG)
+        run: |
+          sudo install -d /usr/share/postgresql-common/pgdg
+          sudo curl -fsSL -o /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc https://www.postgresql.org/media/keys/ACCC4CF8.asc
+          echo "deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list >/dev/null
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq postgresql-client-17 gnupg
+          /usr/lib/postgresql/17/bin/pg_dump --version
+
+      - name: Dump (read-only session), encrypt, verify
+        env:
+          DB_URL: ${{ secrets.PROD_DB_URL_BACKUP }}
+          BACKUP_PASSPHRASE: ${{ secrets.BACKUP_PASSPHRASE }}
+          PGOPTIONS: "-c default_transaction_read_only=on"
+          PGCONNECT_TIMEOUT: "20"
+        run: |
+          set -euo pipefail
+          umask 077
+          BIN=/usr/lib/postgresql/17/bin
+          STAMP="$(date -u +%Y%m%dT%H%M%SZ)"
+          WORK="$(mktemp -d)"
+          OUT="$GITHUB_WORKSPACE/backup-out"
+          mkdir -p "$OUT"
+          cleanup() { rm -rf "$WORK"; }
+          trap cleanup EXIT
+
+          # Prove the session is read-only before dumping.
+          ro="$("$BIN/psql" "$DB_URL" -Atc "show default_transaction_read_only")"
+          [ "$ro" = "on" ] || { echo "::error::session is not read-only ($ro)"; exit 1; }
+
+          "$BIN/pg_dump" "$DB_URL" --format=custom --no-owner --no-privileges \
+            --schema=public --schema=auth --schema=storage \
+            --file "$WORK/db.dump"
+
+          gpg --batch --yes --pinentry-mode loopback --passphrase-fd 3 \
+            --symmetric --cipher-algo AES256 --compress-algo none \
+            --output "$OUT/sherivs-prod-$STAMP.dump.gpg" "$WORK/db.dump" 3<<<"$BACKUP_PASSPHRASE"
+          rm -f "$WORK/db.dump"
+
+          # Verify the ciphertext round-trips: decrypt to a temp copy, list it.
+          gpg --batch --quiet --pinentry-mode loopback --passphrase-fd 3 \
+            --decrypt --output "$WORK/verify.dump" "$OUT/sherivs-prod-$STAMP.dump.gpg" 3<<<"$BACKUP_PASSPHRASE"
+          size="$(stat -c %s "$WORK/verify.dump")"
+          [ "$size" -gt 0 ] || { echo "::error::decrypted dump is empty"; exit 1; }
+          "$BIN/pg_restore" -l "$WORK/verify.dump" > "$WORK/toc.txt"
+          tables="$(grep -cE '^[0-9]+; [0-9]+ [0-9]+ TABLE ' "$WORK/toc.txt" || true)"
+          data="$(grep -cE '^[0-9]+; [0-9]+ [0-9]+ TABLE DATA ' "$WORK/toc.txt" || true)"
+          rm -f "$WORK/verify.dump"
+          [ "$tables" -gt 0 ] || { echo "::error::no tables in dump"; exit 1; }
+          enc_size="$(stat -c %s "$OUT/sherivs-prod-$STAMP.dump.gpg")"
+          {
+            echo "### Nightly DB backup $STAMP"
+            echo "- dump size (plaintext, deleted): $size bytes"
+            echo "- encrypted artifact: $enc_size bytes"
+            echo "- tables: $tables (with data entries: $data)"
+          } | tee -a "$GITHUB_STEP_SUMMARY"
+          echo "STAMP=$STAMP" >> "$GITHUB_ENV"
+
+      - name: Upload encrypted backup (90 days)
+        uses: actions/upload-artifact@v4
+        with:
+          name: sherivs-prod-db-${{ env.STAMP }}
+          path: backup-out/*.dump.gpg
+          retention-days: 90
+          if-no-files-found: error
+          compression-level: 0

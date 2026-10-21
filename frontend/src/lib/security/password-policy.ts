@@ -6,6 +6,9 @@
  */
 export const PASSWORD_MIN_LENGTH = 10;
 
+/** One-sentence rule, shown under new-password fields and in server-error copy. */
+export const PASSWORD_RULE_SUMMARY = `Use at least ${PASSWORD_MIN_LENGTH} characters, including an uppercase letter, a lowercase letter and a number.`;
+
 export function passwordPolicyError(password: string, email?: string): string | null {
   if (password.length < PASSWORD_MIN_LENGTH)
     return `Password must be at least ${PASSWORD_MIN_LENGTH} characters.`;
