@@ -7,7 +7,7 @@ import { scholarWorkspaceHome } from "@/lib/runtime/nav-registry";
 import { PLATFORM_NAME } from "@/lib/platform";
 import { resolveSherivsIdentity } from "@/lib/identity/resolve-identity.functions";
 import { identityFromAppState } from "@/lib/identity/context";
-import { Turnstile } from "@/components/security/turnstile";
+import { Turnstile, captchaRequired } from "@/components/security/turnstile";
 import { turnstileEnabled } from "@/lib/security/turnstile-config";
 import { passwordPolicyError, PASSWORD_MIN_LENGTH } from "@/lib/security/password-policy";
 
@@ -30,6 +30,7 @@ function AuthPage() {
   const [info, setInfo] = useState<string | null>(null);
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const [captchaNonce, setCaptchaNonce] = useState(0);
+  const [captchaUnavailable, setCaptchaUnavailable] = useState(false);
   const resolveIdentity = useServerFn(resolveSherivsIdentity);
 
   // Identity-based post-auth routing (§11): signed-in users are routed by the
@@ -55,7 +56,7 @@ function AuthPage() {
       const pwErr = passwordPolicyError(password, email);
       if (pwErr) return setError(pwErr);
     }
-    if (turnstileEnabled() && !captchaToken) {
+    if (captchaRequired(turnstileEnabled(), captchaToken, captchaUnavailable)) {
       return setError("Please complete the security check.");
     }
     const captcha = captchaToken ?? undefined;
@@ -264,7 +265,11 @@ function AuthPage() {
             </p>
           )}
 
-          <Turnstile onToken={setCaptchaToken} resetKey={`${mode}:${captchaNonce}`} />
+          <Turnstile
+            onToken={setCaptchaToken}
+            onUnavailable={() => setCaptchaUnavailable(true)}
+            resetKey={`${mode}:${captchaNonce}`}
+          />
 
           {error && (
             <div className="rounded-md border border-destructive/40 bg-destructive/10 px-3 py-2 text-sm text-destructive-foreground">
