@@ -98,8 +98,9 @@ jobs:
           size="$(stat -c %s "$WORK/verify.dump")"
           [ "$size" -gt 0 ] || { echo "::error::decrypted dump is empty"; exit 1; }
           "$BIN/pg_restore" -l "$WORK/verify.dump" > "$WORK/toc.txt"
-          tables="$(grep -cE '^[0-9]+; [0-9]+ [0-9]+ TABLE ' "$WORK/toc.txt" || true)"
-          data="$(grep -cE '^[0-9]+; [0-9]+ [0-9]+ TABLE DATA ' "$WORK/toc.txt" || true)"
+          # TOC lines: "<id>; <oid> <oid> TABLE <schema> <name> ..." vs "... TABLE DATA ...".
+          tables="$(awk '$4 == "TABLE" && $5 != "DATA"' "$WORK/toc.txt" | wc -l)"
+          data="$(awk '$4 == "TABLE" && $5 == "DATA"' "$WORK/toc.txt" | wc -l)"
           rm -f "$WORK/verify.dump"
           [ "$tables" -gt 0 ] || { echo "::error::no tables in dump"; exit 1; }
           enc_size="$(stat -c %s "$OUT/sherivs-prod-$STAMP.dump.gpg")"
