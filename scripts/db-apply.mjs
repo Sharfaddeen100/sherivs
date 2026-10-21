@@ -3,26 +3,25 @@
  * CoreGrid — apply database migrations in order via node-postgres.
  *
  * Usage:
- *   $env:DATABASE_URL="postgresql://..." ; node scripts/db-apply.mjs
+ *   SHERIVS_DATABASE_TARGET=development DATABASE_URL="postgresql://..." \
+ *     node scripts/db-apply.mjs
  *
- * Reads DATABASE_URL from the environment ONLY (never hard-coded, never
- * committed). Applies every file in database/supabase/migrations/ in filename
- * order, one query per file. Stops at the first failure.
+ * Requires an explicit SHERIVS_DATABASE_TARGET. Unscoped DATABASE_URL is
+ * accepted only for development and never as a staging/production fallback.
+ * Applies every file in database/supabase/migrations/ in filename order.
  */
 import { readdirSync, readFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import pg from "pg";
 import { pgSslConfig } from "./lib/pg-ssl.mjs";
+import { requirePostgresTarget } from "./lib/sherivs-db-target.mjs";
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
 const MIGRATIONS_DIR = join(ROOT, "database", "supabase", "migrations");
 
-const dbUrl = process.env.DATABASE_URL;
-if (!dbUrl) {
-  console.error("DATABASE_URL is required (postgres connection string).");
-  process.exit(2);
-}
+const resolved = requirePostgresTarget();
+const dbUrl = resolved.connectionString;
 
 const files = readdirSync(MIGRATIONS_DIR)
   .filter((f) => f.endsWith(".sql"))

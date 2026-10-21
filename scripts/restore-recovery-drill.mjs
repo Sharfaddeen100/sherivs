@@ -38,11 +38,11 @@ import { createHash } from "node:crypto";
 import { writeFileSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { requireManagementTarget } from "./lib/sherivs-db-target.mjs";
 
 const root = join(fileURLToPath(new URL("..", import.meta.url)));
 const artifactsDir = "/opt/cursor/artifacts";
-const DEFAULT_REF = "nwrflbpbhyiqdptmlccm";
-const projectRef = process.argv[2] ?? DEFAULT_REF;
+const { projectRef } = requireManagementTarget(process.env, process.argv[2]);
 const drillTable = "restore_drill_probe";
 const now = () => new Date().toISOString();
 const transcript = [];

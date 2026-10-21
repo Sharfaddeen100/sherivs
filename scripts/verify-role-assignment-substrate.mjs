@@ -11,7 +11,8 @@
  *      and lockstep with the server-function surface that calls those RPCs.
  *      This runs in any environment, including one with no database.
  *
- *   2. LIVE (when DATABASE_URL is present): the APPLIED database satisfies the
+ *   2. LIVE (when an explicit SHERIVS_DATABASE_TARGET and target-specific URL
+ *      are present): the APPLIED database satisfies the
  *      same invariants — relations exist, RLS is on with zero policies,
  *      anon/authenticated hold no table privilege, service_role is granted, the
  *      six functions exist as SECURITY DEFINER, and the active-uniqueness
@@ -23,13 +24,14 @@
  *
  * Usage:
  *   node scripts/verify-role-assignment-substrate.mjs
- *   $env:DATABASE_URL="postgresql://..." ; node scripts/verify-role-assignment-substrate.mjs
+ *   SHERIVS_DATABASE_TARGET=development DATABASE_URL="postgresql://..." \
+ *     node scripts/verify-role-assignment-substrate.mjs
  */
 import { createHash } from "node:crypto";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { pgSslConfig } from "./lib/pg-ssl.mjs";
+import { requirePostgresTarget } from "./lib/sherivs-db-target.mjs";
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
 const MIGRATION_REF =
@@ -293,16 +295,24 @@ async function runLiveChecks(client, check) {
   }
 }
 
-/* ── 2. LIVE invariants (only when a database is provided) ────────────────── */
+/* ── 2. LIVE invariants (only when an explicit target and URL are provided) ── */
 
-const dbUrl = process.env.DATABASE_URL;
+const hasAnyDatabaseUrl = Boolean(
+  process.env.DATABASE_URL ||
+    process.env.DEVELOPMENT_DATABASE_URL ||
+    process.env.STAGING_DATABASE_URL ||
+    process.env.SHERIVS_RLS_STAGING_URL ||
+    process.env.PRODUCTION_DATABASE_URL,
+);
 let mode = "static";
 
-if (dbUrl) {
+if (hasAnyDatabaseUrl) {
+  const resolved = requirePostgresTarget();
+  const dbUrl = resolved.connectionString;
   const { connectCoregridPostgres } = await import("./lib/pg-connect.mjs");
   const pg = await import("pg").catch(() => null);
   if (!pg) {
-    check("live:driver", false, "DATABASE_URL is set but the 'pg' driver is not installed");
+    check("live:driver", false, "a database URL is set but the 'pg' driver is not installed");
   } else {
     let client = null;
     try {
@@ -339,7 +349,7 @@ const proof = {
   ok: failed.length === 0,
   liveProcedure: [
     "node scripts/db-apply-one.mjs 20260907000800",
-    '$env:DATABASE_URL="postgresql://…" ; node scripts/verify-role-assignment-substrate.mjs',
+    'SHERIVS_DATABASE_TARGET=development DATABASE_URL="postgresql://…" node scripts/verify-role-assignment-substrate.mjs',
     "commit the regenerated proof artifact and record the mode=live result in PROGRESS §20",
   ],
   limitations: [
