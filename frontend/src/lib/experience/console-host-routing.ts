@@ -4,7 +4,8 @@
  * Routing only, never authorization: every console surface keeps its own
  * role / capability / MFA guards. This module decides WHERE a signed-in user
  * may be on a given host:
- *   - console host: only /internal* renders; anything else goes to /internal.
+ *   - console host: only console surfaces render (/internal*, /mfa, super-admin
+ *     governance, control centre); anything else goes to /internal.
  *     Users who are not console operators see a "not authorised" screen.
  *   - app / public / tenant hosts: /internal* is not served (the console
  *     lives on its own subdomain).
@@ -54,6 +55,27 @@ export function isConsolePath(pathname: string): boolean {
   );
 }
 
+/**
+ * Surfaces the console host may render: the /internal workspace plus the
+ * internal pages it links to (MFA step-up, super-admin governance, control
+ * centre, platform registries). Each keeps its own guard.
+ */
+export const CONSOLE_SURFACE_PREFIXES = [
+  CONSOLE_HOME_PATH,
+  "/mfa",
+  "/super-admin",
+  "/command-centre",
+  "/platform",
+  "/reality",
+  "/runtime",
+] as const;
+
+export function isConsoleSurfacePath(pathname: string): boolean {
+  const p = pathname.replace(/\/+$/, "") || "/";
+  if (isConsolePath(p)) return true;
+  return CONSOLE_SURFACE_PREFIXES.some((prefix) => p === prefix || p.startsWith(`${prefix}/`));
+}
+
 /** Internal workforce: super admins, plus active platform staff once that exists. */
 export function isConsoleOperator(state: {
   superAdmin?: unknown;
@@ -79,7 +101,7 @@ export function decideHostRoute(input: {
   if (hostKind === "internal") {
     if (!signedIn) return { kind: "redirect", to: "/auth" };
     if (!input.isConsoleOperator) return { kind: "not_authorised" };
-    if (!isConsolePath(pathname)) return { kind: "redirect", to: CONSOLE_HOME_PATH };
+    if (!isConsoleSurfacePath(pathname)) return { kind: "redirect", to: CONSOLE_HOME_PATH };
     return { kind: "allow" };
   }
   if (isConsolePath(pathname)) return { kind: "console_elsewhere" };

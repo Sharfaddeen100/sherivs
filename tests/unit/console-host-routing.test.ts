@@ -4,6 +4,7 @@ import {
   effectiveExperienceHostKind,
   isConsoleOperator,
   isConsolePath,
+  isConsoleSurfacePath,
   parseHostKindOverride,
   postLoginDestination,
 } from "@/lib/experience/console-host-routing";
@@ -33,6 +34,19 @@ describe("console host routing", () => {
       expect(isConsolePath(p)).toBe(true);
     for (const p of ["/", "/internals", "/admin", "/super-admin/staff"])
       expect(isConsolePath(p)).toBe(false);
+  });
+
+  it("keeps console-linked surfaces on the console host", () => {
+    for (const p of ["/mfa", "/super-admin/staff", "/command-centre", "/platform/org", "/runtime"])
+      expect(isConsoleSurfacePath(p)).toBe(true);
+    for (const p of ["/admin", "/teacher/lesson-plans", "/welcome", "/mfa-x"])
+      expect(isConsoleSurfacePath(p)).toBe(false);
+    expect(decideHostRoute({ hostKind: "internal", pathname: "/mfa", ...operator }).kind).toBe(
+      "allow",
+    );
+    expect(
+      decideHostRoute({ hostKind: "app", pathname: "/super-admin/tenants", ...operator }).kind,
+    ).toBe("allow");
   });
 
   it("on the console host sends operators to /internal and blocks non-staff", () => {
