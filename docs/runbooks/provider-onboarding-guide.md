@@ -144,7 +144,7 @@ Cost: **$99 USD per year** (Apple Developer Program).
    - Two-factor auth must be enabled on the Apple ID first.
 2. **Bundle ID**: after approval, go to
    https://developer.apple.com/account/resources/identifiers → **+** →
-   App IDs → App → description `CoreGrid Scholar` and explicit bundle id,
+   App IDs → App → description `Sherivs Scholar` and explicit bundle id,
    e.g. `com.vibeora.scholar` (decide this once; it cannot change later).
    Enable capabilities you use (Push Notifications is the V1 one).
 3. **App Store Connect record**: https://appstoreconnect.apple.com →
@@ -173,7 +173,7 @@ Cost: **$25 USD one-time** (registration fee).
 
 1. **Register**: https://play.google.com/console/signup → pay $25 → complete
    the identity verification (can take 48h the first time).
-2. **Create the app**: All apps → **Create app** → name `CoreGrid Scholar`,
+2. **Create the app**: All apps → **Create app** → name `Sherivs Scholar`,
    default language, App (not game), free/paid → create.
 3. **App signing**: Play uses Play App Signing automatically on first
    upload.

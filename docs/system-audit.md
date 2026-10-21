@@ -1,11 +1,11 @@
-# CoreGrid Scholar System Audit
+# Sherivs Scholar System Audit
 
 **Audit date:** 2026-08-19  
 **Scope:** repository foundation review before Phase 01 implementation work
 
 ## Executive summary
 
-CoreGrid Scholar is an existing, substantial multi-tenant school-management
+Sherivs Scholar is an existing, substantial multi-tenant school-management
 application, not a greenfield project. It is implemented as a TanStack Start
 web application in `frontend/`, with Supabase migrations and Row Level
 Security (RLS) in `database/supabase/`. The repository already contains the

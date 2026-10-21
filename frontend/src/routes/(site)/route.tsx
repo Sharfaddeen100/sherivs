@@ -43,7 +43,7 @@ function SiteLayout() {
               Overview
             </Link>
             <Link
-              to="/coregrid"
+              to="/sherivs"
               className="text-muted-foreground hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
             >
               Platform detail

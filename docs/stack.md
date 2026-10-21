@@ -1,4 +1,4 @@
-# CoreGrid Scholar - Verified Stack
+# Sherivs Scholar - Verified Stack
 
 > Status: Canonical. Verified against `package.json`, `package-lock.json`,
 > installed versions (`npm ls`), and source usage. Status legend:

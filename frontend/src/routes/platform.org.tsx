@@ -173,7 +173,7 @@ function PlatformOrganization() {
         </section>
 
         <p className="text-[11px] text-muted-foreground">
-          Every department renders in the CoreGrid internal workspace and is audited above on every
+          Every department renders in the Sherivs internal workspace and is audited above on every
           render. Departments are provisioned from role data, never configured by hand.
         </p>
       </main>

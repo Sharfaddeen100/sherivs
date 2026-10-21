@@ -24,7 +24,7 @@ describe("public root no longer mounts in-memory Command Centre", () => {
     for (const px of [64, 128, 256]) expect(existsSync(join(ROOT, `public/brand/sherivs-mark-${px}.png`))).toBe(true);
     expect(logo).toContain('`${PLATFORM_NAME} logo`');
     expect(home).toContain('to="/auth"');
-    expect(home).toContain('to="/coregrid"');
+    expect(home).toContain('to="/sherivs"');
     expect(home).not.toContain("tenant:coregrid-demo");
     expect(home).not.toMatch(/\b94%\b/);
     expect(home).not.toMatch(/Live attendance/);

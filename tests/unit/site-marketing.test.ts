@@ -28,7 +28,7 @@ const ROOT = fileURLToPath(new URL("../..", import.meta.url));
 const read = (ref: string) => readFileSync(join(ROOT, ref), "utf8");
 
 const SITE_LAYOUT = "frontend/src/routes/(site)/route.tsx";
-const SITE_PAGE = "frontend/src/routes/(site)/coregrid.tsx";
+const SITE_PAGE = "frontend/src/routes/(site)/sherivs.tsx";
 const SITE_HEADER = "frontend/src/components/public/site-header.tsx";
 
 describe("Pricing tier catalog (typed module)", () => {
@@ -115,15 +115,22 @@ describe("Route modules — real links, no fake submissions, landmarks", () => {
   // homepage component, which renders outside the layout group).
   const header = read(SITE_HEADER);
 
-  it("registers the (site) layout group and the /coregrid page in the generated tree", () => {
+  it("registers the (site) layout group, the /sherivs page and the /coregrid redirect in the generated tree", () => {
     const tree = read("frontend/src/routeTree.gen.ts");
     expect(tree).toContain("'/(site)'");
+    expect(tree).toContain("'/(site)/sherivs'");
     expect(tree).toContain("'/(site)/coregrid'");
+  });
+
+  it("keeps the former /coregrid path as a redirect to /sherivs", () => {
+    const legacy = read("frontend/src/routes/(site)/coregrid.tsx");
+    expect(legacy).toContain('createFileRoute("/(site)/coregrid")');
+    expect(legacy).toContain('redirect({ to: "/sherivs"');
   });
 
   it("declares the expected file route ids", () => {
     expect(layout).toContain('createFileRoute("/(site)")');
-    expect(page).toContain('createFileRoute("/(site)/coregrid")');
+    expect(page).toContain('createFileRoute("/(site)/sherivs")');
   });
 
   it("links sign-up and sign-in to the real auth surface at /auth", () => {

@@ -60,7 +60,7 @@ export function PublicPlatformHome() {
               Sign in
             </Link>
             <Link
-              to="/coregrid"
+              to="/sherivs"
               className="rounded-md border border-border px-5 py-2.5 text-sm font-semibold hover:bg-accent"
             >
               Platform overview

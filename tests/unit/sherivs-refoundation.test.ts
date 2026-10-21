@@ -25,7 +25,7 @@ const read = (ref: string) => readFileSync(join(ROOT, ref), "utf8");
 const INDEX = "frontend/src/routes/index.tsx";
 const AUTH = "frontend/src/routes/auth.tsx";
 const SITE_LAYOUT = "frontend/src/routes/(site)/route.tsx";
-const SITE_PAGE = "frontend/src/routes/(site)/coregrid.tsx";
+const SITE_PAGE = "frontend/src/routes/(site)/sherivs.tsx";
 const SHERIVS_HOME = "frontend/src/components/public/sherivs-home.tsx";
 const PLATFORM_PAGE = "frontend/src/routes/platform.tsx";
 const PLATFORM_ORG_PAGE = "frontend/src/routes/platform.org.tsx";

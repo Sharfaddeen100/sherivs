@@ -3,7 +3,7 @@
 --
 -- The owner confirmed (2026-10-20) that EVERY school, user, membership and auth
 -- account in production is test/demo data. This removes all of it, plus the
--- audit log and the CoreGrid foundation-probe test rows.
+-- audit log and the Sherivs foundation-probe test rows.
 --
 -- KEEPS: platform_config (pricing), cg_workforce_kind (71-row catalogue),
 --   cg_domain_runtime ('runtime:scholar' — it is NOT test data: deleting it
@@ -64,7 +64,7 @@ DELETE FROM auth.users;
 -- 4. Audit log
 DELETE FROM public.audit_logs;
 
--- 5. CoreGrid foundation-probe test rows (FK-safe order)
+-- 5. Sherivs foundation-probe test rows (FK-safe order)
 ALTER TABLE public.cg_execution_history DISABLE TRIGGER cg_execution_history_append_only;
 DELETE FROM public.cg_execution_history;
 ALTER TABLE public.cg_execution_history ENABLE TRIGGER cg_execution_history_append_only;

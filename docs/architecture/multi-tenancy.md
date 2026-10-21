@@ -19,7 +19,7 @@ table has a `school_id` foreign key.
 
 `resolveTenantSlug()`: query param first, then first subdomain label when
 not a platform host. Platform hosts are runtime config in `tenant.ts`
-(legacy domains pending CoreGrid DNS cutover).
+(legacy domains pending Sherivs DNS cutover).
 
 ## Current limitations / future
 

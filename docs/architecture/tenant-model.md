@@ -1,10 +1,10 @@
-# Tenant model: Scholar schools vs CoreGrid tenants
+# Tenant model: Scholar schools vs Sherivs tenants
 
 Status: SHERIVS-003b incremental step (migration `20261020000070`). V1 scope only.
 
 ## Current: two models
 
-| | Scholar (authoritative for V1 data) | CoreGrid `cg_*` kernel |
+| | Scholar (authoritative for V1 data) | Sherivs `cg_*` kernel |
 |---|---|---|
 | Tenant id | `schools.id` (uuid) | `cg_tenant.id` (uuid); referenced as **text** in `cg_*` columns (`tenant_ref`, `tenant_id`) |
 | Membership | `users.school_id`, `get_my_school_id()` | `cg_org_membership`, `cg_role_assignment` |
@@ -25,7 +25,7 @@ Effect: a school admin/principal now passes `cg_*` policies that use `is_tenant_
 
 ## Target model
 
-One tenant identity: the CoreGrid tenant is the source of truth, `schools` becomes a Scholar-runtime projection keyed by `tenant_id`, `users.school_id` is derived from tenant membership, and Scholar policies call tenant helpers rather than `get_my_school_id()`. Roles come from `cg_role_assignment` only (Scholar `users.role` becomes a derived chrome hint).
+One tenant identity: the Sherivs tenant is the source of truth, `schools` becomes a Scholar-runtime projection keyed by `tenant_id`, `users.school_id` is derived from tenant membership, and Scholar policies call tenant helpers rather than `get_my_school_id()`. Roles come from `cg_role_assignment` only (Scholar `users.role` becomes a derived chrome hint).
 
 ## Follow-up steps (not done here)
 
