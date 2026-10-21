@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — educational level registry tests (Phase-04 §5).
+ * Sherivs Scholar — educational level registry tests (Phase-04 §5).
  *
  * Proves the level model is configuration-driven: Nigerian (SS/JSS), Ghanaian
  * (JHS/SHS), and fully custom level sets must all validate through the SAME

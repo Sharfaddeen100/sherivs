@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * CoreGrid — run a SQL verification/query file via node-postgres.
+ * Sherivs — run a SQL verification/query file via node-postgres.
  *
  * Usage:
  *   SHERIVS_DATABASE_TARGET=development DATABASE_URL="postgresql://..." \

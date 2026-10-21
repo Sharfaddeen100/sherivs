@@ -1,5 +1,5 @@
 /**
- * CoreGrid — phase 39 substrate surface: governance & alignment contracts
+ * Sherivs — phase 39 substrate surface: governance & alignment contracts
  * (H3 wave Squad G, mission G-059; Contract Architect, phase 39).
  *
  * WHAT: Zod-validated contracts for the alignment substrate — declared

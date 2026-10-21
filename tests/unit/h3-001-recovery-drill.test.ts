@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3 wave, team H3-001 (Recovery Drill Runner Engineer), mission
+ * Sherivs — H3 wave, team H3-001 (Recovery Drill Runner Engineer), mission
  * A-001. Offline proofs for scripts/verify-recovery-drill.mjs WITHOUT touching
  * any database or network service:
  *

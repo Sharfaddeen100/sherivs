@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * CoreGrid Cloud Fabric — apply bootstrap (CF-4 preparation).
+ * Sherivs Cloud Fabric — apply bootstrap (CF-4 preparation).
  *
  * Prepares a provider root for `terraform init/plan` WITHOUT holding secrets:
  *

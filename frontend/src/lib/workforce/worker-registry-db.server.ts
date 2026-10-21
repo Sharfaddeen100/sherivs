@@ -1,5 +1,5 @@
 /**
- * CoreGrid — governed worker identity registry, DB adapter
+ * Sherivs — governed worker identity registry, DB adapter
  * (MISSION V1-003, team WORKFORCE).
  *
  * Persists the PERSISTENT half of the governed worker lifecycle (§28) into

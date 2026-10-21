@@ -1,11 +1,11 @@
 /**
- * CoreGrid Mobile — TanStack Start server-function URL contract client.
+ * Sherivs Mobile — TanStack Start server-function URL contract client.
  *
  * Contract (verified against the live exerciser
  * `scripts/exercise-foundation-loop.mjs`, the repository's HTTP evidence
  * for server-function calls):
  *
- *   POST {EXPO_PUBLIC_COREGRID_WEB_BASE_URL}/_serverFn/{serverFunctionId}
+ *   POST {EXPO_PUBLIC_SHERIVS_WEB_BASE_URL}/_serverFn/{serverFunctionId}
  *   Headers:
  *     Authorization: Bearer <supabase access token>
  *     Content-Type: application/json

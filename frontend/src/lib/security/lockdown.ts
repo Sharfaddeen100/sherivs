@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Emergency lockdown contracts at the authorization-decision
+ * Sherivs — Emergency lockdown contracts at the authorization-decision
  * boundary (J-010 / G-034, AGENTS §5 / §18 / §31, J-035 independence spirit).
  *
  * The credential broker (`credential-broker.ts`) owns the per-lease kill

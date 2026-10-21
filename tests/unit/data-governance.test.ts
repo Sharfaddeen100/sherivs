@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Phase 14 Data Platform unit tests (data-governance).
+ * Sherivs Scholar — Phase 14 Data Platform unit tests (data-governance).
  *
  * Validates:
  * - Data lineage: nodes, edges, and tenant-scoped source-to-target tracing

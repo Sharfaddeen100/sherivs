@@ -1,5 +1,5 @@
 /**
- * CoreGrid — DB-backed mission execution adapter (MISSION V1-004).
+ * Sherivs — DB-backed mission execution adapter (MISSION V1-004).
  *
  * Persists the general mission execution path into the EXISTING `cg_*` mission
  * tables authored by

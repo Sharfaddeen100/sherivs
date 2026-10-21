@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Workflow Engine, pure in-memory evaluator
+ * Sherivs — Workflow Engine, pure in-memory evaluator
  * (V5.3 Part 17, MISSION-V1-008).
  *
  * Generalizes the live-tested durable mission loop vocabulary

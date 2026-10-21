@@ -1,5 +1,5 @@
 /**
- * CoreGrid — first installed runtime (runtime-001) authorization contribution.
+ * Sherivs — first installed runtime (runtime-001) authorization contribution.
  *
  * The V1-006 application of the DomainDefinition registration pattern proven
  * by `domain-config/restaurant.ts`: this runtime's role vocabulary, its

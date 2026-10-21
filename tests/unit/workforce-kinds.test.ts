@@ -1,5 +1,5 @@
 /**
- * CoreGrid — workforce-kind contract + Scholar (R-001) catalog integrity.
+ * Sherivs — workforce-kind contract + Scholar (R-001) catalog integrity.
  *
  * Pins three guarantees:
  *   1. The domain-neutral contract rejects malformed rows (families, codes,

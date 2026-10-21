@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 10 Communication Platform: the steward report tests.
+ * Sherivs — Phase 10 Communication Platform: the steward report tests.
  *
  * The report is the phase's L4 evidence, so the tests hold it to the same standard as
  * the code: it must count what the modules actually contain, exercise real organizations

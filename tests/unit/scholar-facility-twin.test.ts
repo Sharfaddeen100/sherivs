@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — facility twin binding tests (Phase 16 consumption).
+ * Sherivs Scholar — facility twin binding tests (Phase 16 consumption).
  */
 import { describe, expect, it } from "vitest";
 import {

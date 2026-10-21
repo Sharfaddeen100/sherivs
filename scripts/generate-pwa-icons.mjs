@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * CoreGrid — generate the installable PWA icons.
+ * Sherivs — generate the installable PWA icons.
  *
  * The manifest engine declares icons at /icons/icon-192.png, /icons/icon-512.png
  * and /icons/maskable-512.png. Those files must EXIST or "installability

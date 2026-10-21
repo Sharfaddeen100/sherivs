@@ -1,5 +1,5 @@
 /**
- * CoreGrid Enterprise Scale — scale model, workload architecture, compute
+ * Sherivs Enterprise Scale — scale model, workload architecture, compute
  * pools, priority classes, resource governance, and state/service boundary
  * contracts.
  *

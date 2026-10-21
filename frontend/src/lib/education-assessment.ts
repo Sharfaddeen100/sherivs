@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Education Reality Engine assessment engine.
+ * Sherivs — Education Reality Engine assessment engine.
  *
  * Implements `architecture/phase-04-education-reality-engine.md`:
  * - Assessment model: continuous assessment, examinations, practicals, projects,

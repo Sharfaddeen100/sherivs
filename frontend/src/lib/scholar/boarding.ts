@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — boarding model (Phase-04 §57).
+ * Sherivs Scholar — boarding model (Phase-04 §57).
  *
  * Boarding configuration covers dormitories, houses, beds, supervisors,
  * schedules, meals, attendance and incidents. This module keeps the boarding

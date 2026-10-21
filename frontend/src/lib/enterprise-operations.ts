@@ -1,5 +1,5 @@
 /**
- * CoreGrid Enterprise Operations — capacity planning, forecasting, headroom,
+ * Sherivs Enterprise Operations — capacity planning, forecasting, headroom,
  * autoscaling, cost governance, scale testing, chaos engineering, incident
  * management, alerting, runbooks, operational readiness, and performance
  * contracts.

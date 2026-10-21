@@ -1,5 +1,5 @@
 /**
- * CoreGrid — universal role vocabulary + directional domain role mapping
+ * Sherivs — universal role vocabulary + directional domain role mapping
  * (V1CAP-014 / J-006, CTO RULING-4).
  *
  * This module is the PLATFORM's authorization vocabulary substrate. It is

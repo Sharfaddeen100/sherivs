@@ -1,5 +1,5 @@
 /**
- * CoreGrid — ephemeral agent runtime lifecycle (V5.3 Parts 13–14, MISSION-V1-009).
+ * Sherivs — ephemeral agent runtime lifecycle (V5.3 Parts 13–14, MISSION-V1-009).
  *
  * A PURE lifecycle state machine for ephemeral agent workers. It owns nothing
  * persistent: identity and permission vocabulary is delegated to the existing

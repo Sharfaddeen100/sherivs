@@ -1,7 +1,7 @@
 /**
- * CoreGrid — V5.3 Part 64: DomainDefinition contract (configuration layer).
+ * Sherivs — V5.3 Part 64: DomainDefinition contract (configuration layer).
  *
- * "ONE CoreGrid substrate -> MANY organizational configurations." A domain
+ * "ONE Sherivs substrate -> MANY organizational configurations." A domain
  * (Scholar, Restaurant, …) is not a codebase and not a set of tables: it is a
  * DomainDefinition — ENTITY TYPES + SCHEMA + RELATIONSHIPS + ROLES +
  * WORKSPACES + WORKFLOWS — expressed as typed configuration over the EXISTING

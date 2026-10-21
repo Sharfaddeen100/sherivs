@@ -1,9 +1,9 @@
 /**
- * CoreGrid Identity Platform — TypeScript domain model.
+ * Sherivs Identity Platform — TypeScript domain model.
  *
  * Mirrors `architecture/phase-02-identity.md`:
  * - Universal identity is not modelled as an account.
- * - Every CoreGrid actor (human, AI agent, service, device) has an attributable identity.
+ * - Every Sherivs actor (human, AI agent, service, device) has an attributable identity.
  * - Identity lifecycle transitions are policy-controlled.
  * - Credential metadata only; raw secrets live outside ordinary tables.
  * - Identity does not own domain business data.
@@ -106,14 +106,14 @@ export function verificationRank(level: VerificationLevel): number {
  * Canonical Identity Entity (per H2)
  * ────────────────────────────────────────────────────────────*/
 
-export interface CoreGridIdentity {
+export interface SherivsIdentity {
   /** Stable UUID v7 reference (branded for type safety). */
   id: IdentityId;
   /** Which kind of entity this identity represents. */
   kind: IdentityKind;
   lifecycle: IdentityLifecycleState;
   verification: VerificationLevel;
-  /** Canonical authoritative identifier within CoreGrid. */
+  /** Canonical authoritative identifier within Sherivs. */
   canonicalIdentifier: string;
   /** Institution/tenant this identity belongs to (null for platform-level identities). */
   tenantId: string | null;
@@ -396,7 +396,7 @@ export function permissionKey(p: Permission): string {
 export type AuthorizationDecision = "ALLOW" | "DENY" | "REDACT" | "ESCALATE" | "REQUIRE_APPROVAL";
 
 export interface AuthorizationRequest {
-  identity: Pick<CoreGridIdentity, "id" | "kind" | "lifecycle" | "tenantId">;
+  identity: Pick<SherivsIdentity, "id" | "kind" | "lifecycle" | "tenantId">;
   permission: Permission;
   /** Relationship context used by ReBAC when needed. */
   relationships: IdentityRelationship[];
@@ -566,7 +566,7 @@ export interface IdentityEvent {
  * ────────────────────────────────────────────────────────────*/
 
 /** Invariant 02: No authorization decision may rely solely on a username or role. */
-export function isIdentityUsable(id: Pick<CoreGridIdentity, "lifecycle">): boolean {
+export function isIdentityUsable(id: Pick<SherivsIdentity, "lifecycle">): boolean {
   return id.lifecycle === "active" || id.lifecycle === "provisioned";
 }
 

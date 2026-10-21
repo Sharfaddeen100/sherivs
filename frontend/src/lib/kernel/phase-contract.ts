@@ -1,5 +1,5 @@
 /**
- * CoreGrid — kernel phase-engineering contract (domain-neutral).
+ * Sherivs — kernel phase-engineering contract (domain-neutral).
  *
  * A phase contract is the machine-checkable form of a phase document: it
  * declares all twenty engineering sections, the capability the phase owns in

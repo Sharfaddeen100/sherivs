@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Institutional Command Centre alert domain model
+ * Sherivs — Institutional Command Centre alert domain model
  * (Phase 19, Sections Y, Z, AA, AB, AC, AD, AE, AF, AG, AH, AI, AJ, AK).
  *
  * Implements `architecture/phase-19-command-centre.md`:

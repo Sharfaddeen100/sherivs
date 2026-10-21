@@ -1,5 +1,5 @@
 /**
- * CoreGrid — V1-008: organization-provisioning engine proof suite.
+ * Sherivs — V1-008: organization-provisioning engine proof suite.
  *
  * Proves the four structural claims of the platform onboarding engine:
  *

@@ -1,5 +1,5 @@
 /**
- * CoreGrid — V1-006 neutrality + domain-contribution proof suite.
+ * Sherivs — V1-006 neutrality + domain-contribution proof suite.
  *
  * Proves the three structural claims of the V1-006 refactor:
  *

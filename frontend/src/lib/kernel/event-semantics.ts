@@ -1,5 +1,5 @@
 /**
- * CoreGrid — event kernel semantics over cg_event consumption (V1CAP-042 /
+ * Sherivs — event kernel semantics over cg_event consumption (V1CAP-042 /
  * J-020 / MISSION-R-15), with the single time-source authority (V1CAP-045 /
  * J-023) as its ordering substrate.
  *

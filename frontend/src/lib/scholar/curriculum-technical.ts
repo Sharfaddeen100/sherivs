@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — technical education (Phase-04 §15).
+ * Sherivs Scholar — technical education (Phase-04 §15).
  *
  * Engineering, mechanics, electrical systems, electronics, construction,
  * fabrication, computing, manufacturing and technical workshops are

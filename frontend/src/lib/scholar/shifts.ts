@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — multi-shift school + shift-specific operation
+ * Sherivs Scholar — multi-shift school + shift-specific operation
  * (Phase-04 §33–34).
  *
  * Shift labels are configuration (morning/afternoon/evening/night/rotating/

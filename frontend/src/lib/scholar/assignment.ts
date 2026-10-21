@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — assignment engine (Phase-04 §37, F2 — final missing
+ * Sherivs Scholar — assignment engine (Phase-04 §37, F2 — final missing
  * artifact of the build map).
  *
  * Assignments cover teachers, students, classes, rooms, subjects, equipment

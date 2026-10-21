@@ -1,7 +1,7 @@
 /**
- * CoreGrid Scholar — CoreGrid platform organization catalog (WAVE-R32).
+ * Sherivs Scholar — Sherivs platform organization catalog (WAVE-R32).
  *
- * CoreGrid itself is a living organization: the platform teams (executive,
+ * Sherivs itself is a living organization: the platform teams (executive,
  * engineering, AI, product, education domain, customer implementation) are
  * reality roles like any other — they come from the role engine's
  * COREGRID_INTERNAL groups, and their workspaces are generated, never drawn by

@@ -1,9 +1,9 @@
 /**
- * CoreGrid Marketplace Platform — vendor and developer domain.
+ * Sherivs Marketplace Platform — vendor and developer domain.
  *
  * Implements `architecture/phase-27-marketplace.md`:
  * - Vendor platform (Sections 14-18): every marketplace publisher must have a
- *   verified vendor identity; vendor types (CoreGrid, school, university,
+ *   verified vendor identity; vendor types (Sherivs, school, university,
  *   education company, developer, startup, enterprise, NGO, government, hardware,
  *   AI company, content publisher, professional service provider); vendor
  *   verification (identity, organization, legal, ownership, security, payment);

@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — evolution guards + phase ownership boundaries
+ * Sherivs Scholar — evolution guards + phase ownership boundaries
  * (Phase-04 §176–180 and the §142–153 boundary rows O2/O4, plus §184–199).
  *
  * Evolution: a new curriculum must not destroy historical records (§178), a

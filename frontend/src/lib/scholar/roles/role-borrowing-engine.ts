@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Educational Reality Role Engine: borrowing engine.
+ * Sherivs Scholar — Educational Reality Role Engine: borrowing engine.
  *
  * Institutions borrow roles across frameworks (a vocational school staffing
  * workshop supervision, a day school adding boarding later) without breaking

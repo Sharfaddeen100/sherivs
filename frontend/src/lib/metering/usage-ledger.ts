@@ -1,5 +1,5 @@
 /**
- * CoreGrid — AI usage metering ledger (V5.3 MISSION-V1-010, Part 49
+ * Sherivs — AI usage metering ledger (V5.3 MISSION-V1-010, Part 49
  * attribution-minimal).
  *
  * PURE module: no I/O, no provider imports, no environment reads. Every

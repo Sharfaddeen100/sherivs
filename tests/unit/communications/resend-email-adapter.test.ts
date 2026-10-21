@@ -1,5 +1,5 @@
 /**
- * CoreGrid — V1-009: Resend EmailAdapter contract tests.
+ * Sherivs — V1-009: Resend EmailAdapter contract tests.
  *
  * Proves:
  * 1. Contract compliance — the adapter satisfies `EmailAdapter` and its

@@ -1,5 +1,5 @@
 /**
- * CoreGrid AI Intelligence Layer — AI services domain (capability/skill registry,
+ * Sherivs AI Intelligence Layer — AI services domain (capability/skill registry,
  * multimodal/document intelligence, safe generation, orchestration).
  *
  * Implements `architecture/phase-26-ai-intelligence-layer.md`:

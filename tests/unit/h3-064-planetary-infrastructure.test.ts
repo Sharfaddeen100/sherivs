@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-064 planetary-infrastructure contract tests (mission G-064).
+ * Sherivs — H3-064 planetary-infrastructure contract tests (mission G-064).
  * Zod validation of phase-44 distributed-infrastructure substrate contracts:
  * distributed-node identity, region topology, and fail-closed region
  * admission under the E-060 posture (external nodes are never automatically

@@ -1,5 +1,5 @@
 /**
- * CoreGrid — portal overview server reads (V1-011 placeholder-page disposition).
+ * Sherivs — portal overview server reads (V1-011 placeholder-page disposition).
  *
  * The zero-state admin surfaces that covered REAL V1 capabilities read their
  * numbers through these server functions instead of rendering fabricated

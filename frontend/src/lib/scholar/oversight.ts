@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — oversight: government visibility, inspection,
+ * Sherivs Scholar — oversight: government visibility, inspection,
  * accreditation, certification (Phase-04 §94–97).
  *
  * Government-authorized entities receive SCOPED VISIBILITY — never automatic

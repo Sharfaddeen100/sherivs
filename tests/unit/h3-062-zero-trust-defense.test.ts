@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-062 zero-trust-defense contract tests (mission G-062).
+ * Sherivs — H3-062 zero-trust-defense contract tests (mission G-062).
  * Zod validation of phase-42 adversarial-defense substrate contracts:
  * untrusted-by-default input classification (AGENTS §5), recommendation-only
  * defense verdicts over the §16 decision vocabulary (structurally minus

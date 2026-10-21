@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-020 (J-032) Approval Chain Engineer.
+ * Sherivs — H3-020 (J-032) Approval Chain Engineer.
  *
  * Proof suite for the ESCALATE / REQUIRE_APPROVAL resolution-flow contracts
  * in `frontend/src/lib/approval/chains.ts` (Constitution §7, §12, §16, §21,

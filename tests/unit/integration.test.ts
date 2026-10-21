@@ -1,4 +1,4 @@
-// ─── Phase 29 — CoreGrid Integration ─────────────────────────
+// ─── Phase 29 — Sherivs Integration ─────────────────────────
 import { describe, it, expect } from "vitest";
 import {
   createConnector,

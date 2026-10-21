@@ -1,5 +1,5 @@
 /**
- * CoreGrid — platform shell navigation (ADR-003 Option 1, GAP-008 / V1CAP-085).
+ * Sherivs — platform shell navigation (ADR-003 Option 1, GAP-008 / V1CAP-085).
  *
  * The global shell is PLATFORM-owned chrome (ADR-003, PROPOSED ruling pending
  * COND-004). Runtime content is admitted ONLY through the neutral registry:

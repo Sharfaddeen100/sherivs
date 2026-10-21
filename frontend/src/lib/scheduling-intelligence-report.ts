@@ -1,12 +1,12 @@
 /**
- * CoreGrid — Scheduling & Timetable Intelligence: the L4 intelligence report.
+ * Sherivs — Scheduling & Timetable Intelligence: the L4 intelligence report.
  *
  * The report is evidence, not marketing. Every check below EXECUTES the scheduling engines and
  * states what it observed; a check that cannot be observed is reported as a declared gap rather
  * than as a pass. Rules cite the module and the test suite that hold them, so a reviewer can go
  * from a claim in this file to the code that enforces it.
  *
- * Domain-neutral: the report describes CoreGrid scheduling semantics. It names no runtime and no
+ * Domain-neutral: the report describes Sherivs scheduling semantics. It names no runtime and no
  * customer, because the capability belongs to the platform and each organization experiences it
  * through its own activities, resources and calendars.
  */

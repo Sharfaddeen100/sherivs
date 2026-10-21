@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Educational Reality Role Engine: role definition.
+ * Sherivs Scholar — Educational Reality Role Engine: role definition.
  *
  * The ROLE entity. A role is a living organizational entity scoped by reality
  * (feature keys, institution templates, education levels, jurisdictions) — not

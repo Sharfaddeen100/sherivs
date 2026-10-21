@@ -1,8 +1,8 @@
 /**
- * CoreGrid — Phase 04 Scholar runtime: institution operating-model wiring
+ * Sherivs — Phase 04 Scholar runtime: institution operating-model wiring
  * (first Scholar-on-CoreGrid server-function vertical).
  *
- * Scholar is a RUNTIME on CoreGrid, never a subsystem: this family publishes
+ * Scholar is a RUNTIME on Sherivs, never a subsystem: this family publishes
  * the institution's operating model as a UNIVERSAL KERNEL entity
  * (`cg_entity`, entity_type `scholar.institution.operating_model`) — the
  * kernel stays vocabulary-free, Phase 04 owns the education semantics.

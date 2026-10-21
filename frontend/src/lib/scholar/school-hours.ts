@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — flexible school hours / daily routine (Phase-04 §32).
+ * Sherivs Scholar — flexible school hours / daily routine (Phase-04 §32).
  *
  * The administrator defines the school day: opening time, closing time and a
  * sequence of blocks — instructional periods, breaks, assembly, lunch,

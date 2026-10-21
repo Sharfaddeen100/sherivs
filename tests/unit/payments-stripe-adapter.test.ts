@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Stripe adapter tests (V5.3 Part 21).
+ * Sherivs — Stripe adapter tests (V5.3 Part 21).
  * Signature verification (t=/v1= HMAC-SHA256 over `${t}.${body}`),
  * tolerance-based replay protection — plus forgery/replay/tamper negatives (§31).
  */

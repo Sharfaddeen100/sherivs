@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Delegation object contract (J-025 / V1CAP-046, MISSION-R-50).
+ * Sherivs — Delegation object contract (J-025 / V1CAP-046, MISSION-R-50).
  *
  * The Delegation is a FIRST-CLASS governed object: a delegator (an actor
  * with authority) grants a delegate a BOUNDED slice of that authority to

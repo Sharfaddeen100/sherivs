@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 10 Communication Platform: provider adapter registry tests.
+ * Sherivs — Phase 10 Communication Platform: provider adapter registry tests.
  *
  * The registry is where a live telephone path would enter the platform, so these tests
  * hold the boundary: a secret can never be written into an adapter, a provider is never

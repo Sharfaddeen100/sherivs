@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — device context (Phase-04 §66–68).
+ * Sherivs Scholar — device context (Phase-04 §66–68).
  *
  * Every device may have an identity, owner, location (institution/block/room),
  * purpose and network context (§66). Devices communicate with users, rooms,

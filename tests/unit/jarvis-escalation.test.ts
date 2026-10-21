@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Jarvis V1 escalation ladder tests (V5.3 Part 15, fail-closed).
+ * Sherivs — Jarvis V1 escalation ladder tests (V5.3 Part 15, fail-closed).
  *
  * Security negatives are mandatory (Constitution section 31): critical severity
  * must force human approval, records without evidence must be denied, and no

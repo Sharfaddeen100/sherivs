@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — school reality validator + reality drift detection
+ * Sherivs Scholar — school reality validator + reality drift detection
  * (Phase-04 §163–165).
  *
  * Configured reality (the SchoolBuildSpec) must be continuously evaluated

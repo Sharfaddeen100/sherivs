@@ -1,5 +1,5 @@
 /**
- * CoreGrid — V1-008: platform onboarding server function.
+ * Sherivs — V1-008: platform onboarding server function.
  *
  * provisionOrganization — the platform-level, domain-neutral provisioning
  * entry point (§27 SERVER FUNCTION RULE):

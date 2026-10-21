@@ -1,9 +1,9 @@
 /**
- * CoreGrid — Phase 45 AI Compute Civilization Engine: compute-offer clearance
+ * Sherivs — Phase 45 AI Compute Civilization Engine: compute-offer clearance
  * contracts (H3 wave Squad G, mission G-065, Contract Architect role).
  *
  * WHAT: the typed, fail-closed contract surface for the phase-45 substrate —
- * GOVERNED COMPUTE OFFER CLEARANCE. A compute offer joins CoreGrid as a
+ * GOVERNED COMPUTE OFFER CLEARANCE. A compute offer joins Sherivs as a
  * declaration (capacity, workload kinds, residency, isolation, metering
  * rate); a workload requests compute against an offer; the decision is
  * ALLOW or DENY with typed reasons. Under the phase-45 kernel contract the

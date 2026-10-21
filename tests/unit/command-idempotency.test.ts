@@ -1,5 +1,5 @@
 /**
- * CoreGrid — platform-wide command idempotency contract tests
+ * Sherivs — platform-wide command idempotency contract tests
  * (J-030 / V1CAP-054).
  *
  * Validates exactly-once replay, collision rejection, TTL expiry,

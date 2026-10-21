@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Cluster N tests part 2 (§98–109, 158).
+ * Sherivs Scholar — Cluster N tests part 2 (§98–109, 158).
  * Documents, evidence, competency/mastery, portfolios, co-curricular, import.
  */
 import { describe, expect, it } from "vitest";

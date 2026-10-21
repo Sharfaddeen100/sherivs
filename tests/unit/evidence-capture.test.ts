@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Evidence-class capture discipline tests (J-034 / V1CAP-059 /
+ * Sherivs — Evidence-class capture discipline tests (J-034 / V1CAP-059 /
  * MISSION-R-90).
  *
  * Proves the capture-time invariants of `lib/evidence/capture.ts`:

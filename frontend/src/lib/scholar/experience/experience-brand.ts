@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Experience engine: organization brand identity.
+ * Sherivs Scholar — Experience engine: organization brand identity.
  *
  * Every organization receives a brand configuration (logo, colours, fonts,
  * tone, language, domain). No organization requires custom frontend

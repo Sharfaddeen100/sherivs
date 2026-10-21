@@ -1,5 +1,5 @@
 /**
- * CoreGrid — recovery chaos battery (Squad A / A-007, M-R-101 groundwork).
+ * Sherivs — recovery chaos battery (Squad A / A-007, M-R-101 groundwork).
  *
  * Failure-path tests for recovery tooling consuming the backup-manifest
  * contract (`frontend/src/lib/reliability/backup-manifest.ts`, owned by

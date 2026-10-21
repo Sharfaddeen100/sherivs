@@ -1,5 +1,5 @@
 /**
- * CoreGrid — MISSION H3-038 (Squad D): zero-policy posture adjudication for
+ * Sherivs — MISSION H3-038 (Squad D): zero-policy posture adjudication for
  * the provenance/usage family:
  *
  *   - cg_reasoning_provenance_snapshot  (migration 20261002000009)

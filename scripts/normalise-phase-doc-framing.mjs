@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 /**
- * CoreGrid — phase blueprint neutrality normaliser.
+ * Sherivs — phase blueprint neutrality normaliser.
  *
  * WHY IT EXISTS
  * The 51 phase blueprints were authored while one runtime was the product, so a large
- * minority of them present that runtime as the PLATFORM ("CoreGrid Scholar's institutional
+ * minority of them present that runtime as the PLATFORM ("Sherivs Scholar's institutional
  * communication infrastructure", "Scholar is the first runtime", "Scholar-specific", …).
  * Every later phase reads those blueprints as law, so the framing is corrected at the
  * source rather than argued with at review time — the same finding as PROGRESS §22.16,
@@ -12,8 +12,8 @@
  *
  * WHAT IT DOES
  * Rewrites owner-framing statements into platform statements, deterministically:
- *   CoreGrid Scholar …  -> CoreGrid …
- *   Scholar's <noun>    -> CoreGrid's <noun>
+ *   Sherivs Scholar …  -> Sherivs …
+ *   Scholar's <noun>    -> Sherivs's <noun>
  *   Scholar is|consumes|owns|binds|resolves|implements … -> the platform / a runtime …
  * A bare "Scholar" it cannot classify is NEVER rewritten: it is reported as a human
  * decision, because it may be a legitimate proper noun in a sentence about the runtime.

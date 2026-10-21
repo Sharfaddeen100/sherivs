@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — lesson model (Phase-04 §45, upgrade target of the legacy
+ * Sherivs Scholar — lesson model (Phase-04 §45, upgrade target of the legacy
  * academic lesson layer).
  *
  * A lesson contains subject, teacher, class, time, location, learning

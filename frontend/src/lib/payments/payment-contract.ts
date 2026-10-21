@@ -1,9 +1,9 @@
 /**
- * CoreGrid — V1 payment contract layer (MISSION-V1-012, V5.3 Part 21).
+ * Sherivs — V1 payment contract layer (MISSION-V1-012, V5.3 Part 21).
  *
  * Pure, provider-agnostic payment vocabulary. The provider (Paystack,
  * Stripe, …) is an implementation dependency, NEVER the semantic owner:
- * every concept here is expressed in CoreGrid terms (tenant, purpose,
+ * every concept here is expressed in Sherivs terms (tenant, purpose,
  * minor-unit amount) and adapters merely translate. Live provider calls
  * are blocked (BLK-4) — this layer performs no network I/O by design.
  *
@@ -121,7 +121,7 @@ export type PaymentEventType =
   | "payment.refunded";
 
 /**
- * A verified provider webhook, translated into CoreGrid vocabulary.
+ * A verified provider webhook, translated into Sherivs vocabulary.
  * `eventId` is the provider's durable event id (idempotency identity);
  * `providerReference` locates the provider-side transaction.
  * Provider metadata (e.g. tenant hints) is carried as evidence — the
@@ -181,7 +181,7 @@ export interface PaymentAdapterCapabilities {
 
 /**
  * The full adapter contract. Adapters translate provider wire formats into
- * CoreGrid vocabulary and own provider-specific signature schemes — never
+ * Sherivs vocabulary and own provider-specific signature schemes — never
  * the semantics. All operations are pure/local: under BLK-4 no adapter
  * performs network I/O.
  */

@@ -1,5 +1,5 @@
 /**
- * CoreGrid — governed worker identity registry, pure contract
+ * Sherivs — governed worker identity registry, pure contract
  * (MISSION V1-003, team WORKFORCE).
  *
  * The REGISTRATION + AUTHORITY-RESOLUTION half of the governed worker

@@ -1,5 +1,5 @@
 /**
- * CoreGrid — adapter failure-semantics contract tests (J-045, V1CAP-080,
+ * Sherivs — adapter failure-semantics contract tests (J-045, V1CAP-080,
  * MISSION-R-72). Bounded timeouts, error containment, degraded-mode state
  * machine, retry caps + deterministic backoff, circuit-breaker transitions,
  * and per-provider trust decision recording (E-060).

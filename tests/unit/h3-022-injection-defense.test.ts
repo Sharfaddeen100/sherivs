@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-022 (J-036) Injection Defense Engineer.
+ * Sherivs — H3-022 (J-036) Injection Defense Engineer.
  *
  * Proof suite for the prompt-injection & malicious-artifact defense
  * contracts in `frontend/src/lib/security/injection-defense.ts`

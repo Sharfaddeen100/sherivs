@@ -1,5 +1,5 @@
 /**
- * CoreGrid — first SLO/SLI set for the governed loop
+ * Sherivs — first SLO/SLI set for the governed loop
  * (V1CAP-077 / MISSION-R-102 T2; E-101; hardening L-H-027).
  *
  * Five loop-stage SLIs, each bound to one stage of the governed loop, each

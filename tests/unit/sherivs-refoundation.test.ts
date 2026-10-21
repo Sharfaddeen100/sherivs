@@ -1,10 +1,10 @@
 /**
  * SHERIVS EXPERIENCE REFOUNDATION — public boundary verification.
  *
- * Verifies the architectural correction from "CoreGrid Scholar public shell"
+ * Verifies the architectural correction from "Sherivs Scholar public shell"
  * to the four-plane Sherivs experience model:
  *
- *   1. The public company site presents SHERIVS, never CoreGrid branding.
+ *   1. The public company site presents SHERIVS, never Sherivs branding.
  *   2. The public homepage does NOT render the internal command centre or
  *      expose internal architecture (phases, kernel contracts, registries).
  *   3. The public authentication surface exposes NO demo credentials or demo

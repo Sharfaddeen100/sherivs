@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar (R-001) — workforce-kind → chrome resolution (advisory).
+ * Sherivs Scholar (R-001) — workforce-kind → chrome resolution (advisory).
  *
  * Maps the workforce-kind authority groups (Phase 25 catalog) onto the R-001
  * workspace chrome kinds (Phase 06 nav data) so a staff member's real post can

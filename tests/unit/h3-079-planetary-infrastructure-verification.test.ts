@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-079 planetary-infrastructure adversarial verification suite
+ * Sherivs — H3-079 planetary-infrastructure adversarial verification suite
  * (mission G-079, Verifier, phase 44, Squad G).
  *
  * Adversarial verification against the COMPLETED contract module

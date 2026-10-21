@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar (runtime-001) — workspace projection adapter.
+ * Sherivs Scholar (runtime-001) — workspace projection adapter.
  *
  * Binds the DOMAIN-NEUTRAL Phase 06 engine to the Scholar catalog. The engine knows
  * nothing about Scholar; this adapter is the only bridge, which is exactly what

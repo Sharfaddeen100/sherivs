@@ -1,5 +1,5 @@
 /**
- * CoreGrid — cost-attribution tests (J-043 / V1CAP-078, MISSION-R-70):
+ * Sherivs — cost-attribution tests (J-043 / V1CAP-078, MISSION-R-70):
  * conservation of the roll-up partition, unattributed-record detection (never
  * absorbed), bi-temporal period boundaries, boundary-inclusive quota
  * evaluation, and double-count impossibility.

@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Phase 14 Data Platform unit tests (data-quality).
+ * Sherivs Scholar — Phase 14 Data Platform unit tests (data-quality).
  *
  * Validates:
  * - Quality rule creation and evaluation (AD).

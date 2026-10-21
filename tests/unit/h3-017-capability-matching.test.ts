@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-017 capability-matching contract tests (mission B-017 / J-028).
+ * Sherivs — H3-017 capability-matching contract tests (mission B-017 / J-028).
  * Capability-overlap matching depth between declared capabilities and
  * required capabilities, fail-closed on unknown capabilities, plus
  * read-only composition with the delegation contract and the persistent

@@ -123,7 +123,7 @@ CA: `crypto.X509Certificate` parse (`tls.mjs` 69–102). Missing →
 and `ca` (216–220). `checkServerIdentity` is **not** overridden, so Node’s
 default hostname check remains if a handshake ever occurs.
 
-`COREGRID_DB_INSECURE_TLS=1` refused (206–210). Libpq SSL env names
+`SHERIVS_DB_INSECURE_TLS=1` refused (206–210). Libpq SSL env names
 `PGSSLMODE`, `PGSSLROOTCERT`, `PGSSLCERT`, `PGSSLKEY`, `PGSSLNEGOTIATION`
 refused in the **runner env bag** (39–48, `constants.mjs` 68–74).
 

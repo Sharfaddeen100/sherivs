@@ -1,5 +1,5 @@
 /**
- * CoreGrid Developer Platform — developer environment domain.
+ * Sherivs Developer Platform — developer environment domain.
  *
  * Implements `architecture/phase-28-developer-platform.md`:
  * - Developer environments (V): Local, Development, Test, Integration, Staging,
@@ -12,7 +12,7 @@
  *   accidentally committed API keys, tokens, passwords, certificates, private keys.
  * - Configuration management (Y): environment variables, configuration schemas,
  *   secret references, feature flags, configuration versioning.
- * - Local development (29-30): local runtime + simulator of CoreGrid contracts
+ * - Local development (29-30): local runtime + simulator of Sherivs contracts
  *   without production access. Sandbox (31-33): controlled sandbox environments,
  *   isolation from production, synthetic/anonymized datasets.
  * - Permission development (36-37): permission manifests; test under full,

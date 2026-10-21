@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar (runtime R-001) — declared kernel-capability consumption.
+ * Sherivs Scholar (runtime R-001) — declared kernel-capability consumption.
  *
  * The kernel exposes the capability graph plus one generic query
  * (`kernelCapabilitiesByConsumer`). Consumption belongs to the runtime: this

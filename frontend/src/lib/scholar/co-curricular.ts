@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — events, clubs, house activities, community engagement
+ * Sherivs Scholar — events, clubs, house activities, community engagement
  * (Phase-04 §106–109).
  *
  * School events cover assemblies, sports, cultural and religious events,

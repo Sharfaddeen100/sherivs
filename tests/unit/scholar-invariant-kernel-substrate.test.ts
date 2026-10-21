@@ -1,5 +1,5 @@
 /**
- * CoreGrid — M-R-121 T2: §27 per-function invariant suites (Constitution §27).
+ * Sherivs — M-R-121 T2: §27 per-function invariant suites (Constitution §27).
  *
  * Machine-checked proof that every exported server function in the
  * kernel-substrate Scholar families (universal cg_* substrate consumers)

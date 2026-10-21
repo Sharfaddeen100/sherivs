@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-049 dependency health inventory contract tests (mission F-049).
+ * Sherivs — H3-049 dependency health inventory contract tests (mission F-049).
  * Proves: bounded, provenance-carrying inventory declarations; fail-closed
  * posture aggregation (dead checks, unknown checks, invalid results and
  * duplicates all force `failing`); critical-tier escalation of `degraded`;

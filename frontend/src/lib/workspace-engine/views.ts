@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 06 Workspace Engine: views, filters, sorting, grouping.
+ * Sherivs — Phase 06 Workspace Engine: views, filters, sorting, grouping.
  *
  * Implements phase-06-workspace-engine.md sections:
  * - BC Saved views — users may save reusable views.

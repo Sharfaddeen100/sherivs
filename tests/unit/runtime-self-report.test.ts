@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 05 Core Application Runtime: self-report tests.
+ * Sherivs — Phase 05 Core Application Runtime: self-report tests.
  *
  * The runtime's self-check is only worth showing if it can fail, so these tests
  * prove (a) the report reflects the shipped contracts, (b) every check passes

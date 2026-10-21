@@ -1,10 +1,10 @@
 /**
- * CoreGrid — Phase 25 Onboarding, Administration & Workforce Identity:
+ * Sherivs — Phase 25 Onboarding, Administration & Workforce Identity:
  * domain-neutral ORGANIZATION ONBOARDING FLOW.
  *
  * Implements the phase-25 blueprint's creation model and lifecycle semantics
  * in a DOMAIN-FREE way: onboarding transforms a newly created ORGANIZATION
- * record into a securely configured, policy-driven, operational CoreGrid
+ * record into a securely configured, policy-driven, operational Sherivs
  * environment. The organization may be a school, university, company,
  * government agency, community institution, non-profit — orgType is DATA, never
  * a code branch. Every present and future domain runtime (Scholar R-001 is the

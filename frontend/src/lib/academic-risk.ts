@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Academic Learning Intelligence risk engine,
+ * Sherivs — Academic Learning Intelligence risk engine,
  * fairness, aggregates, and recommendations (Phase 11, Sections AI, AJ, AK,
  * AL, AM, AN, AV, AW).
  *

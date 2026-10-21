@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Scholar vertical binding map (kernel capability ↔ Scholar vertical).
+ * Sherivs — Scholar vertical binding map (kernel capability ↔ Scholar vertical).
  *
  * The 51-phase contract chain is complete; this suite locks the CONSUMER side:
  *  - every kernel capability Scholar consumes is bound to a real Scholar

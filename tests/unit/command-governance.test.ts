@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Phase 19 Institutional Command Centre unit tests
+ * Sherivs Scholar — Phase 19 Institutional Command Centre unit tests
  * (command-governance).
  *
  * Validates:

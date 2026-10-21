@@ -1,5 +1,5 @@
 /**
- * CoreGrid — file access policy (MISSION-V1-012 files, V5.3 Part 22).
+ * Sherivs — file access policy (MISSION-V1-012 files, V5.3 Part 22).
  *
  * Pure access decision for the files service: principal + FileDescriptor ->
  * allow | deny. Deny by default. Owner is always allowed (within their own

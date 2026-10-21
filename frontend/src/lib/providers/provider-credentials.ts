@@ -1,5 +1,5 @@
 /**
- * CoreGrid — provider credential registry (machine-readable, secret-free).
+ * Sherivs — provider credential registry (machine-readable, secret-free).
  *
  * The single DATA contract that maps every platform-relevant provider
  * credential to its classification, owning adapter surface, required
@@ -14,7 +14,7 @@
  *   credential (this registry, classified)
  *        → secure runtime configuration (lib/env + per-adapter configFromEnv)
  *        → provider adapter (communications/, payments/, ai-gateway)
- *        → CoreGrid capability service
+ *        → Sherivs capability service
  *        → observability + verification (observability/provider-health.server)
  *
  * Classification vocabulary (mission §4):
@@ -93,7 +93,7 @@ export const providerCredentialEntrySchema = z
     provider: z.string().regex(REF_PATTERN, "provider id must be a lowercase identifier"),
     classification: z.enum(CREDENTIAL_CLASSIFICATIONS),
     runtimeScope: z.enum(RUNTIME_SCOPES),
-    /** What CoreGrid capability the credential unlocks (human-safe phrase). */
+    /** What Sherivs capability the credential unlocks (human-safe phrase). */
     requiredCapability: z.string().min(1).max(200),
     /**
      * Adapter surface that consumes the credential — a repo-relative module
@@ -230,7 +230,7 @@ export const PROVIDER_CREDENTIAL_REGISTRY: readonly ProviderCredentialEntry[] = 
     note: "Non-secret certificate; consumed by scripts/lib/pg-ssl.mjs.",
   },
 
-  // ── CoreGrid Postgres (direct channel) ──
+  // ── Sherivs Postgres (direct channel) ──
   {
     envVar: "DATABASE_URL",
     provider: "coregrid-postgres",
@@ -241,10 +241,10 @@ export const PROVIDER_CREDENTIAL_REGISTRY: readonly ProviderCredentialEntry[] = 
     hasHealthCheck: true,
     status: "OPERATIONAL",
     verificationLevel: "capability_tested",
-    note: "Consumed by scripts/db-*.mjs with strict TLS against COREGRID_DB_CA_CERT.",
+    note: "Consumed by scripts/db-*.mjs with strict TLS against SHERIVS_DB_CA_CERT.",
   },
   {
-    envVar: "COREGRID_DB_CA_CERT",
+    envVar: "SHERIVS_DB_CA_CERT",
     provider: "coregrid-postgres",
     classification: "server_runtime_configuration",
     runtimeScope: "infrastructure",

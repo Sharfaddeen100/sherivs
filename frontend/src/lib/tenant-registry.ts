@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 03 universal tenant registry: typed contract for
+ * Sherivs — Phase 03 universal tenant registry: typed contract for
  * `cg_tenant` (H1 Tenant Entity, L2 model 20260904020000).
  *
  * Mirrors the database truth (H2 status enum, slug CHECK, defaults). Boundary:

@@ -1,5 +1,5 @@
 /**
- * CoreGrid — platform neutrality and no-hand-written-role-lists guard.
+ * Sherivs — platform neutrality and no-hand-written-role-lists guard.
  *
  * Two laws are enforced here, both learned from real defects found in this
  * repository's own closures:
@@ -135,10 +135,10 @@ describe("No hand-written role lists in platform surfaces", () => {
 /* ─────────────────────────────────────────────────────────────
  * LAW 3: only a runtime layer may name a runtime.
  *
- * CoreGrid is the platform; a runtime is an application installed on the kernel.
+ * Sherivs is the platform; a runtime is an application installed on the kernel.
  * Scholar is runtime-001 — the first consumer of these contracts, never their
  * owner (owner decision, 2026-09-16). Seventy-three kernel and capability modules
- * had introduced themselves as "CoreGrid Scholar — …", which quietly taught every
+ * had introduced themselves as "Sherivs Scholar — …", which quietly taught every
  * later phase that the platform *is* one application. The frames were neutralised
  * by `scripts/neutralise-scholar-framing.mjs` (comments only, provably inert) and
  * this block keeps them neutral: a later phase cannot re-frame the kernel.
@@ -152,7 +152,7 @@ const RUNTIME_LAYER = [
   /^frontend\/src\/lib\/runtime\/scholar\/[^/]+\.tsx?$/,
   /^frontend\/src\/routes\/_authenticated\/scholar\//,
   // The runtime's own row/insert/update aliases for the tables it owns.
-  /^frontend\/src\/types\/coregrid-scholar\.ts$/,
+  /^frontend\/src\/types\/sherivs-scholar\.ts$/,
   // A script whose whole purpose is to verify runtime-001's own configuration.
   /^scripts\/[^/]*scholar[^/]*$/,
 ];
@@ -277,7 +277,7 @@ describe("Only the runtime layer narrates a runtime", () => {
  * LAW 6: the phase BLUEPRINTS state the platform, not one application.
  *
  * The 51 phase documents are read as law by every later phase, and 27 of them
- * presented one runtime as the platform ("CoreGrid Scholar's institutional
+ * presented one runtime as the platform ("Sherivs Scholar's institutional
  * communication infrastructure", "Scholar is the first runtime", "Scholar-specific",
  * "SCHOLAR EXTENSIONS" …). They were normalised by
  * `scripts/normalise-phase-doc-framing.mjs`, which rewrites owner-framing statements

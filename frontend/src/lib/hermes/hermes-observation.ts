@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Hermes observation contract + in-memory port
+ * Sherivs — Hermes observation contract + in-memory port
  * (V1 remediation wave, team R4 / HERMES-PORT; follow-up of V1-002).
  *
  * The DURABLE observation surface of the Hermes orchestrator: every

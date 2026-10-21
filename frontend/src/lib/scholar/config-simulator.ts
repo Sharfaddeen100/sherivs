@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — configuration simulator (Phase-04 §84–85).
+ * Sherivs Scholar — configuration simulator (Phase-04 §84–85).
  *
  * Scenario simulation belongs to educational reality: "What happens if we add
  * another campus / introduce evening classes / mark a laboratory unavailable?"

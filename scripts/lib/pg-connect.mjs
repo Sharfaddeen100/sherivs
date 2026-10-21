@@ -1,5 +1,5 @@
 /**
- * CoreGrid — shared Postgres connection resolution for client scripts.
+ * Sherivs — shared Postgres connection resolution for client scripts.
  *
  * Companion to scripts/lib/pg-ssl.mjs (which owns the TLS policy; this module
  * owns the transport). Supabase direct endpoints (db.<ref>.supabase.co) are
@@ -12,11 +12,11 @@
  *      session pooler with the SAME credentials and the SAME strict TLS policy.
  *
  * TLS is never weakened: every connection derives its `ssl` option from
- * `pgSslConfig`, so verification is strict against COREGRID_DB_CA_CERT (the
+ * `pgSslConfig`, so verification is strict against SHERIVS_DB_CA_CERT (the
  * Supabase project CA, published by Supabase at
  * supabase/cli `apps/cli-go/internal/gen/types/templates/prod-ca-2021.crt` —
  * fingerprint-verified against the live chain) or Node's default store.
- * Disabling verification (COREGRID_DB_INSECURE_TLS=1) remains the explicitly
+ * Disabling verification (SHERIVS_DB_INSECURE_TLS=1) remains the explicitly
  * logged last resort and is never chosen here automatically.
  *
  * The transport switch is logged (Constitution §29). Credential values are
@@ -26,7 +26,8 @@ import net from "node:net";
 import { pgSslConfig } from "./pg-ssl.mjs";
 import { assertUrlMatchesTarget, resolveExplicitTarget } from "./sherivs-db-target.mjs";
 
-const POOLER_REGION_ENV = "COREGRID_DB_POOLER_REGION";
+const POOLER_REGION_ENV = "SHERIVS_DB_POOLER_REGION";
+const LEGACY_POOLER_REGION_ENV = "COREGRID_DB_POOLER_REGION"; // former name, still honoured
 const DEFAULT_POOLER_REGION = "eu-west-1";
 /** Supavisor clusters are indexed per rollout wave; the tenant exists on exactly one. */
 const POOLER_CLUSTER_INDICES = ["aws-1", "aws-0", "aws-2", "aws-3"];
@@ -64,7 +65,7 @@ export async function hostReachable(host, port) {
  * Returns candidate URLs for each Supavisor cluster index — the tenant
  * exists on exactly one; candidates are tried in order.
  */
-export function poolerUrlsFor(connectionString, region = process.env[POOLER_REGION_ENV] ?? DEFAULT_POOLER_REGION) {
+export function poolerUrlsFor(connectionString, region = process.env[POOLER_REGION_ENV] ?? process.env[LEGACY_POOLER_REGION_ENV] ?? DEFAULT_POOLER_REGION) {
   let url;
   try {
     url = new URL(connectionString);

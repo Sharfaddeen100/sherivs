@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — dashboard grid engine (WAVE-R34).
+ * Sherivs Scholar — dashboard grid engine (WAVE-R34).
  *
  * Composes an actor's dashboards from enabled feature codes + authorized role
  * categories. Nothing is hand-drawn: a widget appears exactly when the feature it

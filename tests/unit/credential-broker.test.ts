@@ -1,5 +1,5 @@
 /**
- * CoreGrid — credential broker & emergency lockdown contract tests
+ * Sherivs — credential broker & emergency lockdown contract tests
  * (J-007 / J-010, V1CAP-017 / V1CAP-019, MISSION-R-82).
  *
  * Validates: authority-scoped lease grant/deny, TTL expiry, usage budget

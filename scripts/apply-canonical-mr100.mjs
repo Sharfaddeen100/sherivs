@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * CoreGrid — MISSION-R-100 (J-040 / V1CAP-072): apply the wave-3 cg_* migrations
+ * Sherivs — MISSION-R-100 (J-040 / V1CAP-072): apply the wave-3 cg_* migrations
  * to the canonical environment and record declared-vs-applied state truth.
  *
  * Transport: the authorized Supabase Management API query channel (the same

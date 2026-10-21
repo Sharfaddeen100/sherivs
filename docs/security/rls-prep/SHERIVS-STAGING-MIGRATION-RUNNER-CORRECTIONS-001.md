@@ -85,7 +85,7 @@ code, `scripts/db-apply.mjs`, deployment configuration.
   `?host=` / `?hostaddr=`.
 - `sslmode` must be omitted or `verify-full`. `disable` and `no-verify`
   have dedicated refuse codes. `require` / `prefer` / `verify-ca` refuse.
-- `uselibpqcompat`, `ssl=false` / `ssl=no-verify`, `COREGRID_DB_INSECURE_TLS=1`,
+- `uselibpqcompat`, `ssl=false` / `ssl=no-verify`, `SHERIVS_DB_INSECURE_TLS=1`,
   and libpq SSL environment (`PGSSLMODE`, `PGSSLROOTCERT`, `PGSSLCERT`,
   `PGSSLKEY`, `PGSSLNEGOTIATION`) refuse.
 - CA is parsed with `crypto.X509Certificate`. Private keys and

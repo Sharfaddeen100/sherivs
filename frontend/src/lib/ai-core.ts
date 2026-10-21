@@ -1,5 +1,5 @@
 /**
- * CoreGrid AI Intelligence Layer — AI core domain (request model, model registry,
+ * Sherivs AI Intelligence Layer — AI core domain (request model, model registry,
  * routing, inference gateway).
  *
  * Implements `architecture/phase-26-ai-intelligence-layer.md`:

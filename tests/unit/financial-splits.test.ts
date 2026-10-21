@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 13 split payments unit tests (financial-splits).
+ * Sherivs — Phase 13 split payments unit tests (financial-splits).
  *
  * The laws under test (Phase 13 EH/EK):
  * - legs sum EXACTLY to the gross; over- and under-allocation are refused;

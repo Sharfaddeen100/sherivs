@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 11 Academic Learning Intelligence: the phase report.
+ * Sherivs — Phase 11 Academic Learning Intelligence: the phase report.
  *
  * This is the phase's L4 evidence. Nothing here is described: the module builds a real
  * curriculum, defines real competencies, publishes a real curriculum version, ingests real

@@ -1,5 +1,5 @@
 /**
- * CoreGrid Identity Credential Metadata Engine.
+ * Sherivs Identity Credential Metadata Engine.
  *
  * Implements `architecture/phase-02-identity.md` H9 + J3:
  * - Credential metadata only; raw secrets live outside ordinary tables.

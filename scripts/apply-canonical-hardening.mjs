@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * CoreGrid — TEAM 3 hardening apply: MISSION-R-100 continuation (V1CAP-072).
+ * Sherivs — TEAM 3 hardening apply: MISSION-R-100 continuation (V1CAP-072).
  * Applies the hardening migrations (20261002000005..20261002000015) to
  * the canonical environment and records declared-vs-applied state truth.
  *
@@ -24,9 +24,9 @@
  * Transport: the authorized Supabase Management API query channel. The token
  * is read from SUPABASE_ACCESS_TOKEN ONLY and is never printed. No direct
  * Postgres connection is opened, so no CA cert is needed and the TLS posture
- * (COREGRID_DB_INSECURE_TLS must never be set) is untouched.
+ * (SHERIVS_DB_INSECURE_TLS must never be set) is untouched.
  *
- * Artifacts directory: derived from COREGRID_ARTIFACTS_DIR (defaulting to
+ * Artifacts directory: derived from SHERIVS_ARTIFACTS_DIR (defaulting to
  * /opt/cursor/artifacts) so CI runners can redirect evidence without touching
  * the script. The declared-vs-applied record itself always lands at
  * architecture/proofs/CANONICAL_APPLY_RECORD_HARDENING.json in-repo.
@@ -61,7 +61,7 @@ const MIGRATIONS_DIR = join(ROOT, "database", "supabase", "migrations");
 const ROLLBACKS_DIR = join(ROOT, "database", "supabase", "rollbacks");
 const RECORD_PATH = join(ROOT, "architecture", "proofs", "CANONICAL_APPLY_RECORD_HARDENING.json");
 const DEFAULT_ARTIFACTS_DIR = "/opt/cursor/artifacts";
-const ARTIFACTS_DIR = process.env.COREGRID_ARTIFACTS_DIR ?? DEFAULT_ARTIFACTS_DIR;
+const ARTIFACTS_DIR = (process.env.SHERIVS_ARTIFACTS_DIR ?? process.env.COREGRID_ARTIFACTS_DIR) ?? DEFAULT_ARTIFACTS_DIR;
 
 // ── mode / argument parsing ──────────────────────────────────────────────────
 const argv = process.argv.slice(2);
@@ -596,7 +596,7 @@ function printPlan(plan, reportLine) {
 
 /**
  * Guarded artifact write: the artifacts directory is environment-derived
- * (COREGRID_ARTIFACTS_DIR), so an unwritable location must degrade to a
+ * (SHERIVS_ARTIFACTS_DIR), so an unwritable location must degrade to a
  * warning, never silently lose evidence or crash the run.
  */
 function writeArtifact(name, content, reportLine) {

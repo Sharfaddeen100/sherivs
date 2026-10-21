@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-089 Failure Battery Expansion (Squad H, mission H-089).
+ * Sherivs — H3-089 Failure Battery Expansion (Squad H, mission H-089).
  *
  * Failure-path deepening of the batch-2 quota/lease/approval-chain modules
  * (ALL read-only imports — the modules under test are never modified):

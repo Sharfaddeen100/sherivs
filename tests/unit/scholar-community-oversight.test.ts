@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Cluster N tests part 1 (§86–97).
+ * Sherivs Scholar — Cluster N tests part 1 (§86–97).
  * Offline queues, community sharing, oversight/inspection/accreditation.
  */
 import { describe, expect, it } from "vitest";

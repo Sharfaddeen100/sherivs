@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * CoreGrid — apply the CTO-approved V1 migrations to the approved dev project.
+ * Sherivs — apply the CTO-approved V1 migrations to the approved dev project.
  *
  * Authority: CTO DIRECTIVE Part 30 ("CURRENT MIGRATIONS") explicitly approves
  * these two files for the development vertical slice. This script applies ONLY

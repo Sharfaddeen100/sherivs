@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Data Platform core domain model (Phase 14, Sections F,
+ * Sherivs — Data Platform core domain model (Phase 14, Sections F,
  * G, H, I, AM, AP, AQ).
  *
  * Implements `architecture/phase-14-data-platform.md`:

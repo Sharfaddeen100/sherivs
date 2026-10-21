@@ -1,5 +1,5 @@
 /**
- * CoreGrid — trace context propagation contract (H3 wave F-047, Constitution
+ * Sherivs — trace context propagation contract (H3 wave F-047, Constitution
  * §29 observability / §12 provenance).
  *
  * A trace context is the provenance thread that ties one logical operation

@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — native shell adapters (WAVE-R35).
+ * Sherivs Scholar — native shell adapters (WAVE-R35).
  *
  * The same generated experience runs inside iOS, Android and desktop shells.
  * Each shell declares how it behaves (safe areas, status bar, back gesture,

@@ -71,11 +71,11 @@ Exit codes (interpret ONLY through this contract):
 1. **Usage gate.** Unknown flags or more than one positional → `BLOCKED_USAGE` (exit 2). The
    optional positional is a provider id from the Phase-10 catalogue (e.g. `sendgrid`); an
    undeclared id is refused.
-2. **Credential gate.** `COREGRID_COMMUNICATION_PROVIDER_CREDENTIAL` unset → `BLOCKED_NO_CREDENTIAL`
+2. **Credential gate.** `SHERIVS_COMMUNICATION_PROVIDER_CREDENTIAL` unset → `BLOCKED_NO_CREDENTIAL`
    (exit 2) with "Nothing was probed and no network contact was made." Nothing else runs.
 3. **Offline rehearsal.** The full `--rehearse` validation reruns; any finding aborts with exit 1,
    still with zero network contact.
-4. **Sandbox gate.** `COREGRID_COMMUNICATION_SANDBOX_TARGET` unset → `BLOCKED_NO_SANDBOX_TARGET`
+4. **Sandbox gate.** `SHERIVS_COMMUNICATION_SANDBOX_TARGET` unset → `BLOCKED_NO_SANDBOX_TARGET`
    (exit 2). **The operator-supplied sandbox target is REQUIRED BY DESIGN.** The probe has no
    built-in destination: without a target it cannot and does not contact anything.
 5. **Sandbox validation.** The target must parse as an `https://` URL with no embedded
@@ -109,13 +109,13 @@ Exit codes (interpret ONLY through this contract):
 2. **Authorize the sandbox.** The sandbox account and verification target must be registered with
    the platform owner (approval recorded before the probe window). The target must be an `https://`
    verification/handshake endpoint of the sandbox provider — never a production sending endpoint.
-3. **Set the gates.** Export `COREGRID_COMMUNICATION_PROVIDER_CREDENTIAL` (the sandbox provider
-   credential) and `COREGRID_COMMUNICATION_SANDBOX_TARGET` (the https verification URL). Secret
+3. **Set the gates.** Export `SHERIVS_COMMUNICATION_PROVIDER_CREDENTIAL` (the sandbox provider
+   credential) and `SHERIVS_COMMUNICATION_SANDBOX_TARGET` (the https verification URL). Secret
    values stay in the operator's session env; they are never echoed into runbooks, tickets, or
    artifacts.
 4. **Run once.** `node scripts/verify-communication-live.drill.mjs <provider-id>` — one invocation,
    one handshake. Never loop retries; a failed handshake is a FINDING needing human triage.
-5. **Record evidence.** `communication-probe-live.json` / `.log` land in `COREGRID_ARTIFACTS_DIR`
+5. **Record evidence.** `communication-probe-live.json` / `.log` land in `SHERIVS_ARTIFACTS_DIR`
    (default `/opt/cursor/artifacts`): mode, provider id, `credentialPresent: true` (boolean — the
    VALUE is never recorded), `sandboxTargetHost` (host only), `networkContact: true`,
    `sendCapable: false`, handshake status, findings. A second engineer reviews before the evidence

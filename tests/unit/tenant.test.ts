@@ -1,5 +1,5 @@
 /**
- * CoreGrid Phase 03 — Multi-Tenancy Platform unit tests.
+ * Sherivs Phase 03 — Multi-Tenancy Platform unit tests.
  *
  * Covers:
  * - Tenant core domain model (H1, H2, F2, F5, F8)
@@ -16,7 +16,7 @@ import {
   hasTenantBoundary,
   classificationRank,
   hierarchyGrantsAccess,
-  type CoreGridTenant,
+  type SherivsTenant,
   type TenantContext,
   type TenantResource,
   type TenantTopologyEdge,
@@ -73,7 +73,7 @@ import {
 
 const NOW = "2026-08-21T12:00:00.000Z";
 
-function makeTenant(overrides: Partial<CoreGridTenant> = {}): CoreGridTenant {
+function makeTenant(overrides: Partial<SherivsTenant> = {}): SherivsTenant {
   return {
     id: tenantId("tenant-1"),
     type: "school",

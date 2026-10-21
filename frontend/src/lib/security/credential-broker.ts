@@ -1,5 +1,5 @@
 /**
- * CoreGrid — per-agent credential broker & emergency lockdown
+ * Sherivs — per-agent credential broker & emergency lockdown
  * (J-007 / J-010, V1CAP-017 / V1CAP-019, MISSION-R-82, wave 2).
  *
  * G-033 / G-034 blast-radius containment for a platform with autonomous

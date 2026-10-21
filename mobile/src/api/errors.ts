@@ -1,5 +1,5 @@
 /**
- * CoreGrid Mobile — normalized error taxonomy (Phase 22 AE: error
+ * Sherivs Mobile — normalized error taxonomy (Phase 22 AE: error
  * management). Every transport/vendor failure is mapped onto one closed
  * kind set so screens render honest, non-sensitive error states without
  * leaking backend details (§29).

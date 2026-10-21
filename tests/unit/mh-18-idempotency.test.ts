@@ -1,5 +1,5 @@
 /**
- * CoreGrid — reliability idempotency contract tests (J-030 / MISSION H2-18).
+ * Sherivs — reliability idempotency contract tests (J-030 / MISSION H2-18).
  * Caller-supplied idempotency keys on consequential commands: key binding,
  * recorded-outcome replay, tenant-scoped denial (cross-tenant replay is a
  * DENIAL, not a hit), and §12 audit provenance on every decision. §31.

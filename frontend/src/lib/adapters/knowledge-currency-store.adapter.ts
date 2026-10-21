@@ -1,5 +1,5 @@
 /**
- * CoreGrid — DB-backed substrate adapter for the knowledge-currency contract
+ * Sherivs — DB-backed substrate adapter for the knowledge-currency contract
  * (J-019 / V1CAP-040 / MISSION-R-71, wave 3), persisting
  * memory/knowledge-currency.ts sources, freshness contracts, invalidation
  * acts and reliability downgrades into the tables authored by

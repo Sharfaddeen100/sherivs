@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — attendance events (Phase-04 §39).
+ * Sherivs Scholar — attendance events (Phase-04 §39).
  *
  * Attendance events — present, absent, late, excused, early departure, remote
  * and field activity (§39) — are projected onto the universal kernel event

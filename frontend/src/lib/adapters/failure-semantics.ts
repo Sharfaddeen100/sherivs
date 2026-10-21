@@ -1,5 +1,5 @@
 /**
- * CoreGrid — external-adapter failure-semantics contract (H3 wave, mission
+ * Sherivs — external-adapter failure-semantics contract (H3 wave, mission
  * B-023 / J-045), layered on the existing {@link AdapterFailurePolicy}
  * (`./failure-policy`, read-only import — composition, never modification).
  *

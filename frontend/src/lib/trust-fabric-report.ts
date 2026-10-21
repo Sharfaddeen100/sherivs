@@ -1,12 +1,12 @@
 /**
- * CoreGrid — Security & Trust Fabric self-report (Phase 09).
+ * Sherivs — Security & Trust Fabric self-report (Phase 09).
  *
  * A control-plane view of the trust fabric that EXERCISES the shipped state
  * machines instead of describing them. Every invariant below is checked by
  * calling the real functions; a check that stops holding makes this page say so.
  *
  * Ownership (BS): Phase 08 answers "may this action happen?" — Phase 09 answers
- * "how much should CoreGrid trust the entities, evidence and relationships
+ * "how much should Sherivs trust the entities, evidence and relationships
  * involved?". This module therefore produces TRUST, never permission: it can
  * recommend restrictions, and it never grants one.
  *

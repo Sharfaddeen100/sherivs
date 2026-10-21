@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Bi-temporal discipline (V1CAP-004, MISSION-R-13 / J-003).
+ * Sherivs — Bi-temporal discipline (V1CAP-004, MISSION-R-13 / J-003).
  *
  * Proves, at unit level, that:
  *  1. valid_time (when the fact was true in reality) is distinguished from

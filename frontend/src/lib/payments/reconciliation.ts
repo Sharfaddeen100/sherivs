@@ -1,5 +1,5 @@
 /**
- * CoreGrid — payment reconciliation arithmetic (MISSION-R-73, J-044).
+ * Sherivs — payment reconciliation arithmetic (MISSION-R-73, J-044).
  *
  * Reconciles recorded contract-level payment intents against accepted
  * webhook-derived receipts (V5.3 Part 21 + Part 36 posture): the webhook is

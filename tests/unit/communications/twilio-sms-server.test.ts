@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Twilio SMS adapter tests (V1-009 communication fabric).
+ * Sherivs — Twilio SMS adapter tests (V1-009 communication fabric).
  *
  * Proves:
  * 1. Fail-closed credential law: absent/partial credentials resolve to the

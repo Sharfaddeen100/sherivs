@@ -1,5 +1,5 @@
 /**
- * CoreGrid — AI gateway adoption test: expense-insights.functions.ts.
+ * Sherivs — AI gateway adoption test: expense-insights.functions.ts.
  *
  * Proves expense insights route their model invocation through
  * `invokeAiGateway` (§20 centralization), carry full attribution

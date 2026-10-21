@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Academic Learning Intelligence core domain model
+ * Sherivs — Academic Learning Intelligence core domain model
  * (Phase 11).
  *
  * Implements `architecture/phase-11-academic-intelligence.md`:

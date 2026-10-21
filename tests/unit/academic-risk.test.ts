@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Phase 11 Academic Learning Intelligence unit tests
+ * Sherivs Scholar — Phase 11 Academic Learning Intelligence unit tests
  * (academic-risk).
  *
  * Validates:

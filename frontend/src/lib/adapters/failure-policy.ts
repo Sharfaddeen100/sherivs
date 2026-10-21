@@ -4,7 +4,7 @@ import { SystemClock, TimeAuthority } from "../kernel/time-authority";
 const timeAuthority = new TimeAuthority(new SystemClock());
 
 /**
- * CoreGrid — external adapter failure-semantics contract (J-045, V1CAP-080,
+ * Sherivs — external adapter failure-semantics contract (J-045, V1CAP-080,
  * MISSION-R-72; E-060: external systems are never automatically trusted).
  *
  * The one pattern every external adapter inherits. Composition, not rewrite:

@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — configurable programme/educational hierarchy (Phase-04 §6).
+ * Sherivs Scholar — configurable programme/educational hierarchy (Phase-04 §6).
  *
  * "The hierarchy must be configurable." An institution composes its own tree —
  * levels, streams, programmes, houses, groups — as generic nodes with parent

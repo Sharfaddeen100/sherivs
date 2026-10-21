@@ -1,5 +1,5 @@
 /**
- * CoreGrid — capability-code gate (Phase 08/06 enforcement primitive).
+ * Sherivs — capability-code gate (Phase 08/06 enforcement primitive).
  *
  * A capability code is the atomic authorization unit of workspace chrome and
  * future per-feature server gates ("r001:org_admin.settings"). This module

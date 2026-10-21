@@ -1,5 +1,5 @@
 /**
- * CoreGrid — exhaustive decision-matrix suite for the combined authorization
+ * Sherivs — exhaustive decision-matrix suite for the combined authorization
  * engine (MISSION-R-80 / V1CAP-016).
  *
  * Covers `frontend/src/lib/authorization.ts`: the combined
@@ -35,7 +35,7 @@ import {
   redact,
   type AbacContext,
   type AuthorizeOptions,
-  type CoreGridRole,
+  type SherivsRole,
   type PolicyRule,
   type PolicySet,
 } from "@/lib/authorization";
@@ -776,7 +776,7 @@ describe("Deny-by-default: unknown and malformed inputs fail closed", () => {
   it("DENYs an unknown role string (fail-closed lookup)", () => {
     const result = authorize(
       req("settings", "manage", OBJECT_A),
-      opts({ role: unsafe<CoreGridRole>("root_superadmin") }),
+      opts({ role: unsafe<SherivsRole>("root_superadmin") }),
     );
     expect(result.decision).toBe("DENY");
     expect(result.reason).toBe("No matching grant or policy");
@@ -785,7 +785,7 @@ describe("Deny-by-default: unknown and malformed inputs fail closed", () => {
   it("DENYs an empty-string role", () => {
     const result = authorize(
       req("settings", "read", OBJECT_A),
-      opts({ role: unsafe<CoreGridRole>("") }),
+      opts({ role: unsafe<SherivsRole>("") }),
     );
     expect(result.decision).toBe("DENY");
   });
@@ -996,9 +996,9 @@ describe("Property tests: no ALLOW outside explicitly-allowed classes (seeded fu
     // Registered domain roles are fuzzed too: they must behave exactly like
     // core roles under the deny-by-default oracle.
     ...registeredDomainRoles(),
-    unsafe<CoreGridRole>("root"),
-    unsafe<CoreGridRole>(""),
-    unsafe<CoreGridRole>("teacher "),
+    unsafe<SherivsRole>("root"),
+    unsafe<SherivsRole>(""),
+    unsafe<SherivsRole>("teacher "),
   ];
   const RESOURCES: readonly (PermissionResource | string)[] = [
     "school",

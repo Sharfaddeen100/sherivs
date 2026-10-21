@@ -1,5 +1,5 @@
 /**
- * Shared row/insert/update aliases for the CoreGrid Scholar tables.
+ * Shared row/insert/update aliases for the Sherivs Scholar tables.
  * Derived from the generated Supabase types so they never drift from the schema.
  */
 import type { Database } from "@/integrations/supabase/types";

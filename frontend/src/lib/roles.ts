@@ -1,5 +1,5 @@
 /**
- * CoreGrid — legacy identity-store membership kinds (P02/P08 domain boundary).
+ * Sherivs — legacy identity-store membership kinds (P02/P08 domain boundary).
  *
  * This file is NOT UI. It only declares the identity-store `AppRole` union
  * that auth/session consumers still read. Dashboard redirects and display

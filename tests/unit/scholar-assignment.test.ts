@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — assignment engine tests (Phase-04 §37, F2).
+ * Sherivs Scholar — assignment engine tests (Phase-04 §37, F2).
  */
 import { describe, expect, it } from "vitest";
 import {

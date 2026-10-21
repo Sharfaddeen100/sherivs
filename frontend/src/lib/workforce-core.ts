@@ -1,5 +1,5 @@
 /**
- * CoreGrid Institutional Onboarding, Administration & Workforce Identity Platform —
+ * Sherivs Institutional Onboarding, Administration & Workforce Identity Platform —
  * Workforce role, context and lifecycle domain.
  *
  * Implements `architecture/phase-25-institutional-onboarding-administration-workforce-identity-platform.md`:
@@ -30,7 +30,7 @@
 
 /**
  * ECOSYSTEM REFRAME (platform amendment, §0): the domain-flavored vocabulary
- * below (institution, staff, teacher) is legacy R-001 consumption of CoreGrid
+ * below (institution, staff, teacher) is legacy R-001 consumption of Sherivs
  * Phase 25. The authoritative DOMAIN-FREE contracts live in
  * `frontend/src/lib/onboarding/workforce-lifecycle.ts` (organization
  * membership lifecycle, role change, transfer, SoD, offboarding); any org

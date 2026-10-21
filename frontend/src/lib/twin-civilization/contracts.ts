@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 46 Universal Digital Twin Civilization Layer substrate
+ * Sherivs — Phase 46 Universal Digital Twin Civilization Layer substrate
  * contracts (H3 wave Squad G, mission G-066; Constitution §7, §9, §10, §11,
  * §12, §16, §21; architecture/phase-46-universal-digital-twin-civilization-layer.md).
  *

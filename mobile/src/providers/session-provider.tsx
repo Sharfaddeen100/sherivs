@@ -1,5 +1,5 @@
 /**
- * CoreGrid Mobile — session + tenant context (Phase 22 §L: session and
+ * Sherivs Mobile — session + tenant context (Phase 22 §L: session and
  * tenant state are distinct domains and are never mixed with server-state
  * caches). Mirrors the web app's bootstrap: restore session, subscribe to
  * auth changes, resolve the actor (and the RLS-resolved organization) from
@@ -7,8 +7,8 @@
  */
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import type { Session } from "@supabase/supabase-js";
-import type { CoreGridSupabaseClient } from "@/api/client";
-import { getAccessToken, getSession, resolveActor, signOut as signOutRequest, type CoreGridSession } from "@/api/auth.client";
+import type { SherivsSupabaseClient } from "@/api/client";
+import { getAccessToken, getSession, resolveActor, signOut as signOutRequest, type SherivsSession } from "@/api/auth.client";
 import type { MobileEnv } from "@/api/contracts/env";
 import type { Organization, ResolvedActor } from "@/api/contracts/profile-contracts";
 import { mobileEnv, supabase } from "@/lib/app-runtime";
@@ -17,11 +17,11 @@ export type SessionStatus = "loading" | "signedOut" | "signedIn";
 
 export interface SessionContextValue {
   readonly status: SessionStatus;
-  readonly session: CoreGridSession | null;
+  readonly session: SherivsSession | null;
   readonly actor: ResolvedActor | null;
   readonly activeOrganization: Organization | null;
   readonly env: MobileEnv;
-  readonly client: CoreGridSupabaseClient;
+  readonly client: SherivsSupabaseClient;
   setActiveOrganization(organization: Organization | null): void;
   refresh(): Promise<void>;
   signOut(): Promise<void>;
@@ -111,6 +111,6 @@ export function useSession(): SessionContextValue {
   return value;
 }
 
-export async function currentAccessToken(client: CoreGridSupabaseClient): Promise<string | null> {
+export async function currentAccessToken(client: SherivsSupabaseClient): Promise<string | null> {
   return getAccessToken(client);
 }

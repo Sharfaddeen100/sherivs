@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Phase 09 Security & Trust Fabric unit tests
+ * Sherivs Scholar — Phase 09 Security & Trust Fabric unit tests
  * (trust-core).
  *
  * Validates:

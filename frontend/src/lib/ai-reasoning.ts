@@ -1,5 +1,5 @@
 /**
- * CoreGrid AI Intelligence Layer — AI reasoning domain.
+ * Sherivs AI Intelligence Layer — AI reasoning domain.
  *
  * Implements `architecture/phase-26-ai-intelligence-layer.md`:
  * - Reasoning engine (Section 39): decomposition, comparison, causal reasoning,

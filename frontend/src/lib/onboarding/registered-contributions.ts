@@ -1,5 +1,5 @@
 /**
- * CoreGrid — V1-008: the onboarding composition root.
+ * Sherivs — V1-008: the onboarding composition root.
  *
  * Imports every domain provisioning contribution the platform composition
  * knows. Each adapter self-registers (fail-closed) at module load; adding a

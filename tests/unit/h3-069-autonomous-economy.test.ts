@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-069 autonomous-economy contract tests (mission G-069).
+ * Sherivs — H3-069 autonomous-economy contract tests (mission G-069).
  * Zod validation of the phase-49 substrate surface: governed rules,
  * proposal-only economic intelligence (AGENTS §21), §36 payment-security
  * settlement instructions (idempotency, replay protection, signatures,

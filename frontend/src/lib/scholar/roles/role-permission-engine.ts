@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Educational Reality Role Engine: permission engine.
+ * Sherivs Scholar — Educational Reality Role Engine: permission engine.
  *
  * `Role → Policy → Permission → Resource → Action` resolution. Fail-closed:
  * anything unknown, unassigned or contradicted resolves to DENY.

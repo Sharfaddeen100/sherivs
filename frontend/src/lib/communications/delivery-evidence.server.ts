@@ -1,5 +1,5 @@
 /**
- * CoreGrid — delivery-evidence recording (R6 follow-up to V1-009, team COMMS).
+ * Sherivs — delivery-evidence recording (R6 follow-up to V1-009, team COMMS).
  *
  * Durable proof that an outbound communication ATTEMPT happened — including
  * the attempt that was BLOCKED for missing credentials. That a send was

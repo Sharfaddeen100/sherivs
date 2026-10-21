@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3 C-025 / L-T-007 tests: runtime egress allowlist enforcement
+ * Sherivs — H3 C-025 / L-T-007 tests: runtime egress allowlist enforcement
  * at the AI-gateway boundary (`frontend/src/lib/ai-gateway/egress-allowlist.ts`).
  *
  * The suite proves the enforcement half of the runtime gap:

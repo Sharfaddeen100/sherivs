@@ -1,5 +1,5 @@
 /**
- * CoreGrid Mobile — Supabase client factories (mirror the web app's
+ * Sherivs Mobile — Supabase client factories (mirror the web app's
  * `frontend/src/integrations/supabase/client.ts` conventions, §23).
  *
  * Mirrored conventions:
@@ -10,7 +10,7 @@
  * - persisted session with automatic token refresh.
  *
  * Two clients, one set of conventions:
- * - `createCoreGridSupabaseClient` — typed against the generated web-app
+ * - `createSherivsSupabaseClient` — typed against the generated web-app
  *   `Database` contract for public web-schema tables.
  * - `createKernelSupabaseClient` — untyped access to the governed `cg_*`
  *   kernel substrate tables, which are intentionally absent from the
@@ -23,10 +23,10 @@
  * ordinary application storage (Phase 22 §O).
  */
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
-import type { CoreGridDatabase } from "@coregrid/contracts";
+import type { SherivsDatabase } from "@sherivs/contracts";
 import type { MobileEnv } from "./contracts/env";
 
-export type CoreGridSupabaseClient = SupabaseClient<CoreGridDatabase>;
+export type SherivsSupabaseClient = SupabaseClient<SherivsDatabase>;
 export type KernelSupabaseClient = SupabaseClient;
 
 export interface SessionStorageAdapter {
@@ -55,12 +55,12 @@ function createSupabaseFetch(supabaseKey: string): typeof fetch {
   };
 }
 
-export function createCoreGridSupabaseClient(
+export function createSherivsSupabaseClient(
   env: MobileEnv,
   storage: SessionStorageAdapter,
-): CoreGridSupabaseClient {
+): SherivsSupabaseClient {
   const key = env.supabasePublishableKey;
-  return createClient<CoreGridDatabase>(env.supabaseUrl, key, {
+  return createClient<SherivsDatabase>(env.supabaseUrl, key, {
     global: {
       fetch: createSupabaseFetch(key),
     },

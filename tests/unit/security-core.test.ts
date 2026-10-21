@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Phase 08 Security Engine unit tests (security-core).
+ * Sherivs Scholar — Phase 08 Security Engine unit tests (security-core).
  *
  * Validates:
  * - Security Decision Contract construction and expiration (Section F.1).

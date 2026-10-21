@@ -1,5 +1,5 @@
 /**
- * CoreGrid — dataset reconciliation (Phase 14, domain-neutral).
+ * Sherivs — dataset reconciliation (Phase 14, domain-neutral).
  *
  * Two sources that should agree rarely do. Reconciliation finds out where they disagree
  * and keeps every disagreement visible until someone who may decide decides. This engine is

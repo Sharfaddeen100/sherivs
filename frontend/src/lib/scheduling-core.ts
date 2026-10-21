@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Scheduling & Timetable Intelligence core domain model
+ * Sherivs — Scheduling & Timetable Intelligence core domain model
  * (Phase 12).
  *
  * Implements `architecture/phase-12-scheduling-intelligence.md`:

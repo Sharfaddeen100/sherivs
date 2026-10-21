@@ -1,5 +1,5 @@
 /**
- * CoreGrid — failure & incident architecture for the governed loop
+ * Sherivs — failure & incident architecture for the governed loop
  * (V1CAP-075 / MISSION-R-102 T1; hardening L-H-027; E-102: failures are
  * first-class events with evidence).
  *

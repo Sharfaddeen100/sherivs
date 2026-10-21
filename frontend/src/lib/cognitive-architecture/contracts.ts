@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 34 Universal Cognitive Intelligence Engine substrate
+ * Sherivs — Phase 34 Universal Cognitive Intelligence Engine substrate
  * contracts (H3 wave Squad G, mission G-054; Constitution §7, §9, §12, §16,
  * §21; architecture/phase-34-universal-cognitive-intelligence-engine.md).
  *

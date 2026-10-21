@@ -1,5 +1,5 @@
 /**
- * CoreGrid — failure & incident architecture contract tests (V1CAP-075,
+ * Sherivs — failure & incident architecture contract tests (V1CAP-075,
  * MISSION-R-102 T1). Taxonomy completeness, containment correctness (no
  * fail-open, no silent containment, no auto-retry of critical modes),
  * append-only incident log, and escalation triggering.

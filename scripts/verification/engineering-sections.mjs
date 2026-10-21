@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * CoreGrid Engineering-Section Completeness Scanner
+ * Sherivs Engineering-Section Completeness Scanner
  *
  * Parses every architecture/phase-*.md document across its heading dialect and
  * reports engineering-section coverage against the canonical dictionary used by

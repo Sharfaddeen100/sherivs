@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Notification contract (V5.3 Part 20, in-app/email/SMS/voice work package).
+ * Sherivs — Notification contract (V5.3 Part 20, in-app/email/SMS/voice work package).
  *
  * Pure module: no I/O, no provider imports, no secrets. It defines the shape of a
  * notification, its fail-closed state machine, the channel/category policy, and the

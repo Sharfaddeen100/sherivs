@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — fee lifecycle adapter (Phase 13 consumption, R-21).
+ * Sherivs Scholar — fee lifecycle adapter (Phase 13 consumption, R-21).
  *
  * Scholar CONSUMES the domain-neutral Phase-13 financial core. This module
  * computes a school fee account's balance and obligation status using only the

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * CoreGrid — apply ONE database migration via node-postgres.
+ * Sherivs — apply ONE database migration via node-postgres.
  *
  * The full bootstrap path is `scripts/db-apply.mjs` (every migration in order).
  * This runner exists for the change-management case: applying a single authored

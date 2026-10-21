@@ -1,4 +1,4 @@
-// ─── CoreGrid Phase 23 — Web Platform ───────────────────────────────
+// ─── Sherivs Phase 23 — Web Platform ───────────────────────────────
 // web-platform.ts — Accessibility, keyboard, error boundaries, observability
 // ──────────────────────────────────────────────────────────────────────
 // Sections: AN, AO, AP, AQ, BE, BF, BG, BH, BI, BD, BC, BW, BX, BY

@@ -1,5 +1,5 @@
 /**
- * CoreGrid — tenant-scoped event routing & subscriptions suite (V1CAP-043 /
+ * Sherivs — tenant-scoped event routing & subscriptions suite (V1CAP-043 /
  * J-021 / MISSION-R-63).
  *
  * Proves, at unit level, that:

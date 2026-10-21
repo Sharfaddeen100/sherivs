@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 02 identity actor context unit tests.
+ * Sherivs — Phase 02 identity actor context unit tests.
  *
  * Validates role parsing, platform vs school scope rules, and fail-closed
  * resolution of the runtime actor context (no silent nulls, no invented

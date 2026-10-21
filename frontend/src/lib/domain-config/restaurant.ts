@@ -1,5 +1,5 @@
 /**
- * CoreGrid — V5.3 Part 45: restaurant organizational configuration.
+ * Sherivs — V5.3 Part 45: restaurant organizational configuration.
  *
  * The proof of V5.3 Part 64: a SECOND domain binding the SAME universal
  * substrate the Scholar runtime binds, expressed ENTIRELY as a

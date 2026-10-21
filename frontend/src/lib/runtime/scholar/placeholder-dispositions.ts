@@ -1,5 +1,5 @@
 /**
- * CoreGrid — placeholder-page disposition registry (V1CAP-40, mission V1-011).
+ * Sherivs — placeholder-page disposition registry (V1CAP-40, mission V1-011).
  *
  * Typed audit record of the §57 no-product-theatre disposition pass over the
  * portal's zero-state pages. Every page that previously rendered fabricated

@@ -1,5 +1,5 @@
 /**
- * CoreGrid Identity Relationship Engine.
+ * Sherivs Identity Relationship Engine.
  *
  * Implements `architecture/phase-02-identity.md` F7 + G10:
  * - Relationships are first-class objects.
@@ -127,7 +127,7 @@ export function relationshipsForTarget(
 /**
  * Verify that a relationship does not cross tenant boundaries.
  * Relationships must stay within the same tenant unless explicitly
- * authorized by CoreGrid policy (per AGENTS.md §29).
+ * authorized by Sherivs policy (per AGENTS.md §29).
  */
 export function isTenantSafe(
   relationship: IdentityRelationship,

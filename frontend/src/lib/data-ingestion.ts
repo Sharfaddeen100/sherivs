@@ -1,5 +1,5 @@
 /**
- * CoreGrid — data ingestion boundary (Phase 14, domain-neutral).
+ * Sherivs — data ingestion boundary (Phase 14, domain-neutral).
  *
  * Everything that enters the platform from outside arrives through a declared boundary.
  * The boundary is where an untrusted record becomes a governed one, so this engine makes

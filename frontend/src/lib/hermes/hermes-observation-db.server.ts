@@ -1,5 +1,5 @@
 /**
- * CoreGrid — DB-backed Hermes observation port (HermesObservationPortDb)
+ * Sherivs — DB-backed Hermes observation port (HermesObservationPortDb)
  * (V1 remediation wave, team R4 / HERMES-PORT; follow-up of V1-002).
  *
  * Persists the Hermes observation surface into the substrate authored (NOT

@@ -1,5 +1,5 @@
 /**
- * CoreGrid — onboarding reality discovery tests (MISSION-R-43 / V1CAP-090/091).
+ * Sherivs — onboarding reality discovery tests (MISSION-R-43 / V1CAP-090/091).
  * Phase discipline, the human-bootstrap identity rule, the declaration ->
  * evidence -> verification flow, finalization gating and append-only law,
  * partial-state explicitness, cross-tenant isolation, and kernel

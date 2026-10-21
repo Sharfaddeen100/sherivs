@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-097 knowledge-graph provenance proof (mission J-097, Squad J).
+ * Sherivs — H3-097 knowledge-graph provenance proof (mission J-097, Squad J).
  *
  * AGENTS §11 (Knowledge Graph Principle): every knowledge-graph relationship
  * must preserve PROVENANCE, OWNERSHIP, AUTHORIZATION and CONFIDENCE.

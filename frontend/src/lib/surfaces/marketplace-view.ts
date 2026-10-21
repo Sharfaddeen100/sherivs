@@ -1,5 +1,5 @@
 /**
- * CoreGrid — marketplace surface view-model (WAVE-R41).
+ * Sherivs — marketplace surface view-model (WAVE-R41).
  *
  * Discovery and installation, derived — never hand-written. The catalog is
  * PUBLISHED from the organization's reality (one listing per installed feature

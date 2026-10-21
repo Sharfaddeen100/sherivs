@@ -1,5 +1,5 @@
 /**
- * CoreGrid — MISSION-R-103 LIVE storage verification (credential-gated).
+ * Sherivs — MISSION-R-103 LIVE storage verification (credential-gated).
  *
  * Executes the tenant-scoped adapter against the canonical project's real
  * Supabase Storage through the service-role client factory: ensure bucket →

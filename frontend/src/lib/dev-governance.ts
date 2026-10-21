@@ -1,5 +1,5 @@
 /**
- * CoreGrid Developer Platform — developer governance domain.
+ * Sherivs Developer Platform — developer governance domain.
  *
  * Implements `architecture/phase-28-developer-platform.md`:
  * - Developer quotas (CA): API calls, storage, compute, sandbox usage, AI

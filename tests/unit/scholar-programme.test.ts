@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — programme hierarchy tests (Phase-04 §6).
+ * Sherivs Scholar — programme hierarchy tests (Phase-04 §6).
  * Proves the hierarchy is purely configurable (religious/vocational/custom
  * trees all pass the same validator; cycles and dangling parents fail).
  */

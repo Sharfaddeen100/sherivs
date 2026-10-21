@@ -1,9 +1,9 @@
 /**
- * CoreGrid — Resend-backed email adapter (V1-009, team COMMS).
+ * Sherivs — Resend-backed email adapter (V1-009, team COMMS).
  *
  * The concrete Resend implementation of the provider-agnostic
  * `EmailAdapter` contract (`notifications/email-adapter-contract.ts`).
- * CoreGrid owns communication INTENT (recipient, authorization, channel,
+ * Sherivs owns communication INTENT (recipient, authorization, channel,
  * message, delivery state, retries, evidence, audit); Resend is an ADAPTER
  * only (Constitution §24) reached through one bounded fetch here.
  *

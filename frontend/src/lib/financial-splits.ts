@@ -1,5 +1,5 @@
 /**
- * CoreGrid — split payments (Phase 13, domain-neutral).
+ * Sherivs — split payments (Phase 13, domain-neutral).
  *
  * One gross payment, many beneficiaries. A school collecting a fee, a marketplace
  * paying a seller, a platform taking its own share, a partner receiving a referral

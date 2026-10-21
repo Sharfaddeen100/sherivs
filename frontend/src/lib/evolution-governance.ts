@@ -1,5 +1,5 @@
 /**
- * CoreGrid Evolution Governance — evolution review, reversibility, autonomy
+ * Sherivs Evolution Governance — evolution review, reversibility, autonomy
  * evolution, agent evolution and governance, capability scorecards,
  * graduation validation, ethics, evolution security, supply-chain security,
  * and evolution incident/recovery contracts.

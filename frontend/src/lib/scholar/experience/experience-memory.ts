@@ -4,7 +4,7 @@ import { SystemClock, TimeAuthority } from "../../kernel/time-authority";
 const timeAuthority = new TimeAuthority(new SystemClock());
 
 /**
- * CoreGrid Scholar — experience memory (WAVE-R38, directive §23).
+ * Sherivs Scholar — experience memory (WAVE-R38, directive §23).
  *
  * The experience engine may remember user and organization preferences — but
  * only under privacy law: a declared purpose, explicit consent, a tenant and

@@ -1,5 +1,5 @@
 /**
- * CoreGrid — client platform runtime hook (Phase 22/23 live wiring).
+ * Sherivs — client platform runtime hook (Phase 22/23 live wiring).
  *
  * SSR-safe snapshot of the actual runtime: connectivity, viewport breakpoint,
  * color scheme, reduced-motion and device platform. SSR renders safe defaults;

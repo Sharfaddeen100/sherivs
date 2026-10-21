@@ -1,5 +1,5 @@
 /**
- * CoreGrid — DB-backed substrate adapter for the reconciliation contract
+ * Sherivs — DB-backed substrate adapter for the reconciliation contract
  * (V1CAP-005 / J-004 / MISSION-R-14), persisting kernel/reconciliation.ts
  * verdicts into the tables authored by
  * database/supabase/migrations/20261002000005_coregrid_v1_reconciliation.sql.

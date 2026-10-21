@@ -1,5 +1,5 @@
 /**
- * CoreGrid — R7 WORKFORCE-SURFACE: worker mission launch surface.
+ * Sherivs — R7 WORKFORCE-SURFACE: worker mission launch surface.
  *
  * Behavioral + invariant proof for `frontend/src/lib/workforce/worker-launch.functions.ts`:
  *

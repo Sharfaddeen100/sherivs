@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — student documents + document relationships
+ * Sherivs Scholar — student documents + document relationships
  * (Phase-04 §98–99).
  *
  * Documents may include report cards, certificates, transcripts, letters,

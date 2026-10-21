@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3 wave, team H3-095 (Provenance Auditor), mission J-095
+ * Sherivs — H3 wave, team H3-095 (Provenance Auditor), mission J-095
  * (Squad J — Governance & documentation).
  *
  * Offline tests for scripts/verify-provenance-metadata.mjs: the AGENTS.md §12

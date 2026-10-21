@@ -1,11 +1,11 @@
 /**
- * CoreGrid Developer Platform — build, package, and release domain.
+ * Sherivs Developer Platform — build, package, and release domain.
  *
  * Implements `architecture/phase-28-developer-platform.md`:
  * - Project scaffolding (28): templates for applications, integrations, agents,
  *   AI capabilities, automation, connectors, dashboards, educational extensions,
  *   hardware adapters.
- * - Package builder (48): convert projects into standardized CoreGrid packages.
+ * - Package builder (48): convert projects into standardized Sherivs packages.
  * - Package validation (BB): manifest, dependencies, permissions, schemas, APIs,
  *   security, compatibility. Package signing (BC): production packages signed.
  * - Supply-chain security (BD): provenance, SBOM, dependency lockfiles, signatures,
@@ -17,7 +17,7 @@
  * - Git integration (BK), branching (BL), code review (BM), PR validation (BN).
  * - Testing platform (BO): unit/integration/contract/E2E/security/performance/
  *   compatibility/tenant isolation tests. Contract testing (BP) against
- *   authoritative CoreGrid contracts. Backward compatibility (BQ), migration
+ *   authoritative Sherivs contracts. Backward compatibility (BQ), migration
  *   assistance (BR).
  * - Version management (BS): semantic versioning, API/schema/package/dependency
  *   versions. Release channels (BT): experimental, alpha, beta, stable, LTS.

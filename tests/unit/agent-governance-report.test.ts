@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 07 AI Agent System: governance report tests.
+ * Sherivs — Phase 07 AI Agent System: governance report tests.
  *
  * The agent system claims rules; these tests prove the report can only claim what
  * the code enforces, and that its checks can fail.

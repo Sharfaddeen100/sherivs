@@ -124,7 +124,7 @@ describe("dev-core — Organizations & Projects (7, 8, 9, 10-18, 19)", () => {
       version: "1.0.0",
       projectType: "agent",
       environments: ["production"],
-      compatibleCoreGridVersion: "2.0.0",
+      compatibleSherivsVersion: "2.0.0",
     });
     expect(r.ok).toBe(true);
   });

@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3 C-030 (L-T-016) Context-Bleed Adversary battery.
+ * Sherivs — H3 C-030 (L-T-016) Context-Bleed Adversary battery.
  *
  * Adversarial switch-safety battery against the runtime guard
  * (`frontend/src/lib/context/switch-safety-runtime.ts`, owned by H3 B-013,

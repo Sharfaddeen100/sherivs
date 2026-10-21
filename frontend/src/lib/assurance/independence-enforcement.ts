@@ -1,5 +1,5 @@
 /**
- * CoreGrid — verification-independence enforcement (J-035, mission B-021;
+ * Sherivs — verification-independence enforcement (J-035, mission B-021;
  * Constitution §7, §12, §15, §16, §18, §21).
  *
  * J-035: "a worker (AI or human) cannot verify its own output in the loop."

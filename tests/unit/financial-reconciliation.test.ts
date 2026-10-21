@@ -1,5 +1,5 @@
 /**
- * CoreGrid — financial reconciliation dry run (MISSION-R-73, J-044).
+ * Sherivs — financial reconciliation dry run (MISSION-R-73, J-044).
  *
  * Credential-free verification of the FULL payment-acceptance path at
  * contract level, composed end to end:

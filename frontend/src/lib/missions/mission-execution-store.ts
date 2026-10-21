@@ -1,5 +1,5 @@
 /**
- * CoreGrid — general mission execution path, in-memory store (MISSION V1-004).
+ * Sherivs — general mission execution path, in-memory store (MISSION V1-004).
  *
  * The REFERENCE implementation of the execution path
  * (intent → assignment → lease → execute → evidence → verify) behind the

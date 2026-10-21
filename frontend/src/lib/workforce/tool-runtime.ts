@@ -1,5 +1,5 @@
 /**
- * CoreGrid — governed tool runtime & sandbox (J-008 / V1CAP-056, MISSION-R-62,
+ * Sherivs — governed tool runtime & sandbox (J-008 / V1CAP-056, MISSION-R-62,
  * wave 3). THE ONLY way workers execute tools.
  *
  * Law of this module (fail closed on every axis):

@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — educational workflow triggers (Phase-04 §114–115,
+ * Sherivs Scholar — educational workflow triggers (Phase-04 §114–115,
  * BOUNDARY: L3).
  *
  * Phase 17 owns automation EXECUTION; Phase 04 owns educational meaning and

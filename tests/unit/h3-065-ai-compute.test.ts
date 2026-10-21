@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-065 AI Compute clearance-contract tests (mission G-065,
+ * Sherivs — H3-065 AI Compute clearance-contract tests (mission G-065,
  * phase 45). Proves the fail-closed semantics of the phase-45 compute-offer
  * clearance surface:
  *   - compute is clearance-gated: only `available`, tenant-owned offers

@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — reality-role assignment & grant functions (WAVE-R37).
+ * Sherivs Scholar — reality-role assignment & grant functions (WAVE-R37).
  *
  * APIs are APIs (Constitution §27). Every function authenticates, re-derives the
  * tenant server-side through the canonical gate, validates against platform

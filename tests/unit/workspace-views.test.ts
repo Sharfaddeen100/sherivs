@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 06 Workspace Engine tests: views/filters/sorting/grouping
+ * Sherivs — Phase 06 Workspace Engine tests: views/filters/sorting/grouping
  * (phase-06-workspace-engine.md §BC–BK).
  */
 import { describe, expect, it } from "vitest";

@@ -1,5 +1,5 @@
 {
-  "name": "coregrid-scholar",
+  "name": "sherivs",
   "private": true,
   "sideEffects": false,
   "type": "module",
@@ -52,7 +52,7 @@
   },
   "dependencies": {
     "@ai-sdk/openai-compatible": "^2.0.51",
-    "@coregrid/contracts": "file:packages/contracts",
+    "@sherivs/contracts": "file:packages/contracts",
     "@hookform/resolvers": "^5.2.2",
     "@radix-ui/react-accordion": "^1.2.12",
     "@radix-ui/react-alert-dialog": "^1.1.15",

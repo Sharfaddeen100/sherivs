@@ -1,5 +1,5 @@
 /**
- * CoreGrid — AI gateway adoption test: lesson-plan-ai.functions.ts.
+ * Sherivs — AI gateway adoption test: lesson-plan-ai.functions.ts.
  *
  * Proves lesson-plan drafting routes its model invocation through
  * `invokeAiGateway` (§20 centralization), carries full attribution

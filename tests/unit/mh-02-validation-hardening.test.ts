@@ -1,5 +1,5 @@
 /**
- * CoreGrid — MH-02: validation hardening (Constitution §19, §21, §26, §32).
+ * Sherivs — MH-02: validation hardening (Constitution §19, §21, §26, §32).
  *
  * Behavioral proof that the Scholar digital-twin family is fail-closed on
  * malformed input:

@@ -1,5 +1,5 @@
 /**
- * CoreGrid — DomainDefinition validator tests: every non-conforming path
+ * Sherivs — DomainDefinition validator tests: every non-conforming path
  * fails closed (V5.3 Part 46 NO DOMAIN CONTAMINATION, Part 64 config proof).
  */
 import { describe, expect, it } from "vitest";

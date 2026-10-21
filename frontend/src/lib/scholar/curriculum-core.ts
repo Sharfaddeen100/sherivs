@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — curriculum core (Phase-04 §7–10, upgrade target of the
+ * Sherivs Scholar — curriculum core (Phase-04 §7–10, upgrade target of the
  * legacy education-curriculum domain layer).
  *
  * A curriculum framework carries versions (with effective/expiry dates,

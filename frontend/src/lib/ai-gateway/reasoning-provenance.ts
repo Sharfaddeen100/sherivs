@@ -1,5 +1,5 @@
 /**
- * CoreGrid — reasoning provenance & intelligence snapshots (J-015, V1CAP-029,
+ * Sherivs — reasoning provenance & intelligence snapshots (J-015, V1CAP-029,
  * MISSION-R-33; Constitution §9 canonical truth, §12 data provenance, §20 AI
  * gateway, §21 AI output trust).
  *

@@ -1,5 +1,5 @@
 /**
- * CoreGrid — global shell ownership tests (MISSION H2-12, ADR-010 / J-047).
+ * Sherivs — global shell ownership tests (MISSION H2-12, ADR-010 / J-047).
  *
  * Covers the platform shell ownership contract
  * (`frontend/src/lib/platform/global-shell.ts`):

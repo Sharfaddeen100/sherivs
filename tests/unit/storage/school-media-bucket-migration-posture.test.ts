@@ -1,5 +1,5 @@
 /**
- * CoreGrid — school-media bucket migration posture test (post-R-wave
+ * Sherivs — school-media bucket migration posture test (post-R-wave
  * follow-up, team T-C / STORAGE-PROVISION).
  *
  * Text-level posture verification of the school-media storage-bucket

@@ -1,5 +1,5 @@
 /**
- * CoreGrid — runtime egress allowlist enforcement at the AI-gateway
+ * Sherivs — runtime egress allowlist enforcement at the AI-gateway
  * boundary (H3 C-025 / L-T-007; Constitution §20 gateway-owned egress,
  * §25 provider neutrality, §16 typed decisions, §29 auditability).
  *

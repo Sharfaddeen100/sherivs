@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Trust-Fabric wiring into security decisions (J-008 / V1CAP-022 /
+ * Sherivs — Trust-Fabric wiring into security decisions (J-008 / V1CAP-022 /
  * COND-007), implementing ADR-002 Option A: the phase-08 security engine
  * consumes phase-09 trust assertions, with three binding constraints:
  *

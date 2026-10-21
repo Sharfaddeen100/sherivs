@@ -1,5 +1,5 @@
 /**
- * CoreGrid — optional distributed rate limiter tests.
+ * Sherivs — optional distributed rate limiter tests.
  *
  * Proves with injected fetches (no network, no secrets):
  * 1. Missing/malformed REDIS env degrades to the in-process limiter with a

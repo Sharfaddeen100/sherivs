@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-021 (J-035) Independence Enforcer.
+ * Sherivs — H3-021 (J-035) Independence Enforcer.
  *
  * Proof suite for the verification-independence enforcement contract in
  * `frontend/src/lib/assurance/independence-enforcement.ts` (Constitution

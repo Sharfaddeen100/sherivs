@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — organization school-profile contract (persisted, R-24).
+ * Sherivs Scholar — organization school-profile contract (persisted, R-24).
  *
  * Scholar's own profile key + validation over the domain-neutral org-profile
  * store (cg_org_profile). The kernel stores JSON; Scholar defines the shape.

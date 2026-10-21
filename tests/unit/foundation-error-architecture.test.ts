@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 01 Foundation: error architecture behaviour proofs (P01-2).
+ * Sherivs — Phase 01 Foundation: error architecture behaviour proofs (P01-2).
  *
  * The Phase 01 document requires errors to be structured, traceable, safe and
  * actionable, and to never leak secrets, SQL internals, private data or stack

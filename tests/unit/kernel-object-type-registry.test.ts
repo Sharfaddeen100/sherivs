@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Canonical kernel object type registry (V1CAP-003, MISSION-R-11).
+ * Sherivs — Canonical kernel object type registry (V1CAP-003, MISSION-R-11).
  *
  * Proves, at unit level, that:
  *  1. the registry contract is domain-neutral — registration is by domainRef,

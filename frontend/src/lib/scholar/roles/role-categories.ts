@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Educational Reality Role Engine: categories.
+ * Sherivs Scholar — Educational Reality Role Engine: categories.
  *
  * The directive's reality taxonomy: WHO can exist inside an educational
  * reality. Categories are DATA, and every staffed category MAPS to the

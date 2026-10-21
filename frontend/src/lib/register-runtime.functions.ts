@@ -1,7 +1,7 @@
 /**
- * CoreGrid — Phase 33 kernel backend: domain-runtime registration (control plane).
+ * Sherivs — Phase 33 kernel backend: domain-runtime registration (control plane).
  *
- * Installs a domain runtime on CoreGrid as a DATA operation over
+ * Installs a domain runtime on Sherivs as a DATA operation over
  * `cg_domain_runtime` — never a kernel edit (Constitution §20, AD-001).
  * The kernel stays vocabulary-free: this module validates any manifest through
  * the generic `kernel/domain-manifest` contract and persists the registry row

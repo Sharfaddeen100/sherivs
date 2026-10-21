@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — student & teacher portfolios (Phase-04 §104–105).
+ * Sherivs Scholar — student & teacher portfolios (Phase-04 §104–105).
  *
  * Students accumulate work, projects, certificates, competencies and
  * practical evidence (§104). Teachers accumulate qualifications, lesson

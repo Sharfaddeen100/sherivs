@@ -1,5 +1,5 @@
 /**
- * CoreGrid — shared TLS policy for PostgreSQL client scripts (MISSION-V1-016).
+ * Sherivs — shared TLS policy for PostgreSQL client scripts (MISSION-V1-016).
  *
  * Default posture (secure): TLS is always negotiated, and the server
  * certificate must verify against Node's default CA store. Endpoint
@@ -7,14 +7,14 @@
  * own authority) must be trusted out of band via `NODE_EXTRA_CA_CERTS` —
  * never by disabling verification.
  *
- * Escape hatch: setting COREGRID_DB_INSECURE_TLS=1 opts out of certificate
+ * Escape hatch: setting SHERIVS_DB_INSECURE_TLS=1 opts out of certificate
  * verification (rejectUnauthorized: false) for environments whose endpoint
  * cannot present a verifiable chain. This weakens transport security and must
  * never be enabled against production. The variable is read at connection
  * time and its activation is logged so insecure runs remain observable
  * (Constitution §29).
  *
- * Known failure mode (observed 2026-10-01 against the CoreGrid dev project):
+ * Known failure mode (observed 2026-10-01 against the Sherivs dev project):
  * Supabase Postgres endpoints present a certificate chain rooted in a
  * Supabase private CA, so Node's default CA store rejects it with
  * SELF_SIGNED_CERT_IN_CHAIN. The secure remediation is to download the
@@ -28,7 +28,7 @@
  * is honoured: the caller then gets no TLS at all, by explicit choice of the
  * operator, and this helper stays out of the way.
  *
- * CA provisioning: set COREGRID_DB_CA_CERT to the managed CA's PEM text (or a
+ * CA provisioning: set SHERIVS_DB_CA_CERT to the managed CA's PEM text (or a
  * path to the .crt file). The certificate is passed as the client's `ca`, so
  * verification is strict against the managed authority without relying on
  * NODE_EXTRA_CA_CERTS process-wide wiring.
@@ -39,9 +39,11 @@
 
 import { readFileSync } from "node:fs";
 
-const INSECURE_ENV = "COREGRID_DB_INSECURE_TLS";
+const INSECURE_ENV = "SHERIVS_DB_INSECURE_TLS";
+const LEGACY_INSECURE_ENV = "COREGRID_DB_INSECURE_TLS"; // former name, still honoured
 const INSECURE_TLS_WARNING = "WARNING: PostgreSQL TLS certificate verification is disabled";
-const CA_ENV = "COREGRID_DB_CA_CERT";
+const CA_ENV = "SHERIVS_DB_CA_CERT";
+const LEGACY_CA_ENV = "COREGRID_DB_CA_CERT"; // former name, still honoured
 
 /**
  * Resolve the managed-Postgres CA for strict verification.
@@ -51,7 +53,7 @@ const CA_ENV = "COREGRID_DB_CA_CERT";
  * Returns undefined when unset — Node's default CA store applies.
  */
 function resolveCa(env = process.env) {
-  const value = (env[CA_ENV] ?? "").trim();
+  const value = (env[CA_ENV] ?? env[LEGACY_CA_ENV] ?? "").trim();
   if (!value) return undefined;
   if (value.startsWith("-----BEGIN")) return value;
   return readFileSync(value, "utf8");
@@ -77,7 +79,7 @@ export function pgSslConfig(connectionString) {
   ) {
     return undefined;
   }
-  if (process.env[INSECURE_ENV] === "1") {
+  if ((process.env[INSECURE_ENV] ?? process.env[LEGACY_INSECURE_ENV]) === "1") {
     console.error(`${INSECURE_TLS_WARNING} (${INSECURE_ENV}=1 — never use in production).`);
     return { rejectUnauthorized: false };
   }

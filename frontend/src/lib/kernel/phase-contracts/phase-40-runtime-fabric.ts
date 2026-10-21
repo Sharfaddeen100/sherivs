@@ -3,7 +3,7 @@
  *
  * The fabric that composes and runs domain runtimes: installation, isolation,
  * lifecycle, resource governance and health across every runtime installed on
- * CoreGrid — every runtime included, and every future domain as an equal citizen.
+ * Sherivs — every runtime included, and every future domain as an equal citizen.
  */
 
 import { definePhaseContractFromSeed } from "./define-phase";

@@ -1,5 +1,5 @@
 /**
- * CoreGrid Marketplace Platform — marketplace core domain (entities, product
+ * Sherivs Marketplace Platform — marketplace core domain (entities, product
  * model, listings, discovery, trust).
  *
  * Implements `architecture/phase-27-marketplace.md`:
@@ -20,7 +20,7 @@
  *   package, permissions, dependencies, configuration, policies, APIs, assets,
  *   version, commercial offer.
  * - Product trust levels (43-44): Unverified → Verified → Reviewed → Certified →
- *   CoreGrid Trusted → Enterprise Certified → Critical Infrastructure.
+ *   Sherivs Trusted → Enterprise Certified → Critical Infrastructure.
  * - Discovery (45-48): keyword/semantic search, filters, categories, vendor and
  *   capability search; institutional discovery adapts to tenant type, geography,
  *   language, policies, installed capabilities, user permissions.

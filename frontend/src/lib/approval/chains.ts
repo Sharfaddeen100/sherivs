@@ -1,5 +1,5 @@
 /**
- * CoreGrid — ESCALATE / REQUIRE_APPROVAL resolution-flow contracts
+ * Sherivs — ESCALATE / REQUIRE_APPROVAL resolution-flow contracts
  * (J-032, mission B-020; Constitution §7, §12, §16, §21, §29).
  *
  * The authorization engine (§16) emits five decision outcomes. ALLOW, DENY

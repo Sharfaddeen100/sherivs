@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — lesson resources (Phase-04 §46).
+ * Sherivs Scholar — lesson resources (Phase-04 §46).
  *
  * Resources may include textbooks, digital content, laboratory equipment,
  * devices, worksheets, videos, simulations and physical materials — all

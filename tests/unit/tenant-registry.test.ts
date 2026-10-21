@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 03 cg_tenant typed contract tests (P03 L2).
+ * Sherivs — Phase 03 cg_tenant typed contract tests (P03 L2).
  *
  * Pins the pure contract of `tenant-registry.ts` AND its coherence with the
  * live migration SQL (20260904020000_coregrid_l2_identity_tenancy.sql) so the

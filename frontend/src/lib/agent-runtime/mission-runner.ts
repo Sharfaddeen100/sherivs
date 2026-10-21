@@ -1,5 +1,5 @@
 /**
- * CoreGrid — ephemeral mission runner PLAN (V5.3 Parts 13–14, MISSION-V1-009).
+ * Sherivs — ephemeral mission runner PLAN (V5.3 Parts 13–14, MISSION-V1-009).
  *
  * Given an ephemeral agent definition and a mission (existing mission
  * vocabulary from `control-plane/foundation-mission.ts`), produces a RunPlan:

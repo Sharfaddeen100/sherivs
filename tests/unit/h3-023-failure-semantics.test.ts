@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-023 external-adapter failure-semantics contract tests
+ * Sherivs — H3-023 external-adapter failure-semantics contract tests
  * (mission B-023 / J-045). Layered semantics on the read-only
  * AdapterFailurePolicy: fail-closed per-provider gates (unknown provider,
  * invalid call spec, trust gate, degraded denial), bounded declared budgets,

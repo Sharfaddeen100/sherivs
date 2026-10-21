@@ -1,5 +1,5 @@
 /**
- * CoreGrid — phase 49 substrate surface: autonomous-economy contracts
+ * Sherivs — phase 49 substrate surface: autonomous-economy contracts
  * (H3 wave Squad G, mission G-069; Contract Architect, phase 49).
  *
  * WHAT: Zod-validated contracts for the phase-49 substrate — governed

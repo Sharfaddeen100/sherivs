@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 01 Foundation integrity tests.
+ * Sherivs — Phase 01 Foundation integrity tests.
  *
  * Validates repository-level foundation invariants so the foundation can be
  * verified mechanically (§9 testing foundation, phase-01 §35/§38/§39):

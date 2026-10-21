@@ -1,5 +1,5 @@
 /**
- * CoreGrid platform public site — marketing pricing tier catalog.
+ * Sherivs platform public site — marketing pricing tier catalog.
  *
  * Presentation-only data for the (site) public route group. Values mirror the
  * platform's commercial tier catalog (frontend/src/lib/subscription-tiers.ts),

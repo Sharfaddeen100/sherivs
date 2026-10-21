@@ -1,5 +1,5 @@
 /**
- * CoreGrid delegation ENFORCEMENT tests (DEFECT-4 fix + MISSION-R-52 /
+ * Sherivs delegation ENFORCEMENT tests (DEFECT-4 fix + MISSION-R-52 /
  * V1CAP-021 mission wiring, wave 3).
  *
  * Validates that delegation expiry is ENFORCED, not just representable:

@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — AI operations adapter (Phase 26 consumption, R-23).
+ * Sherivs Scholar — AI operations adapter (Phase 26 consumption, R-23).
  *
  * Scholar CONSUMES the domain-neutral Phase-26 AI governance: Scholar
  * supplies ONLY its operation traits (impact, autonomy, data classification);

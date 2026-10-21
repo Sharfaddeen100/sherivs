@@ -1,5 +1,5 @@
 /**
- * CoreGrid — locale resolution tests.
+ * Sherivs — locale resolution tests.
  */
 import { describe, expect, it } from "vitest";
 import {

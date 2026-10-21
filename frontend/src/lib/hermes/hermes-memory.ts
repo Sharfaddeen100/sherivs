@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Hermes memory through the CANONICAL memory tier
+ * Sherivs — Hermes memory through the CANONICAL memory tier
  * (MISSION V1-002).
  *
  * Hermes keeps NO second memory architecture: every Hermes memory act runs

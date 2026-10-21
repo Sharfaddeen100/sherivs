@@ -1,5 +1,5 @@
 /**
- * CoreGrid — V1-013: school-creation migration proof (team ONBOARDING).
+ * Sherivs — V1-013: school-creation migration proof (team ONBOARDING).
  *
  * Proves the mechanical migration planned by V1-008: the super-admin Add
  * School form provisions through the platform onboarding engine

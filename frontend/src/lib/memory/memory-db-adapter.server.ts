@@ -1,5 +1,5 @@
 /**
- * CoreGrid — DB-backed memory tier adapter (MISSION V1-005).
+ * Sherivs — DB-backed memory tier adapter (MISSION V1-005).
  *
  * Persists the durable practical/organizational memory tier into the
  * cg_memory_* tables authored (NOT applied) by

@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — promotion & student progression (Phase-04 §42–43).
+ * Sherivs Scholar — promotion & student progression (Phase-04 §42–43).
  *
  * Progression rules may depend on grades, competencies, attendance, required
  * subjects, examination results and institutional policy (§42). Student

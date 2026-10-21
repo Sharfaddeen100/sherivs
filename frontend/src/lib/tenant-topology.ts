@@ -1,5 +1,5 @@
 /**
- * CoreGrid Tenant Topology Engine (H8 + R).
+ * Sherivs Tenant Topology Engine (H8 + R).
  *
  * Implements `architecture/phase-03-multi-tenancy.md`:
  * - Hierarchical tenancy: Parent → Child (R1).

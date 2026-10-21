@@ -1,8 +1,8 @@
 /**
- * CoreGrid Scholar — African Education Runtime manifest (Phase 04 reframe).
+ * Sherivs Scholar — African Education Runtime manifest (Phase 04 reframe).
  *
- * Scholar is NOT CoreGrid. Scholar is the first domain runtime registered on
- * the CoreGrid universal kernel through the generic domain-runtime manifest
+ * Scholar is NOT Sherivs. Scholar is the first domain runtime registered on
+ * the Sherivs universal kernel through the generic domain-runtime manifest
  * contract (`kernel/domain-manifest.ts`). This manifest declares the education
  * ontology as extensions over the universal substrate; removing it leaves the
  * kernel fully valid (Scholar Independence, §111).

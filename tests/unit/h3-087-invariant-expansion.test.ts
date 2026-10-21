@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-087: §27 posture checks for the H3 wave's NEW server-side
+ * Sherivs — H3-087: §27 posture checks for the H3 wave's NEW server-side
  * contract modules (Constitution §27; mission H-087, Squad H).
  *
  * The scholar-invariant suites (§27 per-function invariants) proved the full

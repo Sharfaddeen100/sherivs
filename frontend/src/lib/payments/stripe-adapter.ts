@@ -1,9 +1,9 @@
 /**
- * CoreGrid — Stripe payment adapter (V5.3 Part 21).
+ * Sherivs — Stripe payment adapter (V5.3 Part 21).
  *
  * Implements the `PaymentAdapter` contract for Stripe. Stripe is an
  * implementation dependency only: wire formats are translated into
- * CoreGrid vocabulary at the boundary and never leak inward.
+ * Sherivs vocabulary at the boundary and never leak inward.
  *
  * Signature scheme (Stripe convention): the `stripe-signature` header
  * carries `t=<unix-seconds>,v1=<hex>` where `v1` is HMAC-SHA256 over

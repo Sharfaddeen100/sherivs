@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Educational Reality role catalog: completeness and boundary.
+ * Sherivs Scholar — Educational Reality role catalog: completeness and boundary.
  *
  * The catalog is the directive's reality (government, regulatory, institutional,
  * academic, teaching, vocational, technical, agricultural, religious,

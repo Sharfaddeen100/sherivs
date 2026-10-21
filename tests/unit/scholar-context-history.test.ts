@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Cluster L tests (Phase-04 §71–73, 112–127).
+ * Sherivs Scholar — Cluster L tests (Phase-04 §71–73, 112–127).
  * Reality graph, communication context, workflow triggers, search scope,
  * knowledge facts, temporal history + snapshots.
  */

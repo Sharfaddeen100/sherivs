@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3 B-009 / J-007 tests: per-agent scoping enforcement depth on
+ * Sherivs — H3 B-009 / J-007 tests: per-agent scoping enforcement depth on
  * the credential broker.
  *
  * Mission acceptance, one case per contract:

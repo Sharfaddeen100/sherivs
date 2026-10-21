@@ -139,7 +139,7 @@ operator's checklist (`frontend/src/lib/security/lockdown.ts:11–41`):
 
 1. Run the RLS isolation battery against the project
    (`docs/runbooks/rls-battery.md`), with the service-role contrast section ON this
-   once (`COREGRID_BATTERY_ALLOW_SERVICE_ROLE=1`) so the privileged path is explicitly
+   once (`SHERIVS_BATTERY_ALLOW_SERVICE_ROLE=1`) so the privileged path is explicitly
    characterized (`scripts/verify-rls-isolation-battery.mjs:1518–1545`).
 2. Read results by posture (`docs/runbooks/rls-battery.md` §3). A `ROW_LEAK_VIA_ANON_REST`
    or `tenantBInvisible=false` (the "TENANT B ROWS VISIBLE" invariant,
@@ -225,9 +225,9 @@ finding.
    `scripts/exercise-foundation-loop.mjs:20–25`); keep that standard in incident
    artifacts. The broker's branded types make raw-secret leakage a type error
    (`frontend/src/lib/security/credential-broker.ts:62–75`) — don't route around it.
-2. **Never weaken TLS during an incident** — `COREGRID_DB_INSECURE_TLS=1` is the
+2. **Never weaken TLS during an incident** — `SHERIVS_DB_INSECURE_TLS=1` is the
    explicitly logged last resort and must never be enabled against production; secure
-   remediation is `COREGRID_DB_CA_CERT` or `NODE_EXTRA_CA_CERTS`
+   remediation is `SHERIVS_DB_CA_CERT` or `NODE_EXTRA_CA_CERTS`
    (`scripts/lib/pg-ssl.mjs:10–15, 17–25, 31–34`;
    `scripts/lib/pg-connect.mjs:91, 109`).
 3. **No ungoverned data access** — the operator reaches rows only through the
@@ -246,7 +246,7 @@ finding.
 | Step | Command / action | Exit codes | Evidence |
 | --- | --- | --- | --- |
 | Contain | rotate/revoke credentials (provider console); broker lockdown + contract lockdown declaration by an authorized guardian | n/a | rotation timestamp; `LOCKDOWN_DECLARED` audit event |
-| Prove posture | `SUPABASE_URL=... SUPABASE_ACCESS_TOKEN=... node scripts/verify-rls-isolation-battery.mjs` (add `COREGRID_BATTERY_ALLOW_SERVICE_ROLE=1` once) | 0 PASS / 1 FAIL / 2 BLOCKED | `/opt/cursor/artifacts/rls-battery-results.{json,log}` (`scripts/verify-rls-isolation-battery.mjs:86–91`) |
+| Prove posture | `SUPABASE_URL=... SUPABASE_ACCESS_TOKEN=... node scripts/verify-rls-isolation-battery.mjs` (add `SHERIVS_BATTERY_ALLOW_SERVICE_ROLE=1` once) | 0 PASS / 1 FAIL / 2 BLOCKED | `/opt/cursor/artifacts/rls-battery-results.{json,log}` (`scripts/verify-rls-isolation-battery.mjs:86–91`) |
 | Check record drift | `SUPABASE_ACCESS_TOKEN=... node scripts/apply-canonical-hardening.mjs --verify-only` | 0 VERIFY_PASS / 1 VERIFY_FINDINGS / 2 BLOCKED | `<artifactsDir>/canonical-apply-hardening-verify.json` (`scripts/apply-canonical-hardening.mjs:522–540`) |
 | Fix posture (if needed) | migration + `SUPABASE_ACCESS_TOKEN=... node scripts/apply-canonical-hardening.mjs [project-ref]` | 0 / 1 FINDING / 2 BLOCKED | `architecture/proofs/CANONICAL_APPLY_RECORD_HARDENING.json` (`scripts/apply-canonical-hardening.mjs:47–51`) |
 | Restore evidence (if needed) | `SUPABASE_ACCESS_TOKEN=... node scripts/restore-recovery-drill.mjs [project-ref]` | 0 PASS / 1 FAIL / 2 BLOCKED | `/opt/cursor/artifacts/restore-recovery-{transcript.log,results.json}` (`scripts/restore-recovery-drill.mjs:34–35`) |

@@ -1,5 +1,5 @@
 /**
- * CoreGrid — lease / concurrency control over shared resources and worker
+ * Sherivs — lease / concurrency control over shared resources and worker
  * execution (J-031 / V1CAP-055).
  *
  * E-058 (RUNTIME leases) and G-022 (bounded scarce computation): multi-worker

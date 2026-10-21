@@ -439,8 +439,8 @@ Secret **values** are not printed. Classification of current deployed values is 
 | `SUPABASE_ACCESS_TOKEN` | management-API scripts; CI batteries | ENVIRONMENT_SPECIFIC / INFRA secret | For those scripts | Scripts default project ref to production | UNKNOWN |
 | `DATABASE_URL` | `db-apply.mjs`, `db-run.mjs`, `db-apply-one.mjs`, `pg-ssl.mjs`, verify scripts | ENVIRONMENT_SPECIFIC secret | For those scripts | **Unscoped:** whatever URL is set is the target. Staging runner **refuses** this name (`constants.mjs` 30–36) | UNKNOWN; **do not run** |
 | `STAGING_DATABASE_URL` / `SHERIVS_RLS_STAGING_URL` | staging runner only | ENVIRONMENT_SPECIFIC staging | For a future authorized restore | Runner refuses production ref and production host markers | UNKNOWN; unused in this mission |
-| `COREGRID_DB_CA_CERT` / `STAGING_DB_CA_CERT` | runner TLS / `pg-ssl.mjs` | ENVIRONMENT_SPECIFIC | For verify-full TLS | — | UNKNOWN |
-| `COREGRID_DB_INSECURE_TLS` | runner | must stay unset/false | No | Enabling would weaken TLS; not authorized here | UNKNOWN |
+| `SHERIVS_DB_CA_CERT` / `STAGING_DB_CA_CERT` | runner TLS / `pg-ssl.mjs` | ENVIRONMENT_SPECIFIC | For verify-full TLS | — | UNKNOWN |
+| `SHERIVS_DB_INSECURE_TLS` | runner | must stay unset/false | No | Enabling would weaken TLS; not authorized here | UNKNOWN |
 | `APP_ENV` / `NODE_ENV` | `scripts/verify-env.ts` 10: `classifyEnvironment(NODE_ENV ?? APP_ENV)` | ENVIRONMENT_SPECIFIC | No | Unknown/empty → **development** (`env.ts` 79–82), which does **not** require service-role in `REQUIRED_VARS` | UNKNOWN |
 | `PAYSTACK_SECRET_KEY` | paystack functions, webhook, testmode module | ENVIRONMENT_SPECIFIC secret | For payments | Live vs `sk_test_` must match environment. Testmode module refuses non-`sk_test_` | UNKNOWN |
 | `PAYSTACK_BASE_URL` | `.env.example` | ENVIRONMENT_SPECIFIC | No | Default comment `https://api.paystack.co` | UNKNOWN |
@@ -457,7 +457,7 @@ Secret **values** are not printed. Classification of current deployed values is 
 | `PLAYWRIGHT_BASE_URL` | e2e | TEST_ONLY | No | Default `http://localhost:8080` | local default only |
 | Mobile `EXPO_PUBLIC_APP_ENV` | `mobile/src/api/contracts/env.ts` | ENVIRONMENT_SPECIFIC | Yes for mobile | `development` \| `preview` \| `production`; example `development`; example web base `https://app.coregrid.example` | UNKNOWN live |
 | Mobile `EXPO_PUBLIC_SUPABASE_URL` / `EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | mobile bundle | ENVIRONMENT_SPECIFIC | Yes | Must match the web app’s project | UNKNOWN |
-| Mobile `EXPO_PUBLIC_COREGRID_WEB_BASE_URL` | mobile | ENVIRONMENT_SPECIFIC | Yes | Wrong host → wrong server functions | UNKNOWN |
+| Mobile `EXPO_PUBLIC_SHERIVS_WEB_BASE_URL` | mobile | ENVIRONMENT_SPECIFIC | Yes | Wrong host → wrong server functions | UNKNOWN |
 
 ### 7.2 Client fallback that can mix planes
 

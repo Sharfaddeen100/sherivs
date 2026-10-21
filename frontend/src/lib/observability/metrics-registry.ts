@@ -1,5 +1,5 @@
 /**
- * CoreGrid — typed metrics registry (MISSION H3-046, Constitution §29).
+ * Sherivs — typed metrics registry (MISSION H3-046, Constitution §29).
  *
  * A PURE, fail-closed declaration registry for typed metric families
  * (counter / gauge / histogram) with bounded label cardinality and a

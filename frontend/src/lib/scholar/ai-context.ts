@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — AI context object (Phase-04 §116–118, O3).
+ * Sherivs Scholar — AI context object (Phase-04 §116–118, O3).
  *
  * AI systems must consume the educational runtime rather than inventing school
  * reality (§116). Every AI request resolves an AI CONTEXT OBJECT (§118) naming

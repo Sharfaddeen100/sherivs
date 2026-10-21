@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — traditional & community education (Phase-04 §12).
+ * Sherivs Scholar — traditional & community education (Phase-04 §12).
  *
  * Community knowledge, indigenous knowledge, oral traditions, cultural
  * education, local language education, traditional skills and community

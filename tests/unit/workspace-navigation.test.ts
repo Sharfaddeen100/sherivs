@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 06/25 workspace-dynamic navigation tests.
+ * Sherivs — Phase 06/25 workspace-dynamic navigation tests.
  * The engine is domain-free; the Scholar R-001 catalog is capability data.
  */
 import { describe, expect, it } from "vitest";

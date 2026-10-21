@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Workflow Engine contracts (V5.3 Part 17, MISSION-V1-008).
+ * Sherivs — Workflow Engine contracts (V5.3 Part 17, MISSION-V1-008).
  *
  * Pure, in-memory contracts for governed workflows:
  * TRIGGER -> CONDITIONS -> CONTEXT -> TASKS -> HUMAN/AI ASSIGNMENT ->

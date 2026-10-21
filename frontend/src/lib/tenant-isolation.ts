@@ -1,5 +1,5 @@
 /**
- * CoreGrid Tenant Isolation Engine (G6).
+ * Sherivs Tenant Isolation Engine (G6).
  *
  * Implements `architecture/phase-03-multi-tenancy.md`:
  * - Tenant isolation is a security boundary (J1).
@@ -11,7 +11,7 @@
  */
 
 import type {
-  CoreGridTenant,
+  SherivsTenant,
   TenantContext,
   TenantId,
   TenantResource,
@@ -114,7 +114,7 @@ export function assertResourceInTenant(
  * Verify that a tenant is usable for operations.
  * Invariant 05: Tenant isolation applies to synchronous and asynchronous operations.
  */
-export function assertTenantUsable(tenant: Pick<CoreGridTenant, "status">): IsolationCheckResult {
+export function assertTenantUsable(tenant: Pick<SherivsTenant, "status">): IsolationCheckResult {
   if (!isTenantUsable(tenant)) {
     return {
       ok: false,

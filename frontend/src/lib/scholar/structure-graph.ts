@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — structure graph over the kernel (Phase-04 §22–25, C5).
+ * Sherivs Scholar — structure graph over the kernel (Phase-04 §22–25, C5).
  *
  * Level/class/cohort relationships are PROJECTED onto the universal kernel
  * (`cg_relationship` via `kernel/reality.ts`) using only relationship types

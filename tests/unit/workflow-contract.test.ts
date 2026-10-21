@@ -1,5 +1,5 @@
 /**
- * CoreGrid Workflow Engine contract tests (V5.3 Part 17, MISSION-V1-008).
+ * Sherivs Workflow Engine contract tests (V5.3 Part 17, MISSION-V1-008).
  *
  * Validates the pure contracts in frontend/src/lib/workflow/
  * workflow-contract.ts:

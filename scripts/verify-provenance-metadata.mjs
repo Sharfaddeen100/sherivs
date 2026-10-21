@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * CoreGrid — H3 wave, team H3-095 (Provenance Auditor), mission J-095
+ * Sherivs — H3 wave, team H3-095 (Provenance Auditor), mission J-095
  * (Squad J — Governance & documentation).
  *
  * Machine check that key governance artifacts carry provenance metadata per
@@ -59,7 +59,7 @@
  *
  * Hygiene law: this tool never prints, logs, or writes any secret value (it
  * reads only checked-in markdown); evidence artifacts land in
- * COREGRID_ARTIFACTS_DIR (default /opt/cursor/artifacts) with a guarded write.
+ * SHERIVS_ARTIFACTS_DIR (default /opt/cursor/artifacts) with a guarded write.
  */
 
 import { mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
@@ -70,7 +70,7 @@ const ROOT = fileURLToPath(new URL("..", import.meta.url));
 const CAMPAIGN_RECORD_REL = "architecture/campaigns/H3-WAVE-CAMPAIGN.md";
 const ROOT_AUTHORITY_REL = "AGENTS.md";
 const ADR_TEMPLATE_REL = "architecture/adr/TEMPLATE.md";
-const ARTIFACTS_DIR = process.env.COREGRID_ARTIFACTS_DIR ?? "/opt/cursor/artifacts";
+const ARTIFACTS_DIR = (process.env.SHERIVS_ARTIFACTS_DIR ?? process.env.COREGRID_ARTIFACTS_DIR) ?? "/opt/cursor/artifacts";
 
 // ── argument parsing ─────────────────────────────────────────────────────────
 const argv = process.argv.slice(2);

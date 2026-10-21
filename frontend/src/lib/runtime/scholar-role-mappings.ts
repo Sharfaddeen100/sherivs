@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — domain role mapping table (the FIRST domain mapping).
+ * Sherivs Scholar — domain role mapping table (the FIRST domain mapping).
  *
  * V1CAP-014 / J-006 / CTO RULING-4. The Scholar runtime's local role vocabulary
  * is the legacy identity-store AppRole union (frontend/src/lib/roles.ts —

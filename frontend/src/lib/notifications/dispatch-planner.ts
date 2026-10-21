@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Notification dispatch planner (V5.3 Part 20).
+ * Sherivs — Notification dispatch planner (V5.3 Part 20).
  *
  * Pure module: given a notification and a channel-availability config (booleans
  * only — provider keys stay server-side and never reach this layer), it decides

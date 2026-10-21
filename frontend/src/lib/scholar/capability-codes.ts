@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — per-feature capability codes.
+ * Sherivs Scholar — per-feature capability codes.
  *
  * A CAPABILITY CODE is the smallest thing a person can be granted: one feature
  * of the education runtime, installed over exactly one kernel capability, owned

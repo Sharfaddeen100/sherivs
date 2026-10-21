@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Security Engine session security controls (Phase 08,
+ * Sherivs — Security Engine session security controls (Phase 08,
  * Section L).
  *
  * Implements `architecture/phase-08-security-engine.md`:

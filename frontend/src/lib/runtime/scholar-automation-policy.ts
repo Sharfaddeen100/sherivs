@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — automation policy adapter (Phase 17 consumption, R-20).
+ * Sherivs Scholar — automation policy adapter (Phase 17 consumption, R-20).
  *
  * Scholar is a CONSUMER of the domain-neutral Phase-17 automation engine. This
  * module maps Scholar operation kinds to risk levels and evaluates condition

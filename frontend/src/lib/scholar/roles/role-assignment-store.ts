@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — role assignment & grant store (WAVE-R37).
+ * Sherivs Scholar — role assignment & grant store (WAVE-R37).
  *
  * Typed contract over the `cg_role_assignment` / `cg_role_grant` substrate and
  * the merge that turns catalog roles + tenant grants into the ROLE SET the

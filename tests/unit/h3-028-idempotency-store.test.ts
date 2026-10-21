@@ -1,5 +1,5 @@
 /**
- * CoreGrid — durable DB-backed idempotency store tests (H3-028 / L-T-012).
+ * Sherivs — durable DB-backed idempotency store tests (H3-028 / L-T-012).
  *
  * Offline suite: the `cg_idempotency_record` substrate is never touched —
  * the DB client is a mock that emulates the statements the store issues,

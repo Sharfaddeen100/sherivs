@@ -1,7 +1,7 @@
 /**
- * CoreGrid — Phase 24 (platform layer): experience & design intelligence.
+ * Sherivs — Phase 24 (platform layer): experience & design intelligence.
  *
- * Domain-neutral contracts that ANY CoreGrid runtime workspace consumes:
+ * Domain-neutral contracts that ANY Sherivs runtime workspace consumes:
  * - §G–J semantic design tokens (color/typography/spacing), §BW density modes,
  *   §BY theming — with high-contrast overrides built in.
  * - §N–X information architecture: workspace IA derived from authorized

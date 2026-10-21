@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 08 Security Engine: canonical runtime role gate tests.
+ * Sherivs — Phase 08 Security Engine: canonical runtime role gate tests.
  *
  * Validates the pure decision contract of `security-role-gate` for both role
  * kinds (school_admin, platform_super_admin):

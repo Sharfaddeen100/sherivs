@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-002 recovery-targets contract tests (mission A-002).
+ * Sherivs — H3-002 recovery-targets contract tests (mission A-002).
  * Zod validation of RTO/RPO declarations per record family, registry
  * cross-record invariants, and fail-closed resolution/coverage semantics.
  * Pure offline: no network, no database, no secrets.

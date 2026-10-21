@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — staff educational context (Phase-04 §28).
+ * Sherivs Scholar — staff educational context (Phase-04 §28).
  *
  * An educator's educational context (over their P02 human identity) may carry
  * subjects, classes, campuses, departments, shifts, programmes and academic

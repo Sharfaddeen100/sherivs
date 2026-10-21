@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Jarvis V1 executive briefing composer (V5.3 Part 15).
+ * Sherivs — Jarvis V1 executive briefing composer (V5.3 Part 15).
  *
  * A pure briefing composer over already-redacted, plain event records. The
  * composer restates event summaries verbatim under a deterministic ordering —

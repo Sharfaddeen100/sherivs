@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Phase 14 Data Platform unit tests (data-catalog).
+ * Sherivs Scholar — Phase 14 Data Platform unit tests (data-catalog).
  *
  * Validates:
  * - Data catalog registration (AN).

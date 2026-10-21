@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — transport model (Phase-04 §58, upgrade target of the
+ * Sherivs Scholar — transport model (Phase-04 §58, upgrade target of the
  * legacy bus-tracking/driver surface).
  *
  * Routes, buses, drivers, stops, student assignments, schedules and vehicle

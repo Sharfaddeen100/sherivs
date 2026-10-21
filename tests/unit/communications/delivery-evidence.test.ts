@@ -1,5 +1,5 @@
 /**
- * CoreGrid — R6 delivery-evidence tests (follow-up to V1-009, team COMMS).
+ * Sherivs — R6 delivery-evidence tests (follow-up to V1-009, team COMMS).
  *
  * Proves:
  * 1. The EmailAdapter records one append-only delivery-evidence row for

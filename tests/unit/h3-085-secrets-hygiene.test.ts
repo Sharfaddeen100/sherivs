@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3 wave, team H3-085 (Secrets-Hygiene Engineer), mission H-085.
+ * Sherivs — H3 wave, team H3-085 (Secrets-Hygiene Engineer), mission H-085.
  * Offline tests for scripts/verify-secrets-hygiene.mjs: detection coverage,
  * allowlist semantics, redaction law, and CLI exit-code contracts.
  *

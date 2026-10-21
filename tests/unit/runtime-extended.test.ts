@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Core Application Runtime extended module tests.
+ * Sherivs Scholar — Core Application Runtime extended module tests.
  *
  * Covers:
  * - runtime-webhooks.ts: signature validation, delivery tracking, retry

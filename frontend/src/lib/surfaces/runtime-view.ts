@@ -1,8 +1,8 @@
 /**
- * CoreGrid — generated runtime surface view-model (WAVE-R40).
+ * Sherivs — generated runtime surface view-model (WAVE-R40).
  *
  * The internal surface a person receives: workspaces, dashboards and (when they
- * staff the platform organization) CoreGrid departments — all composed by the
+ * staff the platform organization) Sherivs departments — all composed by the
  * engines from the roles the SERVER resolved for this identity. The route never
  * supplies its own roles, and never decides what is visible.
  *

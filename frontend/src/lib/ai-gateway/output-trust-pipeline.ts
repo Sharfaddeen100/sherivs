@@ -1,5 +1,5 @@
 /**
- * CoreGrid — AI output trust pipeline + human approval chains (J-035 /
+ * Sherivs — AI output trust pipeline + human approval chains (J-035 /
  * V1CAP-030/032, MISSION-R-34; Constitution §21 AI output trust).
  *
  * The mandatory lifecycle an AI proposal traverses before ANY execution:

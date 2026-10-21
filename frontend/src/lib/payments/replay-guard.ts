@@ -1,5 +1,5 @@
 /**
- * CoreGrid — payment webhook replay guard (V5.3 Part 21, Part 36).
+ * Sherivs — payment webhook replay guard (V5.3 Part 21, Part 36).
  *
  * Pure, idempotent event-acceptance logic. Providers redeliver webhooks;
  * a financial effect must happen exactly once. Two rejection axes:

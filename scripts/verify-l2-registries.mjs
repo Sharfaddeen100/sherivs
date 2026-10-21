@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * CoreGrid — live L2 registry verification (P02 cg_identity / P03 cg_tenant).
+ * Sherivs — live L2 registry verification (P02 cg_identity / P03 cg_tenant).
  *
  * Replicates the server-function DB path of `identity-registry.functions.ts`
  * and `tenant-registry.functions.ts` using the REAL pure draft builders

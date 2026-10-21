@@ -3,7 +3,7 @@ import { SystemClock, TimeAuthority } from "./kernel/time-authority";
 /** J-023: time enters only via the kernel time-authority — no direct wall-clock sampling. */
 const timeAuthority = new TimeAuthority(new SystemClock());
 
-// ─── CoreGrid Phase 24 — Experience & Design Intelligence ────────────
+// ─── Sherivs Phase 24 — Experience & Design Intelligence ────────────
 // experience-personalization.ts — Personalization, AI experience,
 //                                 workspace, device adaptation, AI UX
 // ──────────────────────────────────────────────────────────────────────

@@ -1,7 +1,7 @@
 /**
  * Phase 28 — Developer Platform contract (seeded authoring).
  *
- * The platform for building on CoreGrid: APIs, environments, build pipelines
+ * The platform for building on Sherivs: APIs, environments, build pipelines
  * and developer governance, so extension happens through contracts and
  * verification rather than through forking the kernel.
  */

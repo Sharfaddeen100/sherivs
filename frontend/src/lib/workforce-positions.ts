@@ -1,5 +1,5 @@
 /**
- * CoreGrid — workforce-position typed contract (Phase 25 Workforce Identity).
+ * Sherivs — workforce-position typed contract (Phase 25 Workforce Identity).
  *
  * The tenant-scoped appointment record returned by the org-admin RPC surface
  * (`list_workforce_positions`, migration 20260907000300) and used by HR UI.

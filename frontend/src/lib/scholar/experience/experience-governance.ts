@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Experience engine: governance.
+ * Sherivs Scholar — Experience engine: governance.
  *
  * Every generated experience must respect security, permissions, policies,
  * tenant isolation, audit and privacy. And AI does not silently publish: a

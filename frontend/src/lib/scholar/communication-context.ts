@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — communication + notification context (Phase-04 §112–113).
+ * Sherivs Scholar — communication + notification context (Phase-04 §112–113).
  *
  * School communications should understand the student, class, teacher,
  * guardian, institution, event and policy they concern (§112), and

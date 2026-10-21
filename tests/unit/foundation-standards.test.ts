@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 01 foundation standards module (P01-4 / L4 projection).
+ * Sherivs — Phase 01 foundation standards module (P01-4 / L4 projection).
  *
  * The foundation's standards must be readable by a surface and must match the
  * contract the phases already agreed on — never a second source of prose.

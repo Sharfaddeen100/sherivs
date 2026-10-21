@@ -1,5 +1,5 @@
 /**
- * CoreGrid — workforce-position typed contract tests (RPC surface output).
+ * Sherivs — workforce-position typed contract tests (RPC surface output).
  */
 import { describe, expect, it } from "vitest";
 import {

@@ -1,5 +1,5 @@
 /**
- * CoreGrid — file access-policy tests (deny by default, tenant isolation,
+ * Sherivs — file access-policy tests (deny by default, tenant isolation,
  * owner allowance, grant expiry — Constitution §31 security negatives).
  */
 import { describe, expect, it } from "vitest";

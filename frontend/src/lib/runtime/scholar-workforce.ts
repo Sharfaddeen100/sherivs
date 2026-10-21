@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar (R-001) — African Education Runtime workforce catalog.
+ * Sherivs Scholar (R-001) — African Education Runtime workforce catalog.
  *
  * The staffing reality of an African educational institution, installed as
  * DATA over the domain-neutral workforce-kind contract (workforce-kinds.ts).

@@ -1,5 +1,5 @@
 /**
- * CoreGrid — every phase acceptance probe must stay honest (wave AUDIT-P02/P03).
+ * Sherivs — every phase acceptance probe must stay honest (wave AUDIT-P02/P03).
  *
  * Phase 01 proved the probe mechanism; phases 02 and 03 add data files. This test
  * is the durable guard for ALL probes: it discovers every

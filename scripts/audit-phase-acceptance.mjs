@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * CoreGrid — phase acceptance probe (archaeology instrumentation).
+ * Sherivs — phase acceptance probe (archaeology instrumentation).
  *
  * A pasted phase document states acceptance criteria (§100 in Phase 01). This
  * script resolves each criterion against ACTUAL artefacts and classifies it:

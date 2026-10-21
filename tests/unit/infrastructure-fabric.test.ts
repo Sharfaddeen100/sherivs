@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Cloud Fabric foundation tests (wave CF-3).
+ * Sherivs — Cloud Fabric foundation tests (wave CF-3).
  *
  * Phase 21 owns the fabric; this suite proves the instantiation is faithful:
  *

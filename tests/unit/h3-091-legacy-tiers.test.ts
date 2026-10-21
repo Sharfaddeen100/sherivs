@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-091 legacy-tier reconciliation tests (mission I-091 / J-044,
+ * Sherivs — H3-091 legacy-tier reconciliation tests (mission I-091 / J-044,
  * Squad I — Payments & economics).
  *
  * Grounds the authored legacy-tier → neutral entitlement mapping in

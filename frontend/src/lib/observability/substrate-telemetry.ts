@@ -1,5 +1,5 @@
 /**
- * CoreGrid — substrate telemetry collector (MISSION H2-27, Constitution §29).
+ * Sherivs — substrate telemetry collector (MISSION H2-27, Constitution §29).
  *
  * The eight substrate adapters (reconciliation, event-security, event-routing,
  * evidence-capture, reasoning-provenance, cost-attribution, knowledge-currency,

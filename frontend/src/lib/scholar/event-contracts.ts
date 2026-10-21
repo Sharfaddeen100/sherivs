@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — event contracts + idempotency (Phase-04 §131–133, I6).
+ * Sherivs Scholar — event contracts + idempotency (Phase-04 §131–133, I6).
  *
  * Every Scholar event is emitted through the universal kernel event contract
  * (`kernel/reality.ts` eventDraft). This module is the runtime's wrapper layer:

@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Experience engine: personalization.
+ * Sherivs Scholar — Experience engine: personalization.
  *
  * Different people see different experiences. The difference is derived from
  * AUTHORIZED roles (the role context), never from a hardcoded portal per role

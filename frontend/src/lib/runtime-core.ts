@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Core Application Runtime core context.
+ * Sherivs — Core Application Runtime core context.
  *
  * Implements `architecture/phase-05-core-application-runtime.md`:
  * - Request context: every application request has a structured context (Section I).
@@ -107,7 +107,7 @@ export type ContextValidationResult =
   { ok: true; context: ExecutionContext } | { ok: false; error: string };
 
 /**
- * Validate that an execution context satisfies CoreGrid invariants.
+ * Validate that an execution context satisfies Sherivs invariants.
  * - Tenant context is mandatory for tenant-scoped operations (Section DA).
  * - Cross-tenant operations require explicit elevated authority (Section DB).
  * - Platform operations must not accidentally execute with ordinary tenant privileges (Section DD).

@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Paystack TEST-MODE live client (MISSION-R-32, AGENTS §36).
+ * Sherivs — Paystack TEST-MODE live client (MISSION-R-32, AGENTS §36).
  *
  * The contract adapter (`paystack-adapter.ts`) owns webhook translation and
  * stays local under BLK-4. This module is the governed LIVE surface for the

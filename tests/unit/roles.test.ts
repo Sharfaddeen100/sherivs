@@ -1,5 +1,5 @@
 /**
- * CoreGrid — workspace landing derivation tests.
+ * Sherivs — workspace landing derivation tests.
  *
  * The legacy `dashboardPathForRole` role-switch was removed (de-hardcoding
  * wave-4). Post-login landings are now derived from workspace chrome:

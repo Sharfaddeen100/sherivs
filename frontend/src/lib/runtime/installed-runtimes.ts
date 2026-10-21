@@ -1,5 +1,5 @@
 /**
- * CoreGrid — installed runtimes (runtime layer).
+ * Sherivs — installed runtimes (runtime layer).
  *
  * Which runtime is installed on the platform, and what it calls itself, is runtime-layer
  * knowledge. The kernel and the platform's identity module own the platform, never one

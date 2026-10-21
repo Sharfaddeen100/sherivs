@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-071 phase-51 reality-os-kernel contract tests (mission G-071).
+ * Sherivs — H3-071 phase-51 reality-os-kernel contract tests (mission G-071).
  * Zod validation of the kernel COMPOSITION surface: declarations composed of
  * universal kernel objects, relationships and events, composed READ-ONLY with
  * the kernel substrate's fail-closed draft builders; single tenant scope; no

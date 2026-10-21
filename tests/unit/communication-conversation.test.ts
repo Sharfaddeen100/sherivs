@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Phase 10 Communication Platform unit tests
+ * Sherivs Scholar — Phase 10 Communication Platform unit tests
  * (communication-conversation).
  *
  * Validates:

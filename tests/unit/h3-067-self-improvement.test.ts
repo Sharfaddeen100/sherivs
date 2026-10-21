@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-067 self-improvement contract tests (mission G-067).
+ * Sherivs — H3-067 self-improvement contract tests (mission G-067).
  * Zod validation of phase-47 governed improvement-loop contracts: observed
  * engineering signals, evidenced proposals with named change and rollback,
  * the structural AGENTS §8 encoding (protected change classes always require

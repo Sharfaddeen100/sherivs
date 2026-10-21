@@ -1,5 +1,5 @@
 /**
- * CoreGrid — generated-site surface view-model (WAVE-R40).
+ * Sherivs — generated-site surface view-model (WAVE-R40).
  *
  * The UI layer's contract with the experience engine. A route renders this
  * object; it never re-derives sections, brand, navigation or governance itself,

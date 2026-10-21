@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 06 Workspace Engine: navigation chrome.
+ * Sherivs — Phase 06 Workspace Engine: navigation chrome.
  *
  * Workspace-DYNAMIC UI foundation. Every navigation surface (sidebar,
  * bottom nav, home hubs) is resolved from CONTRIBUTIONS through the

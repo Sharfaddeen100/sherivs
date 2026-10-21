@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — African Education Runtime: domain event vocabulary.
+ * Sherivs Scholar — African Education Runtime: domain event vocabulary.
  *
  * Runtime events are recorded through the UNIVERSAL kernel event contract
  * (`kernel/reality.ts` → `eventDraft` → `cg_event` substrate). This module

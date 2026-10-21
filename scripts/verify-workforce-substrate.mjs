@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * CoreGrid — live workforce-substrate verification (20260907000000/0100/0300).
+ * Sherivs — live workforce-substrate verification (20260907000000/0100/0300).
  *
  * Proves against the real project that the workforce substrate is applied and
  * that the seeded database catalog cannot drift from the typed runtime catalog

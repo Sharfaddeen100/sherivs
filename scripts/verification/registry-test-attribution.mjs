@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * CoreGrid registry test-attribution regenerator (MISSION-R-04 / J-046 / COND-012).
+ * Sherivs registry test-attribution regenerator (MISSION-R-04 / J-046 / COND-012).
  *
  * Attributes every unit test file the verify pipeline executes to exactly one
  * registry phase (or records it as explicitly unattributed with a TODO), so

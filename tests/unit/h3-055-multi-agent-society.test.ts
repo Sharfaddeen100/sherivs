@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-055 phase-35 multi-agent society contract tests
+ * Sherivs — H3-055 phase-35 multi-agent society contract tests
  * (Squad G mission G-055, Contract Architect).
  *
  * Proves the fail-closed surface of `frontend/src/lib/multi-agent-society/

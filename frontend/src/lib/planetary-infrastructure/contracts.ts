@@ -1,5 +1,5 @@
 /**
- * CoreGrid — phase 44 substrate surface: distributed infrastructure contracts
+ * Sherivs — phase 44 substrate surface: distributed infrastructure contracts
  * (H3 wave Squad G, mission G-064; Contract Architect, phase 44).
  *
  * WHAT: Zod-validated contracts for the distributed-infrastructure substrate —

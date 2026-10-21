@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 11 Academic Learning Intelligence: curriculum, competency and assessment.
+ * Sherivs — Phase 11 Academic Learning Intelligence: curriculum, competency and assessment.
  *
  * The blueprint's distinctive claims are structural — a curriculum is versioned, a competency
  * graph is acyclic, an objective declares how mastery is judged, an assessment proves what it

@@ -1,5 +1,5 @@
 /**
- * CoreGrid — provider integration health (auth-level, read-only).
+ * Sherivs — provider integration health (auth-level, read-only).
  *
  * The execution plane behind the §18 health vocabulary. Every check is a
  * SINGLE read-only request against the provider's OWN health/list endpoint

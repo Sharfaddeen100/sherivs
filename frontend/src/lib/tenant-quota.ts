@@ -1,5 +1,5 @@
 /**
- * CoreGrid Tenant Quota & Entitlement Engine (H4 + H5 + O + P).
+ * Sherivs Tenant Quota & Entitlement Engine (H4 + H5 + O + P).
  *
  * Implements `architecture/phase-03-multi-tenancy.md`:
  * - Entitlement evaluation: Tenant + Capability + Policy + Contract = Entitlement Decision (O2).

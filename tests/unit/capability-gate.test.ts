@@ -1,5 +1,5 @@
 /**
- * CoreGrid — capability-gate tests (fail-closed, per-feature r001 codes).
+ * Sherivs — capability-gate tests (fail-closed, per-feature r001 codes).
  */
 import { describe, expect, it } from "vitest";
 import {

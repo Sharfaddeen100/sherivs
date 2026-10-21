@@ -1,5 +1,5 @@
 /**
- * CoreGrid — domain authorization contribution registry (V1-006).
+ * Sherivs — domain authorization contribution registry (V1-006).
  *
  * The registration half of the DomainDefinition pattern (the configuration
  * model proven by `domain-config/restaurant.ts`): a domain declares its own
@@ -27,7 +27,7 @@ import { isNeutralCoreRole, NEUTRAL_ROLE_PERMISSIONS } from "./neutral-roles";
 /**
  * A role contributed by a domain through registration. Branded: domain code
  * converts a plain role name explicitly (`domainRole("…")`) at its own
- * boundary, keeping the core's `CoreGridRole` union honest — a typo'd or
+ * boundary, keeping the core's `SherivsRole` union honest — a typo'd or
  * unregistered role cannot flow into the engine unnoticed.
  */
 export type DomainRegisteredRole = string & { readonly __brand: "DomainRegisteredRole" };

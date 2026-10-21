@@ -1,5 +1,5 @@
 /**
- * CoreGrid — universal organization model tests (MISSION-V1-006).
+ * Sherivs — universal organization model tests (MISSION-V1-006).
  * Fail-closed behavior, tree integrity, membership rules, scope derivation,
  * and the mandatory tenant-isolation case (Constitution §31).
  */

@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Evidence lifecycle tests (J-033 / V1CAP-058 / MISSION-R-91).
+ * Sherivs — Evidence lifecycle tests (J-033 / V1CAP-058 / MISSION-R-91).
  *
  * Proves the lifecycle contract of `lib/evidence/capture.ts` additively over
  * the wave-2 capture suites:

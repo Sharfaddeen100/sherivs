@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar runtime → kernel event-flow tests.
+ * Sherivs Scholar runtime → kernel event-flow tests.
  *
  * These tests prove the runtime consumes the universal kernel: every Scholar
  * domain event passes through the kernel `eventDraft` contract and is bound to

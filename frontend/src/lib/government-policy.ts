@@ -3,7 +3,7 @@ import { SystemClock, TimeAuthority } from "./kernel/time-authority";
 /** J-023: time enters only via the kernel time-authority — no direct wall-clock sampling. */
 const timeAuthority = new TimeAuthority(new SystemClock());
 
-// ─── CoreGrid Phase 20 — Government Education Cloud ──────────────────
+// ─── Sherivs Phase 20 — Government Education Cloud ──────────────────
 // government-policy.ts — Policy lifecycle, programmes, funding, workflow
 // ──────────────────────────────────────────────────────────────────────
 

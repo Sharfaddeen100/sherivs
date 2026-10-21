@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H2-25 / J-007 contract tests: the per-agent credential broker.
+ * Sherivs — H2-25 / J-007 contract tests: the per-agent credential broker.
  *
  * Mission acceptance, one case per contract:
  *  1. issuance bounded by declared capabilities (no self-widening, the

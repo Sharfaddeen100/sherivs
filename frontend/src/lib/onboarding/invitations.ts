@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 25: domain-neutral organization invitations & activation.
+ * Sherivs — Phase 25: domain-neutral organization invitations & activation.
  *
  * Implements the phase-25 invitation + activation semantics for the ENTIRE
  * ecosystem: an organization invites a human identity into its workspace with

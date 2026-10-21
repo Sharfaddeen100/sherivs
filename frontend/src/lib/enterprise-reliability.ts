@@ -1,5 +1,5 @@
 /**
- * CoreGrid Enterprise Reliability — consistency, idempotency, distributed
+ * Sherivs Enterprise Reliability — consistency, idempotency, distributed
  * transactions, service tiers, SLO/error budgets, latency budgets, RPO/RTO,
  * failure domains, cell architecture, and multi-region contracts.
  *

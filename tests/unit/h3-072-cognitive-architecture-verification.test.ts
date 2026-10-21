@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-072 phase-34 cognitive-architecture ADVERSARIAL VERIFICATION
+ * Sherivs — H3-072 phase-34 cognitive-architecture ADVERSARIAL VERIFICATION
  * suite (mission G-072, Verifier role, Squad G; H3-WAVE-CAMPAIGN.md).
  *
  * Target: frontend/src/lib/cognitive-architecture/contracts.ts (landed by

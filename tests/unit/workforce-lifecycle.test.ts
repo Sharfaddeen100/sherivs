@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 25 wave-3 tests: domain-neutral organization membership
+ * Sherivs — Phase 25 wave-3 tests: domain-neutral organization membership
  * lifecycle, role change, transfer, separation of duties, offboarding.
  */
 import { describe, expect, it } from "vitest";

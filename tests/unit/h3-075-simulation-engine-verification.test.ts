@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-075 simulation-engine adversarial verification suite (Squad G,
+ * Sherivs — H3-075 simulation-engine adversarial verification suite (Squad G,
  * mission G-075, Verifier — phase 37 simulation-engine).
  *
  * Adversarial verification against the COMPLETED contract module

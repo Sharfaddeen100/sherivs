@@ -1,5 +1,5 @@
 /**
- * CoreGrid — phase 42 substrate surface: zero trust & adversarial defense
+ * Sherivs — phase 42 substrate surface: zero trust & adversarial defense
  * contracts (H3 wave Squad G, mission G-062; Contract Architect, phase 42).
  *
  * WHAT: Zod-validated contracts for the adversarial-defense substrate —

@@ -1,6 +1,6 @@
 # Scripts
 
-Automation scripts for the CoreGrid platform.
+Automation scripts for the Sherivs platform.
 
 - `smoke.sh` - smoke test public/auth routes against a running dev server
 - `verification/check.ps1` - verification bundle: typecheck + unit tests +

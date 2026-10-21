@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — school calendar (Phase-04 §31).
+ * Sherivs Scholar — school calendar (Phase-04 §31).
  *
  * The calendar holds instructional days, holidays, examinations, events,
  * breaks, training days, public holidays and institutional closures as typed

@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-015 mission-gate machinery tests (mission B-015 / J-026).
+ * Sherivs — H3-015 mission-gate machinery tests (mission B-015 / J-026).
  *
  * Proves the fail-closed gate laws for the definition / security /
  * verification / closure taxonomy (MISSION-R-51):

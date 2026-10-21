@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — privacy, child data, audit, retention, residency
+ * Sherivs Scholar — privacy, child data, audit, retention, residency
  * (Phase-04 §136–140, M3).
  *
  * Privacy boundary contract: sensitive educational data is PURPOSE-LIMITED

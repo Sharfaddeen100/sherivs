@@ -1,5 +1,5 @@
 /**
- * CoreGrid — per-page guidance registry (Scholar R-001 UI surface).
+ * Sherivs — per-page guidance registry (Scholar R-001 UI surface).
  *
  * Route-keyed "what can I do on this page" tips shown inside the portal shell.
  * Pure data + matcher; tips are guidance text only — they never change

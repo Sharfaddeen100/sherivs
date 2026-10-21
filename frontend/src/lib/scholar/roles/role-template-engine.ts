@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Educational Reality Role Engine: template engine.
+ * Sherivs Scholar — Educational Reality Role Engine: template engine.
  *
  * Turns an institution's REALITY (the feature keys + templates it selected at
  * onboarding, its education levels and jurisdictions) into the role set it

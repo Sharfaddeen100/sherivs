@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — institution configuration validator (Phase-04 §83).
+ * Sherivs Scholar — institution configuration validator (Phase-04 §83).
  *
  * Detects structural and consistency problems in an institution's operating
  * configuration: invalid levels/programmes, duplicate or blank campuses and

@@ -1,5 +1,5 @@
 /**
- * CoreGrid Delegation object contract tests (J-025 / V1CAP-046, MISSION-R-50).
+ * Sherivs Delegation object contract tests (J-025 / V1CAP-046, MISSION-R-50).
  *
  * Validates the pure contract in
  * frontend/src/lib/mission/delegation-contract.ts:

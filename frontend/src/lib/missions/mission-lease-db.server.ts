@@ -1,5 +1,5 @@
 /**
- * CoreGrid — DB-backed mission lease port over `cg_mission_lease`
+ * Sherivs — DB-backed mission lease port over `cg_mission_lease`
  * (MISSION V1-003, team WORKFORCE).
  *
  * Closes the lease-substrate gap REPORTED (fail-closed) by mission V1-004

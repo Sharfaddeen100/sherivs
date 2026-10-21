@@ -1,5 +1,5 @@
 /**
- * CoreGrid — V1-001 PWA offline shell tests.
+ * Sherivs — V1-001 PWA offline shell tests.
  *
  * The PWA assets (service worker, robots.txt, favicon) must ship from ONE
  * canonical public dir, the push client must register the service worker at

@@ -1,5 +1,5 @@
 /**
- * CoreGrid — model registry unit tests (J-014, V1CAP-028, MISSION-R-31).
+ * Sherivs — model registry unit tests (J-014, V1CAP-028, MISSION-R-31).
  *
  * Proves the registry's fail-closed construction, deterministic routing by
  * declared purpose requirements (capability/cost/latency), health-state

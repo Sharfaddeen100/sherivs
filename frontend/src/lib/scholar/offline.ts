@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — offline-first operation (Phase-04 §86–90).
+ * Sherivs Scholar — offline-first operation (Phase-04 §86–90).
  *
  * The runtime must work with weak/intermittent connectivity, expensive mobile
  * data and power interruptions (§86). Supported workflows queue SAFE

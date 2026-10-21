@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — configurable grading (§41).
+ * Sherivs Scholar — configurable grading (§41).
  *
  * Grading systems are configuration: numerical, percentage, letter, grade
  * bands, competency, pass/fail, mastery and institution-defined models are

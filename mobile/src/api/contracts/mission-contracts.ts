@@ -1,7 +1,7 @@
 /**
- * CoreGrid Mobile — mission execution read contracts.
+ * Sherivs Mobile — mission execution read contracts.
  *
- * Row shapes are the SINGLE-SOURCE contracts from `@coregrid/contracts`
+ * Row shapes are the SINGLE-SOURCE contracts from `@sherivs/contracts`
  * (formerly mirrored by hand from the web's foundation-loop module — that
  * mirror class is retired: both surfaces now consume one physical source,
  * Constitution §23). Every response is Zod-validated before a screen renders
@@ -13,13 +13,13 @@ import type {
   FoundationEvidenceRow,
   FoundationExecutionRow,
   FoundationVerificationRow,
-} from "@coregrid/contracts";
+} from "@sherivs/contracts";
 import {
   EVIDENCE_LIFECYCLES,
   EXECUTION_STATUSES,
   EXTERNAL_EFFECTS,
   VERIFICATION_DECISIONS,
-} from "@coregrid/contracts";
+} from "@sherivs/contracts";
 
 const timestamp = z.string().trim().min(1);
 

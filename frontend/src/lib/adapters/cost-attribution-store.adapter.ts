@@ -1,5 +1,5 @@
 /**
- * CoreGrid — DB-backed substrate adapter for the cost-attribution contract
+ * Sherivs — DB-backed substrate adapter for the cost-attribution contract
  * (J-043 / V1CAP-078 / MISSION-R-70), persisting metering/cost-attribution.ts
  * usage-ledger roll-ups into the tables authored by
  * database/supabase/migrations/20261002000010_coregrid_v1_cost_attribution.sql.

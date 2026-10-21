@@ -1,5 +1,5 @@
 /**
- * CoreGrid environment verification.
+ * Sherivs environment verification.
  * Usage: npm run verify:env
  * Validates required environment variables and detects server-only secrets
  * accidentally exposed via VITE_ prefix.

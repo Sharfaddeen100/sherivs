@@ -1,5 +1,5 @@
 /**
- * CoreGrid Marketplace Platform — marketplace governance domain.
+ * Sherivs Marketplace Platform — marketplace governance domain.
  *
  * Implements `architecture/phase-27-marketplace.md`:
  * - Publishing governance (120-122): requirements for submission, review,

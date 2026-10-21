@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — language model + multilingual education (Phase-04 §17–18).
+ * Sherivs Scholar — language model + multilingual education (Phase-04 §17–18).
  *
  * Languages are configurable entities. An institution may declare
  * instructional, administrative, local, examination and communication

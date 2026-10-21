@@ -1,5 +1,5 @@
 /**
- * CoreGrid — AI model registry, routing policy & fallback chains (J-014,
+ * Sherivs — AI model registry, routing policy & fallback chains (J-014,
  * V1CAP-028, MISSION-R-31; Constitution §20 gateway-owned routing, §25
  * provider neutrality).
  *

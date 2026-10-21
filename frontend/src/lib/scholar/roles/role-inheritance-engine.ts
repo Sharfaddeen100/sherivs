@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Educational Reality Role Engine: inheritance engine.
+ * Sherivs Scholar — Educational Reality Role Engine: inheritance engine.
  *
  * Roles form a hierarchy inside ONE institution's reality (e.g. Head Teacher →
  * Deputy Head Teacher → Subject Teacher). The hierarchy is installed as DATA by

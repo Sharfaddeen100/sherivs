@@ -1,5 +1,5 @@
 /**
- * CoreGrid Regional Context — country, region, jurisdiction, timezone,
+ * Sherivs Regional Context — country, region, jurisdiction, timezone,
  * calendar, holiday, and education-system localization domain.
  *
  * Implements `architecture/phase-30-globalization.md`:

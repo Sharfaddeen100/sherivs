@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Educational Reality Role Engine: catalog audit.
+ * Sherivs Scholar — Educational Reality Role Engine: catalog audit.
  *
  * The audit is the machine-checkable definition of "the role catalog is well
  * formed": every category represented, every role structurally valid, every

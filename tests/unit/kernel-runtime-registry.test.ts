@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 33 Universal Kernel: domain-runtime registry lifecycle tests.
+ * Sherivs — Phase 33 Universal Kernel: domain-runtime registry lifecycle tests.
  */
 
 import { describe, expect, it } from "vitest";

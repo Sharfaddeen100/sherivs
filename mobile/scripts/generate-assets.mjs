@@ -1,8 +1,8 @@
 /**
- * CoreGrid Mobile — deterministic asset generator (placeholders to spec).
+ * Sherivs Mobile — deterministic asset generator (placeholders to spec).
  *
  * Produces the icon/splash assets referenced by app.json as valid PNGs,
- * rendered from the CoreGrid brand tokens (dark navy field, light "grid
+ * rendered from the Sherivs brand tokens (dark navy field, light "grid
  * cell" motif). Run `npm run generate-assets` in mobile/ to (re)generate.
  * These are placeholder marks: final brand artwork is pending design
  * authority and must be replaced before public release.

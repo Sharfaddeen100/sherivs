@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Cluster G tests (Phase-04 §38–39, 44–45).
+ * Sherivs Scholar — Cluster G tests (Phase-04 §38–39, 44–45).
  * Attendance model + events, learning activities, lesson model.
  */
 import { describe, expect, it } from "vitest";

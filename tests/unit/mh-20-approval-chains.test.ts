@@ -1,5 +1,5 @@
 /**
- * CoreGrid human approval chains tests (J-032, MISSION H2-20;
+ * Sherivs human approval chains tests (J-032, MISSION H2-20;
  * Constitution §7, §12, §16, §21).
  *
  * Validates frontend/src/lib/governance/approval-chains.ts:

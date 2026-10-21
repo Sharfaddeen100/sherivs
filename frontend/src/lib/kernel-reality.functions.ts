@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 33 kernel backend: tenant reality recording (kernel wiring §2.2).
+ * Sherivs — Phase 33 kernel backend: tenant reality recording (kernel wiring §2.2).
  *
  * Tenant-scoped server functions that record reality through the universal
  * substrate contracts (`kernel/reality.ts` pure drafts) into the cg_*

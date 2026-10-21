@@ -1,5 +1,5 @@
 /**
- * CoreGrid Globalization Governance — configuration precedence, feature
+ * Sherivs Globalization Governance — configuration precedence, feature
  * availability, country readiness/expansion, support, localization QA,
  * connectivity/device localization, voice/accessibility UX, knowledge graph,
  * and globalization API/events domain.

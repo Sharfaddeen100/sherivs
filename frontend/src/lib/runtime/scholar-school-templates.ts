@@ -1,13 +1,13 @@
 /**
- * CoreGrid Scholar (R-001) — school template catalog.
+ * Sherivs Scholar (R-001) — school template catalog.
  *
  * Institution templates that match how an African school ACTUALLY runs:
  * public/private day schools, religious (Christian/Islamic) schools, TVET and
  * technical institutes, entrepreneurship and agricultural streams, boarding
  * schools, double-shift schools and multi-campus groups. The engine
  * (`onboarding/template-engine.ts`) recommends these from whatever features
- * the school selects — CoreGrid adapts to the school; the school never adapts
- * to CoreGrid.
+ * the school selects — Sherivs adapts to the school; the school never adapts
+ * to Sherivs.
  */
 import type { InstitutionTemplate } from "../onboarding/template-engine";
 

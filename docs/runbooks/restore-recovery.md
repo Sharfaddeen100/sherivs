@@ -39,9 +39,9 @@ by construction (`:90`, and the ADR-005 obligations table in the ratification ru
 3. **Transport note** — the drill uses the Management API channel, which needs no CA
    cert. Any FUTURE direct-Postgres restore path MUST derive its `ssl` option from
    `scripts/lib/pg-ssl.mjs` strict TLS policy (`:28–31`), i.e. via
-   `scripts/lib/pg-connect.mjs`: strict verification against `COREGRID_DB_CA_CERT` or
+   `scripts/lib/pg-connect.mjs`: strict verification against `SHERIVS_DB_CA_CERT` or
    Node's default store, session-pooler fallback for IPv6-only endpoints
-   (`scripts/lib/pg-connect.mjs:89–122`), and `COREGRID_DB_INSECURE_TLS=1` remains the
+   (`scripts/lib/pg-connect.mjs:89–122`), and `SHERIVS_DB_INSECURE_TLS=1` remains the
    explicitly logged last resort that must never be used against production
    (`scripts/lib/pg-ssl.mjs:10–15`, `:75–78`). TLS is never weakened automatically
    (`scripts/lib/pg-connect.mjs:91`, `:109`).

@@ -1,5 +1,5 @@
 /**
- * CoreGrid Mobile — environment contract (Phase 22 CC/CD: environment
+ * Sherivs Mobile — environment contract (Phase 22 CC/CD: environment
  * separation, fail-closed configuration loading).
  *
  * Pure module: reads nothing itself; `parseMobileEnv` consumes an injected
@@ -17,7 +17,7 @@ export interface MobileEnv {
   readonly supabaseUrl: string;
   /** Publishable (anon) key — public by design; authorization stays server-side (RLS). */
   readonly supabasePublishableKey: string;
-  /** Base URL of the deployed CoreGrid web app hosting the server functions. */
+  /** Base URL of the deployed Sherivs web app hosting the server functions. */
   readonly coregridWebBaseUrl: string;
   /**
    * TanStack Start server-function ids are build-generated content hashes of
@@ -96,8 +96,8 @@ export function parseMobileEnv(source: Record<string, string | undefined>): Mobi
   const publishableField = field(publishableKey.safeParse(source.EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? ""));
   if (!publishableField.ok) failures.push(`EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${publishableField.message}`);
 
-  const webBaseField = field(httpUrl.safeParse(source.EXPO_PUBLIC_COREGRID_WEB_BASE_URL ?? ""));
-  if (!webBaseField.ok) failures.push(`EXPO_PUBLIC_COREGRID_WEB_BASE_URL: ${webBaseField.message}`);
+  const webBaseField = field(httpUrl.safeParse(source.EXPO_PUBLIC_SHERIVS_WEB_BASE_URL ?? source.EXPO_PUBLIC_COREGRID_WEB_BASE_URL ?? ""));
+  if (!webBaseField.ok) failures.push(`EXPO_PUBLIC_SHERIVS_WEB_BASE_URL: ${webBaseField.message}`);
 
   const fnRecordField = field(serverFnId.safeParse(source.EXPO_PUBLIC_SERVER_FN_RECORD_FOUNDATION_LOOP ?? ""));
   if (!fnRecordField.ok) failures.push(`EXPO_PUBLIC_SERVER_FN_RECORD_FOUNDATION_LOOP: ${fnRecordField.message}`);

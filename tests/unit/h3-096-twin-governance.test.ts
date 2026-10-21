@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-096 Twin Governance assertion suite (mission J-096,
+ * Sherivs — H3-096 Twin Governance assertion suite (mission J-096,
  * Squad J — Governance & documentation).
  *
  * PURPOSE: prove, over the EXISTING twin contracts/modules (read-only),

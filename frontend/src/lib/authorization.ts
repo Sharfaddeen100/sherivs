@@ -1,5 +1,5 @@
 /**
- * CoreGrid Authorization Engine.
+ * Sherivs Authorization Engine.
  *
  * Implements the combined authorization model from `architecture/phase-02-identity.md`
  * (J4–J8): RBAC + ABAC + ReBAC + PBAC, producing an explicit decision:
@@ -41,7 +41,7 @@ import type {
   AuthorizationDecision,
   AuthorizationRequest,
   AuthorizationResult,
-  CoreGridIdentity,
+  SherivsIdentity,
   IdentityRelationship,
   Permission,
   PermissionAction,
@@ -65,10 +65,10 @@ const timeAuthority = new TimeAuthority(new SystemClock());
  * appear in this file (RULING-4 direction: domain -> neutral only).
  * ────────────────────────────────────────────────────────────*/
 
-export type CoreGridRole = NeutralCoreRole | DomainRegisteredRole;
+export type SherivsRole = NeutralCoreRole | DomainRegisteredRole;
 
 /** The platform's own role set: neutral core roles only. */
-export const COREGRID_ROLES: readonly CoreGridRole[] = NEUTRAL_CORE_ROLES;
+export const COREGRID_ROLES: readonly SherivsRole[] = NEUTRAL_CORE_ROLES;
 
 /* ─────────────────────────────────────────────────────────────
  * Policy engine (PBAC layer)
@@ -196,7 +196,7 @@ export function evaluateAbac(
  * ────────────────────────────────────────────────────────────*/
 
 export interface AuthorizeOptions {
-  role: CoreGridRole;
+  role: SherivsRole;
   /** Additional explicit grants beyond the role's RBAC grants. */
   extraPermissions?: Permission[];
   /** Policy set to evaluate (PBAC). */
@@ -333,7 +333,7 @@ export function permission(
 }
 
 export function makeAuthorizationRequest(
-  identity: Pick<CoreGridIdentity, "id" | "kind" | "lifecycle" | "tenantId">,
+  identity: Pick<SherivsIdentity, "id" | "kind" | "lifecycle" | "tenantId">,
   resource: PermissionResource,
   action: PermissionAction,
   scope: string | null = null,

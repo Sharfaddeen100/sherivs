@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — archetype simulation suite (Phase-04 §171–172, O5).
+ * Sherivs Scholar — archetype simulation suite (Phase-04 §171–172, O5).
  * African institution archetypes through ONE configuration path.
  */
 import { describe, expect, it } from "vitest";

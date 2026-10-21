@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 07 AI Agent System: governance report.
+ * Sherivs — Phase 07 AI Agent System: governance report.
  *
  * The phase's governing rule: "agents are execution entities; domain phases remain
  * owners of domain truth." This module reports what the agent system enforces, and

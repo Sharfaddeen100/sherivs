@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * CoreGrid — H3 wave, team H3-044 (Communication Probe Engineer), mission
+ * Sherivs — H3 wave, team H3-044 (Communication Probe Engineer), mission
  * E-044 (Squad E — Launch-gate drills, BLK-5). Credential-gated communication
  * provider probe, built in the drill exemplars' image (mission A-001's
  * scripts/verify-recovery-drill.mjs and scripts/apply-canonical-hardening.mjs;
@@ -17,13 +17,13 @@
  *               exact order, ALL gates before any network contact:
  *                 1. unknown arguments        → exit 2 BLOCKED_USAGE;
  *                 2. provider credential gate → exit 2 BLOCKED_NO_CREDENTIAL
- *                    (COREGRID_COMMUNICATION_PROVIDER_CREDENTIAL absent) —
+ *                    (SHERIVS_COMMUNICATION_PROVIDER_CREDENTIAL absent) —
  *                    BEFORE any network contact, nothing probed;
  *                 3. offline rehearsal must pass → exit 1 on any finding,
  *                    still with zero network contact;
  *                 4. sandbox gate → exit 2 BLOCKED_NO_SANDBOX_TARGET when the
  *                    operator-supplied sandbox verification target
- *                    (COREGRID_COMMUNICATION_SANDBOX_TARGET) is absent. The
+ *                    (SHERIVS_COMMUNICATION_SANDBOX_TARGET) is absent. The
  *                    drill REQUIRES an operator-supplied sandbox target by
  *                    design: without one there is NO authorized destination
  *                    and no network contact is ever made;
@@ -50,12 +50,12 @@
  * handshake above, which carries no message content.
  *
  * Credential law: secret NAMES are declared (COREGRID_COMMUNICATION_PROVIDER_
- * CREDENTIAL, COREGRID_COMMUNICATION_SANDBOX_TARGET); secret VALUES are never
+ * CREDENTIAL, SHERIVS_COMMUNICATION_SANDBOX_TARGET); secret VALUES are never
  * printed, logged, or written to any artifact — including in error paths. The
  * sandbox target is logged as host only (never the full URL, which could carry
  * embedded credentials). No eval, no dynamic code, no new dependencies.
  *
- * Artifacts directory: COREGRID_ARTIFACTS_DIR (default /opt/cursor/artifacts).
+ * Artifacts directory: SHERIVS_ARTIFACTS_DIR (default /opt/cursor/artifacts).
  *
  * Usage:
  *   node scripts/verify-communication-live.drill.mjs --rehearse [provider-id]
@@ -74,11 +74,14 @@ import { z } from "zod";
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
 const DEFAULT_ARTIFACTS_DIR = "/opt/cursor/artifacts";
-const ARTIFACTS_DIR = process.env.COREGRID_ARTIFACTS_DIR ?? DEFAULT_ARTIFACTS_DIR;
+const ARTIFACTS_DIR = (process.env.SHERIVS_ARTIFACTS_DIR ?? process.env.COREGRID_ARTIFACTS_DIR) ?? DEFAULT_ARTIFACTS_DIR;
 
 /** Secret NAMES only — values are never referenced in any output. */
-const CREDENTIAL_ENV_NAME = "COREGRID_COMMUNICATION_PROVIDER_CREDENTIAL";
-const SANDBOX_TARGET_ENV_NAME = "COREGRID_COMMUNICATION_SANDBOX_TARGET";
+const CREDENTIAL_ENV_NAME = "SHERIVS_COMMUNICATION_PROVIDER_CREDENTIAL";
+const SANDBOX_TARGET_ENV_NAME = "SHERIVS_COMMUNICATION_SANDBOX_TARGET";
+// Former names, still honoured.
+const LEGACY_CREDENTIAL_ENV_NAME = "COREGRID_COMMUNICATION_PROVIDER_CREDENTIAL";
+const LEGACY_SANDBOX_TARGET_ENV_NAME = "COREGRID_COMMUNICATION_SANDBOX_TARGET";
 const HANDSHAKE_TIMEOUT_MS = 8_000; // parity with DEFAULT_EMAIL_FAILURE_POLICY timeoutMs
 
 // ── mode / argument parsing ──────────────────────────────────────────────────
@@ -104,7 +107,7 @@ if (unknownFlags.length > 0 || positionals.length > 1) {
  * variable are ever used downstream. Rehearsal is deliberately credential-
  * free (offline) and ignores the variable entirely.
  */
-const credential = process.env[CREDENTIAL_ENV_NAME];
+const credential = process.env[CREDENTIAL_ENV_NAME] ?? process.env[LEGACY_CREDENTIAL_ENV_NAME];
 if (MODE !== "rehearse" && !credential) {
   console.error(
     `BLOCKED_NO_CREDENTIAL ${CREDENTIAL_ENV_NAME} is not set. Nothing was probed and no network contact was made.`,
@@ -611,7 +614,9 @@ if (rehearsal.findings > 0) {
 
 // Sandbox gate — the operator-supplied target is REQUIRED by design; without
 // it there is no authorized destination and no network contact is ever made.
-const sandbox = validateSandboxTarget(process.env[SANDBOX_TARGET_ENV_NAME]);
+const sandbox = validateSandboxTarget(
+  process.env[SANDBOX_TARGET_ENV_NAME] ?? process.env[LEGACY_SANDBOX_TARGET_ENV_NAME],
+);
 if (!sandbox.ok) {
   console.error(
     sandbox.reason === "absent"

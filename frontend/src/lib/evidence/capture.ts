@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Evidence-class capture discipline (J-034 / V1CAP-059 / MISSION-R-90).
+ * Sherivs — Evidence-class capture discipline (J-034 / V1CAP-059 / MISSION-R-90).
  *
  * The canonical evidence capture API. Every captured evidence record carries an
  * explicit evidence CLASS, and the class carries the epistemic weight:

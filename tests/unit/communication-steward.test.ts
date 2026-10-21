@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 10 Communication Platform: the Communication Steward.
+ * Sherivs — Phase 10 Communication Platform: the Communication Steward.
  *
  * Every organization on the platform is given an autonomous communication steward, so
  * the tests that matter are the refusals: each way the platform says no, and the rule

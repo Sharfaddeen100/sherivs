@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 04 Educational Reality Engine: projection derivation.
+ * Sherivs — Phase 04 Educational Reality Engine: projection derivation.
  *
  * `architecture/phase-04-education-reality-engine.md` §1 answers nine questions
  * about an institution ("What does this institution look like?", "How does this

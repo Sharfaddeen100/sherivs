@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Phase 07 AI Agent System unit tests (agent-tasks).
+ * Sherivs Scholar — Phase 07 AI Agent System unit tests (agent-tasks).
  *
  * Validates:
  * - Task state transitions (Section AC).

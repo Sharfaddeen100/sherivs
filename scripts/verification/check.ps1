@@ -1,5 +1,5 @@
 #!/usr/bin/env pwsh
-# CoreGrid verification bundle.
+# Sherivs verification bundle.
 # Runs: typecheck -> unit tests -> production build.
 # Usage:  pwsh scripts/verification/check.ps1   (or:  scripts\verification\check.ps1)
 

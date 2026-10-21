@@ -1,4 +1,4 @@
-// ─── CoreGrid Phase 23 — Web Platform ───────────────────────────────
+// ─── Sherivs Phase 23 — Web Platform ───────────────────────────────
 // web-core.ts — Web runtime, routing, URL architecture, rendering,
 //               browser security, CSP, XSS, CSRF, cookies, auth
 // ──────────────────────────────────────────────────────────────────────

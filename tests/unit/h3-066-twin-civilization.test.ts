@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-066 phase-46 twin-civilization contract tests
+ * Sherivs — H3-066 phase-46 twin-civilization contract tests
  * (mission G-066). Zod validation of the federation substrate surface:
  * §10 twin admission (identity/owner/tenant/state/history/capabilities/
  * policies structurally required), the twin-is-not-a-permission-bypass

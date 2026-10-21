@@ -1,5 +1,5 @@
 /**
- * CoreGrid — universal role vocabulary + directional mapping contract tests
+ * Sherivs — universal role vocabulary + directional mapping contract tests
  * (V1CAP-014 / J-006, CTO RULING-4; closes I-010 / I-030 / I-031 at the
  * contract level).
  */

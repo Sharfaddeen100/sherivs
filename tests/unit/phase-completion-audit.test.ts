@@ -1,5 +1,5 @@
 /**
- * CoreGrid — phase completion audit tests (wave AUDIT-1).
+ * Sherivs — phase completion audit tests (wave AUDIT-1).
  *
  * The Constitution defines an evidence-derived five-level maturity model and a
  * Phase Completion Gate. These tests make that gate enforceable:

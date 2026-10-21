@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Jarvis V1 executive-orchestrator contract (V5.3 Part 15).
+ * Sherivs — Jarvis V1 executive-orchestrator contract (V5.3 Part 15).
  *
  * Jarvis is an EXECUTIVE ORCHESTRATOR + MISSION COORDINATOR + ESCALATION LAYER +
  * PLATFORM OBSERVABILITY INTERFACE — not an unrestricted god-agent. This module

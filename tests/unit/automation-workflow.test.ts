@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Phase 17 Controlled Automation Engine unit tests
+ * Sherivs Scholar — Phase 17 Controlled Automation Engine unit tests
  * (automation-workflow).
  *
  * Validates:

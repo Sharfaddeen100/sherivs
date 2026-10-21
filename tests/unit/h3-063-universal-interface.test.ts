@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-063 universal-interface contract tests (mission G-063).
+ * Sherivs — H3-063 universal-interface contract tests (mission G-063).
  * Zod validation of the phase-43 connectivity substrate contracts: connector
  * kernel, zero-trust verification, guard-evidence posture (never
  * authorization), discovery registration (fail-closed), protocol

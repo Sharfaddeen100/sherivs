@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Educational Reality Role Engine: registry.
+ * Sherivs Scholar — Educational Reality Role Engine: registry.
  *
  * Expands the reality GROUPS (data) into ROLE definitions, merging roles that
  * appear in more than one reality (one role, many homes — never a duplicate

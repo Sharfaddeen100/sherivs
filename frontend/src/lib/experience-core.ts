@@ -1,4 +1,4 @@
-// ─── CoreGrid Phase 24 — Experience & Design Intelligence ────────────
+// ─── Sherivs Phase 24 — Experience & Design Intelligence ────────────
 // experience-core.ts — Design language, tokens, component architecture,
 //                      navigation, search, command palette, layout
 // ──────────────────────────────────────────────────────────────────────

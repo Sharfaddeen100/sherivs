@@ -1,5 +1,5 @@
 /**
- * CoreGrid Evolution Migration — deprecation, sunset, migration,
+ * Sherivs Evolution Migration — deprecation, sunset, migration,
  * compatibility, schema/API/protocol/model evolution, cryptographic agility,
  * generation transitions, and vendor exit.
  *
@@ -663,7 +663,7 @@ export function createVendorExitPlan(input: {
   };
 }
 
-// Section AN: CoreGrid must avoid irreversible dependency on a single vendor.
+// Section AN: Sherivs must avoid irreversible dependency on a single vendor.
 export function isVendorIndependenceSatisfied(plan: VendorExitPlan): boolean {
   return (
     plan.abstractionLayer &&

@@ -1,5 +1,5 @@
 /**
- * CoreGrid — P33 kernel ↔ database-tooling coherence tests.
+ * Sherivs — P33 kernel ↔ database-tooling coherence tests.
  *
  * The universal kernel substrate is deny-by-default: RLS enabled, zero
  * policies, zero anon/authenticated grants (see kernel-purity.test.ts). The

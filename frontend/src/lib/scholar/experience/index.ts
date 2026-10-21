@@ -1,7 +1,7 @@
 /**
- * CoreGrid Scholar — Dynamic Experience & Website Generation engine.
+ * Sherivs Scholar — Dynamic Experience & Website Generation engine.
  *
- * Organizations do not buy modules; they declare their reality and CoreGrid
+ * Organizations do not buy modules; they declare their reality and Sherivs
  * generates their public presence, their internal application and the
  * workspaces each person receives. The engine consumes the Educational Reality
  * Role Engine for roles/workspaces and the institution vocabulary for reality.

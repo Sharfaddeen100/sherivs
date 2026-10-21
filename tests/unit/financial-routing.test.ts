@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 13 payment routing unit tests (financial-routing).
+ * Sherivs — Phase 13 payment routing unit tests (financial-routing).
  *
  * The laws under test (Phase 13 Z, AA, DQ):
  * - routing is a decision over DECLARED provider capabilities, never a hard-coded

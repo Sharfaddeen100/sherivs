@@ -2,7 +2,7 @@
  * Sherivs — platform identity constants (UI chrome).
  *
  * Single source for how the platform presents itself. SHERIVS is the COMPANY
- * and the PLATFORM; "CoreGrid" is a historical internal architecture reference
+ * and the PLATFORM; "Sherivs" is a historical internal architecture reference
  * and must never appear on a customer-facing surface. A runtime's own name,
  * id and description belong to that runtime's layer
  * (`@/lib/runtime/installed-runtimes`), never to the platform's identity module,

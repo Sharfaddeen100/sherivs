@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — adaptive configuration discovery (Phase-04 §159–160).
+ * Sherivs Scholar — adaptive configuration discovery (Phase-04 §159–160).
  *
  * The system asks the administrator only for information that cannot be safely
  * inferred (§159) and progressively discovers complexity as the institution

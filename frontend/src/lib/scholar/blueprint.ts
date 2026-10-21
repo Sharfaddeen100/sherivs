@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — versioned institution blueprint (Phase-04 §81–82,128–129).
+ * Sherivs Scholar — versioned institution blueprint (Phase-04 §81–82,128–129).
  *
  * The institution's complete operating model is a VERSIONED blueprint:
  *   version · author · timestamp · reason · previousVersion · spec

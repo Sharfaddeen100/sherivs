@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 08 Security Engine: server-function enforcement surface.
+ * Sherivs — Phase 08 Security Engine: server-function enforcement surface.
  *
  * Machine-checked inventory of `frontend/src/lib/*.functions.ts` against the
  * canonical runtime role gate (`security-role-gate.ts`).

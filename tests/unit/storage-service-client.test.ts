@@ -1,5 +1,5 @@
 /**
- * CoreGrid — service-role storage client factory tests (MISSION-R-103).
+ * Sherivs — service-role storage client factory tests (MISSION-R-103).
  *
  * Focus: fail-closed composition. Missing, malformed or wrong-class
  * credentials never produce a storage client; a valid configuration wires

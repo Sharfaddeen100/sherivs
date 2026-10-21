@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * CoreGrid — H3 wave, team H3-085 (Secrets-Hygiene Engineer), mission H-085.
+ * Sherivs — H3 wave, team H3-085 (Secrets-Hygiene Engineer), mission H-085.
  *
  * Static scan for committed secret-shaped strings (AGENTS.md §29/§30: never
  * log or commit secrets). Detection classes:

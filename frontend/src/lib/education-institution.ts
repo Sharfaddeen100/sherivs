@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Education Reality Engine institutional structure.
+ * Sherivs — Education Reality Engine institutional structure.
  *
  * Implements `architecture/phase-04-education-reality-engine.md`:
  * - Cohort model: intake, cohort, class, stream, group, house, tutorial group,

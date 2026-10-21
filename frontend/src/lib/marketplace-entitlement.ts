@@ -1,5 +1,5 @@
 /**
- * CoreGrid Marketplace Platform — commercial and entitlement domain.
+ * Sherivs Marketplace Platform — commercial and entitlement domain.
  *
  * Implements `architecture/phase-27-marketplace.md`:
  * - Pricing models (52-57): free, one-time purchase, subscription, usage-based,
@@ -15,7 +15,7 @@
  *   financial subsystem (62).
  * - Entitlement (63-67): determines whether a tenant or user may use a marketplace
  *   capability; sources (purchase, subscription, grant, institution plan,
- *   government program, CoreGrid license, free allocation); scope (tenant, campus,
+ *   government program, Sherivs license, free allocation); scope (tenant, campus,
  *   department, workspace, role, user, device); expiration (66); suspension without
  *   deleting the product (67).
  * - Installation lifecycle (68): Requested → Authorized → Validated →

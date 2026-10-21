@@ -1,5 +1,5 @@
 /**
- * CoreGrid AI output trust pipeline tests (J-035 / V1CAP-030/032,
+ * Sherivs AI output trust pipeline tests (J-035 / V1CAP-030/032,
  * MISSION-R-34; Constitution §21).
  *
  * Validates frontend/src/lib/ai-gateway/output-trust-pipeline.ts:

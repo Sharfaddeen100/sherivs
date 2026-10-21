@@ -1,5 +1,5 @@
 /**
- * CoreGrid — ephemeral agent runtime lifecycle unit tests (V5.3 Part 14).
+ * Sherivs — ephemeral agent runtime lifecycle unit tests (V5.3 Part 14).
  *
  * Validates:
  * - Happy-path lifecycle through every Part 14 stage.

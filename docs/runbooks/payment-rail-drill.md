@@ -173,7 +173,7 @@ evidence pattern:
   pending by design, audit record count reconciled, `databaseContact=false`).
 - **Storage** — the runner writes `payments-drill-test-round.json/.log` (round) and
   `payments-drill-rehearsal.json/.log` (rehearsal) into the artifact directory
-  (`COREGRID_ARTIFACTS_DIR`, default `/opt/cursor/artifacts`). Nothing with
+  (`SHERIVS_ARTIFACTS_DIR`, default `/opt/cursor/artifacts`). Nothing with
   secret-shaped material is ever written; the coordinator files the round record under
   `architecture/proofs/` alongside the existing proof records when ratifying.
 

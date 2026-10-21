@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * CoreGrid Mission 0001 reconciliation artifact validator.
+ * Sherivs Mission 0001 reconciliation artifact validator.
  *
  * This is intentionally read-only. It validates that the evidence model
  * references the current repository shape and reports conflicts without

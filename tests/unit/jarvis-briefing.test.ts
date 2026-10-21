@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Jarvis V1 executive briefing composer tests (V5.3 Part 15).
+ * Sherivs — Jarvis V1 executive briefing composer tests (V5.3 Part 15).
  *
  * Security negatives are mandatory (Constitution section 31): the composer must
  * never fabricate facts (every emitted token is drawn from input summaries or

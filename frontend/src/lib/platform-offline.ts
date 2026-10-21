@@ -1,4 +1,4 @@
-// ─── CoreGrid Phase 22 — Mobile Platform ─────────────────────────────
+// ─── Sherivs Phase 22 — Mobile Platform ─────────────────────────────
 // platform-offline.ts — Offline-first capability, sync engine,
 //                       cache management, low-bandwidth mode
 // ──────────────────────────────────────────────────────────────────────

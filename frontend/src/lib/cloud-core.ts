@@ -1,4 +1,4 @@
-// ─── CoreGrid Phase 21 — Global Cloud Fabric ─────────────────────────
+// ─── Sherivs Phase 21 — Global Cloud Fabric ─────────────────────────
 // cloud-core.ts — Infrastructure identity, intent, provider abstraction,
 //                 regions, zones, placement, residency, cloud models
 // ──────────────────────────────────────────────────────────────────────

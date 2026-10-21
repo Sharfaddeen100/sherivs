@@ -1,5 +1,5 @@
 /**
- * CoreGrid Evolution Intelligence — technology radar, horizon scanning,
+ * Sherivs Evolution Intelligence — technology radar, horizon scanning,
  * technology evaluation, technical debt, dependency intelligence, evolution
  * ADRs, risk register, evolution metrics, synthetic data, and engineering
  * memory.
@@ -13,7 +13,7 @@
  *   identity, payments, communications, edtech, learning science, HCI,
  *   developer infrastructure, data engineering, quantum computing, advanced
  *   hardware, energy, emerging architectures — only integrate what materially
- *   improves CoreGrid.
+ *   improves Sherivs.
  * - Technology evaluation (I): strategic relevance, user/institutional
  *   value, technical/security maturity, privacy, regulatory, integration and
  *   operational complexity, infrastructure cost, vendor dependency,
@@ -163,7 +163,7 @@ export function scoreTechnologyAssessment(assessment: TechnologyAssessment): num
   return values.reduce((sum, v) => sum + v, 0) / values.length;
 }
 
-// Section H: integrate only technologies that materially improve CoreGrid.
+// Section H: integrate only technologies that materially improve Sherivs.
 export function isTechnologyRecommended(
   assessment: TechnologyAssessment,
   threshold: number,

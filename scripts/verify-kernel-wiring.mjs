@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * CoreGrid — live kernel-wiring verification (post-migration, DB-backed).
+ * Sherivs — live kernel-wiring verification (post-migration, DB-backed).
  *
  * Uses the REAL authored modules (bundled via esbuild from the repo TS) so the
  * rows written are produced by the same pure code the server functions use:

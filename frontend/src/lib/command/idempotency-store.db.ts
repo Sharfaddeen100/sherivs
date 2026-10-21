@@ -1,5 +1,5 @@
 /**
- * CoreGrid — durable DB-backed idempotency store (H3-028 / L-T-012).
+ * Sherivs — durable DB-backed idempotency store (H3-028 / L-T-012).
  *
  * The durable variant of the platform command idempotency contract
  * (J-030 / V1CAP-054): `frontend/src/lib/command/idempotency.ts` defines the

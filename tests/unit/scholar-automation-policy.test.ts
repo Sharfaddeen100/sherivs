@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — automation policy adapter tests (Phase 17 consumption).
+ * Sherivs Scholar — automation policy adapter tests (Phase 17 consumption).
  */
 import { describe, expect, it } from "vitest";
 import {

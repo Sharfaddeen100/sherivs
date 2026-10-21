@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-059 governance-alignment contract tests (mission G-059).
+ * Sherivs — H3-059 governance-alignment contract tests (mission G-059).
  * Zod validation of phase-39 alignment substrate contracts: expectations,
  * evidence-based conformance, drift records with actor attribution,
  * advisory-only escalations, and the human-governance relaxation posture

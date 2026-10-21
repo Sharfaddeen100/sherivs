@@ -1,7 +1,7 @@
 /**
- * CoreGrid — kernel engineering-section dictionary (domain-neutral).
+ * Sherivs — kernel engineering-section dictionary (domain-neutral).
  *
- * Every CoreGrid phase must declare the same twenty engineering sections. This
+ * Every Sherivs phase must declare the same twenty engineering sections. This
  * module is the kernel-side single source of truth for that dictionary: the
  * documentation scanner (`scripts/verification/engineering-sections.mjs`), the
  * completeness matrix (PROGRESS.md §10) and the phase-contract schema

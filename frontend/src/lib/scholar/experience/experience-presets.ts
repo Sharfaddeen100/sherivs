@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — organization-class reality presets (WAVE-R36).
+ * Sherivs Scholar — organization-class reality presets (WAVE-R36).
  *
  * A surface can generate an experience for an organization CLASS before it knows
  * the organization's own answers (the provisioning flow's selected org type).

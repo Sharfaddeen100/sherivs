@@ -1,5 +1,5 @@
 /**
- * CoreGrid — AI-specific runtime defenses (J-036 / V1CAP-033, MISSION-R-84;
+ * Sherivs — AI-specific runtime defenses (J-036 / V1CAP-033, MISSION-R-84;
  * hardening L-H-014; Constitution §19 AI privacy, §20 AI gateway, §21 AI
  * output trust, §26 API governance, §29 observability).
  *

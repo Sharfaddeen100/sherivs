@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Phase 08 Security Engine unit tests (security-events).
+ * Sherivs Scholar — Phase 08 Security Engine unit tests (security-events).
  *
  * Validates:
  * - Security event contract and immutability (Sections F.3, S.2, AT.7).

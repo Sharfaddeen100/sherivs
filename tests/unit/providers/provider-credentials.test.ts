@@ -1,5 +1,5 @@
 /**
- * CoreGrid — provider credential registry tests (mission §4/§26).
+ * Sherivs — provider credential registry tests (mission §4/§26).
  *
  * Proves:
  * 1. The registry parses fail-closed (schema, uniqueness, hygiene).

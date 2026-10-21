@@ -1,8 +1,8 @@
 /**
- * CoreGrid — Twilio SMS adapter (V1-009 communication fabric).
+ * Sherivs — Twilio SMS adapter (V1-009 communication fabric).
  *
- * The concrete Twilio implementation of CoreGrid's outbound SMS capability.
- * Like the Resend email adapter, CoreGrid owns communication INTENT
+ * The concrete Twilio implementation of Sherivs's outbound SMS capability.
+ * Like the Resend email adapter, Sherivs owns communication INTENT
  * (recipient, authorization, message, delivery state, retries); Twilio is an
  * ADAPTER only (Constitution §24), reached through one bounded fetch here.
  *
@@ -140,7 +140,7 @@ export const TwilioSmsResponseSchema = z.object({
 });
 
 /* ─────────────────────────────────────────────────────────────
- * Typed results (CoreGrid vocabulary — provider shapes never leak inward)
+ * Typed results (Sherivs vocabulary — provider shapes never leak inward)
  * ────────────────────────────────────────────────────────────*/
 
 export type TwilioSmsResult =

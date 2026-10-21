@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Academic Learning Intelligence: curriculum and competency intelligence.
+ * Sherivs — Academic Learning Intelligence: curriculum and competency intelligence.
  *
  * The blueprint's core claim (Phase 11 §C, §I–§O) is that the platform must know what was
  * being taught, against what competency, before it interprets any evidence about learning.

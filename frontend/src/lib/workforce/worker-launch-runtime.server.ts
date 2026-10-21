@@ -1,5 +1,5 @@
 /**
- * CoreGrid — worker mission launch RUNTIME (server-only).
+ * Sherivs — worker mission launch RUNTIME (server-only).
  *
  * The executable side of the launch surface: substrate assembly over the
  * sanctioned service-role DB adapters, the AI-gateway executor, and the §27

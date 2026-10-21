@@ -1,5 +1,5 @@
 /**
- * CoreGrid — V1-012: §27 per-function invariant suite for the command-centre
+ * Sherivs — V1-012: §27 per-function invariant suite for the command-centre
  * server-function family (Constitution §27), plus the honest-substrate route
  * wiring contract for /command-centre.
  *

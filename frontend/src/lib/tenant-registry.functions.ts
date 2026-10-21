@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 03 tenant registry server functions (L2 consumption).
+ * Sherivs — Phase 03 tenant registry server functions (L2 consumption).
  *
  * Registers tenants in `cg_tenant` through the pure `tenant-registry`
  * contract. Platform control-plane operation: the canonical super-admin gate

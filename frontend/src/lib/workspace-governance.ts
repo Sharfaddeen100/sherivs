@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 06 Workspace Engine governance, configuration, and observability (platform layer).
+ * Sherivs — Phase 06 Workspace Engine governance, configuration, and observability (platform layer).
  *
  * Implements `architecture/phase-06-workspace-engine.md`:
  * - Workspace policy: available modules, allowed widgets, default layouts,

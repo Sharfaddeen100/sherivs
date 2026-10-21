@@ -1,5 +1,5 @@
 /**
- * CoreGrid — KERNEL capability registry (domain-neutral, Phase 33 substrate).
+ * Sherivs — KERNEL capability registry (domain-neutral, Phase 33 substrate).
  *
  * Typed consumption of the platform capability graph (architecture/registry.json).
  * The kernel owns WHAT the platform can do; a domain runtime declares which kernel

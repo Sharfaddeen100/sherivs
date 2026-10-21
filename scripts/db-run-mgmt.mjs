@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * CoreGrid — run a SQL verification/query file via the Supabase Management API.
+ * Sherivs — run a SQL verification/query file via the Supabase Management API.
  *
  * Usage:
  *   SHERIVS_DATABASE_TARGET=staging SHERIVS_PROJECT_REF=<ref> \

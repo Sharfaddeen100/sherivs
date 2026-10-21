@@ -1,5 +1,5 @@
 /**
- * CoreGrid — phase 36 Universal Memory & Knowledge Engine substrate contracts
+ * Sherivs — phase 36 Universal Memory & Knowledge Engine substrate contracts
  * (H3 wave, Squad G, mission G-056 — Contract Architect).
  *
  * WHAT: the typed, Zod-validated contract surface for the phase-36 memory and

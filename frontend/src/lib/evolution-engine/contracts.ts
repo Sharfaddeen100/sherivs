@@ -1,5 +1,5 @@
 /**
- * CoreGrid — phase 38 Evolution Engine substrate contracts
+ * Sherivs — phase 38 Evolution Engine substrate contracts
  * (H3 wave Squad G, mission G-058; Contract Architect).
  *
  * WHAT: a Zod-validated, fail-closed contract surface for the phase-38

@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 09 Security & Trust Fabric: the self-report EXERCISES the
+ * Sherivs — Phase 09 Security & Trust Fabric: the self-report EXERCISES the
  * shipped state machines rather than describing them.
  *
  * What this suite protects: every invariant the fabric claims is checked by a

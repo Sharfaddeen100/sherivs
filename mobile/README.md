@@ -18,7 +18,7 @@ claimed as available).
 | Navigation | expo-router (file-based, `mobile/app/`) |
 | Auth | Supabase JS — email/password sign-in against the SAME project as web |
 | API | Typed clients in `mobile/src/api/` mirroring web contracts + RLS-governed reads |
-| Server functions | TanStack Start `/_serverFn/<id>` URL contract via `EXPO_PUBLIC_COREGRID_WEB_BASE_URL` |
+| Server functions | TanStack Start `/_serverFn/<id>` URL contract via `EXPO_PUBLIC_SHERIVS_WEB_BASE_URL` |
 | Session storage | expo-secure-store (iOS Keychain / Android Keystore) — never plain storage |
 | Tests | Root-repo vitest (`tests/unit/mobile-*.test.ts`) + `npm run typecheck` here |
 
@@ -37,7 +37,7 @@ Environment contract (names in `.env.example`; never commit real values):
 - `EXPO_PUBLIC_SUPABASE_URL` — same Supabase project as the web app
 - `EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY` — publishable/anon key only
   (public by design; authorization is enforced server-side by RLS)
-- `EXPO_PUBLIC_COREGRID_WEB_BASE_URL` — deployed web app that hosts the
+- `EXPO_PUBLIC_SHERIVS_WEB_BASE_URL` — deployed web app that hosts the
   TanStack Start server functions
 - `EXPO_PUBLIC_SERVER_FN_RECORD_FOUNDATION_LOOP`,
   `EXPO_PUBLIC_SERVER_FN_LIST_IDENTITIES` — server-function ids emitted by
@@ -87,19 +87,19 @@ cached or fabricated content.
 ## Shared-contract discipline (AGENTS §23)
 
 The shared contracts are declared ONCE in `packages/contracts`
-(specifier `@coregrid/contracts`, an npm `file:` dependency consumed as
+(specifier `@sherivs/contracts`, an npm `file:` dependency consumed as
 TypeScript source by both Vite and Metro — no bundler plugins). This app
 imports them directly; there is no mobile-side mirror to drift:
 
-- **Database row types** — `@coregrid/contracts` (`src/database.ts`, generated
+- **Database row types** — `@sherivs/contracts` (`src/database.ts`, generated
   types; type-erased at build time; a schema change fails both surfaces'
   typechecks at once).
-- **Execution/identity vocabulary** — `@coregrid/contracts`
+- **Execution/identity vocabulary** — `@sherivs/contracts`
   (`src/vocabulary.ts`); the web's contract modules re-export the same
   declarations, so vocabulary drift between web and mobile is impossible by
   construction (pinned by `tests/unit/contracts-single-source.test.ts`).
 - **Server-function request/response contracts** — row shapes come from
-  `@coregrid/contracts` (`src/foundation-rows.ts`, `src/identity.ts`);
+  `@sherivs/contracts` (`src/foundation-rows.ts`, `src/identity.ts`);
   responses re-validated with Zod before rendering, and each Zod schema is
   compile-time-pinned to the shared row type.
 

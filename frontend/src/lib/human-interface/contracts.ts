@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 50 Human Civilization Interface Layer substrate contracts
+ * Sherivs — Phase 50 Human Civilization Interface Layer substrate contracts
  * (H3 wave Squad G, mission G-070; Constitution §7, §9, §12, §16, §21, §34;
  * architecture/phase-50-human-civilization-interface-layer.md).
  *

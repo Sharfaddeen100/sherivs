@@ -1,12 +1,12 @@
 /**
- * CoreGrid — Telephony adapter contract (V1-009, team COMMS).
+ * Sherivs — Telephony adapter contract (V1-009, team COMMS).
  *
  * Provider-agnostic contract for outbound voice calls, mirroring the shape of
  * the email adapter contract (V5.3 Part 20) so both channels share one
  * failure vocabulary and one failure-policy composition (J-045).
  *
  * Boundaries (Constitution §24):
- * - CoreGrid owns communication INTENT (recipient, authorization, channel,
+ * - Sherivs owns communication INTENT (recipient, authorization, channel,
  *   message, delivery state, retries, evidence, audit). Providers are
  *   adapters ONLY: concrete providers (Twilio, Vapi, Africa's Talking, …)
  *   plug in behind `TelephonyAdapter` and are configured server-side.

@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar runtime → kernel reality-flow tests.
+ * Sherivs Scholar runtime → kernel reality-flow tests.
  *
  * Scholar entities, relationships and observations flow through the universal
  * kernel draft contracts, each type/relation validated against the Scholar

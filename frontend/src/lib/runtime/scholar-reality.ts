@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — African Education Runtime: reality flows.
+ * Sherivs Scholar — African Education Runtime: reality flows.
  *
  * Completes the runtime → kernel consumption story: Scholar entities,
  * relationships and observations are recorded through the UNIVERSAL kernel

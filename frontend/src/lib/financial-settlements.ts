@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Payment, Billing & Financial Operating System
+ * Sherivs — Payment, Billing & Financial Operating System
  * reconciliation, settlement, product/pricing, and subscription domain
  * (Phase 13, Sections G, I, J, K, L, AG, AH, AI, AJ, AN).
  *

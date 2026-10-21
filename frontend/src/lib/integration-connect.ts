@@ -1,5 +1,5 @@
 /**
- * CoreGrid Integration Fabric — provider integration, protocol translation,
+ * Sherivs Integration Fabric — provider integration, protocol translation,
  * integration AI, and testing domain.
  *
  * Implements `architecture/phase-29-coregrid-integration.md`:
@@ -13,7 +13,7 @@
  * - Webhook security (BQ): signatures, timestamps, replay prevention,
  *   authentication, authorization. Network security (BR): TLS, certificate
  *   validation, network restrictions, IP allowlists, private connectivity.
- * - Protocol translation (BU-BV): SOAP → CoreGrid API; XML ⇄ JSON, CSV ⇄ JSON,
+ * - Protocol translation (BU-BV): SOAP → Sherivs API; XML ⇄ JSON, CSV ⇄ JSON,
  *   external schema ⇄ canonical schema.
  * - Integration workflows (BW-BX): complex integrations use Phase 17 automation
  *   contracts rather than a second automation engine.

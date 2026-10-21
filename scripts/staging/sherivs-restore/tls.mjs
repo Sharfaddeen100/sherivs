@@ -2,7 +2,7 @@
  * Strict TLS for the staging restore runner.
  *
  * Does not use scripts/lib/pg-ssl.mjs: that helper honours
- * COREGRID_DB_INSECURE_TLS=1 and sslmode=disable.
+ * SHERIVS_DB_INSECURE_TLS=1 and sslmode=disable.
  *
  * pg@8.23.1 ConnectionParameters does Object.assign({}, config,
  * parse(connectionString)), so a URL sslmode *overwrites* an explicit
@@ -26,6 +26,7 @@ import {
   FORBIDDEN_PG_SSL_ENV,
   FORBIDDEN_SSLMODE,
   INSECURE_TLS_ENV,
+  LEGACY_INSECURE_TLS_ENV,
   REQUIRED_PG_PORT,
 } from "./constants.mjs";
 import { redactText, redactUrl } from "./redact.mjs";
@@ -203,7 +204,7 @@ function assertTlsTokens(connectionString) {
  * Never includes connectionString (pg would let URL sslmode overwrite ssl).
  */
 export function strictTlsConfig(connectionString, env = process.env) {
-  if (env[INSECURE_TLS_ENV] === "1") {
+  if ((env[INSECURE_TLS_ENV] ?? env[LEGACY_INSECURE_TLS_ENV]) === "1") {
     fail(
       "TLS_INSECURE_FORBIDDEN",
       `${INSECURE_TLS_ENV}=1 is refused for staging restore`,
@@ -289,7 +290,7 @@ export function inspectTlsPosture(connectionString, env = process.env) {
       detail: redactText(err.message),
       rejectUnauthorized: true,
       caPresent: Boolean(loadCaCandidate(env).pem),
-      insecureFlag: env[INSECURE_TLS_ENV] === "1",
+      insecureFlag: (env[INSECURE_TLS_ENV] ?? env[LEGACY_INSECURE_TLS_ENV]) === "1",
       usesConnectionString: false,
     };
   }

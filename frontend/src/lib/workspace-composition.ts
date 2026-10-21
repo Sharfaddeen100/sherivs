@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 06 Workspace Engine composition domain (platform layer).
+ * Sherivs — Phase 06 Workspace Engine composition domain (platform layer).
  *
  * Implements `architecture/phase-06-workspace-engine.md`:
  * - Standalone navigation and embedded navigation (Sections Y, Z).

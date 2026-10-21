@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-078 zero-trust-defense VERIFICATION suite (mission G-078,
+ * Sherivs — H3-078 zero-trust-defense VERIFICATION suite (mission G-078,
  * Verifier, phase 42; Squad G law).
  *
  * WHAT: adversarial verification against the COMPLETED phase-42 contract

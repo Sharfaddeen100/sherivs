@@ -1,5 +1,5 @@
 /**
- * CoreGrid — H3-077 Universal Runtime Fabric ADVERSARIAL VERIFICATION suite
+ * Sherivs — H3-077 Universal Runtime Fabric ADVERSARIAL VERIFICATION suite
  * (mission G-077, phase 40, Verifier role).
  *
  * Relationship to G-060: G-060 owns the contract module's own suite; this

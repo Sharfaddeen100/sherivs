@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Cluster H tests (Phase-04 §40–43).
+ * Sherivs Scholar — Cluster H tests (Phase-04 §40–43).
  * Assessment model, configurable grading, promotion/progression.
  */
 import { describe, expect, it } from "vitest";

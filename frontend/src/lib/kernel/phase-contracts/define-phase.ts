@@ -1,5 +1,5 @@
 /**
- * CoreGrid — phase-contract authoring helper (kernel, domain-neutral).
+ * Sherivs — phase-contract authoring helper (kernel, domain-neutral).
  *
  * Writing a contract by hand for fifty-one phases would repeat the same
  * structure fifty-one times and invite drift. `definePhaseContract` keeps the

@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Phase 13 Financial Operating System unit tests
+ * Sherivs Scholar — Phase 13 Financial Operating System unit tests
  * (financial-core).
  *
  * Validates:

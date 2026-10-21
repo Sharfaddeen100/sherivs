@@ -100,7 +100,7 @@ The runner applies the §27 server-function discipline to one model invocation:
    attempt, a hard 60s timeout, **no transport retry and no model fallback** (billed,
    non-idempotent effects are never blindly retried).
 6. **Audit** — evidence written to `ai-gateway-live-drill.json` + `.log` in the artifacts
-   directory (`COREGRID_ARTIFACTS_DIR`, default `/opt/cursor/artifacts`): endpoint
+   directory (`SHERIVS_ARTIFACTS_DIR`, default `/opt/cursor/artifacts`): endpoint
    host/path, model, purpose, invocation count, usage counts, duration, prompt digest,
    output digest. Secret values never appear; every emitted line is additionally scrubbed
    against the live key as defense in depth (Part 29).
@@ -127,8 +127,8 @@ launch-gate proof of the gateway path, not a substitute for the gateway's unit b
 
 | Slot | Artifact | Retention |
 | --- | --- | --- |
-| Drill record | `${COREGRID_ARTIFACTS_DIR}/ai-gateway-live-drill.json` | Attach to the launch-gate evidence pack; scrub-check before archiving |
-| Drill log | `${COREGRID_ARTIFACTS_DIR}/ai-gateway-live-drill.log` | Same |
+| Drill record | `${SHERIVS_ARTIFACTS_DIR}/ai-gateway-live-drill.json` | Attach to the launch-gate evidence pack; scrub-check before archiving |
+| Drill log | `${SHERIVS_ARTIFACTS_DIR}/ai-gateway-live-drill.log` | Same |
 | Operator review | second-engineer sign-off line referencing the record's `executedAt` + `outputDigest` | Recorded in the wave evidence store |
 
 Blocked runs (exit `2`) write NO artifacts by design — a block is not evidence of a drill,

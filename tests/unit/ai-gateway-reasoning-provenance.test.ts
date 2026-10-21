@@ -1,5 +1,5 @@
 /**
- * CoreGrid — intelligence snapshot contract tests (J-015, V1CAP-029,
+ * Sherivs — intelligence snapshot contract tests (J-015, V1CAP-029,
  * MISSION-R-33; Constitution §9/§12/§21).
  *
  * Proves the reasoning-provenance contract: snapshot completeness (model,

@@ -262,8 +262,8 @@ runner is built, reviewed, and authorized separately. This mission does
 | `assert-not-production.mjs` | Blob `af6cadbfe4bb8f49ac60d77375f4281a27383057` on the Gate 4/PREP chain. **Absent from `d195ba8`**. Never connects. Fail-closes on production ref/host markers. Does **not** require `dvxszhracsjwdancijdc`. Does **not** refuse a set unprefixed `DATABASE_URL`. `PRODUCTION_HOST_MARKERS` includes `sherivs.com` (could false-positive a future staging custom domain) | **Necessary, not sufficient** |
 | `catalog-verify.sql` | Header: Gate 5 proofs **after** proposed change sets B–G. Expects freeze helpers and absence of FOR ALL on payroll/biometrics | **Wrong tool** for post-restore of the canonical baseline |
 
-`pgSslConfig`: default `{ rejectUnauthorized: true }`; `COREGRID_DB_CA_CERT`
-pins CA; `COREGRID_DB_INSECURE_TLS=1` disables verification; `sslmode=disable`
+`pgSslConfig`: default `{ rejectUnauthorized: true }`; `SHERIVS_DB_CA_CERT`
+pins CA; `SHERIVS_DB_INSECURE_TLS=1` disables verification; `sslmode=disable`
 disables TLS. A staging runner must refuse both escape hatches.
 
 ### 4.2 Minimum requirements for a future staging-only runner
@@ -282,7 +282,7 @@ hardening required by this review.
 4. **Positively require** project ref `dvxszhracsjwdancijdc` in hostname
    and, if pooled, in username (`postgres.dvxszhracsjwdancijdc`).
 5. Enforce strict TLS: `rejectUnauthorized: true` **and** pinned CA.
-   Refuse `COREGRID_DB_INSECURE_TLS=1` and refuse `sslmode=disable` /
+   Refuse `SHERIVS_DB_INSECURE_TLS=1` and refuse `sslmode=disable` /
    `ssl=false`.
 6. **Fail closed** on missing, conflicting, or ambiguous configuration
    (no staging URL; disagreeing staging URLs; third project ref; missing

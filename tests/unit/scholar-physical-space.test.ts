@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — Cluster K tests (Phase-04 §57–76).
+ * Sherivs Scholar — Cluster K tests (Phase-04 §57–76).
  * Boarding, transport, facilities, space, resources, devices, environment,
  * physical-digital mapping, facility availability.
  */

@@ -1,7 +1,7 @@
 /**
- * CoreGrid — school template engine + R-001 template catalog tests.
+ * Sherivs — school template engine + R-001 template catalog tests.
  *
- * Proves CoreGrid ADAPTS: templates are data bundles recommended from what an
+ * Proves Sherivs ADAPTS: templates are data bundles recommended from what an
  * organization selects; nothing is ever forced or removed.
  */
 import { describe, expect, it } from "vitest";

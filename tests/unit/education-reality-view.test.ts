@@ -1,5 +1,5 @@
 /**
- * CoreGrid — Phase 04 Educational Reality Engine: projection tests.
+ * Sherivs — Phase 04 Educational Reality Engine: projection tests.
  *
  * The surface must answer "How does this institution operate?" from real state and
  * must never invent one. These tests prove the three honest states and the

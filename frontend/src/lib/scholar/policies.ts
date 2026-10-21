@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — school operating policies (Phase-04 §77, M1, upgrade
+ * Sherivs Scholar — school operating policies (Phase-04 §77, M1, upgrade
  * target of the legacy education-governance surface).
  *
  * Institutions may define attendance, grading, promotion, discipline,

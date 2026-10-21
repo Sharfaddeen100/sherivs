@@ -1,7 +1,7 @@
 /**
- * CoreGrid — Phase 33 Universal Reality Kernel: domain-runtime manifest schema.
+ * Sherivs — Phase 33 Universal Reality Kernel: domain-runtime manifest schema.
  *
- * A domain runtime is installed on CoreGrid through a manifest — a declaration
+ * A domain runtime is installed on Sherivs through a manifest — a declaration
  * of the runtime's ontology (entity + relationship types it extends over the
  * universal substrate), the canonical capabilities it consumes, the policies
  * it requires, and the interfaces it exposes. The kernel accepts any manifest

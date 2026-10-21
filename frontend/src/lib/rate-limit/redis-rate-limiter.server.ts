@@ -1,5 +1,5 @@
 /**
- * CoreGrid — optional distributed rate limiter (Upstash-compatible REST).
+ * Sherivs — optional distributed rate limiter (Upstash-compatible REST).
  *
  * Server module. Implements the SAME `RateLimiter` contract as the in-process
  * sliding-window limiter in ai-gateway.server, but backed by an

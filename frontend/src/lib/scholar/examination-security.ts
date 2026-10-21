@@ -1,5 +1,5 @@
 /**
- * CoreGrid Scholar — examination security (Phase-04 §50).
+ * Sherivs Scholar — examination security (Phase-04 §50).
  *
  * Candidate verification, seating, invigilation, examination rooms, secure
  * papers, controlled access and incident reporting are typed configuration.
