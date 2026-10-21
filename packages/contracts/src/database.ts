@@ -6935,6 +6935,108 @@ export type Database = {
           },
         ];
       };
+      platform_roles: {
+        Row: {
+          capabilities: string[];
+          code: string;
+          description: string;
+          is_privileged: boolean;
+          label: string;
+          sort_order: number;
+        };
+        Insert: {
+          capabilities?: string[];
+          code: string;
+          description: string;
+          is_privileged?: boolean;
+          label: string;
+          sort_order?: number;
+        };
+        Update: {
+          capabilities?: string[];
+          code?: string;
+          description?: string;
+          is_privileged?: boolean;
+          label?: string;
+          sort_order?: number;
+        };
+        Relationships: [];
+      };
+      platform_staff: {
+        Row: {
+          activated_at: string | null;
+          department: string | null;
+          email: string;
+          full_name: string;
+          id: string;
+          invited_at: string;
+          invited_by: string | null;
+          status: string;
+          suspended_at: string | null;
+          updated_at: string;
+        };
+        Insert: {
+          activated_at?: string | null;
+          department?: string | null;
+          email: string;
+          full_name: string;
+          id: string;
+          invited_at?: string;
+          invited_by?: string | null;
+          status?: string;
+          suspended_at?: string | null;
+          updated_at?: string;
+        };
+        Update: {
+          activated_at?: string | null;
+          department?: string | null;
+          email?: string;
+          full_name?: string;
+          id?: string;
+          invited_at?: string;
+          invited_by?: string | null;
+          status?: string;
+          suspended_at?: string | null;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      platform_staff_roles: {
+        Row: {
+          granted_at: string;
+          granted_by: string | null;
+          role_code: string;
+          staff_id: string;
+        };
+        Insert: {
+          granted_at?: string;
+          granted_by?: string | null;
+          role_code: string;
+          staff_id: string;
+        };
+        Update: {
+          granted_at?: string;
+          granted_by?: string | null;
+          role_code?: string;
+          staff_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "platform_staff_roles_role_code_fkey";
+            columns: ["role_code"];
+            isOneToOne: false;
+            referencedRelation: "platform_roles";
+            referencedColumns: ["code"];
+          },
+          {
+            foreignKeyName: "platform_staff_roles_staff_id_fkey";
+            columns: ["staff_id"];
+            isOneToOne: false;
+            referencedRelation: "platform_staff";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       super_admins: {
         Row: {
           created_at: string | null;
@@ -7643,6 +7745,9 @@ export type Database = {
       };
       is_school_admin: { Args: never; Returns: boolean };
       is_super_admin: { Args: never; Returns: boolean };
+      is_platform_staff: { Args: never; Returns: boolean };
+      has_platform_capability: { Args: { p_capability: string }; Returns: boolean };
+      claim_platform_staff_invite: { Args: never; Returns: boolean };
       is_tenant_admin: { Args: { p_tenant: string }; Returns: boolean };
       list_role_assignments: {
         Args: { p_tenant: string };

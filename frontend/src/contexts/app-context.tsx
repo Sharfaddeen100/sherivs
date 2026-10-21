@@ -41,12 +41,23 @@ export type SuperAdminProfile = {
   email: string;
 };
 
+/** Active internal Sherivs staff member (public.platform_staff, SHERIVS-008). */
+export type PlatformStaffProfile = {
+  id: string;
+  full_name: string;
+  email: string;
+  status: string;
+  roles: string[];
+};
+
 type AppState = {
   loading: boolean;
   session: Session | null;
   authUser: User | null;
   profile: UserProfile | null;
   superAdmin: SuperAdminProfile | null;
+  /** Active internal staff (non-super-admin Sherivs workforce), else null. */
+  platformStaff: PlatformStaffProfile | null;
   /** The school in scope:
    *   - signed-in tenant user: their own school
    *   - public visitor on a tenant subdomain / ?school=slug: that school
@@ -72,10 +83,40 @@ function applyBrandColors(school: SchoolRow | null) {
   else root.style.removeProperty("--tenant-secondary");
 }
 
+/**
+ * Internal staff: activate an accepted invite (own row only, invited → active;
+ * grants nothing), then read the caller's own staff row + roles via RLS.
+ * Only ACTIVE staff resolve; any failure resolves to "not staff".
+ */
+async function loadPlatformStaff(userId: string): Promise<PlatformStaffProfile | null> {
+  try {
+    await supabase.rpc("claim_platform_staff_invite");
+    const { data } = await supabase
+      .from("platform_staff")
+      .select("id, full_name, email, status, platform_staff_roles(role_code)")
+      .eq("id", userId)
+      .eq("status", "active")
+      .maybeSingle();
+    if (!data) return null;
+    return {
+      id: data.id,
+      full_name: data.full_name,
+      email: data.email,
+      status: data.status,
+      roles: ((data.platform_staff_roles ?? []) as Array<{ role_code: string }>).map(
+        (r) => r.role_code,
+      ),
+    };
+  } catch {
+    return null;
+  }
+}
+
 export function AppProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [superAdmin, setSuperAdmin] = useState<SuperAdminProfile | null>(null);
+  const [platformStaff, setPlatformStaff] = useState<PlatformStaffProfile | null>(null);
   const [school, setSchool] = useState<SchoolRow | null>(null);
   const [tenantSlug, setTenantSlug] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -87,6 +128,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
     let nextProfile: UserProfile | null = null;
     let nextSuperAdmin: SuperAdminProfile | null = null;
+    let nextPlatformStaff: PlatformStaffProfile | null = null;
     let nextSchool: SchoolRow | null = null;
 
     if (currentSession?.user) {
@@ -112,6 +154,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
           .eq("id", currentSession.user.id)
           .maybeSingle();
         if (sa) nextSuperAdmin = sa as SuperAdminProfile;
+        else nextPlatformStaff = await loadPlatformStaff(currentSession.user.id);
       }
     }
 
@@ -142,6 +185,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
     setProfile(nextProfile);
     setSuperAdmin(nextSuperAdmin);
+    setPlatformStaff(nextPlatformStaff);
     setSchool(nextSchool);
     applyBrandColors(nextSchool);
     setLoading(false);
@@ -214,6 +258,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     authUser: session?.user ?? null,
     profile,
     superAdmin,
+    platformStaff,
     school,
     tenantSlug,
     role,

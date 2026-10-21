@@ -4,6 +4,7 @@ import {
   redirect,
   Link,
   useLocation,
+  Navigate,
   useNavigate,
   useRouter,
 } from "@tanstack/react-router";
@@ -74,14 +75,15 @@ function AuthenticatedRouteErrorComponent({ error, reset }: { error: unknown; re
 }
 
 function AuthenticatedLayout() {
-  const { profile, superAdmin, school, role, loading, signOut, authUser, refresh } = useApp();
+  const { profile, superAdmin, platformStaff, school, role, loading, signOut, authUser, refresh } =
+    useApp();
   const navigate = useNavigate();
   const location = useLocation();
   const getMyPrimaryPosition = useServerFn(getMyPrimaryWorkforcePosition);
   const switchActiveOrg = useServerFn(switchActiveOrganization);
   // The resolved identity chain (§11): drives the switcher's cross-organization
   // options and the active-context destination.
-  const identity = identityFromAppState({ superAdmin, profile, school });
+  const identity = identityFromAppState({ superAdmin, profile, school, platformStaff });
 
   const myPosition = useQuery({
     queryKey: ["my-primary-position", profile?.id, role],
@@ -112,6 +114,14 @@ function AuthenticatedLayout() {
         </div>
       </div>
     );
+  }
+
+  // Active internal staff (no tenant profile, no super admin) may open only
+  // the internal environment; every other surface stays closed to them.
+  if (!profile && !superAdmin && platformStaff) {
+    const pathname = location.pathname.replace(/\/+$/, "") || "/";
+    if (pathname !== "/internal") return <Navigate to="/internal" replace />;
+    return <Outlet />;
   }
 
   if (!profile && !superAdmin) {
@@ -147,7 +157,8 @@ function AuthenticatedLayout() {
     );
   }
 
-  const displayName = profile?.full_name ?? superAdmin?.full_name ?? "User";
+  const displayName =
+    profile?.full_name ?? superAdmin?.full_name ?? platformStaff?.full_name ?? "User";
   // Internal workforce home is the internal environment (plane 4); members
   // home to their resolved organization workspace.
   const dashHref = superAdmin && !profile ? "/internal" : role ? runtimeWorkspaceHome(role) : "/";

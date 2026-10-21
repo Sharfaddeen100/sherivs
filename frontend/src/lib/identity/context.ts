@@ -1,4 +1,9 @@
-import type { SuperAdminProfile, UserProfile, SchoolRow } from "@/contexts/app-context";
+import type {
+  PlatformStaffProfile,
+  SuperAdminProfile,
+  UserProfile,
+  SchoolRow,
+} from "@/contexts/app-context";
 import { scholarWorkspaceHome } from "@/lib/runtime/nav-registry";
 import { INSTALLED_RUNTIME_ID, INSTALLED_RUNTIME_NAME } from "@/lib/runtime/installed-runtimes";
 import { resolveIdentity, type OrganizationMembership } from "./identity";
@@ -20,8 +25,10 @@ export function identityFromAppState(input: {
   superAdmin: SuperAdminProfile | null;
   profile: UserProfile | null;
   school: SchoolRow | null;
+  /** Active internal staff (SHERIVS-008) — routed like the internal workforce. */
+  platformStaff?: PlatformStaffProfile | null;
 }) {
-  if (input.superAdmin) {
+  if (input.superAdmin || input.platformStaff) {
     return resolveIdentity({ isSherivsInternal: true, memberships: [] });
   }
 

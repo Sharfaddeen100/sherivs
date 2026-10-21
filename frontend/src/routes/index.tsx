@@ -58,19 +58,28 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  const { loading, school, tenantSlug, role, profile, superAdmin } = useApp();
+  const { loading, school, tenantSlug, role, profile, superAdmin, platformStaff } = useApp();
   const navigate = useNavigate();
 
   // Identity-based routing (§11): signed-in users on the platform host (not a
   // tenant site) go to their resolved identity destination — internal
   // workforce → /internal, organization member → their workspace home,
   // multiple memberships → the selector, unlinked → /welcome.
-  const identity = identityFromAppState({ superAdmin, profile, school });
+  const identity = identityFromAppState({ superAdmin, profile, school, platformStaff });
   useEffect(() => {
-    if (!loading && (role || profile || superAdmin) && !tenantSlug) {
+    if (!loading && (role || profile || superAdmin || platformStaff) && !tenantSlug) {
       navigate({ to: identity.destination, replace: true });
     }
-  }, [loading, role, profile, superAdmin, tenantSlug, identity.destination, navigate]);
+  }, [
+    loading,
+    role,
+    profile,
+    superAdmin,
+    platformStaff,
+    tenantSlug,
+    identity.destination,
+    navigate,
+  ]);
 
   // Per-tenant document title + meta description + OG image + JSON-LD
   useEffect(() => {
