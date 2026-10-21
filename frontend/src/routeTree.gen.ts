@@ -33,6 +33,7 @@ import { Route as siteContactRouteImport } from './routes/(site)/contact'
 import { Route as siteCoregridRouteImport } from './routes/(site)/coregrid'
 import { Route as sitePrivacyPolicyRouteImport } from './routes/(site)/privacy-policy'
 import { Route as siteRequestDemoRouteImport } from './routes/(site)/request-demo'
+import { Route as siteSherivsRouteImport } from './routes/(site)/sherivs'
 import { Route as siteTermsRouteImport } from './routes/(site)/terms'
 import { Route as AuthenticatedAdminRouteRouteImport } from './routes/_authenticated/admin/route'
 import { Route as AuthenticatedBursarRouteRouteImport } from './routes/_authenticated/bursar/route'
@@ -297,6 +298,11 @@ const sitePrivacyPolicyRoute = sitePrivacyPolicyRouteImport.update({
 const siteRequestDemoRoute = siteRequestDemoRouteImport.update({
   id: '/request-demo',
   path: '/request-demo',
+  getParentRoute: () => siteRouteRoute,
+} as any)
+const siteSherivsRoute = siteSherivsRouteImport.update({
+  id: '/sherivs',
+  path: '/sherivs',
   getParentRoute: () => siteRouteRoute,
 } as any)
 const siteTermsRoute = siteTermsRouteImport.update({
@@ -1189,6 +1195,7 @@ export interface FileRoutesByFullPath {
   '/coregrid': typeof siteCoregridRoute
   '/privacy-policy': typeof sitePrivacyPolicyRoute
   '/request-demo': typeof siteRequestDemoRoute
+  '/sherivs': typeof siteSherivsRoute
   '/terms': typeof siteTermsRoute
   '/internal': typeof AuthenticatedInternalRoute
   '/messages': typeof AuthenticatedMessagesRoute
@@ -1359,6 +1366,7 @@ export interface FileRoutesByTo {
   '/coregrid': typeof siteCoregridRoute
   '/privacy-policy': typeof sitePrivacyPolicyRoute
   '/request-demo': typeof siteRequestDemoRoute
+  '/sherivs': typeof siteSherivsRoute
   '/terms': typeof siteTermsRoute
   '/internal': typeof AuthenticatedInternalRoute
   '/messages': typeof AuthenticatedMessagesRoute
@@ -1533,6 +1541,7 @@ export interface FileRoutesById {
   '/(site)/coregrid': typeof siteCoregridRoute
   '/(site)/privacy-policy': typeof sitePrivacyPolicyRoute
   '/(site)/request-demo': typeof siteRequestDemoRoute
+  '/(site)/sherivs': typeof siteSherivsRoute
   '/(site)/terms': typeof siteTermsRoute
   '/_authenticated/internal': typeof AuthenticatedInternalRoute
   '/_authenticated/messages': typeof AuthenticatedMessagesRoute
@@ -1706,6 +1715,7 @@ export interface FileRouteTypes {
     | '/coregrid'
     | '/privacy-policy'
     | '/request-demo'
+    | '/sherivs'
     | '/terms'
     | '/internal'
     | '/messages'
@@ -1876,6 +1886,7 @@ export interface FileRouteTypes {
     | '/coregrid'
     | '/privacy-policy'
     | '/request-demo'
+    | '/sherivs'
     | '/terms'
     | '/internal'
     | '/messages'
@@ -2049,6 +2060,7 @@ export interface FileRouteTypes {
     | '/(site)/coregrid'
     | '/(site)/privacy-policy'
     | '/(site)/request-demo'
+    | '/(site)/sherivs'
     | '/(site)/terms'
     | '/_authenticated/internal'
     | '/_authenticated/messages'
@@ -2384,6 +2396,13 @@ declare module '@tanstack/react-router' {
       path: '/request-demo'
       fullPath: '/request-demo'
       preLoaderRoute: typeof siteRequestDemoRouteImport
+      parentRoute: typeof siteRouteRoute
+    }
+    '/(site)/sherivs': {
+      id: '/(site)/sherivs'
+      path: '/sherivs'
+      fullPath: '/sherivs'
+      preLoaderRoute: typeof siteSherivsRouteImport
       parentRoute: typeof siteRouteRoute
     }
     '/(site)/terms': {
@@ -3424,6 +3443,7 @@ interface siteRouteRouteChildren {
   siteCoregridRoute: typeof siteCoregridRoute
   sitePrivacyPolicyRoute: typeof sitePrivacyPolicyRoute
   siteRequestDemoRoute: typeof siteRequestDemoRoute
+  siteSherivsRoute: typeof siteSherivsRoute
   siteTermsRoute: typeof siteTermsRoute
 }
 
@@ -3433,6 +3453,7 @@ const siteRouteRouteChildren: siteRouteRouteChildren = {
   siteCoregridRoute: siteCoregridRoute,
   sitePrivacyPolicyRoute: sitePrivacyPolicyRoute,
   siteRequestDemoRoute: siteRequestDemoRoute,
+  siteSherivsRoute: siteSherivsRoute,
   siteTermsRoute: siteTermsRoute,
 }
 

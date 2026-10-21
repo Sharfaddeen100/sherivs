@@ -1,4 +1,4 @@
-# CoreGrid Scholar - Repository Audit
+# Sherivs Scholar - Repository Audit
 
 **Date:** 2026-08-15
 **Branch:** `coregrid-scholar-migration`
@@ -27,8 +27,8 @@ during migration so the platform ships verified:
    (`@tailwindcss/vite`), which the previous hosted platform wrapper used to
    supply; without it the local build cannot compile Tailwind CSS.
 
-The migration renames the project to **CoreGrid Scholar**, reorganizes the
-repository into the CoreGrid platform structure, and preserves all existing
+The migration renames the project to **Sherivs Scholar**, reorganizes the
+repository into the Sherivs platform structure, and preserves all existing
 functionality.
 
 ---
@@ -199,19 +199,19 @@ roadmap:
 1. Create branch `coregrid-scholar-migration` from the backup commit.
 2. Repair pre-existing build defects (classes.tsx, styles.css, Tailwind
    plugin).
-3. Create the CoreGrid Scholar platform root structure.
+3. Create the Sherivs Scholar platform root structure.
 4. Move code logically:
    - `src/` -> `frontend/src/`, `public/` -> `frontend/public/`
    - `supabase/` -> `database/supabase/`
    - RLS check -> `database/queries/`
    - unit tests -> `tests/unit/`
    - README spec -> `docs/product-spec.md`
-5. Rename identity to CoreGrid Scholar (package, UI, metadata, docs).
+5. Rename identity to Sherivs Scholar (package, UI, metadata, docs).
 6. Create architecture (32 phases), constitution, decisions, progress, and
    `.codex/` systems.
 7. Harden secrets handling (untrack `.env`, add `.env.example`).
 8. Verify build + unit tests; write deliverables.
-9. Commit: "Transform Remix School OS into CoreGrid Scholar foundation".
+9. Commit: "Transform Remix School OS into Sherivs Scholar foundation".
 
 ---
 

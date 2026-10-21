@@ -1,3 +1,5 @@
+> **Name note:** CoreGrid is the former name of the **Sherivs** platform — a domain-neutral platform for organizations. **Sherivs Scholar** (schools) is its first runtime; future runtimes (Health, Mining, Government, Industries, Personal) share the same app. This document keeps the CoreGrid name where it is historical or a technical identifier (packages, env vars, database objects, file names).
+
 COREGRID MASTER GOVERNANCE
 GPT-5.6 LUNA ENGINEERING OPERATING CONTRACT
 Document Type: Master Engineering Governance Instruction

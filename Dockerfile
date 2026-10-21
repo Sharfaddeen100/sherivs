@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 #
-# CoreGrid Scholar — V1 single-VM production image (Part 31 economy path).
+# Sherivs Scholar — V1 single-VM production image (Part 31 economy path).
 #
 # Runtime shape (verified against `vite build` output):
 #   dist/client/            static client assets

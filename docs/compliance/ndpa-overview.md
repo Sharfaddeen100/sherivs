@@ -1,4 +1,4 @@
-# NDPA 2023 compliance overview (CoreGrid Scholar)
+# NDPA 2023 compliance overview (Sherivs Scholar)
 
 Status: **foundations implemented (SHERIVS-003), V1 scope**. Everything marked **LEGAL REVIEW REQUIRED** is an engineering default, not legal advice; a Nigerian data-protection lawyer / the appointed DPO must confirm it before reliance.
 
@@ -7,7 +7,7 @@ Status: **foundations implemented (SHERIVS-003), V1 scope**. Everything marked *
 | Role | Who |
 |---|---|
 | Data controller | Each school (tenant) for its pupils, guardians and staff |
-| Data processor | CoreGrid platform operator (Control Plane) on behalf of schools — **LEGAL REVIEW REQUIRED**: data processing agreement per school |
+| Data processor | Sherivs platform operator (Control Plane) on behalf of schools — **LEGAL REVIEW REQUIRED**: data processing agreement per school |
 | DPO contact | `<DPO NAME / EMAIL / PHONE — PLACEHOLDER, to be appointed>` |
 | Regulator | Nigeria Data Protection Commission (NDPC) |
 

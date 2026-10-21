@@ -6,7 +6,7 @@
 
 ## Current state
 
-Post-migration CoreGrid Scholar: web platform in `frontend/`, Supabase data
+Post-migration Sherivs Scholar: web platform in `frontend/`, Supabase data
 layer in `database/`, 32-phase architecture roadmap, control plane in
 place, build + unit tests verified.
 

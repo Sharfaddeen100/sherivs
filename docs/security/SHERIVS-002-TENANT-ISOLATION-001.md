@@ -16,7 +16,7 @@ Evidence basis: static reading of `database/supabase/migrations/*.sql` (canonica
 | Column key | `school_id` (61 live tables) |
 | App gate | `security-role-gate.ts:130` (`school_admin: { role: "is_school_admin", scope: "get_my_school_id" }`), `:450-451` (`STAFF_SCOPE_RPC`/`STAFF_ROLE_RPC`), `:467-471` (RPC calls), `:492` (`schoolId: gate.scope`); `runtime/scholar/scholar-role-assignments.functions.ts:86`; `scholar-feature-access.functions.ts:84` |
 
-### 1b. Neutral CoreGrid model (`cg_*`)
+### 1b. Neutral Sherivs model (`cg_*`)
 
 | Element | Definition |
 |---|---|

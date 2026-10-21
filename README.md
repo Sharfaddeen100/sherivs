@@ -1,7 +1,7 @@
-CoreGrid
+Sherivs
 AI-Native Institutional Computing Platform
-CoreGrid is an AI-native institutional computing platform designed to represent reality, understand complex organizations, coordinate intelligence, execute workflows, operate autonomous agents, simulate change, and continuously evolve across domains.
-CoreGrid is not fundamentally a school application.
+Sherivs is an AI-native institutional computing platform designed to represent reality, understand complex organizations, coordinate intelligence, execute workflows, operate autonomous agents, simulate change, and continuously evolve across domains.
+Sherivs is not fundamentally a school application.
 It is a programmable institutional intelligence runtime.
 The platform provides universal computational infrastructure from which domain-specific realities, organizations, workflows, intelligence systems, agents, and applications can be instantiated.
 text
@@ -21,14 +21,14 @@ COREGRID
                                                      SCIENCE
                                                      INFRASTRUCTURE
 
-CoreGrid Scholar is the first major production runtime built on CoreGrid.
-It is not the architectural boundary of CoreGrid.
+Sherivs Scholar is the first major production runtime built on Sherivs.
+It is not the architectural boundary of Sherivs.
 
 ───
 
-1. The CoreGrid Vision
+1. The Sherivs Vision
 Traditional software begins with an application.
-CoreGrid begins with reality.
+Sherivs begins with reality.
 text
 REALITY
    ↓
@@ -60,7 +60,7 @@ EVOLUTION
    ↺
 
 The objective is to create infrastructure capable of turning complex real-world organizational realities into governed computational systems.
-CoreGrid therefore treats:
+Sherivs therefore treats:
 • people
 • organizations
 • institutions
@@ -90,8 +90,8 @@ It is:
 
 ───
 
-2. What CoreGrid Is
-CoreGrid provides universal primitives for building intelligent institutional systems.
+2. What Sherivs Is
+Sherivs provides universal primitives for building intelligent institutional systems.
 These include:
 • universal identity
 • multi-tenancy
@@ -140,8 +140,8 @@ APPLICATIONS / EXPERIENCES
 
 ───
 
-3. What CoreGrid Is Not
-CoreGrid is not fundamentally:
+3. What Sherivs Is Not
+Sherivs is not fundamentally:
 • an LMS
 • an ERP
 • a CRM
@@ -156,13 +156,13 @@ CoreGrid is not fundamentally:
 • a collection of unrelated AI agents
 • a model wrapper
 • a conventional SaaS application
-These may exist on top of CoreGrid.
-They do not define CoreGrid.
+These may exist on top of Sherivs.
+They do not define Sherivs.
 
 ───
 
-4. CoreGrid's Fundamental Architectural Model
-CoreGrid is organized around reusable computational capabilities.
+4. Sherivs's Fundamental Architectural Model
+Sherivs is organized around reusable computational capabilities.
 text
 COREGRID
                             │
@@ -191,15 +191,15 @@ COREGRID
                  APPLICATIONS / EXPERIENCES
 
 The same foundation can support fundamentally different domains without duplicating the platform.
-A school, enterprise, hospital, government organization, research institution, factory, or other complex organization should consume CoreGrid capabilities rather than independently rebuilding them.
+A school, enterprise, hospital, government organization, research institution, factory, or other complex organization should consume Sherivs capabilities rather than independently rebuilding them.
 
 ───
 
 5. Reality-First Architecture
-CoreGrid follows the principle:
+Sherivs follows the principle:
 Reality Before Representation.
 Software should represent meaningful entities, relationships, processes, states, events, constraints, resources, and environments rather than forcing reality into arbitrary application structures.
-CoreGrid may represent:
+Sherivs may represent:
 People
 • students
 • employees
@@ -243,12 +243,12 @@ Digital Reality
 • simulations
 • digital twins
 • computational environments
-CoreGrid is therefore designed around the computational representation of reality rather than around a predetermined application category.
+Sherivs is therefore designed around the computational representation of reality rather than around a predetermined application category.
 
 ───
 
 6. Reality, Observation, Knowledge and Truth
-CoreGrid explicitly distinguishes different forms of information.
+Sherivs explicitly distinguishes different forms of information.
 text
 REALITY
    ↓
@@ -282,7 +282,7 @@ Model Output      ≠ Authority
 Confidence        ≠ Permission
 Intelligence      ≠ Governance
 
-CoreGrid therefore preserves provenance, temporal validity, authority, uncertainty, scope, and evidence wherever appropriate.
+Sherivs therefore preserves provenance, temporal validity, authority, uncertainty, scope, and evidence wherever appropriate.
 
 ───
 
@@ -315,13 +315,13 @@ A domain runtime may define:
 • domain experiences
 • domain integrations
 • domain-specific intelligence
-The CoreGrid foundation should not need to be rewritten for every domain.
+The Sherivs foundation should not need to be rewritten for every domain.
 
 ───
 
-8. CoreGrid Scholar
+8. Sherivs Scholar
 First Major Production Runtime
-CoreGrid Scholar is the first major production expression of the CoreGrid architecture.
+Sherivs Scholar is the first major production expression of the Sherivs architecture.
 Scholar provides an education runtime capable of supporting:
 • schools
 • educational institutions
@@ -345,16 +345,16 @@ COREGRID
           │
           └── COREGRID SCHOLAR
 
-Scholar must consume and compose CoreGrid capabilities rather than redefine them.
+Scholar must consume and compose Sherivs capabilities rather than redefine them.
 Scholar is therefore both:
 1. a production domain runtime, and
-2. an architectural proving ground for CoreGrid's universal capabilities.
+2. an architectural proving ground for Sherivs's universal capabilities.
 
 ───
 
 9. Intelligence-Native Architecture
-AI is an infrastructure capability within CoreGrid.
-CoreGrid supports:
+AI is an infrastructure capability within Sherivs.
+Sherivs supports:
 • reasoning
 • planning
 • retrieval
@@ -369,7 +369,7 @@ CoreGrid supports:
 • evaluation
 • intelligence orchestration
 External models remain replaceable.
-CoreGrid must not become architecturally dependent on a single model provider.
+Sherivs must not become architecturally dependent on a single model provider.
 text
 COREGRID
                  INTELLIGENCE CONTRACT
@@ -384,12 +384,12 @@ COREGRID
         MODEL          MODEL          MODEL
 
 Models provide intelligence.
-CoreGrid provides the surrounding system, governance, context, memory, tools, runtime, security, verification, and authority boundaries.
+Sherivs provides the surrounding system, governance, context, memory, tools, runtime, security, verification, and authority boundaries.
 
 ───
 
 10. Adaptive Intelligence
-CoreGrid treats intelligence as a governed computational resource.
+Sherivs treats intelligence as a governed computational resource.
 Different tasks require different levels of reasoning.
 The system should therefore support intelligent routing:
 text
@@ -509,7 +509,7 @@ CONSUMERS
 ───
 
 13. Capability Composition
-CoreGrid systems should be assembled through reusable capabilities.
+Sherivs systems should be assembled through reusable capabilities.
 For example:
 text
 Identity
@@ -539,7 +539,7 @@ Governance
 
 The preferred architecture is:
 Compose capabilities before creating duplicate infrastructure.
-This is one of CoreGrid's primary mechanisms for achieving cross-domain scalability.
+This is one of Sherivs's primary mechanisms for achieving cross-domain scalability.
 
 ───
 
@@ -569,7 +569,7 @@ This allows new domains to be instantiated without rebuilding the entire platfor
 ───
 
 15. Dynamic Experience Architecture
-CoreGrid should avoid hard-coding every domain's experience into independent application structures.
+Sherivs should avoid hard-coding every domain's experience into independent application structures.
 Instead of assuming:
 text
 Teacher Portal
@@ -578,7 +578,7 @@ Employee Portal
 Citizen Portal
 Researcher Portal
 
-CoreGrid can compose experiences from:
+Sherivs can compose experiences from:
 text
 Identity
 +
@@ -602,7 +602,7 @@ The interface becomes an expression of the underlying organizational reality.
 
 16. Context as Infrastructure
 Context is a first-class computational resource.
-CoreGrid should be capable of assembling the minimum sufficient context required by a mission, worker, agent, workflow, or decision.
+Sherivs should be capable of assembling the minimum sufficient context required by a mission, worker, agent, workflow, or decision.
 Context selection may consider:
 • identity
 • authorization
@@ -623,7 +623,7 @@ Information retrieved into context does not automatically become truth.
 ───
 
 17. Memory and Knowledge
-CoreGrid treats memory and knowledge as infrastructure.
+Sherivs treats memory and knowledge as infrastructure.
 Memory may contain:
 • experience
 • context
@@ -652,7 +652,7 @@ AI-generated information must never silently become canonical truth.
 ───
 
 18. Digital Reality
-CoreGrid may create computational representations of:
+Sherivs may create computational representations of:
 • people
 • organizations
 • assets
@@ -668,7 +668,7 @@ A digital representation must remain distinguishable from the reality it represe
 ───
 
 19. Simulation and Sandbox
-CoreGrid should support experimentation before production deployment.
+Sherivs should support experimentation before production deployment.
 Preferred lifecycle:
 text
 IDEA
@@ -716,7 +716,7 @@ AI engineering systems may assist with:
 • security analysis
 • verification
 • conformance analysis
-Autonomous engineering must operate within CoreGrid governance.
+Autonomous engineering must operate within Sherivs governance.
 AI agents may propose or generate architectural changes.
 They must not silently redefine canonical architecture.
 The engineering principle is:
@@ -727,7 +727,7 @@ IMPLEMENT WITHIN AUTHORITY.
 ───
 
 21. Engineering Intelligence
-CoreGrid's engineering loop is:
+Sherivs's engineering loop is:
 text
 MISSION
    ↓
@@ -780,7 +780,7 @@ DEPLOYED ≠ OPERATIONAL
 
 22. Security and Trust
 Security is foundational.
-CoreGrid separates:
+Sherivs separates:
 text
 IDENTITY
    ↓
@@ -813,7 +813,7 @@ Security boundaries apply to:
 ───
 
 23. Governance
-CoreGrid must remain governed as capability increases.
+Sherivs must remain governed as capability increases.
 Governance covers:
 • policies
 • architecture
@@ -847,7 +847,7 @@ Verification establishes evidence.
 ───
 
 24. Multi-Tenancy and Sovereignty
-CoreGrid is designed for strong organizational and deployment isolation.
+Sherivs is designed for strong organizational and deployment isolation.
 It should support:
 • tenant isolation
 • organization isolation
@@ -874,7 +874,7 @@ Tenant context should propagate across:
 ───
 
 25. Global Architecture
-CoreGrid should support regional and jurisdictional differences without fragmenting the platform.
+Sherivs should support regional and jurisdictional differences without fragmenting the platform.
 Preferred mechanisms include:
 • localization
 • configuration
@@ -888,7 +888,7 @@ Avoid creating separate architectural foundations for every geography unless gen
 ───
 
 26. Infrastructure Independence
-CoreGrid should remain portable across:
+Sherivs should remain portable across:
 • cloud providers
 • infrastructure environments
 • AI providers
@@ -928,7 +928,7 @@ Events should support:
 ───
 
 28. API and Contract Architecture
-CoreGrid capabilities communicate through explicit contracts.
+Sherivs capabilities communicate through explicit contracts.
 Preferred interfaces include:
 • APIs
 • commands
@@ -969,7 +969,7 @@ Direct cross-boundary writes require explicit architectural authorization.
 ───
 
 30. Truth and State Architecture
-CoreGrid distinguishes:
+Sherivs distinguishes:
 text
 REALITY
    ↓
@@ -1001,7 +1001,7 @@ This prevents:
 • simulations becoming reality
 • memory becoming truth
 • agent decisions becoming automatic authority
-CoreGrid also preserves temporal distinctions such as:
+Sherivs also preserves temporal distinctions such as:
 • current
 • historical
 • intended
@@ -1016,7 +1016,7 @@ CoreGrid also preserves temporal distinctions such as:
 ───
 
 31. Verification and Evidence
-CoreGrid is designed around evidence-backed operation.
+Sherivs is designed around evidence-backed operation.
 The system must distinguish:
 text
 CLAIM
@@ -1054,7 +1054,7 @@ Every critical capability should define:
 • data integrity
 • operator escalation
 • observability
-CoreGrid considers failure classes including:
+Sherivs considers failure classes including:
 • dependency failure
 • database failure
 • network failure
@@ -1082,7 +1082,7 @@ The architecture must not assume that every failure has the same response.
 ───
 
 33. Observability
-CoreGrid should expose appropriate:
+Sherivs should expose appropriate:
 • metrics
 • logs
 • traces
@@ -1090,7 +1090,7 @@ CoreGrid should expose appropriate:
 • security signals
 • operational events
 • audit records
-CoreGrid should be able to answer:
+Sherivs should be able to answer:
 What is happening?
 Why is it happening?
 Which capability caused it?
@@ -1137,7 +1137,7 @@ A capability may have many consumers but should have a clearly defined canonical
 ───
 
 36. Architecture Registry
-CoreGrid maintains a registered architecture consisting of 51 architecture phases.
+Sherivs maintains a registered architecture consisting of 51 architecture phases.
 The architecture registry and phase specifications provide the structured architectural map of the platform.
 The repository currently maintains architectural material under:
 text
@@ -1154,7 +1154,7 @@ The exact implementation state of each phase is governed by evidence rather than
 ───
 
 37. Governance Documents
-CoreGrid is governed by a hierarchy of architectural and engineering artifacts.
+Sherivs is governed by a hierarchy of architectural and engineering artifacts.
 Core governance materials include:
 text
 CONSTITUTION.md
@@ -1226,7 +1226,7 @@ New architectural boundaries require governance.
 ───
 
 40. Existing-System-First Development
-CoreGrid follows an upgrade-not-rebuild philosophy.
+Sherivs follows an upgrade-not-rebuild philosophy.
 Before replacing an existing capability:
 text
 INSPECT
@@ -1249,7 +1249,7 @@ Architecture modernization must not become an excuse for unnecessary destruction
 ───
 
 41. Migration from the Existing School System
-CoreGrid originated from an existing school-oriented system.
+Sherivs originated from an existing school-oriented system.
 The migration strategy is:
 text
 EXISTING SYSTEM
@@ -1274,7 +1274,7 @@ COREGRID RUNTIME
 
 The objective is not to erase the original system.
 The objective is to transform proven infrastructure into a more universal institutional computing foundation.
-CoreGrid Scholar represents the first major production runtime emerging from this transformation.
+Sherivs Scholar represents the first major production runtime emerging from this transformation.
 
 ───
 
@@ -1310,7 +1310,7 @@ Promotion requires evidence appropriate to the capability's risk.
 
 43. Safe Autonomy
 Autonomy must be proportional to demonstrated capability.
-Before increasing autonomy, CoreGrid should evaluate:
+Before increasing autonomy, Sherivs should evaluate:
 • reliability
 • security
 • observability
@@ -1345,7 +1345,7 @@ The greater the blast radius, the stronger the required validation and authoriza
 ───
 
 45. Architectural Evolution
-CoreGrid is designed to evolve.
+Sherivs is designed to evolve.
 Evolution should be:
 • observable
 • tested
@@ -1386,7 +1386,7 @@ Continuous improvement without architectural amnesia.
 ───
 
 46. Architectural Continuity
-CoreGrid must preserve:
+Sherivs must preserve:
 • compatible interfaces
 • historical data
 • architectural decisions
@@ -1400,7 +1400,7 @@ The system should evolve without losing knowledge of how it became what it is.
 ───
 
 47. Ecosystem Architecture
-CoreGrid is designed to support an ecosystem of:
+Sherivs is designed to support an ecosystem of:
 • developers
 • organizations
 • agents
@@ -1421,7 +1421,7 @@ Extensions should remain:
 ───
 
 48. Dynamic Institutional Computing
-CoreGrid's deeper architectural model is not:
+Sherivs's deeper architectural model is not:
 text
 APPLICATION
 
@@ -1451,12 +1451,12 @@ GOVERNANCE
         ↓
 EVOLUTION
 
-This allows CoreGrid to model organizations as continuously changing computational systems rather than collections of static screens.
+This allows Sherivs to model organizations as continuously changing computational systems rather than collections of static screens.
 
 ───
 
-49. CoreGrid as an Intelligence Ecosystem
-CoreGrid is intended to become a connected computational ecosystem containing:
+49. Sherivs as an Intelligence Ecosystem
+Sherivs is intended to become a connected computational ecosystem containing:
 text
 REALITY
 ENTITIES
@@ -1481,7 +1481,7 @@ These components interact through explicit contracts and governed runtime bounda
 ───
 
 50. Alien-Intelligence Architectural Lens
-From an advanced-systems perspective, CoreGrid should not be thought of as:
+From an advanced-systems perspective, Sherivs should not be thought of as:
 "a collection of applications."
 It is better understood as:
 a computational substrate through which complex realities can be represented, understood, simulated, acted upon, and safely evolved.
@@ -1523,7 +1523,7 @@ EVOLUTION
 over
 STAGNATION
 
-This is an architectural design perspective, not a claim that CoreGrid possesses supernatural or human-like intelligence.
+This is an architectural design perspective, not a claim that Sherivs possesses supernatural or human-like intelligence.
 
 ───
 
@@ -1560,7 +1560,7 @@ from scratch.
 
 ───
 
-52. CoreGrid's Universal Runtime Loop
+52. Sherivs's Universal Runtime Loop
 The conceptual operating loop is:
 text
 REALITY
@@ -1590,7 +1590,7 @@ GOVERN
 EVOLVE
    ↺
 
-This loop describes the intended relationship between CoreGrid's reality model, intelligence systems, runtime systems, and governance mechanisms.
+This loop describes the intended relationship between Sherivs's reality model, intelligence systems, runtime systems, and governance mechanisms.
 
 ───
 
@@ -1735,7 +1735,7 @@ Appropriate testing, execution evidence, verification, and conformance assessmen
 ───
 
 58. Engineering Philosophy
-CoreGrid engineering optimizes for:
+Sherivs engineering optimizes for:
 • correctness
 • simplicity
 • modularity
@@ -1753,7 +1753,7 @@ The objective is to produce reliable computational infrastructure for increasing
 
 ───
 
-59. CoreGrid Architectural Laws
+59. Sherivs Architectural Laws
 The platform is governed by a small set of foundational laws:
 Reality Before Representation
 Represent meaningful reality instead of arbitrary application structures.
@@ -1779,9 +1779,9 @@ The platform must evolve while preserving architectural and operational continui
 ───
 
 60. Final Architectural Identity
-CoreGrid is:
+Sherivs is:
 A programmable AI-native institutional computing platform designed to represent reality, coordinate intelligence, execute workflows, operate autonomous agents, instantiate domain runtimes, simulate change, and continuously evolve complex organizations and ecosystems while preserving security, governance, explainability, verification, sovereignty, and architectural integrity.
-CoreGrid Scholar is the first major production runtime.
+Sherivs Scholar is the first major production runtime.
 It is not the final boundary.
 The platform is intentionally designed so that education can coexist with:
 • enterprise
@@ -1798,7 +1798,7 @@ without requiring the universal foundation to be rebuilt.
 
 ───
 
-61. The CoreGrid Operating Principle
+61. The Sherivs Operating Principle
 text
 REPRESENT REALITY.
 
@@ -1827,14 +1827,14 @@ LEARN FROM VALIDATED OUTCOMES.
 EVOLVE WITHOUT LOSING CONTINUITY.
 
 Or, expressed as the shortest architectural statement:
-CoreGrid exists to turn complex reality into governed computational intelligence—and to provide the infrastructure through which that intelligence can create, operate, understand, simulate, and safely evolve the systems built upon it.
+Sherivs exists to turn complex reality into governed computational intelligence—and to provide the infrastructure through which that intelligence can create, operate, understand, simulate, and safely evolve the systems built upon it.
 
 ───
 
-CoreGrid Status
+Sherivs Status
 text
 PLATFORM:
-CoreGrid
+Sherivs
 
 IDENTITY:
 AI-Native Institutional Computing Platform
@@ -1846,7 +1846,7 @@ ARCHITECTURAL REGISTRY:
 51 Phases
 
 FIRST MAJOR PRODUCTION RUNTIME:
-CoreGrid Scholar
+Sherivs Scholar
 
 PRIMARY ARCHITECTURAL MODEL:
 Reality → Intelligence → Agents → Workflows → Domain Runtimes → Ecosystem
@@ -1860,5 +1860,5 @@ Observe → Compare → Detect → Assess → Authorize → Implement → Verify
 ARCHITECTURAL DIRECTION:
 Universal, AI-native, reality-first, governed institutional computing
 
-CoreGrid is not being built as one application.
+Sherivs is not being built as one application.
 It is being built as infrastructure for building, operating, understanding, and evolving intelligent institutions.

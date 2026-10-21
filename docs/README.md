@@ -1,6 +1,6 @@
 # Docs
 
-Documentation for CoreGrid Scholar.
+Documentation for Sherivs Scholar.
 
 - `stack.md` - verified technology stack
 - `architecture/` - system overview, frontend, backend, database,
@@ -30,5 +30,5 @@ Canonical architecture evidence (post-hardening, 2026-10-02):
 Top-level deliverables from the migration:
 
 - `migration-report.md` - changes made during the migration
-- `architecture-map.md` - current system to CoreGrid Scholar mapping
+- `architecture-map.md` - current system to Sherivs Scholar mapping
 - `remaining-work.md` - future implementation roadmap

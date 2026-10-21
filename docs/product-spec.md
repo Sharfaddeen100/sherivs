@@ -1,7 +1,7 @@
-# CoreGrid Scholar - archived product specification
+# Sherivs Scholar - archived product specification
 
 > This document is the archived product specification carried over from the
-> "Remix of School OS" project during the CoreGrid Scholar migration. It is
+> "Remix of School OS" project during the Sherivs Scholar migration. It is
 > preserved verbatim as the source of truth for the School OS-era product
 > requirements (multi-tenancy, schema, empty-state rules). Product decisions
 > going forward are governed by `CONSTITUTION.md` and `DECISIONS.md` (root).

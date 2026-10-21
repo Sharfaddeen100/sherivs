@@ -1,8 +1,8 @@
-# RUNBOOK — Unified drill schedule (the CoreGrid drill calendar)
+# RUNBOOK — Unified drill schedule (the Sherivs drill calendar)
 
 Status: **AUTHORED** — H3-wave mission F-050 (team H3-050, Drill Scheduler, Squad F —
 Observability & operations). This document is the **calendar and scheduling authority**
-for every CoreGrid drill surface. It answers WHEN each drill runs, UNDER WHICH GATE it
+for every Sherivs drill surface. It answers WHEN each drill runs, UNDER WHICH GATE it
 may run, WHERE its evidence lands, and WHAT its verdict semantics are. It does NOT
 contain any drill's operator procedure: every procedure is owned by its mission's
 runbook, cited below by path and mission ID. If a sibling runbook and this calendar
