@@ -20,6 +20,8 @@ import {
   newPasswordServerMessage,
 } from "@/lib/security/auth-feedback";
 import { SherivsLogo } from "@/components/brand/sherivs-logo";
+import { currentEffectiveHostKind } from "@/lib/experience/console-host-routing";
+import { authPageExperience, effectiveAuthMode } from "@/lib/experience/auth-page-experience";
 
 export const Route = createFileRoute("/auth")({
   ssr: false,
@@ -36,7 +38,15 @@ function AuthPage() {
   const navigate = useNavigate();
   const { loading, role, refresh, school, tenantSlug, profile, superAdmin, platformStaff } =
     useApp();
-  const [mode, setMode] = useState<Mode>("signin");
+  // Console host (console.sherivs.com): staff-branded copy, no self-service
+  // sign-up. Login, reset, Turnstile and MFA are unchanged.
+  const experience = authPageExperience(currentEffectiveHostKind());
+  const [requestedMode, setMode] = useState<Mode>(() =>
+    typeof window !== "undefined"
+      ? effectiveAuthMode(new URLSearchParams(window.location.search).get("mode"), experience)
+      : "signin",
+  );
+  const mode: Mode = effectiveAuthMode(requestedMode, experience);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
@@ -174,7 +184,7 @@ function AuthPage() {
     }
   }
 
-  const title = mode === "signin" ? "Sign in" : "Create account";
+  const title = experience.heading ?? (mode === "signin" ? "Sign in" : "Create account");
 
   return (
     <div className="auth-shell">
@@ -211,9 +221,7 @@ function AuthPage() {
             </div>
           )}
           <h1 className="font-display text-2xl font-bold">{title}</h1>
-          <p className="mt-1 text-sm text-muted-foreground">
-            {`Sign in to ${PLATFORM_NAME} — your organization's operating environment.`}
-          </p>
+          <p className="mt-1 text-sm text-muted-foreground">{experience.subtext}</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -304,7 +312,7 @@ function AuthPage() {
         </form>
 
         <div className="mt-6 space-y-2 text-center text-sm">
-          {mode === "signin" && (
+          {mode === "signin" && experience.allowSignup && (
             <button
               type="button"
               onClick={() => {

@@ -84,7 +84,11 @@ describe("Public authentication surface", () => {
   });
 
   it("signs in to Sherivs, not to a Scholar runtime portal", () => {
-    expect(auth).toMatch(/Sign in to \$\{PLATFORM_NAME\}/);
+    // Copy lives in the per-host auth experience (console vs organization app).
+    const experience = read("frontend/src/lib/experience/auth-page-experience.ts");
+    expect(auth).toContain("authPageExperience(");
+    expect(experience).toMatch(/Sign in to \$\{PLATFORM_NAME\}/);
+    expect(experience).not.toContain("SCHOLAR_RUNTIME_NAME");
     expect(auth).not.toContain("SCHOLAR_RUNTIME_NAME");
   });
 });
