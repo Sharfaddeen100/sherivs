@@ -50,3 +50,13 @@ Architecture analysis:
   writes `architecture/proofs/phase-<id>-acceptance.proof.json`)
 
 Database query scripts moved to `database/queries/`.
+
+Staging-only 71-file restore runner (does **not** replace `db-apply.mjs`,
+does **not** apply migrations unless a later authorized process injects a
+live connector):
+
+- `node scripts/staging/sherivs-restore/cli.mjs --mode=manifest`
+- `node scripts/staging/sherivs-restore/cli.mjs --mode=offline`
+- See `scripts/staging/sherivs-restore/README.md`,
+  `docs/security/rls-prep/SHERIVS-STAGING-MIGRATION-RUNNER-001.md`, and
+  `docs/security/rls-prep/SHERIVS-STAGING-MIGRATION-RUNNER-CORRECTIONS-001.md`

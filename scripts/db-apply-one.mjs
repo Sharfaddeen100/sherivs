@@ -8,11 +8,13 @@
  * file was applied.
  *
  * Usage:
- *   $env:DATABASE_URL="postgresql://..." ; node scripts/db-apply-one.mjs 20260907000800
- *   $env:DATABASE_URL="postgresql://..." ; node scripts/db-apply-one.mjs 20260907000800_ --dry-run
+ *   SHERIVS_DATABASE_TARGET=development DATABASE_URL="postgresql://..." \
+ *     node scripts/db-apply-one.mjs 20260907000800
+ *   SHERIVS_DATABASE_TARGET=development DATABASE_URL="postgresql://..." \
+ *     node scripts/db-apply-one.mjs 20260907000800_ --dry-run
  *
- * Reads DATABASE_URL from the environment ONLY (never hard-coded, never
- * committed). The argument is a filename prefix; exactly one migration must
+ * Requires an explicit SHERIVS_DATABASE_TARGET before connecting. The argument
+ * is a filename prefix; exactly one migration must
  * match, so a typo can never apply the wrong file. `--dry-run` reports the
  * resolved file without executing it.
  */
@@ -20,6 +22,7 @@ import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { pgSslConfig } from "./lib/pg-ssl.mjs";
+import { requirePostgresTarget } from "./lib/sherivs-db-target.mjs";
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
 const MIGRATIONS_DIR = join(ROOT, "database", "supabase", "migrations");
@@ -59,12 +62,8 @@ if (dryRun) {
   process.exit(0);
 }
 
-const dbUrl = process.env.DATABASE_URL;
-if (!dbUrl) {
-  console.error("DATABASE_URL is required (postgres connection string).");
-  console.error("Nothing was applied — the migration is authored, not deployed.");
-  process.exit(2);
-}
+const resolved = requirePostgresTarget();
+const dbUrl = resolved.connectionString;
 
 const pg = await import("pg").catch(() => null);
 if (!pg) {

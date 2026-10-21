@@ -3,14 +3,17 @@
  * CoreGrid — run a SQL verification/query file via the Supabase Management API.
  *
  * Usage:
- *   $env:SUPABASE_ACCESS_TOKEN="sbp_..." ; node scripts/db-run-mgmt.mjs database/queries/rls-isolation-check.sql [project-ref]
+ *   SHERIVS_DATABASE_TARGET=staging SHERIVS_PROJECT_REF=<ref> \
+ *     SUPABASE_ACCESS_TOKEN="sbp_..." node scripts/db-run-mgmt.mjs <sql> [project-ref]
  *
+ * Requires an explicit target and project ref. Production is not the default.
  * Reads the access token from the environment ONLY. Executes the file through
  * POST /v1/projects/{ref}/database/query and prints the response.
  */
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { requireManagementTarget } from "./lib/sherivs-db-target.mjs";
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
 const target = process.argv[2];
@@ -18,8 +21,8 @@ if (!target) {
   console.error("Usage: node scripts/db-run-mgmt.mjs <path-to-sql-file> [project-ref]");
   process.exit(2);
 }
+const { projectRef } = requireManagementTarget(process.env, process.argv[3]);
 const token = process.env.SUPABASE_ACCESS_TOKEN;
-const projectRef = process.argv[3] ?? "nwrflbpbhyiqdptmlccm";
 if (!token) {
   console.error("SUPABASE_ACCESS_TOKEN is required.");
   process.exit(2);

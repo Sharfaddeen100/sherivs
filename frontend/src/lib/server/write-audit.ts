@@ -32,7 +32,7 @@ const timeAuthority = new TimeAuthority(new SystemClock());
  */
 
 /** Outcome of the audited canonical write. */
-export type WriteAuditOutcome = "succeeded" | "failed";
+export type WriteAuditOutcome = "succeeded" | "failed" | "denied";
 
 /** The canonical substrate table that received the audited write. */
 export type WriteAuditEntry = {

@@ -8,8 +8,8 @@ WITH params AS (SELECT 0 AS step),  -- <<< change to 1 after Step 1
 p AS (SELECT step FROM params),
 checks(name, ok) AS (
   VALUES
-  ('ledger has the 70 baseline versions (through 20261003000042)',
-     (SELECT count(*) = 70 FROM supabase_migrations.schema_migrations WHERE version <= '20261003000042')),
+  ('ledger has the 72 baseline versions (through 20261008000060)',
+     (SELECT count(*) = 72 FROM supabase_migrations.schema_migrations WHERE version <= '20261008000060')),
   ('Paystack fix 20261015000005 recorded',
      EXISTS (SELECT 1 FROM supabase_migrations.schema_migrations WHERE version = '20261015000005')),
   ('paystack_secret_key hidden from anon',
@@ -20,11 +20,11 @@ checks(name, ok) AS (
      has_column_privilege('anon','public.schools','name','SELECT') AND has_column_privilege('anon','public.schools','slug','SELECT')),
   ('identity freeze NOT applied (separate decision)',
      NOT EXISTS (SELECT 1 FROM supabase_migrations.schema_migrations WHERE version = '20261015000010')),
-  ('9 SHERIVS release migrations recorded iff step >= 1',
+  ('11 SHERIVS release migrations recorded iff step >= 1',
      ((SELECT count(*) FROM supabase_migrations.schema_migrations WHERE version IN
        ('20261020000020','20261020000030','20261020000040','20261020000050',
-        '20261020000060','20261020000070','20261020000090','20261020000100','20261020000110'))
-      = CASE WHEN (SELECT step FROM p) >= 1 THEN 9 ELSE 0 END)),
+        '20261020000060','20261020000070','20261020000090','20261020000100','20261020000110','20261020000130','20261020000140'))
+      = CASE WHEN (SELECT step FROM p) >= 1 THEN 11 ELSE 0 END)),
   ('cg_idempotency_record RLS on',
      (SELECT relrowsecurity FROM pg_class WHERE oid = 'public.cg_idempotency_record'::regclass)),
   ('website RPCs still public',
@@ -38,7 +38,7 @@ checks(name, ok) AS (
      AND to_regclass('public.security_incidents') IS NOT NULL)),
   ('[step 1] school_tenant_map backfilled (one row per school that has a cg_tenant)',
      (SELECT step FROM p) < 1 OR (to_regclass('public.school_tenant_map') IS NOT NULL AND
-     (SELECT (xpath('/row/c/text()', query_to_xml('SELECT (SELECT count(*) FROM public.school_tenant_map) = (SELECT count(*) FROM public.cg_tenant t JOIN public.schools s ON s.id = t.id) AS c', false, false, '')))[1]::text = 'true'))),
+     (SELECT (xpath('//c/text()', query_to_xml('SELECT (SELECT count(*) FROM public.school_tenant_map) = (SELECT count(*) FROM public.cg_tenant t JOIN public.schools s ON s.id = t.id) AS c', false, false, '')))[1]::text = 'true'))),
   ('[step 1] old school-wide fees/students policies gone',
      (SELECT step FROM p) < 1 OR NOT EXISTS (SELECT 1 FROM pg_policies WHERE schemaname='public' AND policyname IN ('tenant_all_fees','tenant_all_students','platform_fee_ledger_school_access'))),
   ('[step 1] new fees/students policies present',

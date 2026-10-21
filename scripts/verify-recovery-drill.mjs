@@ -46,13 +46,13 @@ import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { z } from "zod";
+import { requireManagementTarget } from "./lib/sherivs-db-target.mjs";
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
 const DEFAULT_ARTIFACTS_DIR = "/opt/cursor/artifacts";
 const ARTIFACTS_DIR = process.env.COREGRID_ARTIFACTS_DIR ?? DEFAULT_ARTIFACTS_DIR;
 const DEFAULT_MANIFESTS_DIR = join(ROOT, "architecture", "proofs", "recovery", "manifests");
 const MANIFESTS_DIR = process.env.COREGRID_RECOVERY_MANIFESTS_DIR ?? DEFAULT_MANIFESTS_DIR;
-const DEFAULT_PROJECT_REF = "nwrflbpbhyiqdptmlccm";
 
 // ── mode / argument parsing ──────────────────────────────────────────────────
 const argv = process.argv.slice(2);
@@ -61,7 +61,6 @@ const positionals = argv.filter((a) => !a.startsWith("--"));
 const KNOWN_FLAGS = new Set(["--rehearse"]);
 const unknownFlags = flags.filter((f) => !KNOWN_FLAGS.has(f));
 const MODE = flags.includes("--rehearse") ? "rehearse" : "live";
-const projectRef = positionals[0] ?? DEFAULT_PROJECT_REF;
 
 if (unknownFlags.length > 0 || positionals.length > 1) {
   console.error(
@@ -70,6 +69,11 @@ if (unknownFlags.length > 0 || positionals.length > 1) {
   );
   process.exit(2);
 }
+
+const projectRef =
+  MODE === "rehearse"
+    ? positionals[0] ?? ""
+    : requireManagementTarget(process.env, positionals[0]).projectRef;
 
 /**
  * Credential gate — BEFORE any other work in live mode. Rehearsal is

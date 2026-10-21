@@ -304,7 +304,7 @@ function BrandingTab({ row, onSaved }: { row: SchoolRow; onSaved: () => Promise<
       <div className="grid gap-4 md:grid-cols-2">
         <Field
           label="Primary color"
-          hint="Hex (e.g. #1d4ed8). Drives accents across the public site."
+          hint="Hex (e.g. #184efd). Drives accents across the public site."
         >
           <div className="flex items-center gap-3">
             <Input

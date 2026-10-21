@@ -3,8 +3,10 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { requireManagementTarget } from "./lib/sherivs-db-target.mjs";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
+const { projectRef } = requireManagementTarget(process.env);
 const envFile = readFileSync(join(root, ".env.local"), "utf8");
 let token = "";
 for (const line of envFile.split(/\r?\n/)) {
@@ -15,7 +17,6 @@ if (!token) {
   console.error("BLOCKED_NO_CREDENTIAL");
   process.exit(2);
 }
-const projectRef = "nwrflbpbhyiqdptmlccm";
 const headers = { Authorization: `Bearer ${token}` };
 
 async function get(path) {

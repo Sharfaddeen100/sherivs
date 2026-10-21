@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
 import { createClient } from "@supabase/supabase-js";
 import { buildGeneratedSiteView } from "@/lib/surfaces/generated-site-view";
+import { customTenantColors } from "@/lib/brand/tenant-colors";
 
 const CACHE = "public, max-age=600";
 
@@ -44,7 +45,7 @@ export const Route = createFileRoute("/manifest.webmanifest")({
               if (row?.name) {
                 brand = {
                   name: row.name,
-                  primaryColor: row.primary_color ?? undefined,
+                  primaryColor: customTenantColors(row.primary_color, row.secondary_color).primary ?? undefined,
                   secondaryColor: row.secondary_color ?? undefined,
                 };
               }
