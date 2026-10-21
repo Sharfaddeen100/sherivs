@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { SherivsLogo } from "@/components/brand/sherivs-logo";
 
 /**
  * Security P2 — TOTP enrolment + challenge. Internal users (super admins,
@@ -51,6 +52,7 @@ function MfaPage() {
 
   return (
     <div className="mx-auto w-full max-w-md space-y-4 px-4 py-10 text-sm">
+      <SherivsLogo size={40} wordmarkClassName="text-xl" />
       <h1 className="font-display text-2xl font-bold">Two-factor verification</h1>
       <p className="text-muted-foreground">
         Internal access requires an authenticator app (TOTP).
