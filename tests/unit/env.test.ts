@@ -21,10 +21,10 @@ describe("classifyEnvironment", () => {
     expect(classifyEnvironment("Local")).toBe("local");
   });
 
-  it("defaults to development for unknown or missing values", () => {
-    expect(classifyEnvironment(undefined)).toBe("development");
-    expect(classifyEnvironment("")).toBe("development");
-    expect(classifyEnvironment("weird")).toBe("development");
+  it("keeps missing or unrecognized values as unknown, not development", () => {
+    expect(classifyEnvironment(undefined)).toBe("unknown");
+    expect(classifyEnvironment("")).toBe("unknown");
+    expect(classifyEnvironment("weird")).toBe("unknown");
   });
 });
 

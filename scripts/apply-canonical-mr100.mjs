@@ -30,6 +30,7 @@ import { createHash } from "node:crypto";
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { requireManagementTarget } from "./lib/sherivs-db-target.mjs";
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
 const MIGRATIONS_DIR = join(ROOT, "database", "supabase", "migrations");
@@ -43,8 +44,8 @@ const RECORD_PATH = join(
 );
 const ARTIFACTS_DIR = "/opt/cursor/artifacts";
 
+const { projectRef } = requireManagementTarget(process.env, process.argv[2]);
 const token = process.env.SUPABASE_ACCESS_TOKEN;
-const projectRef = process.argv[2] ?? "nwrflbpbhyiqdptmlccm";
 if (!token) {
   console.error("BLOCKED_NO_CREDENTIAL SUPABASE_ACCESS_TOKEN is not set. Nothing was applied.");
   process.exit(2);

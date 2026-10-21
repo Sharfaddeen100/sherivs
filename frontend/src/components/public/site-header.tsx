@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { PLATFORM_NAME, PLATFORM_TAGLINE } from "@/lib/platform";
+import { SherivsLogo } from "@/components/brand/sherivs-logo";
 
 /**
  * Sherivs public site header (Plane A chrome).
@@ -26,9 +27,10 @@ export function SiteHeader() {
       <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6">
         <Link
           to="/"
-          className="font-display text-lg font-bold tracking-tight focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+          aria-label={`${PLATFORM_NAME} home`}
+          className="rounded-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
         >
-          {PLATFORM_NAME}
+          <SherivsLogo size={30} wordmarkClassName="text-lg" />
         </Link>
 
         <nav aria-label="Site" className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">

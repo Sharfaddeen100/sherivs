@@ -222,7 +222,12 @@ describe("H3-001 recovery drill runner — credential gate and secret hygiene", 
   it("live mode without SUPABASE_ACCESS_TOKEN fails closed: BLOCKED_NO_CREDENTIAL, exit 2, nothing probed", () => {
     const artifactsDir = join(tmpdir(), `h3-001-gate-${Date.now()}`);
     try {
-      const run = runScript([], offlineEnv({ COREGRID_ARTIFACTS_DIR: artifactsDir }));
+      const run = runScript([], offlineEnv({
+        COREGRID_ARTIFACTS_DIR: artifactsDir,
+        SHERIVS_DATABASE_TARGET: "production",
+        SHERIVS_PROJECT_REF: "nwrflbpbhyiqdptmlccm",
+        SHERIVS_CONFIRM_PRODUCTION: "nwrflbpbhyiqdptmlccm",
+      }));
       expect(run.status).toBe(2);
       expect(run.stderr).toContain("BLOCKED_NO_CREDENTIAL");
       expect(run.stderr).toContain("Nothing was probed");

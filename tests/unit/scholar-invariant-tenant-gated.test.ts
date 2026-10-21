@@ -102,7 +102,7 @@ const CLIENT_TENANT_FIELD_RE = /(?:school_id|schoolId|tenant_id|tenantId):\s*z\.
 const HANDLER_DATA_RE = /\.handler\(\s*(?:async\s+)?\(\s*\{\s*data\b/;
 const SUBSTRATE_RE = /\bsupabase\b|\.rpc\(|supabaseAdmin|asKernelAdmin/;
 const MUTATION_RE = /\.(insert|update|upsert)\(/;
-const WRITE_EVIDENCE_RE = /\.(insert|update|upsert)\(|\.rpc\(|updateUserById/;
+const WRITE_EVIDENCE_RE = /\.(insert|update|upsert)\(|\.rpc\(|updateUserById|performStaffPrivilegeChange\(/;
 const VENDOR_SDK_RE = /from ["'](@supabase\/supabase-js|twilio|paystack)["']/;
 
 function serverFnBlocks(src: string): Map<string, string> {
@@ -481,6 +481,22 @@ defineFamilySuite({
 });
 
 defineFamilySuite({
+  family: "staff-privilege.functions.ts",
+  functions: [
+    {
+      fn: "updateStaffPrivilege",
+      method: "POST",
+      input: "zod",
+      gate: "school-admin",
+      audit: "explicit-event",
+      auditSource: "file",
+      auditMarkers: [/\.from\("users"\)/, /writeAuditRecord\(/],
+      note: "service_role write of users.role/is_active after the school-admin gate and pure decision; fail-closed audit in performStaffPrivilegeChange",
+    },
+  ],
+});
+
+defineFamilySuite({
   family: "teachers.functions.ts",
   functions: [
     {
@@ -498,9 +514,9 @@ defineFamilySuite({
       input: "zod",
       gate: "school-admin",
       audit: "explicit-event",
-      auditMarkers: [/\.from\("users"\)/, /writeAuditRecord\(/],
+      auditMarkers: [/\.from\("users"\)/, /performStaffPrivilegeChange\(/],
       extra: [/\.eq\("role", "teacher"\)/],
-      note: "write is role-scoped AND RLS same-school restricted; §27.6 closed via the shared write-audit hook (fail-closed audit_logs record)",
+      note: "teacher-only, same-school; the service_role write and fail-closed §27.6 audit are delegated to performStaffPrivilegeChange (staff-privilege.functions.ts)",
     },
   ],
 });

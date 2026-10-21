@@ -46,9 +46,9 @@ resource "terraform_data" "configuration_check" {
   depends_on = [terraform_data.connection_gate]
 
   input = {
-    environment = var.environment
-    project_ref = var.supabase_project_ref
-    require_pitr = var.require_pitr
+    environment               = var.environment
+    project_ref               = var.supabase_project_ref
+    require_pitr              = var.require_pitr
     max_backup_retention_days = var.min_backup_retention_days
   }
 
@@ -56,13 +56,13 @@ resource "terraform_data" "configuration_check" {
     command = "node ${path.module}/../../scripts/infrastructure/supabase-config-check.mjs"
 
     environment = {
-      SUPABASE_PROJECT_REF       = var.supabase_project_ref
-      SUPABASE_ACCESS_TOKEN      = var.supabase_access_token
-      SUPABASE_DB_URL            = var.supabase_db_url
-      COREGRID_ENVIRONMENT       = var.environment
-      COREGRID_REQUIRE_PITR      = var.require_pitr ? "true" : "false"
-      COREGRID_MIN_BACKUP_DAYS   = tostring(var.min_backup_retention_days)
-      COREGRID_CONFIG_PROOF      = var.proof_output_path
+      SUPABASE_PROJECT_REF     = var.supabase_project_ref
+      SUPABASE_ACCESS_TOKEN    = var.supabase_access_token
+      SUPABASE_DB_URL          = var.supabase_db_url
+      COREGRID_ENVIRONMENT     = var.environment
+      COREGRID_REQUIRE_PITR    = var.require_pitr ? "true" : "false"
+      COREGRID_MIN_BACKUP_DAYS = tostring(var.min_backup_retention_days)
+      COREGRID_CONFIG_PROOF    = var.proof_output_path
     }
   }
 }

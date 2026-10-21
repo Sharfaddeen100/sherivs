@@ -19,6 +19,17 @@ import { Save, Shield, User2, Lock, Bot } from "lucide-react";
 import { PortalPage, GlassCard, PortalPageSkeleton } from "@/components/portal-shell";
 import { useApp } from "@/contexts/app-context";
 import { supabase } from "@/integrations/supabase/client";
+import { PasswordInput } from "@/components/security/password-input";
+import { PasswordStrengthMeter } from "@/components/security/password-strength-meter";
+import { Turnstile, captchaRequired } from "@/components/security/turnstile";
+import { turnstileEnabled } from "@/lib/security/turnstile-config";
+import { PASSWORD_MIN_LENGTH } from "@/lib/security/password-policy";
+import { newPasswordError } from "@/lib/security/password-strength";
+import {
+  GENERIC_LOGIN_ERROR,
+  loginErrorMessage,
+  newPasswordServerMessage,
+} from "@/lib/security/auth-feedback";
 import {
   getMyProfile,
   setDigitalTwinOptOut,
@@ -214,55 +225,123 @@ function PrivacyCard({
 }
 
 function PasswordCard() {
+  const [current, setCurrent] = useState("");
   const [pw1, setPw1] = useState("");
   const [pw2, setPw2] = useState("");
+  const [email, setEmail] = useState<string | undefined>();
   const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [captchaNonce, setCaptchaNonce] = useState(0);
+  const [captchaUnavailable, setCaptchaUnavailable] = useState(false);
+
+  useEffect(() => {
+    void supabase.auth.getUser().then(({ data }) => setEmail(data.user?.email ?? undefined));
+  }, []);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
-    if (pw1.length < 8) return toast.error("Password must be at least 8 characters");
-    if (pw1 !== pw2) return toast.error("Passwords do not match");
+    setError(null);
+    const pwErr = newPasswordError(pw1, email);
+    if (pwErr) return setError(pwErr);
+    if (pw1 !== pw2) return setError("Passwords do not match.");
+    if (pw1 === current) return setError("Your new password must be different from your current one.");
+    if (!email) return setError("Could not load your account. Refresh and try again.");
+    if (captchaRequired(turnstileEnabled(), captchaToken, captchaUnavailable)) {
+      return setError("Please complete the security check.");
+    }
     setBusy(true);
-    const { error } = await supabase.auth.updateUser({ password: pw1 });
-    setBusy(false);
-    if (error) return toast.error(error.message);
-    setPw1("");
-    setPw2("");
-    toast.success("Password updated");
+    try {
+      // Re-authenticate with the current password before allowing the change.
+      const { error: reauthErr } = await supabase.auth.signInWithPassword({
+        email,
+        password: current,
+        options: { captchaToken: captchaToken ?? undefined },
+      });
+      if (reauthErr) {
+        const msg = loginErrorMessage(reauthErr);
+        throw new Error(msg === GENERIC_LOGIN_ERROR ? "Your current password is incorrect." : msg);
+      }
+      const { error } = await supabase.auth.updateUser({ password: pw1, current_password: current });
+      if (error) throw new Error(newPasswordServerMessage(error));
+      // Sign out every other device; this one stays signed in.
+      await supabase.auth.signOut({ scope: "others" }).catch(() => {});
+      setCurrent("");
+      setPw1("");
+      setPw2("");
+      toast.success("Password changed. Other devices have been signed out.");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not change your password.");
+    } finally {
+      setBusy(false);
+      setCaptchaToken(null);
+      setCaptchaNonce((n) => n + 1);
+    }
   }
 
   return (
     <GlassCard className="flex flex-col gap-4">
       <SectionTitle icon={<Lock className="size-4" />} title="Change password" />
-      <form className="grid gap-4 sm:grid-cols-2" onSubmit={submit}>
+      <form className="grid gap-4 sm:grid-cols-2" onSubmit={submit} data-testid="change-password">
+        {email && <input type="email" autoComplete="username" value={email} readOnly hidden />}
+        <Field label="Current password" className="sm:col-span-2">
+          <PasswordInput
+            required
+            value={current}
+            onChange={(e) => setCurrent(e.target.value)}
+            autoComplete="current-password"
+            fieldLabel="current password"
+          />
+        </Field>
         <Field label="New password">
-          <input
-            type="password"
-            className="uos-input"
+          <PasswordInput
+            required
+            minLength={PASSWORD_MIN_LENGTH}
             value={pw1}
             onChange={(e) => setPw1(e.target.value)}
-            minLength={8}
-            required
+            autoComplete="new-password"
+            fieldLabel="new password"
           />
         </Field>
         <Field label="Confirm new password">
-          <input
-            type="password"
-            className="uos-input"
+          <PasswordInput
+            required
+            minLength={PASSWORD_MIN_LENGTH}
             value={pw2}
             onChange={(e) => setPw2(e.target.value)}
-            minLength={8}
-            required
+            autoComplete="new-password"
+            fieldLabel="confirmation password"
           />
         </Field>
+        <div className="sm:col-span-2">
+          <PasswordStrengthMeter password={pw1} email={email} />
+        </div>
+        <p className="sm:col-span-2 text-xs text-[color:var(--text-muted)]">
+          Changing your password signs you out on all your other devices.
+        </p>
+        <div className="sm:col-span-2">
+          <Turnstile
+            onToken={setCaptchaToken}
+            onUnavailable={() => setCaptchaUnavailable(true)}
+            resetKey={captchaNonce}
+          />
+        </div>
+        {error && (
+          <div
+            role="alert"
+            className="sm:col-span-2 rounded-md border border-destructive/40 bg-destructive/10 px-3 py-2 text-sm"
+          >
+            {error}
+          </div>
+        )}
         <div className="sm:col-span-2 flex justify-end">
           <button
             type="submit"
             disabled={busy}
-            className="uos-btn-primary inline-flex items-center gap-2 disabled:opacity-50"
+            className="uos-btn-primary inline-flex w-full items-center justify-center gap-2 disabled:opacity-50 sm:w-auto"
           >
             <Shield className="size-4" />
-            {busy ? "Updating…" : "Update password"}
+            {busy ? "Updating…" : "Change password"}
           </button>
         </div>
       </form>

@@ -5,6 +5,7 @@ import { SCHOOL_CLIENT_COLUMNS } from "@/lib/runtime/scholar/school-columns";
 import { resolveTenantDomain, resolveTenantSlug } from "@/lib/tenant";
 import { type AppRole } from "@/lib/roles";
 import { runtimeWorkspaceHome } from "@/lib/runtime/nav-registry";
+import { customTenantColors } from "@/lib/brand/tenant-colors";
 
 /**
  * UserProfile = row from public.users (tenant member).
@@ -75,9 +76,10 @@ const AppCtx = createContext<AppState | undefined>(undefined);
 function applyBrandColors(school: SchoolRow | null) {
   if (typeof document === "undefined") return;
   const root = document.documentElement;
-  if (school?.primary_color) root.style.setProperty("--tenant-primary", school.primary_color);
+  const colors = customTenantColors(school?.primary_color, school?.secondary_color);
+  if (colors.primary) root.style.setProperty("--tenant-primary", colors.primary);
   else root.style.removeProperty("--tenant-primary");
-  if (school?.secondary_color) root.style.setProperty("--tenant-secondary", school.secondary_color);
+  if (colors.secondary) root.style.setProperty("--tenant-secondary", colors.secondary);
   else root.style.removeProperty("--tenant-secondary");
 }
 

@@ -1,0 +1,229 @@
+-- =============================================================================
+-- SHERIVS-001 — identity self-update freeze and active-account helper gates
+-- =============================================================================
+-- Status: AUTHORED, NOT APPLIED.
+-- This file is a proposed remediation. It MUST NOT enter the canonical
+-- staging-runner pin. The runner excludes `*.sql.proposed`.
+-- Do not execute this file from this mission. Do not db push / db reset /
+-- db restore. A file existing in Git is not proof of live catalog state.
+--
+-- Mission: SHERIVS-001-PROPOSED-SQL-TRUSTED-ROLE-SKIP-AND-TRANSACTION-001
+-- Version-target classification: ACTIVE-V1 identity / Scholar RLS helpers.
+-- Corrects apply-blocking findings B-1 and B-2 from
+-- docs/security/SHERIVS-001-PROPOSED-SQL-INDEPENDENT-REVIEW-001.md
+--
+-- Rollback (genuine inverse; also proposed, not applied):
+--   database/supabase/rollbacks/20261015000010_sherivs_identity_privilege_freeze.sql.proposed
+--
+-- Confirmed source defects (canonical history, not live catalog):
+--   1. PATH A — public.users UPDATE grant to `authenticated` plus policy
+--      "User updates self" (USING/WITH CHECK only `id = auth.uid()`) lets any
+--      authenticated principal change their own role, school_id, and
+--      is_active through PostgREST. Application Zod in profile.functions.ts
+--      is not a database boundary (INVARIANT 3 / 8).
+--   2. PATH E — public.is_school_admin(), public.get_my_school_id(), and
+--      public.get_my_role() (last Scholar DEFINER bodies: 20260620151525)
+--      do not require users.is_active = true. Inactive accounts still
+--      satisfy Scholar tenant RLS and Phase 08 RPCs.
+--
+-- Why a BEFORE UPDATE trigger (not column REVOKE, not WITH CHECK alone):
+--   • Column REVOKE UPDATE(role, school_id, is_active) FROM authenticated
+--     would be coarser and leave no row-level audit message. Under the new
+--     rule the trigger is the single gate: only service_role may change
+--     these columns, for self or for any other row.
+--   • UPDATE WITH CHECK cannot see OLD. A subquery on public.users during
+--     WITH CHECK observes the new row, so "role = get_my_role()" is a
+--     tautology. The trigger compares NEW to OLD.
+--   • Self-updates of non-privileged columns (full_name, phone, push_token,
+--     digital_twin_opt_out, …) still succeed.
+--
+-- B-1 trusted execution context (ONLY service_role):
+--   Privileged-column UPDATE (role, school_id, is_active) is allowed solely
+--   when current_user = 'service_role'. Every other PostgreSQL role,
+--   including authenticated, anon, and postgres/table owner, raises
+--   'Forbidden: only service_role may modify privileged identity fields
+--   (role, school_id, is_active)' whenever one of those columns changes.
+--   Changing id always raises. Updates that touch no privileged column
+--   (full_name, phone, ...) pass through to RLS as before.
+--
+--   Deliberately NOT trusted: request.jwt.claim.role, request.jwt.claims,
+--   request.jwt.claim.sub, auth.uid(), auth.role(), and session_user. Any
+--   session (including postgres) can set_config() those GUCs, so they are
+--   caller-controlled. current_user is the effective PostgreSQL role and
+--   cannot be forged without actually holding SET ROLE service_role.
+--   The earlier "identified JWT updating a DIFFERENT row is left to RLS"
+--   branch is removed. Closed residual: a postgres session that set
+--   request.jwt.claim.sub to another user could change role via that branch.
+--
+--   Consequence: school-admin JWT updates of OTHER users' role, school_id,
+--   or is_active (e.g. hr.tsx, setTeacherActive) now fail from the browser
+--   client and MUST go through a server path using the service_role client
+--   (authenticate, resolve tenant, authorize school admin, validate, audit).
+--
+-- FORCE ROW LEVEL SECURITY decision (public.users): NOT added.
+--   ALTER TABLE public.users FORCE ROW LEVEL SECURITY would subject the
+--   table owner (postgres) to RLS. The SECURITY DEFINER helpers
+--   get_my_school_id, get_my_role, is_school_admin, and is_super_admin are
+--   owned by postgres and SELECT public.users; today they bypass RLS as
+--   owner. Policies on public.users call those same helpers, so under FORCE
+--   they would re-enter the policy that calls them (infinite recursion) or
+--   return no rows and break every tenant RLS check. It is also unnecessary
+--   for this fix: the trigger fires for owners regardless of RLS, and
+--   postgres is no longer allowlisted. Revisit only after helpers are
+--   moved to a BYPASSRLS non-owner role.
+--
+-- B-2 transactional execution contract:
+--   This file wraps helper replacement and trigger installation in one
+--   explicit BEGIN/COMMIT. Every statement below is transactional
+--   (CREATE OR REPLACE FUNCTION, COMMENT ON, DROP TRIGGER, CREATE TRIGGER).
+--   There is no CREATE INDEX CONCURRENTLY, VACUUM, or other
+--   non-transactional operation.
+--
+--   Honored by: a PostgreSQL client that submits this whole file as one
+--   script and respects BEGIN/COMMIT (psql -f / -1; node-pg client.query
+--   of the full string with no pre-existing transaction). That is the
+--   contract of scripts/db-apply.mjs and scripts/db-apply-one.mjs.
+--
+--   NOT compatible with a tool that already wraps the file in BEGIN/
+--   COMMIT, including scripts/staging/sherivs-restore/runner.mjs. An
+--   inner COMMIT would close that outer transaction before the ledger
+--   INSERT. This file remains *.sql.proposed and is excluded from that
+--   runner. Promoting it to canonical .sql requires either stripping
+--   BEGIN/COMMIT (so the runner wrap is the sole boundary) or changing
+--   the runner so it does not wrap files that already contain COMMIT.
+--   Do not promote without that change.
+--
+--   Failure of any statement aborts the transaction. There is no
+--   EXCEPTION WHEN OTHERS handler. Success is reported only by COMMIT.
+--
+-- Not in this file (out of mission or not confirmed as a self-escalation):
+--   • Neutral cg_org_membership / cg_role_assignment policies already require
+--     is_tenant_admin(); users.role self-elevation does not grant that
+--     binding. Left to SHERIVS-002 grant review.
+--   • Table-level GRANT SELECT,INSERT,UPDATE,DELETE on users to authenticated
+--     is unchanged (SHERIVS-002).
+--   • Sensitive HR/financial/NIN/biometric columns are unchanged (SHERIVS-003).
+--   • news_reads parent-engagement query is unchanged (separate OPEN item).
+--   • postgres / table-owner DBA repair is not a silent skip. Owner repair
+--     requires SET ROLE service_role (if granted) or DISABLE TRIGGER.
+--   • Server paths for school-admin changes to other users' role/school_id/
+--     is_active (hr.tsx, setTeacherActive) are application work, not here.
+-- =============================================================================
+
+BEGIN;
+
+-- -----------------------------------------------------------------------------
+-- 1. Active-account gates on Scholar identity helpers
+--    Bodies otherwise match 20260620151525 (SECURITY DEFINER, search_path).
+-- -----------------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION public.get_my_school_id()
+RETURNS uuid
+LANGUAGE sql
+STABLE
+SECURITY DEFINER
+SET search_path = public
+AS $$
+  SELECT school_id
+    FROM public.users
+   WHERE id = auth.uid()
+     AND is_active = true;
+$$;
+
+COMMENT ON FUNCTION public.get_my_school_id() IS
+  $comment$SHERIVS-001: returns the caller school_id only when the users row is
+  active. SECURITY DEFINER, search_path=public, no parameters. NULL when
+  unauthenticated, missing, or inactive — fail closed for tenant RLS.$comment$;
+
+CREATE OR REPLACE FUNCTION public.get_my_role()
+RETURNS text
+LANGUAGE sql
+STABLE
+SECURITY DEFINER
+SET search_path = public
+AS $$
+  SELECT role
+    FROM public.users
+   WHERE id = auth.uid()
+     AND is_active = true;
+$$;
+
+COMMENT ON FUNCTION public.get_my_role() IS
+  $comment$SHERIVS-001: returns the caller role only when the users row is
+  active. SECURITY DEFINER, search_path=public, no parameters. NULL when
+  unauthenticated, missing, or inactive — fail closed for staff gates.$comment$;
+
+CREATE OR REPLACE FUNCTION public.is_school_admin()
+RETURNS boolean
+LANGUAGE sql
+STABLE
+SECURITY DEFINER
+SET search_path = public
+AS $$
+  SELECT EXISTS (
+    SELECT 1
+      FROM public.users
+     WHERE id = auth.uid()
+       AND role IN ('admin', 'principal')
+       AND is_active = true
+  );
+$$;
+
+COMMENT ON FUNCTION public.is_school_admin() IS
+  $comment$SHERIVS-001: true only for an active users row whose role is admin
+  or principal. SECURITY DEFINER, search_path=public, no parameters.
+  Inactive administrators do not satisfy Scholar admin RLS or RPCs.$comment$;
+
+-- -----------------------------------------------------------------------------
+-- 2. Forbid untrusted mutation of privilege-bearing columns
+-- -----------------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION public.forbid_self_privilege_mutation()
+RETURNS trigger
+LANGUAGE plpgsql
+SECURITY INVOKER
+SET search_path = public
+AS $$
+DECLARE
+  v_privilege_changed boolean;
+BEGIN
+  IF NEW.id IS DISTINCT FROM OLD.id THEN
+    RAISE EXCEPTION 'Forbidden: identity key cannot be changed';
+  END IF;
+
+  IF current_user = 'service_role' THEN
+    RETURN NEW;
+  END IF;
+
+  v_privilege_changed :=
+       NEW.role IS DISTINCT FROM OLD.role
+    OR NEW.school_id IS DISTINCT FROM OLD.school_id
+    OR NEW.is_active IS DISTINCT FROM OLD.is_active;
+
+  IF NOT v_privilege_changed THEN
+    RETURN NEW;
+  END IF;
+
+  RAISE EXCEPTION 'Forbidden: only service_role may modify privileged identity fields (role, school_id, is_active)';
+END;
+$$;
+
+COMMENT ON FUNCTION public.forbid_self_privilege_mutation() IS
+  $comment$SHERIVS-001 BEFORE UPDATE guard. Privilege-bearing columns role,
+  school_id, and is_active may change only when current_user is service_role.
+  All other roles (authenticated, anon, postgres/owner) raise, for self or
+  other rows. Request JWT GUCs, auth.uid(), and session_user are not trusted
+  because a session can set_config them. Closes the residual where postgres
+  carrying another user's request.jwt.claim.sub could change role. School-admin
+  changes to other users must use a service_role server path. Does not SELECT
+  other rows. SECURITY INVOKER.$comment$;
+
+DROP TRIGGER IF EXISTS trg_users_forbid_self_privilege_mutation ON public.users;
+CREATE TRIGGER trg_users_forbid_self_privilege_mutation
+  BEFORE UPDATE ON public.users
+  FOR EACH ROW
+  EXECUTE FUNCTION public.forbid_self_privilege_mutation();
+
+COMMIT;
+
+-- =============================================================================
+-- End of proposed migration. Not applied. Not in the canonical 71-file pin.
+-- =============================================================================

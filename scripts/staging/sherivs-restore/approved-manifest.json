@@ -1,0 +1,449 @@
+{
+  "manifestId": "sherivs-staging-restore-71@d195ba861f80379b79533126653b9cee82a8e872",
+  "sourceCommit": "d195ba861f80379b79533126653b9cee82a8e872",
+  "sourceTree": "bbd828951e166662bbe831fd74972e1a15488468",
+  "directory": "database/supabase/migrations",
+  "count": 71,
+  "files": [
+    {
+      "seq": 1,
+      "filename": "20260620122048_50e590c2-5911-4c98-8931-fb46a4b509f3.sql",
+      "sha256": "87ce504f1566732100d8ddcc4f70165dc5576003d955c1000246c692a6115c54",
+      "byteLength": 25112
+    },
+    {
+      "seq": 2,
+      "filename": "20260620122110_178748dc-376f-4c78-911d-ec879dfffce1.sql",
+      "sha256": "d9f944b2f903ab2c3802ecbfa1bacf0380daa015945caeceb9ef62501952525e",
+      "byteLength": 1053
+    },
+    {
+      "seq": 3,
+      "filename": "20260620123741_7e8b6a59-b1d0-4885-bcfb-ae0dd2dac64e.sql",
+      "sha256": "e8bb72f882c2cf1b43a59dd06df423d11466e20a334093a7e7c3f3f6b151a6c0",
+      "byteLength": 1291
+    },
+    {
+      "seq": 4,
+      "filename": "20260620131046_25e754bd-c51f-409e-90f1-74b622794197.sql",
+      "sha256": "6c5394b82bc3f5ae56b7694f4362d1c09eaeace619564799f25dbe762dc03f24",
+      "byteLength": 435
+    },
+    {
+      "seq": 5,
+      "filename": "20260620150249_aeff3a12-2619-4cc9-aa0f-a7f5a844e8f3.sql",
+      "sha256": "9b30b91e3f76b6fd448c950de70d7ac5e35251eb4fa7bad766dcbc2979074022",
+      "byteLength": 2994
+    },
+    {
+      "seq": 6,
+      "filename": "20260620151525_b630392a-2197-480f-b1cb-99da6c869c81.sql",
+      "sha256": "1f2ef5bb30c946e5d106eb6726e1b9592b07ae490665b3cb6445672a703d65b7",
+      "byteLength": 719
+    },
+    {
+      "seq": 7,
+      "filename": "20260620163221_afd596f8-c5bc-4f1d-8bf0-fd8a2a409d14.sql",
+      "sha256": "c17c05f75e15b0c2940521a8509e16936d1a52d5368d5c83b81bbbcea1abecce",
+      "byteLength": 117
+    },
+    {
+      "seq": 8,
+      "filename": "20260622044140_557cda0e-ae5c-4abc-b1ef-51ea89d09ff5.sql",
+      "sha256": "46e44756b593cc8756e1f6de747789e26be687bbb54ab7c1faaa50977b1c820b",
+      "byteLength": 1257
+    },
+    {
+      "seq": 9,
+      "filename": "20260623054451_c6c2ad41-5c74-4c10-9920-f6ef5546d4e6.sql",
+      "sha256": "d77adfc8e9dcece4e8b0bcd34c299a3cab64bdf88cac6d21970a1eb5e84816c7",
+      "byteLength": 2799
+    },
+    {
+      "seq": 10,
+      "filename": "20260623054511_8244a074-f5e6-41b8-8d3e-44bd6d2c7e12.sql",
+      "sha256": "0352e3a3efa15781d0b109e996d1ade0ba1927fca40b70e7c8e827a41442630c",
+      "byteLength": 732
+    },
+    {
+      "seq": 11,
+      "filename": "20260624115701_d5ee45b9-21af-42a5-b99b-4ae1a1eb7a46.sql",
+      "sha256": "578d06e8bd4dafe83b6f993d7ffc016fa7349f4a7d55dabb347f83e06112f507",
+      "byteLength": 355
+    },
+    {
+      "seq": 12,
+      "filename": "20260626111823_66d215f2-2628-4490-93eb-0379825258b9.sql",
+      "sha256": "7e7e134a524557d189f9f928d004224a2055109d3557591a5faf079af377ec31",
+      "byteLength": 5555
+    },
+    {
+      "seq": 13,
+      "filename": "20260626130344_f04aa837-2b27-4111-8b1d-0c46287a1bb3.sql",
+      "sha256": "0dec5e7687f703960dc1fd19a5b0e8f6de167f70a80a7af250c69d3d85613bd5",
+      "byteLength": 143
+    },
+    {
+      "seq": 14,
+      "filename": "20260626131711_e05e2ec4-e2d0-4a0e-a905-fe22ea9a3401.sql",
+      "sha256": "2e3e8b296ce4e93e263b076d419195f8b62919a737929ef9dada350cf829e601",
+      "byteLength": 2499
+    },
+    {
+      "seq": 15,
+      "filename": "20260626133221_e95464b7-e864-413c-a934-7428cb26da47.sql",
+      "sha256": "e4970688a24f6d2f70d72890ef1785bea6b3e996e2c17cedd74709f943b672a6",
+      "byteLength": 7402
+    },
+    {
+      "seq": 16,
+      "filename": "20260626133249_c712dcde-8e28-4f72-968d-a101b1bd5f7e.sql",
+      "sha256": "0e5ce23ab2d4a17c8bcbec15cc7926d0cfb9137bf44dd771fbe119a7cdcc6de9",
+      "byteLength": 658
+    },
+    {
+      "seq": 17,
+      "filename": "20260626143528_139a8242-aefe-4b45-bd91-9b17351263bc.sql",
+      "sha256": "3e27eee9e70423e9bc9a3691be9614915c16b12d388391b61790bd6f219b14ee",
+      "byteLength": 242
+    },
+    {
+      "seq": 18,
+      "filename": "20260626150625_35a08443-45fd-46ae-807b-3644b44efe26.sql",
+      "sha256": "71f8650a71519573cfcfb51b64135cd7d12669c1a8e98e40611e237a389f2649",
+      "byteLength": 18984
+    },
+    {
+      "seq": 19,
+      "filename": "20260626172336_78ce7dbb-cbb0-4186-b95c-cd8caea6cd95.sql",
+      "sha256": "9c0d372bd753fdce2bb3ef9d1404f4532f15bda2b99daf2bcc2802b1c58f2a54",
+      "byteLength": 1270
+    },
+    {
+      "seq": 20,
+      "filename": "20260627090513_8cdbda3b-4bd0-4ac0-a4b5-0adfdc813790.sql",
+      "sha256": "f389db9376b7fcd08a34ed083ea5c6e87eb9ffa17c78ad42de6224a73ef3dc0d",
+      "byteLength": 343
+    },
+    {
+      "seq": 21,
+      "filename": "20260705002543_e6b3e3bb-6d5e-4783-97cd-39e875bece40.sql",
+      "sha256": "3d066928e52bae6057f933a5c243a36ff4ed42ab6e3672341093cc503274c52e",
+      "byteLength": 2084
+    },
+    {
+      "seq": 22,
+      "filename": "20260707223958_421f2364-7989-4069-b78c-fd119f19daeb.sql",
+      "sha256": "db8d1b56b6a861fdad9c69915175ddb2da5f22218d758a0764d69f0f96f7e656",
+      "byteLength": 1193
+    },
+    {
+      "seq": 23,
+      "filename": "20260707225659_58faa06f-1875-4a2b-8365-88a8473383f2.sql",
+      "sha256": "b33c6529e36ba9cf7f857a18688768735d1c6a4acea28937b90bd955083f22ae",
+      "byteLength": 1086
+    },
+    {
+      "seq": 24,
+      "filename": "20260725063636_d379b679-904b-4d2a-b9ed-11b463817fda.sql",
+      "sha256": "f956290d51d4be129350b6bedfc80947a61692663829fc2af154dbb5070fecc4",
+      "byteLength": 9151
+    },
+    {
+      "seq": 25,
+      "filename": "20260725064521_96522167-55e3-4281-ae25-6180fe57369f.sql",
+      "sha256": "01c41a0504ce523600a439ffbcec131d23c2240794947987c34ae685a3686e6f",
+      "byteLength": 319
+    },
+    {
+      "seq": 26,
+      "filename": "20260725065302_ddd47f8e-25ed-4581-84e8-658d1e38ecdb.sql",
+      "sha256": "f65ab9254635eb5977ebf696eafca2bb0b16355a7371d1971cfa371b0136fa96",
+      "byteLength": 3048
+    },
+    {
+      "seq": 27,
+      "filename": "20260726085612_c410e01a-1b96-4b65-b539-0eb71556bb31.sql",
+      "sha256": "aab29e723d490c8fc5b2be9a4acb9733f8ba97364ced6b6a5aeda49f665b3fd7",
+      "byteLength": 1561
+    },
+    {
+      "seq": 28,
+      "filename": "20260729052237_75252732-97d3-448f-b082-93517558a096.sql",
+      "sha256": "a7404082f4a3956d7f4ed25bb31e612eda7e4bc05dd2f3f1a1a1b3130b94c8a6",
+      "byteLength": 3435
+    },
+    {
+      "seq": 29,
+      "filename": "20260729054314_21b2720c-0c44-46ce-8404-e256ce7cf4ee.sql",
+      "sha256": "050ed51a25e8362ec16535f46cd701a843ae39719ab1b2b64ac272869705cad4",
+      "byteLength": 7347
+    },
+    {
+      "seq": 30,
+      "filename": "20260819000000_coregrid_harden_schools_and_realtime.sql",
+      "sha256": "030a3c41acc3fdbaea964b9d9410c307a0d3edcd78fd120e8d4e2323fbd70f8a",
+      "byteLength": 1551
+    },
+    {
+      "seq": 31,
+      "filename": "20260903000000_coregrid_universal_kernel_substrate.sql",
+      "sha256": "1c6ea1a9271c53ea29329208f10e8ed1cb035c6b5e59cf8e530f02c985e80eca",
+      "byteLength": 12052
+    },
+    {
+      "seq": 32,
+      "filename": "20260904010000_coregrid_rls_transport_and_grants.sql",
+      "sha256": "3fdef310f87da63e2c4f0110f36d0cddb9c4575bff0af802414aaf846781da5e",
+      "byteLength": 2034
+    },
+    {
+      "seq": 33,
+      "filename": "20260904020000_coregrid_l2_identity_tenancy.sql",
+      "sha256": "0850b249ddd023dc345b805de974ec9b22a4d35ccc5bef85b4293c56a6b4f528",
+      "byteLength": 4426
+    },
+    {
+      "seq": 34,
+      "filename": "20260907000000_coregrid_workforce_kind_substrate.sql",
+      "sha256": "824f8ff999de541c0fb69c87dc42aa9167231811901e8889496a5292e7e53183",
+      "byteLength": 8771
+    },
+    {
+      "seq": 35,
+      "filename": "20260907000100_runtime_scholar_workforce_catalog.sql",
+      "sha256": "4612aed4c0f63d949512e6804a9a823074d2cd2c52b29b06f3cdc268456968b0",
+      "byteLength": 15473
+    },
+    {
+      "seq": 36,
+      "filename": "20260907000300_coregrid_workforce_position_rpc.sql",
+      "sha256": "3ceb09bec89448d52ae89545215287c448bf9fea5f4810a821647e9a903fa154",
+      "byteLength": 5826
+    },
+    {
+      "seq": 37,
+      "filename": "20260907000400_coregrid_self_primary_position_rpc.sql",
+      "sha256": "9edba0b523607a598f25827ffe3821bf5b6aa688ff94bb76da2f266f86a2886d",
+      "byteLength": 2011
+    },
+    {
+      "seq": 38,
+      "filename": "20260907000500_coregrid_end_position_promotion.sql",
+      "sha256": "1951a520776f859c8c2fbcf35d8a782bb99daae964dbac2184072bed64a5658b",
+      "byteLength": 2614
+    },
+    {
+      "seq": 39,
+      "filename": "20260907000600_runtime_scholar_workforce_ecosystem_extension.sql",
+      "sha256": "9efa8868da0eaa7d6ad913c3adf080174e0e0b7f3c5cf352e1b399158d6a1246",
+      "byteLength": 9145
+    },
+    {
+      "seq": 40,
+      "filename": "20260907000700_coregrid_org_profile_substrate.sql",
+      "sha256": "1e2798a92fc35fb3158aec4fbea0282908198134b1bc969b998fa7ddf1109a42",
+      "byteLength": 3755
+    },
+    {
+      "seq": 41,
+      "filename": "20260907000800_coregrid_role_assignment_substrate.sql",
+      "sha256": "d76a8df9a7d26b953dca5fccf1a8ded78b37a0356b337b936e3047ca3a2721ff",
+      "byteLength": 10604
+    },
+    {
+      "seq": 42,
+      "filename": "20260929000000_coregrid_foundation_mission_001.sql",
+      "sha256": "8ec43cd8af0dfcc657ae47241038bf08c208a632fd0fa82d87f564a8fd9b4024",
+      "byteLength": 9249
+    },
+    {
+      "seq": 43,
+      "filename": "20260930000000_coregrid_v1_workspace_persistence.sql",
+      "sha256": "82e338038b8ad5d0e9b98b6690bc6db4cf6c00d4271897176240e8375a5e8495",
+      "byteLength": 5325
+    },
+    {
+      "seq": 44,
+      "filename": "20261001000000_coregrid_v1_org_model.sql",
+      "sha256": "4c1d53d6dc9ee4ce4c396be795f418a96ea9b2d5a30c76daffcdb35806f62049",
+      "byteLength": 7460
+    },
+    {
+      "seq": 45,
+      "filename": "20261002000000_coregrid_v1_kernel_envelope.sql",
+      "sha256": "68051c768f473151de22a9d6a200d442690717de837608fe553e3dd5519c4b29",
+      "byteLength": 20083
+    },
+    {
+      "seq": 46,
+      "filename": "20261002000001_coregrid_v1_neutral_tenant_primitives.sql",
+      "sha256": "119545b64357355f28d92291fa46f0b08c71aedf741e2349c7589bbc02dacf6b",
+      "byteLength": 23630
+    },
+    {
+      "seq": 47,
+      "filename": "20261002000002_coregrid_v1_worker_definitions.sql",
+      "sha256": "26f03c1c39b790bfed386bc1af3bd85ecf930f44df44960d3da492668baaf0f1",
+      "byteLength": 15800
+    },
+    {
+      "seq": 48,
+      "filename": "20261002000003_coregrid_v1_kernel_bitemporal.sql",
+      "sha256": "03fd14058d5260f13fe23a50f5957eede1b821a70db3d991f3750a28578a5451",
+      "byteLength": 11946
+    },
+    {
+      "seq": 49,
+      "filename": "20261002000004_coregrid_v1_memory_tier.sql",
+      "sha256": "12f0fce43bf1a7d63ca1f775bebe4c3e430697f104ae551dd3f76c9b9b8a23b4",
+      "byteLength": 16899
+    },
+    {
+      "seq": 50,
+      "filename": "20261002000005_coregrid_v1_reconciliation.sql",
+      "sha256": "5f9796d54b1b34606a6e96fc683156c671d5f055254e95264ac5442ce0f80ba1",
+      "byteLength": 17992
+    },
+    {
+      "seq": 51,
+      "filename": "20261002000006_coregrid_v1_event_security.sql",
+      "sha256": "29c8263377bd34eafe47a7df72189977b6c49e3d3cb6838e6cb4e913e45a8f15",
+      "byteLength": 15104
+    },
+    {
+      "seq": 52,
+      "filename": "20261002000007_coregrid_v1_event_routing.sql",
+      "sha256": "dabdd5414b1da28288df441322da0d378610d4959d3c097a1a8dc2785175ea76",
+      "byteLength": 17087
+    },
+    {
+      "seq": 53,
+      "filename": "20261002000008_coregrid_v1_evidence_lifecycle.sql",
+      "sha256": "fb0a77987cee5d554a0a05bac56d8247574dacc743628d281a42677fb4d4a26b",
+      "byteLength": 20604
+    },
+    {
+      "seq": 54,
+      "filename": "20261002000009_coregrid_v1_reasoning_provenance.sql",
+      "sha256": "7391ef7e739634d351e4f079c82097f5186e4ee7b30186d4dda87c65ed5b31f0",
+      "byteLength": 15025
+    },
+    {
+      "seq": 55,
+      "filename": "20261002000010_coregrid_v1_cost_attribution.sql",
+      "sha256": "c5c7dabca7236513ec1c37d520b55945585b1bb845934b3771e7a1ff9fdf51dd",
+      "byteLength": 11987
+    },
+    {
+      "seq": 56,
+      "filename": "20261002000011_coregrid_v1_knowledge_currency.sql",
+      "sha256": "e7d8b6e0eebd77a5979c4a59bd9f27cf293d2fbf967bd8597677ac2af30f39f4",
+      "byteLength": 16954
+    },
+    {
+      "seq": 57,
+      "filename": "20261002000012_coregrid_v1_tool_runtime.sql",
+      "sha256": "fd829fc13d06771a637fa1fb941494a48e9ece6fcb7d925b390bd6877cb20168",
+      "byteLength": 14027
+    },
+    {
+      "seq": 58,
+      "filename": "20261002000013_coregrid_v1_neutral_membership_policies.sql",
+      "sha256": "d633d725a8fe5120525d8adacea9b4197d8eb71ea8913ade6a9a7179ec3389bc",
+      "byteLength": 16346
+    },
+    {
+      "seq": 59,
+      "filename": "20261002000014_coregrid_v2_transport_buses_rls.sql",
+      "sha256": "a1e3bcc3b0f1436de6c49d4ccd601cd894fdd10bdae5f25d692b02f37be83517",
+      "byteLength": 10364
+    },
+    {
+      "seq": 60,
+      "filename": "20261002000015_coregrid_v1_substrate_policies.sql",
+      "sha256": "e38c8e100c3c39ad745d01d8751ae838b55f2a64c06b7fabec38e70680d298d5",
+      "byteLength": 23700
+    },
+    {
+      "seq": 61,
+      "filename": "20261003000016_coregrid_v1_file_substrate.sql",
+      "sha256": "60d515a6610cf1d4bfbd1365c06c98211a434bbc547b0fa9f2f863f97bae92a4",
+      "byteLength": 19159
+    },
+    {
+      "seq": 62,
+      "filename": "20261003000017_coregrid_v1_idempotency_substrate.sql",
+      "sha256": "1165260c38c88f4726fc56a824ad5b6097001daabbe261bdc0b80b31035cb328",
+      "byteLength": 19141
+    },
+    {
+      "seq": 63,
+      "filename": "20261003000018_coregrid_v1_idempotency_privilege_revoke.sql",
+      "sha256": "242630a6c791eb423758161fadce185d9b9c3434f2fcfd1966bd4dbc9d3edecc",
+      "byteLength": 3279
+    },
+    {
+      "seq": 64,
+      "filename": "20261003000019_coregrid_v1_mission_lease.sql",
+      "sha256": "77f16b824d21934af045647da5d05806f2291fcd4d75a278316fc8fd05616831",
+      "byteLength": 16018
+    },
+    {
+      "seq": 65,
+      "filename": "20261003000020_coregrid_is_super_admin_definer.sql",
+      "sha256": "6f8fb46367691f11b57eaa4642a94c2b68a0aa6a7201f0eb02c80b3c3856baa4",
+      "byteLength": 2576
+    },
+    {
+      "seq": 66,
+      "filename": "20261003000030_coregrid_hermes_observation_substrate.sql",
+      "sha256": "de1578478b5d1bd6312d720d91d78db73003a0edc229d5fdca594d0c62033e38",
+      "byteLength": 11427
+    },
+    {
+      "seq": 67,
+      "filename": "20261003000031_coregrid_delivery_evidence.sql",
+      "sha256": "24fc4eb2215fd08cfe2ae45febcf3614415d31603bae984e9931d56b2fe33e5b",
+      "byteLength": 10886
+    },
+    {
+      "seq": 68,
+      "filename": "20261003000040_coregrid_school_media_bucket.sql",
+      "sha256": "e2a97176d54a75feacc72c7ba5dd3770dae91ccfd56d61681966f0527176cce7",
+      "byteLength": 5543
+    },
+    {
+      "seq": 69,
+      "filename": "20261003000041_coregrid_transport_bus_reads.sql",
+      "sha256": "9a1e0194dcfebde50e031c63fd3701b9b6c7cbed712f9968c646bd83976ab3cf",
+      "byteLength": 13957
+    },
+    {
+      "seq": 70,
+      "filename": "20261008000050_coregrid_organization_memberships.sql",
+      "sha256": "22699f85a2c8f0b12a626e3d33ece2b0a0610836a56144f93bf007b953e48561",
+      "byteLength": 12846
+    },
+    {
+      "seq": 71,
+      "filename": "20261008000060_organization_onboarding.sql",
+      "sha256": "8c7f582dc5c35fb869c625be5b40f83b9611791746fccbcb355cfc37a1347ac3",
+      "byteLength": 5738
+    }
+  ],
+  "transportPair": {
+    "first": "20261002000014_coregrid_v2_transport_buses_rls.sql",
+    "second": "20261003000041_coregrid_transport_bus_reads.sql",
+    "firstSeq": 59,
+    "secondSeq": 69
+  },
+  "sessionGucMigrations": [
+    {
+      "seq": 23,
+      "filename": "20260707225659_58faa06f-1875-4a2b-8365-88a8473383f2.sql",
+      "setting": "SET statement_timeout = '0'",
+      "isolation": "new-connection-per-file"
+    }
+  ]
+}

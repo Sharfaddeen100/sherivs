@@ -15,6 +15,7 @@ import {
 import { createOrganization } from "@/lib/onboarding/create-organization.functions";
 import { runtimeWorkspaceHome } from "@/lib/runtime/nav-registry";
 import { useServerFn } from "@tanstack/react-start";
+import { SherivsLogo } from "@/components/brand/sherivs-logo";
 
 /**
  * SHERIVS ORGANIZATION ONBOARDING (§21) — the founder wizard.
@@ -84,6 +85,7 @@ function OnboardingPage() {
 
   return (
     <div className="mx-auto w-full max-w-xl px-4 py-12">
+      <SherivsLogo size={36} wordmarkClassName="text-xl" className="mb-6" />
       <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
         {PLATFORM_NAME} onboarding
       </p>
