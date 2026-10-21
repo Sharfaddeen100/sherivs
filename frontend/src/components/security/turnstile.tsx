@@ -78,6 +78,9 @@ export function Turnstile({
         if (cancelled || !ref.current || !window.turnstile) return;
         id = window.turnstile.render(ref.current, {
           sitekey: TURNSTILE_SITE_KEY,
+          // "flexible" stretches to the container (min 300px); below that use the
+          // 150px "compact" widget so the iframe can never overflow a phone card.
+          size: turnstileSize(ref.current.clientWidth),
           callback: (t: string) => cb.current(t),
           "expired-callback": () => cb.current(null),
           "error-callback": () => {
@@ -97,7 +100,16 @@ export function Turnstile({
   }, [resetKey]);
 
   if (!TURNSTILE_SITE_KEY) return null;
-  return <div ref={ref} className="min-h-[65px]" data-testid="turnstile" />;
+  return (
+    <div className="turnstile-slot" data-testid="turnstile-slot">
+      <div ref={ref} className="turnstile-host" data-testid="turnstile" />
+    </div>
+  );
+}
+
+/** Widget size for a container width: Cloudflare's flexible widget needs at least 300px. */
+export function turnstileSize(containerWidth: number): "flexible" | "compact" {
+  return containerWidth >= 300 ? "flexible" : "compact";
 }
 
 /** True when the form must wait for a token before submitting. */
