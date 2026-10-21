@@ -41,6 +41,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useCanManageAdmissions } from "@/components/admin-area-guard";
 import { admissionsOnlyNav } from "@/lib/runtime/scholar/admissions-access";
 import { useServerFn } from "@tanstack/react-start";
+import { SherivsLogo, SherivsMark } from "@/components/brand/sherivs-logo";
 
 export const Route = createFileRoute("/_authenticated")({
   ssr: false,
@@ -98,7 +99,14 @@ function AuthenticatedLayout() {
   }, [profile?.id]);
 
   if (loading) {
-    return <div className="min-h-dvh grid place-items-center text-muted-foreground">Loading…</div>;
+    return (
+      <div className="min-h-dvh grid place-items-center" role="status" aria-live="polite">
+        <div className="flex flex-col items-center gap-4">
+          <SherivsLogo size={56} wordmarkClassName="text-2xl" className="animate-pulse" />
+          <span className="text-sm text-muted-foreground">Loading your workspace…</span>
+        </div>
+      </div>
+    );
   }
 
   if (!profile && !superAdmin) {
@@ -181,9 +189,21 @@ function AuthenticatedLayout() {
               <div className="flex items-center gap-2 min-w-0">
                 {role && <SidebarTrigger />}
                 <Link to={dashHref} className="flex items-center gap-2 min-w-0">
-                  <div className="size-8 rounded-lg uos-tenant-bg grid place-items-center font-bold shrink-0">
-                    {(school?.name?.[0] ?? "U") as string}
-                  </div>
+                  {school?.logo_url ? (
+                    <img
+                      src={school.logo_url}
+                      alt=""
+                      width={32}
+                      height={32}
+                      className="size-8 rounded-lg object-cover shrink-0"
+                    />
+                  ) : school ? (
+                    <div className="size-8 rounded-lg uos-tenant-bg grid place-items-center font-bold shrink-0">
+                      {(school.name?.[0] ?? "S") as string}
+                    </div>
+                  ) : (
+                    <SherivsMark size={32} decorative />
+                  )}
                   <div className="leading-tight min-w-0">
                     <div className="font-display font-bold text-sm truncate">
                       {school?.name ?? `${PLATFORM_NAME} HQ`}

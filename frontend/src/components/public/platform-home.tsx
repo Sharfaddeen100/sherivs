@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { PLATFORM_NAME, PLATFORM_PAGE_DESCRIPTION, PLATFORM_TAGLINE } from "@/lib/platform";
+import { SherivsMark } from "@/components/brand/sherivs-logo";
 
 /**
  * Public platform home for unauthenticated visitors on `/` when no tenant
@@ -14,13 +15,7 @@ export function PublicPlatformHome() {
       <header className="border-b border-border">
         <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
           <div className="flex items-center gap-3">
-            <img
-              src="/icons/icon-192.png"
-              alt={`${PLATFORM_NAME} logo`}
-              width={40}
-              height={40}
-              className="size-10 rounded-md"
-            />
+            <SherivsMark size={40} decorative />
             <div>
               <p className="font-display text-lg font-bold leading-tight">{PLATFORM_NAME}</p>
               <p className="text-xs text-muted-foreground">{PLATFORM_TAGLINE}</p>

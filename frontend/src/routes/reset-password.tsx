@@ -7,6 +7,7 @@ import { newPasswordError } from "@/lib/security/password-strength";
 import { newPasswordServerMessage, recoveryLinkError } from "@/lib/security/auth-feedback";
 import { PasswordInput } from "@/components/security/password-input";
 import { PasswordStrengthMeter } from "@/components/security/password-strength-meter";
+import { SherivsLogo } from "@/components/brand/sherivs-logo";
 
 export const Route = createFileRoute("/reset-password")({
   ssr: false,
@@ -109,6 +110,9 @@ function ResetPasswordPage() {
   return (
     <div className="auth-shell">
       <div className="auth-card uos-card" data-testid="auth-card">
+        <Link to="/" aria-label="Sherivs home" className="mb-6 inline-flex">
+          <SherivsLogo size={36} wordmarkClassName="text-xl" />
+        </Link>
         <h1 className="font-display text-2xl font-bold">
           {invalid ? "Link not valid" : "Choose a new password"}
         </h1>

@@ -10,6 +10,7 @@ import {
   NEUTRAL_SENT_MESSAGE,
   RESEND_COOLDOWN_MS,
 } from "@/lib/security/auth-feedback";
+import { SherivsLogo } from "@/components/brand/sherivs-logo";
 
 export const Route = createFileRoute("/forgot-password")({
   ssr: false,
@@ -88,6 +89,9 @@ function FindAccountPage() {
   return (
     <div className="auth-shell">
       <div className="auth-card uos-card" data-testid="auth-card">
+        <Link to="/" aria-label="Sherivs home" className="mb-6 inline-flex">
+          <SherivsLogo size={36} wordmarkClassName="text-xl" />
+        </Link>
         {sentTo === null ? (
           <>
             <h1 className="font-display text-2xl font-bold">Find your account</h1>
