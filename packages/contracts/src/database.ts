@@ -6962,6 +6962,45 @@ export type Database = {
         };
         Relationships: [];
       };
+      platform_support_grants: {
+        Row: {
+          created_at: string;
+          expires_at: string;
+          granted_by: string | null;
+          id: string;
+          reason: string;
+          revoked_at: string | null;
+          revoked_by: string | null;
+          tenant_id: string;
+          staff_id: string;
+          starts_at: string;
+        };
+        Insert: {
+          created_at?: string;
+          expires_at: string;
+          granted_by?: string | null;
+          id?: string;
+          reason: string;
+          revoked_at?: string | null;
+          revoked_by?: string | null;
+          tenant_id: string;
+          staff_id: string;
+          starts_at?: string;
+        };
+        Update: {
+          created_at?: string;
+          expires_at?: string;
+          granted_by?: string | null;
+          id?: string;
+          reason?: string;
+          revoked_at?: string | null;
+          revoked_by?: string | null;
+          tenant_id?: string;
+          staff_id?: string;
+          starts_at?: string;
+        };
+        Relationships: [];
+      };
       platform_staff: {
         Row: {
           activated_at: string | null;
@@ -7746,6 +7785,7 @@ export type Database = {
       is_school_admin: { Args: never; Returns: boolean };
       is_super_admin: { Args: never; Returns: boolean };
       is_platform_staff: { Args: never; Returns: boolean };
+      has_support_access: { Args: { p_tenant: string }; Returns: boolean };
       has_platform_capability: { Args: { p_capability: string }; Returns: boolean };
       claim_platform_staff_invite: { Args: never; Returns: boolean };
       is_tenant_admin: { Args: { p_tenant: string }; Returns: boolean };
