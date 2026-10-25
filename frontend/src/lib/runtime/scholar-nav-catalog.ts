@@ -1266,6 +1266,14 @@ export const SCHOLAR_NAV_CONTRIBUTIONS: readonly NavContribution[] = [
         orderHint: 4,
       },
       {
+        key: "r001.org_admin.school_group",
+        label: "School group",
+        iconKey: "settings",
+        url: "/admin/school-group",
+        capabilities: ["r001:org_admin.school_group"],
+        orderHint: 3,
+      },
+      {
         key: "r001.org_admin.ndpa",
         label: "Data protection (NDPA)",
         iconKey: "shield",

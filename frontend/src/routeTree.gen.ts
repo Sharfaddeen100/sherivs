@@ -72,6 +72,7 @@ import { Route as GovInspectionsRouteImport } from './routes/gov/inspections'
 import { Route as GovPostingsRouteImport } from './routes/gov/postings'
 import { Route as GovSchoolsRouteImport } from './routes/gov/schools'
 import { Route as GovStaffingRouteImport } from './routes/gov/staffing'
+import { Route as GroupIndexRouteImport } from './routes/group/index'
 import { Route as NewsIdRouteImport } from './routes/news.$id'
 import { Route as PlatformOrgRouteImport } from './routes/platform.org'
 import { Route as RealityClassRouteImport } from './routes/reality.$class'
@@ -140,6 +141,7 @@ import { Route as AuthenticatedAdminReportCardsRouteImport } from './routes/_aut
 import { Route as AuthenticatedAdminRoleScopesRouteImport } from './routes/_authenticated/admin/role-scopes'
 import { Route as AuthenticatedAdminRolesRouteImport } from './routes/_authenticated/admin/roles'
 import { Route as AuthenticatedAdminSafeguardsRouteImport } from './routes/_authenticated/admin/safeguards'
+import { Route as AuthenticatedAdminSchoolGroupRouteImport } from './routes/_authenticated/admin/school-group'
 import { Route as AuthenticatedAdminSchoolProfileRouteImport } from './routes/_authenticated/admin/school-profile'
 import { Route as AuthenticatedAdminSessionRolloverRouteImport } from './routes/_authenticated/admin/session-rollover'
 import { Route as AuthenticatedAdminSettingsRouteImport } from './routes/_authenticated/admin/settings'
@@ -552,6 +554,11 @@ const GovStaffingRoute = GovStaffingRouteImport.update({
   path: '/staffing',
   getParentRoute: () => GovRouteRoute,
 } as any)
+const GroupIndexRoute = GroupIndexRouteImport.update({
+  id: '/group/',
+  path: '/group/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const NewsIdRoute = NewsIdRouteImport.update({
   id: '/news/$id',
   path: '/news/$id',
@@ -945,6 +952,12 @@ const AuthenticatedAdminSafeguardsRoute =
   AuthenticatedAdminSafeguardsRouteImport.update({
     id: '/safeguards',
     path: '/safeguards',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminSchoolGroupRoute =
+  AuthenticatedAdminSchoolGroupRouteImport.update({
+    id: '/school-group',
+    path: '/school-group',
     getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
 const AuthenticatedAdminSchoolProfileRoute =
@@ -1535,6 +1548,7 @@ export interface FileRoutesByFullPath {
   '/platform/org': typeof PlatformOrgRoute
   '/reality/$class': typeof RealityClassRoute
   '/gov/': typeof GovIndexRoute
+  '/group/': typeof GroupIndexRoute
   '/admin/academic-standing': typeof AuthenticatedAdminAcademicStandingRoute
   '/admin/admissions': typeof AuthenticatedAdminAdmissionsRoute
   '/admin/admissions-funnel': typeof AuthenticatedAdminAdmissionsFunnelRoute
@@ -1600,6 +1614,7 @@ export interface FileRoutesByFullPath {
   '/admin/role-scopes': typeof AuthenticatedAdminRoleScopesRoute
   '/admin/roles': typeof AuthenticatedAdminRolesRoute
   '/admin/safeguards': typeof AuthenticatedAdminSafeguardsRoute
+  '/admin/school-group': typeof AuthenticatedAdminSchoolGroupRoute
   '/admin/school-profile': typeof AuthenticatedAdminSchoolProfileRoute
   '/admin/session-rollover': typeof AuthenticatedAdminSessionRolloverRoute
   '/admin/settings': typeof AuthenticatedAdminSettingsRoute
@@ -1752,6 +1767,7 @@ export interface FileRoutesByTo {
   '/platform/org': typeof PlatformOrgRoute
   '/reality/$class': typeof RealityClassRoute
   '/gov': typeof GovIndexRoute
+  '/group': typeof GroupIndexRoute
   '/admin/academic-standing': typeof AuthenticatedAdminAcademicStandingRoute
   '/admin/admissions': typeof AuthenticatedAdminAdmissionsRoute
   '/admin/admissions-funnel': typeof AuthenticatedAdminAdmissionsFunnelRoute
@@ -1817,6 +1833,7 @@ export interface FileRoutesByTo {
   '/admin/role-scopes': typeof AuthenticatedAdminRoleScopesRoute
   '/admin/roles': typeof AuthenticatedAdminRolesRoute
   '/admin/safeguards': typeof AuthenticatedAdminSafeguardsRoute
+  '/admin/school-group': typeof AuthenticatedAdminSchoolGroupRoute
   '/admin/school-profile': typeof AuthenticatedAdminSchoolProfileRoute
   '/admin/session-rollover': typeof AuthenticatedAdminSessionRolloverRoute
   '/admin/settings': typeof AuthenticatedAdminSettingsRoute
@@ -1974,6 +1991,7 @@ export interface FileRoutesById {
   '/platform/org': typeof PlatformOrgRoute
   '/reality/$class': typeof RealityClassRoute
   '/gov/': typeof GovIndexRoute
+  '/group/': typeof GroupIndexRoute
   '/_authenticated/admin/academic-standing': typeof AuthenticatedAdminAcademicStandingRoute
   '/_authenticated/admin/admissions': typeof AuthenticatedAdminAdmissionsRoute
   '/_authenticated/admin/admissions-funnel': typeof AuthenticatedAdminAdmissionsFunnelRoute
@@ -2039,6 +2057,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/role-scopes': typeof AuthenticatedAdminRoleScopesRoute
   '/_authenticated/admin/roles': typeof AuthenticatedAdminRolesRoute
   '/_authenticated/admin/safeguards': typeof AuthenticatedAdminSafeguardsRoute
+  '/_authenticated/admin/school-group': typeof AuthenticatedAdminSchoolGroupRoute
   '/_authenticated/admin/school-profile': typeof AuthenticatedAdminSchoolProfileRoute
   '/_authenticated/admin/session-rollover': typeof AuthenticatedAdminSessionRolloverRoute
   '/_authenticated/admin/settings': typeof AuthenticatedAdminSettingsRoute
@@ -2195,6 +2214,7 @@ export interface FileRouteTypes {
     | '/platform/org'
     | '/reality/$class'
     | '/gov/'
+    | '/group/'
     | '/admin/academic-standing'
     | '/admin/admissions'
     | '/admin/admissions-funnel'
@@ -2260,6 +2280,7 @@ export interface FileRouteTypes {
     | '/admin/role-scopes'
     | '/admin/roles'
     | '/admin/safeguards'
+    | '/admin/school-group'
     | '/admin/school-profile'
     | '/admin/session-rollover'
     | '/admin/settings'
@@ -2412,6 +2433,7 @@ export interface FileRouteTypes {
     | '/platform/org'
     | '/reality/$class'
     | '/gov'
+    | '/group'
     | '/admin/academic-standing'
     | '/admin/admissions'
     | '/admin/admissions-funnel'
@@ -2477,6 +2499,7 @@ export interface FileRouteTypes {
     | '/admin/role-scopes'
     | '/admin/roles'
     | '/admin/safeguards'
+    | '/admin/school-group'
     | '/admin/school-profile'
     | '/admin/session-rollover'
     | '/admin/settings'
@@ -2633,6 +2656,7 @@ export interface FileRouteTypes {
     | '/platform/org'
     | '/reality/$class'
     | '/gov/'
+    | '/group/'
     | '/_authenticated/admin/academic-standing'
     | '/_authenticated/admin/admissions'
     | '/_authenticated/admin/admissions-funnel'
@@ -2698,6 +2722,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/role-scopes'
     | '/_authenticated/admin/roles'
     | '/_authenticated/admin/safeguards'
+    | '/_authenticated/admin/school-group'
     | '/_authenticated/admin/school-profile'
     | '/_authenticated/admin/session-rollover'
     | '/_authenticated/admin/settings'
@@ -2814,6 +2839,7 @@ export interface RootRouteChildren {
   EventsIdRoute: typeof EventsIdRoute
   NewsIdRoute: typeof NewsIdRoute
   RealityClassRoute: typeof RealityClassRoute
+  GroupIndexRoute: typeof GroupIndexRoute
   ApiPublicAuditPasswordResetRoute: typeof ApiPublicAuditPasswordResetRoute
   ApiPublicCronWalletTopupReconcileRoute: typeof ApiPublicCronWalletTopupReconcileRoute
   ApiPublicWebhooksPaystackRoute: typeof ApiPublicWebhooksPaystackRoute
@@ -3263,6 +3289,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/gov/staffing'
       preLoaderRoute: typeof GovStaffingRouteImport
       parentRoute: typeof GovRouteRoute
+    }
+    '/group/': {
+      id: '/group/'
+      path: '/group'
+      fullPath: '/group/'
+      preLoaderRoute: typeof GroupIndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/news/$id': {
       id: '/news/$id'
@@ -3738,6 +3771,13 @@ declare module '@tanstack/react-router' {
       path: '/safeguards'
       fullPath: '/admin/safeguards'
       preLoaderRoute: typeof AuthenticatedAdminSafeguardsRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/school-group': {
+      id: '/_authenticated/admin/school-group'
+      path: '/school-group'
+      fullPath: '/admin/school-group'
+      preLoaderRoute: typeof AuthenticatedAdminSchoolGroupRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
     '/_authenticated/admin/school-profile': {
@@ -4457,6 +4497,7 @@ interface AuthenticatedAdminRouteRouteChildren {
   AuthenticatedAdminRoleScopesRoute: typeof AuthenticatedAdminRoleScopesRoute
   AuthenticatedAdminRolesRoute: typeof AuthenticatedAdminRolesRoute
   AuthenticatedAdminSafeguardsRoute: typeof AuthenticatedAdminSafeguardsRoute
+  AuthenticatedAdminSchoolGroupRoute: typeof AuthenticatedAdminSchoolGroupRoute
   AuthenticatedAdminSchoolProfileRoute: typeof AuthenticatedAdminSchoolProfileRoute
   AuthenticatedAdminSessionRolloverRoute: typeof AuthenticatedAdminSessionRolloverRoute
   AuthenticatedAdminSettingsRoute: typeof AuthenticatedAdminSettingsRoute
@@ -4558,6 +4599,7 @@ const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren
     AuthenticatedAdminRoleScopesRoute: AuthenticatedAdminRoleScopesRoute,
     AuthenticatedAdminRolesRoute: AuthenticatedAdminRolesRoute,
     AuthenticatedAdminSafeguardsRoute: AuthenticatedAdminSafeguardsRoute,
+    AuthenticatedAdminSchoolGroupRoute: AuthenticatedAdminSchoolGroupRoute,
     AuthenticatedAdminSchoolProfileRoute: AuthenticatedAdminSchoolProfileRoute,
     AuthenticatedAdminSessionRolloverRoute:
       AuthenticatedAdminSessionRolloverRoute,
@@ -4955,6 +4997,7 @@ const rootRouteChildren: RootRouteChildren = {
   EventsIdRoute: EventsIdRoute,
   NewsIdRoute: NewsIdRoute,
   RealityClassRoute: RealityClassRoute,
+  GroupIndexRoute: GroupIndexRoute,
   ApiPublicAuditPasswordResetRoute: ApiPublicAuditPasswordResetRoute,
   ApiPublicCronWalletTopupReconcileRoute:
     ApiPublicCronWalletTopupReconcileRoute,
