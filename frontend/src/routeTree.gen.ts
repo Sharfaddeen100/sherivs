@@ -161,6 +161,7 @@ import { Route as AuthenticatedAdminTimetableRouteImport } from './routes/_authe
 import { Route as AuthenticatedAdminTransfersCustodyRouteImport } from './routes/_authenticated/admin/transfers-custody'
 import { Route as AuthenticatedAdminVisitorsRouteImport } from './routes/_authenticated/admin/visitors'
 import { Route as AuthenticatedAdminWalletRouteImport } from './routes/_authenticated/admin/wallet'
+import { Route as AuthenticatedAdminWebsiteRouteImport } from './routes/_authenticated/admin/website'
 import { Route as AuthenticatedBursarDashboardRouteImport } from './routes/_authenticated/bursar/dashboard'
 import { Route as AuthenticatedBursarFeePlansRouteImport } from './routes/_authenticated/bursar/fee-plans'
 import { Route as AuthenticatedBursarFinancialIntelligenceRouteImport } from './routes/_authenticated/bursar/financial-intelligence'
@@ -1078,6 +1079,12 @@ const AuthenticatedAdminWalletRoute =
     path: '/wallet',
     getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
+const AuthenticatedAdminWebsiteRoute =
+  AuthenticatedAdminWebsiteRouteImport.update({
+    id: '/website',
+    path: '/website',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
 const AuthenticatedBursarDashboardRoute =
   AuthenticatedBursarDashboardRouteImport.update({
     id: '/dashboard',
@@ -1680,6 +1687,7 @@ export interface FileRoutesByFullPath {
   '/admin/transfers-custody': typeof AuthenticatedAdminTransfersCustodyRoute
   '/admin/visitors': typeof AuthenticatedAdminVisitorsRoute
   '/admin/wallet': typeof AuthenticatedAdminWalletRoute
+  '/admin/website': typeof AuthenticatedAdminWebsiteRoute
   '/bursar/dashboard': typeof AuthenticatedBursarDashboardRoute
   '/bursar/fee-plans': typeof AuthenticatedBursarFeePlansRoute
   '/bursar/financial-intelligence': typeof AuthenticatedBursarFinancialIntelligenceRoute
@@ -1906,6 +1914,7 @@ export interface FileRoutesByTo {
   '/admin/transfers-custody': typeof AuthenticatedAdminTransfersCustodyRoute
   '/admin/visitors': typeof AuthenticatedAdminVisitorsRoute
   '/admin/wallet': typeof AuthenticatedAdminWalletRoute
+  '/admin/website': typeof AuthenticatedAdminWebsiteRoute
   '/bursar/dashboard': typeof AuthenticatedBursarDashboardRoute
   '/bursar/fee-plans': typeof AuthenticatedBursarFeePlansRoute
   '/bursar/financial-intelligence': typeof AuthenticatedBursarFinancialIntelligenceRoute
@@ -2137,6 +2146,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/transfers-custody': typeof AuthenticatedAdminTransfersCustodyRoute
   '/_authenticated/admin/visitors': typeof AuthenticatedAdminVisitorsRoute
   '/_authenticated/admin/wallet': typeof AuthenticatedAdminWalletRoute
+  '/_authenticated/admin/website': typeof AuthenticatedAdminWebsiteRoute
   '/_authenticated/bursar/dashboard': typeof AuthenticatedBursarDashboardRoute
   '/_authenticated/bursar/fee-plans': typeof AuthenticatedBursarFeePlansRoute
   '/_authenticated/bursar/financial-intelligence': typeof AuthenticatedBursarFinancialIntelligenceRoute
@@ -2367,6 +2377,7 @@ export interface FileRouteTypes {
     | '/admin/transfers-custody'
     | '/admin/visitors'
     | '/admin/wallet'
+    | '/admin/website'
     | '/bursar/dashboard'
     | '/bursar/fee-plans'
     | '/bursar/financial-intelligence'
@@ -2593,6 +2604,7 @@ export interface FileRouteTypes {
     | '/admin/transfers-custody'
     | '/admin/visitors'
     | '/admin/wallet'
+    | '/admin/website'
     | '/bursar/dashboard'
     | '/bursar/fee-plans'
     | '/bursar/financial-intelligence'
@@ -2823,6 +2835,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/transfers-custody'
     | '/_authenticated/admin/visitors'
     | '/_authenticated/admin/wallet'
+    | '/_authenticated/admin/website'
     | '/_authenticated/bursar/dashboard'
     | '/_authenticated/bursar/fee-plans'
     | '/_authenticated/bursar/financial-intelligence'
@@ -4005,6 +4018,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminWalletRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
+    '/_authenticated/admin/website': {
+      id: '/_authenticated/admin/website'
+      path: '/website'
+      fullPath: '/admin/website'
+      preLoaderRoute: typeof AuthenticatedAdminWebsiteRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
     '/_authenticated/bursar/dashboard': {
       id: '/_authenticated/bursar/dashboard'
       path: '/dashboard'
@@ -4655,6 +4675,7 @@ interface AuthenticatedAdminRouteRouteChildren {
   AuthenticatedAdminTransfersCustodyRoute: typeof AuthenticatedAdminTransfersCustodyRoute
   AuthenticatedAdminVisitorsRoute: typeof AuthenticatedAdminVisitorsRoute
   AuthenticatedAdminWalletRoute: typeof AuthenticatedAdminWalletRoute
+  AuthenticatedAdminWebsiteRoute: typeof AuthenticatedAdminWebsiteRoute
 }
 
 const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren =
@@ -4762,6 +4783,7 @@ const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren
       AuthenticatedAdminTransfersCustodyRoute,
     AuthenticatedAdminVisitorsRoute: AuthenticatedAdminVisitorsRoute,
     AuthenticatedAdminWalletRoute: AuthenticatedAdminWalletRoute,
+    AuthenticatedAdminWebsiteRoute: AuthenticatedAdminWebsiteRoute,
   }
 
 const AuthenticatedAdminRouteRouteWithChildren =
