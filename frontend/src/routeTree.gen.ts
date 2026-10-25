@@ -18,6 +18,7 @@ import { Route as BlogRouteImport } from './routes/blog'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as FoundationLoopRouteImport } from './routes/foundation-loop'
 import { Route as GovRouteRouteImport } from './routes/gov/route'
+import { Route as GovInviteRouteImport } from './routes/gov-invite'
 import { Route as HeadRouteImport } from './routes/head'
 import { Route as HealthDotjsonRouteImport } from './routes/health[.]json'
 import { Route as LoginRouteImport } from './routes/login'
@@ -262,6 +263,11 @@ const FoundationLoopRoute = FoundationLoopRouteImport.update({
 const GovRouteRoute = GovRouteRouteImport.update({
   id: '/gov',
   path: '/gov',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GovInviteRoute = GovInviteRouteImport.update({
+  id: '/gov-invite',
+  path: '/gov-invite',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HeadRoute = HeadRouteImport.update({
@@ -1428,6 +1434,7 @@ export interface FileRoutesByFullPath {
   '/blog': typeof BlogRouteWithChildren
   '/forgot-password': typeof ForgotPasswordRoute
   '/foundation-loop': typeof FoundationLoopRoute
+  '/gov-invite': typeof GovInviteRoute
   '/head': typeof HeadRoute
   '/health.json': typeof HealthDotjsonRoute
   '/login': typeof LoginRoute
@@ -1638,6 +1645,7 @@ export interface FileRoutesByTo {
   '/blog': typeof BlogRouteWithChildren
   '/forgot-password': typeof ForgotPasswordRoute
   '/foundation-loop': typeof FoundationLoopRoute
+  '/gov-invite': typeof GovInviteRoute
   '/head': typeof HeadRoute
   '/health.json': typeof HealthDotjsonRoute
   '/login': typeof LoginRoute
@@ -1851,6 +1859,7 @@ export interface FileRoutesById {
   '/blog': typeof BlogRouteWithChildren
   '/forgot-password': typeof ForgotPasswordRoute
   '/foundation-loop': typeof FoundationLoopRoute
+  '/gov-invite': typeof GovInviteRoute
   '/head': typeof HeadRoute
   '/health.json': typeof HealthDotjsonRoute
   '/login': typeof LoginRoute
@@ -2064,6 +2073,7 @@ export interface FileRouteTypes {
     | '/blog'
     | '/forgot-password'
     | '/foundation-loop'
+    | '/gov-invite'
     | '/head'
     | '/health.json'
     | '/login'
@@ -2274,6 +2284,7 @@ export interface FileRouteTypes {
     | '/blog'
     | '/forgot-password'
     | '/foundation-loop'
+    | '/gov-invite'
     | '/head'
     | '/health.json'
     | '/login'
@@ -2486,6 +2497,7 @@ export interface FileRouteTypes {
     | '/blog'
     | '/forgot-password'
     | '/foundation-loop'
+    | '/gov-invite'
     | '/head'
     | '/health.json'
     | '/login'
@@ -2700,6 +2712,7 @@ export interface RootRouteChildren {
   BlogRoute: typeof BlogRouteWithChildren
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   FoundationLoopRoute: typeof FoundationLoopRoute
+  GovInviteRoute: typeof GovInviteRoute
   HeadRoute: typeof HeadRoute
   HealthDotjsonRoute: typeof HealthDotjsonRoute
   LoginRoute: typeof LoginRoute
@@ -2785,6 +2798,13 @@ declare module '@tanstack/react-router' {
       path: '/gov'
       fullPath: '/gov'
       preLoaderRoute: typeof GovRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gov-invite': {
+      id: '/gov-invite'
+      path: '/gov-invite'
+      fullPath: '/gov-invite'
+      preLoaderRoute: typeof GovInviteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/head': {
@@ -4770,6 +4790,7 @@ const rootRouteChildren: RootRouteChildren = {
   BlogRoute: BlogRouteWithChildren,
   ForgotPasswordRoute: ForgotPasswordRoute,
   FoundationLoopRoute: FoundationLoopRoute,
+  GovInviteRoute: GovInviteRoute,
   HeadRoute: HeadRoute,
   HealthDotjsonRoute: HealthDotjsonRoute,
   LoginRoute: LoginRoute,
