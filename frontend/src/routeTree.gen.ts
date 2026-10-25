@@ -121,6 +121,7 @@ import { Route as AuthenticatedAdminHostelRouteImport } from './routes/_authenti
 import { Route as AuthenticatedAdminHrRouteImport } from './routes/_authenticated/admin/hr'
 import { Route as AuthenticatedAdminHrPayrollRouteImport } from './routes/_authenticated/admin/hr-payroll'
 import { Route as AuthenticatedAdminIdentitiesRouteImport } from './routes/_authenticated/admin/identities'
+import { Route as AuthenticatedAdminIntegrationsRouteImport } from './routes/_authenticated/admin/integrations'
 import { Route as AuthenticatedAdminIntelligenceRouteImport } from './routes/_authenticated/admin/intelligence'
 import { Route as AuthenticatedAdminIntelligenceAiRouteImport } from './routes/_authenticated/admin/intelligence-ai'
 import { Route as AuthenticatedAdminIntelligenceOperationsRouteImport } from './routes/_authenticated/admin/intelligence-operations'
@@ -230,6 +231,7 @@ import { Route as ApiPublicCronWalletTopupReconcileRouteImport } from './routes/
 import { Route as ApiPublicWebhooksPaystackRouteImport } from './routes/api/public/webhooks/paystack'
 import { Route as ApiPublicWebhooksUssdRouteImport } from './routes/api/public/webhooks/ussd'
 import { Route as ApiPublicWebhooksWhatsappRouteImport } from './routes/api/public/webhooks/whatsapp'
+import { Route as ApiPublicWebhooksIntegrationsWebhookIdRouteImport } from './routes/api/public/webhooks/integrations/$webhookId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -835,6 +837,12 @@ const AuthenticatedAdminIdentitiesRoute =
   AuthenticatedAdminIdentitiesRouteImport.update({
     id: '/identities',
     path: '/identities',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminIntegrationsRoute =
+  AuthenticatedAdminIntegrationsRouteImport.update({
+    id: '/integrations',
+    path: '/integrations',
     getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
 const AuthenticatedAdminIntelligenceRoute =
@@ -1482,6 +1490,12 @@ const ApiPublicWebhooksWhatsappRoute =
     path: '/api/public/webhooks/whatsapp',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicWebhooksIntegrationsWebhookIdRoute =
+  ApiPublicWebhooksIntegrationsWebhookIdRouteImport.update({
+    id: '/api/public/webhooks/integrations/$webhookId',
+    path: '/api/public/webhooks/integrations/$webhookId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -1594,6 +1608,7 @@ export interface FileRoutesByFullPath {
   '/admin/hr': typeof AuthenticatedAdminHrRoute
   '/admin/hr-payroll': typeof AuthenticatedAdminHrPayrollRoute
   '/admin/identities': typeof AuthenticatedAdminIdentitiesRoute
+  '/admin/integrations': typeof AuthenticatedAdminIntegrationsRoute
   '/admin/intelligence': typeof AuthenticatedAdminIntelligenceRoute
   '/admin/intelligence-ai': typeof AuthenticatedAdminIntelligenceAiRoute
   '/admin/intelligence-operations': typeof AuthenticatedAdminIntelligenceOperationsRoute
@@ -1703,6 +1718,7 @@ export interface FileRoutesByFullPath {
   '/api/public/webhooks/paystack': typeof ApiPublicWebhooksPaystackRoute
   '/api/public/webhooks/ussd': typeof ApiPublicWebhooksUssdRoute
   '/api/public/webhooks/whatsapp': typeof ApiPublicWebhooksWhatsappRoute
+  '/api/public/webhooks/integrations/$webhookId': typeof ApiPublicWebhooksIntegrationsWebhookIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -1813,6 +1829,7 @@ export interface FileRoutesByTo {
   '/admin/hr': typeof AuthenticatedAdminHrRoute
   '/admin/hr-payroll': typeof AuthenticatedAdminHrPayrollRoute
   '/admin/identities': typeof AuthenticatedAdminIdentitiesRoute
+  '/admin/integrations': typeof AuthenticatedAdminIntegrationsRoute
   '/admin/intelligence': typeof AuthenticatedAdminIntelligenceRoute
   '/admin/intelligence-ai': typeof AuthenticatedAdminIntelligenceAiRoute
   '/admin/intelligence-operations': typeof AuthenticatedAdminIntelligenceOperationsRoute
@@ -1922,6 +1939,7 @@ export interface FileRoutesByTo {
   '/api/public/webhooks/paystack': typeof ApiPublicWebhooksPaystackRoute
   '/api/public/webhooks/ussd': typeof ApiPublicWebhooksUssdRoute
   '/api/public/webhooks/whatsapp': typeof ApiPublicWebhooksWhatsappRoute
+  '/api/public/webhooks/integrations/$webhookId': typeof ApiPublicWebhooksIntegrationsWebhookIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -2037,6 +2055,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/hr': typeof AuthenticatedAdminHrRoute
   '/_authenticated/admin/hr-payroll': typeof AuthenticatedAdminHrPayrollRoute
   '/_authenticated/admin/identities': typeof AuthenticatedAdminIdentitiesRoute
+  '/_authenticated/admin/integrations': typeof AuthenticatedAdminIntegrationsRoute
   '/_authenticated/admin/intelligence': typeof AuthenticatedAdminIntelligenceRoute
   '/_authenticated/admin/intelligence-ai': typeof AuthenticatedAdminIntelligenceAiRoute
   '/_authenticated/admin/intelligence-operations': typeof AuthenticatedAdminIntelligenceOperationsRoute
@@ -2146,6 +2165,7 @@ export interface FileRoutesById {
   '/api/public/webhooks/paystack': typeof ApiPublicWebhooksPaystackRoute
   '/api/public/webhooks/ussd': typeof ApiPublicWebhooksUssdRoute
   '/api/public/webhooks/whatsapp': typeof ApiPublicWebhooksWhatsappRoute
+  '/api/public/webhooks/integrations/$webhookId': typeof ApiPublicWebhooksIntegrationsWebhookIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -2260,6 +2280,7 @@ export interface FileRouteTypes {
     | '/admin/hr'
     | '/admin/hr-payroll'
     | '/admin/identities'
+    | '/admin/integrations'
     | '/admin/intelligence'
     | '/admin/intelligence-ai'
     | '/admin/intelligence-operations'
@@ -2369,6 +2390,7 @@ export interface FileRouteTypes {
     | '/api/public/webhooks/paystack'
     | '/api/public/webhooks/ussd'
     | '/api/public/webhooks/whatsapp'
+    | '/api/public/webhooks/integrations/$webhookId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -2479,6 +2501,7 @@ export interface FileRouteTypes {
     | '/admin/hr'
     | '/admin/hr-payroll'
     | '/admin/identities'
+    | '/admin/integrations'
     | '/admin/intelligence'
     | '/admin/intelligence-ai'
     | '/admin/intelligence-operations'
@@ -2588,6 +2611,7 @@ export interface FileRouteTypes {
     | '/api/public/webhooks/paystack'
     | '/api/public/webhooks/ussd'
     | '/api/public/webhooks/whatsapp'
+    | '/api/public/webhooks/integrations/$webhookId'
   id:
     | '__root__'
     | '/'
@@ -2702,6 +2726,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/hr'
     | '/_authenticated/admin/hr-payroll'
     | '/_authenticated/admin/identities'
+    | '/_authenticated/admin/integrations'
     | '/_authenticated/admin/intelligence'
     | '/_authenticated/admin/intelligence-ai'
     | '/_authenticated/admin/intelligence-operations'
@@ -2811,6 +2836,7 @@ export interface FileRouteTypes {
     | '/api/public/webhooks/paystack'
     | '/api/public/webhooks/ussd'
     | '/api/public/webhooks/whatsapp'
+    | '/api/public/webhooks/integrations/$webhookId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -2845,6 +2871,7 @@ export interface RootRouteChildren {
   ApiPublicWebhooksPaystackRoute: typeof ApiPublicWebhooksPaystackRoute
   ApiPublicWebhooksUssdRoute: typeof ApiPublicWebhooksUssdRoute
   ApiPublicWebhooksWhatsappRoute: typeof ApiPublicWebhooksWhatsappRoute
+  ApiPublicWebhooksIntegrationsWebhookIdRoute: typeof ApiPublicWebhooksIntegrationsWebhookIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -3633,6 +3660,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminIdentitiesRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
+    '/_authenticated/admin/integrations': {
+      id: '/_authenticated/admin/integrations'
+      path: '/integrations'
+      fullPath: '/admin/integrations'
+      preLoaderRoute: typeof AuthenticatedAdminIntegrationsRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
     '/_authenticated/admin/intelligence': {
       id: '/_authenticated/admin/intelligence'
       path: '/intelligence'
@@ -4396,6 +4430,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicWebhooksWhatsappRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/webhooks/integrations/$webhookId': {
+      id: '/api/public/webhooks/integrations/$webhookId'
+      path: '/api/public/webhooks/integrations/$webhookId'
+      fullPath: '/api/public/webhooks/integrations/$webhookId'
+      preLoaderRoute: typeof ApiPublicWebhooksIntegrationsWebhookIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -4477,6 +4518,7 @@ interface AuthenticatedAdminRouteRouteChildren {
   AuthenticatedAdminHrRoute: typeof AuthenticatedAdminHrRoute
   AuthenticatedAdminHrPayrollRoute: typeof AuthenticatedAdminHrPayrollRoute
   AuthenticatedAdminIdentitiesRoute: typeof AuthenticatedAdminIdentitiesRoute
+  AuthenticatedAdminIntegrationsRoute: typeof AuthenticatedAdminIntegrationsRoute
   AuthenticatedAdminIntelligenceRoute: typeof AuthenticatedAdminIntelligenceRoute
   AuthenticatedAdminIntelligenceAiRoute: typeof AuthenticatedAdminIntelligenceAiRoute
   AuthenticatedAdminIntelligenceOperationsRoute: typeof AuthenticatedAdminIntelligenceOperationsRoute
@@ -4572,6 +4614,7 @@ const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren
     AuthenticatedAdminHrRoute: AuthenticatedAdminHrRoute,
     AuthenticatedAdminHrPayrollRoute: AuthenticatedAdminHrPayrollRoute,
     AuthenticatedAdminIdentitiesRoute: AuthenticatedAdminIdentitiesRoute,
+    AuthenticatedAdminIntegrationsRoute: AuthenticatedAdminIntegrationsRoute,
     AuthenticatedAdminIntelligenceRoute: AuthenticatedAdminIntelligenceRoute,
     AuthenticatedAdminIntelligenceAiRoute:
       AuthenticatedAdminIntelligenceAiRoute,
@@ -5004,6 +5047,8 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicWebhooksPaystackRoute: ApiPublicWebhooksPaystackRoute,
   ApiPublicWebhooksUssdRoute: ApiPublicWebhooksUssdRoute,
   ApiPublicWebhooksWhatsappRoute: ApiPublicWebhooksWhatsappRoute,
+  ApiPublicWebhooksIntegrationsWebhookIdRoute:
+    ApiPublicWebhooksIntegrationsWebhookIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
