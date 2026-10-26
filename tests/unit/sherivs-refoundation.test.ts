@@ -34,7 +34,7 @@ const COMMAND_CENTRE = "frontend/src/routes/_authenticated/command-centre/index.
 describe("Platform identity", () => {
   it("presents the company as Sherivs", () => {
     expect(PLATFORM_NAME).toBe("Sherivs");
-    expect(PLATFORM_TAGLINE).toMatch(/operating intelligence/i);
+    expect(PLATFORM_TAGLINE).toMatch(/intelligence infrastructure/i);
     expect(PLATFORM_DOMAIN).toBe("sherivs.com");
   });
 });
@@ -56,7 +56,8 @@ describe("Public company homepage (plane 1)", () => {
   });
 
   it("communicates the category without internal architecture", () => {
-    expect(home).toMatch(/operating intelligence for modern organizations/i);
+    expect(home).toContain("{PLATFORM_TAGLINE}");
+    expect(home).toMatch(/The intelligence layer for a world that works together/);
     expect(home).toMatch(/Request a demo/);
     expect(home).not.toMatch(/phase/i);
     expect(home).not.toMatch(/kernel/i);
@@ -113,10 +114,15 @@ describe("Internal architecture stays off the public surface", () => {
 
 describe("Public site engagement paths", () => {
   const layout = read(SITE_LAYOUT);
+  const header = read("frontend/src/components/public/site-header.tsx");
+  const footer = read("frontend/src/components/public/site-footer.tsx");
 
   it("offers Request a demo as the primary CTA and links the real routes", () => {
-    expect(layout).toMatch(/Request a demo/);
-    expect(layout).toContain('to="/request-demo"');
-    expect(layout).toContain('to="/auth"');
+    expect(header).toMatch(/Request a demo/);
+    expect(header).toContain('to="/request-demo"');
+    expect(header).toContain('to="/auth"');
+    expect(layout).toContain("<SiteHeader />");
+    expect(layout).toContain("<SiteFooter />");
+    expect(footer).toContain("PUBLIC_CONTACTS");
   });
 });
