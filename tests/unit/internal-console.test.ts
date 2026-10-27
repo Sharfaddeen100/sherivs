@@ -316,4 +316,19 @@ describe("internal console store migration", () => {
     expect(sql).toContain("kind = 'shared'");
     expect(sql).toMatch(/platform_workspace_member_read[\s\S]*kind = 'shared'/);
   });
+
+  it("does not statically import workspace store helpers from client-imported modules", () => {
+    const overview = readFileSync(
+      "frontend/src/lib/internal-console/overview.functions.ts",
+      "utf8",
+    );
+    const shell = readFileSync(
+      "frontend/src/components/internal-console/console-shell.tsx",
+      "utf8",
+    );
+    expect(overview).not.toMatch(/from ["']\.\/workspace\.functions["']/);
+    expect(overview).not.toMatch(/from ["']\.\/workspace\.store\.server["']/);
+    expect(shell).not.toMatch(/workspace\.store\.server/);
+    expect(existsSync("frontend/src/lib/internal-console/workspace.store.server.ts")).toBe(true);
+  });
 });

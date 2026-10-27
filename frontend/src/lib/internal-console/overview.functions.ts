@@ -13,13 +13,6 @@ import { CONSOLE_PATHS } from "./paths";
 import { presentationRoleFor, presentationRoleLabel, viewerCapabilities } from "./roles";
 import { overallFromCards, mapProcessHealth, type ConsoleHealthState } from "./status";
 import { workspacesForViewer } from "./workspaces";
-import {
-  ensurePersonalWorkspace,
-  ensureRegisteredRuntimes,
-  loadAuthorizedWorkspaces,
-  loadRecentAccess,
-  loadRegisteredRuntimes,
-} from "./workspace.functions";
 import { store } from "./store";
 import { REGISTERED_RUNTIMES } from "./runtime-contract";
 import { allowedHrefsFrom } from "./recent";
@@ -451,6 +444,13 @@ export const getConsoleOverview = createServerFn({ method: "GET" })
 
     const presentationRole = presentationRoleFor({ isSuperAdmin, roles });
     const db = await admin();
+    const {
+      ensurePersonalWorkspace,
+      ensureRegisteredRuntimes,
+      loadAuthorizedWorkspaces,
+      loadRecentAccess,
+      loadRegisteredRuntimes,
+    } = await import("./workspace.store.server");
     await ensurePersonalWorkspace(db, context.userId);
     await ensureRegisteredRuntimes(db);
     const canManageWorkspaces = isSuperAdmin || capabilities.has("platform.staff.manage");
