@@ -543,7 +543,7 @@ export function ConsoleAccessReview() {
       <h1>Access Review</h1>
       <p>Privileged identities, active support grants, and recent administrative events.</p>
       {error ? <p className="sherivs-console-error">{error}</p> : null}
-      {!data ? <p>Loading authorized review…</p> : null}
+      {!data && !error ? <p>Loading authorized review…</p> : null}
       {data ? (
         <>
           <h2>Super admins</h2>
