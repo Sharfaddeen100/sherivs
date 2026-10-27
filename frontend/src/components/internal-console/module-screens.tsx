@@ -35,6 +35,7 @@ import {
   type ConsoleStaffRow,
 } from "@/lib/internal-console/overview";
 import { workspaceTypeLabel } from "@/lib/internal-console/workspaces";
+import { consoleVisualFixtureActive } from "@/lib/internal-console/visual-fixture";
 import { ConfirmAction, ConsoleNotice, StaffStatusBadge } from "./console-primitives";
 
 function canManage(overviewCapabilities: string[]): boolean {
@@ -94,46 +95,50 @@ export function ConsoleTeamDirectory() {
         {overview.expiredInvitations ?? "unavailable"}. {overview.usageDefinition}
       </p>
       {error ? <ConsoleNotice tone="error">{error}</ConsoleNotice> : null}
-      <div style={{ overflowX: "auto" }}>
-        <table className="sherivs-console-table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Roles</th>
-              <th>Status</th>
-              <th>Workspaces</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {overview.staff.map((row) => (
-              <StaffRow
-                key={row.id}
-                row={row}
-                busy={busy === row.id}
-                canManage={canManage(overview.viewer.capabilities)}
-                isOwner={overview.viewer.isSuperAdmin}
-                nowIso={new Date().toISOString()}
-                sharedNames={overview.workspaces
-                  .filter(
-                    (workspace) =>
-                      workspace.type === "shared" &&
-                      workspace.members.some((member) => member.userId === row.id),
-                  )
-                  .map((workspace) => workspace.name)}
-                pending={pending?.staffId === row.id ? pending.status : null}
-                onAskStatus={(status) => setPending({ staffId: row.id, status })}
-                onConfirmStatus={() =>
-                  pending && void changeStatus(pending.staffId, pending.status)
-                }
-                onCancelStatus={() => setPending(null)}
-                onReload={reload}
-              />
-            ))}
-          </tbody>
-        </table>
-      </div>
+      {overview.staff.length === 0 ? (
+        <p className="sherivs-console-empty">No staff records in the authorized directory.</p>
+      ) : (
+        <div style={{ overflowX: "auto" }}>
+          <table className="sherivs-console-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Roles</th>
+                <th>Status</th>
+                <th>Workspaces</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {overview.staff.map((row) => (
+                <StaffRow
+                  key={row.id}
+                  row={row}
+                  busy={busy === row.id}
+                  canManage={canManage(overview.viewer.capabilities)}
+                  isOwner={overview.viewer.isSuperAdmin}
+                  nowIso={new Date().toISOString()}
+                  sharedNames={overview.workspaces
+                    .filter(
+                      (workspace) =>
+                        workspace.type === "shared" &&
+                        workspace.members.some((member) => member.userId === row.id),
+                    )
+                    .map((workspace) => workspace.name)}
+                  pending={pending?.staffId === row.id ? pending.status : null}
+                  onAskStatus={(status) => setPending({ staffId: row.id, status })}
+                  onConfirmStatus={() =>
+                    pending && void changeStatus(pending.staffId, pending.status)
+                  }
+                  onCancelStatus={() => setPending(null)}
+                  onReload={reload}
+                />
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </section>
   );
 }
@@ -358,6 +363,13 @@ export function ConsoleInvitations() {
     setBusy(true);
     setError(null);
     setInfo(null);
+    if (consoleVisualFixtureActive()) {
+      setError(
+        "Invitation records are not written in the local visual fixture. Persistent staff storage is not connected.",
+      );
+      setBusy(false);
+      return;
+    }
     try {
       await invitePlatformStaff({
         data: {
@@ -508,6 +520,10 @@ export function ConsoleAccessReview() {
   const [error, setError] = useState<string | null>(null);
   useEffect(() => {
     if (!overview?.viewer.capabilities.includes("platform.audit.read")) return;
+    if (consoleVisualFixtureActive()) {
+      setError("Access review is not queried in the local visual fixture.");
+      return;
+    }
     void getAccessReview()
       .then(setData)
       .catch((err) => setError(err instanceof Error ? err.message : "Access review unavailable"));
@@ -876,6 +892,11 @@ function AuditList({ scope }: { scope: "all" | "admin" | "security" }) {
   const [source, setSource] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
   useEffect(() => {
+    if (consoleVisualFixtureActive()) {
+      setEvents([]);
+      setSource("local visual fixture — audit_logs were not queried");
+      return;
+    }
     void listConsoleAudit({ data: { scope, limit: 80 } })
       .then((result) => {
         setEvents(result.events);
@@ -885,7 +906,14 @@ function AuditList({ scope }: { scope: "all" | "admin" | "security" }) {
   }, [scope]);
   if (error) return <p className="sherivs-console-error">{error}</p>;
   if (!events) return <p>Loading authorized records…</p>;
-  if (!events.length) return <p className="sherivs-console-empty">No matching audit records.</p>;
+  if (!events.length) {
+    return (
+      <>
+        {source ? <p>Source: {source}. These are audit records, not application logs.</p> : null}
+        <p className="sherivs-console-empty">No matching audit records.</p>
+      </>
+    );
+  }
   return (
     <>
       <p>Source: {source}. These are audit records, not application logs.</p>

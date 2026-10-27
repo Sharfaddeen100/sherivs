@@ -13,6 +13,11 @@ import {
   persistOAuthError,
   shouldRejectUninvitedGooglePrincipal,
 } from "@/lib/auth/google-sign-in";
+import {
+  CONSOLE_FIXTURE_OPERATOR,
+  consoleVisualFixtureActive,
+  deactivateConsoleVisualFixture,
+} from "@/lib/internal-console/visual-fixture";
 
 /**
  * UserProfile = row from public.users (tenant member).
@@ -95,6 +100,36 @@ function applyBrandColors(school: SchoolRow | null) {
  * grants nothing), then read the caller's own staff row + roles via RLS.
  * Only ACTIVE staff resolve; any failure resolves to "not staff".
  */
+function fixtureSession(): Session {
+  const user = {
+    id: CONSOLE_FIXTURE_OPERATOR.id,
+    email: CONSOLE_FIXTURE_OPERATOR.email,
+    aud: "authenticated",
+    role: "authenticated",
+    app_metadata: { provider: "email", providers: ["email"] },
+    user_metadata: { full_name: CONSOLE_FIXTURE_OPERATOR.name },
+    created_at: "2026-10-27T00:00:00.000Z",
+  } as User;
+  return {
+    access_token: "local-fixture",
+    refresh_token: "local-fixture",
+    token_type: "bearer",
+    expires_in: 3600,
+    expires_at: 4102444800,
+    user,
+  };
+}
+
+function fixtureStaff(): PlatformStaffProfile {
+  return {
+    id: CONSOLE_FIXTURE_OPERATOR.id,
+    full_name: CONSOLE_FIXTURE_OPERATOR.name,
+    email: CONSOLE_FIXTURE_OPERATOR.email,
+    status: "active",
+    roles: [...CONSOLE_FIXTURE_OPERATOR.roles],
+  };
+}
+
 async function loadPlatformStaff(userId: string): Promise<PlatformStaffProfile | null> {
   try {
     await supabase.rpc("claim_platform_staff_invite");
@@ -130,6 +165,16 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   async function load(currentSession: Session | null) {
     setLoading(true);
+    if (consoleVisualFixtureActive()) {
+      setSession(fixtureSession());
+      setProfile(null);
+      setSuperAdmin(null);
+      setPlatformStaff(fixtureStaff());
+      setSchool(null);
+      setTenantSlug(null);
+      setLoading(false);
+      return;
+    }
     const slug = resolveTenantSlug();
     setTenantSlug(slug);
 
@@ -238,6 +283,12 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     let cancelled = false;
+    if (consoleVisualFixtureActive()) {
+      void load(null);
+      return () => {
+        cancelled = true;
+      };
+    }
     supabase.auth.getSession().then(({ data }) => {
       if (cancelled) return;
       setSession(data.session);
@@ -308,12 +359,21 @@ export function AppProvider({ children }: { children: ReactNode }) {
     tenantSlug,
     role,
     refresh: async () => {
+      if (consoleVisualFixtureActive()) {
+        await load(null);
+        return;
+      }
       const { data } = await supabase.auth.getSession();
       setSession(data.session);
       await load(data.session);
     },
     signOut: async () => {
+      deactivateConsoleVisualFixture();
       await supabase.auth.signOut();
+      setSession(null);
+      setProfile(null);
+      setSuperAdmin(null);
+      setPlatformStaff(null);
     },
   };
 

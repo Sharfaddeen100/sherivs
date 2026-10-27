@@ -332,3 +332,66 @@ describe("internal console store migration", () => {
     expect(existsSync("frontend/src/lib/internal-console/workspace.store.server.ts")).toBe(true);
   });
 });
+
+describe("local visual fixture", () => {
+  it("activates only on Vite DEV, the explicit flag, and localhost", async () => {
+    const { consoleVisualFixtureConfigured, buildConsoleVisualFixtureOverview } =
+      await import("@/lib/internal-console/visual-fixture");
+    expect(
+      consoleVisualFixtureConfigured({
+        dev: true,
+        flag: "1",
+        hostname: "127.0.0.1",
+      }),
+    ).toBe(true);
+    expect(
+      consoleVisualFixtureConfigured({
+        dev: false,
+        flag: "1",
+        hostname: "127.0.0.1",
+      }),
+    ).toBe(false);
+    expect(
+      consoleVisualFixtureConfigured({
+        dev: true,
+        flag: "true",
+        hostname: "localhost",
+      }),
+    ).toBe(false);
+    expect(
+      consoleVisualFixtureConfigured({
+        dev: true,
+        flag: "1",
+        hostname: "console.sherivs.com",
+      }),
+    ).toBe(false);
+    expect(
+      consoleVisualFixtureConfigured({
+        dev: true,
+        flag: "1",
+        hostname: null,
+      }),
+    ).toBe(false);
+
+    const overview = buildConsoleVisualFixtureOverview();
+    expect(overview.workspaceStore).toBe("derived-fallback");
+    expect(overview.staff).toEqual([]);
+    expect(overview.activity).toEqual([]);
+    expect(overview.recent).toEqual([]);
+    expect(overview.health.cards.every((card) => card.status === "unknown")).toBe(true);
+    expect(overview.metrics.every((metric) => metric.available === false)).toBe(true);
+    expect(overview.viewer.isSuperAdmin).toBe(false);
+    expect(overview.viewer.email).toBe("console.fixture@localhost");
+  });
+
+  it("keeps the fixture continue control behind the local gate", () => {
+    const auth = readFileSync("frontend/src/routes/auth.tsx", "utf8");
+    expect(auth).toContain("consoleVisualFixtureEnabled()");
+    expect(auth).toContain("Continue as local fixture operator");
+    expect(auth).toContain('data-testid="console-visual-fixture"');
+    const context = readFileSync("frontend/src/contexts/app-context.tsx", "utf8");
+    expect(context).toContain("consoleVisualFixtureActive()");
+    expect(context).toContain("deactivateConsoleVisualFixture");
+    expect(context).not.toMatch(/\bactivateConsoleVisualFixture\b/);
+  });
+});

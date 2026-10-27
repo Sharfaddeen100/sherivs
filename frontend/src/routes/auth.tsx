@@ -32,6 +32,10 @@ import {
   signInLoadingRemainingMs,
 } from "@/lib/auth/signin-loading-wordmark";
 import { SignInLoading } from "@/components/app-entry/signin-loading";
+import {
+  activateConsoleVisualFixture,
+  consoleVisualFixtureEnabled,
+} from "@/lib/internal-console/visual-fixture";
 import "@/components/app-entry/app-entry.css";
 
 export const Route = createFileRoute("/auth")({
@@ -47,12 +51,11 @@ export const Route = createFileRoute("/auth")({
 
 type Mode = "signin" | "signup";
 
-const backoff = createLoginBackoff(
-  typeof window !== "undefined" ? window.localStorage : undefined,
-);
+const backoff = createLoginBackoff(typeof window !== "undefined" ? window.localStorage : undefined);
 
 function AuthPage() {
   const { loading, refresh, school, tenantSlug, authUser } = useApp();
+  const localFixtureEnabled = consoleVisualFixtureEnabled();
   // Console host (console.sherivs.com): staff-branded copy, no self-service
   // sign-up. Login, reset, Turnstile and MFA are unchanged.
   const experience = authPageExperience(currentEffectiveHostKind());
@@ -215,18 +218,22 @@ function AuthPage() {
     }
   }
 
+  async function continueLocalFixture() {
+    if (!consoleVisualFixtureEnabled()) return;
+    reset();
+    activateConsoleVisualFixture();
+    await refresh();
+  }
+
   async function handleGoogle() {
     reset();
     setRememberPreference(remember);
     setBusy(true);
     setBusyKind("google");
-    const result = await startGoogleSignIn(
-      (args) => supabase.auth.signInWithOAuth(args),
-      {
-        redirectTo: googleSignInRedirectTo(window.location.origin, "/auth"),
-        loginHint: email,
-      },
-    );
+    const result = await startGoogleSignIn((args) => supabase.auth.signInWithOAuth(args), {
+      redirectTo: googleSignInRedirectTo(window.location.origin, "/auth"),
+      loginHint: email,
+    });
     if (!result.ok) {
       setBusy(false);
       setBusyKind(null);
@@ -251,6 +258,9 @@ function AuthPage() {
   }
 
   if (!loading && authUser) {
+    if (currentEffectiveHostKind() === "internal") {
+      return <Navigate to="/console" />;
+    }
     return <Navigate to="/home" />;
   }
 
@@ -354,7 +364,11 @@ function AuthPage() {
                 />
                 Remember for 30 days
               </label>
-              <Link to="/forgot-password" search={email ? { email } : {}} className="app-entry-login-forgot">
+              <Link
+                to="/forgot-password"
+                search={email ? { email } : {}}
+                className="app-entry-login-forgot"
+              >
                 Forgot password
               </Link>
             </div>
@@ -378,11 +392,7 @@ function AuthPage() {
               {error}
             </div>
           )}
-          {info && (
-            <div className="app-entry-alert app-entry-alert-info">
-              {info}
-            </div>
-          )}
+          {info && <div className="app-entry-alert app-entry-alert-info">{info}</div>}
 
           <button
             type="submit"
@@ -414,6 +424,23 @@ function AuthPage() {
             </button>
           )}
         </form>
+
+        {localFixtureEnabled ? (
+          <div className="mt-4 space-y-2">
+            <p className="app-entry-login-invite">
+              Local development fixture. This is not a production identity and does not write staff,
+              invitation, or workspace records.
+            </p>
+            <button
+              type="button"
+              className="app-entry-login-google"
+              data-testid="console-visual-fixture"
+              onClick={() => void continueLocalFixture()}
+            >
+              Continue as local fixture operator
+            </button>
+          </div>
+        ) : null}
 
         <div className="mt-5 space-y-2 text-center text-sm">
           {mode === "signin" && experience.allowSignup && (

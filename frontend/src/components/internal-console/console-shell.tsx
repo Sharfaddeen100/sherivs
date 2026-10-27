@@ -44,6 +44,10 @@ import { REGISTERED_RUNTIMES } from "@/lib/internal-console/runtime-contract";
 import { rememberResource, type RecentResource } from "@/lib/internal-console/recent";
 import { rememberConsoleResource } from "@/lib/internal-console/workspace.functions";
 import { workspaceIdFromPath, workspaceTypeLabel } from "@/lib/internal-console/workspaces";
+import {
+  buildConsoleVisualFixtureOverview,
+  consoleVisualFixtureActive,
+} from "@/lib/internal-console/visual-fixture";
 import { ConsoleNotice } from "./console-primitives";
 import { ConsoleNotAuthorised, ConsoleElsewhere } from "./not-authorised";
 import "./console.css";
@@ -552,6 +556,12 @@ function ConsoleChrome({ children }: { children: ReactNode }) {
 
         <main className="sherivs-console-main">
           <div className="sherivs-console-sheet">
+            {consoleVisualFixtureActive() ? (
+              <ConsoleNotice tone="warning">
+                Local visual fixture. This is not a production identity. Persistent workspace
+                storage is not connected.
+              </ConsoleNotice>
+            ) : null}
             {overview?.workspaceStore === "derived-fallback" ? (
               <ConsoleNotice tone="warning">
                 Persistent workspace storage is not configured in this environment. Compatibility
@@ -576,7 +586,9 @@ export function InternalConsoleLayout() {
 
   async function reload() {
     try {
-      const next = await getConsoleOverview();
+      const next = consoleVisualFixtureActive()
+        ? buildConsoleVisualFixtureOverview()
+        : await getConsoleOverview();
       setOverview(next);
       setError(null);
     } catch (err) {
