@@ -27,7 +27,7 @@ export const CONSOLE_HELP_ARTICLES: readonly ConsoleHelpArticle[] = [
     id: "workspaces",
     title: "Personal and shared workspaces",
     description:
-      "Every staff member has a personal workspace. Shared workspaces follow assigned platform roles.",
+      "Every staff member has a personal workspace. Role workspaces are shared operating environments. Membership is not a permission grant.",
     href: CONSOLE_PATHS.workspaces,
   },
   {

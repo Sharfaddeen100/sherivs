@@ -36,6 +36,7 @@ import {
 } from "@/lib/internal-console/overview";
 import { workspaceTypeLabel } from "@/lib/internal-console/workspaces";
 import { ROLE_WORKSPACE_MAPPINGS } from "@/lib/internal-console/role-workspace";
+import { CONSOLE_METRIC_CONTRACTS, metricContract } from "@/lib/internal-console/metrics";
 import { consoleVisualFixtureActive } from "@/lib/internal-console/visual-fixture";
 import { ConfirmAction, ConsoleNotice, StaffStatusBadge } from "./console-primitives";
 
@@ -1066,13 +1067,18 @@ export function ConsoleScholarRuntime() {
 }
 
 function AuditList({ scope }: { scope: "all" | "admin" | "security" }) {
+  const { overview } = useConsole();
   const [events, setEvents] = useState<ConsoleActivityItem[] | null>(null);
   const [source, setSource] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
   useEffect(() => {
     if (consoleVisualFixtureActive()) {
-      setEvents([]);
-      setSource("local visual fixture — audit_logs were not queried");
+      setEvents(scope === "security" ? [] : overview?.activity ?? []);
+      setSource(
+        scope === "security"
+          ? "local visual fixture — no security events are recorded"
+          : "local visual fixture organization transitions — audit_logs were not queried",
+      );
       return;
     }
     void listConsoleAudit({ data: { scope, limit: 80 } })
@@ -1081,7 +1087,7 @@ function AuditList({ scope }: { scope: "all" | "admin" | "security" }) {
         setSource(result.source);
       })
       .catch((err) => setError(err instanceof Error ? err.message : "Audit records unavailable"));
-  }, [scope]);
+  }, [scope, overview?.activity]);
   if (error) return <p className="sherivs-console-error">{error}</p>;
   if (!events) return <p>Loading authorized records…</p>;
   if (!events.length) {
@@ -1173,22 +1179,54 @@ export function ConsoleMetrics() {
       </section>
     );
   }
+  const measuredKeys = new Set((overview?.metrics ?? []).map((metric) => metric.key));
+  const contracts = CONSOLE_METRIC_CONTRACTS.filter((contract) => !measuredKeys.has(contract.key));
   return (
-    <section className="sherivs-console-card">
+    <section className="sherivs-console-card" data-testid="console-metrics">
+      <p className="sherivs-console-page-kicker">Intelligence & Assurance</p>
       <h1>Metrics</h1>
-      <p>Measured values include a definition, window, source, and last-updated time.</p>
+      <p>
+        Measured values include a definition, window, source, and last-updated time. Contracts
+        without a live source stay unavailable instead of showing placeholder numbers.
+      </p>
       <div className="sherivs-console-grid" style={{ marginTop: "0.9rem" }}>
-        {(overview?.metrics ?? []).map((metric) => (
-          <div key={metric.key} className="sherivs-console-row">
-            <strong>{metric.name}</strong>
-            <p>{metric.available ? `${metric.value} ${metric.unit}` : "Unavailable"}</p>
-            <small>
-              {metric.window} · {metric.source}
-            </small>
-            <small>{metric.definition}</small>
-          </div>
-        ))}
+        {(overview?.metrics ?? []).map((metric) => {
+          const contract = metricContract(metric.key);
+          return (
+            <div key={metric.key} className="sherivs-console-row">
+              <strong>{metric.name}</strong>
+              <p>{metric.available ? `${metric.value} ${metric.unit}` : "Unavailable"}</p>
+              <small>
+                {metric.window} · {metric.source}
+                {metric.updatedAt ? ` · Updated ${new Date(metric.updatedAt).toLocaleString()}` : ""}
+              </small>
+              <small>{metric.definition}</small>
+              {contract ? (
+                <small>
+                  Calculation: {contract.calculation}. Freshness: {contract.freshness}.
+                  Authorization: {contract.authorization}.
+                </small>
+              ) : null}
+            </div>
+          );
+        })}
       </div>
+      {contracts.length ? (
+        <>
+          <h2 style={{ marginTop: "1.5rem" }}>Defined but not collected here</h2>
+          <div className="sherivs-console-list">
+            {contracts.map((contract) => (
+              <div key={contract.key} className="sherivs-console-row">
+                <strong>{contract.name}</strong>
+                <small>
+                  {contract.source} · {contract.window} · {contract.authorization}
+                </small>
+                <small>{contract.definition}</small>
+              </div>
+            ))}
+          </div>
+        </>
+      ) : null}
     </section>
   );
 }

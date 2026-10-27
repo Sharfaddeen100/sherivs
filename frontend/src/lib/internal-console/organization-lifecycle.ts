@@ -350,7 +350,15 @@ export type OrganizationMetricsSnapshot = {
 
 export function summarizeOrganizationStates(
   states: readonly OrganizationLifecycleState[],
-): Omit<OrganizationMetricsSnapshot, "available" | "source" | "medianOnboardingHours"> {
+): {
+  total: number;
+  active: number;
+  onboarding: number;
+  suspended: number;
+  failedProvisioning: number;
+  submitted: number;
+  conversionRate: number | null;
+} {
   const total = states.length;
   const active = states.filter((state) => state === "active").length;
   const onboarding = states.filter((state) => isOnboardingPipelineState(state)).length;

@@ -609,7 +609,7 @@ export function InternalConsoleLayout() {
   useEffect(() => {
     if (app.loading || !app.authUser || !operator) return;
     void reload();
-  }, [app.loading, app.authUser, operator]);
+  }, [app.loading, app.authUser, operator, location.pathname]);
 
   if (app.loading) {
     return (

@@ -83,7 +83,11 @@ describe("internal console V1 contract", () => {
       "organizations",
       "workspaces",
       "runtimes",
+      "activity",
     ]);
+    const supportActivity = filterNav(CONSOLE_NAV, support).find((item) => item.key === "activity");
+    expect(supportActivity?.navigable).toBe(false);
+    expect(supportActivity?.children?.map((item) => item.key)).toEqual(["metrics"]);
     expect(quickActionsFor(support).some((item) => item.key === "invite")).toBe(false);
     expect(
       quickActionsFor({ isSuperAdmin: true, capabilities: new Set() }).some(
@@ -107,6 +111,22 @@ describe("internal console V1 contract", () => {
     expect(activity?.navigable).toBe(false);
     expect(activity?.children?.map((item) => item.key)).toEqual(["metrics", "logs"]);
     expect(quickActionsFor(engineer).some((item) => item.key === "invite")).toBe(false);
+    const operations = {
+      isSuperAdmin: false,
+      capabilities: viewerCapabilities(["operations"], false),
+    };
+    const operationsNav = filterNav(CONSOLE_NAV, operations);
+    expect(operationsNav.map((item) => item.key)).toEqual([
+      "home",
+      "organizations",
+      "workspaces",
+      "runtimes",
+      "activity",
+    ]);
+    expect(
+      operationsNav.find((item) => item.key === "activity")?.children?.map((item) => item.key),
+    ).toEqual(["metrics"]);
+    expect(quickActionsFor(operations).some((item) => item.key === "onboard")).toBe(true);
   });
 
   it("does not put another person's personal workspace in the working set", () => {
@@ -404,14 +424,97 @@ describe("local visual fixture", () => {
     expect(overview.activity).toEqual([]);
     expect(overview.recent).toEqual([]);
     expect(overview.health.cards.every((card) => card.status === "unknown")).toBe(true);
-    expect(overview.metrics.every((metric) => metric.available === false)).toBe(true);
+    expect(overview.metrics.find((metric) => metric.key === "active-staff")?.available).toBe(false);
+    expect(overview.metrics.find((metric) => metric.key === "control-plane-organizations")).toEqual(
+      expect.objectContaining({ available: true, value: "0" }),
+    );
     expect(overview.viewer.isSuperAdmin).toBe(false);
     expect(overview.viewer.email).toBe("console.fixture@localhost");
     expect(overview.organizationStore).toBe("fixture");
+    expect(overview.organizationMetrics.available).toBe(true);
+    expect(overview.organizationMetrics.total).toBe(0);
     expect(overview.organizations).toEqual([]);
     expect(overview.assignments).toEqual([]);
     expect(existsSync("frontend/src/routes/console/organizations/index.tsx")).toBe(true);
     expect(existsSync("frontend/src/routes/console/organizations/new.tsx")).toBe(true);
+  });
+
+  it("derives fixture pipeline metrics from the organization store without fabricating users", async () => {
+    const { buildConsoleVisualFixtureOverview, CONSOLE_FIXTURE_ORGS_KEY, readFixtureOrganizationSnapshot } =
+      await import("@/lib/internal-console/visual-fixture");
+    const raw = JSON.stringify({
+      organizations: [
+        {
+          id: "org-active",
+          displayName: "Riverside School",
+          lifecycleState: "active",
+          assignments: [
+            {
+              id: "asg-1",
+              organizationId: "org-active",
+              staffId: "00000000-0000-4000-8000-000000000001",
+              staffName: "Fixture Operator",
+              assignmentType: "onboarding_owner",
+              status: "active",
+              assignedBy: "00000000-0000-4000-8000-000000000001",
+              assignedAt: "2026-10-27T00:00:00.000Z",
+              releasedAt: null,
+            },
+          ],
+          transitions: [
+            {
+              id: "tr-1",
+              fromState: "ready_for_activation",
+              toState: "active",
+              actorId: "00000000-0000-4000-8000-000000000001",
+              reason: "activated",
+              at: "2026-10-27T01:00:00.000Z",
+            },
+          ],
+        },
+        {
+          id: "org-draft",
+          displayName: "Harbour Academy",
+          lifecycleState: "submitted",
+          transitions: [
+            {
+              id: "tr-2",
+              fromState: "draft",
+              toState: "submitted",
+              actorId: "00000000-0000-4000-8000-000000000001",
+              reason: "submitted",
+              at: "2026-10-27T00:30:00.000Z",
+            },
+          ],
+        },
+      ],
+    });
+    const parsed = readFixtureOrganizationSnapshot(raw);
+    expect(parsed.metrics.total).toBe(2);
+    expect(parsed.metrics.active).toBe(1);
+    expect(parsed.metrics.onboarding).toBe(1);
+    expect(parsed.activity[0]?.description).toContain("Riverside School");
+    const previous =
+      typeof window === "undefined" ? null : window.sessionStorage.getItem(CONSOLE_FIXTURE_ORGS_KEY);
+    if (typeof window !== "undefined") {
+      window.sessionStorage.setItem(CONSOLE_FIXTURE_ORGS_KEY, raw);
+    }
+    try {
+      if (typeof window === "undefined") return;
+      const overview = buildConsoleVisualFixtureOverview();
+      expect(overview.organizationMetrics.active).toBe(1);
+      expect(overview.organizationMetrics.onboarding).toBe(1);
+      expect(overview.metrics.find((metric) => metric.key === "active-organizations")?.value).toBe("1");
+      expect(overview.attention.some((item) => item.id === "onboarding-pipeline")).toBe(true);
+      expect(overview.assignments).toHaveLength(1);
+      expect(overview.registeredUsers).toBeNull();
+      expect(overview.activeUsers30d).toBeNull();
+    } finally {
+      if (typeof window !== "undefined") {
+        if (previous === null) window.sessionStorage.removeItem(CONSOLE_FIXTURE_ORGS_KEY);
+        else window.sessionStorage.setItem(CONSOLE_FIXTURE_ORGS_KEY, previous);
+      }
+    }
   });
 
   it("keeps the fixture continue control behind the local gate", () => {

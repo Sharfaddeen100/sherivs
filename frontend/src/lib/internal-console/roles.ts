@@ -59,6 +59,8 @@ export type ConsoleNavItem = {
   href: string;
   /** null = every console operator. */
   capability: string | null;
+  /** When set, the item is visible if the viewer holds any listed capability. */
+  anyOf?: readonly string[];
   children?: readonly ConsoleNavItem[];
   /** False when the item is a grouping shell for visible children. */
   navigable?: boolean;
@@ -192,7 +194,12 @@ export const CONSOLE_NAV: readonly ConsoleNavItem[] = [
         key: "metrics",
         label: "Metrics",
         href: CONSOLE_PATHS.activityMetrics,
-        capability: "platform.engineering.read",
+        capability: "platform.tenants.read",
+        anyOf: [
+          "platform.tenants.read",
+          "platform.operations.read",
+          "platform.engineering.read",
+        ],
       },
       {
         key: "logs",
@@ -223,6 +230,9 @@ export function navVisible(
   viewer: { isSuperAdmin: boolean; capabilities: ReadonlySet<string> },
 ): boolean {
   if (viewer.isSuperAdmin) return true;
+  if (item.anyOf?.length) {
+    return item.anyOf.some((capability) => viewer.capabilities.has(capability));
+  }
   return item.capability === null || viewer.capabilities.has(item.capability);
 }
 

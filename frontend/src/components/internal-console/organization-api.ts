@@ -31,10 +31,11 @@ import {
 } from "@/lib/internal-console/organization-lifecycle";
 import {
   CONSOLE_FIXTURE_OPERATOR,
+  CONSOLE_FIXTURE_ORGS_KEY,
   consoleVisualFixtureActive,
 } from "@/lib/internal-console/visual-fixture";
 
-const FIXTURE_KEY = "sherivs:console-visual-fixture-orgs";
+const FIXTURE_KEY = CONSOLE_FIXTURE_ORGS_KEY;
 
 type FixtureStore = {
   organizations: OrganizationDetail[];
@@ -205,7 +206,7 @@ export async function apiSaveDraft(input: {
       provisionedAt: null,
       activatedAt: null,
       onboardingOwnerName: CONSOLE_FIXTURE_OPERATOR.name,
-      assignmentCount: 0,
+      assignmentCount: 1,
       legalName: input.draft.legalName ?? null,
       questionnaire: input.draft,
       questionnaireStep: currentOnboardingStep(input.draft),
@@ -222,7 +223,19 @@ export async function apiSaveDraft(input: {
         title: input.draft.contactTitle ?? null,
         method: input.draft.contactMethod ?? null,
       },
-      assignments: [],
+      assignments: [
+        {
+          id: crypto.randomUUID(),
+          organizationId: id,
+          staffId: CONSOLE_FIXTURE_OPERATOR.id,
+          staffName: CONSOLE_FIXTURE_OPERATOR.name,
+          assignmentType: "onboarding_owner",
+          status: "active",
+          assignedBy: CONSOLE_FIXTURE_OPERATOR.id,
+          assignedAt: at,
+          releasedAt: null,
+        },
+      ],
       transitions: [
         {
           id: crypto.randomUUID(),

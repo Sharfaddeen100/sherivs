@@ -97,7 +97,7 @@ export function ConsoleOrganizationDirectory() {
       <p className="sherivs-console-page-kicker">Organizations</p>
       <h1>Organization directory</h1>
       <p>
-        Cases are not Scholar tenants until provisioning links a `schools` row. Sensitive contact
+        Cases are not Scholar tenants until provisioning links a schools row. Sensitive contact
         details stay on the organization profile.
       </p>
       {overview.organizationStore === "unavailable" ? (
@@ -187,7 +187,7 @@ export function ConsoleOrganizationDirectory() {
 }
 
 export function ConsoleOrganizationOnboarding() {
-  const { overview } = useConsole();
+  const { overview, reload } = useConsole();
   const navigate = useNavigate();
   const [draft, setDraft] = useState<OrganizationDraft>({
     orgType: "school",
@@ -215,8 +215,10 @@ export function ConsoleOrganizationOnboarding() {
     try {
       const saved = await apiSaveDraft({ id, draft });
       setId(saved.id);
+      await reload();
       if (andSubmit) {
         await apiSubmit(saved.id);
+        await reload();
         await navigate({ to: CONSOLE_PATHS.organization(saved.id) as never });
         return;
       }
