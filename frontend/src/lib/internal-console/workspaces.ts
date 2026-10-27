@@ -116,6 +116,26 @@ export function workspaceById(
   return null;
 }
 
+/**
+ * Working-set visibility. Managing staff membership is not a license to open
+ * another person's personal workspace. Shared workspaces remain visible to
+ * staff.manage for membership administration.
+ */
+export function isWorkingWorkspace(input: {
+  kind: InternalWorkspaceType;
+  ownerId: string;
+  viewerId: string;
+  isMember: boolean;
+  canManageShared: boolean;
+}): boolean {
+  if (input.kind === "personal") return input.isMember || input.ownerId === input.viewerId;
+  return input.canManageShared || input.isMember;
+}
+
+export function workspaceTypeLabel(type: InternalWorkspaceType): string {
+  return type === "personal" ? "Personal" : "Shared";
+}
+
 export function workspaceFromAuthorized(
   id: string,
   workspaces: readonly InternalWorkspace[],

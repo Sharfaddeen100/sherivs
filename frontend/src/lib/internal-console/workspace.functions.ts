@@ -17,7 +17,7 @@ import {
   slugifyWorkspaceName,
   store,
 } from "./store";
-import type { InternalWorkspace } from "./workspaces";
+import { isWorkingWorkspace, type InternalWorkspace } from "./workspaces";
 import {
   REGISTERED_RUNTIMES,
   SCHOLAR_RUNTIME_CONTRACT,
@@ -133,7 +133,15 @@ export async function loadAuthorizedWorkspaces(
       .filter((row) => row.user_id === userId)
       .map((row) => [row.workspace_id, row.access]),
   );
-  const visible = rows.filter((row) => canManage || mine.has(row.id));
+  const visible = rows.filter((row) =>
+    isWorkingWorkspace({
+      kind: row.kind,
+      ownerId: row.owner_id,
+      viewerId: userId,
+      isMember: mine.has(row.id),
+      canManageShared: canManage,
+    }),
+  );
   return visible.map((row) =>
     mapWorkspaceRecord(
       row,
@@ -326,6 +334,16 @@ export const removeWorkspaceMember = createServerFn({ method: "POST" })
     await assertCapability(context as unknown as Ctx, "platform.staff.manage");
     if (data.userId === context.userId) throw new Error("Use archive to leave ownership.");
     const db = await admin();
+    const { data: workspace, error: loadErr } = await store(db)
+      .from("platform_workspace")
+      .select("id, kind")
+      .eq("id", data.workspaceId)
+      .maybeSingle();
+    if (loadErr) throw new Error(loadErr.message);
+    const row = workspace as { id: string; kind: string } | null;
+    if (!row || row.kind !== "shared") {
+      throw new Error("Only shared workspace members can be removed.");
+    }
     const { error } = await store(db)
       .from("platform_workspace_member")
       .delete()

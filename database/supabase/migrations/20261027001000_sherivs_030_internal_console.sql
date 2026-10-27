@@ -261,12 +261,17 @@ DROP POLICY IF EXISTS platform_workspace_read ON public.platform_workspace;
 CREATE POLICY platform_workspace_read ON public.platform_workspace
   FOR SELECT TO authenticated
   USING (
-    public.is_super_admin()
-    OR public.has_platform_capability('platform.staff.manage')
-    OR EXISTS (
+    EXISTS (
       SELECT 1 FROM public.platform_workspace_member m
        WHERE m.workspace_id = platform_workspace.id
          AND m.user_id = auth.uid()
+    )
+    OR (
+      kind = 'shared'
+      AND (
+        public.is_super_admin()
+        OR public.has_platform_capability('platform.staff.manage')
+      )
     )
   );
 
@@ -276,7 +281,14 @@ CREATE POLICY platform_workspace_member_read ON public.platform_workspace_member
   USING (
     user_id = auth.uid()
     OR public.is_super_admin()
-    OR public.has_platform_capability('platform.staff.manage')
+    OR (
+      public.has_platform_capability('platform.staff.manage')
+      AND EXISTS (
+        SELECT 1 FROM public.platform_workspace w
+         WHERE w.id = platform_workspace_member.workspace_id
+           AND w.kind = 'shared'
+      )
+    )
   );
 
 DROP POLICY IF EXISTS platform_runtime_read ON public.platform_runtime;
