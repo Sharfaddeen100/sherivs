@@ -92,6 +92,12 @@ function describeAction(action: string): string {
     "platform_organization.provision": "Organization provisioning completed",
     "platform_organization.assign": "Staff were assigned to an organization",
     "platform_organization.assignment.release": "An organization assignment was released",
+    "platform_ticket.create": "A support ticket was opened",
+    "platform_ticket.status": "A support ticket status changed",
+    "platform_incident.create": "An operational incident was filed",
+    "platform_incident.status": "An operational incident status changed",
+    "platform_billing.subscription.init": "A school subscription checkout was started",
+    "platform_console.logs.search": "Control-plane logs were searched",
   };
   return map[action] ?? action.replace(/[._]/g, " ");
 }
@@ -213,10 +219,10 @@ export const getConsoleOverview = createServerFn({ method: "GET" })
         key: "incidents",
         name: "Active Incidents",
         status: "unknown",
-        detail: "Sherivs V1 has no incident-tracking store. Open incidents cannot be counted.",
+        detail: "Open operational incidents have not been counted yet.",
         lastCheck: null,
-        href: CONSOLE_PATHS.activity,
-        source: "not configured",
+        href: CONSOLE_PATHS.activityIncidents,
+        source: "platform_incident",
       },
     ];
 
@@ -250,11 +256,11 @@ export const getConsoleOverview = createServerFn({ method: "GET" })
         value: null,
         unit: "count",
         window: "current",
-        source: "not configured",
+        source: "platform_incident",
         updatedAt: null,
         available: false,
         definition:
-          "Incidents currently open under an incident lifecycle. No incident table exists.",
+          "Incidents currently open, acknowledged, or mitigating. Closed records are excluded.",
       },
       {
         key: "uptime",
@@ -688,6 +694,50 @@ export const getConsoleOverview = createServerFn({ method: "GET" })
       } catch {
         organizationStore = "unavailable";
       }
+    }
+
+    const { countOpenIncidents, countSubscriptions } = await import("./operations.store.server");
+    const openIncidentCount = await countOpenIncidents();
+    const incidentCard = cards.find((card) => card.key === "incidents");
+    if (incidentCard) {
+      if (openIncidentCount === null) {
+        incidentCard.status = "unknown";
+        incidentCard.detail = "Incident storage is not applied or could not be read.";
+        incidentCard.lastCheck = now;
+      } else {
+        incidentCard.status = "operational";
+        incidentCard.detail =
+          openIncidentCount === 0
+            ? "No open operational incidents are recorded."
+            : `${openIncidentCount} open operational incident${openIncidentCount === 1 ? "" : "s"} recorded.`;
+        incidentCard.lastCheck = now;
+      }
+    }
+    const incidentMetric = metrics.find((metric) => metric.key === "incidents");
+    if (incidentMetric) {
+      incidentMetric.value = openIncidentCount === null ? null : String(openIncidentCount);
+      incidentMetric.updatedAt = now;
+      incidentMetric.available = openIncidentCount !== null;
+      incidentMetric.source =
+        openIncidentCount === null ? "platform_incident not applied" : "platform_incident";
+    }
+    if (capabilities.has("platform.finance.read") || capabilities.has("platform.tenants.manage")) {
+      const subscriptionCount = await countSubscriptions();
+      metrics.push({
+        key: "subscription-ledger",
+        name: "Commercial subscriptions",
+        value: subscriptionCount === null ? null : String(subscriptionCount),
+        unit: "subscriptions",
+        window: "current ledger",
+        source:
+          subscriptionCount === null
+            ? "public.subscriptions not available"
+            : "public.subscriptions",
+        updatedAt: now,
+        available: subscriptionCount !== null,
+        definition:
+          "Count of Paystack-oriented subscription payment-history rows. Not recognized revenue.",
+      });
     }
 
     const preferredRole = defaultRoleWorkspaceCode({ isSuperAdmin, roles });

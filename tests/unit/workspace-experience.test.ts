@@ -119,6 +119,7 @@ describe("role workspace operating environments", () => {
       "Sherivs Scholar",
       "Metrics",
       "Logs",
+      "Incidents",
       "Help",
     ]);
     expect(nav.some((item) => item.label === "Security events")).toBe(false);
@@ -130,9 +131,9 @@ describe("role workspace operating environments", () => {
     expect(provisionSource).toContain('subscription_status: "suspended"');
   });
 
-  it("documents the commercial subscription ledger as not connected", () => {
+  it("documents the commercial subscription ledger as a payment-history count", () => {
     const metric = CONSOLE_METRIC_CONTRACTS.find((row) => row.key === "subscription-ledger");
-    expect(metric?.calculation).toBe("not calculated");
-    expect(metric?.source).toMatch(/not connected/i);
+    expect(metric?.calculation).toMatch(/count/i);
+    expect(metric?.source).toMatch(/public.subscriptions/i);
   });
 });

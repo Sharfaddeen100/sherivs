@@ -5,7 +5,7 @@
 | Source | What it is | Console use |
 |---|---|---|
 | `public.schools.subscription_tier` / `subscription_status` / `subscription_expires_at` | Coarse tenant flags. Status CHECK: active, suspended, expired, cancelled. | Written on activate/suspend/restore. Not displayed as a commercial subscription. |
-| `public.subscriptions` | Paystack-oriented payment history per school | Not queried by the Internal Console |
+| `public.subscriptions` | Paystack-oriented payment history per school | Listed on `/console/activity/billing`. Counted as a metric. Not treated as recognized revenue. |
 | `org_entitlements` and related tables | Draft SHERIVS-013, absent from generated Database types | Not applied; not console-wired |
 | `platform_organization.lifecycle_state` | Staff onboarding case | Displayed; not billing status |
 
@@ -27,4 +27,4 @@ User permissions remain RBAC/RLS on the school tenant.
 
 ## Integration boundary
 
-A future console subscription module should read an applied, authorized billing store (payment intents / entitlements) through a server function with `platform.finance.read`, and must not calculate revenue from status flags alone.
+The Internal Console billing module reads `public.subscriptions` and `school_platform_pricing` through a server function gated by `platform.finance.read` or `platform.tenants.manage`. Paystack Inline can collect a linked school's configured `monthly_fee`. Settlement is webhook compare-and-set on pending rows (`csub_` references). Revenue, MRR, trials, and entitlements are still not calculated.

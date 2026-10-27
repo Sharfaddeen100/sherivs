@@ -87,7 +87,11 @@ describe("internal console V1 contract", () => {
     ]);
     const supportActivity = filterNav(CONSOLE_NAV, support).find((item) => item.key === "activity");
     expect(supportActivity?.navigable).toBe(false);
-    expect(supportActivity?.children?.map((item) => item.key)).toEqual(["metrics"]);
+    expect(supportActivity?.children?.map((item) => item.key)).toEqual([
+      "metrics",
+      "incidents",
+      "tickets",
+    ]);
     expect(quickActionsFor(support).some((item) => item.key === "invite")).toBe(false);
     expect(
       quickActionsFor({ isSuperAdmin: true, capabilities: new Set() }).some(
@@ -109,7 +113,7 @@ describe("internal console V1 contract", () => {
     );
     const activity = filterNav(CONSOLE_NAV, engineer).find((item) => item.key === "activity");
     expect(activity?.navigable).toBe(false);
-    expect(activity?.children?.map((item) => item.key)).toEqual(["metrics", "logs"]);
+    expect(activity?.children?.map((item) => item.key)).toEqual(["metrics", "logs", "incidents"]);
     expect(quickActionsFor(engineer).some((item) => item.key === "invite")).toBe(false);
     const operations = {
       isSuperAdmin: false,
@@ -125,7 +129,7 @@ describe("internal console V1 contract", () => {
     ]);
     expect(
       operationsNav.find((item) => item.key === "activity")?.children?.map((item) => item.key),
-    ).toEqual(["metrics"]);
+    ).toEqual(["metrics", "incidents", "tickets"]);
     expect(quickActionsFor(operations).some((item) => item.key === "onboard")).toBe(true);
   });
 

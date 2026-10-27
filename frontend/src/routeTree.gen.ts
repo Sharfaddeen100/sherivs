@@ -91,9 +91,12 @@ import { Route as siteSolutionsEnterpriseRouteImport } from './routes/(site)/sol
 import { Route as siteSolutionsResearchRouteImport } from './routes/(site)/solutions.research'
 import { Route as ConsoleActivityIndexRouteImport } from './routes/console/activity/index'
 import { Route as ConsoleActivityAdminRouteImport } from './routes/console/activity/admin'
+import { Route as ConsoleActivityBillingRouteImport } from './routes/console/activity/billing'
+import { Route as ConsoleActivityIncidentsRouteImport } from './routes/console/activity/incidents'
 import { Route as ConsoleActivityLogsRouteImport } from './routes/console/activity/logs'
 import { Route as ConsoleActivityMetricsRouteImport } from './routes/console/activity/metrics'
 import { Route as ConsoleActivitySecurityRouteImport } from './routes/console/activity/security'
+import { Route as ConsoleActivityTicketsRouteImport } from './routes/console/activity/tickets'
 import { Route as ConsoleOrganizationsIndexRouteImport } from './routes/console/organizations/index'
 import { Route as ConsoleOrganizationsOrganizationIdRouteImport } from './routes/console/organizations/$organizationId'
 import { Route as ConsoleOrganizationsNewRouteImport } from './routes/console/organizations/new'
@@ -527,6 +530,17 @@ const ConsoleActivityAdminRoute = ConsoleActivityAdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => ConsoleActivityRouteRoute,
 } as any)
+const ConsoleActivityBillingRoute = ConsoleActivityBillingRouteImport.update({
+  id: '/billing',
+  path: '/billing',
+  getParentRoute: () => ConsoleActivityRouteRoute,
+} as any)
+const ConsoleActivityIncidentsRoute =
+  ConsoleActivityIncidentsRouteImport.update({
+    id: '/incidents',
+    path: '/incidents',
+    getParentRoute: () => ConsoleActivityRouteRoute,
+  } as any)
 const ConsoleActivityLogsRoute = ConsoleActivityLogsRouteImport.update({
   id: '/logs',
   path: '/logs',
@@ -540,6 +554,11 @@ const ConsoleActivityMetricsRoute = ConsoleActivityMetricsRouteImport.update({
 const ConsoleActivitySecurityRoute = ConsoleActivitySecurityRouteImport.update({
   id: '/security',
   path: '/security',
+  getParentRoute: () => ConsoleActivityRouteRoute,
+} as any)
+const ConsoleActivityTicketsRoute = ConsoleActivityTicketsRouteImport.update({
+  id: '/tickets',
+  path: '/tickets',
   getParentRoute: () => ConsoleActivityRouteRoute,
 } as any)
 const ConsoleOrganizationsIndexRoute =
@@ -734,9 +753,12 @@ export interface FileRoutesByFullPath {
   '/solutions/enterprise': typeof siteSolutionsEnterpriseRoute
   '/solutions/research': typeof siteSolutionsResearchRoute
   '/console/activity/admin': typeof ConsoleActivityAdminRoute
+  '/console/activity/billing': typeof ConsoleActivityBillingRoute
+  '/console/activity/incidents': typeof ConsoleActivityIncidentsRoute
   '/console/activity/logs': typeof ConsoleActivityLogsRoute
   '/console/activity/metrics': typeof ConsoleActivityMetricsRoute
   '/console/activity/security': typeof ConsoleActivitySecurityRoute
+  '/console/activity/tickets': typeof ConsoleActivityTicketsRoute
   '/console/organizations/$organizationId': typeof ConsoleOrganizationsOrganizationIdRoute
   '/console/organizations/new': typeof ConsoleOrganizationsNewRoute
   '/console/runtimes/scholar': typeof ConsoleRuntimesScholarRoute
@@ -829,9 +851,12 @@ export interface FileRoutesByTo {
   '/solutions/enterprise': typeof siteSolutionsEnterpriseRoute
   '/solutions/research': typeof siteSolutionsResearchRoute
   '/console/activity/admin': typeof ConsoleActivityAdminRoute
+  '/console/activity/billing': typeof ConsoleActivityBillingRoute
+  '/console/activity/incidents': typeof ConsoleActivityIncidentsRoute
   '/console/activity/logs': typeof ConsoleActivityLogsRoute
   '/console/activity/metrics': typeof ConsoleActivityMetricsRoute
   '/console/activity/security': typeof ConsoleActivitySecurityRoute
+  '/console/activity/tickets': typeof ConsoleActivityTicketsRoute
   '/console/organizations/$organizationId': typeof ConsoleOrganizationsOrganizationIdRoute
   '/console/organizations/new': typeof ConsoleOrganizationsNewRoute
   '/console/runtimes/scholar': typeof ConsoleRuntimesScholarRoute
@@ -938,9 +963,12 @@ export interface FileRoutesById {
   '/(site)/solutions/enterprise': typeof siteSolutionsEnterpriseRoute
   '/(site)/solutions/research': typeof siteSolutionsResearchRoute
   '/console/activity/admin': typeof ConsoleActivityAdminRoute
+  '/console/activity/billing': typeof ConsoleActivityBillingRoute
+  '/console/activity/incidents': typeof ConsoleActivityIncidentsRoute
   '/console/activity/logs': typeof ConsoleActivityLogsRoute
   '/console/activity/metrics': typeof ConsoleActivityMetricsRoute
   '/console/activity/security': typeof ConsoleActivitySecurityRoute
+  '/console/activity/tickets': typeof ConsoleActivityTicketsRoute
   '/console/organizations/$organizationId': typeof ConsoleOrganizationsOrganizationIdRoute
   '/console/organizations/new': typeof ConsoleOrganizationsNewRoute
   '/console/runtimes/scholar': typeof ConsoleRuntimesScholarRoute
@@ -1047,9 +1075,12 @@ export interface FileRouteTypes {
     | '/solutions/enterprise'
     | '/solutions/research'
     | '/console/activity/admin'
+    | '/console/activity/billing'
+    | '/console/activity/incidents'
     | '/console/activity/logs'
     | '/console/activity/metrics'
     | '/console/activity/security'
+    | '/console/activity/tickets'
     | '/console/organizations/$organizationId'
     | '/console/organizations/new'
     | '/console/runtimes/scholar'
@@ -1142,9 +1173,12 @@ export interface FileRouteTypes {
     | '/solutions/enterprise'
     | '/solutions/research'
     | '/console/activity/admin'
+    | '/console/activity/billing'
+    | '/console/activity/incidents'
     | '/console/activity/logs'
     | '/console/activity/metrics'
     | '/console/activity/security'
+    | '/console/activity/tickets'
     | '/console/organizations/$organizationId'
     | '/console/organizations/new'
     | '/console/runtimes/scholar'
@@ -1250,9 +1284,12 @@ export interface FileRouteTypes {
     | '/(site)/solutions/enterprise'
     | '/(site)/solutions/research'
     | '/console/activity/admin'
+    | '/console/activity/billing'
+    | '/console/activity/incidents'
     | '/console/activity/logs'
     | '/console/activity/metrics'
     | '/console/activity/security'
+    | '/console/activity/tickets'
     | '/console/organizations/$organizationId'
     | '/console/organizations/new'
     | '/console/runtimes/scholar'
@@ -1882,6 +1919,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ConsoleActivityAdminRouteImport
       parentRoute: typeof ConsoleActivityRouteRoute
     }
+    '/console/activity/billing': {
+      id: '/console/activity/billing'
+      path: '/billing'
+      fullPath: '/console/activity/billing'
+      preLoaderRoute: typeof ConsoleActivityBillingRouteImport
+      parentRoute: typeof ConsoleActivityRouteRoute
+    }
+    '/console/activity/incidents': {
+      id: '/console/activity/incidents'
+      path: '/incidents'
+      fullPath: '/console/activity/incidents'
+      preLoaderRoute: typeof ConsoleActivityIncidentsRouteImport
+      parentRoute: typeof ConsoleActivityRouteRoute
+    }
     '/console/activity/logs': {
       id: '/console/activity/logs'
       path: '/logs'
@@ -1901,6 +1952,13 @@ declare module '@tanstack/react-router' {
       path: '/security'
       fullPath: '/console/activity/security'
       preLoaderRoute: typeof ConsoleActivitySecurityRouteImport
+      parentRoute: typeof ConsoleActivityRouteRoute
+    }
+    '/console/activity/tickets': {
+      id: '/console/activity/tickets'
+      path: '/tickets'
+      fullPath: '/console/activity/tickets'
+      preLoaderRoute: typeof ConsoleActivityTicketsRouteImport
       parentRoute: typeof ConsoleActivityRouteRoute
     }
     '/console/organizations/': {
@@ -2218,17 +2276,23 @@ const siteRouteRouteWithChildren = siteRouteRoute._addFileChildren(
 
 interface ConsoleActivityRouteRouteChildren {
   ConsoleActivityAdminRoute: typeof ConsoleActivityAdminRoute
+  ConsoleActivityBillingRoute: typeof ConsoleActivityBillingRoute
+  ConsoleActivityIncidentsRoute: typeof ConsoleActivityIncidentsRoute
   ConsoleActivityLogsRoute: typeof ConsoleActivityLogsRoute
   ConsoleActivityMetricsRoute: typeof ConsoleActivityMetricsRoute
   ConsoleActivitySecurityRoute: typeof ConsoleActivitySecurityRoute
+  ConsoleActivityTicketsRoute: typeof ConsoleActivityTicketsRoute
   ConsoleActivityIndexRoute: typeof ConsoleActivityIndexRoute
 }
 
 const ConsoleActivityRouteRouteChildren: ConsoleActivityRouteRouteChildren = {
   ConsoleActivityAdminRoute: ConsoleActivityAdminRoute,
+  ConsoleActivityBillingRoute: ConsoleActivityBillingRoute,
+  ConsoleActivityIncidentsRoute: ConsoleActivityIncidentsRoute,
   ConsoleActivityLogsRoute: ConsoleActivityLogsRoute,
   ConsoleActivityMetricsRoute: ConsoleActivityMetricsRoute,
   ConsoleActivitySecurityRoute: ConsoleActivitySecurityRoute,
+  ConsoleActivityTicketsRoute: ConsoleActivityTicketsRoute,
   ConsoleActivityIndexRoute: ConsoleActivityIndexRoute,
 }
 

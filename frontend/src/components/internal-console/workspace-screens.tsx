@@ -14,7 +14,6 @@ import {
   visibleWorkspaceNav,
   type WorkspaceExperienceKey,
 } from "@/lib/internal-console/workspace-experience";
-import { ConsoleNotice } from "./console-primitives";
 
 function StatusBadge({ status }: { status: ConsoleHealthState }) {
   return (
@@ -97,15 +96,14 @@ function SubscriptionBoundary() {
   return (
     <section>
       <h2>Subscriptions and entitlements</h2>
-      <ConsoleNotice>
-        There is no commercial subscription ledger connected to the Internal Console. Tenant access
-        is controlled by organization lifecycle and schools.is_active. The school subscription_status
-        column is a coarse access flag, not recognized revenue.
-      </ConsoleNotice>
-      <Empty>
-        Plans, prices, payments, trials, renewals, and refunds are not shown because those sources
-        are not authorized for this console. Do not invent subscription records here.
-      </Empty>
+      <p>
+        Tenant access is controlled by organization lifecycle and schools.is_active. Payment history
+        lives in public.subscriptions and is shown on Billing. That ledger is not recognized
+        revenue or MRR.
+      </p>
+      <Link to={CONSOLE_PATHS.activityBilling as never} className="sherivs-console-btn secondary">
+        Open billing
+      </Link>
     </section>
   );
 }
@@ -392,12 +390,17 @@ function EngineeringExperience({ overview }: { overview: ConsoleOverview }) {
       <section>
         <h2>Available logs</h2>
         <p>
-          A searchable log index is not configured. Process health remains at /health.json. This
+          Control-plane audit actions can be searched. Process health remains at /health.json. This
           workspace does not invent log rows or expose secrets.
         </p>
-        <Link to={CONSOLE_PATHS.activityLogs as never} className="sherivs-console-btn secondary">
-          Open logs
-        </Link>
+        <div className="sherivs-console-actions">
+          <Link to={CONSOLE_PATHS.activityLogs as never} className="sherivs-console-btn secondary">
+            Search logs
+          </Link>
+          <Link to={CONSOLE_PATHS.activityIncidents as never} className="sherivs-console-btn secondary">
+            Open incidents
+          </Link>
+        </div>
       </section>
     </>
   );
@@ -425,8 +428,7 @@ function SupportExperience({ overview }: { overview: ConsoleOverview }) {
           </div>
         ) : (
           <Empty>
-            No organizations are assigned to you. Ticket queues and support conversations are not
-            implemented.
+            No organizations are assigned to you. Open Tickets to file an onboarding or access case.
           </Empty>
         )}
       </section>
@@ -449,10 +451,10 @@ function SupportExperience({ overview }: { overview: ConsoleOverview }) {
       </section>
       <section>
         <h2>Escalation</h2>
-        <Empty>
-          No escalation system is implemented. Use Help for the authorized support process rather
-          than a fabricated ticket list.
-        </Empty>
+        <p>Support tickets are organization cases, not school complaints or student records.</p>
+        <Link to={CONSOLE_PATHS.activityTickets as never} className="sherivs-console-btn secondary">
+          Open tickets
+        </Link>
       </section>
     </>
   );

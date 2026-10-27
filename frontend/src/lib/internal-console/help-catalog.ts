@@ -38,6 +38,27 @@ export const CONSOLE_HELP_ARTICLES: readonly ConsoleHelpArticle[] = [
     href: CONSOLE_PATHS.activityMetrics,
   },
   {
+    id: "tickets",
+    title: "Support tickets",
+    description:
+      "Console tickets are staff-operated organization cases. They are not school complaints, student records, or fee invoices.",
+    href: CONSOLE_PATHS.activityTickets,
+  },
+  {
+    id: "incidents",
+    title: "Operational incidents",
+    description:
+      "Incidents are operator-filed operational records. Unknown is not healthy, and this is not a security operations centre.",
+    href: CONSOLE_PATHS.activityIncidents,
+  },
+  {
+    id: "billing",
+    title: "Billing and Paystack",
+    description:
+      "Billing reads public.subscriptions. Paystack Inline collects a configured school monthly fee. The webhook remains the source of truth.",
+    href: CONSOLE_PATHS.activityBilling,
+  },
+  {
     id: "audit",
     title: "Audit records",
     description:

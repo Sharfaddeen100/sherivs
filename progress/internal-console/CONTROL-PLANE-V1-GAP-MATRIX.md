@@ -16,7 +16,7 @@ Version target: **ACTIVE-V1**. Canonical destinations remain `console.sherivs.co
 | Evidence-based metrics | Staff counts + process uptime; honest unavailable cards | `overview.functions.ts` | Org/user metrics missing | Contracts + `platform_control_plane_metrics()` | Engine A, auth.users | Medium | No fabricated numbers | Implemented, unit tested |
 | Homepage as decision surface | Health, attention (invites), quick actions | `home-screen.tsx` | No pipeline / assignments | Pipeline + assignments empty-or-real; fixture store drives counts | Metrics | Low | Progressive disclosure | Implemented, unit tested; browser pending |
 | RLS / no client writes | FORCE RLS on console store | SHERIVS-030 | New tables need same posture | FORCE RLS + SELECT-only grants in 031 | Migration apply | High if applied untested | Unauthorized insert fails | Designed + SQL fixture; not production verified |
-| Logs / incidents / tasks | Honest unavailable | module-screens | None that V1 should fill | Deferred | Observability provider | — | Do not fake | Deferred |
+| Logs / incidents / tickets | Searchable audit_logs + platform_incident + platform_ticket | SHERIVS-032, operations screens | Live apply of 032 | Applied in repo; production apply requires valid PRODUCTION_DATABASE_URL | 030/031 | Medium: unapplied migration | Empty-or-real; no fabricated rows | Implemented, unit tested; database not production-verified |
 
 ## Role-to-workspace mapping
 

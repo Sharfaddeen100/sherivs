@@ -1036,33 +1036,6 @@ export function ConsoleActivity({ scope = "all" }: { scope?: "all" | "admin" | "
   );
 }
 
-export function ConsoleLogs() {
-  const { overview } = useConsole();
-  if (!overview) return <section className="sherivs-console-card">Loading logs…</section>;
-  if (!overview.viewer.capabilities.includes("platform.engineering.read")) {
-    return (
-      <section className="sherivs-console-card">
-        <h1>Logs</h1>
-        <p>Technical logs require the engineering capability.</p>
-      </section>
-    );
-  }
-  return (
-    <section className="sherivs-console-card">
-      <p className="sherivs-console-page-kicker">Activity & Audit</p>
-      <h1>Logs</h1>
-      <ConsoleNotice>
-        A searchable log index is not configured for this environment. Application health
-        information and available audit records remain accessible through their respective views.
-      </ConsoleNotice>
-      <p>
-        Request logs belong in the configured observability provider. Process health remains at{" "}
-        <code>/health.json</code>. This page does not invent log rows.
-      </p>
-    </section>
-  );
-}
-
 export function ConsoleMetrics() {
   const { overview } = useConsole();
   if (!overview) return <section className="sherivs-console-card">Loading metrics…</section>;

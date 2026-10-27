@@ -143,11 +143,11 @@ export const CONSOLE_METRIC_CONTRACTS: readonly ConsoleMetricContract[] = [
     name: "Commercial subscriptions",
     definition:
       "Recognized subscription, trial, past-due, and revenue totals from an authoritative billing ledger. schools.subscription_status is a coarse tenant access flag written by lifecycle operations and is not this metric.",
-    source: "not connected — public.subscriptions and entitlement tables are not wired to the Internal Console",
-    calculation: "not calculated",
-    window: "not applicable",
+    source: "public.subscriptions",
+    calculation: "count of subscription payment-history rows; not recognized revenue",
+    window: "current ledger",
     unit: "subscriptions",
-    freshness: "not collected",
+    freshness: "read at page load",
     authorization: "platform.finance.read",
   },
   {
