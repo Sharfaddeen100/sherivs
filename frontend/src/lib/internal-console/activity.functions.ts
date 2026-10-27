@@ -54,7 +54,7 @@ export const listConsoleAudit = createServerFn({ method: "POST" })
       const filter =
         data.scope === "security"
           ? "action.like.platform_staff.status.%,action.like.platform_staff.set_roles,action.like.platform_support.%"
-          : "action.like.platform_staff.%,action.like.platform_support.%,action.like.platform_access_review.%";
+          : "action.like.platform_staff.%,action.like.platform_support.%,action.like.platform_access_review.%,action.like.platform_workspace.%";
       const { data: rows, error } = await db
         .from("audit_logs")
         .select("id, action, user_id, record_id, created_at, new_value")

@@ -26,6 +26,8 @@ import {
   canTransition,
   type PlatformStaffStatus,
 } from "./catalogue";
+import { CONSOLE_ORIGIN } from "@/lib/experience/console-host-routing";
+import { isMissingRelation, store } from "@/lib/internal-console/store";
 
 type GateContext = {
   supabase: Parameters<typeof requirePlatformSuperAdmin>[0];
@@ -65,16 +67,22 @@ async function admin() {
 
 const timeAuthority = new TimeAuthority(new SystemClock());
 
-const DEFAULT_APP_ORIGIN = "https://app.sherivs.com";
+const INVITE_TTL_MS = 14 * 24 * 60 * 60 * 1000;
 function inviteRedirect(): string {
   // Supabase only honours redirects on the Auth → URL Configuration allow-list.
-  let origin = DEFAULT_APP_ORIGIN;
+  let origin = CONSOLE_ORIGIN;
   try {
     origin = new URL(getRequest().url).origin;
   } catch {
-    /* fall back to canonical app host */
+    /* fall back to the Internal Console host */
   }
   return `${origin}/reset-password`;
+}
+
+function inviteExpiry(fromIso: string): string {
+  const fromMs = Date.parse(fromIso);
+  if (!Number.isFinite(fromMs)) throw new Error("invalid invitation time");
+  return new Date(fromMs + INVITE_TTL_MS).toISOString();
 }
 
 async function audit(
@@ -133,6 +141,7 @@ const inviteSchema = z.object({
   fullName: z.string().trim().min(2).max(120),
   department: z.string().trim().max(80).optional(),
   roles: roleList.min(1),
+  initialWorkspaceId: z.string().uuid().optional(),
 });
 
 export const invitePlatformStaff = createServerFn({ method: "POST" })
@@ -152,6 +161,25 @@ export const invitePlatformStaff = createServerFn({ method: "POST" })
       .maybeSingle();
     if (existing) throw new Error("That email is already platform staff.");
 
+    if (data.initialWorkspaceId) {
+      const { data: workspace, error: workspaceErr } = await store(db)
+        .from("platform_workspace")
+        .select("id, kind, status")
+        .eq("id", data.initialWorkspaceId)
+        .maybeSingle();
+      if (workspaceErr) {
+        throw new Error(
+          isMissingRelation(workspaceErr)
+            ? "Workspace store is not configured."
+            : workspaceErr.message,
+        );
+      }
+      const row = workspace as { id: string; kind: string; status: string } | null;
+      if (!row || row.kind !== "shared" || row.status !== "active") {
+        throw new Error("Initial workspace must be an active shared workspace.");
+      }
+    }
+
     // Never repurpose an existing (e.g. customer) account into staff: invite
     // creates a NEW auth user; an existing account makes the invite fail.
     const { data: invited, error } = await db.auth.admin.inviteUserByEmail(data.email, {
@@ -168,14 +196,31 @@ export const invitePlatformStaff = createServerFn({ method: "POST" })
     }
     const staffId = invited.user.id;
 
-    const { error: insErr } = await db.from("platform_staff").insert({
+    const invitedAt = timeAuthority.now().at;
+    const staffRow = {
       id: staffId,
       email: data.email,
       full_name: data.fullName,
       department: data.department || null,
       status: "invited",
       invited_by: context.userId,
-    });
+      invited_at: invitedAt,
+      invite_expires_at: inviteExpiry(invitedAt),
+      initial_workspace_id: data.initialWorkspaceId ?? null,
+    };
+    let { error: insErr } = await db.from("platform_staff").insert(staffRow as never);
+    if (insErr && /invite_expires_at|initial_workspace_id|schema cache/i.test(insErr.message)) {
+      const retry = await db.from("platform_staff").insert({
+        id: staffRow.id,
+        email: staffRow.email,
+        full_name: staffRow.full_name,
+        department: staffRow.department,
+        status: staffRow.status,
+        invited_by: staffRow.invited_by,
+        invited_at: staffRow.invited_at,
+      });
+      insErr = retry.error;
+    }
     if (insErr) {
       // Do not leave a dangling invited auth user behind.
       await db.auth.admin.deleteUser(staffId);
@@ -194,6 +239,7 @@ export const invitePlatformStaff = createServerFn({ method: "POST" })
       email: data.email,
       roles: data.roles,
       department: data.department ?? null,
+      initialWorkspaceId: data.initialWorkspaceId ?? null,
     });
     return { id: staffId };
   });
@@ -236,6 +282,14 @@ export const resendPlatformStaffInvite = createServerFn({ method: "POST" })
         throw new Error(rErr.message);
       }
     }
+    const { error: expiryErr } = await db
+      .from("platform_staff")
+      .update({
+        invite_expires_at: inviteExpiry(timeAuthority.now().at),
+        updated_at: timeAuthority.now().at,
+      } as never)
+      .eq("id", staff.id);
+    void expiryErr;
     await audit(context, "resend_invite", staff.id, "succeeded", { email: staff.email });
     return { ok: true };
   });
@@ -302,7 +356,11 @@ export const setPlatformStaffRoles = createServerFn({ method: "POST" })
       .eq("staff_id", staff.id);
     const before = new Set((current ?? []).map((r) => r.role_code));
     const after = new Set<string>(data.roles);
-    if ([...before, ...after].some((role) => (PRIVILEGED_PLATFORM_ROLES as ReadonlySet<string>).has(role))) {
+    if (
+      [...before, ...after].some((role) =>
+        (PRIVILEGED_PLATFORM_ROLES as ReadonlySet<string>).has(role),
+      )
+    ) {
       await assertSuper(context);
     }
     const toAdd = [...after].filter((r) => !before.has(r));

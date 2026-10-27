@@ -90,7 +90,7 @@ export function searchConsole(input: {
       id: runtime.id,
       title: runtime.name,
       description: runtime.description,
-      href: `/console/runtimes/${runtime.id === "runtime:scholar" ? "scholar" : runtime.id}`,
+      href: runtime.helpHref,
     });
     if (hits.length >= limit) return hits;
   }

@@ -10,9 +10,12 @@ import {
 import {
   workspacesForViewer,
   workspaceById,
+  workspaceFromAuthorized,
   workspaceIdFromPath,
 } from "@/lib/internal-console/workspaces";
+import { isUniqueViolation } from "@/lib/internal-console/store";
 import { searchConsole } from "@/lib/internal-console/search";
+import { isMissingRelation, slugifyWorkspaceName } from "@/lib/internal-console/store";
 import { mapProcessHealth, overallFromCards } from "@/lib/internal-console/status";
 import {
   REGISTERED_RUNTIMES,
@@ -105,6 +108,9 @@ describe("internal console V1 contract", () => {
   it("resolves the active workspace from the console path", () => {
     expect(workspaceIdFromPath("/console/workspaces/me")).toBe("me");
     expect(workspaceIdFromPath("/console/workspaces/role:engineering")).toBe("role:engineering");
+    expect(workspaceIdFromPath("/console/workspaces/8f14e45f-ea9d-4c2b-9b3a-1c2d3e4f5a67")).toBe(
+      "8f14e45f-ea9d-4c2b-9b3a-1c2d3e4f5a67",
+    );
     expect(workspaceIdFromPath("/console/workspaces/secret")).toBeNull();
     expect(workspaceIdFromPath("/console")).toBeNull();
   });
@@ -122,6 +128,36 @@ describe("internal console V1 contract", () => {
       help: [],
     });
     expect(hits.some((hit) => hit.kind === "staff")).toBe(false);
+  });
+
+  it("slugifies shared workspace names without inventing operational data", () => {
+    expect(slugifyWorkspaceName("Engineering Workspace")).toBe("engineering-workspace");
+    expect(isMissingRelation({ code: "PGRST205", message: "could not find the table" })).toBe(true);
+    expect(isMissingRelation({ code: "42501", message: "permission denied" })).toBe(false);
+    expect(isUniqueViolation({ code: "23505" })).toBe(true);
+    expect(isUniqueViolation({ code: "42501" })).toBe(false);
+  });
+
+  it("resolves stored workspace records by uuid without falling back to role aliases", () => {
+    const stored = [
+      {
+        ...workspacesForViewer({
+          displayName: "Ada",
+          isSuperAdmin: false,
+          roles: ["engineering"],
+        })[0],
+        id: "8f14e45f-ea9d-4c2b-9b3a-1c2d3e4f5a67",
+        recordId: "8f14e45f-ea9d-4c2b-9b3a-1c2d3e4f5a67",
+        source: "database" as const,
+      },
+    ];
+    expect(
+      workspaceFromAuthorized("8f14e45f-ea9d-4c2b-9b3a-1c2d3e4f5a67", stored, {
+        displayName: "Ada",
+        isSuperAdmin: false,
+        roles: ["engineering"],
+      })?.recordId,
+    ).toBe("8f14e45f-ea9d-4c2b-9b3a-1c2d3e4f5a67");
   });
 
   it("never treats a missing health signal as operational", () => {
@@ -186,5 +222,35 @@ describe("console pages do not restore deleted prototypes", () => {
     const auth = readFileSync("frontend/src/routes/auth.tsx", "utf8");
     expect(auth).toContain("authPageExperience");
     expect(auth).toContain("app-entry.css");
+  });
+});
+
+describe("internal console store migration", () => {
+  const sql = readFileSync(
+    "database/supabase/migrations/20261027001000_sherivs_030_internal_console.sql",
+    "utf8",
+  );
+
+  it("revokes client writes and forces RLS on console store tables", () => {
+    for (const table of [
+      "platform_workspace",
+      "platform_workspace_member",
+      "platform_runtime",
+      "platform_recent_access",
+    ]) {
+      expect(sql).toContain(`ALTER TABLE public.${table} ENABLE ROW LEVEL SECURITY`);
+      expect(sql).toContain(`ALTER TABLE public.${table} FORCE ROW LEVEL SECURITY`);
+    }
+    expect(sql).toMatch(
+      /REVOKE ALL ON TABLE public\.platform_workspace[\s\S]*FROM PUBLIC, anon, authenticated/,
+    );
+    expect(sql).not.toMatch(/GRANT (INSERT|UPDATE|DELETE|ALL)[^;]*TO authenticated/);
+    expect(sql).toMatch(/GRANT ALL ON TABLE public\.platform_workspace[\s\S]*TO service_role/);
+    expect(sql).not.toContain("FROM public.platform_workspace_member self");
+    expect(sql).toContain("invite_expires_at");
+    expect(sql).toContain("ensure_platform_personal_workspace");
+    expect(sql).toMatch(
+      /GRANT EXECUTE ON FUNCTION public\.ensure_platform_personal_workspace\(uuid\) TO service_role/,
+    );
   });
 });

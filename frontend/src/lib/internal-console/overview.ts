@@ -1,6 +1,8 @@
 import type { ConsoleHealthState, ConsoleSeverity } from "./status";
 import type { ConsolePresentationRole } from "./roles";
 import type { InternalWorkspace } from "./workspaces";
+import type { ConsoleRuntimeContract } from "./runtime-contract";
+import type { RecentResource } from "./recent";
 
 export interface ConsoleHealthCard {
   key: string;
@@ -54,6 +56,7 @@ export interface ConsoleStaffRow {
   status: string;
   invitedAt: string | null;
   activatedAt: string | null;
+  inviteExpiresAt: string | null;
   roles: string[];
 }
 
@@ -85,9 +88,13 @@ export interface ConsoleOverview {
   attention: ConsoleAttentionItem[];
   activity: ConsoleActivityItem[];
   workspaces: InternalWorkspace[];
+  workspaceStore: "database" | "derived-fallback";
+  runtimes: ConsoleRuntimeContract[];
+  recent: RecentResource[];
   staff: ConsoleStaffRow[];
   staffAvailable: boolean;
   pendingInvitations: number | null;
+  expiredInvitations: number | null;
   activeStaff: number | null;
   usageDefinition: string;
 }

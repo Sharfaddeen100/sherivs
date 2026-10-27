@@ -13,6 +13,16 @@ import { CONSOLE_PATHS } from "./paths";
 import { presentationRoleFor, presentationRoleLabel, viewerCapabilities } from "./roles";
 import { overallFromCards, mapProcessHealth, type ConsoleHealthState } from "./status";
 import { workspacesForViewer } from "./workspaces";
+import {
+  ensurePersonalWorkspace,
+  ensureRegisteredRuntimes,
+  loadAuthorizedWorkspaces,
+  loadRecentAccess,
+  loadRegisteredRuntimes,
+} from "./workspace.functions";
+import { store } from "./store";
+import { REGISTERED_RUNTIMES } from "./runtime-contract";
+import { allowedHrefsFrom } from "./recent";
 import type {
   ConsoleActivityItem,
   ConsoleAttentionItem,
@@ -69,6 +79,10 @@ function describeAction(action: string): string {
     "platform_support.grant": "Time-limited support access was granted",
     "platform_support.revoke": "Support access was revoked",
     "platform_access_review.view": "An access review was opened",
+    "platform_workspace.create": "A shared workspace was created",
+    "platform_workspace.member.add": "A workspace member was added",
+    "platform_workspace.member.remove": "A workspace member was removed",
+    "platform_workspace.archive": "A shared workspace was archived",
   };
   return map[action] ?? action.replace(/[._]/g, " ");
 }
@@ -250,19 +264,47 @@ export const getConsoleOverview = createServerFn({ method: "GET" })
     const canAudit = capabilities.has("platform.audit.read");
     let staff: ConsoleStaffRow[] = [];
     let pendingInvitations: number | null = null;
+    let expiredInvitations: number | null = null;
     let activeStaff: number | null = null;
 
     if (canStaff) {
       const db = await admin();
-      const { data, error } = await db
+      let data: unknown = null;
+      let error: { message: string; code?: string } | null = null;
+      const withExpiry = await store(db)
         .from("platform_staff")
         .select(
-          "id, email, full_name, department, status, invited_at, activated_at, platform_staff_roles(role_code)",
+          "id, email, full_name, department, status, invited_at, activated_at, invite_expires_at, platform_staff_roles(role_code)",
         )
         .order("invited_at", { ascending: false })
         .limit(500);
+      data = withExpiry.data;
+      error = withExpiry.error;
+      if (error) {
+        const retry = await db
+          .from("platform_staff")
+          .select(
+            "id, email, full_name, department, status, invited_at, activated_at, platform_staff_roles(role_code)",
+          )
+          .order("invited_at", { ascending: false })
+          .limit(500);
+        data = retry.data;
+        error = retry.error;
+      }
       if (!error) {
-        staff = (data ?? []).map((row) => ({
+        staff = (
+          (data ?? []) as Array<{
+            id: string;
+            email: string;
+            full_name: string;
+            department: string | null;
+            status: string;
+            invited_at: string | null;
+            activated_at: string | null;
+            invite_expires_at?: string | null;
+            platform_staff_roles: Array<{ role_code: string }> | null;
+          }>
+        ).map((row) => ({
           id: row.id,
           email: row.email,
           fullName: row.full_name,
@@ -270,11 +312,14 @@ export const getConsoleOverview = createServerFn({ method: "GET" })
           status: row.status,
           invitedAt: row.invited_at,
           activatedAt: row.activated_at,
-          roles: ((row.platform_staff_roles ?? []) as Array<{ role_code: string }>).map(
-            (x) => x.role_code,
-          ),
+          inviteExpiresAt: row.invite_expires_at ?? null,
+          roles: (row.platform_staff_roles ?? []).map((x) => x.role_code),
         }));
         pendingInvitations = staff.filter((row) => row.status === "invited").length;
+        expiredInvitations = staff.filter(
+          (row) =>
+            row.status === "invited" && row.inviteExpiresAt !== null && row.inviteExpiresAt < now,
+        ).length;
         activeStaff = staff.filter((row) => row.status === "active").length;
       }
     }
@@ -286,7 +331,7 @@ export const getConsoleOverview = createServerFn({ method: "GET" })
         .from("audit_logs")
         .select("id, action, user_id, record_id, created_at, new_value")
         .or(
-          "action.like.platform_staff.%,action.like.platform_support.%,action.like.platform_access_review.%",
+          "action.like.platform_staff.%,action.like.platform_support.%,action.like.platform_access_review.%,action.like.platform_workspace.%",
         )
         .order("created_at", { ascending: false })
         .limit(20);
@@ -364,6 +409,19 @@ export const getConsoleOverview = createServerFn({ method: "GET" })
         href: CONSOLE_PATHS.teamInvitations,
       });
     }
+    if (typeof expiredInvitations === "number" && expiredInvitations > 0) {
+      attention.push({
+        id: "expired-invites",
+        severity: "medium",
+        title: `${expiredInvitations} staff invitation${expiredInvitations === 1 ? "" : "s"} expired`,
+        description: "Expired invitations cannot be accepted. Resend or revoke them.",
+        detectedAt: now,
+        resource: "Team & Access",
+        owner: null,
+        nextAction: "Review invitations",
+        href: CONSOLE_PATHS.teamInvitations,
+      });
+    }
 
     if (canStaff) {
       metrics.push({
@@ -392,7 +450,27 @@ export const getConsoleOverview = createServerFn({ method: "GET" })
     }
 
     const presentationRole = presentationRoleFor({ isSuperAdmin, roles });
-    const workspaces = workspacesForViewer({ displayName: name, isSuperAdmin, roles });
+    const db = await admin();
+    await ensurePersonalWorkspace(db, context.userId);
+    await ensureRegisteredRuntimes(db);
+    const canManageWorkspaces = isSuperAdmin || capabilities.has("platform.staff.manage");
+    const storedWorkspaces = await loadAuthorizedWorkspaces(
+      db,
+      context.userId,
+      name,
+      canManageWorkspaces,
+    );
+    const workspaces =
+      storedWorkspaces ?? workspacesForViewer({ displayName: name, isSuperAdmin, roles });
+    const runtimes = (await loadRegisteredRuntimes(db)) ?? [...REGISTERED_RUNTIMES];
+    const allowedRecent = allowedHrefsFrom([
+      ...workspaces,
+      { href: CONSOLE_PATHS.home },
+      { href: CONSOLE_PATHS.scholar },
+      { href: CONSOLE_PATHS.team },
+      { href: CONSOLE_PATHS.help },
+    ]);
+    const recent = (await loadRecentAccess(db, context.userId, allowedRecent)) ?? [];
 
     return {
       viewer: {
@@ -423,9 +501,13 @@ export const getConsoleOverview = createServerFn({ method: "GET" })
       attention,
       activity,
       workspaces,
+      workspaceStore: storedWorkspaces ? "database" : "derived-fallback",
+      runtimes,
+      recent,
       staff,
       staffAvailable: canStaff,
       pendingInvitations,
+      expiredInvitations,
       activeStaff,
       usageDefinition:
         "Active internal staff means platform_staff rows with status active. This number never includes school administrators, teachers, students, or parents.",

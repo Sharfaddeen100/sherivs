@@ -29,7 +29,7 @@ export const SCHOLAR_RUNTIME_CONTRACT: ConsoleRuntimeContract = {
   entryOrigin: SCHOLAR_APP_ORIGIN,
   entryPath: SCHOLAR_ENTRY_PATH,
   entryUrl: SCHOLAR_ENTRY_URL,
-  helpHref: "/console/help",
+  helpHref: "/console/runtimes/scholar",
   status: "operational_product",
   permission: null,
 };

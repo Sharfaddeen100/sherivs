@@ -231,6 +231,12 @@ export const CONSOLE_QUICK_ACTIONS: readonly ConsoleQuickAction[] = [
     capability: "platform.audit.read",
   },
   {
+    key: "create-workspace",
+    label: "Create Workspace",
+    href: CONSOLE_PATHS.workspaces,
+    capability: "platform.staff.manage",
+  },
+  {
     key: "workspace",
     label: "Open My Workspace",
     href: CONSOLE_PATHS.myWorkspace,

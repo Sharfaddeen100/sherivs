@@ -23,7 +23,8 @@ import { CONSOLE_PATHS } from "@/lib/internal-console/paths";
 import { searchConsole } from "@/lib/internal-console/search";
 import { CONSOLE_HELP_ARTICLES } from "@/lib/internal-console/help-catalog";
 import { REGISTERED_RUNTIMES } from "@/lib/internal-console/runtime-contract";
-import { rememberResource } from "@/lib/internal-console/recent";
+import { rememberResource, type RecentResource } from "@/lib/internal-console/recent";
+import { rememberConsoleResource } from "@/lib/internal-console/workspace.functions";
 import { workspaceIdFromPath } from "@/lib/internal-console/workspaces";
 import { ConsoleNotAuthorised, ConsoleElsewhere } from "./not-authorised";
 import "./console.css";
@@ -63,6 +64,11 @@ function navActive(href: string, path: string): boolean {
   return path === href || path.startsWith(`${href}/`);
 }
 
+function remember(entry: RecentResource) {
+  rememberResource(entry);
+  void rememberConsoleResource({ data: entry }).catch(() => undefined);
+}
+
 function NavGroup({
   label,
   items,
@@ -86,7 +92,7 @@ function NavGroup({
               className={navActive(item.href, path) ? "is-active" : undefined}
               title={item.label}
               onClick={() =>
-                rememberResource({
+                remember({
                   id: item.key,
                   title: item.label,
                   href: item.href,
@@ -149,7 +155,7 @@ function ConsoleChrome({ children }: { children: ReactNode }) {
       status: row.status,
     })),
     workspaces: overview?.workspaces ?? [],
-    runtimes: REGISTERED_RUNTIMES,
+    runtimes: overview?.runtimes?.length ? overview.runtimes : REGISTERED_RUNTIMES,
     pages: [...mainNav, ...accountNav, ...platformNav, ...engineeringNav],
     help: CONSOLE_HELP_ARTICLES,
   });
@@ -167,7 +173,12 @@ function ConsoleChrome({ children }: { children: ReactNode }) {
   const activeWorkspace =
     workspaces.find((workspace) => workspace.id === activeWorkspaceId) ?? workspaces[0];
   const workspaceName = activeWorkspace?.name ?? "My Workspace";
-  const runtimeName = "Sherivs Scholar";
+  const runtimes = overview?.runtimes?.length ? overview.runtimes : REGISTERED_RUNTIMES;
+  const activeRuntime =
+    runtimes.find(
+      (runtime) => path === runtime.helpHref || path.startsWith(`${runtime.helpHref}/`),
+    ) ?? runtimes[0];
+  const runtimeName = activeRuntime?.name ?? "Sherivs Scholar";
 
   return (
     <div
@@ -258,14 +269,14 @@ function ConsoleChrome({ children }: { children: ReactNode }) {
                   className="sherivs-console-search-panel sherivs-console-switcher-panel"
                   role="listbox"
                 >
-                  {REGISTERED_RUNTIMES.map((runtime) => (
+                  {runtimes.map((runtime) => (
                     <Link
                       key={runtime.id}
-                      to={CONSOLE_PATHS.scholar as never}
+                      to={runtime.helpHref as never}
                       onClick={() => setOpenRuntime(false)}
                     >
                       <strong>{runtime.name}</strong>
-                      <small> · operational</small>
+                      <small> · {runtime.status.replaceAll("_", " ")}</small>
                     </Link>
                   ))}
                 </div>
@@ -300,7 +311,7 @@ function ConsoleChrome({ children }: { children: ReactNode }) {
                       to={hit.href as never}
                       onClick={() => {
                         setOpenSearch(false);
-                        rememberResource({
+                        remember({
                           id: hit.id,
                           title: hit.title,
                           href: hit.href,

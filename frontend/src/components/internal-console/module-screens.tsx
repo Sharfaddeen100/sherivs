@@ -7,14 +7,20 @@ import {
   setPlatformStaffStatus,
 } from "@/lib/platform-staff/staff.functions";
 import {
+  addWorkspaceMember,
+  archiveSharedWorkspace,
+  createSharedWorkspace,
+  removeWorkspaceMember,
+} from "@/lib/internal-console/workspace.functions";
+import {
   PLATFORM_ROLE_CODES,
   PLATFORM_ROLE_LABELS,
   PRIVILEGED_PLATFORM_ROLES,
 } from "@/lib/platform-staff/catalogue";
 import { getAccessReview } from "@/lib/platform-staff/support-access.functions";
 import { listConsoleAudit } from "@/lib/internal-console/activity.functions";
-import { CONSOLE_PATHS, SCHOLAR_ENTRY_URL } from "@/lib/internal-console/paths";
-import { workspaceById } from "@/lib/internal-console/workspaces";
+import { SCHOLAR_ENTRY_URL } from "@/lib/internal-console/paths";
+import { workspaceFromAuthorized } from "@/lib/internal-console/workspaces";
 import {
   REGISTERED_RUNTIMES,
   SCHOLAR_RUNTIME_CONTRACT,
@@ -237,6 +243,7 @@ export function ConsoleInvitations() {
   const [fullName, setFullName] = useState("");
   const [department, setDepartment] = useState("");
   const [roles, setRoles] = useState<string[]>(["operations"]);
+  const [initialWorkspaceId, setInitialWorkspaceId] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [info, setInfo] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -255,6 +262,7 @@ export function ConsoleInvitations() {
           fullName,
           department: department || undefined,
           roles: roles as (typeof PLATFORM_ROLE_CODES)[number][],
+          initialWorkspaceId: initialWorkspaceId || undefined,
         },
       });
       setEmail("");
@@ -330,6 +338,24 @@ export function ConsoleInvitations() {
               ))}
             </div>
           </div>
+          <label>
+            Initial shared workspace
+            <select
+              value={initialWorkspaceId}
+              onChange={(event) => setInitialWorkspaceId(event.target.value)}
+            >
+              <option value="">None — personal workspace only</option>
+              {(overview?.workspaces ?? [])
+                .filter(
+                  (workspace) => workspace.type === "shared" && workspace.source === "database",
+                )
+                .map((workspace) => (
+                  <option key={workspace.recordId} value={workspace.recordId}>
+                    {workspace.name}
+                  </option>
+                ))}
+            </select>
+          </label>
           {error ? <p className="sherivs-console-error">{error}</p> : null}
           {info ? <p>{info}</p> : null}
           <button
@@ -355,6 +381,9 @@ export function ConsoleInvitations() {
               <small>
                 {row.email} · invited{" "}
                 {row.invitedAt ? new Date(row.invitedAt).toLocaleString() : "at unknown time"}
+                {row.inviteExpiresAt
+                  ? ` · expires ${new Date(row.inviteExpiresAt).toLocaleString()}`
+                  : ""}
               </small>
             </div>
           ))}
@@ -431,15 +460,64 @@ export function ConsoleAccessReview() {
 }
 
 export function ConsoleWorkspaces() {
-  const { overview } = useConsole();
+  const { overview, reload } = useConsole();
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
   if (!overview) return <section className="sherivs-console-card">Loading workspaces…</section>;
+  const canCreate =
+    overview.viewer.isSuperAdmin || overview.viewer.capabilities.includes("platform.staff.manage");
+
+  async function create(event: FormEvent) {
+    event.preventDefault();
+    setBusy(true);
+    setError(null);
+    try {
+      await createSharedWorkspace({ data: { name, description: description || undefined } });
+      setName("");
+      setDescription("");
+      await reload();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Workspace could not be created");
+    } finally {
+      setBusy(false);
+    }
+  }
+
   return (
     <section className="sherivs-console-card">
       <h1>Workspaces</h1>
       <p>
-        V1 shared workspaces are the staff role teams. Arbitrary named workspaces are postponed so
-        this directory stays backed by real membership data.
+        {overview.workspaceStore === "database"
+          ? "Personal workspaces are provisioned for eligible staff. Shared workspaces exist only for authorized members."
+          : "The workspace store is not configured in this environment, so this directory uses role membership as a fallback."}
       </p>
+      {canCreate && overview.workspaceStore === "database" ? (
+        <form
+          className="sherivs-console-form"
+          onSubmit={(event) => void create(event)}
+          style={{ marginTop: "1rem" }}
+        >
+          <label>
+            Shared workspace name
+            <input
+              value={name}
+              onChange={(event) => setName(event.target.value)}
+              required
+              minLength={2}
+            />
+          </label>
+          <label>
+            Description
+            <input value={description} onChange={(event) => setDescription(event.target.value)} />
+          </label>
+          {error ? <p className="sherivs-console-error">{error}</p> : null}
+          <button type="submit" className="sherivs-console-btn" disabled={busy}>
+            {busy ? "Creating…" : "Create workspace"}
+          </button>
+        </form>
+      ) : null}
       <div className="sherivs-console-list">
         {overview.workspaces.map((workspace) => (
           <Link key={workspace.id} to={workspace.href as never} className="sherivs-console-row">
@@ -457,9 +535,11 @@ export function ConsoleWorkspaces() {
 
 export function ConsoleWorkspaceDetail() {
   const params = useParams({ strict: false }) as { workspaceId?: string };
-  const { overview } = useConsole();
+  const { overview, reload } = useConsole();
+  const [memberId, setMemberId] = useState("");
+  const [error, setError] = useState<string | null>(null);
   if (!overview) return <section className="sherivs-console-card">Loading workspace…</section>;
-  const workspace = workspaceById(params.workspaceId ?? "me", {
+  const workspace = workspaceFromAuthorized(params.workspaceId ?? "me", overview.workspaces, {
     displayName: overview.viewer.name,
     isSuperAdmin: overview.viewer.isSuperAdmin,
     roles: overview.viewer.roles,
@@ -472,26 +552,72 @@ export function ConsoleWorkspaceDetail() {
       </section>
     );
   }
+  const canManage =
+    overview.viewer.isSuperAdmin || overview.viewer.capabilities.includes("platform.staff.manage");
   const members =
     workspace.type === "personal"
-      ? [{ name: overview.viewer.name, access: "owner" }]
-      : overview.staff
-          .filter((row) => row.roles.some((role) => workspace.id === `role:${role}`))
-          .map((row) => ({ name: row.fullName, access: "member" }));
+      ? [{ id: overview.viewer.id, name: overview.viewer.name, access: "owner" as const }]
+      : workspace.source === "database"
+        ? workspace.members.map((member) => ({
+            id: member.userId,
+            name:
+              overview.staff.find((row) => row.id === member.userId)?.fullName ??
+              (member.userId === overview.viewer.id ? overview.viewer.name : "Staff member"),
+            access: member.access,
+          }))
+        : overview.staff
+            .filter((row) => row.roles.some((role) => workspace.id === `role:${role}`))
+            .map((row) => ({ id: row.id, name: row.fullName, access: "member" as const }));
+
+  async function addMember(event: FormEvent) {
+    event.preventDefault();
+    if (!workspace || workspace.source !== "database") return;
+    setError(null);
+    try {
+      await addWorkspaceMember({ data: { workspaceId: workspace.recordId, userId: memberId } });
+      setMemberId("");
+      await reload();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Member could not be added");
+    }
+  }
+
   return (
     <section className="sherivs-console-card">
       <h1>{workspace.name}</h1>
       <p>{workspace.description}</p>
       <p>
-        Type: {workspace.type}. Access: {workspace.access}. Team: {workspace.team}.
+        Type: {workspace.type}. Access: {workspace.access}. Source: {workspace.source}.
       </p>
       <h2 style={{ marginTop: "1rem" }}>Members</h2>
       {members.length ? (
         <div className="sherivs-console-list">
           {members.map((member) => (
-            <div key={member.name} className="sherivs-console-row">
+            <div key={member.id} className="sherivs-console-row">
               <strong>{member.name}</strong>
               <small>{member.access}</small>
+              {canManage &&
+              workspace.type === "shared" &&
+              workspace.source === "database" &&
+              member.access === "member" ? (
+                <button
+                  type="button"
+                  className="sherivs-console-btn secondary"
+                  onClick={() =>
+                    void removeWorkspaceMember({
+                      data: { workspaceId: workspace.recordId, userId: member.id },
+                    })
+                      .then(() => reload())
+                      .catch((err) =>
+                        setError(
+                          err instanceof Error ? err.message : "Member could not be removed",
+                        ),
+                      )
+                  }
+                >
+                  Remove
+                </button>
+              ) : null}
             </div>
           ))}
         </div>
@@ -500,11 +626,56 @@ export function ConsoleWorkspaceDetail() {
           Member names appear when you are authorized to read the staff directory.
         </p>
       )}
+      {canManage && workspace.type === "shared" && workspace.source === "database" ? (
+        <>
+          <form
+            className="sherivs-console-form"
+            onSubmit={(event) => void addMember(event)}
+            style={{ marginTop: "1rem" }}
+          >
+            <label>
+              Add staff member
+              <select
+                value={memberId}
+                onChange={(event) => setMemberId(event.target.value)}
+                required
+              >
+                <option value="">Select staff</option>
+                {overview.staff
+                  .filter((row) => row.status === "active")
+                  .map((row) => (
+                    <option key={row.id} value={row.id}>
+                      {row.fullName}
+                    </option>
+                  ))}
+              </select>
+            </label>
+            {error ? <p className="sherivs-console-error">{error}</p> : null}
+            <button type="submit" className="sherivs-console-btn">
+              Add member
+            </button>
+          </form>
+          <button
+            type="button"
+            className="sherivs-console-btn secondary"
+            style={{ marginTop: "0.75rem" }}
+            onClick={() =>
+              void archiveSharedWorkspace({ data: { workspaceId: workspace.recordId } })
+                .then(() => reload())
+                .catch((err) => setError(err instanceof Error ? err.message : "Archive failed"))
+            }
+          >
+            Archive workspace
+          </button>
+        </>
+      ) : null}
     </section>
   );
 }
 
 export function ConsoleRuntimes() {
+  const { overview } = useConsole();
+  const runtimes = overview?.runtimes?.length ? overview.runtimes : REGISTERED_RUNTIMES;
   return (
     <section className="sherivs-console-card">
       <h1>Runtime directory</h1>
@@ -513,12 +684,8 @@ export function ConsoleRuntimes() {
         operational.
       </p>
       <div className="sherivs-console-list">
-        {REGISTERED_RUNTIMES.map((runtime) => (
-          <Link
-            key={runtime.id}
-            to={CONSOLE_PATHS.scholar as never}
-            className="sherivs-console-row"
-          >
+        {runtimes.map((runtime) => (
+          <Link key={runtime.id} to={runtime.helpHref as never} className="sherivs-console-row">
             <strong>{runtime.name}</strong>
             <small>
               {runtime.id} · {runtime.status.replace("_", " ")}

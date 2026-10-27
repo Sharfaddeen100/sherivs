@@ -37,7 +37,7 @@ export function ConsoleHomeScreen() {
     { href: CONSOLE_PATHS.team },
     { href: CONSOLE_PATHS.help },
   ]);
-  const recent = readRecentResources(allowed);
+  const recent = overview.recent.length ? overview.recent : readRecentResources(allowed);
 
   return (
     <>

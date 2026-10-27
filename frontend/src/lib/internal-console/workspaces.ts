@@ -1,25 +1,33 @@
 /**
  * V1 internal workspaces.
  *
- * Personal workspace: implicit working environment for each staff member.
- * Shared workspaces: one team workspace per platform role the viewer holds
- * (Engineering, Operations, Support, …). Arbitrary named workspaces are
- * postponed — a decorative create-workspace form would have no backend.
+ * Canonical records live in `platform_workspace` when the Internal Console
+ * store is applied. Derived role workspaces remain a fallback when that store
+ * is not configured, and never authorize access on their own.
  */
 import { PLATFORM_ROLE_LABELS, isPlatformRoleCode } from "@/lib/platform-staff/catalogue";
 import { CONSOLE_PATHS } from "./paths";
 
+export const WORKSPACE_UUID_RE =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
 export type InternalWorkspaceType = "personal" | "shared";
 export type InternalWorkspaceAccess = "owner" | "member";
+export type InternalWorkspaceSource = "database" | "derived";
 
 export interface InternalWorkspace {
   id: string;
+  recordId: string;
   name: string;
   description: string;
   type: InternalWorkspaceType;
   access: InternalWorkspaceAccess;
   team: string;
   href: string;
+  status: "active" | "archived";
+  source: InternalWorkspaceSource;
+  slug: string;
+  members: readonly { userId: string; access: InternalWorkspaceAccess }[];
 }
 
 export const PERSONAL_WORKSPACE_ID = "me";
@@ -27,12 +35,17 @@ export const PERSONAL_WORKSPACE_ID = "me";
 export function personalWorkspace(displayName: string): InternalWorkspace {
   return {
     id: PERSONAL_WORKSPACE_ID,
+    recordId: PERSONAL_WORKSPACE_ID,
     name: "My Workspace",
     description: `${displayName}'s personal working environment. Private by default.`,
     type: "personal",
     access: "owner",
     team: displayName,
     href: CONSOLE_PATHS.myWorkspace,
+    status: "active",
+    source: "derived",
+    slug: "me",
+    members: [],
   };
 }
 
@@ -41,12 +54,17 @@ export function sharedWorkspaceForRole(role: string): InternalWorkspace | null {
   const name = PLATFORM_ROLE_LABELS[role];
   return {
     id: `role:${role}`,
+    recordId: `role:${role}`,
     name: `${name} Workspace`,
     description: `Shared workspace for the ${name} team. Membership follows the assigned platform role.`,
     type: "shared",
     access: "member",
     team: name,
     href: CONSOLE_PATHS.workspace(`role:${role}`),
+    status: "active",
+    source: "derived",
+    slug: role,
+    members: [],
   };
 }
 
@@ -73,8 +91,9 @@ export function workspacesForViewer(input: {
 
 export function parseWorkspaceId(
   raw: string,
-): { kind: "personal" } | { kind: "role"; role: string } | null {
+): { kind: "personal" } | { kind: "role"; role: string } | { kind: "record"; id: string } | null {
   if (raw === PERSONAL_WORKSPACE_ID) return { kind: "personal" };
+  if (WORKSPACE_UUID_RE.test(raw)) return { kind: "record", id: raw };
   if (raw.startsWith("role:")) {
     const role = raw.slice("role:".length);
     if (!isPlatformRoleCode(role)) return null;
@@ -90,10 +109,22 @@ export function workspaceById(
   const parsed = parseWorkspaceId(id);
   if (!parsed) return null;
   if (parsed.kind === "personal") return personalWorkspace(viewer.displayName);
+  if (parsed.kind === "record") return null;
   const ws = sharedWorkspaceForRole(parsed.role);
   if (!ws) return null;
   if (viewer.isSuperAdmin || viewer.roles.includes(parsed.role)) return ws;
   return null;
+}
+
+export function workspaceFromAuthorized(
+  id: string,
+  workspaces: readonly InternalWorkspace[],
+  viewer: { displayName: string; isSuperAdmin: boolean; roles: readonly string[] },
+): InternalWorkspace | null {
+  const needle = id === PERSONAL_WORKSPACE_ID ? "me" : id;
+  const found = workspaces.find((row) => row.id === needle || row.recordId === id);
+  if (found) return found;
+  return workspaceById(id, viewer);
 }
 
 /** Active workspace from the console path, if the path names one. */
