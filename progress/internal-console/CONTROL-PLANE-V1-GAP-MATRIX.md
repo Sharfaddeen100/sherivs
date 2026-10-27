@@ -53,5 +53,5 @@ General task management, incident management, queryable logs, dashboard builder,
 
 - **Designed / implemented / unit tested:** this change
 - **Integration / RLS on a live database:** blocked until SHERIVS-031 is applied through the authorized release process
-- **Browser:** local visual fixture only
+- **Browser:** local visual fixture walkthrough on 127.0.0.1:4173 — questionnaire, activation, homepage pipeline 0→1 active, metrics, desktop and mobile
 - **Production verified / deployed:** no
