@@ -39,6 +39,7 @@ import { searchConsole } from "@/lib/internal-console/search";
 import { CONSOLE_HELP_ARTICLES } from "@/lib/internal-console/help-catalog";
 import { REGISTERED_RUNTIMES } from "@/lib/internal-console/runtime-contract";
 import { rememberResource } from "@/lib/internal-console/recent";
+import { workspaceIdFromPath } from "@/lib/internal-console/workspaces";
 import { ConsoleNotAuthorised, ConsoleElsewhere } from "./not-authorised";
 import "./console.css";
 
@@ -138,6 +139,8 @@ function ConsoleChrome({ children }: { children: ReactNode }) {
   const [query, setQuery] = useState("");
   const [openSearch, setOpenSearch] = useState(false);
   const [openQuick, setOpenQuick] = useState(false);
+  const [openWorkspace, setOpenWorkspace] = useState(false);
+  const [openRuntime, setOpenRuntime] = useState(false);
   const overview = console.overview;
   const capabilities = useMemo(
     () => new Set(overview?.viewer.capabilities ?? []),
@@ -172,10 +175,16 @@ function ConsoleChrome({ children }: { children: ReactNode }) {
   useEffect(() => {
     setDrawer(false);
     setOpenQuick(false);
+    setOpenWorkspace(false);
+    setOpenRuntime(false);
   }, [path]);
 
   const display = overview?.viewer.name ?? app.authUser?.email ?? "Staff";
-  const workspaceName = overview?.workspaces[0]?.name ?? "My Workspace";
+  const workspaces = overview?.workspaces ?? [];
+  const activeWorkspaceId = workspaceIdFromPath(path) ?? workspaces[0]?.id ?? "me";
+  const activeWorkspace =
+    workspaces.find((workspace) => workspace.id === activeWorkspaceId) ?? workspaces[0];
+  const workspaceName = activeWorkspace?.name ?? "My Workspace";
   const runtimeName = "Sherivs Scholar";
 
   return (
@@ -206,12 +215,74 @@ function ConsoleChrome({ children }: { children: ReactNode }) {
             </span>
           </Link>
           <div className="sherivs-console-switchers">
-            <span className="sherivs-console-chip" title="Workspace">
-              Workspace <strong>{workspaceName}</strong>
-            </span>
-            <Link to={CONSOLE_PATHS.scholar as never} className="sherivs-console-chip">
-              Runtime <strong>{runtimeName}</strong>
-            </Link>
+            <div className="sherivs-console-switcher">
+              <button
+                type="button"
+                className="sherivs-console-chip"
+                aria-haspopup="listbox"
+                aria-expanded={openWorkspace}
+                aria-label="Switch workspace"
+                onClick={() => {
+                  setOpenWorkspace((open) => !open);
+                  setOpenRuntime(false);
+                  setOpenQuick(false);
+                }}
+              >
+                Workspace <strong>{workspaceName}</strong>
+              </button>
+              {openWorkspace ? (
+                <div className="sherivs-console-search-panel sherivs-console-switcher-panel" role="listbox">
+                  {workspaces.map((workspace) => (
+                    <Link
+                      key={workspace.id}
+                      to={workspace.href as never}
+                      onClick={() => setOpenWorkspace(false)}
+                    >
+                      <strong>{workspace.name}</strong>
+                      <small>
+                        {" "}
+                        · {workspace.type} · {workspace.access}
+                      </small>
+                    </Link>
+                  ))}
+                  {workspaces.length === 0 ? (
+                    <p className="sherivs-console-empty" style={{ padding: "0.7rem" }}>
+                      No authorized workspaces.
+                    </p>
+                  ) : null}
+                </div>
+              ) : null}
+            </div>
+            <div className="sherivs-console-switcher">
+              <button
+                type="button"
+                className="sherivs-console-chip"
+                aria-haspopup="listbox"
+                aria-expanded={openRuntime}
+                aria-label="Switch runtime"
+                onClick={() => {
+                  setOpenRuntime((open) => !open);
+                  setOpenWorkspace(false);
+                  setOpenQuick(false);
+                }}
+              >
+                Runtime <strong>{runtimeName}</strong>
+              </button>
+              {openRuntime ? (
+                <div className="sherivs-console-search-panel sherivs-console-switcher-panel" role="listbox">
+                  {REGISTERED_RUNTIMES.map((runtime) => (
+                    <Link
+                      key={runtime.id}
+                      to={CONSOLE_PATHS.scholar as never}
+                      onClick={() => setOpenRuntime(false)}
+                    >
+                      <strong>{runtime.name}</strong>
+                      <small> · operational</small>
+                    </Link>
+                  ))}
+                </div>
+              ) : null}
+            </div>
             <span className={`sherivs-console-env ${envClass(overview?.context.environment ?? "Unknown")}`}>
               {overview?.context.environment ?? "Unknown"}
             </span>

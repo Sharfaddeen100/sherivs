@@ -134,6 +134,16 @@
   flex-wrap: wrap;
 }
 
+.sherivs-console-switcher {
+  position: relative;
+}
+
+.sherivs-console-switcher-panel {
+  width: 16.5rem;
+  left: 0;
+  right: auto;
+}
+
 .sherivs-console-chip {
   appearance: none;
   border: 1px solid rgba(16, 24, 43, 0.1);
@@ -141,10 +151,13 @@
   color: var(--console-ink);
   border-radius: 999px;
   padding: 0.35rem 0.75rem;
+  font: inherit;
   font-size: 0.8rem;
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
+  cursor: pointer;
+  text-decoration: none;
 }
 
 .sherivs-console-chip strong {
@@ -601,6 +614,11 @@
 
   .sherivs-console-search-wrap {
     display: none;
+  }
+
+  .sherivs-console-switchers {
+    flex: 1;
+    min-width: 0;
   }
 
   .sherivs-console-main {

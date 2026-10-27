@@ -7,7 +7,7 @@ import {
   CONSOLE_NAV,
   viewerCapabilities,
 } from "@/lib/internal-console/roles";
-import { workspacesForViewer, workspaceById } from "@/lib/internal-console/workspaces";
+import { workspacesForViewer, workspaceById, workspaceIdFromPath } from "@/lib/internal-console/workspaces";
 import { searchConsole } from "@/lib/internal-console/search";
 import { mapProcessHealth, overallFromCards } from "@/lib/internal-console/status";
 import { REGISTERED_RUNTIMES, SCHOLAR_RUNTIME_CONTRACT } from "@/lib/internal-console/runtime-contract";
@@ -89,6 +89,13 @@ describe("internal console V1 contract", () => {
         roles: ["engineering"],
       }),
     ).toBeNull();
+  });
+
+  it("resolves the active workspace from the console path", () => {
+    expect(workspaceIdFromPath("/console/workspaces/me")).toBe("me");
+    expect(workspaceIdFromPath("/console/workspaces/role:engineering")).toBe("role:engineering");
+    expect(workspaceIdFromPath("/console/workspaces/secret")).toBeNull();
+    expect(workspaceIdFromPath("/console")).toBeNull();
   });
 
   it("keeps search permission-aware", () => {

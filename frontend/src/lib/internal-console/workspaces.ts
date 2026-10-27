@@ -93,3 +93,13 @@ export function workspaceById(
   if (viewer.isSuperAdmin || viewer.roles.includes(parsed.role)) return ws;
   return null;
 }
+
+/** Active workspace from the console path, if the path names one. */
+export function workspaceIdFromPath(pathname: string): string | null {
+  const path = pathname.replace(/\/+$/, "") || "/";
+  if (path === CONSOLE_PATHS.myWorkspace) return PERSONAL_WORKSPACE_ID;
+  const prefix = `${CONSOLE_PATHS.workspaces}/`;
+  if (!path.startsWith(prefix)) return null;
+  const id = decodeURIComponent(path.slice(prefix.length).split("/")[0] ?? "");
+  return parseWorkspaceId(id) ? id : null;
+}

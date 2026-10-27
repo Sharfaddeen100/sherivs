@@ -77,6 +77,7 @@ export function ConsoleTeamDirectory() {
                 canManage={canManage(overview.viewer.capabilities)}
                 isOwner={overview.viewer.isSuperAdmin}
                 onStatus={changeStatus}
+                onReload={reload}
               />
             ))}
           </tbody>
@@ -92,21 +93,45 @@ function StaffRow({
   canManage: manage,
   isOwner,
   onStatus,
+  onReload,
 }: {
   row: ConsoleStaffRow;
   busy: boolean;
   canManage: boolean;
   isOwner: boolean;
   onStatus: (id: string, status: "active" | "suspended" | "revoked") => void;
+  onReload: () => Promise<void>;
 }) {
-  const [roles, setRoles] = useState(row.roles.join(","));
+  const [roles, setRoles] = useState(row.roles);
+  const [savingRoles, setSavingRoles] = useState(false);
+  const [roleError, setRoleError] = useState<string | null>(null);
+  useEffect(() => {
+    setRoles(row.roles);
+  }, [row.id, row.roles]);
+  const roleOptions = PLATFORM_ROLE_CODES.filter(
+    (role) => isOwner || !PRIVILEGED_PLATFORM_ROLES.has(role),
+  );
+  const dirty = [...roles].sort().join(",") !== [...row.roles].sort().join(",");
+
   async function saveRoles() {
-    const next = roles
-      .split(",")
-      .map((value) => value.trim())
-      .filter(Boolean);
-    await setPlatformStaffRoles({ data: { staffId: row.id, roles: next as typeof PLATFORM_ROLE_CODES[number][] } });
+    if (!roles.length) {
+      setRoleError("Assign at least one role.");
+      return;
+    }
+    setSavingRoles(true);
+    setRoleError(null);
+    try {
+      await setPlatformStaffRoles({
+        data: { staffId: row.id, roles: roles as (typeof PLATFORM_ROLE_CODES)[number][] },
+      });
+      await onReload();
+    } catch (err) {
+      setRoleError(err instanceof Error ? err.message : "Role update failed");
+    } finally {
+      setSavingRoles(false);
+    }
   }
+
   return (
     <tr>
       <td>
@@ -116,12 +141,36 @@ function StaffRow({
       <td>{row.email}</td>
       <td>
         {manage ? (
-          <input
-            value={roles}
-            onChange={(event) => setRoles(event.target.value)}
-            onBlur={() => void saveRoles().catch(() => undefined)}
-            aria-label={`Roles for ${row.fullName}`}
-          />
+          <div>
+            <div className="sherivs-console-roles">
+              {roleOptions.map((role) => (
+                <label key={role}>
+                  <input
+                    type="checkbox"
+                    checked={roles.includes(role)}
+                    onChange={() =>
+                      setRoles((current) =>
+                        current.includes(role)
+                          ? current.filter((item) => item !== role)
+                          : [...current, role],
+                      )
+                    }
+                    aria-label={`${PLATFORM_ROLE_LABELS[role]} for ${row.fullName}`}
+                  />
+                  {PLATFORM_ROLE_LABELS[role]}
+                </label>
+              ))}
+            </div>
+            {roleError ? <p className="sherivs-console-error">{roleError}</p> : null}
+            <button
+              type="button"
+              className="sherivs-console-btn secondary"
+              disabled={!dirty || savingRoles || busy}
+              onClick={() => void saveRoles()}
+            >
+              {savingRoles ? "Saving…" : "Save roles"}
+            </button>
+          </div>
         ) : (
           row.roles.map((role) => PLATFORM_ROLE_LABELS[role as keyof typeof PLATFORM_ROLE_LABELS] ?? role).join(", ")
         )}
