@@ -75,7 +75,12 @@ export const CONSOLE_NAV: readonly ConsoleNavItem[] = [
     href: CONSOLE_PATHS.team,
     capability: "platform.staff.read",
     children: [
-      { key: "team-directory", label: "Team Directory", href: CONSOLE_PATHS.team, capability: "platform.staff.read" },
+      {
+        key: "team-directory",
+        label: "Team Directory",
+        href: CONSOLE_PATHS.team,
+        capability: "platform.staff.read",
+      },
       {
         key: "team-invitations",
         label: "Invitations",
@@ -96,7 +101,12 @@ export const CONSOLE_NAV: readonly ConsoleNavItem[] = [
     href: CONSOLE_PATHS.workspaces,
     capability: null,
     children: [
-      { key: "my-workspace", label: "My Workspace", href: CONSOLE_PATHS.myWorkspace, capability: null },
+      {
+        key: "my-workspace",
+        label: "My Workspace",
+        href: CONSOLE_PATHS.myWorkspace,
+        capability: null,
+      },
       {
         key: "workspace-directory",
         label: "Workspace Directory",
@@ -111,7 +121,12 @@ export const CONSOLE_NAV: readonly ConsoleNavItem[] = [
     href: CONSOLE_PATHS.runtimes,
     capability: null,
     children: [
-      { key: "runtime-directory", label: "Runtime Directory", href: CONSOLE_PATHS.runtimes, capability: null },
+      {
+        key: "runtime-directory",
+        label: "Runtime Directory",
+        href: CONSOLE_PATHS.runtimes,
+        capability: null,
+      },
       { key: "scholar", label: "Sherivs Scholar", href: CONSOLE_PATHS.scholar, capability: null },
     ],
   },
@@ -121,7 +136,12 @@ export const CONSOLE_NAV: readonly ConsoleNavItem[] = [
     href: CONSOLE_PATHS.activity,
     capability: "platform.audit.read",
     children: [
-      { key: "activity-overview", label: "Activity Overview", href: CONSOLE_PATHS.activity, capability: "platform.audit.read" },
+      {
+        key: "activity-overview",
+        label: "Activity Overview",
+        href: CONSOLE_PATHS.activity,
+        capability: "platform.audit.read",
+      },
       {
         key: "activity-admin",
         label: "Administrative Events",
@@ -143,13 +163,28 @@ export const CONSOLE_ACCOUNT_NAV: readonly ConsoleNavItem[] = [
 ];
 
 export const CONSOLE_PLATFORM_NAV: readonly ConsoleNavItem[] = [
-  { key: "settings", label: "Platform Settings", href: CONSOLE_PATHS.settings, capability: "platform.config.read" },
+  {
+    key: "settings",
+    label: "Platform Settings",
+    href: CONSOLE_PATHS.settings,
+    capability: "platform.config.read",
+  },
   { key: "help", label: "Help & Support", href: CONSOLE_PATHS.help, capability: null },
 ];
 
 export const CONSOLE_ENGINEERING_NAV: readonly ConsoleNavItem[] = [
-  { key: "metrics", label: "Metrics", href: CONSOLE_PATHS.activityMetrics, capability: "platform.engineering.read" },
-  { key: "logs", label: "Logs", href: CONSOLE_PATHS.activityLogs, capability: "platform.engineering.read" },
+  {
+    key: "metrics",
+    label: "Metrics",
+    href: CONSOLE_PATHS.activityMetrics,
+    capability: "platform.engineering.read",
+  },
+  {
+    key: "logs",
+    label: "Logs",
+    href: CONSOLE_PATHS.activityLogs,
+    capability: "platform.engineering.read",
+  },
 ];
 
 export function navVisible(

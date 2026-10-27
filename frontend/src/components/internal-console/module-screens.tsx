@@ -6,12 +6,19 @@ import {
   setPlatformStaffRoles,
   setPlatformStaffStatus,
 } from "@/lib/platform-staff/staff.functions";
-import { PLATFORM_ROLE_CODES, PLATFORM_ROLE_LABELS, PRIVILEGED_PLATFORM_ROLES } from "@/lib/platform-staff/catalogue";
+import {
+  PLATFORM_ROLE_CODES,
+  PLATFORM_ROLE_LABELS,
+  PRIVILEGED_PLATFORM_ROLES,
+} from "@/lib/platform-staff/catalogue";
 import { getAccessReview } from "@/lib/platform-staff/support-access.functions";
 import { listConsoleAudit } from "@/lib/internal-console/activity.functions";
 import { CONSOLE_PATHS, SCHOLAR_ENTRY_URL } from "@/lib/internal-console/paths";
 import { workspaceById } from "@/lib/internal-console/workspaces";
-import { REGISTERED_RUNTIMES, SCHOLAR_RUNTIME_CONTRACT } from "@/lib/internal-console/runtime-contract";
+import {
+  REGISTERED_RUNTIMES,
+  SCHOLAR_RUNTIME_CONTRACT,
+} from "@/lib/internal-console/runtime-contract";
 import { CONSOLE_HELP_ARTICLES } from "@/lib/internal-console/help-catalog";
 import { CONSOLE_HEALTH_LABELS } from "@/lib/internal-console/status";
 import { useApp } from "@/contexts/app-context";
@@ -172,28 +179,50 @@ function StaffRow({
             </button>
           </div>
         ) : (
-          row.roles.map((role) => PLATFORM_ROLE_LABELS[role as keyof typeof PLATFORM_ROLE_LABELS] ?? role).join(", ")
+          row.roles
+            .map((role) => PLATFORM_ROLE_LABELS[role as keyof typeof PLATFORM_ROLE_LABELS] ?? role)
+            .join(", ")
         )}
       </td>
       <td>{row.status}</td>
       <td>
         {manage && row.status === "invited" ? (
-          <button type="button" className="sherivs-console-btn secondary" disabled={busy} onClick={() => void resendPlatformStaffInvite({ data: { staffId: row.id } })}>
+          <button
+            type="button"
+            className="sherivs-console-btn secondary"
+            disabled={busy}
+            onClick={() => void resendPlatformStaffInvite({ data: { staffId: row.id } })}
+          >
             Resend
           </button>
         ) : null}
         {manage && row.status === "active" ? (
-          <button type="button" className="sherivs-console-btn secondary" disabled={busy} onClick={() => onStatus(row.id, "suspended")}>
+          <button
+            type="button"
+            className="sherivs-console-btn secondary"
+            disabled={busy}
+            onClick={() => onStatus(row.id, "suspended")}
+          >
             Suspend
           </button>
         ) : null}
         {manage && row.status === "suspended" ? (
-          <button type="button" className="sherivs-console-btn secondary" disabled={busy} onClick={() => onStatus(row.id, "active")}>
+          <button
+            type="button"
+            className="sherivs-console-btn secondary"
+            disabled={busy}
+            onClick={() => onStatus(row.id, "active")}
+          >
             Restore
           </button>
         ) : null}
         {isOwner && row.status !== "revoked" ? (
-          <button type="button" className="sherivs-console-btn secondary" disabled={busy} onClick={() => onStatus(row.id, "revoked")}>
+          <button
+            type="button"
+            className="sherivs-console-btn secondary"
+            disabled={busy}
+            onClick={() => onStatus(row.id, "revoked")}
+          >
             Revoke
           </button>
         ) : null}
@@ -225,12 +254,14 @@ export function ConsoleInvitations() {
           email,
           fullName,
           department: department || undefined,
-          roles: roles as typeof PLATFORM_ROLE_CODES[number][],
+          roles: roles as (typeof PLATFORM_ROLE_CODES)[number][],
         },
       });
       setEmail("");
       setFullName("");
-      setInfo("Invitation created. Delivery follows the configured auth provider; this page does not mark it delivered.");
+      setInfo(
+        "Invitation created. Delivery follows the configured auth provider; this page does not mark it delivered.",
+      );
       await reload();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Invite failed");
@@ -246,16 +277,33 @@ export function ConsoleInvitations() {
   return (
     <section className="sherivs-console-card">
       <h1>Invitations</h1>
-      <p>An invitation is not access. Membership activates only after the invitee accepts and the staff row is active.</p>
+      <p>
+        An invitation is not access. Membership activates only after the invitee accepts and the
+        staff row is active.
+      </p>
       {manage ? (
-        <form className="sherivs-console-form" onSubmit={(event) => void invite(event)} style={{ marginTop: "1rem" }}>
+        <form
+          className="sherivs-console-form"
+          onSubmit={(event) => void invite(event)}
+          style={{ marginTop: "1rem" }}
+        >
           <label>
             Full name
-            <input value={fullName} onChange={(event) => setFullName(event.target.value)} required minLength={2} />
+            <input
+              value={fullName}
+              onChange={(event) => setFullName(event.target.value)}
+              required
+              minLength={2}
+            />
           </label>
           <label>
             Email
-            <input type="email" value={email} onChange={(event) => setEmail(event.target.value)} required />
+            <input
+              type="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              required
+            />
           </label>
           <label>
             Department
@@ -271,7 +319,9 @@ export function ConsoleInvitations() {
                     checked={roles.includes(role)}
                     onChange={() =>
                       setRoles((current) =>
-                        current.includes(role) ? current.filter((item) => item !== role) : [...current, role],
+                        current.includes(role)
+                          ? current.filter((item) => item !== role)
+                          : [...current, role],
                       )
                     }
                   />
@@ -282,12 +332,19 @@ export function ConsoleInvitations() {
           </div>
           {error ? <p className="sherivs-console-error">{error}</p> : null}
           {info ? <p>{info}</p> : null}
-          <button type="submit" className="sherivs-console-btn" disabled={busy || roles.length === 0}>
+          <button
+            type="submit"
+            className="sherivs-console-btn"
+            disabled={busy || roles.length === 0}
+          >
             {busy ? "Sending…" : "Create invitation"}
           </button>
         </form>
       ) : (
-        <p className="sherivs-console-empty">You can view invitations you are authorized to see. Creating invitations requires staff.manage.</p>
+        <p className="sherivs-console-empty">
+          You can view invitations you are authorized to see. Creating invitations requires
+          staff.manage.
+        </p>
       )}
       <h2 style={{ marginTop: "1.4rem" }}>Pending</h2>
       {pending.length ? (
@@ -296,7 +353,8 @@ export function ConsoleInvitations() {
             <div key={row.id} className="sherivs-console-row">
               <strong>{row.fullName}</strong>
               <small>
-                {row.email} · invited {row.invitedAt ? new Date(row.invitedAt).toLocaleString() : "at unknown time"}
+                {row.email} · invited{" "}
+                {row.invitedAt ? new Date(row.invitedAt).toLocaleString() : "at unknown time"}
               </small>
             </div>
           ))}
@@ -450,10 +508,17 @@ export function ConsoleRuntimes() {
   return (
     <section className="sherivs-console-card">
       <h1>Runtime directory</h1>
-      <p>Only registered, existing runtimes appear here. Future products are not listed as operational.</p>
+      <p>
+        Only registered, existing runtimes appear here. Future products are not listed as
+        operational.
+      </p>
       <div className="sherivs-console-list">
         {REGISTERED_RUNTIMES.map((runtime) => (
-          <Link key={runtime.id} to={CONSOLE_PATHS.scholar as never} className="sherivs-console-row">
+          <Link
+            key={runtime.id}
+            to={CONSOLE_PATHS.scholar as never}
+            className="sherivs-console-row"
+          >
             <strong>{runtime.name}</strong>
             <small>
               {runtime.id} · {runtime.status.replace("_", " ")}
@@ -526,7 +591,11 @@ export function ConsoleActivity({ scope = "all" }: { scope?: "all" | "admin" | "
   const { overview } = useConsole();
   const allowed = overview?.viewer.capabilities.includes("platform.audit.read");
   const title =
-    scope === "security" ? "Security events" : scope === "admin" ? "Administrative events" : "Activity overview";
+    scope === "security"
+      ? "Security events"
+      : scope === "admin"
+        ? "Administrative events"
+        : "Activity overview";
   return (
     <section className="sherivs-console-card">
       <h1>{title}</h1>
@@ -587,7 +656,11 @@ export function ConsoleAccount() {
       </p>
       <p>Roles: {overview?.viewer.roles.join(", ") || "none assigned beyond owner status"}.</p>
       <div className="sherivs-console-actions" style={{ marginTop: "1rem" }}>
-        <button type="button" className="sherivs-console-btn secondary" onClick={() => void app.signOut()}>
+        <button
+          type="button"
+          className="sherivs-console-btn secondary"
+          onClick={() => void app.signOut()}
+        >
           Sign out
         </button>
       </div>

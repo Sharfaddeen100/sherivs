@@ -45,7 +45,8 @@ export function ConsoleHomeScreen() {
         <p>Welcome back, {overview.viewer.name}</p>
         <h1>Internal Platform Operations</h1>
         <p>
-          {overview.context.organization} · {overview.viewer.presentationLabel} · {overview.context.workspace}
+          {overview.context.organization} · {overview.viewer.presentationLabel} ·{" "}
+          {overview.context.workspace}
         </p>
         <p>
           Environment: {overview.context.environment}
@@ -66,7 +67,9 @@ export function ConsoleHomeScreen() {
               <small>{card.detail}</small>
               <small>
                 Source: {card.source}
-                {card.lastCheck ? ` · Updated ${new Date(card.lastCheck).toLocaleString()}` : " · No successful check"}
+                {card.lastCheck
+                  ? ` · Updated ${new Date(card.lastCheck).toLocaleString()}`
+                  : " · No successful check"}
               </small>
             </Link>
           ))}
@@ -75,7 +78,9 @@ export function ConsoleHomeScreen() {
 
       <section className="sherivs-console-card">
         <h2>Operational metrics</h2>
-        <p>Only measured values are shown as numbers. Unavailable metrics stay marked unavailable.</p>
+        <p>
+          Only measured values are shown as numbers. Unavailable metrics stay marked unavailable.
+        </p>
         <div className="sherivs-console-grid" style={{ marginTop: "0.9rem" }}>
           {overview.metrics.map((metric) => (
             <div key={metric.key} className="sherivs-console-metric sherivs-console-row">
@@ -83,7 +88,9 @@ export function ConsoleHomeScreen() {
               <strong>{metric.available ? `${metric.value} ${metric.unit}` : "Unavailable"}</strong>
               <small>
                 {metric.window} · {metric.source}
-                {metric.updatedAt ? ` · Updated ${new Date(metric.updatedAt).toLocaleString()}` : ""}
+                {metric.updatedAt
+                  ? ` · Updated ${new Date(metric.updatedAt).toLocaleString()}`
+                  : ""}
               </small>
               <small>{metric.definition}</small>
             </div>
@@ -103,7 +110,8 @@ export function ConsoleHomeScreen() {
                   </strong>
                   <small>{item.description}</small>
                   <small>
-                    {item.resource} · {item.nextAction} · {new Date(item.detectedAt).toLocaleString()}
+                    {item.resource} · {item.nextAction} ·{" "}
+                    {new Date(item.detectedAt).toLocaleString()}
                   </small>
                 </Link>
               ))}
@@ -125,7 +133,11 @@ export function ConsoleHomeScreen() {
         <h2>Quick actions</h2>
         <div className="sherivs-console-actions" style={{ marginTop: "0.8rem" }}>
           {actions.map((action) => (
-            <Link key={action.key} to={action.href as never} className="sherivs-console-btn secondary">
+            <Link
+              key={action.key}
+              to={action.href as never}
+              className="sherivs-console-btn secondary"
+            >
               {action.label}
             </Link>
           ))}
@@ -141,7 +153,8 @@ export function ConsoleHomeScreen() {
                 <div key={item.id} className="sherivs-console-row">
                   <strong>{item.description}</strong>
                   <small>
-                    {item.actor ?? "Unknown actor"} · {item.outcome} · {new Date(item.at).toLocaleString()}
+                    {item.actor ?? "Unknown actor"} · {item.outcome} ·{" "}
+                    {new Date(item.at).toLocaleString()}
                   </small>
                 </div>
               ))}

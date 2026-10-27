@@ -71,7 +71,9 @@ export function workspacesForViewer(input: {
   });
 }
 
-export function parseWorkspaceId(raw: string): { kind: "personal" } | { kind: "role"; role: string } | null {
+export function parseWorkspaceId(
+  raw: string,
+): { kind: "personal" } | { kind: "role"; role: string } | null {
   if (raw === PERSONAL_WORKSPACE_ID) return { kind: "personal" };
   if (raw.startsWith("role:")) {
     const role = raw.slice("role:".length);

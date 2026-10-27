@@ -24,18 +24,14 @@ export const CONSOLE_HEALTH_LABELS: Record<ConsoleHealthState, string> = {
   maintenance: "Maintenance",
 };
 
-export function mapProcessHealth(
-  status: string | null | undefined,
-): ConsoleHealthState {
+export function mapProcessHealth(status: string | null | undefined): ConsoleHealthState {
   if (status === "ok") return "operational";
   if (status === "degraded") return "degraded";
   if (status === "failing") return "unavailable";
   return "unknown";
 }
 
-export function overallFromCards(
-  states: readonly ConsoleHealthState[],
-): ConsoleHealthState {
+export function overallFromCards(states: readonly ConsoleHealthState[]): ConsoleHealthState {
   if (states.includes("unavailable")) return "unavailable";
   if (states.includes("degraded")) return "degraded";
   if (states.includes("maintenance")) return "maintenance";

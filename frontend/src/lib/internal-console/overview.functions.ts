@@ -50,7 +50,11 @@ function environmentLabel(): { environment: string; source: string } {
   if (vercel === "preview") return { environment: "Preview", source: "VERCEL_ENV" };
   if (vercel === "development") return { environment: "Development", source: "VERCEL_ENV" };
   const node = (process.env.NODE_ENV ?? "").trim();
-  if (node) return { environment: node === "production" ? "Production" : "Development", source: "NODE_ENV" };
+  if (node)
+    return {
+      environment: node === "production" ? "Production" : "Development",
+      source: "NODE_ENV",
+    };
   return { environment: "Unknown", source: "not configured" };
 }
 
@@ -116,7 +120,8 @@ export const getConsoleOverview = createServerFn({ method: "GET" })
         databaseDetail = "The required database health query failed.";
       } else {
         databaseStatus = "operational";
-        databaseDetail = "The platform catalogue query succeeded. This does not prove every workflow.";
+        databaseDetail =
+          "The platform catalogue query succeeded. This does not prove every workflow.";
       }
     } catch {
       databaseStatus = "unavailable";
@@ -202,7 +207,8 @@ export const getConsoleOverview = createServerFn({ method: "GET" })
         source: "not configured",
         updatedAt: null,
         available: false,
-        definition: "Eligible failed API requests divided by eligible API requests. Not collected in V1.",
+        definition:
+          "Eligible failed API requests divided by eligible API requests. Not collected in V1.",
       },
       {
         key: "api-latency",
@@ -224,7 +230,8 @@ export const getConsoleOverview = createServerFn({ method: "GET" })
         source: "not configured",
         updatedAt: null,
         available: false,
-        definition: "Incidents currently open under an incident lifecycle. No incident table exists.",
+        definition:
+          "Incidents currently open under an incident lifecycle. No incident table exists.",
       },
       {
         key: "uptime",
@@ -263,7 +270,9 @@ export const getConsoleOverview = createServerFn({ method: "GET" })
           status: row.status,
           invitedAt: row.invited_at,
           activatedAt: row.activated_at,
-          roles: ((row.platform_staff_roles ?? []) as Array<{ role_code: string }>).map((x) => x.role_code),
+          roles: ((row.platform_staff_roles ?? []) as Array<{ role_code: string }>).map(
+            (x) => x.role_code,
+          ),
         }));
         pendingInvitations = staff.filter((row) => row.status === "invited").length;
         activeStaff = staff.filter((row) => row.status === "active").length;
@@ -276,10 +285,14 @@ export const getConsoleOverview = createServerFn({ method: "GET" })
       const { data } = await db
         .from("audit_logs")
         .select("id, action, user_id, record_id, created_at, new_value")
-        .or("action.like.platform_staff.%,action.like.platform_support.%,action.like.platform_access_review.%")
+        .or(
+          "action.like.platform_staff.%,action.like.platform_support.%,action.like.platform_access_review.%",
+        )
         .order("created_at", { ascending: false })
         .limit(20);
-      const actorIds = [...new Set((data ?? []).map((row) => row.user_id).filter(Boolean))] as string[];
+      const actorIds = [
+        ...new Set((data ?? []).map((row) => row.user_id).filter(Boolean)),
+      ] as string[];
       const names = new Map<string, string>();
       if (actorIds.length) {
         const { data: people } = await db
@@ -287,11 +300,17 @@ export const getConsoleOverview = createServerFn({ method: "GET" })
           .select("id, full_name, email")
           .in("id", actorIds);
         for (const person of people ?? []) names.set(person.id, person.full_name || person.email);
-        const { data: supers } = await db.from("super_admins").select("id, full_name, email").in("id", actorIds);
+        const { data: supers } = await db
+          .from("super_admins")
+          .select("id, full_name, email")
+          .in("id", actorIds);
         for (const person of supers ?? []) names.set(person.id, person.full_name || person.email);
       }
       for (const row of data ?? []) {
-        const payload = (row.new_value ?? {}) as { outcome?: string; details?: Record<string, unknown> };
+        const payload = (row.new_value ?? {}) as {
+          outcome?: string;
+          details?: Record<string, unknown>;
+        };
         activity.push({
           id: String(row.id),
           description: describeAction(row.action),
@@ -356,7 +375,8 @@ export const getConsoleOverview = createServerFn({ method: "GET" })
         source: "platform_staff.status = active",
         updatedAt: now,
         available: activeStaff !== null,
-        definition: "Sherivs staff rows currently in status active. Customer-school users are excluded.",
+        definition:
+          "Sherivs staff rows currently in status active. Customer-school users are excluded.",
       });
       metrics.push({
         key: "pending-invites",

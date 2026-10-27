@@ -1,21 +1,6 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-  type ReactNode,
-} from "react";
+import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import { Link, Navigate, Outlet, useLocation, useNavigate } from "@tanstack/react-router";
-import {
-  Bell,
-  HelpCircle,
-  LogOut,
-  Menu,
-  PanelLeft,
-  Plus,
-  Search,
-} from "lucide-react";
+import { Bell, HelpCircle, LogOut, Menu, PanelLeft, Plus, Search } from "lucide-react";
 import { SherivsLogo } from "@/components/brand/sherivs-logo";
 import { useApp } from "@/contexts/app-context";
 import {
@@ -142,10 +127,7 @@ function ConsoleChrome({ children }: { children: ReactNode }) {
   const [openWorkspace, setOpenWorkspace] = useState(false);
   const [openRuntime, setOpenRuntime] = useState(false);
   const overview = console.overview;
-  const capabilities = useMemo(
-    () => new Set(overview?.viewer.capabilities ?? []),
-    [overview],
-  );
+  const capabilities = useMemo(() => new Set(overview?.viewer.capabilities ?? []), [overview]);
   const viewer = {
     isSuperAdmin: overview?.viewer.isSuperAdmin ?? Boolean(app.superAdmin),
     capabilities,
@@ -231,7 +213,10 @@ function ConsoleChrome({ children }: { children: ReactNode }) {
                 Workspace <strong>{workspaceName}</strong>
               </button>
               {openWorkspace ? (
-                <div className="sherivs-console-search-panel sherivs-console-switcher-panel" role="listbox">
+                <div
+                  className="sherivs-console-search-panel sherivs-console-switcher-panel"
+                  role="listbox"
+                >
                   {workspaces.map((workspace) => (
                     <Link
                       key={workspace.id}
@@ -269,7 +254,10 @@ function ConsoleChrome({ children }: { children: ReactNode }) {
                 Runtime <strong>{runtimeName}</strong>
               </button>
               {openRuntime ? (
-                <div className="sherivs-console-search-panel sherivs-console-switcher-panel" role="listbox">
+                <div
+                  className="sherivs-console-search-panel sherivs-console-switcher-panel"
+                  role="listbox"
+                >
                   {REGISTERED_RUNTIMES.map((runtime) => (
                     <Link
                       key={runtime.id}
@@ -283,7 +271,9 @@ function ConsoleChrome({ children }: { children: ReactNode }) {
                 </div>
               ) : null}
             </div>
-            <span className={`sherivs-console-env ${envClass(overview?.context.environment ?? "Unknown")}`}>
+            <span
+              className={`sherivs-console-env ${envClass(overview?.context.environment ?? "Unknown")}`}
+            >
               {overview?.context.environment ?? "Unknown"}
             </span>
           </div>
@@ -342,9 +332,16 @@ function ConsoleChrome({ children }: { children: ReactNode }) {
                 <Plus size={18} />
               </button>
               {openQuick ? (
-                <div className="sherivs-console-search-panel" style={{ width: "16rem", right: 0, left: "auto" }}>
+                <div
+                  className="sherivs-console-search-panel"
+                  style={{ width: "16rem", right: 0, left: "auto" }}
+                >
                   {actions.map((action) => (
-                    <Link key={action.key} to={action.href as never} onClick={() => setOpenQuick(false)}>
+                    <Link
+                      key={action.key}
+                      to={action.href as never}
+                      onClick={() => setOpenQuick(false)}
+                    >
                       {action.label}
                     </Link>
                   ))}
@@ -404,7 +401,12 @@ function ConsoleChrome({ children }: { children: ReactNode }) {
           <NavGroup label="Internal Console" items={mainNav} path={path} collapsed={collapsed} />
           <NavGroup label="Account" items={accountNav} path={path} collapsed={collapsed} />
           <NavGroup label="Platform" items={platformNav} path={path} collapsed={collapsed} />
-          <NavGroup label="Observability" items={engineeringNav} path={path} collapsed={collapsed} />
+          <NavGroup
+            label="Observability"
+            items={engineeringNav}
+            path={path}
+            collapsed={collapsed}
+          />
           <nav className="sherivs-console-nav" style={{ marginTop: "auto" }}>
             <button type="button" onClick={() => void app.signOut()}>
               <LogOut size={16} />
@@ -486,4 +488,3 @@ export function InternalConsoleLayout() {
     </ConsoleCtx.Provider>
   );
 }
-

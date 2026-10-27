@@ -47,40 +47,42 @@ const listSchema = z.object({
 export const listConsoleAudit = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .validator((input: unknown) => listSchema.parse(input ?? {}))
-  .handler(async ({ data, context }): Promise<{ events: ConsoleActivityItem[]; source: string }> => {
-    await assertCapability(context as unknown as Ctx, "platform.audit.read");
-    const db = await admin();
-    const filter =
-      data.scope === "security"
-        ? "action.like.platform_staff.status.%,action.like.platform_staff.set_roles,action.like.platform_support.%"
-        : "action.like.platform_staff.%,action.like.platform_support.%,action.like.platform_access_review.%";
-    const { data: rows, error } = await db
-      .from("audit_logs")
-      .select("id, action, user_id, record_id, created_at, new_value")
-      .or(filter)
-      .order("created_at", { ascending: false })
-      .limit(data.limit);
-    if (error) throw new Error(error.message);
-    await writeAuditRecord(db, {
-      action: "platform_console.audit.view",
-      gate: "has_platform_capability:platform.audit.read",
-      tenantId: null,
-      actorId: context.userId,
-      table: "audit_logs",
-      outcome: "succeeded",
-      details: { scope: data.scope, count: (rows ?? []).length },
-    });
-    const events: ConsoleActivityItem[] = (rows ?? []).map((row) => {
-      const payload = (row.new_value ?? {}) as { outcome?: string };
-      return {
-        id: String(row.id),
-        description: describeAction(row.action),
-        actor: row.user_id,
-        target: row.record_id,
-        at: row.created_at ?? new Date(0).toISOString(),
-        outcome: typeof payload.outcome === "string" ? payload.outcome : "recorded",
-        action: row.action,
-      };
-    });
-    return { events, source: "audit_logs (control-plane platform_* actions)" };
-  });
+  .handler(
+    async ({ data, context }): Promise<{ events: ConsoleActivityItem[]; source: string }> => {
+      await assertCapability(context as unknown as Ctx, "platform.audit.read");
+      const db = await admin();
+      const filter =
+        data.scope === "security"
+          ? "action.like.platform_staff.status.%,action.like.platform_staff.set_roles,action.like.platform_support.%"
+          : "action.like.platform_staff.%,action.like.platform_support.%,action.like.platform_access_review.%";
+      const { data: rows, error } = await db
+        .from("audit_logs")
+        .select("id, action, user_id, record_id, created_at, new_value")
+        .or(filter)
+        .order("created_at", { ascending: false })
+        .limit(data.limit);
+      if (error) throw new Error(error.message);
+      await writeAuditRecord(db, {
+        action: "platform_console.audit.view",
+        gate: "has_platform_capability:platform.audit.read",
+        tenantId: null,
+        actorId: context.userId,
+        table: "audit_logs",
+        outcome: "succeeded",
+        details: { scope: data.scope, count: (rows ?? []).length },
+      });
+      const events: ConsoleActivityItem[] = (rows ?? []).map((row) => {
+        const payload = (row.new_value ?? {}) as { outcome?: string };
+        return {
+          id: String(row.id),
+          description: describeAction(row.action),
+          actor: row.user_id,
+          target: row.record_id,
+          at: row.created_at ?? new Date(0).toISOString(),
+          outcome: typeof payload.outcome === "string" ? payload.outcome : "recorded",
+          action: row.action,
+        };
+      });
+      return { events, source: "audit_logs (control-plane platform_* actions)" };
+    },
+  );

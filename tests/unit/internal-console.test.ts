@@ -7,10 +7,17 @@ import {
   CONSOLE_NAV,
   viewerCapabilities,
 } from "@/lib/internal-console/roles";
-import { workspacesForViewer, workspaceById, workspaceIdFromPath } from "@/lib/internal-console/workspaces";
+import {
+  workspacesForViewer,
+  workspaceById,
+  workspaceIdFromPath,
+} from "@/lib/internal-console/workspaces";
 import { searchConsole } from "@/lib/internal-console/search";
 import { mapProcessHealth, overallFromCards } from "@/lib/internal-console/status";
-import { REGISTERED_RUNTIMES, SCHOLAR_RUNTIME_CONTRACT } from "@/lib/internal-console/runtime-contract";
+import {
+  REGISTERED_RUNTIMES,
+  SCHOLAR_RUNTIME_CONTRACT,
+} from "@/lib/internal-console/runtime-contract";
 import { CONSOLE_PATHS } from "@/lib/internal-console/paths";
 import {
   decideHostRoute,
@@ -53,7 +60,9 @@ describe("internal console V1 contract", () => {
       "platform_administrator",
     );
     expect(presentationRoleFor({ isSuperAdmin: false, roles: ["engineering"] })).toBe("engineer");
-    expect(presentationRoleFor({ isSuperAdmin: false, roles: ["support"] })).toBe("support_specialist");
+    expect(presentationRoleFor({ isSuperAdmin: false, roles: ["support"] })).toBe(
+      "support_specialist",
+    );
     expect(presentationRoleFor({ isSuperAdmin: false, roles: ["finance"] })).toBe(
       "standard_team_member",
     );
@@ -70,9 +79,11 @@ describe("internal console V1 contract", () => {
       "runtimes",
     ]);
     expect(quickActionsFor(support).some((item) => item.key === "invite")).toBe(false);
-    expect(quickActionsFor({ isSuperAdmin: true, capabilities: new Set() }).some((item) => item.key === "invite")).toBe(
-      true,
-    );
+    expect(
+      quickActionsFor({ isSuperAdmin: true, capabilities: new Set() }).some(
+        (item) => item.key === "invite",
+      ),
+    ).toBe(true);
   });
 
   it("does not list shared workspaces the viewer cannot access", () => {
@@ -102,7 +113,9 @@ describe("internal console V1 contract", () => {
     const hits = searchConsole({
       query: "secret",
       canReadStaff: false,
-      staff: [{ id: "1", fullName: "Secret Staff", email: "s@x", department: null, status: "active" }],
+      staff: [
+        { id: "1", fullName: "Secret Staff", email: "s@x", department: null, status: "active" },
+      ],
       workspaces: [],
       runtimes: REGISTERED_RUNTIMES,
       pages: [],

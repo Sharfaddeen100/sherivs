@@ -23,7 +23,11 @@ export function ConsoleNotAuthorised() {
               Signing in with a school account does not grant console access.
             </p>
             <div className="sherivs-console-actions" style={{ marginTop: "1rem" }}>
-              <button type="button" className="sherivs-console-btn secondary" onClick={() => void app.signOut()}>
+              <button
+                type="button"
+                className="sherivs-console-btn secondary"
+                onClick={() => void app.signOut()}
+              >
                 Sign out
               </button>
             </div>
