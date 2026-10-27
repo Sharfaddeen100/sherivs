@@ -601,7 +601,6 @@ export async function provisionOrganizationCase(
           phone: row.questionnaire.contactPhone ?? null,
           is_active: false,
           onboarding_completed: false,
-          subscription_status: "trial",
         })
         .select("id")
         .single();
@@ -615,7 +614,6 @@ export async function provisionOrganizationCase(
               slug: retrySlug,
               is_active: false,
               onboarding_completed: false,
-              subscription_status: "trial",
             })
             .select("id")
             .single();

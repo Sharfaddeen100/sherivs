@@ -5,8 +5,13 @@
  * store is applied. Derived role workspaces remain a fallback when that store
  * is not configured, and never authorize access on their own.
  */
-import { PLATFORM_ROLE_LABELS, isPlatformRoleCode } from "@/lib/platform-staff/catalogue";
 import { CONSOLE_PATHS } from "./paths";
+import {
+  mappingForRole,
+  ROLE_WORKSPACE_MAPPINGS,
+  roleCodesForWorkspaceProvisioning,
+  type RoleWorkspaceMapping,
+} from "./role-workspace";
 
 export const WORKSPACE_UUID_RE =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -49,23 +54,26 @@ export function personalWorkspace(displayName: string): InternalWorkspace {
   };
 }
 
-export function sharedWorkspaceForRole(role: string): InternalWorkspace | null {
-  if (!isPlatformRoleCode(role)) return null;
-  const name = PLATFORM_ROLE_LABELS[role];
+export function roleWorkspaceFromMapping(mapping: RoleWorkspaceMapping): InternalWorkspace {
   return {
-    id: `role:${role}`,
-    recordId: `role:${role}`,
-    name: `${name} Workspace`,
-    description: `Shared workspace for the ${name} team. Membership follows the assigned platform role.`,
-    type: "shared",
+    id: `role:${mapping.roleCode}`,
+    recordId: `role:${mapping.roleCode}`,
+    name: mapping.name,
+    description: `${mapping.description} Membership is not a permission grant.`,
+    type: "role",
     access: "member",
-    team: name,
-    href: CONSOLE_PATHS.workspace(`role:${role}`),
+    team: mapping.name,
+    href: CONSOLE_PATHS.workspace(`role:${mapping.roleCode}`),
     status: "active",
     source: "derived",
-    slug: role,
+    slug: mapping.slug,
     members: [],
   };
+}
+
+export function sharedWorkspaceForRole(role: string): InternalWorkspace | null {
+  const mapping = mappingForRole(role);
+  return mapping ? roleWorkspaceFromMapping(mapping) : null;
 }
 
 export function workspacesForViewer(input: {
@@ -74,15 +82,11 @@ export function workspacesForViewer(input: {
   roles: readonly string[];
 }): InternalWorkspace[] {
   const personal = personalWorkspace(input.displayName);
-  const shared = input.isSuperAdmin
-    ? Object.keys(PLATFORM_ROLE_LABELS)
-        .map((role) => sharedWorkspaceForRole(role))
-        .filter((row): row is InternalWorkspace => row !== null)
-    : input.roles
-        .map((role) => sharedWorkspaceForRole(role))
-        .filter((row): row is InternalWorkspace => row !== null);
+  const roleWorkspaces = roleCodesForWorkspaceProvisioning(input)
+    .map((role) => sharedWorkspaceForRole(role))
+    .filter((row): row is InternalWorkspace => row !== null);
   const seen = new Set<string>();
-  return [personal, ...shared].filter((row) => {
+  return [personal, ...roleWorkspaces].filter((row) => {
     if (seen.has(row.id)) return false;
     seen.add(row.id);
     return true;
@@ -94,11 +98,12 @@ export function parseWorkspaceId(
 ): { kind: "personal" } | { kind: "role"; role: string } | { kind: "record"; id: string } | null {
   if (raw === PERSONAL_WORKSPACE_ID) return { kind: "personal" };
   if (WORKSPACE_UUID_RE.test(raw)) return { kind: "record", id: raw };
-  if (raw.startsWith("role:")) {
-    const role = raw.slice("role:".length);
-    if (!isPlatformRoleCode(role)) return null;
-    return { kind: "role", role };
-  }
+  const token = raw.startsWith("role:") ? raw.slice("role:".length) : raw;
+  const mapped =
+    mappingForRole(token) ??
+    ROLE_WORKSPACE_MAPPINGS.find((row) => row.slug === raw || row.slug === token) ??
+    null;
+  if (mapped) return { kind: "role", role: mapped.roleCode };
   return null;
 }
 

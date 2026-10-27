@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, type FormEvent } from "react";
-import { Link, useNavigate, useParams } from "@tanstack/react-router";
+import { Link, useNavigate, useParams, useSearch } from "@tanstack/react-router";
 import { CONSOLE_PATHS } from "@/lib/internal-console/paths";
 import {
   ORGANIZATION_ASSIGNMENT_LABELS,
@@ -52,9 +52,11 @@ function LifecycleBadge({ state }: { state: OrganizationLifecycleState }) {
 
 export function ConsoleOrganizationDirectory() {
   const { overview } = useConsole();
+  const search = useSearch({ strict: false }) as { state?: string };
+  const searchState = typeof search.state === "string" ? search.state : "";
   const [rows, setRows] = useState<OrganizationDirectoryRow[]>(overview?.organizations ?? []);
   const [query, setQuery] = useState("");
-  const [state, setState] = useState("");
+  const [state, setState] = useState(searchState);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const canManage = overview?.viewer.capabilities.includes("platform.tenants.manage") ?? false;
@@ -77,10 +79,14 @@ export function ConsoleOrganizationDirectory() {
   }
 
   useEffect(() => {
+    setState(searchState);
+  }, [searchState]);
+
+  useEffect(() => {
     if (canRead) void load();
-    // Intentionally load once the viewer is known.
+    // Reload when the viewer or lifecycle filter changes.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [canRead]);
+  }, [canRead, state]);
 
   if (!overview) return <section className="sherivs-console-card">Loading organizations…</section>;
   if (!canRead) {

@@ -3,4 +3,7 @@ import { ConsoleOrganizationDirectory } from "@/components/internal-console/orga
 
 export const Route = createFileRoute("/console/organizations/")({
   component: ConsoleOrganizationDirectory,
+  validateSearch: (search: Record<string, unknown>): { state?: string } => ({
+    state: typeof search.state === "string" ? search.state : undefined,
+  }),
 });

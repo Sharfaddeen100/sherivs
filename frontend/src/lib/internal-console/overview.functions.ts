@@ -13,6 +13,7 @@ import { CONSOLE_PATHS } from "./paths";
 import { presentationRoleFor, presentationRoleLabel, viewerCapabilities } from "./roles";
 import { overallFromCards, mapProcessHealth, type ConsoleHealthState } from "./status";
 import { workspacesForViewer } from "./workspaces";
+import { defaultRoleWorkspaceCode, mappingForRole } from "./role-workspace";
 import { store } from "./store";
 import { REGISTERED_RUNTIMES } from "./runtime-contract";
 import { allowedHrefsFrom } from "./recent";
@@ -689,8 +690,18 @@ export const getConsoleOverview = createServerFn({ method: "GET" })
       }
     }
 
+    const preferredRole = defaultRoleWorkspaceCode({ isSuperAdmin, roles });
+    const preferredMapping = preferredRole ? mappingForRole(preferredRole) : null;
     const currentWorkspace =
-      workspaces.find((workspace) => workspace.type === "role") ?? workspaces[0];
+      workspaces.find(
+        (workspace) =>
+          preferredMapping &&
+          (workspace.slug === preferredMapping.slug ||
+            workspace.id === `role:${preferredMapping.roleCode}` ||
+            workspace.name === preferredMapping.name),
+      ) ??
+      workspaces.find((workspace) => workspace.type === "role") ??
+      workspaces[0];
 
     return {
       viewer: {

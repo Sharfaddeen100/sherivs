@@ -139,6 +139,18 @@ export const CONSOLE_METRIC_CONTRACTS: readonly ConsoleMetricContract[] = [
     authorization: "platform.staff.read",
   },
   {
+    key: "subscription-ledger",
+    name: "Commercial subscriptions",
+    definition:
+      "Recognized subscription, trial, past-due, and revenue totals from an authoritative billing ledger. schools.subscription_status is a coarse tenant access flag written by lifecycle operations and is not this metric.",
+    source: "not connected — public.subscriptions and entitlement tables are not wired to the Internal Console",
+    calculation: "not calculated",
+    window: "not applicable",
+    unit: "subscriptions",
+    freshness: "not collected",
+    authorization: "platform.finance.read",
+  },
+  {
     key: "runtime-availability",
     name: "Sherivs Scholar process availability",
     definition: "Application process health for the Scholar runtime. This is not organization onboarding completeness.",

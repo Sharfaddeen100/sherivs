@@ -39,105 +39,10 @@ import { ROLE_WORKSPACE_MAPPINGS } from "@/lib/internal-console/role-workspace";
 import { CONSOLE_METRIC_CONTRACTS, metricContract } from "@/lib/internal-console/metrics";
 import { consoleVisualFixtureActive } from "@/lib/internal-console/visual-fixture";
 import { ConfirmAction, ConsoleNotice, StaffStatusBadge } from "./console-primitives";
+import { ConsoleWorkspaceExperience } from "./workspace-screens";
 
 function canManage(overviewCapabilities: string[]): boolean {
   return overviewCapabilities.includes("platform.staff.manage");
-}
-
-function WorkspaceLanding({ workspaceSlug }: { workspaceSlug: string }) {
-  const { overview } = useConsole();
-  const slug = workspaceSlug.replace(/^role:/, "").replace(/^role-/, "");
-  const capabilities = new Set(overview?.viewer.capabilities ?? []);
-  const tools: Array<{ href: string; label: string; detail: string }> = [];
-  if (slug.includes("operation") || slug === "platform_owner") {
-    if (capabilities.has("platform.tenants.read")) {
-      tools.push({
-        href: CONSOLE_PATHS.organizations,
-        label: "Organization pipeline",
-        detail: "Review onboarding cases that need attention.",
-      });
-    }
-    tools.push({
-      href: CONSOLE_PATHS.home,
-      label: "Platform overview",
-      detail: "Open the operational homepage.",
-    });
-  }
-  if (slug.includes("admin") || slug === "platform_admin") {
-    if (capabilities.has("platform.staff.read")) {
-      tools.push({
-        href: CONSOLE_PATHS.team,
-        label: "Staff directory",
-        detail: "Invite, review, and revoke internal access.",
-      });
-    }
-    if (capabilities.has("platform.config.read")) {
-      tools.push({
-        href: CONSOLE_PATHS.settings,
-        label: "Platform settings",
-        detail: "Environment and onboarding defaults.",
-      });
-    }
-  }
-  if (slug.includes("engineering") || slug === "engineering") {
-    tools.push({
-      href: CONSOLE_PATHS.runtimes,
-      label: "Runtime health",
-      detail: "Registered runtimes and Scholar availability.",
-    });
-    if (capabilities.has("platform.engineering.read")) {
-      tools.push({
-        href: CONSOLE_PATHS.activityMetrics,
-        label: "Engineering metrics",
-        detail: "Measured process metrics only.",
-      });
-    }
-  }
-  if (slug.includes("support") || slug === "support") {
-    tools.push({
-      href: CONSOLE_PATHS.organizations,
-      label: "Assigned organizations",
-      detail: overview?.assignments.length
-        ? `${overview.assignments.length} active assignment${overview.assignments.length === 1 ? "" : "s"}.`
-        : "No assignments are recorded yet.",
-    });
-  }
-  return (
-    <div style={{ marginTop: "1rem" }}>
-      <h2>Workspace tools</h2>
-      {tools.length ? (
-        <div className="sherivs-console-list">
-          {tools.map((tool) => (
-            <Link key={tool.href} to={tool.href as never} className="sherivs-console-row">
-              <strong>{tool.label}</strong>
-              <small>{tool.detail}</small>
-            </Link>
-          ))}
-        </div>
-      ) : (
-        <p className="sherivs-console-empty">
-          No additional tools are registered for this workspace. Task queues, tickets, and incident
-          lists are not implemented.
-        </p>
-      )}
-      {overview?.assignments.length && (slug.includes("support") || slug.includes("operation")) ? (
-        <div className="sherivs-console-list" style={{ marginTop: "0.8rem" }}>
-          {overview.assignments.map((assignment) => (
-            <Link
-              key={assignment.id}
-              to={CONSOLE_PATHS.organization(assignment.organizationId) as never}
-              className="sherivs-console-row"
-            >
-              <strong>{assignment.staffName ?? assignment.organizationId}</strong>
-              <small>
-                {assignment.assignmentType} · {assignment.status}
-              </small>
-            </Link>
-          ))}
-        </div>
-      ) : null}
-    </div>
-  );
 }
 
 export function ConsoleTeamDirectory() {
@@ -898,15 +803,9 @@ export function ConsoleWorkspaceDetail() {
           ? "Persistent workspace."
           : "Compatibility workspace from role membership. Custom members cannot be stored here."}
       </p>
-      {workspace.type === "personal" ? (
-        <p>
-          Personal workspaces are private to their owner. There are no documents, notes, or files in
-          V1.
-        </p>
-      ) : null}
-      {workspace.type === "role" || workspace.slug.startsWith("role-") || workspace.id.startsWith("role:") ? (
-        <WorkspaceLanding workspaceSlug={workspace.slug} />
-      ) : null}
+      <div style={{ marginTop: "1rem" }}>
+        <ConsoleWorkspaceExperience workspace={workspace} overview={overview} />
+      </div>
       <h2 style={{ marginTop: "1rem" }}>Members</h2>
       {members.length ? (
         <div className="sherivs-console-list">

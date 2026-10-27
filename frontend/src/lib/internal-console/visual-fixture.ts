@@ -31,7 +31,7 @@ export const CONSOLE_FIXTURE_OPERATOR = {
   id: "00000000-0000-4000-8000-000000000001",
   email: "console.fixture@localhost",
   name: "Fixture Operator",
-  roles: ["platform_admin", "engineering"] as const,
+  roles: ["platform_admin", "operations", "engineering", "support"] as const,
 };
 
 const LOCAL_HOSTS = new Set(["127.0.0.1", "localhost"]);
@@ -391,7 +391,7 @@ export function buildConsoleVisualFixtureOverview(): ConsoleOverview {
     },
     context: {
       organization: "Sherivs Internal",
-      workspace: workspaces[0]?.name ?? "My Workspace",
+      workspace: workspaces.find((workspace) => workspace.type === "role")?.name ?? workspaces[0]?.name ?? "My Workspace",
       environment: "Development",
       environmentSource: "local visual fixture",
       host: "127.0.0.1",
