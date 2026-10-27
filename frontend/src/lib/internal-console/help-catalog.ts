@@ -17,6 +17,13 @@ export const CONSOLE_HELP_ARTICLES: readonly ConsoleHelpArticle[] = [
     href: CONSOLE_PATHS.teamInvitations,
   },
   {
+    id: "organizations",
+    title: "Organization lifecycle",
+    description:
+      "Organizations move from draft through review and provisioning before they become active. Activation is a separate authorized step.",
+    href: CONSOLE_PATHS.organizations,
+  },
+  {
     id: "workspaces",
     title: "Personal and shared workspaces",
     description:

@@ -11,7 +11,7 @@ import { CONSOLE_PATHS } from "./paths";
 export const WORKSPACE_UUID_RE =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
-export type InternalWorkspaceType = "personal" | "shared";
+export type InternalWorkspaceType = "personal" | "shared" | "role";
 export type InternalWorkspaceAccess = "owner" | "member";
 export type InternalWorkspaceSource = "database" | "derived";
 
@@ -133,7 +133,9 @@ export function isWorkingWorkspace(input: {
 }
 
 export function workspaceTypeLabel(type: InternalWorkspaceType): string {
-  return type === "personal" ? "Personal" : "Shared";
+  if (type === "personal") return "Personal";
+  if (type === "role") return "Role";
+  return "Shared";
 }
 
 export function workspaceFromAuthorized(

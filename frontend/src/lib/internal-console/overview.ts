@@ -3,6 +3,11 @@ import type { ConsolePresentationRole } from "./roles";
 import type { InternalWorkspace } from "./workspaces";
 import type { ConsoleRuntimeContract } from "./runtime-contract";
 import type { RecentResource } from "./recent";
+import type {
+  OrganizationAssignmentRecord,
+  OrganizationDirectoryRow,
+  OrganizationMetricsSnapshot,
+} from "./organization-lifecycle";
 
 export interface ConsoleHealthCard {
   key: string;
@@ -97,6 +102,13 @@ export interface ConsoleOverview {
   expiredInvitations: number | null;
   activeStaff: number | null;
   usageDefinition: string;
+  organizations: OrganizationDirectoryRow[];
+  organizationStore: "database" | "unavailable" | "fixture";
+  organizationMetrics: OrganizationMetricsSnapshot;
+  assignments: OrganizationAssignmentRecord[];
+  scholarTenants: number | null;
+  registeredUsers: number | null;
+  activeUsers30d: number | null;
 }
 
 export type ConsoleStaffPresentationStatus =

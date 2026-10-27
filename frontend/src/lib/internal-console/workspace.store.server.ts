@@ -39,7 +39,7 @@ export async function loadAuthorizedWorkspaces(
     slug: string;
     name: string;
     description: string;
-    kind: "personal" | "shared";
+    kind: "personal" | "shared" | "role";
     status: "active" | "archived";
     owner_id: string;
   }>;
@@ -83,6 +83,13 @@ export async function loadAuthorizedWorkspaces(
 
 export async function ensurePersonalWorkspace(db: Admin, userId: string): Promise<void> {
   const { error } = await store(db).rpc("ensure_platform_personal_workspace", {
+    p_user_id: userId,
+  });
+  if (error && !isMissingRelation(error)) throw new Error(error.message);
+}
+
+export async function syncStaffWorkspaces(db: Admin, userId: string): Promise<void> {
+  const { error } = await store(db).rpc("sync_platform_staff_workspaces", {
     p_user_id: userId,
   });
   if (error && !isMissingRelation(error)) throw new Error(error.message);

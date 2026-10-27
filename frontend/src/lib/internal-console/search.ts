@@ -7,7 +7,7 @@ import type { ConsoleNavItem } from "./roles";
 import type { InternalWorkspace } from "./workspaces";
 import type { ConsoleRuntimeContract } from "./runtime-contract";
 
-export type ConsoleSearchKind = "staff" | "workspace" | "runtime" | "page" | "help";
+export type ConsoleSearchKind = "staff" | "workspace" | "runtime" | "page" | "help" | "organization";
 
 export interface ConsoleSearchHit {
   kind: ConsoleSearchKind;
@@ -42,10 +42,18 @@ function matches(query: string, ...parts: Array<string | null | undefined>): boo
   return haystack(...parts).includes(q);
 }
 
+export interface ConsoleSearchOrganization {
+  id: string;
+  displayName: string;
+  lifecycleState: string;
+}
+
 export function searchConsole(input: {
   query: string;
   canReadStaff: boolean;
   staff: readonly ConsoleSearchStaff[];
+  organizations?: readonly ConsoleSearchOrganization[];
+  canReadOrganizations?: boolean;
   workspaces: readonly InternalWorkspace[];
   runtimes: readonly ConsoleRuntimeContract[];
   pages: readonly ConsoleNavItem[];
@@ -66,6 +74,20 @@ export function searchConsole(input: {
         title: staff.fullName,
         description: staff.email,
         href: `/console/team`,
+      });
+      if (hits.length >= limit) return hits;
+    }
+  }
+
+  if (input.canReadOrganizations) {
+    for (const organization of input.organizations ?? []) {
+      if (!matches(q, organization.displayName, organization.lifecycleState)) continue;
+      hits.push({
+        kind: "organization",
+        id: organization.id,
+        title: organization.displayName,
+        description: organization.lifecycleState,
+        href: `/console/organizations/${encodeURIComponent(organization.id)}`,
       });
       if (hits.length >= limit) return hits;
     }

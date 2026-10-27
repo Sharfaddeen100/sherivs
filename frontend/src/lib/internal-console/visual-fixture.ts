@@ -173,5 +173,23 @@ export function buildConsoleVisualFixtureOverview(): ConsoleOverview {
     activeStaff: 0,
     usageDefinition:
       "Fixture directory is empty. No synthetic staff rows are shown as if they were live records.",
+    organizations: [],
+    organizationStore: "fixture",
+    organizationMetrics: {
+      available: true,
+      source: "local visual fixture organization store",
+      total: 0,
+      active: 0,
+      onboarding: 0,
+      suspended: 0,
+      failedProvisioning: 0,
+      submitted: 0,
+      conversionRate: null,
+      medianOnboardingHours: null,
+    },
+    assignments: [],
+    scholarTenants: null,
+    registeredUsers: null,
+    activeUsers30d: null,
   };
 }

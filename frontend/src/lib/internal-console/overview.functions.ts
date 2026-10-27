@@ -24,6 +24,7 @@ import type {
   ConsoleOverview,
   ConsoleStaffRow,
 } from "./overview";
+import type { OrganizationMetricsSnapshot } from "./organization-lifecycle";
 
 const timeAuthority = new TimeAuthority(new SystemClock());
 
@@ -76,6 +77,20 @@ function describeAction(action: string): string {
     "platform_workspace.member.add": "A workspace member was added",
     "platform_workspace.member.remove": "A workspace member was removed",
     "platform_workspace.archive": "A shared workspace was archived",
+    "platform_organization.create": "An organization case was created",
+    "platform_organization.draft.save": "Organization onboarding progress was saved",
+    "platform_organization.submit": "An organization questionnaire was submitted",
+    "platform_organization.state.submitted": "An organization was submitted for review",
+    "platform_organization.state.under_review": "An organization entered review",
+    "platform_organization.state.provisioning": "Organization provisioning started",
+    "platform_organization.state.provisioning_failed": "Organization provisioning failed",
+    "platform_organization.state.ready_for_activation": "An organization is ready for activation",
+    "platform_organization.state.active": "An organization was activated",
+    "platform_organization.state.suspended": "An organization was suspended",
+    "platform_organization.state.deactivated": "An organization was deactivated",
+    "platform_organization.provision": "Organization provisioning completed",
+    "platform_organization.assign": "Staff were assigned to an organization",
+    "platform_organization.assignment.release": "An organization assignment was released",
   };
   return map[action] ?? action.replace(/[._]/g, " ");
 }
@@ -324,7 +339,7 @@ export const getConsoleOverview = createServerFn({ method: "GET" })
         .from("audit_logs")
         .select("id, action, user_id, record_id, created_at, new_value")
         .or(
-          "action.like.platform_staff.%,action.like.platform_support.%,action.like.platform_access_review.%,action.like.platform_workspace.%",
+          "action.like.platform_staff.%,action.like.platform_support.%,action.like.platform_access_review.%,action.like.platform_workspace.%,action.like.platform_organization.%",
         )
         .order("created_at", { ascending: false })
         .limit(20);
@@ -442,6 +457,22 @@ export const getConsoleOverview = createServerFn({ method: "GET" })
       });
     }
 
+    if (canStaff && activeStaff !== null && staff.length) {
+      const invited = staff.filter((row) => row.invitedAt).length;
+      metrics.push({
+        key: "invitation-acceptance",
+        name: "Staff invitation acceptance rate",
+        value: invited === 0 ? null : String(Math.round((activeStaff / invited) * 1000) / 10),
+        unit: "%",
+        window: "current staff directory",
+        source: "platform_staff",
+        updatedAt: now,
+        available: invited > 0,
+        definition:
+          "Active staff divided by staff rows that have an invitation timestamp. Delivery is not implied.",
+      });
+    }
+
     const presentationRole = presentationRoleFor({ isSuperAdmin, roles });
     const db = await admin();
     const {
@@ -450,8 +481,10 @@ export const getConsoleOverview = createServerFn({ method: "GET" })
       loadAuthorizedWorkspaces,
       loadRecentAccess,
       loadRegisteredRuntimes,
+      syncStaffWorkspaces,
     } = await import("./workspace.store.server");
     await ensurePersonalWorkspace(db, context.userId);
+    await syncStaffWorkspaces(db, context.userId);
     await ensureRegisteredRuntimes(db);
     const canManageWorkspaces = isSuperAdmin || capabilities.has("platform.staff.manage");
     const storedWorkspaces = await loadAuthorizedWorkspaces(
@@ -468,9 +501,196 @@ export const getConsoleOverview = createServerFn({ method: "GET" })
       { href: CONSOLE_PATHS.home },
       { href: CONSOLE_PATHS.scholar },
       { href: CONSOLE_PATHS.team },
+      { href: CONSOLE_PATHS.organizations },
       { href: CONSOLE_PATHS.help },
     ]);
     const recent = (await loadRecentAccess(db, context.userId, allowedRecent)) ?? [];
+
+    const emptyOrgMetrics: OrganizationMetricsSnapshot = {
+      available: false,
+      source: "not authorized or not configured",
+      total: null,
+      active: null,
+      onboarding: null,
+      suspended: null,
+      failedProvisioning: null,
+      submitted: null,
+      conversionRate: null,
+      medianOnboardingHours: null,
+    };
+    let organizationMetrics: OrganizationMetricsSnapshot = emptyOrgMetrics
+    let organizations: ConsoleOverview["organizations"] = [];
+    let organizationStore: ConsoleOverview["organizationStore"] = "unavailable";
+    let assignments: ConsoleOverview["assignments"] = [];
+    let scholarTenants: number | null = null;
+    let registeredUsers: number | null = null;
+    let activeUsers30d: number | null = null;
+    if (capabilities.has("platform.tenants.read")) {
+      const { loadOrganizationMetrics, loadViewerAssignments } = await import(
+        "./organization.store.server"
+      );
+      try {
+        const snapshot = await loadOrganizationMetrics(db);
+        organizationMetrics = snapshot.organizationMetrics;
+        organizationStore = snapshot.organizationMetrics.available ? "database" : "unavailable";
+        scholarTenants = snapshot.scholarTenants;
+        registeredUsers = snapshot.registeredUsers;
+        activeUsers30d = snapshot.activeUsers30d;
+        organizations = snapshot.rows.slice(0, 8).map((row) => ({
+          id: row.id,
+          displayName: row.display_name,
+          orgType: "school" as const,
+          lifecycleState: row.lifecycle_state as ConsoleOverview["organizations"][number]["lifecycleState"],
+          country: row.country,
+          region: row.region,
+          city: row.city,
+          intendedRuntime: "scholar",
+          enabledRuntime: row.enabled_runtime,
+          schoolId: row.school_id,
+          slug: row.slug,
+          createdAt: row.created_at,
+          updatedAt: row.updated_at,
+          submittedAt: row.submitted_at,
+          provisionedAt: row.provisioned_at,
+          activatedAt: row.activated_at,
+          onboardingOwnerName: null,
+          assignmentCount: 0,
+        }));
+        assignments = await loadViewerAssignments(db, context.userId);
+        if (organizationMetrics.available) {
+          const pushMetric = (
+            key: string,
+            name: string,
+            value: string | null,
+            unit: string,
+            definition: string,
+            source: string,
+            available: boolean,
+          ) => {
+            metrics.push({
+              key,
+              name,
+              value,
+              unit,
+              window: "current",
+              source,
+              updatedAt: now,
+              available,
+              definition,
+            });
+          };
+          pushMetric(
+            "control-plane-organizations",
+            "Control-plane organizations",
+            organizationMetrics.total === null ? null : String(organizationMetrics.total),
+            "organizations",
+            "Organization lifecycle cases recorded by Sherivs staff.",
+            "platform_organization",
+            organizationMetrics.total !== null,
+          );
+          pushMetric(
+            "active-organizations",
+            "Active organizations",
+            organizationMetrics.active === null ? null : String(organizationMetrics.active),
+            "organizations",
+            "Lifecycle cases in state active.",
+            "platform_organization.lifecycle_state",
+            organizationMetrics.active !== null,
+          );
+          pushMetric(
+            "onboarding-organizations",
+            "Organizations onboarding",
+            organizationMetrics.onboarding === null ? null : String(organizationMetrics.onboarding),
+            "organizations",
+            "Cases that have started and are not yet active, suspended, or deactivated.",
+            "platform_organization.lifecycle_state",
+            organizationMetrics.onboarding !== null,
+          );
+          pushMetric(
+            "suspended-organizations",
+            "Suspended organizations",
+            organizationMetrics.suspended === null ? null : String(organizationMetrics.suspended),
+            "organizations",
+            "Lifecycle cases in state suspended. Records are retained.",
+            "platform_organization.lifecycle_state",
+            organizationMetrics.suspended !== null,
+          );
+          if (typeof organizationMetrics.failedProvisioning === "number" && organizationMetrics.failedProvisioning > 0) {
+            attention.push({
+              id: "provisioning-failed",
+              severity: "high",
+              title: `${organizationMetrics.failedProvisioning} provisioning failure${organizationMetrics.failedProvisioning === 1 ? "" : "s"}`,
+              description: "Provisioning failed for one or more organization cases. Retry is idempotent.",
+              detectedAt: now,
+              resource: "Organizations",
+              owner: null,
+              nextAction: "Open organization directory",
+              href: CONSOLE_PATHS.organizations,
+            });
+          }
+          if (typeof organizationMetrics.onboarding === "number" && organizationMetrics.onboarding > 0) {
+            attention.push({
+              id: "onboarding-pipeline",
+              severity: "medium",
+              title: `${organizationMetrics.onboarding} organization${organizationMetrics.onboarding === 1 ? "" : "s"} in the onboarding pipeline`,
+              description: "These cases are not yet active.",
+              detectedAt: now,
+              resource: "Organizations",
+              owner: null,
+              nextAction: "Review onboarding",
+              href: CONSOLE_PATHS.organizations,
+            });
+          }
+        }
+        if (registeredUsers !== null) {
+          metrics.push({
+            key: "registered-users",
+            name: "Registered users",
+            value: String(registeredUsers),
+            unit: "people",
+            window: "current",
+            source: "public.users",
+            updatedAt: now,
+            available: true,
+            definition:
+              "Identity-store rows in public.users. Platform staff without a school membership are excluded.",
+          });
+        }
+        if (activeUsers30d !== null) {
+          metrics.push({
+            key: "active-users-30d",
+            name: "Active users (30 days)",
+            value: String(activeUsers30d),
+            unit: "people",
+            window: "trailing 30 days",
+            source: "auth.users.last_sign_in_at joined to public.users",
+            updatedAt: now,
+            available: true,
+            definition:
+              "Scholar users whose Auth last_sign_in_at is within 30 days. Account creation alone is not activity.",
+          });
+        }
+        if (scholarTenants !== null) {
+          metrics.push({
+            key: "scholar-tenants",
+            name: "Scholar tenant records",
+            value: String(scholarTenants),
+            unit: "tenants",
+            window: "current",
+            source: "public.schools",
+            updatedAt: now,
+            available: true,
+            definition:
+              "Rows in public.schools. Includes tenants not created through the Internal Console questionnaire.",
+          });
+        }
+      } catch {
+        organizationStore = "unavailable";
+      }
+    }
+
+    const currentWorkspace =
+      workspaces.find((workspace) => workspace.type === "role") ?? workspaces[0];
 
     return {
       viewer: {
@@ -485,7 +705,7 @@ export const getConsoleOverview = createServerFn({ method: "GET" })
       },
       context: {
         organization: "Sherivs Internal",
-        workspace: workspaces[0]?.name ?? "My Workspace",
+        workspace: currentWorkspace?.name ?? "My Workspace",
         environment,
         environmentSource,
         host: requestHost(),
@@ -511,5 +731,12 @@ export const getConsoleOverview = createServerFn({ method: "GET" })
       activeStaff,
       usageDefinition:
         "Active internal staff means platform_staff rows with status active. This number never includes school administrators, teachers, students, or parents.",
+      organizations,
+      organizationStore,
+      organizationMetrics,
+      assignments,
+      scholarTenants,
+      registeredUsers,
+      activeUsers30d,
     };
   });

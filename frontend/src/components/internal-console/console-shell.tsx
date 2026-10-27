@@ -19,6 +19,7 @@ import {
   Settings,
   UserCircle,
   Users,
+  Building2,
 } from "lucide-react";
 import { SherivsLogo } from "@/components/brand/sherivs-logo";
 import { useApp } from "@/contexts/app-context";
@@ -94,6 +95,7 @@ function remember(entry: RecentResource) {
 
 const NAV_ICONS: Record<string, LucideIcon> = {
   home: Home,
+  organizations: Building2,
   team: Users,
   workspaces: LayoutGrid,
   runtimes: Boxes,
@@ -210,6 +212,12 @@ function ConsoleChrome({ children }: { children: ReactNode }) {
       email: row.email,
       department: row.department,
       status: row.status,
+    })),
+    canReadOrganizations: viewer.capabilities.has("platform.tenants.read"),
+    organizations: (overview?.organizations ?? []).map((row) => ({
+      id: row.id,
+      displayName: row.displayName,
+      lifecycleState: row.lifecycleState,
     })),
     workspaces: overview?.workspaces ?? [],
     runtimes: overview?.runtimes?.length ? overview.runtimes : REGISTERED_RUNTIMES,

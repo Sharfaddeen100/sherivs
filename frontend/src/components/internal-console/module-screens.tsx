@@ -19,7 +19,7 @@ import {
 } from "@/lib/platform-staff/catalogue";
 import { getAccessReview } from "@/lib/platform-staff/support-access.functions";
 import { listConsoleAudit } from "@/lib/internal-console/activity.functions";
-import { SCHOLAR_ENTRY_URL } from "@/lib/internal-console/paths";
+import { CONSOLE_PATHS, SCHOLAR_ENTRY_URL } from "@/lib/internal-console/paths";
 import { workspaceFromAuthorized } from "@/lib/internal-console/workspaces";
 import {
   REGISTERED_RUNTIMES,
@@ -35,11 +35,108 @@ import {
   type ConsoleStaffRow,
 } from "@/lib/internal-console/overview";
 import { workspaceTypeLabel } from "@/lib/internal-console/workspaces";
+import { ROLE_WORKSPACE_MAPPINGS } from "@/lib/internal-console/role-workspace";
 import { consoleVisualFixtureActive } from "@/lib/internal-console/visual-fixture";
 import { ConfirmAction, ConsoleNotice, StaffStatusBadge } from "./console-primitives";
 
 function canManage(overviewCapabilities: string[]): boolean {
   return overviewCapabilities.includes("platform.staff.manage");
+}
+
+function WorkspaceLanding({ workspaceSlug }: { workspaceSlug: string }) {
+  const { overview } = useConsole();
+  const slug = workspaceSlug.replace(/^role:/, "").replace(/^role-/, "");
+  const capabilities = new Set(overview?.viewer.capabilities ?? []);
+  const tools: Array<{ href: string; label: string; detail: string }> = [];
+  if (slug.includes("operation") || slug === "platform_owner") {
+    if (capabilities.has("platform.tenants.read")) {
+      tools.push({
+        href: CONSOLE_PATHS.organizations,
+        label: "Organization pipeline",
+        detail: "Review onboarding cases that need attention.",
+      });
+    }
+    tools.push({
+      href: CONSOLE_PATHS.home,
+      label: "Platform overview",
+      detail: "Open the operational homepage.",
+    });
+  }
+  if (slug.includes("admin") || slug === "platform_admin") {
+    if (capabilities.has("platform.staff.read")) {
+      tools.push({
+        href: CONSOLE_PATHS.team,
+        label: "Staff directory",
+        detail: "Invite, review, and revoke internal access.",
+      });
+    }
+    if (capabilities.has("platform.config.read")) {
+      tools.push({
+        href: CONSOLE_PATHS.settings,
+        label: "Platform settings",
+        detail: "Environment and onboarding defaults.",
+      });
+    }
+  }
+  if (slug.includes("engineering") || slug === "engineering") {
+    tools.push({
+      href: CONSOLE_PATHS.runtimes,
+      label: "Runtime health",
+      detail: "Registered runtimes and Scholar availability.",
+    });
+    if (capabilities.has("platform.engineering.read")) {
+      tools.push({
+        href: CONSOLE_PATHS.activityMetrics,
+        label: "Engineering metrics",
+        detail: "Measured process metrics only.",
+      });
+    }
+  }
+  if (slug.includes("support") || slug === "support") {
+    tools.push({
+      href: CONSOLE_PATHS.organizations,
+      label: "Assigned organizations",
+      detail: overview?.assignments.length
+        ? `${overview.assignments.length} active assignment${overview.assignments.length === 1 ? "" : "s"}.`
+        : "No assignments are recorded yet.",
+    });
+  }
+  return (
+    <div style={{ marginTop: "1rem" }}>
+      <h2>Workspace tools</h2>
+      {tools.length ? (
+        <div className="sherivs-console-list">
+          {tools.map((tool) => (
+            <Link key={tool.href} to={tool.href as never} className="sherivs-console-row">
+              <strong>{tool.label}</strong>
+              <small>{tool.detail}</small>
+            </Link>
+          ))}
+        </div>
+      ) : (
+        <p className="sherivs-console-empty">
+          No additional tools are registered for this workspace. Task queues, tickets, and incident
+          lists are not implemented.
+        </p>
+      )}
+      {overview?.assignments.length && (slug.includes("support") || slug.includes("operation")) ? (
+        <div className="sherivs-console-list" style={{ marginTop: "0.8rem" }}>
+          {overview.assignments.map((assignment) => (
+            <Link
+              key={assignment.id}
+              to={CONSOLE_PATHS.organization(assignment.organizationId) as never}
+              className="sherivs-console-row"
+            >
+              <strong>{assignment.staffName ?? assignment.organizationId}</strong>
+              <small>
+                {assignment.assignmentType} · {assignment.status}
+              </small>
+            </Link>
+          ))}
+        </div>
+      ) : null}
+    </div>
+  );
 }
 
 export function ConsoleTeamDirectory() {
@@ -122,7 +219,7 @@ export function ConsoleTeamDirectory() {
                   sharedNames={overview.workspaces
                     .filter(
                       (workspace) =>
-                        workspace.type === "shared" &&
+                        workspace.type !== "personal" &&
                         workspace.members.some((member) => member.userId === row.id),
                     )
                     .map((workspace) => workspace.name)}
@@ -455,15 +552,16 @@ export function ConsoleInvitations() {
             </div>
           </div>
           <label>
-            Initial shared workspace
+            Initial workspace
             <select
               value={initialWorkspaceId}
               onChange={(event) => setInitialWorkspaceId(event.target.value)}
             >
-              <option value="">None — personal workspace only</option>
+              <option value="">Default from assigned role</option>
               {(overview?.workspaces ?? [])
                 .filter(
-                  (workspace) => workspace.type === "shared" && workspace.source === "database",
+                  (workspace) =>
+                    workspace.type !== "personal" && workspace.source === "database",
                 )
                 .map((workspace) => (
                   <option key={workspace.recordId} value={workspace.recordId}>
@@ -578,6 +676,83 @@ export function ConsoleAccessReview() {
           </p>
         </>
       ) : null}
+    </section>
+  );
+}
+
+export function ConsoleRoleCatalogue() {
+  const { overview } = useConsole();
+  if (!overview) return <section className="sherivs-console-card">Loading roles…</section>;
+  if (!overview.staffAvailable) {
+    return (
+      <section className="sherivs-console-card">
+        <h1>Role catalogue</h1>
+        <p>Role records are limited to authorized administrators.</p>
+      </section>
+    );
+  }
+  return (
+    <section className="sherivs-console-card" data-testid="console-roles">
+      <p className="sherivs-console-page-kicker">Team & Access</p>
+      <h1>Role catalogue</h1>
+      <p>
+        These are the database-backed platform roles. Presentation labels such as Engineer map onto
+        these codes. Workspace membership is not a capability grant.
+      </p>
+      <div className="sherivs-console-list" style={{ marginTop: "1rem" }}>
+        {ROLE_WORKSPACE_MAPPINGS.map((mapping) => (
+          <div key={mapping.roleCode} className="sherivs-console-row">
+            <strong>
+              {mapping.name}{" "}
+              {mapping.inPlatformRoles ? `(${mapping.roleCode})` : "(super admin mapping)"}
+            </strong>
+            <small>{mapping.description}</small>
+            <small>
+              Default workspace: {mapping.name}. Capabilities still come from{" "}
+              {mapping.inPlatformRoles ? "platform_roles" : "is_super_admin()"}.
+            </small>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+export function ConsoleSuspendedStaff() {
+  const { overview } = useConsole();
+  if (!overview) return <section className="sherivs-console-card">Loading staff…</section>;
+  if (!overview.staffAvailable) {
+    return (
+      <section className="sherivs-console-card">
+        <h1>Suspended and revoked</h1>
+        <p>Staff records are limited to authorized administrators.</p>
+      </section>
+    );
+  }
+  const rows = overview.staff.filter((row) => row.status === "suspended" || row.status === "revoked");
+  return (
+    <section className="sherivs-console-card" data-testid="console-suspended">
+      <p className="sherivs-console-page-kicker">Team & Access</p>
+      <h1>Suspended and revoked</h1>
+      <p>
+        Suspension bans the auth account. Revocation also removes roles. Personal workspace
+        ownership is preserved. Role-workspace membership is recalculated by the provisioning
+        engine.
+      </p>
+      {rows.length === 0 ? (
+        <p className="sherivs-console-empty">No suspended or revoked staff in the authorized directory.</p>
+      ) : (
+        <div className="sherivs-console-list">
+          {rows.map((row) => (
+            <div key={row.id} className="sherivs-console-row">
+              <strong>{row.fullName}</strong>
+              <small>
+                {row.email} · {row.status} · {row.roles.join(", ") || "no roles"}
+              </small>
+            </div>
+          ))}
+        </div>
+      )}
     </section>
   );
 }
@@ -727,6 +902,9 @@ export function ConsoleWorkspaceDetail() {
           Personal workspaces are private to their owner. There are no documents, notes, or files in
           V1.
         </p>
+      ) : null}
+      {workspace.type === "role" || workspace.slug.startsWith("role-") || workspace.id.startsWith("role:") ? (
+        <WorkspaceLanding workspaceSlug={workspace.slug} />
       ) : null}
       <h2 style={{ marginTop: "1rem" }}>Members</h2>
       {members.length ? (
@@ -983,11 +1161,15 @@ export function ConsoleLogs() {
 export function ConsoleMetrics() {
   const { overview } = useConsole();
   if (!overview) return <section className="sherivs-console-card">Loading metrics…</section>;
-  if (!overview.viewer.capabilities.includes("platform.engineering.read")) {
+  const canReadMetrics =
+    overview.viewer.capabilities.includes("platform.engineering.read") ||
+    overview.viewer.capabilities.includes("platform.operations.read") ||
+    overview.viewer.capabilities.includes("platform.tenants.read");
+  if (!canReadMetrics) {
     return (
       <section className="sherivs-console-card">
         <h1>Metrics</h1>
-        <p>Operational metrics require the engineering capability.</p>
+        <p>Operational metrics require an authorized operations, engineering, or tenant-read capability.</p>
       </section>
     );
   }
@@ -1058,6 +1240,13 @@ export function ConsoleSettings() {
         <div className="sherivs-console-row">
           <strong>Host</strong>
           <small>{overview?.context.host ?? "Unknown"}</small>
+        </div>
+        <div className="sherivs-console-row">
+          <strong>Onboarding defaults</strong>
+          <small>
+            Organization type: school. Runtime: Sherivs Scholar. These defaults are the supported V1
+            configuration, not a generic settings framework.
+          </small>
         </div>
       </div>
     </section>

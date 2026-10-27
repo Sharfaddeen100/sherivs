@@ -175,8 +175,8 @@ export const invitePlatformStaff = createServerFn({ method: "POST" })
         );
       }
       const row = workspace as { id: string; kind: string; status: string } | null;
-      if (!row || row.kind !== "shared" || row.status !== "active") {
-        throw new Error("Initial workspace must be an active shared workspace.");
+      if (!row || !["shared", "role"].includes(row.kind) || row.status !== "active") {
+        throw new Error("Initial workspace must be an active shared or role workspace.");
       }
     }
 
@@ -336,6 +336,10 @@ export const setPlatformStaffStatus = createServerFn({ method: "POST" })
       from: staff.status,
       to: data.status,
     });
+    const { error: syncErr } = await store(db).rpc("sync_platform_staff_workspaces", {
+      p_user_id: staff.id,
+    });
+    if (syncErr && !isMissingRelation(syncErr)) throw new Error(syncErr.message);
     return { ok: true };
   });
 
@@ -382,5 +386,9 @@ export const setPlatformStaffRoles = createServerFn({ method: "POST" })
       if (error) throw new Error(error.message);
     }
     await audit(context, "set_roles", staff.id, "succeeded", { added: toAdd, removed: toRemove });
+    const { error: syncErr } = await store(db).rpc("sync_platform_staff_workspaces", {
+      p_user_id: staff.id,
+    });
+    if (syncErr && !isMissingRelation(syncErr)) throw new Error(syncErr.message);
     return { roles: [...after] };
   });

@@ -67,9 +67,29 @@ export type ConsoleNavItem = {
 export const CONSOLE_NAV: readonly ConsoleNavItem[] = [
   {
     key: "home",
-    label: "Home",
+    label: "Overview",
     href: CONSOLE_PATHS.home,
     capability: null,
+  },
+  {
+    key: "organizations",
+    label: "Organizations",
+    href: CONSOLE_PATHS.organizations,
+    capability: "platform.tenants.read",
+    children: [
+      {
+        key: "organization-directory",
+        label: "Directory",
+        href: CONSOLE_PATHS.organizations,
+        capability: "platform.tenants.read",
+      },
+      {
+        key: "organization-onboard",
+        label: "Onboard organization",
+        href: CONSOLE_PATHS.organizationNew,
+        capability: "platform.tenants.manage",
+      },
+    ],
   },
   {
     key: "team",
@@ -79,7 +99,7 @@ export const CONSOLE_NAV: readonly ConsoleNavItem[] = [
     children: [
       {
         key: "team-directory",
-        label: "Team Directory",
+        label: "Staff Directory",
         href: CONSOLE_PATHS.team,
         capability: "platform.staff.read",
       },
@@ -87,6 +107,18 @@ export const CONSOLE_NAV: readonly ConsoleNavItem[] = [
         key: "team-invitations",
         label: "Invitations",
         href: CONSOLE_PATHS.teamInvitations,
+        capability: "platform.staff.read",
+      },
+      {
+        key: "team-roles",
+        label: "Role Catalogue",
+        href: CONSOLE_PATHS.teamRoles,
+        capability: "platform.staff.read",
+      },
+      {
+        key: "team-suspended",
+        label: "Suspended and Revoked",
+        href: CONSOLE_PATHS.teamSuspended,
         capability: "platform.staff.read",
       },
       {
@@ -134,7 +166,7 @@ export const CONSOLE_NAV: readonly ConsoleNavItem[] = [
   },
   {
     key: "activity",
-    label: "Activity & Audit",
+    label: "Intelligence & Assurance",
     href: CONSOLE_PATHS.activity,
     capability: "platform.audit.read",
     children: [
@@ -218,8 +250,14 @@ export type ConsoleQuickAction = {
 
 export const CONSOLE_QUICK_ACTIONS: readonly ConsoleQuickAction[] = [
   {
+    key: "onboard",
+    label: "Onboard organization",
+    href: CONSOLE_PATHS.organizationNew,
+    capability: "platform.tenants.manage",
+  },
+  {
     key: "invite",
-    label: "Invite Team Member",
+    label: "Invite staff",
     href: CONSOLE_PATHS.teamInvitations,
     capability: "platform.staff.manage",
   },

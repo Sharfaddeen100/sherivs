@@ -49,6 +49,7 @@ import { Route as ConsoleIndexRouteImport } from './routes/console/index'
 import { Route as ConsoleAccountRouteImport } from './routes/console/account'
 import { Route as ConsoleActivityRouteRouteImport } from './routes/console/activity/route'
 import { Route as ConsoleHelpRouteImport } from './routes/console/help'
+import { Route as ConsoleOrganizationsRouteRouteImport } from './routes/console/organizations/route'
 import { Route as ConsoleRuntimesRouteRouteImport } from './routes/console/runtimes/route'
 import { Route as ConsoleSettingsRouteImport } from './routes/console/settings'
 import { Route as ConsoleTeamRouteRouteImport } from './routes/console/team/route'
@@ -93,11 +94,16 @@ import { Route as ConsoleActivityAdminRouteImport } from './routes/console/activ
 import { Route as ConsoleActivityLogsRouteImport } from './routes/console/activity/logs'
 import { Route as ConsoleActivityMetricsRouteImport } from './routes/console/activity/metrics'
 import { Route as ConsoleActivitySecurityRouteImport } from './routes/console/activity/security'
+import { Route as ConsoleOrganizationsIndexRouteImport } from './routes/console/organizations/index'
+import { Route as ConsoleOrganizationsOrganizationIdRouteImport } from './routes/console/organizations/$organizationId'
+import { Route as ConsoleOrganizationsNewRouteImport } from './routes/console/organizations/new'
 import { Route as ConsoleRuntimesIndexRouteImport } from './routes/console/runtimes/index'
 import { Route as ConsoleRuntimesScholarRouteImport } from './routes/console/runtimes/scholar'
 import { Route as ConsoleTeamIndexRouteImport } from './routes/console/team/index'
 import { Route as ConsoleTeamAccessRouteImport } from './routes/console/team/access'
 import { Route as ConsoleTeamInvitationsRouteImport } from './routes/console/team/invitations'
+import { Route as ConsoleTeamRolesRouteImport } from './routes/console/team/roles'
+import { Route as ConsoleTeamSuspendedRouteImport } from './routes/console/team/suspended'
 import { Route as ConsoleWorkspacesIndexRouteImport } from './routes/console/workspaces/index'
 import { Route as ConsoleWorkspacesWorkspaceIdRouteImport } from './routes/console/workspaces/$workspaceId'
 import { Route as HomeSSectionRouteImport } from './routes/home/s.$section'
@@ -309,6 +315,12 @@ const ConsoleHelpRoute = ConsoleHelpRouteImport.update({
   path: '/help',
   getParentRoute: () => ConsoleRouteRoute,
 } as any)
+const ConsoleOrganizationsRouteRoute =
+  ConsoleOrganizationsRouteRouteImport.update({
+    id: '/organizations',
+    path: '/organizations',
+    getParentRoute: () => ConsoleRouteRoute,
+  } as any)
 const ConsoleRuntimesRouteRoute = ConsoleRuntimesRouteRouteImport.update({
   id: '/runtimes',
   path: '/runtimes',
@@ -530,6 +542,23 @@ const ConsoleActivitySecurityRoute = ConsoleActivitySecurityRouteImport.update({
   path: '/security',
   getParentRoute: () => ConsoleActivityRouteRoute,
 } as any)
+const ConsoleOrganizationsIndexRoute =
+  ConsoleOrganizationsIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => ConsoleOrganizationsRouteRoute,
+  } as any)
+const ConsoleOrganizationsOrganizationIdRoute =
+  ConsoleOrganizationsOrganizationIdRouteImport.update({
+    id: '/$organizationId',
+    path: '/$organizationId',
+    getParentRoute: () => ConsoleOrganizationsRouteRoute,
+  } as any)
+const ConsoleOrganizationsNewRoute = ConsoleOrganizationsNewRouteImport.update({
+  id: '/new',
+  path: '/new',
+  getParentRoute: () => ConsoleOrganizationsRouteRoute,
+} as any)
 const ConsoleRuntimesIndexRoute = ConsoleRuntimesIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -553,6 +582,16 @@ const ConsoleTeamAccessRoute = ConsoleTeamAccessRouteImport.update({
 const ConsoleTeamInvitationsRoute = ConsoleTeamInvitationsRouteImport.update({
   id: '/invitations',
   path: '/invitations',
+  getParentRoute: () => ConsoleTeamRouteRoute,
+} as any)
+const ConsoleTeamRolesRoute = ConsoleTeamRolesRouteImport.update({
+  id: '/roles',
+  path: '/roles',
+  getParentRoute: () => ConsoleTeamRouteRoute,
+} as any)
+const ConsoleTeamSuspendedRoute = ConsoleTeamSuspendedRouteImport.update({
+  id: '/suspended',
+  path: '/suspended',
   getParentRoute: () => ConsoleTeamRouteRoute,
 } as any)
 const ConsoleWorkspacesIndexRoute = ConsoleWorkspacesIndexRouteImport.update({
@@ -633,6 +672,7 @@ export interface FileRoutesByFullPath {
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/console/activity': typeof ConsoleActivityRouteRouteWithChildren
+  '/console/organizations': typeof ConsoleOrganizationsRouteRouteWithChildren
   '/console/runtimes': typeof ConsoleRuntimesRouteRouteWithChildren
   '/console/team': typeof ConsoleTeamRouteRouteWithChildren
   '/console/workspaces': typeof ConsoleWorkspacesRouteRouteWithChildren
@@ -697,9 +737,13 @@ export interface FileRoutesByFullPath {
   '/console/activity/logs': typeof ConsoleActivityLogsRoute
   '/console/activity/metrics': typeof ConsoleActivityMetricsRoute
   '/console/activity/security': typeof ConsoleActivitySecurityRoute
+  '/console/organizations/$organizationId': typeof ConsoleOrganizationsOrganizationIdRoute
+  '/console/organizations/new': typeof ConsoleOrganizationsNewRoute
   '/console/runtimes/scholar': typeof ConsoleRuntimesScholarRoute
   '/console/team/access': typeof ConsoleTeamAccessRoute
   '/console/team/invitations': typeof ConsoleTeamInvitationsRoute
+  '/console/team/roles': typeof ConsoleTeamRolesRoute
+  '/console/team/suspended': typeof ConsoleTeamSuspendedRoute
   '/console/workspaces/$workspaceId': typeof ConsoleWorkspacesWorkspaceIdRoute
   '/home/s/$section': typeof HomeSSectionRoute
   '/help/': typeof siteHelpIndexRoute
@@ -708,6 +752,7 @@ export interface FileRoutesByFullPath {
   '/security/': typeof siteSecurityIndexRoute
   '/solutions/': typeof siteSolutionsIndexRoute
   '/console/activity/': typeof ConsoleActivityIndexRoute
+  '/console/organizations/': typeof ConsoleOrganizationsIndexRoute
   '/console/runtimes/': typeof ConsoleRuntimesIndexRoute
   '/console/team/': typeof ConsoleTeamIndexRoute
   '/console/workspaces/': typeof ConsoleWorkspacesIndexRoute
@@ -787,9 +832,13 @@ export interface FileRoutesByTo {
   '/console/activity/logs': typeof ConsoleActivityLogsRoute
   '/console/activity/metrics': typeof ConsoleActivityMetricsRoute
   '/console/activity/security': typeof ConsoleActivitySecurityRoute
+  '/console/organizations/$organizationId': typeof ConsoleOrganizationsOrganizationIdRoute
+  '/console/organizations/new': typeof ConsoleOrganizationsNewRoute
   '/console/runtimes/scholar': typeof ConsoleRuntimesScholarRoute
   '/console/team/access': typeof ConsoleTeamAccessRoute
   '/console/team/invitations': typeof ConsoleTeamInvitationsRoute
+  '/console/team/roles': typeof ConsoleTeamRolesRoute
+  '/console/team/suspended': typeof ConsoleTeamSuspendedRoute
   '/console/workspaces/$workspaceId': typeof ConsoleWorkspacesWorkspaceIdRoute
   '/home/s/$section': typeof HomeSSectionRoute
   '/help': typeof siteHelpIndexRoute
@@ -798,6 +847,7 @@ export interface FileRoutesByTo {
   '/security': typeof siteSecurityIndexRoute
   '/solutions': typeof siteSolutionsIndexRoute
   '/console/activity': typeof ConsoleActivityIndexRoute
+  '/console/organizations': typeof ConsoleOrganizationsIndexRoute
   '/console/runtimes': typeof ConsoleRuntimesIndexRoute
   '/console/team': typeof ConsoleTeamIndexRoute
   '/console/workspaces': typeof ConsoleWorkspacesIndexRoute
@@ -826,6 +876,7 @@ export interface FileRoutesById {
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/console/activity': typeof ConsoleActivityRouteRouteWithChildren
+  '/console/organizations': typeof ConsoleOrganizationsRouteRouteWithChildren
   '/console/runtimes': typeof ConsoleRuntimesRouteRouteWithChildren
   '/console/team': typeof ConsoleTeamRouteRouteWithChildren
   '/console/workspaces': typeof ConsoleWorkspacesRouteRouteWithChildren
@@ -890,9 +941,13 @@ export interface FileRoutesById {
   '/console/activity/logs': typeof ConsoleActivityLogsRoute
   '/console/activity/metrics': typeof ConsoleActivityMetricsRoute
   '/console/activity/security': typeof ConsoleActivitySecurityRoute
+  '/console/organizations/$organizationId': typeof ConsoleOrganizationsOrganizationIdRoute
+  '/console/organizations/new': typeof ConsoleOrganizationsNewRoute
   '/console/runtimes/scholar': typeof ConsoleRuntimesScholarRoute
   '/console/team/access': typeof ConsoleTeamAccessRoute
   '/console/team/invitations': typeof ConsoleTeamInvitationsRoute
+  '/console/team/roles': typeof ConsoleTeamRolesRoute
+  '/console/team/suspended': typeof ConsoleTeamSuspendedRoute
   '/console/workspaces/$workspaceId': typeof ConsoleWorkspacesWorkspaceIdRoute
   '/home/s/$section': typeof HomeSSectionRoute
   '/(site)/help/': typeof siteHelpIndexRoute
@@ -901,6 +956,7 @@ export interface FileRoutesById {
   '/(site)/security/': typeof siteSecurityIndexRoute
   '/(site)/solutions/': typeof siteSolutionsIndexRoute
   '/console/activity/': typeof ConsoleActivityIndexRoute
+  '/console/organizations/': typeof ConsoleOrganizationsIndexRoute
   '/console/runtimes/': typeof ConsoleRuntimesIndexRoute
   '/console/team/': typeof ConsoleTeamIndexRoute
   '/console/workspaces/': typeof ConsoleWorkspacesIndexRoute
@@ -929,6 +985,7 @@ export interface FileRouteTypes {
     | '/robots.txt'
     | '/sitemap.xml'
     | '/console/activity'
+    | '/console/organizations'
     | '/console/runtimes'
     | '/console/team'
     | '/console/workspaces'
@@ -993,9 +1050,13 @@ export interface FileRouteTypes {
     | '/console/activity/logs'
     | '/console/activity/metrics'
     | '/console/activity/security'
+    | '/console/organizations/$organizationId'
+    | '/console/organizations/new'
     | '/console/runtimes/scholar'
     | '/console/team/access'
     | '/console/team/invitations'
+    | '/console/team/roles'
+    | '/console/team/suspended'
     | '/console/workspaces/$workspaceId'
     | '/home/s/$section'
     | '/help/'
@@ -1004,6 +1065,7 @@ export interface FileRouteTypes {
     | '/security/'
     | '/solutions/'
     | '/console/activity/'
+    | '/console/organizations/'
     | '/console/runtimes/'
     | '/console/team/'
     | '/console/workspaces/'
@@ -1083,9 +1145,13 @@ export interface FileRouteTypes {
     | '/console/activity/logs'
     | '/console/activity/metrics'
     | '/console/activity/security'
+    | '/console/organizations/$organizationId'
+    | '/console/organizations/new'
     | '/console/runtimes/scholar'
     | '/console/team/access'
     | '/console/team/invitations'
+    | '/console/team/roles'
+    | '/console/team/suspended'
     | '/console/workspaces/$workspaceId'
     | '/home/s/$section'
     | '/help'
@@ -1094,6 +1160,7 @@ export interface FileRouteTypes {
     | '/security'
     | '/solutions'
     | '/console/activity'
+    | '/console/organizations'
     | '/console/runtimes'
     | '/console/team'
     | '/console/workspaces'
@@ -1121,6 +1188,7 @@ export interface FileRouteTypes {
     | '/robots.txt'
     | '/sitemap.xml'
     | '/console/activity'
+    | '/console/organizations'
     | '/console/runtimes'
     | '/console/team'
     | '/console/workspaces'
@@ -1185,9 +1253,13 @@ export interface FileRouteTypes {
     | '/console/activity/logs'
     | '/console/activity/metrics'
     | '/console/activity/security'
+    | '/console/organizations/$organizationId'
+    | '/console/organizations/new'
     | '/console/runtimes/scholar'
     | '/console/team/access'
     | '/console/team/invitations'
+    | '/console/team/roles'
+    | '/console/team/suspended'
     | '/console/workspaces/$workspaceId'
     | '/home/s/$section'
     | '/(site)/help/'
@@ -1196,6 +1268,7 @@ export interface FileRouteTypes {
     | '/(site)/security/'
     | '/(site)/solutions/'
     | '/console/activity/'
+    | '/console/organizations/'
     | '/console/runtimes/'
     | '/console/team/'
     | '/console/workspaces/'
@@ -1515,6 +1588,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ConsoleHelpRouteImport
       parentRoute: typeof ConsoleRouteRoute
     }
+    '/console/organizations': {
+      id: '/console/organizations'
+      path: '/organizations'
+      fullPath: '/console/organizations'
+      preLoaderRoute: typeof ConsoleOrganizationsRouteRouteImport
+      parentRoute: typeof ConsoleRouteRoute
+    }
     '/console/runtimes': {
       id: '/console/runtimes'
       path: '/runtimes'
@@ -1823,6 +1903,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ConsoleActivitySecurityRouteImport
       parentRoute: typeof ConsoleActivityRouteRoute
     }
+    '/console/organizations/': {
+      id: '/console/organizations/'
+      path: '/'
+      fullPath: '/console/organizations/'
+      preLoaderRoute: typeof ConsoleOrganizationsIndexRouteImport
+      parentRoute: typeof ConsoleOrganizationsRouteRoute
+    }
+    '/console/organizations/$organizationId': {
+      id: '/console/organizations/$organizationId'
+      path: '/$organizationId'
+      fullPath: '/console/organizations/$organizationId'
+      preLoaderRoute: typeof ConsoleOrganizationsOrganizationIdRouteImport
+      parentRoute: typeof ConsoleOrganizationsRouteRoute
+    }
+    '/console/organizations/new': {
+      id: '/console/organizations/new'
+      path: '/new'
+      fullPath: '/console/organizations/new'
+      preLoaderRoute: typeof ConsoleOrganizationsNewRouteImport
+      parentRoute: typeof ConsoleOrganizationsRouteRoute
+    }
     '/console/runtimes/': {
       id: '/console/runtimes/'
       path: '/'
@@ -1856,6 +1957,20 @@ declare module '@tanstack/react-router' {
       path: '/invitations'
       fullPath: '/console/team/invitations'
       preLoaderRoute: typeof ConsoleTeamInvitationsRouteImport
+      parentRoute: typeof ConsoleTeamRouteRoute
+    }
+    '/console/team/roles': {
+      id: '/console/team/roles'
+      path: '/roles'
+      fullPath: '/console/team/roles'
+      preLoaderRoute: typeof ConsoleTeamRolesRouteImport
+      parentRoute: typeof ConsoleTeamRouteRoute
+    }
+    '/console/team/suspended': {
+      id: '/console/team/suspended'
+      path: '/suspended'
+      fullPath: '/console/team/suspended'
+      preLoaderRoute: typeof ConsoleTeamSuspendedRouteImport
       parentRoute: typeof ConsoleTeamRouteRoute
     }
     '/console/workspaces/': {
@@ -2120,6 +2235,25 @@ const ConsoleActivityRouteRouteChildren: ConsoleActivityRouteRouteChildren = {
 const ConsoleActivityRouteRouteWithChildren =
   ConsoleActivityRouteRoute._addFileChildren(ConsoleActivityRouteRouteChildren)
 
+interface ConsoleOrganizationsRouteRouteChildren {
+  ConsoleOrganizationsOrganizationIdRoute: typeof ConsoleOrganizationsOrganizationIdRoute
+  ConsoleOrganizationsNewRoute: typeof ConsoleOrganizationsNewRoute
+  ConsoleOrganizationsIndexRoute: typeof ConsoleOrganizationsIndexRoute
+}
+
+const ConsoleOrganizationsRouteRouteChildren: ConsoleOrganizationsRouteRouteChildren =
+  {
+    ConsoleOrganizationsOrganizationIdRoute:
+      ConsoleOrganizationsOrganizationIdRoute,
+    ConsoleOrganizationsNewRoute: ConsoleOrganizationsNewRoute,
+    ConsoleOrganizationsIndexRoute: ConsoleOrganizationsIndexRoute,
+  }
+
+const ConsoleOrganizationsRouteRouteWithChildren =
+  ConsoleOrganizationsRouteRoute._addFileChildren(
+    ConsoleOrganizationsRouteRouteChildren,
+  )
+
 interface ConsoleRuntimesRouteRouteChildren {
   ConsoleRuntimesScholarRoute: typeof ConsoleRuntimesScholarRoute
   ConsoleRuntimesIndexRoute: typeof ConsoleRuntimesIndexRoute
@@ -2136,12 +2270,16 @@ const ConsoleRuntimesRouteRouteWithChildren =
 interface ConsoleTeamRouteRouteChildren {
   ConsoleTeamAccessRoute: typeof ConsoleTeamAccessRoute
   ConsoleTeamInvitationsRoute: typeof ConsoleTeamInvitationsRoute
+  ConsoleTeamRolesRoute: typeof ConsoleTeamRolesRoute
+  ConsoleTeamSuspendedRoute: typeof ConsoleTeamSuspendedRoute
   ConsoleTeamIndexRoute: typeof ConsoleTeamIndexRoute
 }
 
 const ConsoleTeamRouteRouteChildren: ConsoleTeamRouteRouteChildren = {
   ConsoleTeamAccessRoute: ConsoleTeamAccessRoute,
   ConsoleTeamInvitationsRoute: ConsoleTeamInvitationsRoute,
+  ConsoleTeamRolesRoute: ConsoleTeamRolesRoute,
+  ConsoleTeamSuspendedRoute: ConsoleTeamSuspendedRoute,
   ConsoleTeamIndexRoute: ConsoleTeamIndexRoute,
 }
 
@@ -2166,6 +2304,7 @@ const ConsoleWorkspacesRouteRouteWithChildren =
 
 interface ConsoleRouteRouteChildren {
   ConsoleActivityRouteRoute: typeof ConsoleActivityRouteRouteWithChildren
+  ConsoleOrganizationsRouteRoute: typeof ConsoleOrganizationsRouteRouteWithChildren
   ConsoleRuntimesRouteRoute: typeof ConsoleRuntimesRouteRouteWithChildren
   ConsoleTeamRouteRoute: typeof ConsoleTeamRouteRouteWithChildren
   ConsoleWorkspacesRouteRoute: typeof ConsoleWorkspacesRouteRouteWithChildren
@@ -2177,6 +2316,7 @@ interface ConsoleRouteRouteChildren {
 
 const ConsoleRouteRouteChildren: ConsoleRouteRouteChildren = {
   ConsoleActivityRouteRoute: ConsoleActivityRouteRouteWithChildren,
+  ConsoleOrganizationsRouteRoute: ConsoleOrganizationsRouteRouteWithChildren,
   ConsoleRuntimesRouteRoute: ConsoleRuntimesRouteRouteWithChildren,
   ConsoleTeamRouteRoute: ConsoleTeamRouteRouteWithChildren,
   ConsoleWorkspacesRouteRoute: ConsoleWorkspacesRouteRouteWithChildren,

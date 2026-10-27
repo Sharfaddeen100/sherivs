@@ -80,6 +80,7 @@ describe("internal console V1 contract", () => {
     };
     expect(filterNav(CONSOLE_NAV, support).map((item) => item.key)).toEqual([
       "home",
+      "organizations",
       "workspaces",
       "runtimes",
     ]);
@@ -99,6 +100,9 @@ describe("internal console V1 contract", () => {
       "runtimes",
       "activity",
     ]);
+    expect(filterNav(CONSOLE_NAV, engineer).some((item) => item.key === "organizations")).toBe(
+      false,
+    );
     const activity = filterNav(CONSOLE_NAV, engineer).find((item) => item.key === "activity");
     expect(activity?.navigable).toBe(false);
     expect(activity?.children?.map((item) => item.key)).toEqual(["metrics", "logs"]);
@@ -122,6 +126,15 @@ describe("internal console V1 contract", () => {
         viewerId: "admin",
         isMember: false,
         canManageShared: true,
+      }),
+    ).toBe(true);
+    expect(
+      isWorkingWorkspace({
+        kind: "role",
+        ownerId: "owner",
+        viewerId: "engineer",
+        isMember: true,
+        canManageShared: false,
       }),
     ).toBe(true);
     expect(
@@ -189,6 +202,18 @@ describe("internal console V1 contract", () => {
       help: [],
     });
     expect(hits.some((hit) => hit.kind === "staff")).toBe(false);
+    const orgHits = searchConsole({
+      query: "riverside",
+      canReadStaff: false,
+      canReadOrganizations: false,
+      staff: [],
+      organizations: [{ id: "1", displayName: "Riverside School", lifecycleState: "active" }],
+      workspaces: [],
+      runtimes: REGISTERED_RUNTIMES,
+      pages: [],
+      help: [],
+    });
+    expect(orgHits.some((hit) => hit.kind === "organization")).toBe(false);
   });
 
   it("slugifies shared workspace names without inventing operational data", () => {
@@ -382,6 +407,11 @@ describe("local visual fixture", () => {
     expect(overview.metrics.every((metric) => metric.available === false)).toBe(true);
     expect(overview.viewer.isSuperAdmin).toBe(false);
     expect(overview.viewer.email).toBe("console.fixture@localhost");
+    expect(overview.organizationStore).toBe("fixture");
+    expect(overview.organizations).toEqual([]);
+    expect(overview.assignments).toEqual([]);
+    expect(existsSync("frontend/src/routes/console/organizations/index.tsx")).toBe(true);
+    expect(existsSync("frontend/src/routes/console/organizations/new.tsx")).toBe(true);
   });
 
   it("keeps the fixture continue control behind the local gate", () => {

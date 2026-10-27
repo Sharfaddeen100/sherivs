@@ -60,7 +60,7 @@ export type PlatformWorkspaceRecord = {
   slug: string;
   name: string;
   description: string;
-  kind: "personal" | "shared";
+  kind: "personal" | "shared" | "role";
   status: "active" | "archived";
   owner_id: string;
 };
@@ -82,7 +82,7 @@ export function mapWorkspaceRecord(
     recordId: row.id,
     name: row.name,
     description: row.description,
-    type: row.kind,
+    type: row.kind === "role" ? "role" : row.kind,
     access,
     team,
     href: row.kind === "personal" ? CONSOLE_PATHS.myWorkspace : CONSOLE_PATHS.workspace(row.id),

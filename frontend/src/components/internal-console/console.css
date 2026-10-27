@@ -615,9 +615,54 @@
 }
 
 .sherivs-console-pill.is-suspended,
-.sherivs-console-pill.is-revoked {
+.sherivs-console-pill.is-revoked,
+.sherivs-console-pill.is-provisioning_failed,
+.sherivs-console-pill.is-deactivated {
   color: var(--console-red);
   background: rgba(180, 35, 24, 0.1);
+}
+
+.sherivs-console-pill.is-draft,
+.sherivs-console-pill.is-submitted,
+.sherivs-console-pill.is-under_review,
+.sherivs-console-pill.is-provisioning,
+.sherivs-console-pill.is-ready_for_activation {
+  color: var(--console-amber);
+  background: rgba(180, 83, 9, 0.12);
+}
+
+.sherivs-console-steps {
+  display: grid;
+  gap: 0.35rem;
+  margin: 1rem 0;
+  padding-left: 1.1rem;
+  color: var(--console-muted);
+  font-size: 0.88rem;
+}
+
+.sherivs-console-steps .is-current {
+  color: var(--console-ink);
+  font-weight: 650;
+}
+
+.sherivs-console-check {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-weight: 500;
+}
+
+.sherivs-console-form fieldset {
+  border: 1px solid var(--console-line);
+  border-radius: 12px;
+  padding: 0.75rem;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.sherivs-console-form legend {
+  font-size: 0.85rem;
+  font-weight: 650;
 }
 
 .sherivs-console-confirm {
