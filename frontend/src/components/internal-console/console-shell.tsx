@@ -99,7 +99,15 @@ function NavGroup({
               to={item.href as never}
               className={navActive(item.href, path) ? "is-active" : undefined}
               title={item.label}
-              onClick={() => rememberResource({ id: item.key, title: item.label, href: item.href, kind: "page" })}
+              onClick={() =>
+                rememberResource({
+                  id: item.key,
+                  title: item.label,
+                  href: item.href,
+                  kind: "page",
+                  at: new Date().toISOString(),
+                })
+              }
             >
               {collapsed ? item.label.slice(0, 1) : item.label}
             </Link>
@@ -236,6 +244,7 @@ function ConsoleChrome({ children }: { children: ReactNode }) {
                           title: hit.title,
                           href: hit.href,
                           kind: hit.kind,
+                          at: new Date().toISOString(),
                         });
                       }}
                     >

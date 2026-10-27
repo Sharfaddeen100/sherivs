@@ -39,9 +39,9 @@ export function readRecentResources(allowedHrefs: ReadonlySet<string>): RecentRe
   }
 }
 
-export function rememberResource(entry: Omit<RecentResource, "at">): void {
+export function rememberResource(entry: RecentResource): void {
   if (typeof window === "undefined") return;
-  const next: RecentResource = { ...entry, at: new Date().toISOString() };
+  const next: RecentResource = entry;
   const allowed = new Set<string>([entry.href]);
   const existing = readRecentResources(allowed);
   const rest = (() => {

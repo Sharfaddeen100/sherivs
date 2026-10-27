@@ -139,7 +139,7 @@ export const getConsoleOverview = createServerFn({ method: "GET" })
         name: "Sherivs Scholar",
         status: processStatus,
         detail:
-          "Scholar is served by this application process. This check does not prove every school workflow is functioning.",
+          "Sherivs Scholar runs on this application process. This check does not prove every school workflow is functioning.",
         lastCheck: healthReport.ts,
         href: CONSOLE_PATHS.scholar,
         source: "same application process as /health.json",

@@ -6,7 +6,7 @@ export const CONSOLE_HELP_ARTICLES: readonly ConsoleHelpArticle[] = [
     id: "console-vs-scholar",
     title: "Internal Console and Sherivs Scholar",
     description:
-      "The Internal Console is for Sherivs staff. Scholar is the school runtime. They share a shell language, not a dashboard.",
+      "The Internal Console is for Sherivs staff. Sherivs Scholar serves schools. They share a shell language, not a dashboard.",
     href: CONSOLE_PATHS.help,
   },
   {
