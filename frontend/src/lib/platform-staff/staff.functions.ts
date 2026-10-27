@@ -1,10 +1,12 @@
 /**
  * Sherivs internal console — platform staff administration (SHERIVS-008).
  *
- * Every write runs with the SERVICE ROLE, and only after the canonical
- * platform-super-admin gate. Clients have no write grant on platform_staff /
- * platform_staff_roles (RLS + grants in migration 20261020000150). Every
- * operation is audited (control-plane scope, tenantId null) — never secrets.
+ * Every write runs with the SERVICE ROLE after a capability check
+ * (`platform.staff.manage`, which includes super admins). Privileged role
+ * grants still require the platform-super-admin gate. Clients have no write
+ * grant on platform_staff / platform_staff_roles (RLS + grants in migration
+ * 20261020000150). Every operation is audited (control-plane scope, tenantId
+ * null) — never secrets.
  *
  * `client.server` is imported INSIDE handlers so this file stays safe to
  * import from components.
@@ -18,12 +20,24 @@ import { requirePlatformSuperAdmin } from "@/lib/security-role-gate";
 import { assertInternalAal2 } from "@/lib/security/mfa-server";
 import { writeAuditRecord } from "@/lib/server/write-audit";
 import { SystemClock, TimeAuthority } from "@/lib/kernel/time-authority";
-import { PLATFORM_ROLE_CODES, canTransition, type PlatformStaffStatus } from "./catalogue";
+import {
+  PLATFORM_ROLE_CODES,
+  PRIVILEGED_PLATFORM_ROLES,
+  canTransition,
+  type PlatformStaffStatus,
+} from "./catalogue";
 
 type GateContext = {
   supabase: Parameters<typeof requirePlatformSuperAdmin>[0];
   claims: { exp: number };
   userId: string;
+};
+
+type RpcClient = {
+  rpc: (
+    fn: string,
+    args?: Record<string, unknown>,
+  ) => PromiseLike<{ data: unknown; error: unknown }>;
 };
 
 async function assertSuper(context: GateContext) {
@@ -33,6 +47,15 @@ async function assertSuper(context: GateContext) {
     sessionValid:
       typeof context?.claims?.exp === "number" && tokenMsRemaining(context.claims.exp) > 0,
   });
+}
+
+async function assertCapability(context: GateContext, capability: string) {
+  assertInternalAal2((context as { claims?: { aal?: unknown } }).claims);
+  const { data, error } = await (context.supabase as unknown as RpcClient).rpc(
+    "has_platform_capability",
+    { p_capability: capability },
+  );
+  if (error || data !== true) throw new Error("Not authorized");
 }
 
 async function admin() {
@@ -79,7 +102,7 @@ const roleList = z.array(z.enum(PLATFORM_ROLE_CODES)).max(PLATFORM_ROLE_CODES.le
 export const listPlatformStaff = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    await assertSuper(context);
+    await assertCapability(context, "platform.staff.read");
     const db = await admin();
     const { data, error } = await db
       .from("platform_staff")
@@ -116,7 +139,10 @@ export const invitePlatformStaff = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .validator((input: unknown) => inviteSchema.parse(input))
   .handler(async ({ data, context }) => {
-    await assertSuper(context);
+    await assertCapability(context, "platform.staff.manage");
+    if (data.roles.some((role) => PRIVILEGED_PLATFORM_ROLES.has(role))) {
+      await assertSuper(context);
+    }
     const db = await admin();
 
     const { data: existing } = await db
@@ -191,7 +217,7 @@ export const resendPlatformStaffInvite = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .validator((input: unknown) => idSchema.parse(input))
   .handler(async ({ data, context }) => {
-    await assertSuper(context);
+    await assertCapability(context, "platform.staff.manage");
     const staff = await loadStaff(data.staffId);
     if (staff.status !== "invited") throw new Error("Only pending invites can be resent.");
     const db = await admin();
@@ -224,7 +250,7 @@ export const setPlatformStaffStatus = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .validator((input: unknown) => statusSchema.parse(input))
   .handler(async ({ data, context }) => {
-    await assertSuper(context);
+    await assertCapability(context, "platform.staff.manage");
     if (data.staffId === context.userId) throw new Error("You cannot change your own status.");
     const staff = await loadStaff(data.staffId);
     if (!canTransition(staff.status, data.status)) {
@@ -266,7 +292,7 @@ export const setPlatformStaffRoles = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .validator((input: unknown) => rolesSchema.parse(input))
   .handler(async ({ data, context }) => {
-    await assertSuper(context);
+    await assertCapability(context, "platform.staff.manage");
     const staff = await loadStaff(data.staffId);
     if (staff.status === "revoked") throw new Error("Revoked staff cannot hold roles.");
     const db = await admin();
@@ -276,6 +302,9 @@ export const setPlatformStaffRoles = createServerFn({ method: "POST" })
       .eq("staff_id", staff.id);
     const before = new Set((current ?? []).map((r) => r.role_code));
     const after = new Set<string>(data.roles);
+    if ([...before, ...after].some((role) => (PRIVILEGED_PLATFORM_ROLES as ReadonlySet<string>).has(role))) {
+      await assertSuper(context);
+    }
     const toAdd = [...after].filter((r) => !before.has(r));
     const toRemove = [...before].filter((r) => !after.has(r));
     if (toRemove.length) {

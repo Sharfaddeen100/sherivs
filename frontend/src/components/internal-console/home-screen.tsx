@@ -1,0 +1,207 @@
+import { Link } from "@tanstack/react-router";
+import { CONSOLE_HEALTH_LABELS, type ConsoleHealthState } from "@/lib/internal-console/status";
+import { quickActionsFor } from "@/lib/internal-console/roles";
+import { CONSOLE_PATHS } from "@/lib/internal-console/paths";
+import { allowedHrefsFrom, readRecentResources } from "@/lib/internal-console/recent";
+import { SCHOLAR_RUNTIME_CONTRACT } from "@/lib/internal-console/runtime-contract";
+import { useConsole } from "./console-shell";
+
+function StatusBadge({ status }: { status: ConsoleHealthState }) {
+  return (
+    <span className={`sherivs-console-status is-${status}`}>
+      <i />
+      {CONSOLE_HEALTH_LABELS[status]}
+    </span>
+  );
+}
+
+export function ConsoleHomeScreen() {
+  const { overview, error } = useConsole();
+  if (!overview) {
+    return (
+      <section className="sherivs-console-card">
+        <p>{error ?? "Loading operational status…"}</p>
+      </section>
+    );
+  }
+
+  const viewer = {
+    isSuperAdmin: overview.viewer.isSuperAdmin,
+    capabilities: new Set(overview.viewer.capabilities),
+  };
+  const actions = quickActionsFor(viewer);
+  const allowed = allowedHrefsFrom([
+    ...overview.workspaces,
+    { href: CONSOLE_PATHS.home },
+    { href: CONSOLE_PATHS.scholar },
+    { href: CONSOLE_PATHS.team },
+    { href: CONSOLE_PATHS.help },
+  ]);
+  const recent = readRecentResources(allowed);
+
+  return (
+    <>
+      <section className="sherivs-console-card sherivs-console-welcome" data-testid="console-home">
+        <p>Welcome back, {overview.viewer.name}</p>
+        <h1>Internal Platform Operations</h1>
+        <p>
+          {overview.context.organization} · {overview.viewer.presentationLabel} · {overview.context.workspace}
+        </p>
+        <p>
+          Environment: {overview.context.environment}
+          {overview.context.environmentSource !== "not configured"
+            ? ` (${overview.context.environmentSource})`
+            : " — environment is not configured"}
+        </p>
+      </section>
+
+      <section className="sherivs-console-card">
+        <h2>Platform health</h2>
+        <p>{overview.health.caveat}</p>
+        <div className="sherivs-console-grid" style={{ marginTop: "0.9rem" }}>
+          {overview.health.cards.map((card) => (
+            <Link key={card.key} to={card.href as never} className="sherivs-console-row">
+              <strong>{card.name}</strong>
+              <StatusBadge status={card.status} />
+              <small>{card.detail}</small>
+              <small>
+                Source: {card.source}
+                {card.lastCheck ? ` · Updated ${new Date(card.lastCheck).toLocaleString()}` : " · No successful check"}
+              </small>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <section className="sherivs-console-card">
+        <h2>Operational metrics</h2>
+        <p>Only measured values are shown as numbers. Unavailable metrics stay marked unavailable.</p>
+        <div className="sherivs-console-grid" style={{ marginTop: "0.9rem" }}>
+          {overview.metrics.map((metric) => (
+            <div key={metric.key} className="sherivs-console-metric sherivs-console-row">
+              <span>{metric.name}</span>
+              <strong>{metric.available ? `${metric.value} ${metric.unit}` : "Unavailable"}</strong>
+              <small>
+                {metric.window} · {metric.source}
+                {metric.updatedAt ? ` · Updated ${new Date(metric.updatedAt).toLocaleString()}` : ""}
+              </small>
+              <small>{metric.definition}</small>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <div className="sherivs-console-split">
+        <section className="sherivs-console-card">
+          <h2>Attention required</h2>
+          {overview.attention.length ? (
+            <div className="sherivs-console-list">
+              {overview.attention.map((item) => (
+                <Link key={item.id} to={item.href as never} className="sherivs-console-row">
+                  <strong>
+                    {item.severity.toUpperCase()} · {item.title}
+                  </strong>
+                  <small>{item.description}</small>
+                  <small>
+                    {item.resource} · {item.nextAction} · {new Date(item.detectedAt).toLocaleString()}
+                  </small>
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <p className="sherivs-console-empty">No verified items need attention right now.</p>
+          )}
+        </section>
+        <section className="sherivs-console-card">
+          <h2>My work</h2>
+          <p className="sherivs-console-empty">
+            Assigned work is not configured. Sherivs V1 does not include a project-management
+            system, so this section stays empty rather than showing decorative tasks.
+          </p>
+        </section>
+      </div>
+
+      <section className="sherivs-console-card">
+        <h2>Quick actions</h2>
+        <div className="sherivs-console-actions" style={{ marginTop: "0.8rem" }}>
+          {actions.map((action) => (
+            <Link key={action.key} to={action.href as never} className="sherivs-console-btn secondary">
+              {action.label}
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <div className="sherivs-console-split">
+        <section className="sherivs-console-card">
+          <h2>Recent activity</h2>
+          {overview.activity.length ? (
+            <div className="sherivs-console-list">
+              {overview.activity.map((item) => (
+                <div key={item.id} className="sherivs-console-row">
+                  <strong>{item.description}</strong>
+                  <small>
+                    {item.actor ?? "Unknown actor"} · {item.outcome} · {new Date(item.at).toLocaleString()}
+                  </small>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="sherivs-console-empty">
+              {viewer.capabilities.has("platform.audit.read")
+                ? "No recent administrative events."
+                : "Administrative activity is limited to authorized roles."}
+            </p>
+          )}
+        </section>
+        <section className="sherivs-console-card">
+          <h2>Sherivs Scholar</h2>
+          <p>{SCHOLAR_RUNTIME_CONTRACT.description}</p>
+          <p>
+            Availability uses the same application-process evidence as platform health. It does not
+            duplicate the school dashboard.
+          </p>
+          <div className="sherivs-console-actions" style={{ marginTop: "0.8rem" }}>
+            <Link to={CONSOLE_PATHS.scholar as never} className="sherivs-console-btn">
+              Open runtime
+            </Link>
+          </div>
+        </section>
+      </div>
+
+      <section className="sherivs-console-card">
+        <h2>My workspaces</h2>
+        <div className="sherivs-console-list">
+          {overview.workspaces.map((workspace) => (
+            <Link key={workspace.id} to={workspace.href as never} className="sherivs-console-row">
+              <strong>{workspace.name}</strong>
+              <small>
+                {workspace.type} · {workspace.access} · {workspace.team}
+              </small>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <section className="sherivs-console-card">
+        <h2>Recently accessed</h2>
+        {recent.length ? (
+          <div className="sherivs-console-list">
+            {recent.map((item) => (
+              <Link key={item.id} to={item.href as never} className="sherivs-console-row">
+                <strong>{item.title}</strong>
+                <small>
+                  {item.kind} · {new Date(item.at).toLocaleString()}
+                </small>
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <p className="sherivs-console-empty">
+            Recently accessed resources appear here after you open an authorized page.
+          </p>
+        )}
+      </section>
+    </>
+  );
+}

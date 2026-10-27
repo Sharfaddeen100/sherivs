@@ -50,7 +50,8 @@ Hardcoded Scholar portal routes, portal chrome, and the previous application she
 | `/super-admin/*`, `/internal`, `/command-centre/*` | Platform / HQ ops | D | internal workforce | hardcoded UI deleted | future governed console | REMOVED |
 | `app.sherivs.com` `/`, `/onboarding` | Application splash, invite-only sign-in, team onboarding | C | host routing + invitation credentials | splash then Sign in; Google for invited accounts; no self-signup | keep | IMPLEMENTED |
 | `/home`, `/home/s/$section`, `/home/ai`, `/home/notifications` | Governed organization workspace shell | C | authenticated + membership | capability-dynamic home, 75% glass drawer, role bottom slots, VAPID device push | keep | IMPLEMENTED |
-| `console.sherivs.com`, gov/head/group hosts | Console shells | D | host routing | retired unavailable surface | do not SSR public homepage | REMOVED |
+| `console.sherivs.com` `/console` | Sherivs Internal Console | D | authenticated + internal staff | governed operations center | keep | IMPLEMENTED |
+| gov/head/group hosts | Former console shells | D | host routing | retired unavailable surface | do not SSR public homepage | REMOVED |
 
 ## Boundary rules locked
 
@@ -63,4 +64,4 @@ Hardcoded Scholar portal routes, portal chrome, and the previous application she
 ## Known open items
 
 - `/coregrid` compatibility path: retire after external link hygiene; cannot break until tracked.
-- Sherivs internal console (Plane D) hardcoded UI remains removed. Plane C replacement is the governed `/home` shell.
+- Plane D Internal Console is `/console` on `console.sherivs.com`. Deleted prototypes (`/internal`, `/super-admin`, `/command-centre`) stay removed. Plane C remains the governed `/home` shell.

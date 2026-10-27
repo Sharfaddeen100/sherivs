@@ -23,10 +23,10 @@ describe("app-entry host", () => {
     expect(isRetiredApplicationHostname("app.universalschoolos.com")).toBe(false);
   });
 
-  it("keeps console, gov, head, and group hosts retired", () => {
+  it("keeps gov, head, and group hosts retired; console is the Internal Console", () => {
     expect(isAppEntryHostname("console.sherivs.com")).toBe(false);
-    expect(isRetiredApplicationHostname("console.sherivs.com")).toBe(true);
-    expect(isRetiredApplicationHostname("internal.sherivs.com")).toBe(true);
+    expect(isRetiredApplicationHostname("console.sherivs.com")).toBe(false);
+    expect(isRetiredApplicationHostname("internal.sherivs.com")).toBe(false);
     expect(isRetiredApplicationHostname("gov.sherivs.com")).toBe(true);
     expect(isRetiredApplicationHostname("head.sherivs.com")).toBe(true);
     expect(isRetiredApplicationHostname("group.sherivs.com")).toBe(true);
@@ -77,12 +77,13 @@ describe("app-entry host", () => {
 });
 
 describe("app-entry wiring", () => {
-  it("renders the splash on the app host index and keeps console unavailable", () => {
+  it("renders the splash on the app host index and the Internal Console on the console host", () => {
     const index = read("frontend/src/routes/index.tsx");
     expect(index).toContain("AppEntryScreen");
     expect(index).toContain("isAppEntryKind");
     expect(index).toContain("isRetiredApplicationHostname");
     expect(index).toContain("ApplicationUnavailable");
+    expect(index).toContain("ConsoleGate");
     expect(index).toContain("<SherivsHome />");
     expect(index).not.toContain("signUp");
   });

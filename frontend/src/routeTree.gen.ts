@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as siteRouteRouteImport } from './routes/(site)/route'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as ConsoleRouteRouteImport } from './routes/console/route'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as HealthDotjsonRouteImport } from './routes/health[.]json'
 import { Route as HomeRouteRouteImport } from './routes/home/route'
@@ -44,6 +45,14 @@ import { Route as siteSupportRouteImport } from './routes/(site)/support'
 import { Route as siteTermsRouteImport } from './routes/(site)/terms'
 import { Route as siteTrustRouteImport } from './routes/(site)/trust'
 import { Route as siteVerifyTranscriptRouteImport } from './routes/(site)/verify-transcript'
+import { Route as ConsoleIndexRouteImport } from './routes/console/index'
+import { Route as ConsoleAccountRouteImport } from './routes/console/account'
+import { Route as ConsoleActivityRouteRouteImport } from './routes/console/activity/route'
+import { Route as ConsoleHelpRouteImport } from './routes/console/help'
+import { Route as ConsoleRuntimesRouteRouteImport } from './routes/console/runtimes/route'
+import { Route as ConsoleSettingsRouteImport } from './routes/console/settings'
+import { Route as ConsoleTeamRouteRouteImport } from './routes/console/team/route'
+import { Route as ConsoleWorkspacesRouteRouteImport } from './routes/console/workspaces/route'
 import { Route as HomeIndexRouteImport } from './routes/home/index'
 import { Route as HomeAiRouteImport } from './routes/home/ai'
 import { Route as HomeHelpRouteImport } from './routes/home/help'
@@ -79,6 +88,18 @@ import { Route as siteSolutionsIndexRouteImport } from './routes/(site)/solution
 import { Route as siteSolutionsEducationRouteImport } from './routes/(site)/solutions.education'
 import { Route as siteSolutionsEnterpriseRouteImport } from './routes/(site)/solutions.enterprise'
 import { Route as siteSolutionsResearchRouteImport } from './routes/(site)/solutions.research'
+import { Route as ConsoleActivityIndexRouteImport } from './routes/console/activity/index'
+import { Route as ConsoleActivityAdminRouteImport } from './routes/console/activity/admin'
+import { Route as ConsoleActivityLogsRouteImport } from './routes/console/activity/logs'
+import { Route as ConsoleActivityMetricsRouteImport } from './routes/console/activity/metrics'
+import { Route as ConsoleActivitySecurityRouteImport } from './routes/console/activity/security'
+import { Route as ConsoleRuntimesIndexRouteImport } from './routes/console/runtimes/index'
+import { Route as ConsoleRuntimesScholarRouteImport } from './routes/console/runtimes/scholar'
+import { Route as ConsoleTeamIndexRouteImport } from './routes/console/team/index'
+import { Route as ConsoleTeamAccessRouteImport } from './routes/console/team/access'
+import { Route as ConsoleTeamInvitationsRouteImport } from './routes/console/team/invitations'
+import { Route as ConsoleWorkspacesIndexRouteImport } from './routes/console/workspaces/index'
+import { Route as ConsoleWorkspacesWorkspaceIdRouteImport } from './routes/console/workspaces/$workspaceId'
 import { Route as HomeSSectionRouteImport } from './routes/home/s.$section'
 import { Route as siteInsightsCategorySlugRouteImport } from './routes/(site)/insights.category.$slug'
 import { Route as ApiPublicAuditPasswordResetRouteImport } from './routes/api/public/audit.password-reset'
@@ -101,6 +122,11 @@ const siteRouteRoute = siteRouteRouteImport.update({
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConsoleRouteRoute = ConsoleRouteRouteImport.update({
+  id: '/console',
+  path: '/console',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
@@ -262,6 +288,46 @@ const siteVerifyTranscriptRoute = siteVerifyTranscriptRouteImport.update({
   id: '/verify-transcript',
   path: '/verify-transcript',
   getParentRoute: () => siteRouteRoute,
+} as any)
+const ConsoleIndexRoute = ConsoleIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ConsoleRouteRoute,
+} as any)
+const ConsoleAccountRoute = ConsoleAccountRouteImport.update({
+  id: '/account',
+  path: '/account',
+  getParentRoute: () => ConsoleRouteRoute,
+} as any)
+const ConsoleActivityRouteRoute = ConsoleActivityRouteRouteImport.update({
+  id: '/activity',
+  path: '/activity',
+  getParentRoute: () => ConsoleRouteRoute,
+} as any)
+const ConsoleHelpRoute = ConsoleHelpRouteImport.update({
+  id: '/help',
+  path: '/help',
+  getParentRoute: () => ConsoleRouteRoute,
+} as any)
+const ConsoleRuntimesRouteRoute = ConsoleRuntimesRouteRouteImport.update({
+  id: '/runtimes',
+  path: '/runtimes',
+  getParentRoute: () => ConsoleRouteRoute,
+} as any)
+const ConsoleSettingsRoute = ConsoleSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => ConsoleRouteRoute,
+} as any)
+const ConsoleTeamRouteRoute = ConsoleTeamRouteRouteImport.update({
+  id: '/team',
+  path: '/team',
+  getParentRoute: () => ConsoleRouteRoute,
+} as any)
+const ConsoleWorkspacesRouteRoute = ConsoleWorkspacesRouteRouteImport.update({
+  id: '/workspaces',
+  path: '/workspaces',
+  getParentRoute: () => ConsoleRouteRoute,
 } as any)
 const HomeIndexRoute = HomeIndexRouteImport.update({
   id: '/',
@@ -439,6 +505,67 @@ const siteSolutionsResearchRoute = siteSolutionsResearchRouteImport.update({
   path: '/research',
   getParentRoute: () => siteSolutionsRoute,
 } as any)
+const ConsoleActivityIndexRoute = ConsoleActivityIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ConsoleActivityRouteRoute,
+} as any)
+const ConsoleActivityAdminRoute = ConsoleActivityAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => ConsoleActivityRouteRoute,
+} as any)
+const ConsoleActivityLogsRoute = ConsoleActivityLogsRouteImport.update({
+  id: '/logs',
+  path: '/logs',
+  getParentRoute: () => ConsoleActivityRouteRoute,
+} as any)
+const ConsoleActivityMetricsRoute = ConsoleActivityMetricsRouteImport.update({
+  id: '/metrics',
+  path: '/metrics',
+  getParentRoute: () => ConsoleActivityRouteRoute,
+} as any)
+const ConsoleActivitySecurityRoute = ConsoleActivitySecurityRouteImport.update({
+  id: '/security',
+  path: '/security',
+  getParentRoute: () => ConsoleActivityRouteRoute,
+} as any)
+const ConsoleRuntimesIndexRoute = ConsoleRuntimesIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ConsoleRuntimesRouteRoute,
+} as any)
+const ConsoleRuntimesScholarRoute = ConsoleRuntimesScholarRouteImport.update({
+  id: '/scholar',
+  path: '/scholar',
+  getParentRoute: () => ConsoleRuntimesRouteRoute,
+} as any)
+const ConsoleTeamIndexRoute = ConsoleTeamIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ConsoleTeamRouteRoute,
+} as any)
+const ConsoleTeamAccessRoute = ConsoleTeamAccessRouteImport.update({
+  id: '/access',
+  path: '/access',
+  getParentRoute: () => ConsoleTeamRouteRoute,
+} as any)
+const ConsoleTeamInvitationsRoute = ConsoleTeamInvitationsRouteImport.update({
+  id: '/invitations',
+  path: '/invitations',
+  getParentRoute: () => ConsoleTeamRouteRoute,
+} as any)
+const ConsoleWorkspacesIndexRoute = ConsoleWorkspacesIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ConsoleWorkspacesRouteRoute,
+} as any)
+const ConsoleWorkspacesWorkspaceIdRoute =
+  ConsoleWorkspacesWorkspaceIdRouteImport.update({
+    id: '/$workspaceId',
+    path: '/$workspaceId',
+    getParentRoute: () => ConsoleWorkspacesRouteRoute,
+  } as any)
 const HomeSSectionRoute = HomeSSectionRouteImport.update({
   id: '/s/$section',
   path: '/s/$section',
@@ -494,6 +621,7 @@ const ApiPublicWebhooksIntegrationsWebhookIdRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/console': typeof ConsoleRouteRouteWithChildren
   '/home': typeof HomeRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/forgot-password': typeof ForgotPasswordRoute
@@ -504,6 +632,10 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/console/activity': typeof ConsoleActivityRouteRouteWithChildren
+  '/console/runtimes': typeof ConsoleRuntimesRouteRouteWithChildren
+  '/console/team': typeof ConsoleTeamRouteRouteWithChildren
+  '/console/workspaces': typeof ConsoleWorkspacesRouteRouteWithChildren
   '/about': typeof siteAboutRoute
   '/accessibility': typeof siteAccessibilityRoute
   '/check-result': typeof siteCheckResultRoute
@@ -527,6 +659,9 @@ export interface FileRoutesByFullPath {
   '/terms': typeof siteTermsRoute
   '/trust': typeof siteTrustRoute
   '/verify-transcript': typeof siteVerifyTranscriptRoute
+  '/console/account': typeof ConsoleAccountRoute
+  '/console/help': typeof ConsoleHelpRoute
+  '/console/settings': typeof ConsoleSettingsRoute
   '/home/ai': typeof HomeAiRoute
   '/home/help': typeof HomeHelpRoute
   '/home/notifications': typeof HomeNotificationsRoute
@@ -534,6 +669,7 @@ export interface FileRoutesByFullPath {
   '/home/security': typeof HomeSecurityRoute
   '/home/settings': typeof HomeSettingsRoute
   '/pages/$slug': typeof PagesSlugRoute
+  '/console/': typeof ConsoleIndexRoute
   '/home/': typeof HomeIndexRoute
   '/company/about': typeof siteCompanyAboutRoute
   '/company/careers': typeof siteCompanyCareersRoute
@@ -557,12 +693,24 @@ export interface FileRoutesByFullPath {
   '/solutions/education': typeof siteSolutionsEducationRoute
   '/solutions/enterprise': typeof siteSolutionsEnterpriseRoute
   '/solutions/research': typeof siteSolutionsResearchRoute
+  '/console/activity/admin': typeof ConsoleActivityAdminRoute
+  '/console/activity/logs': typeof ConsoleActivityLogsRoute
+  '/console/activity/metrics': typeof ConsoleActivityMetricsRoute
+  '/console/activity/security': typeof ConsoleActivitySecurityRoute
+  '/console/runtimes/scholar': typeof ConsoleRuntimesScholarRoute
+  '/console/team/access': typeof ConsoleTeamAccessRoute
+  '/console/team/invitations': typeof ConsoleTeamInvitationsRoute
+  '/console/workspaces/$workspaceId': typeof ConsoleWorkspacesWorkspaceIdRoute
   '/home/s/$section': typeof HomeSSectionRoute
   '/help/': typeof siteHelpIndexRoute
   '/insights/': typeof siteInsightsIndexRoute
   '/product/': typeof siteProductIndexRoute
   '/security/': typeof siteSecurityIndexRoute
   '/solutions/': typeof siteSolutionsIndexRoute
+  '/console/activity/': typeof ConsoleActivityIndexRoute
+  '/console/runtimes/': typeof ConsoleRuntimesIndexRoute
+  '/console/team/': typeof ConsoleTeamIndexRoute
+  '/console/workspaces/': typeof ConsoleWorkspacesIndexRoute
   '/insights/category/$slug': typeof siteInsightsCategorySlugRoute
   '/api/public/audit/password-reset': typeof ApiPublicAuditPasswordResetRoute
   '/api/public/cron/integrations-sync': typeof ApiPublicCronIntegrationsSyncRoute
@@ -601,6 +749,9 @@ export interface FileRoutesByTo {
   '/terms': typeof siteTermsRoute
   '/trust': typeof siteTrustRoute
   '/verify-transcript': typeof siteVerifyTranscriptRoute
+  '/console/account': typeof ConsoleAccountRoute
+  '/console/help': typeof ConsoleHelpRoute
+  '/console/settings': typeof ConsoleSettingsRoute
   '/home/ai': typeof HomeAiRoute
   '/home/help': typeof HomeHelpRoute
   '/home/notifications': typeof HomeNotificationsRoute
@@ -608,6 +759,7 @@ export interface FileRoutesByTo {
   '/home/security': typeof HomeSecurityRoute
   '/home/settings': typeof HomeSettingsRoute
   '/pages/$slug': typeof PagesSlugRoute
+  '/console': typeof ConsoleIndexRoute
   '/home': typeof HomeIndexRoute
   '/company/about': typeof siteCompanyAboutRoute
   '/company/careers': typeof siteCompanyCareersRoute
@@ -631,12 +783,24 @@ export interface FileRoutesByTo {
   '/solutions/education': typeof siteSolutionsEducationRoute
   '/solutions/enterprise': typeof siteSolutionsEnterpriseRoute
   '/solutions/research': typeof siteSolutionsResearchRoute
+  '/console/activity/admin': typeof ConsoleActivityAdminRoute
+  '/console/activity/logs': typeof ConsoleActivityLogsRoute
+  '/console/activity/metrics': typeof ConsoleActivityMetricsRoute
+  '/console/activity/security': typeof ConsoleActivitySecurityRoute
+  '/console/runtimes/scholar': typeof ConsoleRuntimesScholarRoute
+  '/console/team/access': typeof ConsoleTeamAccessRoute
+  '/console/team/invitations': typeof ConsoleTeamInvitationsRoute
+  '/console/workspaces/$workspaceId': typeof ConsoleWorkspacesWorkspaceIdRoute
   '/home/s/$section': typeof HomeSSectionRoute
   '/help': typeof siteHelpIndexRoute
   '/insights': typeof siteInsightsIndexRoute
   '/product': typeof siteProductIndexRoute
   '/security': typeof siteSecurityIndexRoute
   '/solutions': typeof siteSolutionsIndexRoute
+  '/console/activity': typeof ConsoleActivityIndexRoute
+  '/console/runtimes': typeof ConsoleRuntimesIndexRoute
+  '/console/team': typeof ConsoleTeamIndexRoute
+  '/console/workspaces': typeof ConsoleWorkspacesIndexRoute
   '/insights/category/$slug': typeof siteInsightsCategorySlugRoute
   '/api/public/audit/password-reset': typeof ApiPublicAuditPasswordResetRoute
   '/api/public/cron/integrations-sync': typeof ApiPublicCronIntegrationsSyncRoute
@@ -650,6 +814,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/(site)': typeof siteRouteRouteWithChildren
+  '/console': typeof ConsoleRouteRouteWithChildren
   '/home': typeof HomeRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/forgot-password': typeof ForgotPasswordRoute
@@ -660,6 +825,10 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/console/activity': typeof ConsoleActivityRouteRouteWithChildren
+  '/console/runtimes': typeof ConsoleRuntimesRouteRouteWithChildren
+  '/console/team': typeof ConsoleTeamRouteRouteWithChildren
+  '/console/workspaces': typeof ConsoleWorkspacesRouteRouteWithChildren
   '/(site)/about': typeof siteAboutRoute
   '/(site)/accessibility': typeof siteAccessibilityRoute
   '/(site)/check-result': typeof siteCheckResultRoute
@@ -683,6 +852,9 @@ export interface FileRoutesById {
   '/(site)/terms': typeof siteTermsRoute
   '/(site)/trust': typeof siteTrustRoute
   '/(site)/verify-transcript': typeof siteVerifyTranscriptRoute
+  '/console/account': typeof ConsoleAccountRoute
+  '/console/help': typeof ConsoleHelpRoute
+  '/console/settings': typeof ConsoleSettingsRoute
   '/home/ai': typeof HomeAiRoute
   '/home/help': typeof HomeHelpRoute
   '/home/notifications': typeof HomeNotificationsRoute
@@ -690,6 +862,7 @@ export interface FileRoutesById {
   '/home/security': typeof HomeSecurityRoute
   '/home/settings': typeof HomeSettingsRoute
   '/pages/$slug': typeof PagesSlugRoute
+  '/console/': typeof ConsoleIndexRoute
   '/home/': typeof HomeIndexRoute
   '/(site)/company/about': typeof siteCompanyAboutRoute
   '/(site)/company/careers': typeof siteCompanyCareersRoute
@@ -713,12 +886,24 @@ export interface FileRoutesById {
   '/(site)/solutions/education': typeof siteSolutionsEducationRoute
   '/(site)/solutions/enterprise': typeof siteSolutionsEnterpriseRoute
   '/(site)/solutions/research': typeof siteSolutionsResearchRoute
+  '/console/activity/admin': typeof ConsoleActivityAdminRoute
+  '/console/activity/logs': typeof ConsoleActivityLogsRoute
+  '/console/activity/metrics': typeof ConsoleActivityMetricsRoute
+  '/console/activity/security': typeof ConsoleActivitySecurityRoute
+  '/console/runtimes/scholar': typeof ConsoleRuntimesScholarRoute
+  '/console/team/access': typeof ConsoleTeamAccessRoute
+  '/console/team/invitations': typeof ConsoleTeamInvitationsRoute
+  '/console/workspaces/$workspaceId': typeof ConsoleWorkspacesWorkspaceIdRoute
   '/home/s/$section': typeof HomeSSectionRoute
   '/(site)/help/': typeof siteHelpIndexRoute
   '/(site)/insights/': typeof siteInsightsIndexRoute
   '/(site)/product/': typeof siteProductIndexRoute
   '/(site)/security/': typeof siteSecurityIndexRoute
   '/(site)/solutions/': typeof siteSolutionsIndexRoute
+  '/console/activity/': typeof ConsoleActivityIndexRoute
+  '/console/runtimes/': typeof ConsoleRuntimesIndexRoute
+  '/console/team/': typeof ConsoleTeamIndexRoute
+  '/console/workspaces/': typeof ConsoleWorkspacesIndexRoute
   '/(site)/insights/category/$slug': typeof siteInsightsCategorySlugRoute
   '/api/public/audit/password-reset': typeof ApiPublicAuditPasswordResetRoute
   '/api/public/cron/integrations-sync': typeof ApiPublicCronIntegrationsSyncRoute
@@ -732,6 +917,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/console'
     | '/home'
     | '/auth'
     | '/forgot-password'
@@ -742,6 +928,10 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/robots.txt'
     | '/sitemap.xml'
+    | '/console/activity'
+    | '/console/runtimes'
+    | '/console/team'
+    | '/console/workspaces'
     | '/about'
     | '/accessibility'
     | '/check-result'
@@ -765,6 +955,9 @@ export interface FileRouteTypes {
     | '/terms'
     | '/trust'
     | '/verify-transcript'
+    | '/console/account'
+    | '/console/help'
+    | '/console/settings'
     | '/home/ai'
     | '/home/help'
     | '/home/notifications'
@@ -772,6 +965,7 @@ export interface FileRouteTypes {
     | '/home/security'
     | '/home/settings'
     | '/pages/$slug'
+    | '/console/'
     | '/home/'
     | '/company/about'
     | '/company/careers'
@@ -795,12 +989,24 @@ export interface FileRouteTypes {
     | '/solutions/education'
     | '/solutions/enterprise'
     | '/solutions/research'
+    | '/console/activity/admin'
+    | '/console/activity/logs'
+    | '/console/activity/metrics'
+    | '/console/activity/security'
+    | '/console/runtimes/scholar'
+    | '/console/team/access'
+    | '/console/team/invitations'
+    | '/console/workspaces/$workspaceId'
     | '/home/s/$section'
     | '/help/'
     | '/insights/'
     | '/product/'
     | '/security/'
     | '/solutions/'
+    | '/console/activity/'
+    | '/console/runtimes/'
+    | '/console/team/'
+    | '/console/workspaces/'
     | '/insights/category/$slug'
     | '/api/public/audit/password-reset'
     | '/api/public/cron/integrations-sync'
@@ -839,6 +1045,9 @@ export interface FileRouteTypes {
     | '/terms'
     | '/trust'
     | '/verify-transcript'
+    | '/console/account'
+    | '/console/help'
+    | '/console/settings'
     | '/home/ai'
     | '/home/help'
     | '/home/notifications'
@@ -846,6 +1055,7 @@ export interface FileRouteTypes {
     | '/home/security'
     | '/home/settings'
     | '/pages/$slug'
+    | '/console'
     | '/home'
     | '/company/about'
     | '/company/careers'
@@ -869,12 +1079,24 @@ export interface FileRouteTypes {
     | '/solutions/education'
     | '/solutions/enterprise'
     | '/solutions/research'
+    | '/console/activity/admin'
+    | '/console/activity/logs'
+    | '/console/activity/metrics'
+    | '/console/activity/security'
+    | '/console/runtimes/scholar'
+    | '/console/team/access'
+    | '/console/team/invitations'
+    | '/console/workspaces/$workspaceId'
     | '/home/s/$section'
     | '/help'
     | '/insights'
     | '/product'
     | '/security'
     | '/solutions'
+    | '/console/activity'
+    | '/console/runtimes'
+    | '/console/team'
+    | '/console/workspaces'
     | '/insights/category/$slug'
     | '/api/public/audit/password-reset'
     | '/api/public/cron/integrations-sync'
@@ -887,6 +1109,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/(site)'
+    | '/console'
     | '/home'
     | '/auth'
     | '/forgot-password'
@@ -897,6 +1120,10 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/robots.txt'
     | '/sitemap.xml'
+    | '/console/activity'
+    | '/console/runtimes'
+    | '/console/team'
+    | '/console/workspaces'
     | '/(site)/about'
     | '/(site)/accessibility'
     | '/(site)/check-result'
@@ -920,6 +1147,9 @@ export interface FileRouteTypes {
     | '/(site)/terms'
     | '/(site)/trust'
     | '/(site)/verify-transcript'
+    | '/console/account'
+    | '/console/help'
+    | '/console/settings'
     | '/home/ai'
     | '/home/help'
     | '/home/notifications'
@@ -927,6 +1157,7 @@ export interface FileRouteTypes {
     | '/home/security'
     | '/home/settings'
     | '/pages/$slug'
+    | '/console/'
     | '/home/'
     | '/(site)/company/about'
     | '/(site)/company/careers'
@@ -950,12 +1181,24 @@ export interface FileRouteTypes {
     | '/(site)/solutions/education'
     | '/(site)/solutions/enterprise'
     | '/(site)/solutions/research'
+    | '/console/activity/admin'
+    | '/console/activity/logs'
+    | '/console/activity/metrics'
+    | '/console/activity/security'
+    | '/console/runtimes/scholar'
+    | '/console/team/access'
+    | '/console/team/invitations'
+    | '/console/workspaces/$workspaceId'
     | '/home/s/$section'
     | '/(site)/help/'
     | '/(site)/insights/'
     | '/(site)/product/'
     | '/(site)/security/'
     | '/(site)/solutions/'
+    | '/console/activity/'
+    | '/console/runtimes/'
+    | '/console/team/'
+    | '/console/workspaces/'
     | '/(site)/insights/category/$slug'
     | '/api/public/audit/password-reset'
     | '/api/public/cron/integrations-sync'
@@ -969,6 +1212,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   siteRouteRoute: typeof siteRouteRouteWithChildren
+  ConsoleRouteRoute: typeof ConsoleRouteRouteWithChildren
   HomeRouteRoute: typeof HomeRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   ForgotPasswordRoute: typeof ForgotPasswordRoute
@@ -1010,6 +1254,13 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/console': {
+      id: '/console'
+      path: '/console'
+      fullPath: '/console'
+      preLoaderRoute: typeof ConsoleRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/forgot-password': {
@@ -1235,6 +1486,62 @@ declare module '@tanstack/react-router' {
       fullPath: '/verify-transcript'
       preLoaderRoute: typeof siteVerifyTranscriptRouteImport
       parentRoute: typeof siteRouteRoute
+    }
+    '/console/': {
+      id: '/console/'
+      path: '/'
+      fullPath: '/console/'
+      preLoaderRoute: typeof ConsoleIndexRouteImport
+      parentRoute: typeof ConsoleRouteRoute
+    }
+    '/console/account': {
+      id: '/console/account'
+      path: '/account'
+      fullPath: '/console/account'
+      preLoaderRoute: typeof ConsoleAccountRouteImport
+      parentRoute: typeof ConsoleRouteRoute
+    }
+    '/console/activity': {
+      id: '/console/activity'
+      path: '/activity'
+      fullPath: '/console/activity'
+      preLoaderRoute: typeof ConsoleActivityRouteRouteImport
+      parentRoute: typeof ConsoleRouteRoute
+    }
+    '/console/help': {
+      id: '/console/help'
+      path: '/help'
+      fullPath: '/console/help'
+      preLoaderRoute: typeof ConsoleHelpRouteImport
+      parentRoute: typeof ConsoleRouteRoute
+    }
+    '/console/runtimes': {
+      id: '/console/runtimes'
+      path: '/runtimes'
+      fullPath: '/console/runtimes'
+      preLoaderRoute: typeof ConsoleRuntimesRouteRouteImport
+      parentRoute: typeof ConsoleRouteRoute
+    }
+    '/console/settings': {
+      id: '/console/settings'
+      path: '/settings'
+      fullPath: '/console/settings'
+      preLoaderRoute: typeof ConsoleSettingsRouteImport
+      parentRoute: typeof ConsoleRouteRoute
+    }
+    '/console/team': {
+      id: '/console/team'
+      path: '/team'
+      fullPath: '/console/team'
+      preLoaderRoute: typeof ConsoleTeamRouteRouteImport
+      parentRoute: typeof ConsoleRouteRoute
+    }
+    '/console/workspaces': {
+      id: '/console/workspaces'
+      path: '/workspaces'
+      fullPath: '/console/workspaces'
+      preLoaderRoute: typeof ConsoleWorkspacesRouteRouteImport
+      parentRoute: typeof ConsoleRouteRoute
     }
     '/home/': {
       id: '/home/'
@@ -1481,6 +1788,90 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof siteSolutionsResearchRouteImport
       parentRoute: typeof siteSolutionsRoute
     }
+    '/console/activity/': {
+      id: '/console/activity/'
+      path: '/'
+      fullPath: '/console/activity/'
+      preLoaderRoute: typeof ConsoleActivityIndexRouteImport
+      parentRoute: typeof ConsoleActivityRouteRoute
+    }
+    '/console/activity/admin': {
+      id: '/console/activity/admin'
+      path: '/admin'
+      fullPath: '/console/activity/admin'
+      preLoaderRoute: typeof ConsoleActivityAdminRouteImport
+      parentRoute: typeof ConsoleActivityRouteRoute
+    }
+    '/console/activity/logs': {
+      id: '/console/activity/logs'
+      path: '/logs'
+      fullPath: '/console/activity/logs'
+      preLoaderRoute: typeof ConsoleActivityLogsRouteImport
+      parentRoute: typeof ConsoleActivityRouteRoute
+    }
+    '/console/activity/metrics': {
+      id: '/console/activity/metrics'
+      path: '/metrics'
+      fullPath: '/console/activity/metrics'
+      preLoaderRoute: typeof ConsoleActivityMetricsRouteImport
+      parentRoute: typeof ConsoleActivityRouteRoute
+    }
+    '/console/activity/security': {
+      id: '/console/activity/security'
+      path: '/security'
+      fullPath: '/console/activity/security'
+      preLoaderRoute: typeof ConsoleActivitySecurityRouteImport
+      parentRoute: typeof ConsoleActivityRouteRoute
+    }
+    '/console/runtimes/': {
+      id: '/console/runtimes/'
+      path: '/'
+      fullPath: '/console/runtimes/'
+      preLoaderRoute: typeof ConsoleRuntimesIndexRouteImport
+      parentRoute: typeof ConsoleRuntimesRouteRoute
+    }
+    '/console/runtimes/scholar': {
+      id: '/console/runtimes/scholar'
+      path: '/scholar'
+      fullPath: '/console/runtimes/scholar'
+      preLoaderRoute: typeof ConsoleRuntimesScholarRouteImport
+      parentRoute: typeof ConsoleRuntimesRouteRoute
+    }
+    '/console/team/': {
+      id: '/console/team/'
+      path: '/'
+      fullPath: '/console/team/'
+      preLoaderRoute: typeof ConsoleTeamIndexRouteImport
+      parentRoute: typeof ConsoleTeamRouteRoute
+    }
+    '/console/team/access': {
+      id: '/console/team/access'
+      path: '/access'
+      fullPath: '/console/team/access'
+      preLoaderRoute: typeof ConsoleTeamAccessRouteImport
+      parentRoute: typeof ConsoleTeamRouteRoute
+    }
+    '/console/team/invitations': {
+      id: '/console/team/invitations'
+      path: '/invitations'
+      fullPath: '/console/team/invitations'
+      preLoaderRoute: typeof ConsoleTeamInvitationsRouteImport
+      parentRoute: typeof ConsoleTeamRouteRoute
+    }
+    '/console/workspaces/': {
+      id: '/console/workspaces/'
+      path: '/'
+      fullPath: '/console/workspaces/'
+      preLoaderRoute: typeof ConsoleWorkspacesIndexRouteImport
+      parentRoute: typeof ConsoleWorkspacesRouteRoute
+    }
+    '/console/workspaces/$workspaceId': {
+      id: '/console/workspaces/$workspaceId'
+      path: '/$workspaceId'
+      fullPath: '/console/workspaces/$workspaceId'
+      preLoaderRoute: typeof ConsoleWorkspacesWorkspaceIdRouteImport
+      parentRoute: typeof ConsoleWorkspacesRouteRoute
+    }
     '/home/s/$section': {
       id: '/home/s/$section'
       path: '/s/$section'
@@ -1710,6 +2101,95 @@ const siteRouteRouteWithChildren = siteRouteRoute._addFileChildren(
   siteRouteRouteChildren,
 )
 
+interface ConsoleActivityRouteRouteChildren {
+  ConsoleActivityAdminRoute: typeof ConsoleActivityAdminRoute
+  ConsoleActivityLogsRoute: typeof ConsoleActivityLogsRoute
+  ConsoleActivityMetricsRoute: typeof ConsoleActivityMetricsRoute
+  ConsoleActivitySecurityRoute: typeof ConsoleActivitySecurityRoute
+  ConsoleActivityIndexRoute: typeof ConsoleActivityIndexRoute
+}
+
+const ConsoleActivityRouteRouteChildren: ConsoleActivityRouteRouteChildren = {
+  ConsoleActivityAdminRoute: ConsoleActivityAdminRoute,
+  ConsoleActivityLogsRoute: ConsoleActivityLogsRoute,
+  ConsoleActivityMetricsRoute: ConsoleActivityMetricsRoute,
+  ConsoleActivitySecurityRoute: ConsoleActivitySecurityRoute,
+  ConsoleActivityIndexRoute: ConsoleActivityIndexRoute,
+}
+
+const ConsoleActivityRouteRouteWithChildren =
+  ConsoleActivityRouteRoute._addFileChildren(ConsoleActivityRouteRouteChildren)
+
+interface ConsoleRuntimesRouteRouteChildren {
+  ConsoleRuntimesScholarRoute: typeof ConsoleRuntimesScholarRoute
+  ConsoleRuntimesIndexRoute: typeof ConsoleRuntimesIndexRoute
+}
+
+const ConsoleRuntimesRouteRouteChildren: ConsoleRuntimesRouteRouteChildren = {
+  ConsoleRuntimesScholarRoute: ConsoleRuntimesScholarRoute,
+  ConsoleRuntimesIndexRoute: ConsoleRuntimesIndexRoute,
+}
+
+const ConsoleRuntimesRouteRouteWithChildren =
+  ConsoleRuntimesRouteRoute._addFileChildren(ConsoleRuntimesRouteRouteChildren)
+
+interface ConsoleTeamRouteRouteChildren {
+  ConsoleTeamAccessRoute: typeof ConsoleTeamAccessRoute
+  ConsoleTeamInvitationsRoute: typeof ConsoleTeamInvitationsRoute
+  ConsoleTeamIndexRoute: typeof ConsoleTeamIndexRoute
+}
+
+const ConsoleTeamRouteRouteChildren: ConsoleTeamRouteRouteChildren = {
+  ConsoleTeamAccessRoute: ConsoleTeamAccessRoute,
+  ConsoleTeamInvitationsRoute: ConsoleTeamInvitationsRoute,
+  ConsoleTeamIndexRoute: ConsoleTeamIndexRoute,
+}
+
+const ConsoleTeamRouteRouteWithChildren =
+  ConsoleTeamRouteRoute._addFileChildren(ConsoleTeamRouteRouteChildren)
+
+interface ConsoleWorkspacesRouteRouteChildren {
+  ConsoleWorkspacesWorkspaceIdRoute: typeof ConsoleWorkspacesWorkspaceIdRoute
+  ConsoleWorkspacesIndexRoute: typeof ConsoleWorkspacesIndexRoute
+}
+
+const ConsoleWorkspacesRouteRouteChildren: ConsoleWorkspacesRouteRouteChildren =
+  {
+    ConsoleWorkspacesWorkspaceIdRoute: ConsoleWorkspacesWorkspaceIdRoute,
+    ConsoleWorkspacesIndexRoute: ConsoleWorkspacesIndexRoute,
+  }
+
+const ConsoleWorkspacesRouteRouteWithChildren =
+  ConsoleWorkspacesRouteRoute._addFileChildren(
+    ConsoleWorkspacesRouteRouteChildren,
+  )
+
+interface ConsoleRouteRouteChildren {
+  ConsoleActivityRouteRoute: typeof ConsoleActivityRouteRouteWithChildren
+  ConsoleRuntimesRouteRoute: typeof ConsoleRuntimesRouteRouteWithChildren
+  ConsoleTeamRouteRoute: typeof ConsoleTeamRouteRouteWithChildren
+  ConsoleWorkspacesRouteRoute: typeof ConsoleWorkspacesRouteRouteWithChildren
+  ConsoleAccountRoute: typeof ConsoleAccountRoute
+  ConsoleHelpRoute: typeof ConsoleHelpRoute
+  ConsoleSettingsRoute: typeof ConsoleSettingsRoute
+  ConsoleIndexRoute: typeof ConsoleIndexRoute
+}
+
+const ConsoleRouteRouteChildren: ConsoleRouteRouteChildren = {
+  ConsoleActivityRouteRoute: ConsoleActivityRouteRouteWithChildren,
+  ConsoleRuntimesRouteRoute: ConsoleRuntimesRouteRouteWithChildren,
+  ConsoleTeamRouteRoute: ConsoleTeamRouteRouteWithChildren,
+  ConsoleWorkspacesRouteRoute: ConsoleWorkspacesRouteRouteWithChildren,
+  ConsoleAccountRoute: ConsoleAccountRoute,
+  ConsoleHelpRoute: ConsoleHelpRoute,
+  ConsoleSettingsRoute: ConsoleSettingsRoute,
+  ConsoleIndexRoute: ConsoleIndexRoute,
+}
+
+const ConsoleRouteRouteWithChildren = ConsoleRouteRoute._addFileChildren(
+  ConsoleRouteRouteChildren,
+)
+
 interface HomeRouteRouteChildren {
   HomeAiRoute: typeof HomeAiRoute
   HomeHelpRoute: typeof HomeHelpRoute
@@ -1739,6 +2219,7 @@ const HomeRouteRouteWithChildren = HomeRouteRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   siteRouteRoute: siteRouteRouteWithChildren,
+  ConsoleRouteRoute: ConsoleRouteRouteWithChildren,
   HomeRouteRoute: HomeRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   ForgotPasswordRoute: ForgotPasswordRoute,

@@ -56,10 +56,13 @@ describe("migration security posture", () => {
 });
 
 describe("staff server functions", () => {
-  it("every exported server fn runs the super-admin gate", () => {
+  it("list is capability-gated; privileged grants still use the super-admin gate", () => {
     const exported = fns.match(/export const \w+ = createServerFn/g) ?? [];
     expect(exported.length).toBe(5);
-    expect(fns.match(/await assertSuper\(context\);/g)?.length).toBe(5);
+    expect(fns).toContain('assertCapability(context, "platform.staff.read")');
+    expect(fns).toContain('assertCapability(context, "platform.staff.manage")');
+    expect(fns).toContain("requirePlatformSuperAdmin");
+    expect(fns).toContain("PRIVILEGED_PLATFORM_ROLES");
   });
   it("invites redirect to /reset-password and are audited", () => {
     expect(fns).toContain("/reset-password");
@@ -104,7 +107,7 @@ describe("lifecycle + workspace", () => {
       visibleInternalSections(sections, { isSuperAdmin: true, capabilities: new Set() }),
     ).toHaveLength(3);
   });
-  it("routes active platform staff to /internal", () => {
+  it("routes active platform staff to /console", () => {
     const id = identityFromAppState({
       superAdmin: null,
       profile: null,
