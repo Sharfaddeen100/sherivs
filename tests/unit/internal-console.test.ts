@@ -12,7 +12,9 @@ import {
   workspaceById,
   workspaceFromAuthorized,
   workspaceIdFromPath,
+  isWorkingWorkspace,
 } from "@/lib/internal-console/workspaces";
+import { presentationStaffStatus } from "@/lib/internal-console/overview";
 import { isUniqueViolation } from "@/lib/internal-console/store";
 import { searchConsole } from "@/lib/internal-console/search";
 import { isMissingRelation, slugifyWorkspaceName } from "@/lib/internal-console/store";
@@ -87,6 +89,65 @@ describe("internal console V1 contract", () => {
         (item) => item.key === "invite",
       ),
     ).toBe(true);
+    const engineer = {
+      isSuperAdmin: false,
+      capabilities: viewerCapabilities(["engineering"], false),
+    };
+    expect(filterNav(CONSOLE_NAV, engineer).map((item) => item.key)).toEqual([
+      "home",
+      "workspaces",
+      "runtimes",
+      "activity",
+    ]);
+    const activity = filterNav(CONSOLE_NAV, engineer).find((item) => item.key === "activity");
+    expect(activity?.navigable).toBe(false);
+    expect(activity?.children?.map((item) => item.key)).toEqual(["metrics", "logs"]);
+    expect(quickActionsFor(engineer).some((item) => item.key === "invite")).toBe(false);
+  });
+
+  it("does not put another person's personal workspace in the working set", () => {
+    expect(
+      isWorkingWorkspace({
+        kind: "personal",
+        ownerId: "owner",
+        viewerId: "admin",
+        isMember: false,
+        canManageShared: true,
+      }),
+    ).toBe(false);
+    expect(
+      isWorkingWorkspace({
+        kind: "shared",
+        ownerId: "owner",
+        viewerId: "admin",
+        isMember: false,
+        canManageShared: true,
+      }),
+    ).toBe(true);
+    expect(
+      isWorkingWorkspace({
+        kind: "personal",
+        ownerId: "owner",
+        viewerId: "owner",
+        isMember: true,
+        canManageShared: false,
+      }),
+    ).toBe(true);
+  });
+
+  it("presents expired invitations without inventing a database status", () => {
+    expect(
+      presentationStaffStatus(
+        { status: "invited", inviteExpiresAt: "2020-01-01T00:00:00.000Z" },
+        "2026-10-27T00:00:00.000Z",
+      ),
+    ).toBe("expired");
+    expect(
+      presentationStaffStatus(
+        { status: "invited", inviteExpiresAt: "2027-01-01T00:00:00.000Z" },
+        "2026-10-27T00:00:00.000Z",
+      ),
+    ).toBe("invited");
   });
 
   it("does not list shared workspaces the viewer cannot access", () => {
@@ -252,5 +313,7 @@ describe("internal console store migration", () => {
     expect(sql).toMatch(
       /GRANT EXECUTE ON FUNCTION public\.ensure_platform_personal_workspace\(uuid\) TO service_role/,
     );
+    expect(sql).toContain("kind = 'shared'");
+    expect(sql).toMatch(/platform_workspace_member_read[\s\S]*kind = 'shared'/);
   });
 });

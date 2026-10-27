@@ -29,17 +29,38 @@ import { CONSOLE_HELP_ARTICLES } from "@/lib/internal-console/help-catalog";
 import { CONSOLE_HEALTH_LABELS } from "@/lib/internal-console/status";
 import { useApp } from "@/contexts/app-context";
 import { useConsole } from "./console-shell";
-import type { ConsoleActivityItem, ConsoleStaffRow } from "@/lib/internal-console/overview";
+import {
+  presentationStaffStatus,
+  type ConsoleActivityItem,
+  type ConsoleStaffRow,
+} from "@/lib/internal-console/overview";
+import { workspaceTypeLabel } from "@/lib/internal-console/workspaces";
+import { ConfirmAction, ConsoleNotice, StaffStatusBadge } from "./console-primitives";
 
 function canManage(overviewCapabilities: string[]): boolean {
   return overviewCapabilities.includes("platform.staff.manage");
 }
 
 export function ConsoleTeamDirectory() {
-  const { overview, reload } = useConsole();
+  const { overview, reload, error: loadError } = useConsole();
   const [busy, setBusy] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  if (!overview) return <section className="sherivs-console-card">Loading team…</section>;
+  const [pending, setPending] = useState<{
+    staffId: string;
+    status: "active" | "suspended" | "revoked";
+  } | null>(null);
+  if (!overview) {
+    return (
+      <section className="sherivs-console-card">
+        <p className="sherivs-console-page-kicker">Team & Access</p>
+        <h1>Team Directory</h1>
+        <p>{loadError ? loadError : "Loading team…"}</p>
+        {loadError ? (
+          <ConsoleNotice tone="error">The team directory could not be retrieved.</ConsoleNotice>
+        ) : null}
+      </section>
+    );
+  }
   if (!overview.staffAvailable) {
     return (
       <section className="sherivs-console-card">
@@ -54,6 +75,7 @@ export function ConsoleTeamDirectory() {
     setError(null);
     try {
       await setPlatformStaffStatus({ data: { staffId, status } });
+      setPending(null);
       await reload();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Status change failed");
@@ -64,12 +86,14 @@ export function ConsoleTeamDirectory() {
 
   return (
     <section className="sherivs-console-card" data-testid="console-team">
+      <p className="sherivs-console-page-kicker">Team & Access</p>
       <h1>Team Directory</h1>
       <p>
         Active internal staff: {overview.activeStaff ?? "unavailable"}. Pending invitations:{" "}
-        {overview.pendingInvitations ?? "unavailable"}. {overview.usageDefinition}
+        {overview.pendingInvitations ?? "unavailable"}. Expired invitations:{" "}
+        {overview.expiredInvitations ?? "unavailable"}. {overview.usageDefinition}
       </p>
-      {error ? <p className="sherivs-console-error">{error}</p> : null}
+      {error ? <ConsoleNotice tone="error">{error}</ConsoleNotice> : null}
       <div style={{ overflowX: "auto" }}>
         <table className="sherivs-console-table">
           <thead>
@@ -78,6 +102,7 @@ export function ConsoleTeamDirectory() {
               <th>Email</th>
               <th>Roles</th>
               <th>Status</th>
+              <th>Workspaces</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -89,7 +114,20 @@ export function ConsoleTeamDirectory() {
                 busy={busy === row.id}
                 canManage={canManage(overview.viewer.capabilities)}
                 isOwner={overview.viewer.isSuperAdmin}
-                onStatus={changeStatus}
+                nowIso={new Date().toISOString()}
+                sharedNames={overview.workspaces
+                  .filter(
+                    (workspace) =>
+                      workspace.type === "shared" &&
+                      workspace.members.some((member) => member.userId === row.id),
+                  )
+                  .map((workspace) => workspace.name)}
+                pending={pending?.staffId === row.id ? pending.status : null}
+                onAskStatus={(status) => setPending({ staffId: row.id, status })}
+                onConfirmStatus={() =>
+                  pending && void changeStatus(pending.staffId, pending.status)
+                }
+                onCancelStatus={() => setPending(null)}
                 onReload={reload}
               />
             ))}
@@ -105,19 +143,31 @@ function StaffRow({
   busy,
   canManage: manage,
   isOwner,
-  onStatus,
+  nowIso,
+  sharedNames,
+  pending,
+  onAskStatus,
+  onConfirmStatus,
+  onCancelStatus,
   onReload,
 }: {
   row: ConsoleStaffRow;
   busy: boolean;
   canManage: boolean;
   isOwner: boolean;
-  onStatus: (id: string, status: "active" | "suspended" | "revoked") => void;
+  nowIso: string;
+  sharedNames: string[];
+  pending: "active" | "suspended" | "revoked" | null;
+  onAskStatus: (status: "active" | "suspended" | "revoked") => void;
+  onConfirmStatus: () => void;
+  onCancelStatus: () => void;
   onReload: () => Promise<void>;
 }) {
   const [roles, setRoles] = useState(row.roles);
   const [savingRoles, setSavingRoles] = useState(false);
   const [roleError, setRoleError] = useState<string | null>(null);
+  const [confirmRoles, setConfirmRoles] = useState(false);
+  const [info, setInfo] = useState<string | null>(null);
   useEffect(() => {
     setRoles(row.roles);
   }, [row.id, row.roles]);
@@ -125,6 +175,10 @@ function StaffRow({
     (role) => isOwner || !PRIVILEGED_PLATFORM_ROLES.has(role),
   );
   const dirty = [...roles].sort().join(",") !== [...row.roles].sort().join(",");
+  const presentation = presentationStaffStatus(row, nowIso);
+  const privilegedChange = [...roles, ...row.roles].some((role) =>
+    (PRIVILEGED_PLATFORM_ROLES as ReadonlySet<string>).has(role),
+  );
 
   async function saveRoles() {
     if (!roles.length) {
@@ -133,10 +187,13 @@ function StaffRow({
     }
     setSavingRoles(true);
     setRoleError(null);
+    setInfo(null);
     try {
       await setPlatformStaffRoles({
         data: { staffId: row.id, roles: roles as (typeof PLATFORM_ROLE_CODES)[number][] },
       });
+      setConfirmRoles(false);
+      setInfo("Roles saved.");
       await onReload();
     } catch (err) {
       setRoleError(err instanceof Error ? err.message : "Role update failed");
@@ -144,6 +201,13 @@ function StaffRow({
       setSavingRoles(false);
     }
   }
+
+  const statusQuestion =
+    pending === "revoked"
+      ? `Revoke ${row.fullName}? They lose roles and live sessions. This is not the same as removing them from a shared workspace.`
+      : pending === "suspended"
+        ? `Suspend ${row.fullName}? Live sessions will be blocked until restored.`
+        : `Restore ${row.fullName} to active membership?`;
 
   return (
     <tr>
@@ -155,6 +219,14 @@ function StaffRow({
       <td>
         {manage ? (
           <div>
+            <p>
+              Current:{" "}
+              {row.roles
+                .map(
+                  (role) => PLATFORM_ROLE_LABELS[role as keyof typeof PLATFORM_ROLE_LABELS] ?? role,
+                )
+                .join(", ") || "none"}
+            </p>
             <div className="sherivs-console-roles">
               {roleOptions.map((role) => (
                 <label key={role}>
@@ -174,15 +246,29 @@ function StaffRow({
                 </label>
               ))}
             </div>
+            {privilegedChange && !isOwner ? (
+              <p>Privileged role changes require the platform owner.</p>
+            ) : null}
             {roleError ? <p className="sherivs-console-error">{roleError}</p> : null}
-            <button
-              type="button"
-              className="sherivs-console-btn secondary"
-              disabled={!dirty || savingRoles || busy}
-              onClick={() => void saveRoles()}
-            >
-              {savingRoles ? "Saving…" : "Save roles"}
-            </button>
+            {info ? <p>{info}</p> : null}
+            {confirmRoles ? (
+              <ConfirmAction
+                question={`Save role changes for ${row.fullName}? Current: ${row.roles.join(", ") || "none"}. Proposed: ${roles.join(", ")}.`}
+                confirmLabel="Save roles"
+                busy={savingRoles}
+                onConfirm={() => void saveRoles()}
+                onCancel={() => setConfirmRoles(false)}
+              />
+            ) : (
+              <button
+                type="button"
+                className="sherivs-console-btn secondary"
+                disabled={!dirty || savingRoles || busy}
+                onClick={() => setConfirmRoles(true)}
+              >
+                Review role changes
+              </button>
+            )}
           </div>
         ) : (
           row.roles
@@ -190,9 +276,15 @@ function StaffRow({
             .join(", ")
         )}
       </td>
-      <td>{row.status}</td>
       <td>
-        {manage && row.status === "invited" ? (
+        <StaffStatusBadge status={presentation} />
+      </td>
+      <td>
+        {row.status === "active" ? "Personal" : "—"}
+        {sharedNames.length ? ` · ${sharedNames.join(", ")}` : ""}
+      </td>
+      <td>
+        {manage && (row.status === "invited" || presentation === "expired") ? (
           <button
             type="button"
             className="sherivs-console-btn secondary"
@@ -207,7 +299,7 @@ function StaffRow({
             type="button"
             className="sherivs-console-btn secondary"
             disabled={busy}
-            onClick={() => onStatus(row.id, "suspended")}
+            onClick={() => onAskStatus("suspended")}
           >
             Suspend
           </button>
@@ -217,7 +309,7 @@ function StaffRow({
             type="button"
             className="sherivs-console-btn secondary"
             disabled={busy}
-            onClick={() => onStatus(row.id, "active")}
+            onClick={() => onAskStatus("active")}
           >
             Restore
           </button>
@@ -227,10 +319,21 @@ function StaffRow({
             type="button"
             className="sherivs-console-btn secondary"
             disabled={busy}
-            onClick={() => onStatus(row.id, "revoked")}
+            onClick={() => onAskStatus("revoked")}
           >
             Revoke
           </button>
+        ) : null}
+        {pending ? (
+          <ConfirmAction
+            question={statusQuestion}
+            confirmLabel={
+              pending === "revoked" ? "Revoke" : pending === "suspended" ? "Suspend" : "Restore"
+            }
+            busy={busy}
+            onConfirm={onConfirmStatus}
+            onCancel={onCancelStatus}
+          />
         ) : null}
       </td>
     </tr>
@@ -268,7 +371,7 @@ export function ConsoleInvitations() {
       setEmail("");
       setFullName("");
       setInfo(
-        "Invitation created. Delivery follows the configured auth provider; this page does not mark it delivered.",
+        "Invitation record created. Email delivery is handled by the auth provider and is not confirmed here.",
       );
       await reload();
     } catch (err) {
@@ -284,10 +387,11 @@ export function ConsoleInvitations() {
 
   return (
     <section className="sherivs-console-card">
+      <p className="sherivs-console-page-kicker">Team & Access</p>
       <h1>Invitations</h1>
       <p>
         An invitation is not access. Membership activates only after the invitee accepts and the
-        staff row is active.
+        staff row is active. Creating a record is not the same as delivery.
       </p>
       {manage ? (
         <form
@@ -383,6 +487,9 @@ export function ConsoleInvitations() {
                 {row.invitedAt ? new Date(row.invitedAt).toLocaleString() : "at unknown time"}
                 {row.inviteExpiresAt
                   ? ` · expires ${new Date(row.inviteExpiresAt).toLocaleString()}`
+                  : ""}
+                {presentationStaffStatus(row, new Date().toISOString()) === "expired"
+                  ? " · expired — resend required"
                   : ""}
               </small>
             </div>
@@ -487,11 +594,12 @@ export function ConsoleWorkspaces() {
 
   return (
     <section className="sherivs-console-card">
+      <p className="sherivs-console-page-kicker">Workspaces</p>
       <h1>Workspaces</h1>
       <p>
         {overview.workspaceStore === "database"
-          ? "Personal workspaces are provisioned for eligible staff. Shared workspaces exist only for authorized members."
-          : "The workspace store is not configured in this environment, so this directory uses role membership as a fallback."}
+          ? "Personal workspaces are private to their owner. Shared workspaces exist only for authorized members. Managing staff is not the same as opening someone else's personal workspace."
+          : "Persistent workspace storage is not configured. This directory is a compatibility view from role membership and cannot hold custom members."}
       </p>
       {canCreate && overview.workspaceStore === "database" ? (
         <form
@@ -523,7 +631,8 @@ export function ConsoleWorkspaces() {
           <Link key={workspace.id} to={workspace.href as never} className="sherivs-console-row">
             <strong>{workspace.name}</strong>
             <small>
-              {workspace.type} · {workspace.access} · {workspace.team}
+              {workspaceTypeLabel(workspace.type)} · {workspace.access}
+              {workspace.source === "derived" ? " · compatibility" : ""}
             </small>
             <small>{workspace.description}</small>
           </Link>
@@ -538,6 +647,9 @@ export function ConsoleWorkspaceDetail() {
   const { overview, reload } = useConsole();
   const [memberId, setMemberId] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [removeId, setRemoveId] = useState<string | null>(null);
+  const [confirmArchive, setConfirmArchive] = useState(false);
+  const [info, setInfo] = useState<string | null>(null);
   if (!overview) return <section className="sherivs-console-card">Loading workspace…</section>;
   const workspace = workspaceFromAuthorized(params.workspaceId ?? "me", overview.workspaces, {
     displayName: overview.viewer.name,
@@ -576,6 +688,7 @@ export function ConsoleWorkspaceDetail() {
     try {
       await addWorkspaceMember({ data: { workspaceId: workspace.recordId, userId: memberId } });
       setMemberId("");
+      setInfo("Member added.");
       await reload();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Member could not be added");
@@ -584,11 +697,21 @@ export function ConsoleWorkspaceDetail() {
 
   return (
     <section className="sherivs-console-card">
+      <p className="sherivs-console-page-kicker">Workspaces</p>
       <h1>{workspace.name}</h1>
       <p>{workspace.description}</p>
       <p>
-        Type: {workspace.type}. Access: {workspace.access}. Source: {workspace.source}.
+        {workspaceTypeLabel(workspace.type)}. Access: {workspace.access}.{" "}
+        {workspace.source === "database"
+          ? "Persistent workspace."
+          : "Compatibility workspace from role membership. Custom members cannot be stored here."}
       </p>
+      {workspace.type === "personal" ? (
+        <p>
+          Personal workspaces are private to their owner. There are no documents, notes, or files in
+          V1.
+        </p>
+      ) : null}
       <h2 style={{ marginTop: "1rem" }}>Members</h2>
       {members.length ? (
         <div className="sherivs-console-list">
@@ -600,23 +723,36 @@ export function ConsoleWorkspaceDetail() {
               workspace.type === "shared" &&
               workspace.source === "database" &&
               member.access === "member" ? (
-                <button
-                  type="button"
-                  className="sherivs-console-btn secondary"
-                  onClick={() =>
-                    void removeWorkspaceMember({
-                      data: { workspaceId: workspace.recordId, userId: member.id },
-                    })
-                      .then(() => reload())
-                      .catch((err) =>
-                        setError(
-                          err instanceof Error ? err.message : "Member could not be removed",
-                        ),
-                      )
-                  }
-                >
-                  Remove
-                </button>
+                removeId === member.id ? (
+                  <ConfirmAction
+                    question={`Remove ${member.name} from this shared workspace? Their personal workspace is not affected.`}
+                    confirmLabel="Remove member"
+                    onConfirm={() =>
+                      void removeWorkspaceMember({
+                        data: { workspaceId: workspace.recordId, userId: member.id },
+                      })
+                        .then(() => {
+                          setRemoveId(null);
+                          setInfo("Member removed.");
+                          return reload();
+                        })
+                        .catch((err) =>
+                          setError(
+                            err instanceof Error ? err.message : "Member could not be removed",
+                          ),
+                        )
+                    }
+                    onCancel={() => setRemoveId(null)}
+                  />
+                ) : (
+                  <button
+                    type="button"
+                    className="sherivs-console-btn secondary"
+                    onClick={() => setRemoveId(member.id)}
+                  >
+                    Remove
+                  </button>
+                )
               ) : null}
             </div>
           ))}
@@ -651,22 +787,32 @@ export function ConsoleWorkspaceDetail() {
               </select>
             </label>
             {error ? <p className="sherivs-console-error">{error}</p> : null}
+            {info ? <p>{info}</p> : null}
             <button type="submit" className="sherivs-console-btn">
               Add member
             </button>
           </form>
-          <button
-            type="button"
-            className="sherivs-console-btn secondary"
-            style={{ marginTop: "0.75rem" }}
-            onClick={() =>
-              void archiveSharedWorkspace({ data: { workspaceId: workspace.recordId } })
-                .then(() => reload())
-                .catch((err) => setError(err instanceof Error ? err.message : "Archive failed"))
-            }
-          >
-            Archive workspace
-          </button>
+          {confirmArchive ? (
+            <ConfirmAction
+              question="Archive this shared workspace? Members lose access. Personal workspaces are not deleted."
+              confirmLabel="Archive workspace"
+              onConfirm={() =>
+                void archiveSharedWorkspace({ data: { workspaceId: workspace.recordId } })
+                  .then(() => reload())
+                  .catch((err) => setError(err instanceof Error ? err.message : "Archive failed"))
+              }
+              onCancel={() => setConfirmArchive(false)}
+            />
+          ) : (
+            <button
+              type="button"
+              className="sherivs-console-btn secondary"
+              style={{ marginTop: "0.75rem" }}
+              onClick={() => setConfirmArchive(true)}
+            >
+              Archive workspace
+            </button>
+          )}
         </>
       ) : null}
     </section>
@@ -713,9 +859,13 @@ export function ConsoleScholarRuntime() {
           Launch Sherivs Scholar
         </a>
       </div>
+      <p>
+        Last health check:{" "}
+        {scholar?.lastCheck ? new Date(scholar.lastCheck).toLocaleString() : "No successful check"}.
+      </p>
       <p style={{ marginTop: "1rem" }}>
-        Launch opens the Scholar application host. Platform staff without a school membership will
-        not receive a school dashboard, by design.
+        Launch opens the Scholar application host with the current authenticated session. Platform
+        staff without a school membership will not receive a school dashboard, by design.
       </p>
     </section>
   );
@@ -776,15 +926,27 @@ export function ConsoleActivity({ scope = "all" }: { scope?: "all" | "admin" | "
 }
 
 export function ConsoleLogs() {
+  const { overview } = useConsole();
+  if (!overview) return <section className="sherivs-console-card">Loading logs…</section>;
+  if (!overview.viewer.capabilities.includes("platform.engineering.read")) {
+    return (
+      <section className="sherivs-console-card">
+        <h1>Logs</h1>
+        <p>Technical logs require the engineering capability.</p>
+      </section>
+    );
+  }
   return (
     <section className="sherivs-console-card">
+      <p className="sherivs-console-page-kicker">Activity & Audit</p>
       <h1>Logs</h1>
+      <ConsoleNotice>
+        A searchable log index is not configured for this environment. Application health
+        information and available audit records remain accessible through their respective views.
+      </ConsoleNotice>
       <p>
-        This application does not store a queryable log index. Request logs belong in the configured
-        observability provider. The process health report is available at <code>/health.json</code>.
-      </p>
-      <p className="sherivs-console-empty">
-        A proprietary log-storage platform is a V1 exclusion. This page does not invent log rows.
+        Request logs belong in the configured observability provider. Process health remains at{" "}
+        <code>/health.json</code>. This page does not invent log rows.
       </p>
     </section>
   );
@@ -792,6 +954,15 @@ export function ConsoleLogs() {
 
 export function ConsoleMetrics() {
   const { overview } = useConsole();
+  if (!overview) return <section className="sherivs-console-card">Loading metrics…</section>;
+  if (!overview.viewer.capabilities.includes("platform.engineering.read")) {
+    return (
+      <section className="sherivs-console-card">
+        <h1>Metrics</h1>
+        <p>Operational metrics require the engineering capability.</p>
+      </section>
+    );
+  }
   return (
     <section className="sherivs-console-card">
       <h1>Metrics</h1>
@@ -832,8 +1003,8 @@ export function ConsoleAccount() {
         </button>
       </div>
       <p className="sherivs-console-empty" style={{ marginTop: "1rem" }}>
-        Notification and workspace preferences appear here only when the supporting controls exist.
-        Profile fields other than the authenticated identity are not editable from this page.
+        Theme, language, timezone, and notification switches are not configured. Profile fields
+        other than the authenticated identity are not editable from this page.
       </p>
     </section>
   );

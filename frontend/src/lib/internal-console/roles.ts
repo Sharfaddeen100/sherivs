@@ -60,6 +60,8 @@ export type ConsoleNavItem = {
   /** null = every console operator. */
   capability: string | null;
   children?: readonly ConsoleNavItem[];
+  /** False when the item is a grouping shell for visible children. */
+  navigable?: boolean;
 };
 
 export const CONSOLE_NAV: readonly ConsoleNavItem[] = [
@@ -154,6 +156,18 @@ export const CONSOLE_NAV: readonly ConsoleNavItem[] = [
         href: CONSOLE_PATHS.activitySecurity,
         capability: "platform.audit.read",
       },
+      {
+        key: "metrics",
+        label: "Metrics",
+        href: CONSOLE_PATHS.activityMetrics,
+        capability: "platform.engineering.read",
+      },
+      {
+        key: "logs",
+        label: "Logs",
+        href: CONSOLE_PATHS.activityLogs,
+        capability: "platform.engineering.read",
+      },
     ],
   },
 ];
@@ -172,21 +186,6 @@ export const CONSOLE_PLATFORM_NAV: readonly ConsoleNavItem[] = [
   { key: "help", label: "Help & Support", href: CONSOLE_PATHS.help, capability: null },
 ];
 
-export const CONSOLE_ENGINEERING_NAV: readonly ConsoleNavItem[] = [
-  {
-    key: "metrics",
-    label: "Metrics",
-    href: CONSOLE_PATHS.activityMetrics,
-    capability: "platform.engineering.read",
-  },
-  {
-    key: "logs",
-    label: "Logs",
-    href: CONSOLE_PATHS.activityLogs,
-    capability: "platform.engineering.read",
-  },
-];
-
 export function navVisible(
   item: ConsoleNavItem,
   viewer: { isSuperAdmin: boolean; capabilities: ReadonlySet<string> },
@@ -199,12 +198,12 @@ export function filterNav(
   items: readonly ConsoleNavItem[],
   viewer: { isSuperAdmin: boolean; capabilities: ReadonlySet<string> },
 ): ConsoleNavItem[] {
-  return items
-    .filter((item) => navVisible(item, viewer))
-    .map((item) => ({
-      ...item,
-      children: item.children ? filterNav(item.children, viewer) : undefined,
-    }));
+  return items.flatMap((item) => {
+    const children = item.children ? filterNav(item.children, viewer) : undefined;
+    const visible = navVisible(item, viewer);
+    if (!visible && !children?.length) return [];
+    return [{ ...item, children, navigable: visible }];
+  });
 }
 
 export type ConsoleQuickAction = {

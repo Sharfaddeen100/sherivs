@@ -1,6 +1,25 @@
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import { Link, Navigate, Outlet, useLocation, useNavigate } from "@tanstack/react-router";
-import { Bell, HelpCircle, LogOut, Menu, PanelLeft, Plus, Search } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+import {
+  Activity,
+  Bell,
+  Boxes,
+  Gauge,
+  HelpCircle,
+  Home,
+  LayoutGrid,
+  LifeBuoy,
+  LogOut,
+  Menu,
+  PanelLeft,
+  Plus,
+  ScrollText,
+  Search,
+  Settings,
+  UserCircle,
+  Users,
+} from "lucide-react";
 import { SherivsLogo } from "@/components/brand/sherivs-logo";
 import { useApp } from "@/contexts/app-context";
 import {
@@ -12,7 +31,6 @@ import { getConsoleOverview } from "@/lib/internal-console/overview.functions";
 import type { ConsoleOverview } from "@/lib/internal-console/overview";
 import {
   CONSOLE_ACCOUNT_NAV,
-  CONSOLE_ENGINEERING_NAV,
   CONSOLE_NAV,
   CONSOLE_PLATFORM_NAV,
   filterNav,
@@ -25,7 +43,8 @@ import { CONSOLE_HELP_ARTICLES } from "@/lib/internal-console/help-catalog";
 import { REGISTERED_RUNTIMES } from "@/lib/internal-console/runtime-contract";
 import { rememberResource, type RecentResource } from "@/lib/internal-console/recent";
 import { rememberConsoleResource } from "@/lib/internal-console/workspace.functions";
-import { workspaceIdFromPath } from "@/lib/internal-console/workspaces";
+import { workspaceIdFromPath, workspaceTypeLabel } from "@/lib/internal-console/workspaces";
+import { ConsoleNotice } from "./console-primitives";
 import { ConsoleNotAuthorised, ConsoleElsewhere } from "./not-authorised";
 import "./console.css";
 
@@ -69,6 +88,19 @@ function remember(entry: RecentResource) {
   void rememberConsoleResource({ data: entry }).catch(() => undefined);
 }
 
+const NAV_ICONS: Record<string, LucideIcon> = {
+  home: Home,
+  team: Users,
+  workspaces: LayoutGrid,
+  runtimes: Boxes,
+  activity: Activity,
+  account: UserCircle,
+  settings: Settings,
+  help: LifeBuoy,
+  metrics: Gauge,
+  logs: ScrollText,
+};
+
 function NavGroup({
   label,
   items,
@@ -85,36 +117,55 @@ function NavGroup({
     <>
       <p className="sherivs-console-kicker">{label}</p>
       <nav className="sherivs-console-nav" aria-label={label}>
-        {items.map((item) => (
-          <span key={item.key}>
-            <Link
-              to={item.href as never}
-              className={navActive(item.href, path) ? "is-active" : undefined}
-              title={item.label}
-              onClick={() =>
-                remember({
-                  id: item.key,
-                  title: item.label,
-                  href: item.href,
-                  kind: "page",
-                  at: new Date().toISOString(),
-                })
-              }
-            >
-              {collapsed ? item.label.slice(0, 1) : item.label}
-            </Link>
-            {!collapsed &&
-              item.children?.map((child) => (
-                <Link
-                  key={child.key}
-                  to={child.href as never}
-                  className={`is-child${navActive(child.href, path) ? " is-active" : ""}`}
-                >
-                  {child.label}
-                </Link>
-              ))}
-          </span>
-        ))}
+        {items.map((item) => {
+          const Icon = NAV_ICONS[item.key] ?? LayoutGrid;
+          const active = navActive(item.href, path);
+          const parent =
+            item.navigable === false ? (
+              <span
+                className={`sherivs-console-nav-label${active ? " is-active" : ""}`}
+                title={item.label}
+              >
+                <Icon size={16} aria-hidden="true" />
+                {collapsed ? <span className="sr-only">{item.label}</span> : item.label}
+              </span>
+            ) : (
+              <Link
+                to={item.href as never}
+                className={active ? "is-active" : undefined}
+                title={item.label}
+                aria-current={active ? "page" : undefined}
+                onClick={() =>
+                  remember({
+                    id: item.key,
+                    title: item.label,
+                    href: item.href,
+                    kind: "page",
+                    at: new Date().toISOString(),
+                  })
+                }
+              >
+                <Icon size={16} aria-hidden="true" />
+                {collapsed ? <span className="sr-only">{item.label}</span> : item.label}
+              </Link>
+            );
+          return (
+            <span key={item.key}>
+              {parent}
+              {!collapsed &&
+                item.children?.map((child) => (
+                  <Link
+                    key={child.key}
+                    to={child.href as never}
+                    className={`is-child${navActive(child.href, path) ? " is-active" : ""}`}
+                    aria-current={navActive(child.href, path) ? "page" : undefined}
+                  >
+                    {child.label}
+                  </Link>
+                ))}
+            </span>
+          );
+        })}
       </nav>
     </>
   );
@@ -132,6 +183,9 @@ function ConsoleChrome({ children }: { children: ReactNode }) {
   const [openQuick, setOpenQuick] = useState(false);
   const [openWorkspace, setOpenWorkspace] = useState(false);
   const [openRuntime, setOpenRuntime] = useState(false);
+  const [openProfile, setOpenProfile] = useState(false);
+  const [openNotice, setOpenNotice] = useState(false);
+  const [mobileSearch, setMobileSearch] = useState(false);
   const overview = console.overview;
   const capabilities = useMemo(() => new Set(overview?.viewer.capabilities ?? []), [overview]);
   const viewer = {
@@ -141,7 +195,6 @@ function ConsoleChrome({ children }: { children: ReactNode }) {
   const mainNav = filterNav(CONSOLE_NAV, viewer);
   const accountNav = filterNav(CONSOLE_ACCOUNT_NAV, viewer);
   const platformNav = filterNav(CONSOLE_PLATFORM_NAV, viewer);
-  const engineeringNav = filterNav(CONSOLE_ENGINEERING_NAV, viewer);
   const actions = quickActionsFor(viewer);
   const path = location.pathname;
   const hits = searchConsole({
@@ -156,7 +209,7 @@ function ConsoleChrome({ children }: { children: ReactNode }) {
     })),
     workspaces: overview?.workspaces ?? [],
     runtimes: overview?.runtimes?.length ? overview.runtimes : REGISTERED_RUNTIMES,
-    pages: [...mainNav, ...accountNav, ...platformNav, ...engineeringNav],
+    pages: [...mainNav, ...accountNav, ...platformNav],
     help: CONSOLE_HELP_ARTICLES,
   });
 
@@ -165,6 +218,8 @@ function ConsoleChrome({ children }: { children: ReactNode }) {
     setOpenQuick(false);
     setOpenWorkspace(false);
     setOpenRuntime(false);
+    setOpenProfile(false);
+    setOpenNotice(false);
   }, [path]);
 
   const display = overview?.viewer.name ?? app.authUser?.email ?? "Staff";
@@ -222,6 +277,9 @@ function ConsoleChrome({ children }: { children: ReactNode }) {
                 }}
               >
                 Workspace <strong>{workspaceName}</strong>
+                {activeWorkspace ? (
+                  <small> · {workspaceTypeLabel(activeWorkspace.type)}</small>
+                ) : null}
               </button>
               {openWorkspace ? (
                 <div
@@ -232,12 +290,16 @@ function ConsoleChrome({ children }: { children: ReactNode }) {
                     <Link
                       key={workspace.id}
                       to={workspace.href as never}
-                      onClick={() => setOpenWorkspace(false)}
+                      onClick={() => {
+                        setOpenWorkspace(false);
+                        void console.reload();
+                      }}
                     >
                       <strong>{workspace.name}</strong>
                       <small>
                         {" "}
-                        · {workspace.type} · {workspace.access}
+                        · {workspaceTypeLabel(workspace.type)} · {workspace.access}
+                        {workspace.source === "derived" ? " · compatibility" : ""}
                       </small>
                     </Link>
                   ))}
@@ -269,16 +331,18 @@ function ConsoleChrome({ children }: { children: ReactNode }) {
                   className="sherivs-console-search-panel sherivs-console-switcher-panel"
                   role="listbox"
                 >
-                  {runtimes.map((runtime) => (
-                    <Link
-                      key={runtime.id}
-                      to={runtime.helpHref as never}
-                      onClick={() => setOpenRuntime(false)}
-                    >
-                      <strong>{runtime.name}</strong>
-                      <small> · {runtime.status.replaceAll("_", " ")}</small>
-                    </Link>
-                  ))}
+                  {runtimes
+                    .filter((runtime) => runtime.status === "operational_product")
+                    .map((runtime) => (
+                      <Link
+                        key={runtime.id}
+                        to={runtime.helpHref as never}
+                        onClick={() => setOpenRuntime(false)}
+                      >
+                        <strong>{runtime.name}</strong>
+                        <small> · operational product</small>
+                      </Link>
+                    ))}
                 </div>
               ) : null}
             </div>
@@ -288,7 +352,7 @@ function ConsoleChrome({ children }: { children: ReactNode }) {
               {overview?.context.environment ?? "Unknown"}
             </span>
           </div>
-          <div className="sherivs-console-search-wrap">
+          <div className={`sherivs-console-search-wrap${mobileSearch ? " is-open" : ""}`}>
             <label className="sherivs-console-search">
               <Search size={16} />
               <input
@@ -333,12 +397,25 @@ function ConsoleChrome({ children }: { children: ReactNode }) {
             ) : null}
           </div>
           <div className="sherivs-console-top-actions">
+            <button
+              type="button"
+              className="sherivs-console-icon-btn sherivs-console-search-toggle"
+              aria-label="Search"
+              onClick={() => setMobileSearch((open) => !open)}
+            >
+              <Search size={18} />
+            </button>
             <div style={{ position: "relative" }}>
               <button
                 type="button"
                 className="sherivs-console-icon-btn"
                 aria-label="Quick actions"
-                onClick={() => setOpenQuick((open) => !open)}
+                aria-expanded={openQuick}
+                onClick={() => {
+                  setOpenQuick((open) => !open);
+                  setOpenNotice(false);
+                  setOpenProfile(false);
+                }}
               >
                 <Plus size={18} />
               </button>
@@ -364,14 +441,44 @@ function ConsoleChrome({ children }: { children: ReactNode }) {
                 </div>
               ) : null}
             </div>
-            <button
-              type="button"
-              className="sherivs-console-icon-btn"
-              aria-label="Notifications"
-              onClick={() => void navigate({ to: CONSOLE_PATHS.home as never })}
-            >
-              <Bell size={18} />
-            </button>
+            <div style={{ position: "relative" }}>
+              <button
+                type="button"
+                className="sherivs-console-icon-btn"
+                aria-label="Notifications"
+                aria-expanded={openNotice}
+                onClick={() => {
+                  setOpenNotice((open) => !open);
+                  setOpenQuick(false);
+                  setOpenProfile(false);
+                }}
+              >
+                <Bell size={18} />
+              </button>
+              {openNotice ? (
+                <div
+                  className="sherivs-console-search-panel"
+                  style={{ width: "18rem", right: 0, left: "auto" }}
+                >
+                  {(overview?.attention ?? []).length ? (
+                    overview?.attention.map((item) => (
+                      <Link
+                        key={item.id}
+                        to={item.href as never}
+                        onClick={() => setOpenNotice(false)}
+                      >
+                        <strong>{item.title}</strong>
+                        <small> · {item.severity}</small>
+                      </Link>
+                    ))
+                  ) : (
+                    <p className="sherivs-console-empty" style={{ padding: "0.7rem" }}>
+                      There is no notification inbox. Verified attention items appear on Home.
+                    </p>
+                  )}
+                </div>
+              ) : null}
+            </div>
             <button
               type="button"
               className="sherivs-console-icon-btn"
@@ -380,14 +487,37 @@ function ConsoleChrome({ children }: { children: ReactNode }) {
             >
               <HelpCircle size={18} />
             </button>
-            <button
-              type="button"
-              className="sherivs-console-icon-btn"
-              aria-label="Account"
-              onClick={() => void navigate({ to: CONSOLE_PATHS.account as never })}
-            >
-              <span className="sherivs-console-avatar">{initials(display)}</span>
-            </button>
+            <div style={{ position: "relative" }}>
+              <button
+                type="button"
+                className="sherivs-console-icon-btn"
+                aria-label="Account menu"
+                aria-expanded={openProfile}
+                onClick={() => {
+                  setOpenProfile((open) => !open);
+                  setOpenQuick(false);
+                  setOpenNotice(false);
+                }}
+              >
+                <span className="sherivs-console-avatar">{initials(display)}</span>
+              </button>
+              {openProfile ? (
+                <div
+                  className="sherivs-console-search-panel"
+                  style={{ width: "16rem", right: 0, left: "auto" }}
+                >
+                  <Link to={CONSOLE_PATHS.account as never} onClick={() => setOpenProfile(false)}>
+                    Account & Preferences
+                  </Link>
+                  <Link to={CONSOLE_PATHS.help as never} onClick={() => setOpenProfile(false)}>
+                    Help
+                  </Link>
+                  <button type="button" onClick={() => void app.signOut()}>
+                    Sign out
+                  </button>
+                </div>
+              ) : null}
+            </div>
           </div>
         </header>
 
@@ -412,12 +542,6 @@ function ConsoleChrome({ children }: { children: ReactNode }) {
           <NavGroup label="Internal Console" items={mainNav} path={path} collapsed={collapsed} />
           <NavGroup label="Account" items={accountNav} path={path} collapsed={collapsed} />
           <NavGroup label="Platform" items={platformNav} path={path} collapsed={collapsed} />
-          <NavGroup
-            label="Observability"
-            items={engineeringNav}
-            path={path}
-            collapsed={collapsed}
-          />
           <nav className="sherivs-console-nav" style={{ marginTop: "auto" }}>
             <button type="button" onClick={() => void app.signOut()}>
               <LogOut size={16} />
@@ -427,7 +551,15 @@ function ConsoleChrome({ children }: { children: ReactNode }) {
         </aside>
 
         <main className="sherivs-console-main">
-          <div className="sherivs-console-sheet">{children}</div>
+          <div className="sherivs-console-sheet">
+            {overview?.workspaceStore === "derived-fallback" ? (
+              <ConsoleNotice tone="warning">
+                Persistent workspace storage is not configured in this environment. Compatibility
+                workspaces are shown from role membership and cannot hold custom members.
+              </ConsoleNotice>
+            ) : null}
+            {children}
+          </div>
         </main>
       </div>
     </div>

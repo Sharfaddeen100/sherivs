@@ -98,3 +98,32 @@ export interface ConsoleOverview {
   activeStaff: number | null;
   usageDefinition: string;
 }
+
+export type ConsoleStaffPresentationStatus =
+  "invited" | "active" | "suspended" | "revoked" | "expired";
+
+export const STAFF_STATUS_LABELS: Record<ConsoleStaffPresentationStatus, string> = {
+  invited: "Invited",
+  active: "Active",
+  suspended: "Suspended",
+  revoked: "Revoked",
+  expired: "Expired",
+};
+
+export function presentationStaffStatus(
+  row: Pick<ConsoleStaffRow, "status" | "inviteExpiresAt">,
+  nowIso: string,
+): ConsoleStaffPresentationStatus {
+  if (row.status === "invited" && row.inviteExpiresAt !== null && row.inviteExpiresAt < nowIso) {
+    return "expired";
+  }
+  if (
+    row.status === "active" ||
+    row.status === "suspended" ||
+    row.status === "revoked" ||
+    row.status === "invited"
+  ) {
+    return row.status;
+  }
+  return "invited";
+}

@@ -4,7 +4,9 @@ import { quickActionsFor } from "@/lib/internal-console/roles";
 import { CONSOLE_PATHS } from "@/lib/internal-console/paths";
 import { allowedHrefsFrom, readRecentResources } from "@/lib/internal-console/recent";
 import { SCHOLAR_RUNTIME_CONTRACT } from "@/lib/internal-console/runtime-contract";
+import { workspaceTypeLabel } from "@/lib/internal-console/workspaces";
 import { useConsole } from "./console-shell";
+import { ConsoleNotice } from "./console-primitives";
 
 function StatusBadge({ status }: { status: ConsoleHealthState }) {
   return (
@@ -20,7 +22,12 @@ export function ConsoleHomeScreen() {
   if (!overview) {
     return (
       <section className="sherivs-console-card">
-        <p>{error ?? "Loading operational status…"}</p>
+        <p className="sherivs-console-page-kicker">Home</p>
+        <h1>Internal Platform Operations</h1>
+        <p>{error ? error : "Loading operational status…"}</p>
+        {error ? (
+          <ConsoleNotice tone="error">The homepage could not be retrieved.</ConsoleNotice>
+        ) : null}
       </section>
     );
   }
@@ -38,10 +45,20 @@ export function ConsoleHomeScreen() {
     { href: CONSOLE_PATHS.help },
   ]);
   const recent = overview.recent.length ? overview.recent : readRecentResources(allowed);
+  const measured = overview.metrics.filter((metric) => metric.available);
+  const unmeasured = overview.metrics.filter((metric) => !metric.available);
+  const healthCards = overview.health.cards.filter(
+    (card) =>
+      card.key === "platform" ||
+      card.key === "scholar" ||
+      card.key === "database" ||
+      card.key === "auth",
+  );
 
   return (
     <>
       <section className="sherivs-console-card sherivs-console-welcome" data-testid="console-home">
+        <p className="sherivs-console-page-kicker">Home</p>
         <p>Welcome back, {overview.viewer.name}</p>
         <h1>Internal Platform Operations</h1>
         <p>
@@ -54,13 +71,35 @@ export function ConsoleHomeScreen() {
             ? ` (${overview.context.environmentSource})`
             : " — environment is not configured"}
         </p>
+        {overview.attention.length === 0 ? (
+          <p>No verified items need attention right now.</p>
+        ) : null}
       </section>
+
+      {overview.attention.length ? (
+        <section className="sherivs-console-card">
+          <h2>Attention required</h2>
+          <div className="sherivs-console-list">
+            {overview.attention.map((item) => (
+              <Link key={item.id} to={item.href as never} className="sherivs-console-row">
+                <strong>
+                  {item.severity.toUpperCase()} · {item.title}
+                </strong>
+                <small>{item.description}</small>
+                <small>
+                  {item.resource} · {item.nextAction} · {new Date(item.detectedAt).toLocaleString()}
+                </small>
+              </Link>
+            ))}
+          </div>
+        </section>
+      ) : null}
 
       <section className="sherivs-console-card">
         <h2>Platform health</h2>
         <p>{overview.health.caveat}</p>
         <div className="sherivs-console-grid" style={{ marginTop: "0.9rem" }}>
-          {overview.health.cards.map((card) => (
+          {healthCards.map((card) => (
             <Link key={card.key} to={card.href as never} className="sherivs-console-row">
               <strong>{card.name}</strong>
               <StatusBadge status={card.status} />
@@ -76,56 +115,22 @@ export function ConsoleHomeScreen() {
         </div>
       </section>
 
-      <section className="sherivs-console-card">
-        <h2>Operational metrics</h2>
-        <p>
-          Only measured values are shown as numbers. Unavailable metrics stay marked unavailable.
-        </p>
-        <div className="sherivs-console-grid" style={{ marginTop: "0.9rem" }}>
-          {overview.metrics.map((metric) => (
-            <div key={metric.key} className="sherivs-console-metric sherivs-console-row">
-              <span>{metric.name}</span>
-              <strong>{metric.available ? `${metric.value} ${metric.unit}` : "Unavailable"}</strong>
-              <small>
-                {metric.window} · {metric.source}
-                {metric.updatedAt
-                  ? ` · Updated ${new Date(metric.updatedAt).toLocaleString()}`
-                  : ""}
-              </small>
-              <small>{metric.definition}</small>
-            </div>
-          ))}
-        </div>
-      </section>
-
       <div className="sherivs-console-split">
-        <section className="sherivs-console-card">
-          <h2>Attention required</h2>
-          {overview.attention.length ? (
-            <div className="sherivs-console-list">
-              {overview.attention.map((item) => (
-                <Link key={item.id} to={item.href as never} className="sherivs-console-row">
-                  <strong>
-                    {item.severity.toUpperCase()} · {item.title}
-                  </strong>
-                  <small>{item.description}</small>
-                  <small>
-                    {item.resource} · {item.nextAction} ·{" "}
-                    {new Date(item.detectedAt).toLocaleString()}
-                  </small>
-                </Link>
-              ))}
-            </div>
-          ) : (
-            <p className="sherivs-console-empty">No verified items need attention right now.</p>
-          )}
-        </section>
         <section className="sherivs-console-card">
           <h2>My work</h2>
           <p className="sherivs-console-empty">
-            Assigned work is not configured. Sherivs V1 does not include a project-management
-            system, so this section stays empty rather than showing decorative tasks.
+            No assignments are available. Sherivs V1 does not include a task system, so this section
+            stays empty rather than showing decorative work.
           </p>
+        </section>
+        <section className="sherivs-console-card">
+          <h2>Sherivs Scholar</h2>
+          <p>{SCHOLAR_RUNTIME_CONTRACT.description}</p>
+          <div className="sherivs-console-actions" style={{ marginTop: "0.8rem" }}>
+            <Link to={CONSOLE_PATHS.scholar as never} className="sherivs-console-btn">
+              Open runtime
+            </Link>
+          </div>
         </section>
       </div>
 
@@ -139,6 +144,24 @@ export function ConsoleHomeScreen() {
               className="sherivs-console-btn secondary"
             >
               {action.label}
+            </Link>
+          ))}
+          {actions.length === 0 ? (
+            <p className="sherivs-console-empty">No permitted actions for this role.</p>
+          ) : null}
+        </div>
+      </section>
+
+      <section className="sherivs-console-card">
+        <h2>My workspaces</h2>
+        <div className="sherivs-console-list">
+          {overview.workspaces.map((workspace) => (
+            <Link key={workspace.id} to={workspace.href as never} className="sherivs-console-row">
+              <strong>{workspace.name}</strong>
+              <small>
+                {workspaceTypeLabel(workspace.type)} · {workspace.access}
+                {workspace.source === "derived" ? " · compatibility directory" : ""}
+              </small>
             </Link>
           ))}
         </div>
@@ -168,52 +191,52 @@ export function ConsoleHomeScreen() {
           )}
         </section>
         <section className="sherivs-console-card">
-          <h2>Sherivs Scholar</h2>
-          <p>{SCHOLAR_RUNTIME_CONTRACT.description}</p>
-          <p>
-            Availability uses the same application-process evidence as platform health. It does not
-            duplicate the school dashboard.
-          </p>
-          <div className="sherivs-console-actions" style={{ marginTop: "0.8rem" }}>
-            <Link to={CONSOLE_PATHS.scholar as never} className="sherivs-console-btn">
-              Open runtime
-            </Link>
-          </div>
+          <h2>Recently accessed</h2>
+          {recent.length ? (
+            <div className="sherivs-console-list">
+              {recent.map((item) => (
+                <Link key={item.id} to={item.href as never} className="sherivs-console-row">
+                  <strong>{item.title}</strong>
+                  <small>
+                    {item.kind} · {new Date(item.at).toLocaleString()}
+                  </small>
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <p className="sherivs-console-empty">
+              Recently accessed resources appear here after you open an authorized page.
+            </p>
+          )}
         </section>
       </div>
 
       <section className="sherivs-console-card">
-        <h2>My workspaces</h2>
-        <div className="sherivs-console-list">
-          {overview.workspaces.map((workspace) => (
-            <Link key={workspace.id} to={workspace.href as never} className="sherivs-console-row">
-              <strong>{workspace.name}</strong>
-              <small>
-                {workspace.type} · {workspace.access} · {workspace.team}
-              </small>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      <section className="sherivs-console-card">
-        <h2>Recently accessed</h2>
-        {recent.length ? (
-          <div className="sherivs-console-list">
-            {recent.map((item) => (
-              <Link key={item.id} to={item.href as never} className="sherivs-console-row">
-                <strong>{item.title}</strong>
+        <h2>Operational metrics</h2>
+        {measured.length ? (
+          <div className="sherivs-console-grid" style={{ marginTop: "0.9rem" }}>
+            {measured.map((metric) => (
+              <div key={metric.key} className="sherivs-console-metric sherivs-console-row">
+                <span>{metric.name}</span>
+                <strong>
+                  {metric.value} {metric.unit}
+                </strong>
                 <small>
-                  {item.kind} · {new Date(item.at).toLocaleString()}
+                  {metric.window} · {metric.source}
+                  {metric.updatedAt
+                    ? ` · Updated ${new Date(metric.updatedAt).toLocaleString()}`
+                    : ""}
                 </small>
-              </Link>
+                <small>{metric.definition}</small>
+              </div>
             ))}
           </div>
         ) : (
-          <p className="sherivs-console-empty">
-            Recently accessed resources appear here after you open an authorized page.
-          </p>
+          <p className="sherivs-console-empty">No measured operational metrics are available.</p>
         )}
+        {unmeasured.length ? (
+          <p>Not collected in V1: {unmeasured.map((metric) => metric.name).join(", ")}.</p>
+        ) : null}
       </section>
     </>
   );
