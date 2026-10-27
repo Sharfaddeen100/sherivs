@@ -1,4 +1,6 @@
 .sherivs-console {
+  max-width: 100vw;
+  overflow-x: hidden;
   --console-ink: #10182b;
   --console-muted: #6b7690;
   --console-line: rgba(16, 24, 43, 0.08);
@@ -84,8 +86,11 @@
   z-index: 1;
   display: grid;
   grid-template-columns: var(--console-sidebar) minmax(0, 1fr);
-  grid-template-rows: auto 1fr;
+  grid-template-rows: auto minmax(0, 1fr);
   min-height: 100dvh;
+  height: 100dvh;
+  max-width: 100%;
+  min-width: 0;
 }
 
 .sherivs-console.is-collapsed {
@@ -94,6 +99,8 @@
 
 .sherivs-console-top {
   grid-column: 1 / -1;
+  position: relative;
+  z-index: 6;
   display: flex;
   align-items: center;
   gap: 0.75rem;
@@ -103,6 +110,7 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.82);
   box-shadow: 0 1px 0 var(--console-line);
   backdrop-filter: blur(22px) saturate(170%);
+  overflow: visible;
 }
 
 .sherivs-console-brand {
@@ -138,9 +146,12 @@
 }
 
 .sherivs-console-switcher-panel {
-  width: 16.5rem;
+  min-width: 18rem;
+  width: max(16.5rem, 100%);
   left: 0;
   right: auto;
+  overflow: auto;
+  max-height: min(70vh, 22rem);
 }
 
 .sherivs-console-chip {
@@ -257,6 +268,9 @@
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 .sherivs-console-kicker {
@@ -311,11 +325,15 @@
 
 .sherivs-console-main {
   min-width: 0;
+  min-height: 0;
+  overflow-y: auto;
   padding: 1.25rem 1.25rem 2.5rem;
 }
 
 .sherivs-console-sheet {
   width: min(100%, 72rem);
+  max-width: 100%;
+  min-width: 0;
   margin: 0 auto;
   display: grid;
   gap: 1rem;
@@ -343,6 +361,13 @@
 .sherivs-console-card p {
   margin: 0.35rem 0 0;
   color: var(--console-muted);
+  overflow-wrap: anywhere;
+}
+
+.sherivs-console-card h1,
+.sherivs-console-card h2,
+.sherivs-console-notice {
+  overflow-wrap: anywhere;
 }
 
 .sherivs-console-welcome h1 {
@@ -424,7 +449,8 @@
   justify-content: center;
   gap: 0.4rem;
   min-height: 2.5rem;
-  padding: 0.45rem 0.9rem;
+  padding: 0.55rem 0.9rem;
+  line-height: 1.2;
   border-radius: 12px;
   border: 1px solid transparent;
   background: linear-gradient(180deg, #4b86ff, #1848fd);
@@ -662,8 +688,8 @@
   border-radius: 14px;
   border: 1px solid var(--console-line);
   box-shadow: 0 16px 40px rgba(16, 24, 43, 0.12);
-  z-index: 5;
-  overflow: hidden;
+  z-index: 8;
+  overflow: auto;
 }
 
 .sherivs-console-search-wrap {
@@ -705,6 +731,7 @@
     inset: 0 auto 0 0;
     width: min(20rem, 86vw);
     box-shadow: 18px 0 40px rgba(16, 24, 43, 0.12);
+    overflow-y: auto;
   }
 
   .sherivs-console.is-drawer .sherivs-console-drawer-scrim {
@@ -747,8 +774,42 @@
   }
 
   .sherivs-console-switchers {
-    flex: 1;
+    flex: 1 0 100%;
+    order: 5;
+    width: 100%;
+    max-width: 100%;
     min-width: 0;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 0.1rem;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .sherivs-console-chip {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  .sherivs-console-chip small,
+  .sherivs-console-chip-kind {
+    display: none;
+  }
+
+  .sherivs-console-card,
+  .sherivs-console-notice,
+  .sherivs-console-welcome {
+    max-width: 100%;
+  }
+
+  .sherivs-console-top {
+    flex-wrap: wrap;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  .sherivs-console-top-actions {
+    margin-left: auto;
   }
 
   .sherivs-console-main {

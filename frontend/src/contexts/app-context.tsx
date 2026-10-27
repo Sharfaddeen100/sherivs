@@ -368,8 +368,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
       await load(data.session);
     },
     signOut: async () => {
+      const localFixture = consoleVisualFixtureActive();
       deactivateConsoleVisualFixture();
-      await supabase.auth.signOut();
+      if (!localFixture) {
+        await supabase.auth.signOut();
+      }
       setSession(null);
       setProfile(null);
       setSuperAdmin(null);

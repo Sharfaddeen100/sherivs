@@ -280,7 +280,8 @@ function ConsoleChrome({ children }: { children: ReactNode }) {
                   setOpenQuick(false);
                 }}
               >
-                Workspace <strong>{workspaceName}</strong>
+                <span className="sherivs-console-chip-kind">Workspace </span>
+                <strong>{workspaceName}</strong>
                 {activeWorkspace ? (
                   <small> · {workspaceTypeLabel(activeWorkspace.type)}</small>
                 ) : null}
@@ -328,7 +329,8 @@ function ConsoleChrome({ children }: { children: ReactNode }) {
                   setOpenQuick(false);
                 }}
               >
-                Runtime <strong>{runtimeName}</strong>
+                <span className="sherivs-console-chip-kind">Runtime </span>
+                <strong>{runtimeName}</strong>
               </button>
               {openRuntime ? (
                 <div
