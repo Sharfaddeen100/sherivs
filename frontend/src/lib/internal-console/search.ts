@@ -7,7 +7,8 @@ import type { ConsoleNavItem } from "./roles";
 import type { InternalWorkspace } from "./workspaces";
 import type { ConsoleRuntimeContract } from "./runtime-contract";
 
-export type ConsoleSearchKind = "staff" | "workspace" | "runtime" | "page" | "help" | "organization";
+export type ConsoleSearchKind =
+  "staff" | "workspace" | "runtime" | "page" | "help" | "organization";
 
 export interface ConsoleSearchHit {
   kind: ConsoleSearchKind;

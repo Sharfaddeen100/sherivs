@@ -514,7 +514,9 @@ export function readFixtureOrganizationSnapshot(raw: string | null): {
         const lifecycleState = isOrganizationLifecycleState(row.lifecycleState)
           ? row.lifecycleState
           : ("draft" as const);
-        const activeAssignments = (row.assignments ?? []).filter((item) => item.status === "active");
+        const activeAssignments = (row.assignments ?? []).filter(
+          (item) => item.status === "active",
+        );
         return {
           id: row.id,
           displayName: row.displayName,
@@ -534,7 +536,8 @@ export function readFixtureOrganizationSnapshot(raw: string | null): {
           activatedAt: row.activatedAt ?? null,
           onboardingOwnerName:
             row.onboardingOwnerName ??
-            activeAssignments.find((item) => item.assignmentType === "onboarding_owner")?.staffName ??
+            activeAssignments.find((item) => item.assignmentType === "onboarding_owner")
+              ?.staffName ??
             null,
           assignmentCount: row.assignmentCount ?? activeAssignments.length,
         };
@@ -592,7 +595,8 @@ function fixtureOrganizationMetricsCards(
       source,
       updatedAt: null,
       available: true,
-      definition: "Fixture cases that have started and are not yet active, suspended, or deactivated.",
+      definition:
+        "Fixture cases that have started and are not yet active, suspended, or deactivated.",
     },
     {
       key: "suspended-organizations",
@@ -755,7 +759,10 @@ export function buildConsoleVisualFixtureOverview(
     },
     context: {
       organization: "Sherivs Internal",
-      workspace: workspaces.find((workspace) => workspace.type === "role")?.name ?? workspaces[0]?.name ?? "My Workspace",
+      workspace:
+        workspaces.find((workspace) => workspace.type === "role")?.name ??
+        workspaces[0]?.name ??
+        "My Workspace",
       environment: "Development",
       environmentSource: "local visual fixture",
       host: "127.0.0.1",
@@ -769,7 +776,8 @@ export function buildConsoleVisualFixtureOverview(
     metrics: canReadOrgs
       ? fixtureOrganizationMetricsCards(snapshot)
       : fixtureOrganizationMetricsCards(snapshot).filter(
-          (metric) => !metric.key.includes("organization") && metric.key !== "onboarding-conversion",
+          (metric) =>
+            !metric.key.includes("organization") && metric.key !== "onboarding-conversion",
         ),
     attention: fixtureAttention(snapshot).filter((item) => {
       if (

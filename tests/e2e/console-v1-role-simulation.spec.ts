@@ -56,9 +56,18 @@ async function collectConsoleHrefs(page: Page) {
 }
 
 async function pageFault(page: Page) {
-  const missing = await page.locator("h2", { hasText: "Page not found" }).isVisible().catch(() => false);
-  const crashed = await page.locator("h1", { hasText: "Something went wrong" }).isVisible().catch(() => false);
-  const hostDenied = await page.getByTestId("console-not-authorised").isVisible().catch(() => false);
+  const missing = await page
+    .locator("h2", { hasText: "Page not found" })
+    .isVisible()
+    .catch(() => false);
+  const crashed = await page
+    .locator("h1", { hasText: "Something went wrong" })
+    .isVisible()
+    .catch(() => false);
+  const hostDenied = await page
+    .getByTestId("console-not-authorised")
+    .isVisible()
+    .catch(() => false);
   const limited = await page
     .locator("p", { hasText: "Organization records are limited to authorized operators." })
     .isVisible()
@@ -70,7 +79,9 @@ async function pageFault(page: Page) {
   return null;
 }
 
-test("signs into every V1 console role and clicks visible console links", async ({ page }, testInfo) => {
+test("signs into every V1 console role and clicks visible console links", async ({
+  page,
+}, testInfo) => {
   mkdirSync(ARTIFACTS, { recursive: true });
   const report: Array<{
     role: string;
@@ -104,8 +115,17 @@ test("signs into every V1 console role and clicks visible console links", async 
     await expect(page.getByTestId("console-home")).toContainText(role.name);
 
     const heading =
-      (await page.locator("h1").first().textContent().catch(() => null))?.trim() ?? null;
-    const homeHasOrgPipeline = await page.getByTestId("console-org-pipeline").isVisible().catch(() => false);
+      (
+        await page
+          .locator("h1")
+          .first()
+          .textContent()
+          .catch(() => null)
+      )?.trim() ?? null;
+    const homeHasOrgPipeline = await page
+      .getByTestId("console-org-pipeline")
+      .isVisible()
+      .catch(() => false);
     await page.screenshot({ path: join(ARTIFACTS, `console_role_${role.key}_home.png`) });
 
     const chrome: Array<{ name: string; ok: boolean; error?: string }> = [];
@@ -162,7 +182,9 @@ test("signs into every V1 console role and clicks visible console links", async 
         if (await nav.count()) {
           await nav.click();
         } else {
-          const main = page.locator(`[data-testid="internal-console"] a[href="${link.href}"]`).first();
+          const main = page
+            .locator(`[data-testid="internal-console"] a[href="${link.href}"]`)
+            .first();
           if (await main.count()) {
             await main.click();
           } else {
@@ -207,7 +229,9 @@ test("signs into every V1 console role and clicks visible console links", async 
   writeFileSync(join(ARTIFACTS, "console_role_click_audit.json"), JSON.stringify(report, null, 2));
   const broken = [
     ...report.flatMap((row) =>
-      row.chrome.filter((item) => !item.ok).map((item) => `${row.role} chrome:${item.name} ${item.error}`),
+      row.chrome
+        .filter((item) => !item.ok)
+        .map((item) => `${row.role} chrome:${item.name} ${item.error}`),
     ),
     ...report.flatMap((row) =>
       row.links.filter((link) => !link.ok).map((link) => `${row.role} ${link.href} ${link.error}`),

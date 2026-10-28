@@ -84,9 +84,7 @@ export function ConsoleHomeScreen() {
             ? ` (${overview.context.environmentSource})`
             : " — environment is not configured"}
         </p>
-        {attention.length === 0 ? (
-          <p>No verified items need attention right now.</p>
-        ) : null}
+        {attention.length === 0 ? <p>No verified items need attention right now.</p> : null}
       </section>
 
       {canReadOrgs && overview.organizationMetrics.available ? (
@@ -100,7 +98,10 @@ export function ConsoleHomeScreen() {
             {overview.organizationMetrics.source}.
           </p>
           <div className="sherivs-console-actions" style={{ marginTop: "0.8rem" }}>
-            <Link to={CONSOLE_PATHS.organizations as never} className="sherivs-console-btn secondary">
+            <Link
+              to={CONSOLE_PATHS.organizations as never}
+              className="sherivs-console-btn secondary"
+            >
               Open organizations
             </Link>
           </div>
@@ -173,8 +174,8 @@ export function ConsoleHomeScreen() {
             </div>
           ) : (
             <p className="sherivs-console-empty">
-              No organization assignments are recorded for you. Sherivs V1 does not include a general
-              task system, so this section stays empty rather than showing decorative work.
+              No organization assignments are recorded for you. Sherivs V1 does not include a
+              general task system, so this section stays empty rather than showing decorative work.
             </p>
           )}
         </section>

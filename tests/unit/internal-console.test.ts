@@ -600,7 +600,10 @@ describe("local visual fixture", () => {
     expect(context).toContain("consoleVisualFixtureEnabled()");
     expect(context).toContain("deactivateConsoleVisualFixture");
     expect(context).not.toMatch(/\bactivateConsoleVisualFixture\b/);
-    const shell = readFileSync("frontend/src/components/internal-console/console-shell.tsx", "utf8");
+    const shell = readFileSync(
+      "frontend/src/components/internal-console/console-shell.tsx",
+      "utf8",
+    );
     expect(shell).toContain("console-fixture-role-switcher");
   });
 
@@ -650,7 +653,13 @@ describe("local visual fixture", () => {
   it("does not leak organization pipeline data to roles without tenants.read", async () => {
     const { buildConsoleVisualFixtureOverview, CONSOLE_FIXTURE_PERSONAS } =
       await import("@/lib/internal-console/visual-fixture");
-    const withTenants = new Set(["platform_owner", "platform_admin", "operations", "support", "sales"]);
+    const withTenants = new Set([
+      "platform_owner",
+      "platform_admin",
+      "operations",
+      "support",
+      "sales",
+    ]);
     for (const persona of CONSOLE_FIXTURE_PERSONAS) {
       const overview = buildConsoleVisualFixtureOverview(persona);
       if (withTenants.has(persona.key)) {
@@ -661,9 +670,7 @@ describe("local visual fixture", () => {
         expect(overview.organizations).toEqual([]);
         expect(overview.assignments).toEqual([]);
         expect(
-          overview.attention.every(
-            (item) => !item.href.startsWith("/console/organizations"),
-          ),
+          overview.attention.every((item) => !item.href.startsWith("/console/organizations")),
         ).toBe(true);
         expect(overview.metrics.every((metric) => !metric.key.includes("organization"))).toBe(true);
       }
@@ -676,7 +683,9 @@ describe("local visual fixture", () => {
       isSuperAdmin: false,
       capabilities: new Set(["platform.engineering.read", "platform.config.read"]),
     });
-    expect(engineerHelp.some((article) => article.href === CONSOLE_PATHS.organizations)).toBe(false);
+    expect(engineerHelp.some((article) => article.href === CONSOLE_PATHS.organizations)).toBe(
+      false,
+    );
     expect(engineerHelp.some((article) => article.href === CONSOLE_PATHS.help)).toBe(true);
   });
 
