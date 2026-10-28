@@ -17,7 +17,6 @@ import {
   PLATFORM_ROLE_LABELS,
   PRIVILEGED_PLATFORM_ROLES,
 } from "@/lib/platform-staff/catalogue";
-import { getAccessReview } from "@/lib/platform-staff/support-access.functions";
 import { listConsoleAudit } from "@/lib/internal-console/activity.functions";
 import { CONSOLE_PATHS, SCHOLAR_ENTRY_URL } from "@/lib/internal-console/paths";
 import { workspaceFromAuthorized } from "@/lib/internal-console/workspaces";
@@ -514,74 +513,6 @@ export function ConsoleInvitations() {
       ) : (
         <p className="sherivs-console-empty">No pending invitations in the authorized directory.</p>
       )}
-    </section>
-  );
-}
-
-export function ConsoleAccessReview() {
-  const { overview } = useConsole();
-  const [data, setData] = useState<Awaited<ReturnType<typeof getAccessReview>> | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  useEffect(() => {
-    if (!overview?.viewer.capabilities.includes("platform.audit.read")) return;
-    if (consoleVisualFixtureActive()) {
-      setError("Access review is not queried in the local visual fixture.");
-      return;
-    }
-    void getAccessReview()
-      .then(setData)
-      .catch((err) => setError(err instanceof Error ? err.message : "Access review unavailable"));
-  }, [overview]);
-
-  if (!overview?.viewer.capabilities.includes("platform.audit.read")) {
-    return (
-      <section className="sherivs-console-card">
-        <h1>Access Review</h1>
-        <p>Access review requires the audit capability.</p>
-      </section>
-    );
-  }
-
-  return (
-    <section className="sherivs-console-card">
-      <h1>Access Review</h1>
-      <p>Privileged identities, active support grants, and recent administrative events.</p>
-      {error ? <p className="sherivs-console-error">{error}</p> : null}
-      {!data && !error ? <p>Loading authorized review…</p> : null}
-      {data ? (
-        <>
-          <h2>Super admins</h2>
-          <div className="sherivs-console-list">
-            {data.superAdmins.map((row) => (
-              <div key={row.id} className="sherivs-console-row">
-                <strong>{row.full_name || row.email}</strong>
-                <small>{row.email}</small>
-              </div>
-            ))}
-          </div>
-          <h2 style={{ marginTop: "1rem" }}>Active support grants</h2>
-          {data.activeGrants.length ? (
-            <div className="sherivs-console-list">
-              {data.activeGrants.map((row) => (
-                <div key={row.id} className="sherivs-console-row">
-                  <strong>{row.staff_id}</strong>
-                  <small>
-                    Tenant {row.tenant_id} · expires {row.expires_at}
-                  </small>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p className="sherivs-console-empty">No active support grants.</p>
-          )}
-          <h2 style={{ marginTop: "1rem" }}>Security alerts</h2>
-          <p>
-            {data.alertsAvailable
-              ? `${data.alerts.length} alert${data.alerts.length === 1 ? "" : "s"} in the last 24 hours.`
-              : "Alert scan is not available in this environment."}
-          </p>
-        </>
-      ) : null}
     </section>
   );
 }
