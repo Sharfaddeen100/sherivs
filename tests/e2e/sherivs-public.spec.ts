@@ -43,6 +43,7 @@ test.describe("Sherivs public homepage (plane A)", () => {
   }) => {
     await page.goto("/");
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+    await page.waitForLoadState("networkidle");
 
     // Compact marketing chrome keeps Sign in inside the mobile drawer.
     await page.getByRole("button", { name: /open menu/i }).click();
