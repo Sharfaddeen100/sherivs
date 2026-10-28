@@ -2,7 +2,7 @@
 
 Version target: **ACTIVE-V1**. Canonical destinations remain `console.sherivs.com/console` and `app.sherivs.com/home`. Scholar educational workflows are not duplicated in the console.
 
-Production schema apply (2026-10-28 WAT): SHERIVS-030 / 031 / 032 recorded on `nwrflbpbhyiqdptmlccm` via `scripts/apply-console-control-plane.mjs` with `SHERIVS_DATABASE_TARGET=production`. Vercel production `dpl_6JX14ewR9PY1Nhm1re7g2CFS2Q7w` serves `console.sherivs.com`. Staff-authenticated browser of live tickets / incidents / billing is still blocked: `platform_staff` and `super_admins` have no operator session in this environment.
+Production schema apply (2026-10-28 WAT): SHERIVS-030 / 031 / 032 recorded on `nwrflbpbhyiqdptmlccm` via `scripts/apply-console-control-plane.mjs` with `SHERIVS_DATABASE_TARGET=production`. Vercel production `dpl_6JX14ewR9PY1Nhm1re7g2CFS2Q7w` serves `console.sherivs.com`. Staff-authenticated browser of live tickets / incidents / billing is still blocked: one active confirmed `super_admins` row exists, `platform_staff` is empty, and this environment has no operator credentials (`CONSOLE_STAFF_EMAIL` / `CONSOLE_STAFF_PASSWORD` unset).
 
 | Requirement | Existing implementation | Evidence | Gap | Proposed / delivered change | Dependencies | Risk | Acceptance | Status |
 |---|---|---|---|---|---|---|---|---|
@@ -62,5 +62,5 @@ Incident records, queryable audit logs, and billing checkout are implemented in 
 - **Designed / implemented / unit tested:** this change and PR #148
 - **Production schema:** SHERIVS-030 / 031 / 032 applied 2026-10-28 WAT; FORCE RLS confirmed
 - **Production deploy:** Vercel production alias `console.sherivs.com` on merge `5445a089`
-- **Staff-authenticated browser:** blocked until a `super_admins` row exists and that operator can sign in
+- **Staff-authenticated browser:** blocked in this environment (no operator credentials). One active confirmed super-admin exists; `platform_staff` is empty.
 - **GitHub Actions Verify:** not running (`startup_failure` / `BuildFailed`; account billing)
