@@ -333,7 +333,9 @@ function OperationsExperience({ overview }: { overview: ConsoleOverview }) {
 }
 
 function EngineeringExperience({ overview }: { overview: ConsoleOverview }) {
-  const failed = overview.organizationMetrics.failedProvisioning;
+  const canReadOrgs =
+    overview.viewer.isSuperAdmin || overview.viewer.capabilities.includes("platform.tenants.read");
+  const failed = canReadOrgs ? overview.organizationMetrics.failedProvisioning : null;
   return (
     <>
       <section>

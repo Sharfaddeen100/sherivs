@@ -41,7 +41,7 @@ import {
 } from "@/lib/internal-console/roles";
 import { CONSOLE_PATHS } from "@/lib/internal-console/paths";
 import { searchConsole } from "@/lib/internal-console/search";
-import { CONSOLE_HELP_ARTICLES } from "@/lib/internal-console/help-catalog";
+import { helpArticlesFor } from "@/lib/internal-console/help-catalog";
 import { REGISTERED_RUNTIMES } from "@/lib/internal-console/runtime-contract";
 import { rememberResource, type RecentResource } from "@/lib/internal-console/recent";
 import { rememberConsoleResource } from "@/lib/internal-console/workspace.functions";
@@ -226,7 +226,7 @@ function ConsoleChrome({ children }: { children: ReactNode }) {
     workspaces: overview?.workspaces ?? [],
     runtimes: overview?.runtimes?.length ? overview.runtimes : REGISTERED_RUNTIMES,
     pages: [...mainNav, ...accountNav, ...platformNav],
-    help: CONSOLE_HELP_ARTICLES,
+    help: helpArticlesFor(viewer),
   });
 
   useEffect(() => {

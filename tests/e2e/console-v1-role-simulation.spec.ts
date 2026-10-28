@@ -134,7 +134,7 @@ test("signs into every V1 console role and clicks visible console links", async 
     }
     try {
       await page.getByRole("button", { name: "Account menu" }).click();
-      await page.getByRole("link", { name: "Account & Preferences" }).click();
+      await page.locator("header .sherivs-console-search-panel a[href='/console/account']").click();
       await expect(page.getByTestId("internal-console")).toBeVisible({ timeout: 8_000 });
       const fault = await pageFault(page);
       chrome.push({ name: "account menu", ok: !fault, error: fault ?? undefined });

@@ -671,6 +671,13 @@ describe("local visual fixture", () => {
     const home = readFileSync("frontend/src/components/internal-console/home-screen.tsx", "utf8");
     expect(home).toContain("canReadOrgs && overview.organizationMetrics.available");
     expect(home).toContain('data-testid="console-org-pipeline"');
+    const { helpArticlesFor } = await import("@/lib/internal-console/help-catalog");
+    const engineerHelp = helpArticlesFor({
+      isSuperAdmin: false,
+      capabilities: new Set(["platform.engineering.read", "platform.config.read"]),
+    });
+    expect(engineerHelp.some((article) => article.href === CONSOLE_PATHS.organizations)).toBe(false);
+    expect(engineerHelp.some((article) => article.href === CONSOLE_PATHS.help)).toBe(true);
   });
 
   it("registers a clickable route file for every console navigation href", () => {

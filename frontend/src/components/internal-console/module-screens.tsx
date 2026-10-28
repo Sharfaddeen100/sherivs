@@ -24,7 +24,7 @@ import {
   REGISTERED_RUNTIMES,
   SCHOLAR_RUNTIME_CONTRACT,
 } from "@/lib/internal-console/runtime-contract";
-import { CONSOLE_HELP_ARTICLES } from "@/lib/internal-console/help-catalog";
+import { helpArticlesFor } from "@/lib/internal-console/help-catalog";
 import { CONSOLE_HEALTH_LABELS } from "@/lib/internal-console/status";
 import { useApp } from "@/contexts/app-context";
 import { useConsole } from "./console-shell";
@@ -1107,11 +1107,16 @@ export function ConsoleSettings() {
 }
 
 export function ConsoleHelp() {
+  const { overview } = useConsole();
+  const articles = helpArticlesFor({
+    isSuperAdmin: overview?.viewer.isSuperAdmin ?? false,
+    capabilities: new Set(overview?.viewer.capabilities ?? []),
+  });
   return (
     <section className="sherivs-console-card">
       <h1>Help & Support</h1>
       <div className="sherivs-console-list">
-        {CONSOLE_HELP_ARTICLES.map((article) => (
+        {articles.map((article) => (
           <Link key={article.id} to={article.href as never} className="sherivs-console-row">
             <strong>{article.title}</strong>
             <small>{article.description}</small>

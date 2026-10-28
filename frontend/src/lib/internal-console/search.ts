@@ -30,6 +30,9 @@ export interface ConsoleHelpArticle {
   title: string;
   description: string;
   href: string;
+  /** null = every console operator. */
+  capability?: string | null;
+  anyOf?: readonly string[];
 }
 
 function haystack(...parts: Array<string | null | undefined>): string {
