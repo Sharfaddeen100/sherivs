@@ -257,6 +257,8 @@
   .sherivs-drift,
   .sherivs-hero-atmosphere::before {
     animation: none;
+    opacity: 1;
+    transform: none;
   }
   .sherivs-motion-loop {
     animation: none !important;

@@ -24,7 +24,7 @@ export function MobileNavigation({
   const closeRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const restoreRef = useRef<Element | null>(null);
-  const [expanded, setExpanded] = useState<string | null>(HEADER_GROUPS[0]?.id ?? null);
+  const [expanded, setExpanded] = useState<string | null>(null);
 
   useEffect(() => {
     if (!open) return;
@@ -95,7 +95,7 @@ export function MobileNavigation({
         aria-modal="true"
         aria-label={`${PLATFORM_NAME} menu`}
         ref={panelRef}
-        className="absolute inset-y-0 right-0 flex w-[min(100%,22.5rem)] flex-col border-l border-[var(--sherivs-border)] bg-[color-mix(in_oklab,var(--sherivs-obsidian)_92%,var(--sherivs-navy))] shadow-[var(--sherivs-shadow)]"
+        className="absolute top-0 right-0 flex h-dvh w-[min(100%,22.5rem)] flex-col border-l border-[var(--sherivs-border)] bg-[var(--sherivs-midnight)] shadow-[var(--sherivs-shadow)]"
       >
         <div className="flex items-center justify-between gap-3 border-b border-[var(--sherivs-border)] px-4 py-3">
           <SherivsLogo size={26} wordmarkClassName="text-base" />
@@ -110,7 +110,7 @@ export function MobileNavigation({
           </button>
         </div>
 
-        <nav aria-label="Mobile" className="flex-1 overflow-y-auto px-3 py-3">
+        <nav aria-label="Mobile" className="min-h-0 flex-1 overflow-y-auto px-3 py-3">
           {HEADER_GROUPS.map((group) => {
             const isOpen = expanded === group.id;
             const panelId = `${menuId}-${group.id}`;

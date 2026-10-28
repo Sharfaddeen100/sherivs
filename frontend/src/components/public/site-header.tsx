@@ -137,7 +137,7 @@ function DesktopNavGroup({
         />
       </button>
       {open ? (
-        <div className="sherivs-glass sherivs-nav-panel absolute left-0 top-full z-[var(--sherivs-z-overlay)] mt-2 w-80 rounded-[var(--sherivs-radius)] p-2">
+        <div className="sherivs-nav-panel absolute left-0 top-full z-[var(--sherivs-z-overlay)] mt-2 w-80 rounded-[var(--sherivs-radius)] border border-[var(--sherivs-glass-border)] bg-[var(--sherivs-midnight)] p-2 shadow-[var(--sherivs-shadow)]">
           <ul>
             {group.items.map((item) => (
               <li key={`${group.id}-${item.href}-${item.label}`}>
