@@ -2,7 +2,6 @@ import { createFileRoute, Link, Navigate, redirect } from "@tanstack/react-route
 import { useEffect, useState } from "react";
 import { Lock, LogIn, Mail } from "lucide-react";
 import { EnterpriseLoginFields } from "@/components/auth/enterprise-login-fields";
-import { passkeyLoginPriority } from "@/lib/auth/webauthn-client";
 import { supabase } from "@/integrations/supabase/client";
 import { useApp } from "@/contexts/app-context";
 import { Turnstile, captchaRequired } from "@/components/security/turnstile";
@@ -87,8 +86,7 @@ function AuthPage() {
   const [remember, setRemember] = useState(() =>
     typeof window !== "undefined" ? rememberPreferenceActive() : false,
   );
-  const [busyKind, setBusyKind] = useState<"password" | "google" | "passkey" | null>(null);
-  const prioritizePasskey = mode === "signin" && passkeyLoginPriority();
+  const [busyKind, setBusyKind] = useState<"password" | "google" | null>(null);
 
   // Count down any active backoff after repeated failed sign-ins.
   useEffect(() => {
@@ -132,7 +130,7 @@ function AuthPage() {
       return setError("Please complete the security check.");
     }
     const captcha = captchaToken ?? undefined;
-    if (mode === "signin" && !prioritizePasskey) setRememberPreference(remember);
+    if (mode === "signin") setRememberPreference(remember);
     setBusy(true);
     setBusyKind("password");
     const startedAt = Date.now();
@@ -218,31 +216,9 @@ function AuthPage() {
     await refresh();
   }
 
-  async function completePasskeySignIn() {
-    if (!prioritizePasskey) setRememberPreference(remember);
-    const { data } = await supabase.auth.getUser();
-    if (data.user) {
-      await assertPostAuthOrganizationAccess({
-        userId: data.user.id,
-        tenantSlug,
-        schoolId: school?.id ?? null,
-      });
-    }
-    void fetch("/api/public/audit/password-reset", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        event: "login_succeeded",
-        email: data.user?.email,
-        user_id: data.user?.id,
-      }),
-    }).catch(() => {});
-    await refresh();
-  }
-
   async function handleGoogle() {
     reset();
-    if (!prioritizePasskey) setRememberPreference(remember);
+    setRememberPreference(remember);
     setBusy(true);
     setBusyKind("google");
     const result = await startGoogleSignIn((args) => supabase.auth.signInWithOAuth(args), {
@@ -259,7 +235,7 @@ function AuthPage() {
   const title = experience.heading ?? (mode === "signin" ? "Welcome back" : "Create account");
   const signInCopy = mode === "signin";
 
-  if (busy && (busyKind === "password" || busyKind === "passkey")) {
+  if (busy && busyKind === "password") {
     return (
       <div className="auth-shell app-entry app-entry-login">
         <div className="app-entry-login-orbs" aria-hidden="true">
@@ -339,21 +315,12 @@ function AuthPage() {
               identifier={email}
               password={password}
               remember={remember}
-              passkeyEligible={prioritizePasskey}
-              submitting={busy}
-              waitMs={waitMs}
               forgotSearch={
                 classifySignInIdentifier(email).kind === "email" ? { email: email.trim() } : {}
               }
               onIdentifierChange={setEmail}
               onPasswordChange={setPassword}
               onRememberChange={setRemember}
-              onPasskeyBusy={(next) => {
-                setBusy(next);
-                setBusyKind(next ? "passkey" : null);
-              }}
-              onPasskeyError={setError}
-              onPasskeySignedIn={completePasskeySignIn}
             />
           ) : (
             <>
@@ -416,18 +383,21 @@ function AuthPage() {
           )}
           {info && <div className="app-entry-alert app-entry-alert-info">{info}</div>}
 
-          {mode === "signup" ? (
-            <button type="submit" disabled={busy} className="app-entry-login-submit">
-              <span className="app-entry-glass-icon" aria-hidden="true">
-                <LogIn />
-              </span>
-              {busyKind === "password" ? "Please wait…" : "Create account"}
-            </button>
-          ) : (
-            <button type="submit" className="sr-only" disabled={busy || waitMs > 0}>
-              {busyKind === "password" ? "Please wait…" : "Sign in"}
-            </button>
-          )}
+          <button
+            type="submit"
+            disabled={busy || (mode === "signin" && waitMs > 0)}
+            className="app-entry-login-submit"
+            data-testid="auth-submit"
+          >
+            <span className="app-entry-glass-icon" aria-hidden="true">
+              <LogIn />
+            </span>
+            {busyKind === "password"
+              ? "Please wait…"
+              : mode === "signup"
+                ? "Create account"
+                : "Sign in"}
+          </button>
 
           {signInCopy && (
             <button

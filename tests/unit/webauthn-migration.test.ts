@@ -100,4 +100,17 @@ describe("WebAuthn migration and wiring", () => {
     expect(envExample).not.toMatch(/VITE_WEBAUTHN_/);
     expect(envExample).not.toMatch(/NEXT_PUBLIC_WEBAUTHN_/);
   });
+
+  it("keeps email confirmation as an invite-time property, not a passkey side effect", () => {
+    const session = readFileSync(
+      join(ROOT, "frontend/src/lib/auth/webauthn-session.server.ts"),
+      "utf8",
+    );
+    const service = readFileSync(join(ROOT, "frontend/src/lib/auth/webauthn.server.ts"), "utf8");
+    expect(session).not.toMatch(/\bemail_confirm\b/);
+    expect(session).not.toMatch(/updateUserById/);
+    expect(service).not.toMatch(/\bemail_confirm\b/);
+    expect(session).toMatch(/email_confirmed_at/);
+  });
 });
+

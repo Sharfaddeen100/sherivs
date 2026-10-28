@@ -241,6 +241,7 @@ export function createWebAuthnService(deps: WebAuthnServiceDeps) {
   }
 
   return {
+    platformConfig: deps.config,
     async registrationOptions(input: {
       userId: string;
       origin: string;

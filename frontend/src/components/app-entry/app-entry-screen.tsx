@@ -36,7 +36,6 @@ import { SherivsMark } from "@/components/brand/sherivs-logo";
 import { AppEntryCanvas } from "./app-entry-canvas";
 import { AppEntryWordmark } from "./app-entry-wordmark";
 import { EnterpriseLoginFields } from "@/components/auth/enterprise-login-fields";
-import { passkeyLoginPriority } from "@/lib/auth/webauthn-client";
 import { SignInLoading } from "./signin-loading";
 
 const backoff = createLoginBackoff(typeof window !== "undefined" ? window.localStorage : undefined);
@@ -116,13 +115,12 @@ function SignInPanel({ onSigningChange }: { onSigningChange: (signing: boolean) 
   const [remember, setRemember] = useState(() =>
     typeof window !== "undefined" ? rememberPreferenceActive() : false,
   );
-  const [busy, setBusy] = useState<"password" | "google" | "passkey" | null>(null);
+  const [busy, setBusy] = useState<"password" | "google" | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const [captchaNonce, setCaptchaNonce] = useState(0);
   const [captchaUnavailable, setCaptchaUnavailable] = useState(false);
   const [waitMs, setWaitMs] = useState(() => backoff.remainingMs());
-  const prioritizePasskey = passkeyLoginPriority();
 
   useEffect(() => {
     if (waitMs <= 0) return;
@@ -158,7 +156,7 @@ function SignInPanel({ onSigningChange }: { onSigningChange: (signing: boolean) 
     const classified = classifySignInIdentifier(identifier);
     const payload = toPasswordSignInPayload(classified, password, captchaToken ?? undefined);
     const auditEmail = classified.kind === "email" ? classified.value : undefined;
-    if (!prioritizePasskey) setRememberPreference(remember);
+    setRememberPreference(remember);
     setBusy("password");
     onSigningChange(true);
     const startedAt = Date.now();
@@ -227,31 +225,9 @@ function SignInPanel({ onSigningChange }: { onSigningChange: (signing: boolean) 
     }
   }
 
-  async function completePasskeySignIn() {
-    if (!prioritizePasskey) setRememberPreference(remember);
-    const { data } = await supabase.auth.getUser();
-    if (data.user) {
-      await assertPostAuthOrganizationAccess({
-        userId: data.user.id,
-        tenantSlug,
-        schoolId: school?.id ?? null,
-      });
-    }
-    void fetch("/api/public/audit/password-reset", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        event: "login_succeeded",
-        email: data.user?.email,
-        user_id: data.user?.id,
-      }),
-    }).catch(() => {});
-    await refresh();
-  }
-
   async function handleGoogle() {
     setError(null);
-    if (!prioritizePasskey) setRememberPreference(remember);
+    setRememberPreference(remember);
     setBusy("google");
     const result = await startGoogleSignIn((args) => supabase.auth.signInWithOAuth(args), {
       redirectTo: googleSignInRedirectTo(window.location.origin, "/?panel=signin"),
@@ -298,21 +274,12 @@ function SignInPanel({ onSigningChange }: { onSigningChange: (signing: boolean) 
           identifier={identifier}
           password={password}
           remember={remember}
-          passkeyEligible={prioritizePasskey}
-          submitting={submitting}
-          waitMs={waitMs}
           identifierTestId="app-entry-identifier"
           rememberTestId="app-entry-remember"
           forgotSearch={forgotSearch}
           onIdentifierChange={setIdentifier}
           onPasswordChange={setPassword}
           onRememberChange={setRemember}
-          onPasskeyBusy={(next) => {
-            setBusy(next ? "passkey" : null);
-            onSigningChange(next);
-          }}
-          onPasskeyError={setError}
-          onPasskeySignedIn={completePasskeySignIn}
         />
         <Turnstile
           onToken={setCaptchaToken}
@@ -332,10 +299,13 @@ function SignInPanel({ onSigningChange }: { onSigningChange: (signing: boolean) 
         )}
         <button
           type="submit"
-          className="sr-only"
+          className="app-entry-login-submit"
           disabled={submitting || waitMs > 0}
           data-testid="app-entry-submit"
         >
+          <span className="app-entry-glass-icon" aria-hidden="true">
+            <LogIn />
+          </span>
           {busy === "password" ? "Please wait…" : "Sign in"}
         </button>
         <button

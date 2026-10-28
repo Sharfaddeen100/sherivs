@@ -67,6 +67,7 @@ export function createSupabaseWebAuthnSessionMinter(
           "passkey session requires a confirmed email",
         );
       }
+      // Invite-time property only. A passkey must not confirm the address.
       if (!user.email_confirmed_at) {
         throw new WebAuthnSessionError(
           "email_unconfirmed",

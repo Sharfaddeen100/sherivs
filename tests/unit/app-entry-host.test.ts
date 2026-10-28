@@ -96,10 +96,12 @@ describe("app-entry wiring", () => {
     expect(splash).toContain("signInWithPassword");
     expect(splash).toContain("signInWithOAuth");
     expect(splash).not.toContain("signUp");
-    expect(splash).toContain("Forgot password");
+    expect(splash).toContain("EnterpriseLoginFields");
     expect(splash).toContain("Welcome back");
     expect(splash).toContain("Sign in with Google");
-    expect(splash).toContain("Remember for 30 days");
+    const fields = read("frontend/src/components/auth/enterprise-login-fields.tsx");
+    expect(fields).toContain("Forgot password");
+    expect(fields).toContain("Remember for 30 days");
     expect(splash).not.toContain("Use the username, email, or phone number");
     expect(splash).not.toContain("Create Account");
     expect(splash).not.toContain("/onboarding");

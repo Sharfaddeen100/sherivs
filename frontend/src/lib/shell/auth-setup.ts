@@ -32,12 +32,12 @@ export const PUSH_DEVICE_STEPS = [
 ] as const;
 
 export const BIOMETRIC_PASKEY_STEPS = [
-  "Serve the app only on HTTPS (app.sherivs.com already is).",
-  "WebAuthn relying party is sherivs.com so app, console, and school subdomains can share a passkey. Never collect or store a fingerprint or face image.",
-  "Open Biometric and authentication, tap Register a passkey, and confirm with whatever this device offers (fingerprint, face unlock, PIN, or a security key).",
+  "Install the Sherivs iOS or Android app. Passkeys are not offered in the browser.",
+  "WebAuthn relying party is sherivs.com for the native apps. Never collect or store a fingerprint or face image.",
+  "In the app, open Settings and tap Register a passkey, then confirm with whatever this device offers (fingerprint, face unlock, PIN, or a security key).",
   "Sherivs stores only the credential ID and public key. The biometric or PIN stays on the device.",
-  "At sign-in tap Sign in with a passkey. Password and Google remain available.",
-  "A lost device is removed from this screen. Removing the passkey does not delete the biometric on the handset.",
+  "At app sign-in tap Sign in with a passkey. Password remains available in the app and in the browser.",
+  "A lost device is removed from Settings in the app. Removing the passkey does not delete the biometric on the handset.",
 ] as const;
 
 export async function platformAuthenticatorAvailable(): Promise<boolean> {

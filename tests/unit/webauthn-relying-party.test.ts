@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   candidateRpHosts,
+  nativeCeremonyOrigin,
   resolveCeremonyRelyingParty,
   selectCustomDomainRelyingParty,
   selectSchoolDomainForHost,
@@ -85,6 +86,11 @@ describe("custom-domain relying party selection", () => {
       domain: { hostname: "school.edu.ng", status: "verified", schoolId: "school-a" },
     });
     expect(resolved?.rpID).toBe("sherivs.com");
+  });
+
+  it("binds native iOS/Android ceremonies to the platform RP origin, not a custom domain", () => {
+    expect(nativeCeremonyOrigin({ rpID: "sherivs.com" })).toBe("https://sherivs.com");
+    expect(nativeCeremonyOrigin({ rpID: "localhost" })).toBe("http://localhost");
   });
 
   it("does not treat a Host-like suffix trick as a platform origin", () => {

@@ -2,7 +2,7 @@
  * Domain-aware WebAuthn relying-party selection.
  *
  * Platform hosts (sherivs.com) keep the configured platform RP ID.
- * A custom school domain may complete a ceremony only when:
+ * A custom tenant domain may complete a ceremony only when:
  *   - the request Origin is HTTPS
  *   - the hostname matches a verified school_domains row (or is a suffix of one)
  *   - the RP ID is that verified hostname
@@ -84,7 +84,7 @@ export function selectCustomDomainRelyingParty(input: {
 /**
  * Resolve the ceremony config for a browser Origin.
  * Platform RP wins when the origin is valid for it. Otherwise a verified
- * custom school domain may supply its own RP ID. Unverified, revoked, HTTP,
+ * custom tenant domain may supply its own RP ID. Unverified, revoked, HTTP,
  * and unknown origins return null (fail closed).
  */
 export function resolveCeremonyRelyingParty(input: {
@@ -99,4 +99,15 @@ export function resolveCeremonyRelyingParty(input: {
     rpName: input.platform.rpName,
     challengeTtlMs: input.platform.challengeTtlMs,
   });
+}
+
+/**
+ * Native iOS/Android passkeys use the associated-domain origin of the
+ * platform RP ID (https://sherivs.com), not a custom tenant website and not
+ * the browser tab that called the API. sherivs.com credentials stay bound
+ * to that RP ID.
+ */
+export function nativeCeremonyOrigin(platform: Pick<WebAuthnConfig, "rpID">): string {
+  if (platform.rpID === "localhost") return "http://localhost";
+  return `https://${platform.rpID}`;
 }

@@ -22,7 +22,6 @@ import {
   Building2,
 } from "lucide-react";
 import { SherivsLogo } from "@/components/brand/sherivs-logo";
-import { PasskeyEnrollmentGate } from "@/components/auth/passkey-enrollment-gate";
 import { useApp } from "@/contexts/app-context";
 import {
   currentEffectiveHostKind,
@@ -640,19 +639,17 @@ export function InternalConsoleLayout() {
   if (!operator) return <ConsoleNotAuthorised />;
 
   return (
-    <PasskeyEnrollmentGate>
-      <ConsoleCtx.Provider value={{ overview, error, reload }}>
-        <ConsoleChrome>
-          {error && !overview ? (
-            <section className="sherivs-console-card">
-              <h1>Console unavailable</h1>
-              <p className="sherivs-console-error">{error}</p>
-            </section>
-          ) : (
-            <Outlet />
-          )}
-        </ConsoleChrome>
-      </ConsoleCtx.Provider>
-    </PasskeyEnrollmentGate>
+    <ConsoleCtx.Provider value={{ overview, error, reload }}>
+      <ConsoleChrome>
+        {error && !overview ? (
+          <section className="sherivs-console-card">
+            <h1>Console unavailable</h1>
+            <p className="sherivs-console-error">{error}</p>
+          </section>
+        ) : (
+          <Outlet />
+        )}
+      </ConsoleChrome>
+    </ConsoleCtx.Provider>
   );
 }

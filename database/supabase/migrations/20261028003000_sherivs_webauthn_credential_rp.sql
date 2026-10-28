@@ -1,7 +1,7 @@
 -- =============================================================================
 -- Bind passkey credentials to the relying-party ID they were registered under.
 -- Existing sherivs.com credentials keep rp_id = 'sherivs.com' and are not
--- rewritten onto custom school domains. A verified custom domain registers a
+-- rewritten onto custom tenant domains. A verified custom domain registers a
 -- new passkey for that RP ID.
 -- Rollback: database/supabase/rollbacks/20261028003000_sherivs_webauthn_credential_rp.sql
 -- =============================================================================

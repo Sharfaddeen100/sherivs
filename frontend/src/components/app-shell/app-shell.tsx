@@ -6,7 +6,6 @@ import { refreshPushTokenIfGranted } from "@/lib/push-client";
 import { SHELL_ACCOUNT_NAV } from "@/lib/shell/account";
 import { shellIcon } from "@/lib/shell/icon-registry";
 import { APP_SHELL_HOME, APP_SHELL_NOTIFICATIONS, APP_SHELL_PROFILE } from "@/lib/shell/paths";
-import { PasskeyEnrollmentGate } from "@/components/auth/passkey-enrollment-gate";
 import { OrganizationAccessDenied } from "@/components/auth/organization-access-denied";
 import { isActiveMembership } from "@/lib/auth/organization-access";
 import { ShellGlassIcon } from "./glass-icon";
@@ -208,13 +207,11 @@ export function AppShellLayout() {
     return <OrganizationAccessDenied onSignOut={signOut} />;
   }
   return (
-    <PasskeyEnrollmentGate>
-      <AppShellStateProvider>
-        <ShellChrome>
-          <Outlet />
-        </ShellChrome>
-      </AppShellStateProvider>
-    </PasskeyEnrollmentGate>
+    <AppShellStateProvider>
+      <ShellChrome>
+        <Outlet />
+      </ShellChrome>
+    </AppShellStateProvider>
   );
 }
 

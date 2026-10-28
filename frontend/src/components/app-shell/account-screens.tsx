@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Bell, Sparkles } from "lucide-react";
-import { PasskeyManager } from "@/components/auth/passkey-manager";
 import { supabase } from "@/integrations/supabase/client";
 import { useApp } from "@/contexts/app-context";
 import { GoogleMark } from "@/components/auth/google-mark";
@@ -194,7 +193,11 @@ export function AppSecurityScreen() {
         ))}
       </ol>
 
-      <PasskeyManager variant="app-shell" />
+      <p className="app-shell-org">Passkeys</p>
+      <p className="app-shell-empty">
+        Passkeys are registered and used in the Sherivs iOS and Android apps. Browser sign-in uses
+        password, Google, and Cloudflare Turnstile.
+      </p>
       <p className="app-shell-org">How passkeys work here</p>
       <ol className="app-shell-steps" data-testid="biometric-owner-steps">
         {BIOMETRIC_PASKEY_STEPS.map((step) => (

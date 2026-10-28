@@ -87,6 +87,27 @@ describe("Supabase session minting after WebAuthn", () => {
     ).rejects.toMatchObject({ code: "email_unconfirmed" });
   });
 
+  it("does not confirm email because a passkey exists", async () => {
+    let generated = 0;
+    const inner = admin({ confirmed: false });
+    const wrapped: SupabaseAuthAdmin = {
+      auth: {
+        admin: {
+          getUserById: inner.auth.admin.getUserById,
+          generateLink: async (args) => {
+            generated += 1;
+            return inner.auth.admin.generateLink(args);
+          },
+        },
+        verifyOtp: inner.auth.verifyOtp,
+      },
+    };
+    await expect(createSupabaseWebAuthnSessionMinter(wrapped).mint(USER)).rejects.toMatchObject({
+      code: "email_unconfirmed",
+    });
+    expect(generated).toBe(0);
+  });
+
   it("refuses tokens issued for a different user", async () => {
     const minter = createSupabaseWebAuthnSessionMinter(admin({ sessionUser: "someone-else" }));
     await expect(minter.mint(USER)).rejects.toMatchObject({ code: "session_unavailable" });

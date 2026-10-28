@@ -41,6 +41,8 @@ describe("sign-in page per host", () => {
     expect(authSource).toContain('mode === "signin" && experience.allowSignup');
     expect(authSource).not.toContain("{experience.subtext}");
     expect(authSource).toContain("<Turnstile");
+    expect(authSource).toContain("app-entry-login-submit");
+    expect(authSource).toContain('data-testid="auth-submit"');
     expect(authSource).toContain("EnterpriseLoginFields");
     expect(authSource).toContain("startGoogleSignIn");
     expect(authSource).toContain("Sign in with Google");

@@ -17,7 +17,6 @@ import {
   PLATFORM_ROLE_LABELS,
   PRIVILEGED_PLATFORM_ROLES,
 } from "@/lib/platform-staff/catalogue";
-import { PasskeyManager } from "@/components/auth/passkey-manager";
 import { getAccessReview } from "@/lib/platform-staff/support-access.functions";
 import { listConsoleAudit } from "@/lib/internal-console/activity.functions";
 import { CONSOLE_PATHS, SCHOLAR_ENTRY_URL } from "@/lib/internal-console/paths";
@@ -1132,7 +1131,9 @@ export function ConsoleAccount() {
         </button>
       </div>
       <h2 style={{ marginTop: "1.5rem" }}>Passkeys</h2>
-      <PasskeyManager variant="console" />
+      <p className="sherivs-console-empty">
+        Passkeys are registered and used in the Sherivs iOS and Android apps, not in this browser.
+      </p>
       <p className="sherivs-console-empty" style={{ marginTop: "1rem" }}>
         Theme, language, timezone, and notification switches are not configured. Profile fields
         other than the authenticated identity are not editable from this page.
