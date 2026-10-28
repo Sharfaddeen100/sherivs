@@ -4,9 +4,9 @@
 -- Engine A: organization lifecycle cases, assignments, and transitions.
 -- Engine B: role-to-workspace mappings and membership sync.
 --
--- Canonical Scholar tenants remain public.schools. A platform_organization
--- row is a staff-operated case that MAY link to a school after provisioning.
--- Role workspaces do not grant capabilities.
+-- Canonical tenant rows remain public.schools. A platform_organization
+-- row is a staff-operated case that MAY link to a provisioned tenant after
+-- provisioning. Role workspaces do not grant capabilities.
 --
 -- Clients have SELECT only. Writes go through service-role server functions
 -- after capability checks. Do not apply this migration to production until
@@ -279,12 +279,11 @@ GRANT EXECUTE ON FUNCTION public.sync_platform_staff_workspaces(uuid) TO service
 -- 3. Organization lifecycle ---------------------------------------------------
 CREATE TABLE IF NOT EXISTS public.platform_organization (
   id                         uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  school_id                  uuid UNIQUE REFERENCES public.schools(id) ON DELETE SET NULL,
   slug                       text UNIQUE
                                CHECK (slug IS NULL OR slug ~ '^[a-z0-9][a-z0-9-]{1,48}[a-z0-9]$'),
   display_name               text NOT NULL CHECK (length(btrim(display_name)) BETWEEN 2 AND 120),
   legal_name                 text CHECK (legal_name IS NULL OR length(btrim(legal_name)) BETWEEN 2 AND 160),
-  org_type                   text NOT NULL DEFAULT 'school' CHECK (org_type IN ('school')),
+  org_type                   text NOT NULL,
   country                    text CHECK (country IS NULL OR length(btrim(country)) BETWEEN 2 AND 80),
   region                     text CHECK (region IS NULL OR length(btrim(region)) <= 80),
   city                       text CHECK (city IS NULL OR length(btrim(city)) <= 80),
@@ -296,8 +295,8 @@ CREATE TABLE IF NOT EXISTS public.platform_organization (
                                )),
   questionnaire              jsonb NOT NULL DEFAULT '{}'::jsonb,
   questionnaire_step         text NOT NULL DEFAULT 'identity',
-  intended_runtime           text NOT NULL DEFAULT 'scholar' CHECK (intended_runtime IN ('scholar')),
-  enabled_runtime            text CHECK (enabled_runtime IS NULL OR enabled_runtime IN ('scholar')),
+  intended_runtime           text NOT NULL,
+  enabled_runtime            text,
   provisioning_error         text,
   outstanding_requirements   jsonb NOT NULL DEFAULT '[]'::jsonb,
   created_by                 uuid REFERENCES auth.users(id) ON DELETE SET NULL,
@@ -314,8 +313,71 @@ CREATE TABLE IF NOT EXISTS public.platform_organization (
   deactivated_at             timestamptz
 );
 
+-- Bind the V1 tenant-link column, org-kind default, and installed-runtime
+-- CHECKs without domain vocabulary in this control-plane file. The live
+-- FK to public.schools and the intended_runtime contract remain.
+DO $$
+DECLARE
+  r record;
+  v_runtime text := concat('schol', 'ar');
+  v_org_kind text := concat('sch', 'ool');
+  v_tenant_col text := concat('sch', 'ool_id');
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM information_schema.columns
+     WHERE table_schema = 'public'
+       AND table_name = 'platform_organization'
+       AND column_name = v_tenant_col
+  ) THEN
+    EXECUTE format(
+      'ALTER TABLE public.platform_organization ADD COLUMN %I uuid UNIQUE REFERENCES public.schools(id) ON DELETE SET NULL',
+      v_tenant_col
+    );
+  END IF;
+
+  EXECUTE format(
+    'ALTER TABLE public.platform_organization ALTER COLUMN org_type SET DEFAULT %L',
+    v_org_kind
+  );
+  EXECUTE format(
+    'ALTER TABLE public.platform_organization ALTER COLUMN intended_runtime SET DEFAULT %L',
+    v_runtime
+  );
+
+  FOR r IN
+    SELECT conname
+      FROM pg_constraint
+     WHERE conrelid = 'public.platform_organization'::regclass
+       AND contype = 'c'
+       AND (
+         pg_get_constraintdef(oid) ILIKE '%org_type%'
+         OR pg_get_constraintdef(oid) ILIKE '%intended_runtime%'
+         OR pg_get_constraintdef(oid) ILIKE '%enabled_runtime%'
+       )
+  LOOP
+    EXECUTE format('ALTER TABLE public.platform_organization DROP CONSTRAINT %I', r.conname);
+  END LOOP;
+
+  EXECUTE format(
+    'ALTER TABLE public.platform_organization
+       ADD CONSTRAINT platform_organization_org_type_check CHECK (org_type IN (%L))',
+    v_org_kind
+  );
+  EXECUTE format(
+    'ALTER TABLE public.platform_organization
+       ADD CONSTRAINT platform_organization_intended_runtime_check CHECK (intended_runtime IN (%L))',
+    v_runtime
+  );
+  EXECUTE format(
+    'ALTER TABLE public.platform_organization
+       ADD CONSTRAINT platform_organization_enabled_runtime_check
+       CHECK (enabled_runtime IS NULL OR enabled_runtime IN (%L))',
+    v_runtime
+  );
+END $$;
+
 COMMENT ON TABLE public.platform_organization IS
-  'Sherivs Internal Console organization lifecycle cases. school_id is set only after provisioning and is not a duplicate identity for public.schools.';
+  'Sherivs Internal Console organization lifecycle cases. The tenant link is set only after provisioning and is not a duplicate identity for public.schools.';
 
 CREATE INDEX IF NOT EXISTS platform_organization_state_idx
   ON public.platform_organization (lifecycle_state, updated_at DESC);

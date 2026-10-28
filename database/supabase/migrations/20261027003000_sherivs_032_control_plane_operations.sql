@@ -1,8 +1,8 @@
 -- =============================================================================
 -- SHERIVS-032 — Control-plane operations store (Plane D).
 --
--- Tickets and incidents for Internal Console operators. These are not school
--- SIS records and not platform_complaints (tenant-submitted school complaints).
+-- Tickets and incidents for Internal Console operators. These are not tenant
+-- SIS records and not platform_complaints (tenant-submitted complaints).
 -- Billing continues to use public.subscriptions / school_platform_pricing.
 -- Log search continues to use public.audit_logs.
 --
@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS public.platform_ticket (
 );
 
 COMMENT ON TABLE public.platform_ticket IS
-  'Internal Console support tickets about organization cases. Not student, fee, or biometric school records.';
+  'Internal Console support tickets about organization cases. Not learner, invoice, or biometric tenant records.';
 
 CREATE INDEX IF NOT EXISTS platform_ticket_status_idx
   ON public.platform_ticket (status, updated_at DESC);
@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS public.platform_incident (
 );
 
 COMMENT ON TABLE public.platform_incident IS
-  'Internal Console operational incidents. Not a security operations centre and not tenant student data.';
+  'Internal Console operational incidents. Not a security operations centre and not tenant learner data.';
 
 CREATE INDEX IF NOT EXISTS platform_incident_status_idx
   ON public.platform_incident (status, severity, updated_at DESC);

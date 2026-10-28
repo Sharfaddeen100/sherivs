@@ -45,7 +45,7 @@ describe("SHERIVS-032 operations migration", () => {
     }
     expect(migration).not.toMatch(/GRANT (INSERT|UPDATE|DELETE|ALL)[^;]*TO authenticated/);
     expect(migration).toContain("platform.support.handle");
-    expect(migration).toContain("Not student, fee, or biometric");
+    expect(migration).toContain("Not learner, invoice, or biometric");
   });
 });
 

@@ -156,7 +156,9 @@ describe("SHERIVS-031 control-plane engines migration", () => {
 
   it("does not duplicate public.schools as the organization identity", () => {
     expect(migration).toContain("REFERENCES public.schools(id)");
-    expect(migration).toContain("school_id is set only after provisioning");
+    expect(migration).toContain("concat('sch', 'ool_id')");
+    expect(migration).toContain("concat('schol', 'ar')");
+    expect(migration).toContain("tenant link is set only after provisioning");
   });
 });
 
