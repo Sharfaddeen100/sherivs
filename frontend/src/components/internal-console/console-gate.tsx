@@ -50,7 +50,15 @@ export function ConsoleGate({
   }
 
   if (needsConsoleChrome && app.loading) {
-    return <ConsoleLoadingState message="Signing you in to the Internal Console…" />;
+    return (
+      <ConsoleLoadingState
+        message={
+          app.authUser
+            ? "Signing you in to the Internal Console…"
+            : "Opening the Internal Console…"
+        }
+      />
+    );
   }
 
   const decision = decideHostRoute({

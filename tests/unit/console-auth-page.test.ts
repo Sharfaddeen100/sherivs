@@ -55,6 +55,7 @@ describe("sign-in page per host", () => {
     expect(authSource).not.toContain("app-entry-login-chrome");
     expect(authSource).toContain("SignInLoading");
     expect(authSource).toContain("consoleVisualFixtureEnabled()");
-    expect(authSource).toContain("Continue as local fixture operator");
+    expect(authSource).toContain("CONSOLE_FIXTURE_PERSONAS");
+    expect(authSource).toContain("Continue as {persona.jobTitle}");
   });
 });

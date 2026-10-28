@@ -259,6 +259,7 @@
   border-radius: 12px;
   display: grid;
   place-items: center;
+  cursor: pointer;
 }
 
 .sherivs-console-icon-btn:hover,
@@ -327,6 +328,7 @@
   border-radius: 12px;
   padding: 0.55rem 0.6rem;
   font-size: 0.9rem;
+  cursor: pointer;
 }
 
 .sherivs-console-nav a.is-active,
@@ -476,6 +478,7 @@
   border: 1px solid transparent;
   background: linear-gradient(180deg, #4b86ff, #1848fd);
   color: #fff;
+  cursor: pointer;
   font-weight: 650;
   font-size: 0.88rem;
   text-decoration: none;
@@ -508,6 +511,28 @@
   border: 1px solid rgba(16, 24, 43, 0.06);
   text-decoration: none;
   color: inherit;
+  cursor: pointer;
+}
+
+.sherivs-console-fixture-switch {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0.35rem 0 0.85rem;
+  font-size: 0.82rem;
+  color: var(--console-muted);
+}
+
+.sherivs-console-fixture-switch select {
+  min-height: 2.4rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: 12px;
+  border: 1px solid rgba(16, 24, 43, 0.12);
+  background: #fff;
+  color: var(--console-ink);
+  font: inherit;
+  cursor: pointer;
 }
 
 .sherivs-console-row small {
@@ -789,6 +814,17 @@
 }
 
 @media (max-width: 960px) {
+  .sherivs-console-orb {
+    animation: none;
+    filter: none;
+    opacity: 0.22;
+  }
+
+  .sherivs-console-top,
+  .sherivs-console-side {
+    backdrop-filter: none;
+  }
+
   .sherivs-console-frame {
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto minmax(0, 1fr);

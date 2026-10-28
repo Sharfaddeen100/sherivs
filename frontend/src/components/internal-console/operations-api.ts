@@ -22,10 +22,11 @@ import type {
 import { canTransitionIncident, canTransitionTicket } from "@/lib/internal-console/operations";
 import {
   CONSOLE_FIXTURE_OPERATOR,
+  CONSOLE_FIXTURE_OPS_KEY,
   consoleVisualFixtureActive,
 } from "@/lib/internal-console/visual-fixture";
 
-const FIXTURE_KEY = "sherivs:console-visual-fixture-ops";
+const FIXTURE_KEY = CONSOLE_FIXTURE_OPS_KEY;
 
 type FixtureStore = {
   tickets: ConsoleTicket[];

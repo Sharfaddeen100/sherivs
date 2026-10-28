@@ -47,6 +47,7 @@ import { SignInLoading } from "@/components/app-entry/signin-loading";
 import { SherivsLogo } from "@/components/brand/sherivs-logo";
 import {
   activateConsoleVisualFixture,
+  CONSOLE_FIXTURE_PERSONAS,
   consoleVisualFixtureEnabled,
 } from "@/lib/internal-console/visual-fixture";
 import "@/components/app-entry/app-entry.css";
@@ -223,10 +224,10 @@ function AuthPage() {
     }
   }
 
-  async function continueLocalFixture() {
+  async function continueLocalFixture(personaKey: string) {
     if (!consoleVisualFixtureEnabled()) return;
     reset();
-    activateConsoleVisualFixture();
+    activateConsoleVisualFixture(personaKey);
     await refresh();
   }
 
@@ -442,19 +443,26 @@ function AuthPage() {
         </form>
 
         {localFixtureEnabled ? (
-          <div className="mt-4 space-y-2">
+          <div className="mt-4 space-y-2" data-testid="console-role-simulation">
             <p className="app-entry-login-invite">
-              Local development fixture. This is not a production identity and does not write staff,
+              Local V1 role simulation. These are not production identities and do not write staff,
               invitation, or workspace records.
             </p>
-            <button
-              type="button"
-              className="app-entry-login-google"
-              data-testid="console-visual-fixture"
-              onClick={() => void continueLocalFixture()}
-            >
-              Continue as local fixture operator
-            </button>
+            {CONSOLE_FIXTURE_PERSONAS.map((persona) => (
+              <button
+                key={persona.key}
+                type="button"
+                className="app-entry-login-google"
+                data-testid={
+                  persona.key === "platform_owner"
+                    ? "console-visual-fixture"
+                    : `console-fixture-${persona.key}`
+                }
+                onClick={() => void continueLocalFixture(persona.key)}
+              >
+                Continue as {persona.jobTitle}
+              </button>
+            ))}
           </div>
         ) : null}
 

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useApp } from "@/contexts/app-context";
+import { currentEffectiveHostKind, isConsoleOperator } from "@/lib/experience/console-host-routing";
 import {
   analyticsAllowed,
   doNotTrackEnabled,
@@ -19,7 +20,8 @@ const HOST = import.meta.env.VITE_POSTHOG_HOST as string | undefined;
  * accepts. Students and Do-Not-Track browsers are never tracked or asked.
  */
 export function AnalyticsConsent() {
-  const { profile, role, school } = useApp();
+  const app = useApp();
+  const { profile, role, school, loading, superAdmin, platformStaff } = app;
   const [consent, setConsent] = useState<AnalyticsConsent>("unset");
   const [ready, setReady] = useState(false);
   const [dnt, setDnt] = useState(false);
@@ -42,6 +44,12 @@ export function AnalyticsConsent() {
       identifyPosthog({ id: profile?.id, role, tenantId: school?.id ?? profile?.school_id }),
     );
   }, [ready, allowed, profile?.id, role, school?.id, profile?.school_id]);
+
+  const hostKind = currentEffectiveHostKind();
+  const operator = isConsoleOperator({ superAdmin, platformStaff });
+  if (hostKind === "internal" && (loading || !operator)) {
+    return null;
+  }
 
   if (!ready || !shouldAskForAnalyticsConsent({ key: KEY, consent, doNotTrack: dnt, role })) {
     return null;
