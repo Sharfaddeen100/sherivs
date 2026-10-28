@@ -466,6 +466,12 @@
   border-color: rgba(16, 24, 43, 0.1);
 }
 
+.sherivs-console-passkeys {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
 .sherivs-console-list {
   display: grid;
   gap: 0.65rem;

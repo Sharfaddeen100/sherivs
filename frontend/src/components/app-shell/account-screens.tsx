@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { Bell, Fingerprint, ScanFace, Sparkles } from "lucide-react";
+import { Bell, Sparkles } from "lucide-react";
+import { PasskeyManager } from "@/components/auth/passkey-manager";
 import { supabase } from "@/integrations/supabase/client";
 import { useApp } from "@/contexts/app-context";
 import { GoogleMark } from "@/components/auth/google-mark";
@@ -23,7 +24,6 @@ import {
   GOOGLE_LINK_STEPS,
   GOOGLE_PROVIDER_STEPS,
   PUSH_DEVICE_STEPS,
-  platformAuthenticatorAvailable,
 } from "@/lib/shell/auth-setup";
 import { APP_SHELL_HOME } from "@/lib/shell/paths";
 import { useAppShell } from "./shell-context";
@@ -83,12 +83,7 @@ export function AppSecurityScreen() {
   const [confirm, setConfirm] = useState("");
   const [message, setMessage] = useState<string | null>(null);
   const [googleBusy, setGoogleBusy] = useState(false);
-  const [biometricReady, setBiometricReady] = useState<boolean | null>(null);
   const googleConnected = hasGoogleIdentity(app.authUser);
-
-  useEffect(() => {
-    void platformAuthenticatorAvailable().then(setBiometricReady);
-  }, []);
 
   async function savePassword(event: React.FormEvent) {
     event.preventDefault();
@@ -147,11 +142,21 @@ export function AppSecurityScreen() {
       <form className="app-shell-form" onSubmit={(event) => void savePassword(event)}>
         <label>
           New password
-          <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} autoComplete="new-password" />
+          <input
+            type="password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+            autoComplete="new-password"
+          />
         </label>
         <label>
           Confirm password
-          <input type="password" value={confirm} onChange={(event) => setConfirm(event.target.value)} autoComplete="new-password" />
+          <input
+            type="password"
+            value={confirm}
+            onChange={(event) => setConfirm(event.target.value)}
+            autoComplete="new-password"
+          />
         </label>
         <button type="submit">Update password</button>
       </form>
@@ -167,7 +172,12 @@ export function AppSecurityScreen() {
         </div>
       </div>
       {googleConnected ? null : (
-        <button type="button" className="app-shell-primary" disabled={googleBusy} onClick={() => void connectGoogle()}>
+        <button
+          type="button"
+          className="app-shell-primary"
+          disabled={googleBusy}
+          onClick={() => void connectGoogle()}
+        >
           {googleBusy ? "Opening Google…" : "Connect Google"}
         </button>
       )}
@@ -184,33 +194,8 @@ export function AppSecurityScreen() {
         ))}
       </ol>
 
-      <div className="app-shell-cards">
-        <div className="app-shell-card">
-          <ShellGlassIcon>
-            <Fingerprint />
-          </ShellGlassIcon>
-          <div>
-            <p>Fingerprint</p>
-            <small>
-              {biometricReady
-                ? "This device can verify a passkey with Touch ID or Windows Hello."
-                : biometricReady === false
-                  ? "This browser has no platform authenticator yet."
-                  : "Checking this device…"}
-            </small>
-          </div>
-        </div>
-        <div className="app-shell-card">
-          <ShellGlassIcon>
-            <ScanFace />
-          </ShellGlassIcon>
-          <div>
-            <p>Face ID</p>
-            <small>Same WebAuthn passkey. Sherivs never stores a face or fingerprint image.</small>
-          </div>
-        </div>
-      </div>
-      <p className="app-shell-org">Professional passkey rollout</p>
+      <PasskeyManager variant="app-shell" />
+      <p className="app-shell-org">How passkeys work here</p>
       <ol className="app-shell-steps" data-testid="biometric-owner-steps">
         {BIOMETRIC_PASKEY_STEPS.map((step) => (
           <li key={step}>{step}</li>
@@ -252,7 +237,8 @@ function pushStatusLabel(support: PushSupport): string {
   if (!support.vapidConfigured) return "This build is missing the public VAPID key.";
   if (!support.supported) return "This browser cannot receive web push.";
   if (support.permission === "granted") return "This device is allowed to receive push.";
-  if (support.permission === "denied") return "This browser blocked notifications. Allow them in site settings.";
+  if (support.permission === "denied")
+    return "This browser blocked notifications. Allow them in site settings.";
   return "Push is off on this device until you enable it.";
 }
 
@@ -284,7 +270,9 @@ export function AppNotificationsScreen() {
       return;
     }
     if (result.reason === "denied") {
-      setMessage("This browser blocked notifications. Allow them in site settings, then try again.");
+      setMessage(
+        "This browser blocked notifications. Allow them in site settings, then try again.",
+      );
       return;
     }
     if (result.reason === "unsupported") {
@@ -381,7 +369,11 @@ export function AppNotificationsScreen() {
       ) : (
         <div className="app-shell-cards">
           {inbox.map((item) => (
-            <a key={item.key} className="app-shell-card" href={`/home/s/${encodeURIComponent(item.key)}`}>
+            <a
+              key={item.key}
+              className="app-shell-card"
+              href={`/home/s/${encodeURIComponent(item.key)}`}
+            >
               <div>
                 <p>{item.label}</p>
                 <small>Role inbox</small>

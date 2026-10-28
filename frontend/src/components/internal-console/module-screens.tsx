@@ -17,6 +17,7 @@ import {
   PLATFORM_ROLE_LABELS,
   PRIVILEGED_PLATFORM_ROLES,
 } from "@/lib/platform-staff/catalogue";
+import { PasskeyManager } from "@/components/auth/passkey-manager";
 import { getAccessReview } from "@/lib/platform-staff/support-access.functions";
 import { listConsoleAudit } from "@/lib/internal-console/activity.functions";
 import { CONSOLE_PATHS, SCHOLAR_ENTRY_URL } from "@/lib/internal-console/paths";
@@ -466,8 +467,7 @@ export function ConsoleInvitations() {
               <option value="">Default from assigned role</option>
               {(overview?.workspaces ?? [])
                 .filter(
-                  (workspace) =>
-                    workspace.type !== "personal" && workspace.source === "database",
+                  (workspace) => workspace.type !== "personal" && workspace.source === "database",
                 )
                 .map((workspace) => (
                   <option key={workspace.recordId} value={workspace.recordId}>
@@ -635,7 +635,9 @@ export function ConsoleSuspendedStaff() {
       </section>
     );
   }
-  const rows = overview.staff.filter((row) => row.status === "suspended" || row.status === "revoked");
+  const rows = overview.staff.filter(
+    (row) => row.status === "suspended" || row.status === "revoked",
+  );
   return (
     <section className="sherivs-console-card" data-testid="console-suspended">
       <p className="sherivs-console-page-kicker">Team & Access</p>
@@ -646,7 +648,9 @@ export function ConsoleSuspendedStaff() {
         engine.
       </p>
       {rows.length === 0 ? (
-        <p className="sherivs-console-empty">No suspended or revoked staff in the authorized directory.</p>
+        <p className="sherivs-console-empty">
+          No suspended or revoked staff in the authorized directory.
+        </p>
       ) : (
         <div className="sherivs-console-list">
           {rows.map((row) => (
@@ -972,7 +976,7 @@ function AuditList({ scope }: { scope: "all" | "admin" | "security" }) {
   const [error, setError] = useState<string | null>(null);
   useEffect(() => {
     if (consoleVisualFixtureActive()) {
-      setEvents(scope === "security" ? [] : overview?.activity ?? []);
+      setEvents(scope === "security" ? [] : (overview?.activity ?? []));
       setSource(
         scope === "security"
           ? "local visual fixture — no security events are recorded"
@@ -1047,7 +1051,10 @@ export function ConsoleMetrics() {
     return (
       <section className="sherivs-console-card">
         <h1>Metrics</h1>
-        <p>Operational metrics require an authorized operations, engineering, or tenant-read capability.</p>
+        <p>
+          Operational metrics require an authorized operations, engineering, or tenant-read
+          capability.
+        </p>
       </section>
     );
   }
@@ -1070,7 +1077,9 @@ export function ConsoleMetrics() {
               <p>{metric.available ? `${metric.value} ${metric.unit}` : "Unavailable"}</p>
               <small>
                 {metric.window} · {metric.source}
-                {metric.updatedAt ? ` · Updated ${new Date(metric.updatedAt).toLocaleString()}` : ""}
+                {metric.updatedAt
+                  ? ` · Updated ${new Date(metric.updatedAt).toLocaleString()}`
+                  : ""}
               </small>
               <small>{metric.definition}</small>
               {contract ? (
@@ -1122,6 +1131,8 @@ export function ConsoleAccount() {
           Sign out
         </button>
       </div>
+      <h2 style={{ marginTop: "1.5rem" }}>Passkeys</h2>
+      <PasskeyManager variant="console" />
       <p className="sherivs-console-empty" style={{ marginTop: "1rem" }}>
         Theme, language, timezone, and notification switches are not configured. Profile fields
         other than the authenticated identity are not editable from this page.

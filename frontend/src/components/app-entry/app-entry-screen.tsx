@@ -35,11 +35,11 @@ import {
 } from "@/lib/auth/signin-loading-wordmark";
 import { AppEntryCanvas } from "./app-entry-canvas";
 import { AppEntryWordmark } from "./app-entry-wordmark";
+import { PasskeySignInButton } from "@/components/auth/passkey-sign-in-button";
+import { PASSKEY_DEVICE_HELP } from "@/lib/auth/webauthn-client";
 import { SignInLoading } from "./signin-loading";
 
-const backoff = createLoginBackoff(
-  typeof window !== "undefined" ? window.localStorage : undefined,
-);
+const backoff = createLoginBackoff(typeof window !== "undefined" ? window.localStorage : undefined);
 
 export function AppEntryScreen({ panel }: { panel: AppEntryPanel }) {
   const { loading, authUser } = useApp();
@@ -116,7 +116,7 @@ function SignInPanel({ onSigningChange }: { onSigningChange: (signing: boolean) 
   const [remember, setRemember] = useState(() =>
     typeof window !== "undefined" ? rememberPreferenceActive() : false,
   );
-  const [busy, setBusy] = useState<"password" | "google" | null>(null);
+  const [busy, setBusy] = useState<"password" | "google" | "passkey" | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const [captchaNonce, setCaptchaNonce] = useState(0);
@@ -198,7 +198,11 @@ function SignInPanel({ onSigningChange }: { onSigningChange: (signing: boolean) 
       void fetch("/api/public/audit/password-reset", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ event: "login_succeeded", email: auditEmail, user_id: data.user?.id }),
+        body: JSON.stringify({
+          event: "login_succeeded",
+          email: auditEmail,
+          user_id: data.user?.id,
+        }),
       }).catch(() => {});
 
       await refresh();
@@ -218,20 +222,18 @@ function SignInPanel({ onSigningChange }: { onSigningChange: (signing: boolean) 
     setError(null);
     setRememberPreference(remember);
     setBusy("google");
-    const result = await startGoogleSignIn(
-      (args) => supabase.auth.signInWithOAuth(args),
-      {
-        redirectTo: googleSignInRedirectTo(window.location.origin, "/?panel=signin"),
-        loginHint: classifySignInIdentifier(identifier).kind === "email" ? identifier : undefined,
-      },
-    );
+    const result = await startGoogleSignIn((args) => supabase.auth.signInWithOAuth(args), {
+      redirectTo: googleSignInRedirectTo(window.location.origin, "/?panel=signin"),
+      loginHint: classifySignInIdentifier(identifier).kind === "email" ? identifier : undefined,
+    });
     if (!result.ok) {
       setBusy(null);
       setError(result.error);
     }
   }
 
-  const forgotSearch = classifySignInIdentifier(identifier).kind === "email" ? { email: identifier.trim() } : {};
+  const forgotSearch =
+    classifySignInIdentifier(identifier).kind === "email" ? { email: identifier.trim() } : {};
   const submitting = busy !== null;
 
   return (
@@ -353,6 +355,47 @@ function SignInPanel({ onSigningChange }: { onSigningChange: (signing: boolean) 
           </span>
           {busy === "google" ? "Opening Google…" : "Sign in with Google"}
         </button>
+        <PasskeySignInButton
+          className="app-entry-login-google"
+          iconClassName="app-entry-glass-icon"
+          disabled={submitting || waitMs > 0}
+          onBusy={(next) => {
+            setBusy(next ? "passkey" : null);
+            onSigningChange(next);
+          }}
+          onError={setError}
+          onSignedIn={async () => {
+            setRememberPreference(remember);
+            const { data } = await supabase.auth.getUser();
+            if (tenantSlug && school && data.user) {
+              const { data: u } = await supabase
+                .from("users")
+                .select("school_id, role")
+                .eq("id", data.user.id)
+                .maybeSingle();
+              if (u && u.school_id !== school.id) {
+                await supabase.auth.signOut();
+                throw new Error(INVITE_LOGIN_ERROR);
+              }
+            }
+            const customHost = resolveTenantDomain();
+            if (customHost && data.user && !(await schoolDomainLoginAllowed(customHost))) {
+              await supabase.auth.signOut();
+              throw new Error(INVITE_LOGIN_ERROR);
+            }
+            void fetch("/api/public/audit/password-reset", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                event: "login_succeeded",
+                email: data.user?.email,
+                user_id: data.user?.id,
+              }),
+            }).catch(() => {});
+            await refresh();
+          }}
+        />
+        <p className="app-entry-login-invite">{PASSKEY_DEVICE_HELP}</p>
         <p className="app-entry-login-invite">
           Need an account? Ask your administrator to invite you.
         </p>

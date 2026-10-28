@@ -44,6 +44,8 @@ describe("sign-in page per host", () => {
     expect(authSource).toContain('to="/forgot-password"');
     expect(authSource).toContain("startGoogleSignIn");
     expect(authSource).toContain("Sign in with Google");
+    expect(authSource).toContain("PasskeySignInButton");
+    expect(authSource).toContain("PASSKEY_DEVICE_HELP");
     expect(authSource).toContain("Remember for 30 days");
     expect(authSource).toContain("Ask your administrator to invite you");
     expect(authSource).not.toContain("SherivsLockup");

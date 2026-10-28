@@ -656,9 +656,38 @@
   border: 1px solid var(--shell-line);
 }
 
-.app-shell-push-actions {
+.app-shell-push-actions,
+.app-shell-passkeys {
   display: grid;
   gap: 0.55rem;
+}
+
+.app-shell-passkey-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.65rem;
+}
+
+.app-shell-passkey-item {
+  display: grid;
+  gap: 0.55rem;
+  padding: 0.9rem;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid var(--shell-line);
+}
+
+.app-shell-passkey-item small {
+  display: block;
+  color: var(--shell-muted);
+}
+
+.app-shell-passkey-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
 }
 
 .app-shell-form button:disabled,

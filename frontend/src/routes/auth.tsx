@@ -1,6 +1,8 @@
 import { createFileRoute, Link, Navigate, redirect } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Lock, LogIn, Mail } from "lucide-react";
+import { PasskeySignInButton } from "@/components/auth/passkey-sign-in-button";
+import { PASSKEY_DEVICE_HELP } from "@/lib/auth/webauthn-client";
 import { supabase } from "@/integrations/supabase/client";
 import { useApp } from "@/contexts/app-context";
 import { Turnstile, captchaRequired } from "@/components/security/turnstile";
@@ -79,7 +81,7 @@ function AuthPage() {
   const [remember, setRemember] = useState(() =>
     typeof window !== "undefined" ? rememberPreferenceActive() : false,
   );
-  const [busyKind, setBusyKind] = useState<"password" | "google" | null>(null);
+  const [busyKind, setBusyKind] = useState<"password" | "google" | "passkey" | null>(null);
 
   // Count down any active backoff after repeated failed sign-ins.
   useEffect(() => {
@@ -245,7 +247,7 @@ function AuthPage() {
   const title = experience.heading ?? (mode === "signin" ? "Welcome back" : "Create account");
   const signInCopy = mode === "signin";
 
-  if (busy && busyKind === "password") {
+  if (busy && (busyKind === "password" || busyKind === "passkey")) {
     return (
       <div className="auth-shell app-entry app-entry-login">
         <div className="app-entry-login-orbs" aria-hidden="true">
@@ -427,6 +429,55 @@ function AuthPage() {
               </span>
               {busyKind === "google" ? "Opening Google…" : "Sign in with Google"}
             </button>
+          )}
+          {signInCopy && (
+            <>
+              <PasskeySignInButton
+                className="app-entry-login-google"
+                iconClassName="app-entry-glass-icon"
+                disabled={busy || waitMs > 0}
+                onBusy={(next) => {
+                  setBusy(next);
+                  setBusyKind(next ? "passkey" : null);
+                }}
+                onError={setError}
+                onSignedIn={async () => {
+                  setRememberPreference(remember);
+                  const { data } = await supabase.auth.getUser();
+                  if (tenantSlug && school && data.user) {
+                    const { data: u } = await supabase
+                      .from("users")
+                      .select("school_id, role")
+                      .eq("id", data.user.id)
+                      .maybeSingle();
+                    if (u && u.school_id !== school.id) {
+                      await supabase.auth.signOut();
+                      throw new Error(
+                        `This account does not belong to ${school.name}. Please sign in on your own school portal.`,
+                      );
+                    }
+                  }
+                  const customHost = resolveTenantDomain();
+                  if (customHost && data.user && !(await schoolDomainLoginAllowed(customHost))) {
+                    await supabase.auth.signOut();
+                    throw new Error(
+                      `This account does not belong to ${school?.name ?? "this school"}. Please sign in on your own school's address or at app.sherivs.com.`,
+                    );
+                  }
+                  void fetch("/api/public/audit/password-reset", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                      event: "login_succeeded",
+                      email: data.user?.email,
+                      user_id: data.user?.id,
+                    }),
+                  }).catch(() => {});
+                  await refresh();
+                }}
+              />
+              <p className="app-entry-login-invite">{PASSKEY_DEVICE_HELP}</p>
+            </>
           )}
         </form>
 
