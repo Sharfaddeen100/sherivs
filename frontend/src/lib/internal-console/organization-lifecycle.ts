@@ -253,7 +253,7 @@ export const ORGANIZATION_ACCESS_EFFECTS = {
   suspend: {
     sessions: "Sherivs does not globally revoke every browser session. The next authorized Scholar request re-evaluates schools.is_active.",
     api: "Tenant API access is denied while the school row is inactive and subscription_status is suspended.",
-    runtime: "Sherivs Scholar remains registered but this organization is not authorized to use it.",
+    runtime: "Sherivs Scholar stays registered, but this organization is not authorized to use it.",
     data: "Records are retained. Suspension does not delete the organization, members, or questionnaire.",
     audit: "History is retained.",
   },
