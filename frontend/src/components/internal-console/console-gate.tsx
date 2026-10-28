@@ -53,9 +53,7 @@ export function ConsoleGate({
     return (
       <ConsoleLoadingState
         message={
-          app.authUser
-            ? "Signing you in to the Internal Console…"
-            : "Opening the Internal Console…"
+          app.authUser ? "Signing you in to the Internal Console…" : "Opening the Internal Console…"
         }
       />
     );

@@ -70,9 +70,9 @@ export function AnalyticsConsent() {
     >
       <p className="text-sm font-semibold">Help us improve Sherivs</p>
       <p className="mt-1 text-xs text-muted-foreground">
-        With your permission we collect anonymous usage analytics (pages visited and buttons
-        used). We never record your screen, what you type, or your name, email or phone.
-        Student accounts are never tracked. See our{" "}
+        With your permission we collect anonymous usage analytics (pages visited and buttons used).
+        We never record your screen, what you type, or your name, email or phone. Student accounts
+        are never tracked. See our{" "}
         <a
           href={
             resolveExperienceHost(window.location.hostname) === "tenant"

@@ -242,112 +242,112 @@ export function AppProvider({ children }: { children: ReactNode }) {
     let nextSchool: SchoolRow | null = null;
 
     try {
-    if (currentSession?.user) {
-      const userId = currentSession.user.id;
-      // Workforce identity is independent of a tenant membership row. A
-      // platform owner who also has an organization profile must still
-      // resolve as a console operator.
-      const [profRow, workforce] = await withTimeout(
-        Promise.all([
-          supabase.from("users").select(USER_SAFE_COLUMNS).eq("id", userId).maybeSingle(),
-          loadWorkforce(userId),
-        ]),
-        IDENTITY_LOAD_MS,
-        "identity",
-      );
-      const prof = profRow.data as unknown as UserProfile | null;
-      nextSuperAdmin = workforce.superAdmin;
-      nextPlatformStaff = workforce.platformStaff;
+      if (currentSession?.user) {
+        const userId = currentSession.user.id;
+        // Workforce identity is independent of a tenant membership row. A
+        // platform owner who also has an organization profile must still
+        // resolve as a console operator.
+        const [profRow, workforce] = await withTimeout(
+          Promise.all([
+            supabase.from("users").select(USER_SAFE_COLUMNS).eq("id", userId).maybeSingle(),
+            loadWorkforce(userId),
+          ]),
+          IDENTITY_LOAD_MS,
+          "identity",
+        );
+        const prof = profRow.data as unknown as UserProfile | null;
+        nextSuperAdmin = workforce.superAdmin;
+        nextPlatformStaff = workforce.platformStaff;
 
-      if (prof) {
-        const activeMember = (prof as UserProfile & { is_active?: boolean }).is_active !== false;
-        if (!activeMember) {
-          persistOAuthError(ORGANIZATION_ACCESS_DENIED);
-          await supabase.auth.signOut();
-          setSession(null);
-        } else {
-          nextProfile = prof;
-          const { data: sch } = await supabase
-            .from("schools")
-            .select(SCHOOL_CLIENT_COLUMNS)
-            .eq("id", prof.school_id)
-            .eq("is_active", true)
-            .maybeSingle();
-          if (sch) nextSchool = sch as unknown as SchoolRow;
-          else {
+        if (prof) {
+          const activeMember = (prof as UserProfile & { is_active?: boolean }).is_active !== false;
+          if (!activeMember) {
             persistOAuthError(ORGANIZATION_ACCESS_DENIED);
             await supabase.auth.signOut();
             setSession(null);
-            nextProfile = null;
+          } else {
+            nextProfile = prof;
+            const { data: sch } = await supabase
+              .from("schools")
+              .select(SCHOOL_CLIENT_COLUMNS)
+              .eq("id", prof.school_id)
+              .eq("is_active", true)
+              .maybeSingle();
+            if (sch) nextSchool = sch as unknown as SchoolRow;
+            else {
+              persistOAuthError(ORGANIZATION_ACCESS_DENIED);
+              await supabase.auth.signOut();
+              setSession(null);
+              nextProfile = null;
+            }
           }
         }
-      }
 
-      // Google OAuth can create an Auth user with no membership. Sign that
-      // session out — access is by admin invite, never self-registration.
-      if (
-        shouldRejectUninvitedGooglePrincipal({
-          hasMembership: Boolean(nextProfile || nextSuperAdmin || nextPlatformStaff),
-          user: currentSession.user,
-        })
-      ) {
-        persistOAuthError(GOOGLE_UNINVITED_ERROR);
-        await supabase.auth.signOut();
-        setSession(null);
-        nextProfile = null;
-        nextSuperAdmin = null;
-        nextPlatformStaff = null;
-        nextSchool = null;
-      }
-    }
-
-    // Console host is not a tenant site — skip school lookups that can stall sign-in.
-    if (!consoleHost) {
-      if (!nextSchool && slug) {
-        const { data: sch } = await supabase
-          .from("schools")
-          .select(SCHOOL_CLIENT_COLUMNS)
-          .eq("slug", slug)
-          .eq("is_active", true)
-          .maybeSingle();
-        if (sch) nextSchool = sch as unknown as SchoolRow;
-      }
-
-      // Plane B: custom-domain lookup — an organization's own registered
-      // domain (schools.domain) serves its public site when the visitor
-      // lands on it. Subdomain and platform hosts never reach this branch.
-      // SHERIVS-029: verified rows in school_domains win; legacy schools.domain is the fallback.
-      const tenantDomain = resolveTenantDomain();
-      if (tenantDomain && !slug) {
-        const resolved = await resolveSchoolByHost(tenantDomain);
-        // A session that does not belong to this school's domain is ended here (host-scoped login).
-        if (currentSession && resolved && !(await schoolDomainLoginAllowed(tenantDomain))) {
+        // Google OAuth can create an Auth user with no membership. Sign that
+        // session out — access is by admin invite, never self-registration.
+        if (
+          shouldRejectUninvitedGooglePrincipal({
+            hasMembership: Boolean(nextProfile || nextSuperAdmin || nextPlatformStaff),
+            user: currentSession.user,
+          })
+        ) {
+          persistOAuthError(GOOGLE_UNINVITED_ERROR);
           await supabase.auth.signOut();
+          setSession(null);
           nextProfile = null;
           nextSuperAdmin = null;
           nextPlatformStaff = null;
           nextSchool = null;
         }
-        if (resolved && (!nextSchool || nextSchool.id !== resolved.school_id)) {
+      }
+
+      // Console host is not a tenant site — skip school lookups that can stall sign-in.
+      if (!consoleHost) {
+        if (!nextSchool && slug) {
           const { data: sch } = await supabase
             .from("schools")
             .select(SCHOOL_CLIENT_COLUMNS)
-            .eq("id", resolved.school_id)
+            .eq("slug", slug)
             .eq("is_active", true)
             .maybeSingle();
-          nextSchool = sch ? (sch as unknown as SchoolRow) : null;
+          if (sch) nextSchool = sch as unknown as SchoolRow;
+        }
+
+        // Plane B: custom-domain lookup — an organization's own registered
+        // domain (schools.domain) serves its public site when the visitor
+        // lands on it. Subdomain and platform hosts never reach this branch.
+        // SHERIVS-029: verified rows in school_domains win; legacy schools.domain is the fallback.
+        const tenantDomain = resolveTenantDomain();
+        if (tenantDomain && !slug) {
+          const resolved = await resolveSchoolByHost(tenantDomain);
+          // A session that does not belong to this school's domain is ended here (host-scoped login).
+          if (currentSession && resolved && !(await schoolDomainLoginAllowed(tenantDomain))) {
+            await supabase.auth.signOut();
+            nextProfile = null;
+            nextSuperAdmin = null;
+            nextPlatformStaff = null;
+            nextSchool = null;
+          }
+          if (resolved && (!nextSchool || nextSchool.id !== resolved.school_id)) {
+            const { data: sch } = await supabase
+              .from("schools")
+              .select(SCHOOL_CLIENT_COLUMNS)
+              .eq("id", resolved.school_id)
+              .eq("is_active", true)
+              .maybeSingle();
+            nextSchool = sch ? (sch as unknown as SchoolRow) : null;
+          }
+        }
+        if (!nextSchool && !slug && tenantDomain) {
+          const { data: sch } = await supabase
+            .from("schools")
+            .select(SCHOOL_CLIENT_COLUMNS)
+            .eq("domain", tenantDomain)
+            .eq("is_active", true)
+            .maybeSingle();
+          if (sch) nextSchool = sch as unknown as SchoolRow;
         }
       }
-      if (!nextSchool && !slug && tenantDomain) {
-        const { data: sch } = await supabase
-          .from("schools")
-          .select(SCHOOL_CLIENT_COLUMNS)
-          .eq("domain", tenantDomain)
-          .eq("is_active", true)
-          .maybeSingle();
-        if (sch) nextSchool = sch as unknown as SchoolRow;
-      }
-    }
     } catch {
       /* Fail closed on identity errors, but never leave the console on a blank loading gradient. */
     } finally {
@@ -376,11 +376,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
           if (!cancelled) setLoading(false);
           return;
         }
-        const { data } = await withTimeout(
-          supabase.auth.getSession(),
-          SESSION_LOAD_MS,
-          "session",
-        );
+        const { data } = await withTimeout(supabase.auth.getSession(), SESSION_LOAD_MS, "session");
         if (cancelled) return;
         setSession(data.session);
         await load(data.session);
