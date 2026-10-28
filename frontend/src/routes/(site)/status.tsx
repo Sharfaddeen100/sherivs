@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { PLATFORM_NAME } from "@/lib/platform";
 import { publicHead } from "@/lib/public-site/seo";
 import { MarketingPage } from "@/components/public/marketing-page";
-import { PageContainer, Section } from "@/components/public/ui";
+import { GlassPanel, PageContainer, Section } from "@/components/public/ui";
 
 /** Public status page. Reads the leak-free /health.json report only. */
 export const Route = createFileRoute("/(site)/status")({
@@ -63,11 +63,11 @@ function StatusPage() {
           </h2>
           {err ? <p className="text-sherivs-warning">Status is unavailable right now.</p> : null}
           {r ? (
-            <>
+            <GlassPanel className="mx-auto max-w-2xl">
               <p className={`text-xl font-medium ${tone(r.status)}`}>Overall: {r.status}</p>
-              <ul className="mt-6 divide-y divide-[var(--sherivs-border)] rounded-md border border-[var(--sherivs-border)]">
+              <ul className="mt-6 divide-y divide-[var(--sherivs-border)]">
                 {checks.map((c) => (
-                  <li key={c.name} className="flex justify-between px-4 py-3">
+                  <li key={c.name} className="flex justify-between py-3">
                     <span>{c.name}</span>
                     <span className={tone(c.status)}>{c.status}</span>
                   </li>
@@ -78,7 +78,7 @@ function StatusPage() {
                   Checked {new Date(r.ts).toLocaleString()}
                 </p>
               ) : null}
-            </>
+            </GlassPanel>
           ) : null}
         </PageContainer>
       </Section>

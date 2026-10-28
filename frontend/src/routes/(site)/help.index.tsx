@@ -45,7 +45,7 @@ function HelpIndex() {
                       <Link
                         to="/help/$slug"
                         params={{ slug: article.slug }}
-                        className="flex items-start justify-between gap-3 rounded-[var(--sherivs-radius)] border border-[var(--sherivs-border)] p-4 hover:bg-white/5"
+                        className="sherivs-glass-card flex items-start justify-between gap-3 rounded-[var(--sherivs-radius)] p-4 transition-transform duration-[var(--sherivs-motion-fast)] hover:-translate-y-0.5"
                       >
                         <span>
                           <span className="font-medium">{article.title}</span>

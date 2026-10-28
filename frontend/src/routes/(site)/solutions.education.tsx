@@ -5,6 +5,7 @@ import { publicHead } from "@/lib/public-site/seo";
 import { MarketingPage } from "@/components/public/marketing-page";
 import {
   FeatureCard,
+  GlassPanel,
   PageContainer,
   PublicButton,
   Section,
@@ -43,18 +44,24 @@ function EducationPage() {
       }
     >
       <Section labelledBy="scholar-detail">
-        <PageContainer className="max-w-3xl space-y-4 py-16 text-sm leading-relaxed text-sherivs-muted sm:text-base">
-          <h2 id="scholar-detail" className="font-display text-xl font-semibold text-sherivs-white">
-            What schools can do today
-          </h2>
-          <p>
-            Create an organization, invite people, and run Scholar workspaces for administrators,
-            teachers, students, and parents. Schools can publish a public website on their own host.
-          </p>
-          <p>
-            Payments through Paystack and messaging through configured providers are available when
-            those integrations are set up — they are not automatic for every organization.
-          </p>
+        <PageContainer className="py-16">
+          <GlassPanel className="mx-auto max-w-3xl space-y-4 text-sm leading-relaxed text-sherivs-muted sm:text-base">
+            <h2
+              id="scholar-detail"
+              className="font-display text-xl font-semibold text-[var(--sherivs-ink)]"
+            >
+              What schools can do today
+            </h2>
+            <p>
+              Create an organization, invite people, and run Scholar workspaces for administrators,
+              teachers, students, and parents. Schools can publish a public website on their own
+              host.
+            </p>
+            <p>
+              Payments through Paystack and messaging through configured providers are available
+              when those integrations are set up — they are not automatic for every organization.
+            </p>
+          </GlassPanel>
         </PageContainer>
       </Section>
 
@@ -65,7 +72,7 @@ function EducationPage() {
             eyebrow="Capabilities"
             title="Practical school operations, in one environment."
           />
-          <ul className="mt-10 grid gap-4 md:grid-cols-2">
+          <ul className="sherivs-stagger mt-10 grid gap-4 md:grid-cols-2">
             {SCHOLAR_CAPABILITIES.map((card) => (
               <li key={card.id} id={card.id === "administration" ? undefined : card.id}>
                 <FeatureCard title={card.title}>{card.body}</FeatureCard>
@@ -82,7 +89,7 @@ function EducationPage() {
             eyebrow="School community"
             title="One school. A more connected experience."
           />
-          <ul className="mt-10 grid gap-4 sm:grid-cols-2">
+          <ul className="sherivs-stagger mt-10 grid gap-4 sm:grid-cols-2">
             {SCHOLAR_AUDIENCES.map((audience) => (
               <li key={audience.id}>
                 <FeatureCard title={audience.title}>{audience.body}</FeatureCard>

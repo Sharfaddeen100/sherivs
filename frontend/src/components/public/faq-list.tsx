@@ -3,7 +3,13 @@ import { Link } from "@tanstack/react-router";
 import { FAQ_CATEGORIES, FAQ_ITEMS, type FaqItem } from "@/lib/public-site/faq";
 import { inputClass } from "@/components/public/ui";
 
-export function FaqList({ items = FAQ_ITEMS, preview = false }: { items?: readonly FaqItem[]; preview?: boolean }) {
+export function FaqList({
+  items = FAQ_ITEMS,
+  preview = false,
+}: {
+  items?: readonly FaqItem[];
+  preview?: boolean;
+}) {
   const [query, setQuery] = useState("");
   const [hash, setHash] = useState("");
 
@@ -56,7 +62,7 @@ export function FaqList({ items = FAQ_ITEMS, preview = false }: { items?: readon
             {!preview ? (
               <h2 className="font-display text-lg font-semibold">{group.category}</h2>
             ) : null}
-            <div className="mt-3 divide-y divide-[var(--sherivs-border)] rounded-[var(--sherivs-radius)] border border-[var(--sherivs-border)]">
+            <div className="sherivs-glass-card mt-3 divide-y divide-[var(--sherivs-border)] rounded-[var(--sherivs-radius)]">
               {group.items.map((item) => (
                 <details
                   key={item.id}
@@ -65,7 +71,11 @@ export function FaqList({ items = FAQ_ITEMS, preview = false }: { items?: readon
                   className="px-4 py-3"
                 >
                   <summary className="cursor-pointer list-none font-medium [&::-webkit-details-marker]:hidden">
-                    <Link to="/faq" hash={item.id} className="text-sherivs-white hover:text-sherivs-cyan">
+                    <Link
+                      to="/faq"
+                      hash={item.id}
+                      className="text-[var(--sherivs-ink)] hover:text-sherivs-cyan"
+                    >
                       {item.question}
                     </Link>
                   </summary>
@@ -74,7 +84,10 @@ export function FaqList({ items = FAQ_ITEMS, preview = false }: { items?: readon
                     <ul className="mt-3 flex flex-wrap gap-3 text-sm">
                       {item.related.map((rel) => (
                         <li key={rel.href}>
-                          <Link to={rel.href as never} className="text-sherivs-cyan underline-offset-4 hover:underline">
+                          <Link
+                            to={rel.href as never}
+                            className="text-sherivs-cyan underline-offset-4 hover:underline"
+                          >
                             {rel.label}
                           </Link>
                         </li>

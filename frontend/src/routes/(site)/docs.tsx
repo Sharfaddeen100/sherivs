@@ -26,7 +26,7 @@ function DocsPage() {
       ]}
     >
       <Section labelledBy="doc-links">
-        <PageContainer className="grid gap-4 py-16 sm:grid-cols-2">
+        <PageContainer className="sherivs-stagger grid gap-4 py-16 sm:grid-cols-2">
           <h2 id="doc-links" className="sr-only">
             Documentation links
           </h2>

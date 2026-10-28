@@ -86,7 +86,10 @@ export function CompanySocialLinks({
   }
 
   return (
-    <nav aria-label="Sherivs on social media" className={cn("flex flex-wrap items-center gap-3", className)}>
+    <nav
+      aria-label="Sherivs on social media"
+      className={cn("flex flex-wrap items-center gap-3", className)}
+    >
       {social.map((item) => {
         const Icon = COMPANY_SOCIAL_ICONS[item.id];
         return (
@@ -96,7 +99,7 @@ export function CompanySocialLinks({
             target="_blank"
             rel="noopener noreferrer"
             aria-label={socialAriaLabel(item)}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--sherivs-border)] text-sherivs-white transition-colors hover:border-sherivs-cyan hover:text-sherivs-cyan focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--sherivs-focus)]"
+            className="sherivs-btn-secondary inline-flex h-10 w-10 items-center justify-center rounded-full text-[var(--sherivs-ink)] transition-colors hover:text-sherivs-blue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--sherivs-focus)]"
           >
             {Icon ? <Icon /> : <span className="text-xs font-semibold">{item.label}</span>}
           </a>

@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { PLATFORM_NAME, PLATFORM_PAGE_DESCRIPTION } from "@/lib/platform";
 import { PRODUCT_NAME } from "@/lib/public-site/company";
 import {
@@ -8,6 +8,7 @@ import {
 } from "./-content/site-content";
 import { publicHead } from "@/lib/public-site/seo";
 import {
+  GlassPanel,
   PageContainer,
   Section,
   SectionHeading,
@@ -36,28 +37,27 @@ function SherivsPlatformPage() {
 
   return (
     <>
-      <section aria-labelledby="scholar-hero" className="border-b border-[var(--sherivs-border)]">
+      <section aria-labelledby="scholar-hero">
         <PageContainer className="py-16 sm:py-20">
-          <p className="sherivs-kicker">{PRODUCT_NAME}</p>
-          <h1
-            id="scholar-hero"
-            className="sherivs-display mt-4 max-w-[16ch] text-3xl font-bold sm:text-5xl"
-          >
-            A better way to run your school.
-          </h1>
-          <p className="mt-5 max-w-2xl text-sm leading-relaxed text-sherivs-muted sm:text-lg">
-            Bring school administration, academic operations, and your school community together in
-            one connected platform.
-          </p>
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <PublicButton href="/onboarding">Get started</PublicButton>
-            <Link
-              to="/auth"
-              className="inline-flex min-h-11 items-center justify-center rounded-[var(--sherivs-radius-sm)] border border-[var(--sherivs-border-strong)] px-5 py-2.5 text-center text-sm font-semibold hover:bg-white/5"
+          <GlassPanel enter className="mx-auto max-w-3xl px-6 py-10 sm:px-10 sm:py-14">
+            <p className="sherivs-kicker">{PRODUCT_NAME}</p>
+            <h1
+              id="scholar-hero"
+              className="sherivs-display sherivs-enter-2 mt-4 max-w-[16ch] text-3xl font-bold sm:text-5xl"
             >
-              Sign in
-            </Link>
-          </div>
+              A better way to run your school.
+            </h1>
+            <p className="sherivs-enter-3 mt-5 max-w-2xl text-sm leading-relaxed text-sherivs-muted sm:text-lg">
+              Bring school administration, academic operations, and your school community together
+              in one connected platform.
+            </p>
+            <div className="sherivs-enter-4 mt-8 flex flex-col gap-3 sm:flex-row">
+              <PublicButton href="/onboarding">Get started</PublicButton>
+              <PublicButton href="/auth" variant="secondary">
+                Sign in
+              </PublicButton>
+            </div>
+          </GlassPanel>
         </PageContainer>
       </section>
 
@@ -69,7 +69,7 @@ function SherivsPlatformPage() {
             title="Everything your school needs to stay in sync."
             lead="The capabilities below are the Scholar workflows available in the product today."
           />
-          <ul className="mt-10 grid gap-4 md:grid-cols-2">
+          <ul className="sherivs-stagger mt-10 grid gap-4 md:grid-cols-2">
             {SITE_CAPABILITIES.map((capability) => (
               <li key={capability.id}>
                 <FeatureCard title={capability.title}>{capability.description}</FeatureCard>
@@ -87,9 +87,9 @@ function SherivsPlatformPage() {
             title={`${PLATFORM_NAME} ${runtime.name}`}
             lead={runtime.description}
           />
-          <p className="mt-6 max-w-2xl text-sm leading-relaxed text-sherivs-muted">
-            {runtime.proof}
-          </p>
+          <GlassPanel className="mt-6 max-w-2xl">
+            <p className="text-sm leading-relaxed text-sherivs-muted">{runtime.proof}</p>
+          </GlassPanel>
         </PageContainer>
       </Section>
 
@@ -101,7 +101,7 @@ function SherivsPlatformPage() {
             title="Built with responsibility in mind."
             lead="School information deserves careful handling. These practices describe the access model implemented in the product — not certifications or independent audits."
           />
-          <ul className="mt-10 grid gap-4 sm:grid-cols-2">
+          <ul className="sherivs-stagger mt-10 grid gap-4 sm:grid-cols-2">
             {SECURITY_GUARANTEES.map((item) => (
               <li key={item.id}>
                 <FeatureCard title={item.title}>{item.description}</FeatureCard>

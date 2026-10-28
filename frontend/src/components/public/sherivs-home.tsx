@@ -6,7 +6,7 @@ import {
 } from "@/lib/public-site/company";
 import { SiteHeader } from "@/components/public/site-header";
 import { SiteFooter } from "@/components/public/site-footer";
-import { HeroProductVisual } from "@/components/public/hero-product-visual";
+import { PublicAtmosphere } from "@/components/public/public-atmosphere";
 import { FaqAccordion } from "@/components/public/faq-accordion";
 import { JsonLd } from "@/components/public/json-ld";
 import { PageContainer, Section, SectionHeading, PublicButton } from "@/components/public/ui";
@@ -35,11 +35,12 @@ const FAQ_PREVIEW = FAQ_ITEMS.filter((item) =>
 
 export function SherivsHome() {
   return (
-    <div className="sherivs-public flex min-h-dvh flex-col bg-sherivs-obsidian text-sherivs-white">
+    <div className="sherivs-public flex min-h-dvh flex-col">
+      <PublicAtmosphere />
       <JsonLd data={organizationJsonLd()} />
       <JsonLd data={softwareJsonLd()} />
       <SiteHeader />
-      <main id="main-content" className="flex-1">
+      <main id="main-content" className="relative z-[1] flex-1">
         <HeroSection />
         <ProductExperienceSection />
         <AdvantageSection />
@@ -57,36 +58,31 @@ export function SherivsHome() {
 
 function HeroSection() {
   return (
-    <Section labelledBy="sherivs-hero" className="relative overflow-hidden">
-      <div className="sherivs-hero-atmosphere sherivs-grid-fade" />
-      <PageContainer
-        wide
-        className="relative grid items-center gap-12 py-16 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:py-24"
-      >
-        <div>
-          <p className="sherivs-kicker sherivs-enter">{PRODUCT_NAME}</p>
+    <Section labelledBy="sherivs-hero">
+      <PageContainer className="py-16 sm:py-20 lg:py-24">
+        <div className="sherivs-glass-card sherivs-enter mx-auto max-w-3xl rounded-[var(--sherivs-radius-lg)] px-6 py-10 sm:px-10 sm:py-14">
+          <p className="sherivs-kicker">{PRODUCT_NAME}</p>
           <h1
             id="sherivs-hero"
-            className="sherivs-display sherivs-enter sherivs-enter-2 mt-4 max-w-[14ch] text-[2.15rem] font-bold sm:text-5xl lg:text-[3.35rem]"
+            className="sherivs-display sherivs-enter-2 mt-4 max-w-[14ch] text-[2.15rem] font-bold sm:text-5xl"
           >
             A better way to run your school.
           </h1>
-          <p className="sherivs-enter sherivs-enter-3 mt-5 max-w-xl text-base leading-relaxed text-sherivs-muted sm:text-lg">
+          <p className="sherivs-enter-3 mt-5 max-w-xl text-base leading-relaxed text-[var(--sherivs-ink-muted)] sm:text-lg">
             Bring school administration, academic operations, and your school community together in
             one connected platform.
           </p>
-          <p className="sherivs-enter sherivs-enter-3 mt-3 max-w-xl text-sm leading-relaxed text-sherivs-muted sm:text-base">
+          <p className="sherivs-enter-3 mt-3 max-w-xl text-sm leading-relaxed text-[var(--sherivs-ink-muted)] sm:text-base">
             From everyday school records to the workflows that keep a school moving, Sherivs Scholar
             gives your team a more coherent way to manage school life.
           </p>
-          <div className="sherivs-enter sherivs-enter-4 mt-8 flex flex-col gap-3 sm:flex-row">
+          <div className="sherivs-enter-4 mt-8 flex flex-col gap-3 sm:flex-row">
             <PublicButton href="/solutions/education">Explore Sherivs Scholar</PublicButton>
             <PublicButton href="/onboarding" variant="secondary">
               Get started
             </PublicButton>
           </div>
         </div>
-        <HeroProductVisual className="sherivs-enter sherivs-enter-3" />
       </PageContainer>
     </Section>
   );
@@ -102,12 +98,12 @@ function ProductExperienceSection() {
           title="Everything your school needs to stay in sync."
           lead="Bring the people, records, and everyday processes of your school into one organized environment."
         />
-        <ul id="capabilities" className="mt-10 grid gap-4 md:grid-cols-2">
+        <ul id="capabilities" className="sherivs-stagger mt-10 grid gap-4 md:grid-cols-2">
           {SCHOLAR_CAPABILITIES.map((card, index) => (
             <li key={card.id} id={card.id}>
               <PublicLink
                 href={card.href}
-                className="group block h-full rounded-[var(--sherivs-radius)] border border-[var(--sherivs-border)] bg-[color-mix(in_oklab,var(--sherivs-navy)_55%,transparent)] p-6 shadow-[var(--sherivs-shadow-card)] transition-[transform,border-color] duration-[var(--sherivs-motion-fast)] hover:-translate-y-0.5 hover:border-[var(--sherivs-glass-border)]"
+                className="sherivs-glass-card group block h-full rounded-[var(--sherivs-radius)] p-6 transition-transform duration-[var(--sherivs-motion-fast)] hover:-translate-y-0.5"
               >
                 <p className="font-display text-xs font-semibold tracking-[0.16em] text-sherivs-cyan">
                   {String(index + 1).padStart(2, "0")}
@@ -133,9 +129,9 @@ function AdvantageSection() {
           title="Less fragmentation. More clarity."
           lead="School operations work better when essential information and everyday workflows belong to the same operating environment."
         />
-        <ol className="mt-12 grid gap-8 lg:grid-cols-3 lg:gap-10">
+        <ol className="sherivs-stagger mt-12 grid gap-8 lg:grid-cols-3 lg:gap-10">
           {SCHOLAR_PRINCIPLES.map((item, index) => (
-            <li key={item.id} className="relative border-t border-[var(--sherivs-border)] pt-6">
+            <li key={item.id} className="sherivs-glass-card rounded-[var(--sherivs-radius)] p-6">
               <p className="font-display text-sm font-semibold text-sherivs-cyan">
                 {String(index + 1).padStart(2, "0")}
               </p>
@@ -163,8 +159,8 @@ function AudienceSection() {
           title="One school. A more connected experience."
           lead="Give each member of the school community a clearer place to access the information and workflows relevant to them."
         />
-        <div className="mt-10 grid gap-4">
-          <article className="rounded-[var(--sherivs-radius-lg)] border border-black/10 bg-white p-7 shadow-[0_20px_50px_rgba(18,24,38,0.08)] sm:p-8">
+        <div className="sherivs-stagger mt-10 grid gap-4">
+          <article className="sherivs-glass-card rounded-[var(--sherivs-radius-lg)] p-7 sm:p-8">
             <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#1558d6]">
               Featured
             </p>
@@ -177,7 +173,7 @@ function AudienceSection() {
             {rest.map((audience) => (
               <li
                 key={audience.id}
-                className="rounded-[var(--sherivs-radius)] border border-black/10 bg-white/70 p-5"
+                className="sherivs-glass-card rounded-[var(--sherivs-radius)] p-5"
               >
                 <h3 className="font-display text-base font-semibold">{audience.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-[var(--sherivs-ink-muted)]">
@@ -202,11 +198,11 @@ function PathSection() {
           title="A clearer path to running your school."
           lead="Sherivs provisions the organization's admin account. That admin then invites the rest of the school community."
         />
-        <ol className="mt-12 grid gap-0 lg:grid-cols-3">
-          {SCHOLAR_PATH_STEPS.map((item, index) => (
+        <ol className="sherivs-stagger mt-12 grid gap-4 lg:grid-cols-3">
+          {SCHOLAR_PATH_STEPS.map((item) => (
             <li
               key={item.step}
-              className={`relative px-0 py-6 lg:px-8 lg:py-0 ${index < SCHOLAR_PATH_STEPS.length - 1 ? "lg:border-r lg:border-[var(--sherivs-border)]" : ""}`}
+              className="sherivs-glass-card rounded-[var(--sherivs-radius)] p-6 lg:p-8"
             >
               <p className="font-display text-sm font-bold text-sherivs-cyan">{item.step}</p>
               <h3 className="mt-3 font-display text-xl font-semibold">{item.title}</h3>
@@ -230,18 +226,24 @@ function MissionSection() {
           eyebrow="Vision and mission"
           title="A company direction schools can understand today."
         />
-        <div className="mt-10 grid gap-6 lg:grid-cols-3">
-          <article className="rounded-[var(--sherivs-radius)] border border-[var(--sherivs-border)] p-6">
+        <div className="sherivs-stagger mt-10 grid gap-6 lg:grid-cols-3">
+          <article className="sherivs-glass-card rounded-[var(--sherivs-radius)] p-6">
             <h3 className="font-display text-lg font-semibold">Vision</h3>
-            <p className="mt-3 text-sm leading-relaxed text-sherivs-muted">{COMPANY_VISION}</p>
+            <p className="mt-3 text-sm leading-relaxed text-[var(--sherivs-ink-muted)]">
+              {COMPANY_VISION}
+            </p>
           </article>
-          <article className="rounded-[var(--sherivs-radius)] border border-[var(--sherivs-border)] p-6">
+          <article className="sherivs-glass-card rounded-[var(--sherivs-radius)] p-6">
             <h3 className="font-display text-lg font-semibold">Mission</h3>
-            <p className="mt-3 text-sm leading-relaxed text-sherivs-muted">{COMPANY_MISSION}</p>
+            <p className="mt-3 text-sm leading-relaxed text-[var(--sherivs-ink-muted)]">
+              {COMPANY_MISSION}
+            </p>
           </article>
-          <article className="rounded-[var(--sherivs-radius)] border border-[var(--sherivs-border)] bg-[color-mix(in_oklab,var(--sherivs-navy)_70%,transparent)] p-6">
+          <article className="sherivs-glass-card rounded-[var(--sherivs-radius)] p-6">
             <h3 className="font-display text-lg font-semibold">Our approach</h3>
-            <p className="mt-3 text-sm leading-relaxed text-sherivs-muted">{COMPANY_APPROACH}</p>
+            <p className="mt-3 text-sm leading-relaxed text-[var(--sherivs-ink-muted)]">
+              {COMPANY_APPROACH}
+            </p>
           </article>
         </div>
       </PageContainer>
@@ -259,9 +261,9 @@ function TrustSection() {
           title="Built with responsibility in mind."
           lead="School information deserves careful handling. Sherivs Scholar focuses on appropriate access, clear responsibilities, and the protection of institutional information."
         />
-        <ul className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="sherivs-stagger mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {SCHOLAR_TRUST.map((item) => (
-            <li key={item.id} className="border-t border-[var(--sherivs-border)] pt-5">
+            <li key={item.id} className="sherivs-glass-card rounded-[var(--sherivs-radius)] p-6">
               <h3 className="font-display text-base font-semibold">{item.title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-sherivs-muted">{item.body}</p>
             </li>
@@ -316,8 +318,7 @@ function FinalCtaSection() {
   return (
     <Section labelledBy="cta-heading">
       <PageContainer className="py-16 sm:py-20">
-        <div className="relative overflow-hidden rounded-[var(--sherivs-radius-lg)] border border-[var(--sherivs-glass-border)] bg-[color-mix(in_oklab,var(--sherivs-navy)_70%,transparent)] px-6 py-12 text-center sm:px-12">
-          <div className="sherivs-hero-atmosphere opacity-70" />
+        <div className="sherivs-glass-card relative overflow-hidden rounded-[var(--sherivs-radius-lg)] px-6 py-12 text-center sm:px-12">
           <div className="relative">
             <h2 id="cta-heading" className="sherivs-display text-2xl font-bold sm:text-4xl">
               Give your school a more connected way to work.

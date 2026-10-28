@@ -60,7 +60,8 @@ export function MailtoForm({ kind }: { kind: MailtoKind }) {
     event.preventDefault();
     const next: Record<string, string> = {};
     if (!values.name.trim()) next.name = "Enter your name.";
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) next.email = "Enter a work email address.";
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email))
+      next.email = "Enter a work email address.";
     if (!values.message.trim()) next.message = "Describe what you need.";
     if (!values.consent) next.consent = "Confirm you understand how this message is sent.";
     setErrors(next);
@@ -102,12 +103,19 @@ export function MailtoForm({ kind }: { kind: MailtoKind }) {
   const set =
     (key: keyof typeof values) =>
     (event: { target: { value?: string; checked?: boolean; type?: string } }) => {
-      const value = event.target.type === "checkbox" ? Boolean(event.target.checked) : event.target.value ?? "";
+      const value =
+        event.target.type === "checkbox"
+          ? Boolean(event.target.checked)
+          : (event.target.value ?? "");
       setValues((current) => ({ ...current, [key]: value as never }));
     };
 
   return (
-    <form onSubmit={onSubmit} noValidate className="grid gap-4">
+    <form
+      onSubmit={onSubmit}
+      noValidate
+      className="sherivs-glass-card grid gap-4 rounded-[var(--sherivs-radius-lg)] p-6 sm:p-8"
+    >
       <p className="text-sm text-sherivs-muted">{privacy}</p>
       <div className="grid gap-4 sm:grid-cols-2">
         <Field id={`${kind}-name`} label="Name" error={errors.name}>
@@ -156,7 +164,12 @@ export function MailtoForm({ kind }: { kind: MailtoKind }) {
       </div>
       {kind === "contact" ? (
         <Field id={`${kind}-inquiry`} label="What is this about?">
-          <select id={`${kind}-inquiry`} className={inputClass} value={values.inquiry} onChange={set("inquiry")}>
+          <select
+            id={`${kind}-inquiry`}
+            className={inputClass}
+            value={values.inquiry}
+            onChange={set("inquiry")}
+          >
             <option value="prospect">Prospective customer or demonstration</option>
             <option value="partnership">Partnership or business development</option>
             <option value="general">General company or administrative inquiry</option>
@@ -165,7 +178,12 @@ export function MailtoForm({ kind }: { kind: MailtoKind }) {
       ) : null}
       {kind !== "support" ? (
         <Field id={`${kind}-type`} label="Organization type">
-          <select id={`${kind}-type`} className={inputClass} value={values.orgType} onChange={set("orgType")}>
+          <select
+            id={`${kind}-type`}
+            className={inputClass}
+            value={values.orgType}
+            onChange={set("orgType")}
+          >
             <option value="education">Education</option>
             <option value="enterprise">Enterprise</option>
             <option value="research">Research</option>
@@ -175,7 +193,12 @@ export function MailtoForm({ kind }: { kind: MailtoKind }) {
       ) : (
         <div className="grid gap-4 sm:grid-cols-2">
           <Field id={`${kind}-category`} label="Issue category">
-            <select id={`${kind}-category`} className={inputClass} value={values.category} onChange={set("category")}>
+            <select
+              id={`${kind}-category`}
+              className={inputClass}
+              value={values.category}
+              onChange={set("category")}
+            >
               <option value="question">Question</option>
               <option value="access">Access</option>
               <option value="billing">Billing</option>
@@ -184,7 +207,12 @@ export function MailtoForm({ kind }: { kind: MailtoKind }) {
             </select>
           </Field>
           <Field id={`${kind}-severity`} label="Severity">
-            <select id={`${kind}-severity`} className={inputClass} value={values.severity} onChange={set("severity")}>
+            <select
+              id={`${kind}-severity`}
+              className={inputClass}
+              value={values.severity}
+              onChange={set("severity")}
+            >
               <option value="low">Low</option>
               <option value="normal">Normal</option>
               <option value="high">High</option>
@@ -213,7 +241,12 @@ export function MailtoForm({ kind }: { kind: MailtoKind }) {
             />
           </Field>
           <Field id={`${kind}-size`} label="Approximate organization size">
-            <input id={`${kind}-size`} className={inputClass} value={values.size} onChange={set("size")} />
+            <input
+              id={`${kind}-size`}
+              className={inputClass}
+              value={values.size}
+              onChange={set("size")}
+            />
           </Field>
         </div>
       )}
@@ -227,7 +260,12 @@ export function MailtoForm({ kind }: { kind: MailtoKind }) {
         />
       </Field>
       <Field id={`${kind}-follow`} label="Preferred follow-up">
-        <select id={`${kind}-follow`} className={inputClass} value={values.followUp} onChange={set("followUp")}>
+        <select
+          id={`${kind}-follow`}
+          className={inputClass}
+          value={values.followUp}
+          onChange={set("followUp")}
+        >
           <option value="email">Email</option>
         </select>
       </Field>
@@ -242,7 +280,10 @@ export function MailtoForm({ kind }: { kind: MailtoKind }) {
           />
           <span>
             I understand this opens my email client to {to}. See the{" "}
-            <a className="text-sherivs-cyan underline-offset-4 hover:underline" href="/privacy-policy">
+            <a
+              className="text-sherivs-cyan underline-offset-4 hover:underline"
+              href="/privacy-policy"
+            >
               privacy policy
             </a>
             .

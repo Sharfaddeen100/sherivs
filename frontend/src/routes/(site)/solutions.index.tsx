@@ -31,7 +31,7 @@ function SolutionsPage() {
           <h2 id="solutions-heading" className="sr-only">
             School solutions
           </h2>
-          <ul className="grid gap-4 lg:grid-cols-3">
+          <ul className="sherivs-stagger grid gap-4 lg:grid-cols-3">
             <li>
               <FeatureCard title="Schools" href="/solutions/education">
                 A connected operating environment for the people and processes that run a school.

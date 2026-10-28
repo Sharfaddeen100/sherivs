@@ -7,7 +7,7 @@ import {
   publishedPartners,
 } from "@/lib/public-site/partners";
 import { MarketingPage } from "@/components/public/marketing-page";
-import { Callout, PageContainer, PartnerCard, Section } from "@/components/public/ui";
+import { Callout, GlassPanel, PageContainer, PartnerCard, Section } from "@/components/public/ui";
 
 export const Route = createFileRoute("/(site)/company/partners")({
   component: PartnersPage,
@@ -36,17 +36,20 @@ function PartnersPage() {
     >
       <Section labelledBy="thinktech-heading">
         <PageContainer className="space-y-10 py-16">
-          <div className="max-w-3xl space-y-4 text-sm leading-relaxed text-sherivs-muted sm:text-base">
-            <h2 id="thinktech-heading" className="font-display text-xl font-semibold text-sherivs-white">
+          <GlassPanel className="max-w-3xl space-y-4 text-sm leading-relaxed text-sherivs-muted sm:text-base">
+            <h2
+              id="thinktech-heading"
+              className="font-display text-xl font-semibold text-[var(--sherivs-ink)]"
+            >
               Sherivs and ThinkTech
             </h2>
             <p>{THINKTECH_DESCRIPTION}</p>
-          </div>
+          </GlassPanel>
           <div>
             <h3 id="partner-list" className="font-display text-lg font-semibold">
               Technology partners
             </h3>
-            <ul className="mt-4 grid gap-4 sm:grid-cols-2">
+            <ul className="sherivs-stagger mt-4 grid gap-4 sm:grid-cols-2">
               {technologyPartners.map((item) => (
                 <li key={item.id}>
                   <PartnerCard
@@ -69,7 +72,10 @@ function PartnersPage() {
           ) : null}
           <Callout title="Not an integration directory">
             Paystack and WhatsApp appear on the{" "}
-            <a className="text-sherivs-cyan underline-offset-4 hover:underline" href="/integrations">
+            <a
+              className="text-sherivs-cyan underline-offset-4 hover:underline"
+              href="/integrations"
+            >
               integrations
             </a>{" "}
             page as configured technology paths. They are not listed here as partners.
