@@ -163,17 +163,17 @@ function AudienceSection() {
           title="One school. A more connected experience."
           lead="Give each member of the school community a clearer place to access the information and workflows relevant to them."
         />
-        <div className="mt-10 grid items-start gap-4 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
-          <article className="rounded-[var(--sherivs-radius-lg)] border border-black/10 bg-white p-7 shadow-[0_20px_50px_rgba(18,24,38,0.08)] sm:p-9">
+        <div className="mt-10 grid gap-4">
+          <article className="rounded-[var(--sherivs-radius-lg)] border border-black/10 bg-white p-7 shadow-[0_20px_50px_rgba(18,24,38,0.08)] sm:p-8">
             <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#1558d6]">
               Featured
             </p>
             <h3 className="mt-3 font-display text-2xl font-semibold">{featured.title}</h3>
-            <p className="mt-3 max-w-xl text-sm leading-relaxed text-[var(--sherivs-ink-muted)] sm:text-base">
+            <p className="mt-3 max-w-3xl text-sm leading-relaxed text-[var(--sherivs-ink-muted)] sm:text-base">
               {featured.body}
             </p>
           </article>
-          <ul className="grid gap-4">
+          <ul className="grid gap-4 sm:grid-cols-3">
             {rest.map((audience) => (
               <li
                 key={audience.id}
@@ -259,9 +259,9 @@ function TrustSection() {
           title="Built with responsibility in mind."
           lead="School information deserves careful handling. Sherivs Scholar focuses on appropriate access, clear responsibilities, and the protection of institutional information."
         />
-        <ul className="mt-10 grid gap-px overflow-hidden rounded-[var(--sherivs-radius)] border border-[var(--sherivs-border)] sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {SCHOLAR_TRUST.map((item) => (
-            <li key={item.id} className="bg-[var(--sherivs-obsidian)] p-6">
+            <li key={item.id} className="border-t border-[var(--sherivs-border)] pt-5">
               <h3 className="font-display text-base font-semibold">{item.title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-sherivs-muted">{item.body}</p>
             </li>

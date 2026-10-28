@@ -81,7 +81,14 @@
   --color-sherivs-warning: var(--sherivs-warning);
 }
 
-html:has(.sherivs-public) {
+/*
+ * Clip horizontal overflow on the document body, not on html or the
+ * full-height marketing wrapper. Putting overflow-x on html (or on a
+ * min-h-dvh wrapper) makes that element a scroll container, which
+ * breaks window scrolling, sticky header composition, and dropdown
+ * screenshots taken from the top of the page.
+ */
+body:has(.sherivs-public) {
   overflow-x: hidden;
 }
 

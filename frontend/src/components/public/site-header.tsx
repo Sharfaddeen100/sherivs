@@ -67,10 +67,11 @@ export function SiteHeader() {
         </Link>
 
         <nav ref={navRef} aria-label="Site" className="hidden items-center gap-0.5 lg:flex">
-          {HEADER_GROUPS.map((group) => (
+          {HEADER_GROUPS.map((group, index) => (
             <DesktopNavGroup
               key={group.id}
               group={group}
+              align={index >= HEADER_GROUPS.length - 2 ? "end" : "start"}
               open={desktopGroup === group.id}
               onClose={() => setDesktopGroup(null)}
               onToggle={() =>
@@ -111,11 +112,13 @@ export function SiteHeader() {
 
 function DesktopNavGroup({
   group,
+  align,
   open,
   onClose,
   onToggle,
 }: {
   group: NavGroup;
+  align: "start" | "end";
   open: boolean;
   onClose: () => void;
   onToggle: () => void;
@@ -136,7 +139,7 @@ function DesktopNavGroup({
       {open ? (
         <div
           id={`${group.id}-menu`}
-          className="sherivs-nav-panel absolute left-0 top-full z-[var(--sherivs-z-overlay)] mt-2 w-80 rounded-[var(--sherivs-radius)] border border-[var(--sherivs-glass-border)] bg-[var(--sherivs-midnight)] p-2 shadow-[var(--sherivs-shadow)]"
+          className={`sherivs-nav-panel absolute top-full z-[var(--sherivs-z-overlay)] mt-2 w-80 max-w-[calc(100vw-2rem)] rounded-[var(--sherivs-radius)] border border-[var(--sherivs-glass-border)] bg-[var(--sherivs-midnight)] p-2 shadow-[var(--sherivs-shadow)] ${align === "end" ? "right-0" : "left-0"}`}
         >
           <ul>
             {group.items.map((item) => (
