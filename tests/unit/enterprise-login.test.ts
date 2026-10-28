@@ -31,7 +31,8 @@ describe("enterprise login layout", () => {
     expect(auth).toContain("<Turnstile");
     expect(auth).toContain("app-entry-login-submit");
     expect(auth).not.toContain("PASSKEY_DEVICE_HELP");
-    expect(auth).not.toContain("{experience.subtext}");
+    expect(auth).toContain('hostKind === "internal"');
+    expect(auth).toContain("{experience.subtext}");
     expect(ACCOUNT_INVITATION_COPY).toBe("Don't have an account? Contact your administrator.");
   });
 

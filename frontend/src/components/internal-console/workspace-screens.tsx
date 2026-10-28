@@ -40,7 +40,8 @@ function NavLinks({
     isSuperAdmin: overview.viewer.isSuperAdmin,
     capabilities: new Set(overview.viewer.capabilities),
   });
-  if (!links.length) return <Empty>No additional destinations are authorized in this workspace.</Empty>;
+  if (!links.length)
+    return <Empty>No additional destinations are authorized in this workspace.</Empty>;
   return (
     <div className="sherivs-console-list">
       {links.map((item) => (
@@ -62,15 +63,33 @@ function OrgQueue({ overview }: { overview: ConsoleOverview }) {
   if (!overview.organizationMetrics.available) {
     return (
       <Empty>
-        Organization lifecycle storage is not configured, so this workspace cannot show a live queue.
+        Organization lifecycle storage is not configured, so this workspace cannot show a live
+        queue.
       </Empty>
     );
   }
   const counts = [
-    { state: "submitted", label: "Awaiting review", value: overview.organizations.filter((row) => row.lifecycleState === "submitted").length },
-    { state: "under_review", label: "Under review", value: overview.organizations.filter((row) => row.lifecycleState === "under_review").length },
-    { state: "provisioning_failed", label: "Provisioning failed", value: overview.organizationMetrics.failedProvisioning ?? 0 },
-    { state: "ready_for_activation", label: "Ready for activation", value: overview.organizations.filter((row) => row.lifecycleState === "ready_for_activation").length },
+    {
+      state: "submitted",
+      label: "Awaiting review",
+      value: overview.organizations.filter((row) => row.lifecycleState === "submitted").length,
+    },
+    {
+      state: "under_review",
+      label: "Under review",
+      value: overview.organizations.filter((row) => row.lifecycleState === "under_review").length,
+    },
+    {
+      state: "provisioning_failed",
+      label: "Provisioning failed",
+      value: overview.organizationMetrics.failedProvisioning ?? 0,
+    },
+    {
+      state: "ready_for_activation",
+      label: "Ready for activation",
+      value: overview.organizations.filter((row) => row.lifecycleState === "ready_for_activation")
+        .length,
+    },
     { state: "active", label: "Active", value: overview.organizationMetrics.active ?? 0 },
     { state: "suspended", label: "Suspended", value: overview.organizationMetrics.suspended ?? 0 },
   ];
@@ -85,7 +104,12 @@ function OrgQueue({ overview }: { overview: ConsoleOverview }) {
         >
           <strong>{item.label}</strong>
           <small>
-            {item.value} · {ORGANIZATION_LIFECYCLE_LABELS[item.state as keyof typeof ORGANIZATION_LIFECYCLE_LABELS]}
+            {item.value} ·{" "}
+            {
+              ORGANIZATION_LIFECYCLE_LABELS[
+                item.state as keyof typeof ORGANIZATION_LIFECYCLE_LABELS
+              ]
+            }
           </small>
         </Link>
       ))}
@@ -99,8 +123,8 @@ function SubscriptionBoundary() {
       <h2>Subscriptions and entitlements</h2>
       <p>
         Tenant access is controlled by organization lifecycle and schools.is_active. Payment history
-        lives in public.subscriptions and is shown on Billing. That ledger is not recognized
-        revenue or MRR.
+        lives in public.subscriptions and is shown on Billing. That ledger is not recognized revenue
+        or MRR.
       </p>
       <Link to={CONSOLE_PATHS.activityBilling as never} className="sherivs-console-btn secondary">
         Open billing
@@ -212,7 +236,11 @@ function PlatformOperationsExperience({ overview }: { overview: ConsoleOverview 
         <h2>Quick actions</h2>
         <div className="sherivs-console-actions">
           {actions.map((action) => (
-            <Link key={action.key} to={action.href as never} className="sherivs-console-btn secondary">
+            <Link
+              key={action.key}
+              to={action.href as never}
+              className="sherivs-console-btn secondary"
+            >
               {action.label}
             </Link>
           ))}
@@ -241,7 +269,10 @@ function PlatformAdministrationExperience({ overview }: { overview: ConsoleOverv
           <Link to={CONSOLE_PATHS.team as never} className="sherivs-console-btn secondary">
             Open team directory
           </Link>
-          <Link to={CONSOLE_PATHS.teamInvitations as never} className="sherivs-console-btn secondary">
+          <Link
+            to={CONSOLE_PATHS.teamInvitations as never}
+            className="sherivs-console-btn secondary"
+          >
             Invitations
           </Link>
         </div>
@@ -321,8 +352,8 @@ function OperationsExperience({ overview }: { overview: ConsoleOverview }) {
             {overview.organizationMetrics.conversionRate === null
               ? "not calculated"
               : `${Math.round(overview.organizationMetrics.conversionRate * 1000) / 10}%`}
-            . Median hours: {overview.organizationMetrics.medianOnboardingHours ?? "not calculated"}.
-            Source: {overview.organizationMetrics.source}.
+            . Median hours: {overview.organizationMetrics.medianOnboardingHours ?? "not calculated"}
+            . Source: {overview.organizationMetrics.source}.
           </p>
         ) : (
           <Empty>Onboarding performance is unavailable without organization storage.</Empty>
@@ -333,7 +364,9 @@ function OperationsExperience({ overview }: { overview: ConsoleOverview }) {
 }
 
 function EngineeringExperience({ overview }: { overview: ConsoleOverview }) {
-  const failed = overview.organizationMetrics.failedProvisioning;
+  const canReadOrgs =
+    overview.viewer.isSuperAdmin || overview.viewer.capabilities.includes("platform.tenants.read");
+  const failed = canReadOrgs ? overview.organizationMetrics.failedProvisioning : null;
   return (
     <>
       <section>
@@ -370,7 +403,9 @@ function EngineeringExperience({ overview }: { overview: ConsoleOverview }) {
             search={{ state: "provisioning_failed" } as never}
             className="sherivs-console-row"
           >
-            <strong>{failed} provisioning failure{failed === 1 ? "" : "s"}</strong>
+            <strong>
+              {failed} provisioning failure{failed === 1 ? "" : "s"}
+            </strong>
             <small>Retry is idempotent and does not create duplicate schools.</small>
           </Link>
         ) : (
@@ -398,7 +433,10 @@ function EngineeringExperience({ overview }: { overview: ConsoleOverview }) {
           <Link to={CONSOLE_PATHS.activityLogs as never} className="sherivs-console-btn secondary">
             Search logs
           </Link>
-          <Link to={CONSOLE_PATHS.activityIncidents as never} className="sherivs-console-btn secondary">
+          <Link
+            to={CONSOLE_PATHS.activityIncidents as never}
+            className="sherivs-console-btn secondary"
+          >
             Open incidents
           </Link>
         </div>
@@ -522,7 +560,9 @@ function PersonalExperience({ overview }: { overview: ConsoleOverview }) {
       </section>
       <section>
         <h2>Notifications</h2>
-        <Empty>A notification inbox is not configured. Verified attention items appear on Home.</Empty>
+        <Empty>
+          A notification inbox is not configured. Verified attention items appear on Home.
+        </Empty>
       </section>
       <section>
         <h2>Role workspaces</h2>
@@ -536,7 +576,10 @@ function PersonalExperience({ overview }: { overview: ConsoleOverview }) {
             ))}
           </div>
         ) : (
-          <Empty>No role workspaces are assigned. Standard team members work from this personal workspace.</Empty>
+          <Empty>
+            No role workspaces are assigned. Standard team members work from this personal
+            workspace.
+          </Empty>
         )}
       </section>
       <div className="sherivs-console-actions">
@@ -557,18 +600,16 @@ function SharedExperience() {
   );
 }
 
-const EXPERIENCE_BODY: Record<
-  WorkspaceExperienceKey,
-  (overview: ConsoleOverview) => ReactElement
-> = {
-  platform_operations: (overview) => <PlatformOperationsExperience overview={overview} />,
-  platform_administration: (overview) => <PlatformAdministrationExperience overview={overview} />,
-  operations: (overview) => <OperationsExperience overview={overview} />,
-  engineering: (overview) => <EngineeringExperience overview={overview} />,
-  support: (overview) => <SupportExperience overview={overview} />,
-  personal: (overview) => <PersonalExperience overview={overview} />,
-  shared: () => <SharedExperience />,
-};
+const EXPERIENCE_BODY: Record<WorkspaceExperienceKey, (overview: ConsoleOverview) => ReactElement> =
+  {
+    platform_operations: (overview) => <PlatformOperationsExperience overview={overview} />,
+    platform_administration: (overview) => <PlatformAdministrationExperience overview={overview} />,
+    operations: (overview) => <OperationsExperience overview={overview} />,
+    engineering: (overview) => <EngineeringExperience overview={overview} />,
+    support: (overview) => <SupportExperience overview={overview} />,
+    personal: (overview) => <PersonalExperience overview={overview} />,
+    shared: () => <SharedExperience />,
+  };
 
 export function ConsoleWorkspaceExperience({
   workspace,

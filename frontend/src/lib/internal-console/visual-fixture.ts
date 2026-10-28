@@ -25,13 +25,107 @@ import {
 } from "./organization-lifecycle";
 
 export const CONSOLE_FIXTURE_STORAGE_KEY = "sherivs:console-visual-fixture";
+export const CONSOLE_FIXTURE_ROLE_KEY = "sherivs:console-visual-fixture-role";
 export const CONSOLE_FIXTURE_ORGS_KEY = "sherivs:console-visual-fixture-orgs";
+export const CONSOLE_FIXTURE_OPS_KEY = "sherivs:console-visual-fixture-ops";
 
+export type ConsoleFixturePersona = {
+  key: string;
+  id: string;
+  email: string;
+  name: string;
+  isSuperAdmin: boolean;
+  roles: readonly string[];
+  jobTitle: string;
+};
+
+/**
+ * One local persona per V1 Internal Console role-workspace mapping.
+ * Production builds never activate these identities.
+ */
+export const CONSOLE_FIXTURE_PERSONAS: readonly ConsoleFixturePersona[] = [
+  {
+    key: "platform_owner",
+    id: "00000000-0000-4000-8000-000000000001",
+    email: "owner.fixture@localhost",
+    name: "Amina Okonkwo",
+    isSuperAdmin: true,
+    roles: [],
+    jobTitle: "Platform Owner",
+  },
+  {
+    key: "platform_admin",
+    id: "00000000-0000-4000-8000-000000000002",
+    email: "admin.fixture@localhost",
+    name: "Chidi Nwosu",
+    isSuperAdmin: false,
+    roles: ["platform_admin"],
+    jobTitle: "Platform Administrator",
+  },
+  {
+    key: "operations",
+    id: "00000000-0000-4000-8000-000000000003",
+    email: "operations.fixture@localhost",
+    name: "Fatima Bello",
+    isSuperAdmin: false,
+    roles: ["operations"],
+    jobTitle: "Operations Administrator",
+  },
+  {
+    key: "engineering",
+    id: "00000000-0000-4000-8000-000000000004",
+    email: "engineering.fixture@localhost",
+    name: "Ifeanyi Eze",
+    isSuperAdmin: false,
+    roles: ["engineering"],
+    jobTitle: "Engineer",
+  },
+  {
+    key: "support",
+    id: "00000000-0000-4000-8000-000000000005",
+    email: "support.fixture@localhost",
+    name: "Ngozi Adeyemi",
+    isSuperAdmin: false,
+    roles: ["support"],
+    jobTitle: "Support Specialist",
+  },
+  {
+    key: "security",
+    id: "00000000-0000-4000-8000-000000000006",
+    email: "security.fixture@localhost",
+    name: "Tunde Bakare",
+    isSuperAdmin: false,
+    roles: ["security"],
+    jobTitle: "Security",
+  },
+  {
+    key: "finance",
+    id: "00000000-0000-4000-8000-000000000007",
+    email: "finance.fixture@localhost",
+    name: "Kemi Oladipo",
+    isSuperAdmin: false,
+    roles: ["finance"],
+    jobTitle: "Finance",
+  },
+  {
+    key: "sales",
+    id: "00000000-0000-4000-8000-000000000008",
+    email: "sales.fixture@localhost",
+    name: "Yusuf Ibrahim",
+    isSuperAdmin: false,
+    roles: ["sales"],
+    jobTitle: "Sales",
+  },
+];
+
+const DEFAULT_FIXTURE_PERSONA = CONSOLE_FIXTURE_PERSONAS[0];
+
+/** Compatibility actor used by fixture organization / operations stores. */
 export const CONSOLE_FIXTURE_OPERATOR = {
-  id: "00000000-0000-4000-8000-000000000001",
-  email: "console.fixture@localhost",
-  name: "Fixture Operator",
-  roles: ["platform_admin", "operations", "engineering", "support"] as const,
+  id: DEFAULT_FIXTURE_PERSONA.id,
+  email: DEFAULT_FIXTURE_PERSONA.email,
+  name: DEFAULT_FIXTURE_PERSONA.name,
+  roles: DEFAULT_FIXTURE_PERSONA.roles,
 };
 
 const LOCAL_HOSTS = new Set(["127.0.0.1", "localhost"]);
@@ -64,17 +158,271 @@ export function consoleVisualFixtureActive(): boolean {
   }
 }
 
-export function activateConsoleVisualFixture(): void {
+export function fixturePersonaByKey(key: string | null | undefined): ConsoleFixturePersona {
+  return CONSOLE_FIXTURE_PERSONAS.find((persona) => persona.key === key) ?? DEFAULT_FIXTURE_PERSONA;
+}
+
+export function readSelectedFixturePersona(): ConsoleFixturePersona {
+  if (typeof window === "undefined") return DEFAULT_FIXTURE_PERSONA;
+  try {
+    return fixturePersonaByKey(window.sessionStorage.getItem(CONSOLE_FIXTURE_ROLE_KEY));
+  } catch {
+    return DEFAULT_FIXTURE_PERSONA;
+  }
+}
+
+export function selectConsoleVisualFixturePersona(key: string): ConsoleFixturePersona {
+  const persona = fixturePersonaByKey(key);
+  if (typeof window !== "undefined") {
+    window.sessionStorage.setItem(CONSOLE_FIXTURE_ROLE_KEY, persona.key);
+  }
+  return persona;
+}
+
+export function activateConsoleVisualFixture(personaKey?: string): void {
   if (!consoleVisualFixtureEnabled()) return;
   window.sessionStorage.setItem(CONSOLE_FIXTURE_STORAGE_KEY, "1");
+  selectConsoleVisualFixturePersona(personaKey ?? DEFAULT_FIXTURE_PERSONA.key);
+  seedConsoleVisualFixtureDemo();
 }
 
 export function deactivateConsoleVisualFixture(): void {
   try {
     window.sessionStorage.removeItem(CONSOLE_FIXTURE_STORAGE_KEY);
+    window.sessionStorage.removeItem(CONSOLE_FIXTURE_ROLE_KEY);
   } catch {
     /* ignore */
   }
+}
+
+function seedConsoleVisualFixtureDemo(): void {
+  if (typeof window === "undefined") return;
+  try {
+    if (!window.sessionStorage.getItem(CONSOLE_FIXTURE_ORGS_KEY)) {
+      window.sessionStorage.setItem(
+        CONSOLE_FIXTURE_ORGS_KEY,
+        JSON.stringify({ organizations: fixtureDemoOrganizations() }),
+      );
+    }
+    if (!window.sessionStorage.getItem(CONSOLE_FIXTURE_OPS_KEY)) {
+      window.sessionStorage.setItem(CONSOLE_FIXTURE_OPS_KEY, JSON.stringify(fixtureDemoOps()));
+    }
+  } catch {
+    /* ignore */
+  }
+}
+
+function fixtureDemoOrganizations() {
+  const actor = CONSOLE_FIXTURE_OPERATOR;
+  const at = "2026-10-27T12:00:00.000Z";
+  return [
+    {
+      id: "fixture-org-active",
+      displayName: "Riverside School",
+      orgType: "school",
+      lifecycleState: "active",
+      country: "NG",
+      region: "Lagos",
+      city: "Lagos",
+      intendedRuntime: "scholar",
+      enabledRuntime: "scholar",
+      schoolId: "fixture-school-riverside",
+      slug: "riverside-school",
+      createdAt: "2026-10-20T00:00:00.000Z",
+      updatedAt: at,
+      submittedAt: "2026-10-21T00:00:00.000Z",
+      provisionedAt: "2026-10-22T00:00:00.000Z",
+      activatedAt: at,
+      onboardingOwnerName: actor.name,
+      assignmentCount: 1,
+      legalName: "Riverside School Ltd",
+      questionnaire: { displayName: "Riverside School", country: "NG" },
+      questionnaireStep: "review",
+      provisioningError: null,
+      outstandingRequirements: [],
+      createdBy: actor.id,
+      submittedBy: actor.id,
+      reviewedBy: actor.id,
+      activatedBy: actor.id,
+      contact: {
+        name: "Ada Obasi",
+        email: "ada@example.invalid",
+        phone: null,
+        title: "Administrator",
+        method: "email",
+      },
+      assignments: [
+        {
+          id: "fixture-asg-riverside",
+          organizationId: "fixture-org-active",
+          staffId: actor.id,
+          staffName: actor.name,
+          assignmentType: "onboarding_owner",
+          status: "active",
+          assignedBy: actor.id,
+          assignedAt: "2026-10-21T00:00:00.000Z",
+          releasedAt: null,
+        },
+      ],
+      transitions: [
+        {
+          id: "fixture-tr-riverside",
+          fromState: "ready_for_activation",
+          toState: "active",
+          actorId: actor.id,
+          reason: "activated",
+          at,
+        },
+      ],
+      accessEffects: null,
+    },
+    {
+      id: "fixture-org-submitted",
+      displayName: "Harbour Academy",
+      orgType: "school",
+      lifecycleState: "submitted",
+      country: "NG",
+      region: "Rivers",
+      city: "Port Harcourt",
+      intendedRuntime: "scholar",
+      enabledRuntime: null,
+      schoolId: null,
+      slug: "harbour-academy",
+      createdAt: "2026-10-26T00:00:00.000Z",
+      updatedAt: "2026-10-27T00:30:00.000Z",
+      submittedAt: "2026-10-27T00:30:00.000Z",
+      provisionedAt: null,
+      activatedAt: null,
+      onboardingOwnerName: actor.name,
+      assignmentCount: 1,
+      legalName: "Harbour Academy",
+      questionnaire: { displayName: "Harbour Academy", country: "NG" },
+      questionnaireStep: "review",
+      provisioningError: null,
+      outstandingRequirements: [],
+      createdBy: actor.id,
+      submittedBy: actor.id,
+      reviewedBy: null,
+      activatedBy: null,
+      contact: {
+        name: "Emeka Okoro",
+        email: "emeka@example.invalid",
+        phone: null,
+        title: "Principal",
+        method: "email",
+      },
+      assignments: [
+        {
+          id: "fixture-asg-harbour",
+          organizationId: "fixture-org-submitted",
+          staffId: actor.id,
+          staffName: actor.name,
+          assignmentType: "onboarding_owner",
+          status: "active",
+          assignedBy: actor.id,
+          assignedAt: "2026-10-26T00:00:00.000Z",
+          releasedAt: null,
+        },
+      ],
+      transitions: [
+        {
+          id: "fixture-tr-harbour",
+          fromState: "draft",
+          toState: "submitted",
+          actorId: actor.id,
+          reason: "submitted",
+          at: "2026-10-27T00:30:00.000Z",
+        },
+      ],
+      accessEffects: null,
+    },
+    {
+      id: "fixture-org-failed",
+      displayName: "Sahel College",
+      orgType: "school",
+      lifecycleState: "provisioning_failed",
+      country: "NG",
+      region: "Kano",
+      city: "Kano",
+      intendedRuntime: "scholar",
+      enabledRuntime: null,
+      schoolId: null,
+      slug: "sahel-college",
+      createdAt: "2026-10-24T00:00:00.000Z",
+      updatedAt: "2026-10-25T00:00:00.000Z",
+      submittedAt: "2026-10-24T12:00:00.000Z",
+      provisionedAt: null,
+      activatedAt: null,
+      onboardingOwnerName: null,
+      assignmentCount: 0,
+      legalName: "Sahel College",
+      questionnaire: { displayName: "Sahel College", country: "NG" },
+      questionnaireStep: "review",
+      provisioningError: "Provisioning failed in the local fixture.",
+      outstandingRequirements: ["retry_provisioning"],
+      createdBy: actor.id,
+      submittedBy: actor.id,
+      reviewedBy: actor.id,
+      activatedBy: null,
+      contact: {
+        name: "Hauwa Sani",
+        email: "hauwa@example.invalid",
+        phone: null,
+        title: "Registrar",
+        method: "email",
+      },
+      assignments: [],
+      transitions: [
+        {
+          id: "fixture-tr-sahel",
+          fromState: "under_review",
+          toState: "provisioning_failed",
+          actorId: actor.id,
+          reason: "provisioning_failed",
+          at: "2026-10-25T00:00:00.000Z",
+        },
+      ],
+      accessEffects: null,
+    },
+  ];
+}
+
+function fixtureDemoOps() {
+  const actor = CONSOLE_FIXTURE_OPERATOR;
+  const at = "2026-10-27T12:00:00.000Z";
+  return {
+    tickets: [
+      {
+        id: "fixture-ticket-1",
+        organizationId: "fixture-org-active",
+        organizationName: "Riverside School",
+        subject: "Administrator cannot open Scholar",
+        body: "Local fixture ticket. No live tenant session is opened.",
+        status: "open",
+        priority: "normal",
+        openedBy: actor.name,
+        assignedTo: null,
+        createdAt: at,
+        updatedAt: at,
+        resolvedAt: null,
+      },
+    ],
+    incidents: [
+      {
+        id: "fixture-incident-1",
+        organizationId: null,
+        organizationName: null,
+        title: "Fixture process check",
+        details: "Local fixture incident. This is not a production event.",
+        severity: "low",
+        status: "open",
+        openedBy: actor.name,
+        createdAt: at,
+        updatedAt: at,
+        resolvedAt: null,
+      },
+    ],
+  };
 }
 
 type FixtureOrganizationRow = {
@@ -166,7 +514,9 @@ export function readFixtureOrganizationSnapshot(raw: string | null): {
         const lifecycleState = isOrganizationLifecycleState(row.lifecycleState)
           ? row.lifecycleState
           : ("draft" as const);
-        const activeAssignments = (row.assignments ?? []).filter((item) => item.status === "active");
+        const activeAssignments = (row.assignments ?? []).filter(
+          (item) => item.status === "active",
+        );
         return {
           id: row.id,
           displayName: row.displayName,
@@ -186,7 +536,8 @@ export function readFixtureOrganizationSnapshot(raw: string | null): {
           activatedAt: row.activatedAt ?? null,
           onboardingOwnerName:
             row.onboardingOwnerName ??
-            activeAssignments.find((item) => item.assignmentType === "onboarding_owner")?.staffName ??
+            activeAssignments.find((item) => item.assignmentType === "onboarding_owner")
+              ?.staffName ??
             null,
           assignmentCount: row.assignmentCount ?? activeAssignments.length,
         };
@@ -244,7 +595,8 @@ function fixtureOrganizationMetricsCards(
       source,
       updatedAt: null,
       available: true,
-      definition: "Fixture cases that have started and are not yet active, suspended, or deactivated.",
+      definition:
+        "Fixture cases that have started and are not yet active, suspended, or deactivated.",
     },
     {
       key: "suspended-organizations",
@@ -331,15 +683,31 @@ function fixtureAttention(
   return items;
 }
 
-export function buildConsoleVisualFixtureOverview(): ConsoleOverview {
-  const roles = [...CONSOLE_FIXTURE_OPERATOR.roles];
-  const capabilities = [...viewerCapabilities(roles, false)];
+export function buildConsoleVisualFixtureOverview(
+  persona: ConsoleFixturePersona = readSelectedFixturePersona(),
+): ConsoleOverview {
+  const roles = [...persona.roles];
+  const capabilities = [...viewerCapabilities(roles, persona.isSuperAdmin)];
   const workspaces = workspacesForViewer({
-    displayName: CONSOLE_FIXTURE_OPERATOR.name,
-    isSuperAdmin: false,
+    displayName: persona.name,
+    isSuperAdmin: persona.isSuperAdmin,
     roles,
   });
   const snapshot = fixtureOrganizationSnapshot();
+  const canReadOrgs = persona.isSuperAdmin || capabilities.includes("platform.tenants.read");
+  const canAudit = persona.isSuperAdmin || capabilities.includes("platform.audit.read");
+  const unauthorizedOrgMetrics = {
+    available: false,
+    source: "not authorized",
+    total: null,
+    active: null,
+    onboarding: null,
+    suspended: null,
+    failedProvisioning: null,
+    submitted: null,
+    conversionRate: null,
+    medianOnboardingHours: null,
+  };
   const healthCards = [
     {
       key: "platform",
@@ -380,18 +748,21 @@ export function buildConsoleVisualFixtureOverview(): ConsoleOverview {
   ];
   return {
     viewer: {
-      id: CONSOLE_FIXTURE_OPERATOR.id,
-      name: CONSOLE_FIXTURE_OPERATOR.name,
-      email: CONSOLE_FIXTURE_OPERATOR.email,
-      isSuperAdmin: false,
+      id: persona.id,
+      name: persona.name,
+      email: persona.email,
+      isSuperAdmin: persona.isSuperAdmin,
       roles,
-      presentationRole: presentationRoleFor({ isSuperAdmin: false, roles }),
-      presentationLabel: presentationRoleLabel({ isSuperAdmin: false, roles }),
+      presentationRole: presentationRoleFor({ isSuperAdmin: persona.isSuperAdmin, roles }),
+      presentationLabel: presentationRoleLabel({ isSuperAdmin: persona.isSuperAdmin, roles }),
       capabilities,
     },
     context: {
       organization: "Sherivs Internal",
-      workspace: workspaces.find((workspace) => workspace.type === "role")?.name ?? workspaces[0]?.name ?? "My Workspace",
+      workspace:
+        workspaces.find((workspace) => workspace.type === "role")?.name ??
+        workspaces[0]?.name ??
+        "My Workspace",
       environment: "Development",
       environmentSource: "local visual fixture",
       host: "127.0.0.1",
@@ -402,9 +773,22 @@ export function buildConsoleVisualFixtureOverview(): ConsoleOverview {
       cards: healthCards,
       caveat: "These statuses describe the local visual fixture, not a live environment.",
     },
-    metrics: fixtureOrganizationMetricsCards(snapshot),
-    attention: fixtureAttention(snapshot),
-    activity: snapshot.activity,
+    metrics: canReadOrgs
+      ? fixtureOrganizationMetricsCards(snapshot)
+      : fixtureOrganizationMetricsCards(snapshot).filter(
+          (metric) =>
+            !metric.key.includes("organization") && metric.key !== "onboarding-conversion",
+        ),
+    attention: fixtureAttention(snapshot).filter((item) => {
+      if (
+        item.href === CONSOLE_PATHS.organizations ||
+        item.href.startsWith(`${CONSOLE_PATHS.organizations}/`)
+      ) {
+        return canReadOrgs;
+      }
+      return true;
+    }),
+    activity: canAudit ? snapshot.activity : [],
     workspaces,
     workspaceStore: "derived-fallback",
     runtimes: [...REGISTERED_RUNTIMES],
@@ -416,12 +800,12 @@ export function buildConsoleVisualFixtureOverview(): ConsoleOverview {
     activeStaff: 0,
     usageDefinition:
       "Fixture directory is empty. No synthetic staff rows are shown as if they were live records.",
-    organizations: snapshot.organizations,
-    organizationStore: "fixture",
-    organizationMetrics: snapshot.metrics,
-    assignments: snapshot.assignments.filter(
-      (item) => item.staffId === CONSOLE_FIXTURE_OPERATOR.id,
-    ),
+    organizations: canReadOrgs ? snapshot.organizations : [],
+    organizationStore: canReadOrgs ? "fixture" : "unavailable",
+    organizationMetrics: canReadOrgs ? snapshot.metrics : unauthorizedOrgMetrics,
+    assignments: canReadOrgs
+      ? snapshot.assignments.filter((item) => item.staffId === persona.id)
+      : [],
     scholarTenants: null,
     registeredUsers: null,
     activeUsers30d: null,

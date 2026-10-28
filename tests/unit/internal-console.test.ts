@@ -4,9 +4,13 @@ import {
   presentationRoleFor,
   quickActionsFor,
   filterNav,
+  CONSOLE_ACCOUNT_NAV,
   CONSOLE_NAV,
+  CONSOLE_PLATFORM_NAV,
+  CONSOLE_QUICK_ACTIONS,
   viewerCapabilities,
 } from "@/lib/internal-console/roles";
+import { WORKSPACE_EXPERIENCES } from "@/lib/internal-console/workspace-experience";
 import {
   workspacesForViewer,
   workspaceById,
@@ -291,22 +295,53 @@ describe("console host routing for /console", () => {
 
   it("keeps signed-in console status copy above the background orbs", () => {
     const css = readFileSync("frontend/src/components/internal-console/console.css", "utf8");
-    expect(css).toContain(".sherivs-console-status");
-    expect(css).toMatch(/\.sherivs-console-status\s*\{[\s\S]*z-index:\s*1/);
+    expect(css).toContain(".sherivs-console-stage");
+    expect(css).toMatch(/\.sherivs-console-stage\s*\{[\s\S]*z-index:\s*1/);
+    const statusBlock = css.match(/\.sherivs-console-status\s*\{[^}]+\}/)?.[0];
+    expect(statusBlock).toContain("inline-flex");
+    expect(statusBlock).not.toContain("min-height");
+    expect(css).toContain("minmax(0, 1fr)");
+    const primitives = readFileSync(
+      "frontend/src/components/internal-console/console-primitives.tsx",
+      "utf8",
+    );
+    expect(primitives).toContain("sherivs-console-stage");
+    expect(primitives).not.toContain('className="sherivs-console-status"');
     const gate = readFileSync("frontend/src/components/internal-console/console-gate.tsx", "utf8");
     expect(gate).toContain("ConsoleLoadingState");
-    const shell = readFileSync("frontend/src/components/internal-console/console-shell.tsx", "utf8");
+    expect(gate).toContain("Opening the Internal Console…");
+    expect(css).toMatch(
+      /@media \(max-width: 960px\)[\s\S]*\.sherivs-console-orb\s*\{[\s\S]*animation:\s*none/,
+    );
+    expect(gate).toContain("consoleSignInSearch");
+    expect(gate).toContain("hostKindProp");
+    expect(gate).toContain("clientReady");
+    const shell = readFileSync(
+      "frontend/src/components/internal-console/console-shell.tsx",
+      "utf8",
+    );
     expect(shell).toContain("ConsoleLoadingState");
-    const authz = readFileSync("frontend/src/components/internal-console/not-authorised.tsx", "utf8");
+    expect(shell).toContain("consoleSignInSearch");
+    const authz = readFileSync(
+      "frontend/src/components/internal-console/not-authorised.tsx",
+      "utf8",
+    );
     expect(authz).toContain("ConsoleAtmosphere");
     expect(authz).toContain("console-not-authorised");
     expect(authz).not.toMatch(/Signing in with a school account/);
+    const site = readFileSync("frontend/src/routes/(site)/route.tsx", "utf8");
+    expect(site).toContain('hostKind === "internal"');
+    expect(site).toContain('redirect({ to: "/" })');
+    const index = readFileSync("frontend/src/routes/index.tsx", "utf8");
+    expect(index).toContain("hostKind={data.hostKind}");
   });
 
   it("resolves workforce identity even when a tenant profile exists", () => {
     const src = readFileSync("frontend/src/contexts/app-context.tsx", "utf8");
     expect(src).toContain("loadWorkforce");
     expect(src).toContain("IDENTITY_LOAD_MS");
+    expect(src).toContain("SESSION_LOAD_MS");
+    expect(src).toContain('currentEffectiveHostKind() === "internal"');
     expect(src).toContain('from("super_admins")');
     expect(src).toContain("claim_platform_staff_invite");
     expect(src).not.toContain("Try tenant profile first");
@@ -456,8 +491,9 @@ describe("local visual fixture", () => {
     expect(overview.metrics.find((metric) => metric.key === "control-plane-organizations")).toEqual(
       expect.objectContaining({ available: true, value: "0" }),
     );
-    expect(overview.viewer.isSuperAdmin).toBe(false);
-    expect(overview.viewer.email).toBe("console.fixture@localhost");
+    expect(overview.viewer.isSuperAdmin).toBe(true);
+    expect(overview.viewer.email).toBe("owner.fixture@localhost");
+    expect(overview.viewer.presentationRole).toBe("platform_owner");
     expect(overview.organizationStore).toBe("fixture");
     expect(overview.organizationMetrics.available).toBe(true);
     expect(overview.organizationMetrics.total).toBe(0);
@@ -468,8 +504,11 @@ describe("local visual fixture", () => {
   });
 
   it("derives fixture pipeline metrics from the organization store without fabricating users", async () => {
-    const { buildConsoleVisualFixtureOverview, CONSOLE_FIXTURE_ORGS_KEY, readFixtureOrganizationSnapshot } =
-      await import("@/lib/internal-console/visual-fixture");
+    const {
+      buildConsoleVisualFixtureOverview,
+      CONSOLE_FIXTURE_ORGS_KEY,
+      readFixtureOrganizationSnapshot,
+    } = await import("@/lib/internal-console/visual-fixture");
     const raw = JSON.stringify({
       organizations: [
         {
@@ -523,7 +562,9 @@ describe("local visual fixture", () => {
     expect(parsed.metrics.onboarding).toBe(1);
     expect(parsed.activity[0]?.description).toContain("Riverside School");
     const previous =
-      typeof window === "undefined" ? null : window.sessionStorage.getItem(CONSOLE_FIXTURE_ORGS_KEY);
+      typeof window === "undefined"
+        ? null
+        : window.sessionStorage.getItem(CONSOLE_FIXTURE_ORGS_KEY);
     if (typeof window !== "undefined") {
       window.sessionStorage.setItem(CONSOLE_FIXTURE_ORGS_KEY, raw);
     }
@@ -532,7 +573,9 @@ describe("local visual fixture", () => {
       const overview = buildConsoleVisualFixtureOverview();
       expect(overview.organizationMetrics.active).toBe(1);
       expect(overview.organizationMetrics.onboarding).toBe(1);
-      expect(overview.metrics.find((metric) => metric.key === "active-organizations")?.value).toBe("1");
+      expect(overview.metrics.find((metric) => metric.key === "active-organizations")?.value).toBe(
+        "1",
+      );
       expect(overview.attention.some((item) => item.id === "onboarding-pipeline")).toBe(true);
       expect(overview.assignments).toHaveLength(1);
       expect(overview.registeredUsers).toBeNull();
@@ -548,11 +591,141 @@ describe("local visual fixture", () => {
   it("keeps the fixture continue control behind the local gate", () => {
     const auth = readFileSync("frontend/src/routes/auth.tsx", "utf8");
     expect(auth).toContain("consoleVisualFixtureEnabled()");
-    expect(auth).toContain("Continue as local fixture operator");
-    expect(auth).toContain('data-testid="console-visual-fixture"');
+    expect(auth).toContain("CONSOLE_FIXTURE_PERSONAS");
+    expect(auth).toContain("Continue as {persona.jobTitle}");
+    expect(auth).toContain("console-visual-fixture");
+    expect(auth).toContain('data-testid="console-role-simulation"');
     const context = readFileSync("frontend/src/contexts/app-context.tsx", "utf8");
     expect(context).toContain("consoleVisualFixtureActive()");
+    expect(context).toContain("consoleVisualFixtureEnabled()");
     expect(context).toContain("deactivateConsoleVisualFixture");
     expect(context).not.toMatch(/\bactivateConsoleVisualFixture\b/);
+    const shell = readFileSync(
+      "frontend/src/components/internal-console/console-shell.tsx",
+      "utf8",
+    );
+    expect(shell).toContain("console-fixture-role-switcher");
+  });
+
+  it("simulates every V1 Internal Console role with the matching workspace", async () => {
+    const { buildConsoleVisualFixtureOverview, CONSOLE_FIXTURE_PERSONAS } =
+      await import("@/lib/internal-console/visual-fixture");
+    expect(CONSOLE_FIXTURE_PERSONAS.map((persona) => persona.key)).toEqual([
+      "platform_owner",
+      "platform_admin",
+      "operations",
+      "engineering",
+      "support",
+      "security",
+      "finance",
+      "sales",
+    ]);
+    expect(CONSOLE_FIXTURE_PERSONAS.map((persona) => persona.jobTitle)).toEqual([
+      "Platform Owner",
+      "Platform Administrator",
+      "Operations Administrator",
+      "Engineer",
+      "Support Specialist",
+      "Security",
+      "Finance",
+      "Sales",
+    ]);
+    const expected = {
+      platform_owner: "platform_owner",
+      platform_admin: "platform_administrator",
+      operations: "operations_administrator",
+      engineering: "engineer",
+      support: "support_specialist",
+      security: "standard_team_member",
+      finance: "standard_team_member",
+      sales: "standard_team_member",
+    } as const;
+    for (const persona of CONSOLE_FIXTURE_PERSONAS) {
+      const overview = buildConsoleVisualFixtureOverview(persona);
+      expect(overview.viewer.presentationRole).toBe(expected[persona.key as keyof typeof expected]);
+      expect(overview.viewer.email).toBe(persona.email);
+      expect(overview.viewer.isSuperAdmin).toBe(persona.isSuperAdmin);
+      expect(overview.workspaces.some((workspace) => workspace.type === "personal")).toBe(true);
+      expect(overview.staff).toEqual([]);
+    }
+  });
+
+  it("does not leak organization pipeline data to roles without tenants.read", async () => {
+    const { buildConsoleVisualFixtureOverview, CONSOLE_FIXTURE_PERSONAS } =
+      await import("@/lib/internal-console/visual-fixture");
+    const withTenants = new Set([
+      "platform_owner",
+      "platform_admin",
+      "operations",
+      "support",
+      "sales",
+    ]);
+    for (const persona of CONSOLE_FIXTURE_PERSONAS) {
+      const overview = buildConsoleVisualFixtureOverview(persona);
+      if (withTenants.has(persona.key)) {
+        expect(overview.organizationMetrics.available).toBe(true);
+        expect(overview.organizationStore).toBe("fixture");
+      } else {
+        expect(overview.organizationMetrics.available).toBe(false);
+        expect(overview.organizations).toEqual([]);
+        expect(overview.assignments).toEqual([]);
+        expect(
+          overview.attention.every((item) => !item.href.startsWith("/console/organizations")),
+        ).toBe(true);
+        expect(overview.metrics.every((metric) => !metric.key.includes("organization"))).toBe(true);
+      }
+    }
+    const home = readFileSync("frontend/src/components/internal-console/home-screen.tsx", "utf8");
+    expect(home).toContain("canReadOrgs && overview.organizationMetrics.available");
+    expect(home).toContain('data-testid="console-org-pipeline"');
+    const { helpArticlesFor } = await import("@/lib/internal-console/help-catalog");
+    const engineerHelp = helpArticlesFor({
+      isSuperAdmin: false,
+      capabilities: new Set(["platform.engineering.read", "platform.config.read"]),
+    });
+    expect(engineerHelp.some((article) => article.href === CONSOLE_PATHS.organizations)).toBe(
+      false,
+    );
+    expect(engineerHelp.some((article) => article.href === CONSOLE_PATHS.help)).toBe(true);
+  });
+
+  it("registers a clickable route file for every console navigation href", () => {
+    const hrefs = new Set<string>();
+    const walk = (items: typeof CONSOLE_NAV) => {
+      for (const item of items) {
+        hrefs.add(item.href);
+        if (item.children) walk(item.children);
+      }
+    };
+    walk(CONSOLE_NAV);
+    walk(CONSOLE_ACCOUNT_NAV);
+    walk(CONSOLE_PLATFORM_NAV);
+    for (const action of CONSOLE_QUICK_ACTIONS) hrefs.add(action.href);
+    for (const experience of Object.values(WORKSPACE_EXPERIENCES)) {
+      for (const link of experience.navigation) hrefs.add(link.href);
+    }
+
+    function routeFileFor(href: string): string | null {
+      const path = href.replace(/\/+$/, "") || "/";
+      if (path === "/console") return "frontend/src/routes/console/index.tsx";
+      const rest = path.replace(/^\/console\//, "");
+      const parts = rest.split("/");
+      if (parts[0] === "organizations" && parts[1] && parts[1] !== "new" && parts[1] !== "index") {
+        return "frontend/src/routes/console/organizations/$organizationId.tsx";
+      }
+      if (parts[0] === "workspaces" && parts[1]) {
+        return "frontend/src/routes/console/workspaces/$workspaceId.tsx";
+      }
+      const file = `frontend/src/routes/console/${parts.join("/")}.tsx`;
+      if (existsSync(file)) return file;
+      const index = `frontend/src/routes/console/${parts.join("/")}/index.tsx`;
+      return existsSync(index) ? index : file;
+    }
+
+    const missing = [...hrefs].filter((href) => {
+      const file = routeFileFor(href);
+      return !file || !existsSync(file);
+    });
+    expect(missing).toEqual([]);
   });
 });

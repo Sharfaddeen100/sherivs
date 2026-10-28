@@ -24,6 +24,7 @@ import {
 import { SherivsLogo } from "@/components/brand/sherivs-logo";
 import { useApp } from "@/contexts/app-context";
 import {
+  consoleSignInSearch,
   currentEffectiveHostKind,
   decideHostRoute,
   isConsoleOperator,
@@ -40,14 +41,17 @@ import {
 } from "@/lib/internal-console/roles";
 import { CONSOLE_PATHS } from "@/lib/internal-console/paths";
 import { searchConsole } from "@/lib/internal-console/search";
-import { CONSOLE_HELP_ARTICLES } from "@/lib/internal-console/help-catalog";
+import { helpArticlesFor } from "@/lib/internal-console/help-catalog";
 import { REGISTERED_RUNTIMES } from "@/lib/internal-console/runtime-contract";
 import { rememberResource, type RecentResource } from "@/lib/internal-console/recent";
 import { rememberConsoleResource } from "@/lib/internal-console/workspace.functions";
 import { workspaceIdFromPath, workspaceTypeLabel } from "@/lib/internal-console/workspaces";
 import {
   buildConsoleVisualFixtureOverview,
+  CONSOLE_FIXTURE_PERSONAS,
   consoleVisualFixtureActive,
+  readSelectedFixturePersona,
+  selectConsoleVisualFixturePersona,
 } from "@/lib/internal-console/visual-fixture";
 import { ConsoleLoadingState, ConsoleNotice } from "./console-primitives";
 import { ConsoleNotAuthorised, ConsoleElsewhere } from "./not-authorised";
@@ -222,7 +226,7 @@ function ConsoleChrome({ children }: { children: ReactNode }) {
     workspaces: overview?.workspaces ?? [],
     runtimes: overview?.runtimes?.length ? overview.runtimes : REGISTERED_RUNTIMES,
     pages: [...mainNav, ...accountNav, ...platformNav],
-    help: CONSOLE_HELP_ARTICLES,
+    help: helpArticlesFor(viewer),
   });
 
   useEffect(() => {
@@ -526,7 +530,12 @@ function ConsoleChrome({ children }: { children: ReactNode }) {
                   <Link to={CONSOLE_PATHS.help as never} onClick={() => setOpenProfile(false)}>
                     Help
                   </Link>
-                  <button type="button" onClick={() => void app.signOut()}>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      void app.signOut().then(() => navigate({ to: "/auth" as never }))
+                    }
+                  >
                     Sign out
                   </button>
                 </div>
@@ -557,7 +566,10 @@ function ConsoleChrome({ children }: { children: ReactNode }) {
           <NavGroup label="Account" items={accountNav} path={path} collapsed={collapsed} />
           <NavGroup label="Platform" items={platformNav} path={path} collapsed={collapsed} />
           <nav className="sherivs-console-nav" style={{ marginTop: "auto" }}>
-            <button type="button" onClick={() => void app.signOut()}>
+            <button
+              type="button"
+              onClick={() => void app.signOut().then(() => navigate({ to: "/auth" as never }))}
+            >
               <LogOut size={16} />
               {collapsed ? "" : "Sign out"}
             </button>
@@ -567,10 +579,32 @@ function ConsoleChrome({ children }: { children: ReactNode }) {
         <main className="sherivs-console-main">
           <div className="sherivs-console-sheet">
             {consoleVisualFixtureActive() ? (
-              <ConsoleNotice tone="warning">
-                Local visual fixture. This is not a production identity. Persistent workspace
-                storage is not connected.
-              </ConsoleNotice>
+              <>
+                <ConsoleNotice tone="warning">
+                  Local V1 role simulation for {overview?.viewer.presentationLabel ?? "staff"}. This
+                  is not a production identity. Persistent workspace storage is not connected.
+                </ConsoleNotice>
+                <label className="sherivs-console-fixture-switch">
+                  Simulate role
+                  <select
+                    data-testid="console-fixture-role-switcher"
+                    value={readSelectedFixturePersona().key}
+                    onChange={(event) => {
+                      selectConsoleVisualFixturePersona(event.target.value);
+                      void app.refresh().then(() => {
+                        void console.reload();
+                        void navigate({ to: CONSOLE_PATHS.home as never });
+                      });
+                    }}
+                  >
+                    {CONSOLE_FIXTURE_PERSONAS.map((persona) => (
+                      <option key={persona.key} value={persona.key}>
+                        {persona.jobTitle}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              </>
             ) : null}
             {overview?.workspaceStore === "derived-fallback" ? (
               <ConsoleNotice tone="warning">
@@ -622,12 +656,16 @@ export function InternalConsoleLayout() {
     isConsoleOperator: operator,
   });
   if (decision.kind === "redirect") {
-    if (decision.to === "/auth") return <Navigate to="/auth" />;
+    if (decision.to === "/auth") {
+      return <Navigate to="/auth" search={consoleSignInSearch(location.pathname) as never} />;
+    }
     return <Navigate to={decision.to as never} />;
   }
   if (decision.kind === "not_authorised") return <ConsoleNotAuthorised />;
   if (decision.kind === "console_elsewhere") return <ConsoleElsewhere />;
-  if (!app.authUser) return <Navigate to="/auth" />;
+  if (!app.authUser) {
+    return <Navigate to="/auth" search={consoleSignInSearch(location.pathname) as never} />;
+  }
   if (!operator) return <ConsoleNotAuthorised />;
 
   return (

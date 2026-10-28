@@ -560,6 +560,7 @@
 
 .app-entry-login-card {
   position: relative;
+  z-index: 1;
   width: 100%;
   padding: 1.85rem 1.65rem 1.7rem;
   border-radius: 22px;
@@ -859,6 +860,23 @@ a.app-entry-login-submit {
   font-size: 0.84rem;
   color: #8b93a7;
   text-wrap: balance;
+}
+
+.app-entry-login-title + .app-entry-login-invite {
+  margin: -1.05rem 0 1.15rem;
+  text-align: left;
+}
+
+.app-entry-fixture-roles {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.45rem;
+}
+
+.app-entry-fixture-roles .app-entry-login-google {
+  min-height: 2.6rem;
+  padding: 0.55rem 0.6rem;
+  font-size: 0.82rem;
 }
 
 .app-entry-login .app-entry-alert-error {

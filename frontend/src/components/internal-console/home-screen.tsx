@@ -36,14 +36,17 @@ export function ConsoleHomeScreen() {
     isSuperAdmin: overview.viewer.isSuperAdmin,
     capabilities: new Set(overview.viewer.capabilities),
   };
+  const canReadOrgs = viewer.isSuperAdmin || viewer.capabilities.has("platform.tenants.read");
   const actions = quickActionsFor(viewer);
   const allowed = allowedHrefsFrom([
     ...overview.workspaces,
     { href: CONSOLE_PATHS.home },
     { href: CONSOLE_PATHS.scholar },
-    { href: CONSOLE_PATHS.team },
-    { href: CONSOLE_PATHS.organizations },
     { href: CONSOLE_PATHS.help },
+    ...(canReadOrgs ? [{ href: CONSOLE_PATHS.organizations }] : []),
+    ...(viewer.isSuperAdmin || viewer.capabilities.has("platform.staff.read")
+      ? [{ href: CONSOLE_PATHS.team }]
+      : []),
   ]);
   const recent = overview.recent.length ? overview.recent : readRecentResources(allowed);
   const measured = overview.metrics.filter((metric) => metric.available);
@@ -55,6 +58,15 @@ export function ConsoleHomeScreen() {
       card.key === "database" ||
       card.key === "auth",
   );
+  const attention = overview.attention.filter((item) => {
+    if (
+      item.href === CONSOLE_PATHS.organizations ||
+      item.href.startsWith(`${CONSOLE_PATHS.organizations}/`)
+    ) {
+      return canReadOrgs;
+    }
+    return true;
+  });
 
   return (
     <>
@@ -72,12 +84,10 @@ export function ConsoleHomeScreen() {
             ? ` (${overview.context.environmentSource})`
             : " — environment is not configured"}
         </p>
-        {overview.attention.length === 0 ? (
-          <p>No verified items need attention right now.</p>
-        ) : null}
+        {attention.length === 0 ? <p>No verified items need attention right now.</p> : null}
       </section>
 
-      {overview.organizationMetrics.available ? (
+      {canReadOrgs && overview.organizationMetrics.available ? (
         <section className="sherivs-console-card" data-testid="console-org-pipeline">
           <h2>Onboarding pipeline</h2>
           <p>
@@ -88,12 +98,15 @@ export function ConsoleHomeScreen() {
             {overview.organizationMetrics.source}.
           </p>
           <div className="sherivs-console-actions" style={{ marginTop: "0.8rem" }}>
-            <Link to={CONSOLE_PATHS.organizations as never} className="sherivs-console-btn secondary">
+            <Link
+              to={CONSOLE_PATHS.organizations as never}
+              className="sherivs-console-btn secondary"
+            >
               Open organizations
             </Link>
           </div>
         </section>
-      ) : overview.viewer.capabilities.includes("platform.tenants.read") ? (
+      ) : canReadOrgs ? (
         <section className="sherivs-console-card">
           <h2>Onboarding pipeline</h2>
           <p className="sherivs-console-empty">
@@ -102,11 +115,11 @@ export function ConsoleHomeScreen() {
         </section>
       ) : null}
 
-      {overview.attention.length ? (
+      {attention.length ? (
         <section className="sherivs-console-card">
           <h2>Attention required</h2>
           <div className="sherivs-console-list">
-            {overview.attention.map((item) => (
+            {attention.map((item) => (
               <Link key={item.id} to={item.href as never} className="sherivs-console-row">
                 <strong>
                   {item.severity.toUpperCase()} · {item.title}
@@ -144,7 +157,7 @@ export function ConsoleHomeScreen() {
       <div className="sherivs-console-split">
         <section className="sherivs-console-card">
           <h2>My work</h2>
-          {overview.assignments.length ? (
+          {canReadOrgs && overview.assignments.length ? (
             <div className="sherivs-console-list">
               {overview.assignments.map((assignment) => (
                 <Link
@@ -161,8 +174,8 @@ export function ConsoleHomeScreen() {
             </div>
           ) : (
             <p className="sherivs-console-empty">
-              No organization assignments are recorded for you. Sherivs V1 does not include a general
-              task system, so this section stays empty rather than showing decorative work.
+              No organization assignments are recorded for you. Sherivs V1 does not include a
+              general task system, so this section stays empty rather than showing decorative work.
             </p>
           )}
         </section>

@@ -22,10 +22,11 @@ import type {
 import { canTransitionIncident, canTransitionTicket } from "@/lib/internal-console/operations";
 import {
   CONSOLE_FIXTURE_OPERATOR,
+  CONSOLE_FIXTURE_OPS_KEY,
   consoleVisualFixtureActive,
 } from "@/lib/internal-console/visual-fixture";
 
-const FIXTURE_KEY = "sherivs:console-visual-fixture-ops";
+const FIXTURE_KEY = CONSOLE_FIXTURE_OPS_KEY;
 
 type FixtureStore = {
   tickets: ConsoleTicket[];
@@ -98,7 +99,10 @@ export async function apiCreateTicket(input: {
   return createConsoleTicket({ data: input });
 }
 
-export async function apiTransitionTicket(id: string, toStatus: TicketStatus): Promise<ConsoleTicket> {
+export async function apiTransitionTicket(
+  id: string,
+  toStatus: TicketStatus,
+): Promise<ConsoleTicket> {
   if (consoleVisualFixtureActive()) {
     const store = readStore();
     const ticket = store.tickets.find((row) => row.id === id);
@@ -208,9 +212,10 @@ export async function apiSearchLogs(query?: string): Promise<{
       })),
     ];
     const q = (query ?? "").trim().toLowerCase();
-    const events = q.length < 2 ? haystack : haystack.filter((row) =>
-      `${row.action} ${row.description}`.toLowerCase().includes(q),
-    );
+    const events =
+      q.length < 2
+        ? haystack
+        : haystack.filter((row) => `${row.action} ${row.description}`.toLowerCase().includes(q));
     return { events, source: "local visual fixture", available: true };
   }
   return searchConsoleLogs({ data: { query } });

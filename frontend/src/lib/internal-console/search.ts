@@ -7,7 +7,8 @@ import type { ConsoleNavItem } from "./roles";
 import type { InternalWorkspace } from "./workspaces";
 import type { ConsoleRuntimeContract } from "./runtime-contract";
 
-export type ConsoleSearchKind = "staff" | "workspace" | "runtime" | "page" | "help" | "organization";
+export type ConsoleSearchKind =
+  "staff" | "workspace" | "runtime" | "page" | "help" | "organization";
 
 export interface ConsoleSearchHit {
   kind: ConsoleSearchKind;
@@ -30,6 +31,9 @@ export interface ConsoleHelpArticle {
   title: string;
   description: string;
   href: string;
+  /** null = every console operator. */
+  capability?: string | null;
+  anyOf?: readonly string[];
 }
 
 function haystack(...parts: Array<string | null | undefined>): string {
