@@ -448,21 +448,23 @@ function AuthPage() {
               Local V1 role simulation. These are not production identities and do not write staff,
               invitation, or workspace records.
             </p>
-            {CONSOLE_FIXTURE_PERSONAS.map((persona) => (
-              <button
-                key={persona.key}
-                type="button"
-                className="app-entry-login-google"
-                data-testid={
-                  persona.key === "platform_owner"
-                    ? "console-visual-fixture"
-                    : `console-fixture-${persona.key}`
-                }
-                onClick={() => void continueLocalFixture(persona.key)}
-              >
-                Continue as {persona.jobTitle}
-              </button>
-            ))}
+            <div className="app-entry-fixture-roles">
+              {CONSOLE_FIXTURE_PERSONAS.map((persona) => (
+                <button
+                  key={persona.key}
+                  type="button"
+                  className="app-entry-login-google"
+                  data-testid={
+                    persona.key === "platform_owner"
+                      ? "console-visual-fixture"
+                      : `console-fixture-${persona.key}`
+                  }
+                  onClick={() => void continueLocalFixture(persona.key)}
+                >
+                  Continue as {persona.jobTitle}
+                </button>
+              ))}
+            </div>
           </div>
         ) : null}
 

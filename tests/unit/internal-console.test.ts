@@ -647,6 +647,32 @@ describe("local visual fixture", () => {
     }
   });
 
+  it("does not leak organization pipeline data to roles without tenants.read", async () => {
+    const { buildConsoleVisualFixtureOverview, CONSOLE_FIXTURE_PERSONAS } =
+      await import("@/lib/internal-console/visual-fixture");
+    const withTenants = new Set(["platform_owner", "platform_admin", "operations", "support", "sales"]);
+    for (const persona of CONSOLE_FIXTURE_PERSONAS) {
+      const overview = buildConsoleVisualFixtureOverview(persona);
+      if (withTenants.has(persona.key)) {
+        expect(overview.organizationMetrics.available).toBe(true);
+        expect(overview.organizationStore).toBe("fixture");
+      } else {
+        expect(overview.organizationMetrics.available).toBe(false);
+        expect(overview.organizations).toEqual([]);
+        expect(overview.assignments).toEqual([]);
+        expect(
+          overview.attention.every(
+            (item) => !item.href.startsWith("/console/organizations"),
+          ),
+        ).toBe(true);
+        expect(overview.metrics.every((metric) => !metric.key.includes("organization"))).toBe(true);
+      }
+    }
+    const home = readFileSync("frontend/src/components/internal-console/home-screen.tsx", "utf8");
+    expect(home).toContain("canReadOrgs && overview.organizationMetrics.available");
+    expect(home).toContain('data-testid="console-org-pipeline"');
+  });
+
   it("registers a clickable route file for every console navigation href", () => {
     const hrefs = new Set<string>();
     const walk = (items: typeof CONSOLE_NAV) => {

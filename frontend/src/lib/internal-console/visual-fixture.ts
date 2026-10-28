@@ -690,6 +690,20 @@ export function buildConsoleVisualFixtureOverview(
     roles,
   });
   const snapshot = fixtureOrganizationSnapshot();
+  const canReadOrgs = persona.isSuperAdmin || capabilities.includes("platform.tenants.read");
+  const canAudit = persona.isSuperAdmin || capabilities.includes("platform.audit.read");
+  const unauthorizedOrgMetrics = {
+    available: false,
+    source: "not authorized",
+    total: null,
+    active: null,
+    onboarding: null,
+    suspended: null,
+    failedProvisioning: null,
+    submitted: null,
+    conversionRate: null,
+    medianOnboardingHours: null,
+  };
   const healthCards = [
     {
       key: "platform",
@@ -752,9 +766,21 @@ export function buildConsoleVisualFixtureOverview(
       cards: healthCards,
       caveat: "These statuses describe the local visual fixture, not a live environment.",
     },
-    metrics: fixtureOrganizationMetricsCards(snapshot),
-    attention: fixtureAttention(snapshot),
-    activity: snapshot.activity,
+    metrics: canReadOrgs
+      ? fixtureOrganizationMetricsCards(snapshot)
+      : fixtureOrganizationMetricsCards(snapshot).filter(
+          (metric) => !metric.key.includes("organization") && metric.key !== "onboarding-conversion",
+        ),
+    attention: fixtureAttention(snapshot).filter((item) => {
+      if (
+        item.href === CONSOLE_PATHS.organizations ||
+        item.href.startsWith(`${CONSOLE_PATHS.organizations}/`)
+      ) {
+        return canReadOrgs;
+      }
+      return true;
+    }),
+    activity: canAudit ? snapshot.activity : [],
     workspaces,
     workspaceStore: "derived-fallback",
     runtimes: [...REGISTERED_RUNTIMES],
@@ -766,10 +792,12 @@ export function buildConsoleVisualFixtureOverview(
     activeStaff: 0,
     usageDefinition:
       "Fixture directory is empty. No synthetic staff rows are shown as if they were live records.",
-    organizations: snapshot.organizations,
-    organizationStore: "fixture",
-    organizationMetrics: snapshot.metrics,
-    assignments: snapshot.assignments.filter((item) => item.staffId === persona.id),
+    organizations: canReadOrgs ? snapshot.organizations : [],
+    organizationStore: canReadOrgs ? "fixture" : "unavailable",
+    organizationMetrics: canReadOrgs ? snapshot.metrics : unauthorizedOrgMetrics,
+    assignments: canReadOrgs
+      ? snapshot.assignments.filter((item) => item.staffId === persona.id)
+      : [],
     scholarTenants: null,
     registeredUsers: null,
     activeUsers30d: null,

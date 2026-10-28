@@ -867,6 +867,18 @@ a.app-entry-login-submit {
   text-align: left;
 }
 
+.app-entry-fixture-roles {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.45rem;
+}
+
+.app-entry-fixture-roles .app-entry-login-google {
+  min-height: 2.6rem;
+  padding: 0.55rem 0.6rem;
+  font-size: 0.82rem;
+}
+
 .app-entry-login .app-entry-alert-error {
   color: #8a1f32;
   background: rgba(255, 107, 122, 0.12);
