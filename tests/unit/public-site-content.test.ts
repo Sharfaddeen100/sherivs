@@ -9,7 +9,7 @@ import { fileURLToPath } from "node:url";
 import { PUBLIC_ANNOUNCEMENT } from "@/lib/public-site/announcement";
 import { publishedArticles, ARTICLE_CATEGORIES } from "@/lib/public-site/articles";
 import { FAQ_ITEMS, FAQ_PREVIEW_IDS } from "@/lib/public-site/faq";
-import { HELP_ARTICLES } from "@/lib/public-site/help";
+import { HELP_ARTICLES, listedHelpArticles } from "@/lib/public-site/help";
 import { LEGAL_DOCUMENTS } from "@/lib/public-site/legal";
 import { PUBLIC_SITEMAP_PATHS } from "@/lib/public-site/navigation";
 import {
@@ -72,6 +72,8 @@ describe("public content honesty", () => {
     expect(HELP_ARTICLES.find((article) => article.slug === "ai-workforce")?.status).toBe(
       "in_development",
     );
+    expect(listedHelpArticles().some((article) => article.slug === "ai-workforce")).toBe(false);
+    expect(listedHelpArticles().some((article) => article.slug === "digital-twins")).toBe(false);
   });
 
   it("does not index unpublished legal drafts", () => {
@@ -247,6 +249,7 @@ describe("public content honesty", () => {
   it("keeps the homepage free of customer-availability announcements", () => {
     const home = read("frontend/src/components/public/sherivs-home.tsx");
     expect(home).not.toMatch(/accepting customers|now accepting|open for customers/i);
+    expect(home).not.toMatch(/institutional computing|AI workforce|Developer Platform/i);
     expect(home).toContain('href="/solutions/education"');
     expect(home).toContain('href="/onboarding"');
     expect(FAQ_PREVIEW_IDS).toContain("how-to-start");

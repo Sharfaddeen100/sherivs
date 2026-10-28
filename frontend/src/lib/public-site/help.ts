@@ -4,6 +4,8 @@ export interface HelpArticle {
   title: string;
   summary: string;
   status: "available" | "in_development";
+  /** When false, the article stays in the catalog but is omitted from the public index. */
+  listed?: boolean;
   body: readonly { heading?: string; paragraphs: readonly string[] }[];
 }
 
@@ -93,6 +95,7 @@ export const HELP_ARTICLES: readonly HelpArticle[] = [
     title: "Using AI workers safely",
     summary: "AI workers are governed capabilities, not unrestricted operators.",
     status: "in_development",
+    listed: false,
     body: [
       {
         paragraphs: [
@@ -108,6 +111,7 @@ export const HELP_ARTICLES: readonly HelpArticle[] = [
     title: "Digital twins in the product",
     summary: "What exists today versus the long-term runtime.",
     status: "in_development",
+    listed: false,
     body: [
       {
         paragraphs: [
@@ -182,4 +186,8 @@ export const HELP_ARTICLES: readonly HelpArticle[] = [
 
 export function helpBySlug(slug: string) {
   return HELP_ARTICLES.find((article) => article.slug === slug);
+}
+
+export function listedHelpArticles() {
+  return HELP_ARTICLES.filter((article) => article.listed !== false);
 }

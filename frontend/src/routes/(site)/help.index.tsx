@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { HELP_ARTICLES, HELP_CATEGORIES } from "@/lib/public-site/help";
+import { HELP_CATEGORIES, listedHelpArticles } from "@/lib/public-site/help";
 import { publicHead } from "@/lib/public-site/seo";
 import { MarketingPage } from "@/components/public/marketing-page";
 import { PageContainer, Section, StatusBadge } from "@/components/public/ui";
@@ -9,7 +9,8 @@ export const Route = createFileRoute("/(site)/help/")({
   head: () =>
     publicHead({
       title: "Help center",
-      description: "Getting started, accounts, organizations, Scholar, integrations, and troubleshooting — limited to implemented functionality.",
+      description:
+        "Getting started, accounts, organizations, Scholar, integrations, and troubleshooting — limited to implemented functionality.",
       path: "/help",
     }),
 });
@@ -31,7 +32,9 @@ function HelpIndex() {
             Help categories
           </h2>
           {HELP_CATEGORIES.map((category) => {
-            const articles = HELP_ARTICLES.filter((article) => article.category === category);
+            const articles = listedHelpArticles().filter(
+              (article) => article.category === category,
+            );
             if (!articles.length) return null;
             return (
               <div key={category}>
@@ -46,7 +49,9 @@ function HelpIndex() {
                       >
                         <span>
                           <span className="font-medium">{article.title}</span>
-                          <span className="mt-1 block text-sm text-sherivs-muted">{article.summary}</span>
+                          <span className="mt-1 block text-sm text-sherivs-muted">
+                            {article.summary}
+                          </span>
                         </span>
                         <StatusBadge status={article.status} />
                       </Link>

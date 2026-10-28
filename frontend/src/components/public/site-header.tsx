@@ -40,6 +40,12 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-[var(--sherivs-z-nav)] border-b border-[var(--sherivs-border)] bg-[color-mix(in_oklab,var(--sherivs-obsidian)_82%,transparent)] backdrop-blur-xl">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-3 focus:z-[calc(var(--sherivs-z-nav)+1)] focus:rounded-md focus:bg-sherivs-blue focus:px-3 focus:py-2 focus:text-sm focus:text-white"
+      >
+        Skip to content
+      </a>
       {PUBLIC_ANNOUNCEMENT.published && PUBLIC_ANNOUNCEMENT.text ? (
         <div className="border-b border-[var(--sherivs-border)] bg-[var(--sherivs-midnight)] px-4 py-2 text-center text-xs text-sherivs-muted">
           {PUBLIC_ANNOUNCEMENT.href ? (
@@ -66,7 +72,6 @@ export function SiteHeader() {
               key={group.id}
               group={group}
               open={desktopGroup === group.id}
-              onOpen={() => setDesktopGroup(group.id)}
               onClose={() => setDesktopGroup(null)}
               onToggle={() =>
                 setDesktopGroup((current) => (current === group.id ? null : group.id))
@@ -107,21 +112,19 @@ export function SiteHeader() {
 function DesktopNavGroup({
   group,
   open,
-  onOpen,
   onClose,
   onToggle,
 }: {
   group: NavGroup;
   open: boolean;
-  onOpen: () => void;
   onClose: () => void;
   onToggle: () => void;
 }) {
   return (
-    <div className="relative" onMouseEnter={onOpen} onMouseLeave={onClose}>
+    <div className="relative">
       <button
         type="button"
-        className="inline-flex items-center gap-1 rounded-md px-3 py-2 text-sm text-sherivs-muted transition-colors hover:bg-white/5 hover:text-sherivs-white"
+        className={`inline-flex items-center gap-1 rounded-md px-3 py-2 text-sm transition-colors hover:bg-white/5 hover:text-sherivs-white ${open ? "bg-white/5 text-sherivs-white" : "text-sherivs-muted"}`}
         aria-expanded={open}
         aria-haspopup="true"
         onClick={onToggle}

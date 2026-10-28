@@ -84,6 +84,7 @@
 .sherivs-public {
   color: var(--sherivs-text);
   background: var(--sherivs-bg);
+  overflow-x: clip;
   scroll-padding-top: calc(var(--sherivs-header-offset) + 0.75rem);
 }
 

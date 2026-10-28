@@ -7,7 +7,7 @@ export function HeroProductVisual({ className = "" }: { className?: string }) {
     <div className={`relative isolate ${className}`} aria-hidden="true">
       <div className="sherivs-hero-atmosphere" />
       <div className="relative mx-auto w-full max-w-[34rem]">
-        <div className="sherivs-glass sherivs-drift rounded-[var(--sherivs-radius-lg)] p-4 sm:p-5">
+        <div className="sherivs-glass rounded-[var(--sherivs-radius-lg)] p-4 sm:p-5">
           <div className="flex items-center justify-between gap-3">
             <div>
               <p className="sherivs-kicker">School workspace</p>
@@ -44,24 +44,26 @@ export function HeroProductVisual({ className = "" }: { className?: string }) {
           </div>
         </div>
 
-        <div className="sherivs-glass absolute -left-2 top-[62%] hidden w-44 rounded-[var(--sherivs-radius)] p-3 sm:block lg:-left-8">
-          <p className="text-[10px] font-semibold uppercase tracking-widest text-sherivs-cyan">
-            Class activity
-          </p>
-          <p className="mt-1 text-sm font-medium">Attendance register</p>
-          <p className="mt-1 text-xs leading-snug text-sherivs-muted">
-            Teachers record the day’s class information in their workspace.
-          </p>
-        </div>
-        <div className="sherivs-glass absolute -right-2 top-8 hidden w-44 rounded-[var(--sherivs-radius)] p-3 sm:block lg:-right-6">
-          <p className="text-[10px] font-semibold uppercase tracking-widest text-sherivs-cyan">
-            Family access
-          </p>
-          <p className="mt-1 text-sm font-medium">Parent workspace</p>
-          <p className="mt-1 text-xs leading-snug text-sherivs-muted">
-            Guardians see the records the school has authorized.
-          </p>
-        </div>
+        <ul className="mt-3 grid gap-3 sm:grid-cols-2">
+          <li className="sherivs-glass rounded-[var(--sherivs-radius)] p-3.5">
+            <p className="text-[10px] font-semibold uppercase tracking-widest text-sherivs-cyan">
+              Class activity
+            </p>
+            <p className="mt-1 text-sm font-medium">Attendance register</p>
+            <p className="mt-1 text-xs leading-snug text-sherivs-muted">
+              Teachers record the day’s class information in their workspace.
+            </p>
+          </li>
+          <li className="sherivs-glass rounded-[var(--sherivs-radius)] p-3.5">
+            <p className="text-[10px] font-semibold uppercase tracking-widest text-sherivs-cyan">
+              Family access
+            </p>
+            <p className="mt-1 text-sm font-medium">Parent workspace</p>
+            <p className="mt-1 text-xs leading-snug text-sherivs-muted">
+              Guardians see the records the school has authorized.
+            </p>
+          </li>
+        </ul>
       </div>
     </div>
   );
