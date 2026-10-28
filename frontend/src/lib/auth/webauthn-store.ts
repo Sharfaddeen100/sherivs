@@ -2,6 +2,9 @@
  * WebAuthn persistence contracts. Implementations live in .server.ts so the
  * service-role client never reaches the browser bundle.
  */
+import type { PasskeyOnboardingStatus } from "./webauthn-policy";
+
+export type { PasskeyOnboardingStatus };
 
 export type WebAuthnCeremony = "registration" | "authentication";
 
@@ -46,6 +49,12 @@ export type WebAuthnCredentialPatch = {
   deviceType?: WebAuthnCredentialRecord["deviceType"];
 };
 
+export type WebAuthnPreferenceRecord = {
+  userId: string;
+  onboardingStatus: PasskeyOnboardingStatus;
+  passkeyFirst: boolean;
+};
+
 export interface WebAuthnStore {
   insertChallenge(
     row: Omit<WebAuthnChallengeRecord, "id"> & { id?: string },
@@ -65,6 +74,8 @@ export interface WebAuthnStore {
   ): Promise<WebAuthnCredentialRecord | null>;
   deleteCredential(id: string, userId: string): Promise<boolean>;
   countCredentials(userId: string): Promise<number>;
+  getPreferences(userId: string): Promise<WebAuthnPreferenceRecord | null>;
+  upsertPreferences(row: WebAuthnPreferenceRecord): Promise<WebAuthnPreferenceRecord>;
 }
 
 export type WebAuthnUserProfile = {

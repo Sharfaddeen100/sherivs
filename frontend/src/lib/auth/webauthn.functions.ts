@@ -189,3 +189,40 @@ export const removePasskey = createServerFn({ method: "POST" })
       publicError(err);
     }
   });
+
+export const getPasskeyOnboardingState = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    try {
+      const { service } = await loadService();
+      return await service.onboardingState({ userId: context.userId });
+    } catch (err) {
+      publicError(err);
+    }
+  });
+
+export const dismissPasskeyOnboarding = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    try {
+      const { service } = await loadService();
+      return await service.dismissOnboarding({ userId: context.userId });
+    } catch (err) {
+      publicError(err);
+    }
+  });
+
+export const setPasskeyFirstPreference = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .validator((input: unknown) => z.object({ passkeyFirst: z.boolean() }).parse(input))
+  .handler(async ({ data, context }) => {
+    try {
+      const { service } = await loadService();
+      return await service.setPasskeyFirst({
+        userId: context.userId,
+        passkeyFirst: data.passkeyFirst,
+      });
+    } catch (err) {
+      publicError(err);
+    }
+  });

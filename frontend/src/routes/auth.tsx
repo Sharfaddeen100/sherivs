@@ -2,7 +2,8 @@ import { createFileRoute, Link, Navigate, redirect } from "@tanstack/react-route
 import { useEffect, useState } from "react";
 import { Lock, LogIn, Mail } from "lucide-react";
 import { PasskeySignInButton } from "@/components/auth/passkey-sign-in-button";
-import { PASSKEY_DEVICE_HELP } from "@/lib/auth/webauthn-client";
+import { PasskeyConditionalLogin } from "@/components/auth/passkey-conditional-login";
+import { PASSKEY_DEVICE_HELP, passkeyLoginPriority } from "@/lib/auth/webauthn-client";
 import { supabase } from "@/integrations/supabase/client";
 import { useApp } from "@/contexts/app-context";
 import { Turnstile, captchaRequired } from "@/components/security/turnstile";
@@ -82,6 +83,7 @@ function AuthPage() {
     typeof window !== "undefined" ? rememberPreferenceActive() : false,
   );
   const [busyKind, setBusyKind] = useState<"password" | "google" | "passkey" | null>(null);
+  const prioritizePasskey = mode === "signin" && passkeyLoginPriority();
 
   // Count down any active backoff after repeated failed sign-ins.
   useEffect(() => {
@@ -228,6 +230,41 @@ function AuthPage() {
     await refresh();
   }
 
+  async function completePasskeySignIn() {
+    setRememberPreference(remember);
+    const { data } = await supabase.auth.getUser();
+    if (tenantSlug && school && data.user) {
+      const { data: u } = await supabase
+        .from("users")
+        .select("school_id, role")
+        .eq("id", data.user.id)
+        .maybeSingle();
+      if (u && u.school_id !== school.id) {
+        await supabase.auth.signOut();
+        throw new Error(
+          `This account does not belong to ${school.name}. Please sign in on your own school portal.`,
+        );
+      }
+    }
+    const customHost = resolveTenantDomain();
+    if (customHost && data.user && !(await schoolDomainLoginAllowed(customHost))) {
+      await supabase.auth.signOut();
+      throw new Error(
+        `This account does not belong to ${school?.name ?? "this school"}. Please sign in on your own school's address or at app.sherivs.com.`,
+      );
+    }
+    void fetch("/api/public/audit/password-reset", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        event: "login_succeeded",
+        email: data.user?.email,
+        user_id: data.user?.id,
+      }),
+    }).catch(() => {});
+    await refresh();
+  }
+
   async function handleGoogle() {
     reset();
     setRememberPreference(remember);
@@ -337,9 +374,36 @@ function AuthPage() {
               onChange={(e) => setEmail(e.target.value)}
               className="app-entry-login-input"
               placeholder="Email address"
-              autoComplete="email"
+              autoComplete={mode === "signin" ? "username webauthn" : "email"}
             />
           </label>
+          {signInCopy ? (
+            <PasskeyConditionalLogin
+              enabled={waitMs <= 0 && !busy}
+              onBusy={(next) => {
+                setBusy(next);
+                setBusyKind(next ? "passkey" : null);
+              }}
+              onError={setError}
+              onSignedIn={completePasskeySignIn}
+            />
+          ) : null}
+          {prioritizePasskey ? (
+            <>
+              <PasskeySignInButton
+                className="app-entry-login-submit"
+                iconClassName="app-entry-glass-icon"
+                disabled={busy || waitMs > 0}
+                onBusy={(next) => {
+                  setBusy(next);
+                  setBusyKind(next ? "passkey" : null);
+                }}
+                onError={setError}
+                onSignedIn={completePasskeySignIn}
+              />
+              <p className="app-entry-login-or">or use your password</p>
+            </>
+          ) : null}
           <label className="app-entry-login-field">
             <span className="sr-only">Password</span>
             <span className="app-entry-login-field-icon">
@@ -404,7 +468,7 @@ function AuthPage() {
           <button
             type="submit"
             disabled={busy || (mode === "signin" && waitMs > 0)}
-            className="app-entry-login-submit"
+            className={prioritizePasskey ? "app-entry-login-google" : "app-entry-login-submit"}
           >
             <span className="app-entry-glass-icon" aria-hidden="true">
               <LogIn />
@@ -412,7 +476,7 @@ function AuthPage() {
             {busyKind === "password"
               ? "Please wait…"
               : mode === "signin"
-                ? "Sign in"
+                ? "Sign in with password"
                 : "Create account"}
           </button>
 
@@ -430,55 +494,20 @@ function AuthPage() {
               {busyKind === "google" ? "Opening Google…" : "Sign in with Google"}
             </button>
           )}
-          {signInCopy && (
-            <>
-              <PasskeySignInButton
-                className="app-entry-login-google"
-                iconClassName="app-entry-glass-icon"
-                disabled={busy || waitMs > 0}
-                onBusy={(next) => {
-                  setBusy(next);
-                  setBusyKind(next ? "passkey" : null);
-                }}
-                onError={setError}
-                onSignedIn={async () => {
-                  setRememberPreference(remember);
-                  const { data } = await supabase.auth.getUser();
-                  if (tenantSlug && school && data.user) {
-                    const { data: u } = await supabase
-                      .from("users")
-                      .select("school_id, role")
-                      .eq("id", data.user.id)
-                      .maybeSingle();
-                    if (u && u.school_id !== school.id) {
-                      await supabase.auth.signOut();
-                      throw new Error(
-                        `This account does not belong to ${school.name}. Please sign in on your own school portal.`,
-                      );
-                    }
-                  }
-                  const customHost = resolveTenantDomain();
-                  if (customHost && data.user && !(await schoolDomainLoginAllowed(customHost))) {
-                    await supabase.auth.signOut();
-                    throw new Error(
-                      `This account does not belong to ${school?.name ?? "this school"}. Please sign in on your own school's address or at app.sherivs.com.`,
-                    );
-                  }
-                  void fetch("/api/public/audit/password-reset", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                      event: "login_succeeded",
-                      email: data.user?.email,
-                      user_id: data.user?.id,
-                    }),
-                  }).catch(() => {});
-                  await refresh();
-                }}
-              />
-              <p className="app-entry-login-invite">{PASSKEY_DEVICE_HELP}</p>
-            </>
-          )}
+          {signInCopy && !prioritizePasskey ? (
+            <PasskeySignInButton
+              className="app-entry-login-google"
+              iconClassName="app-entry-glass-icon"
+              disabled={busy || waitMs > 0}
+              onBusy={(next) => {
+                setBusy(next);
+                setBusyKind(next ? "passkey" : null);
+              }}
+              onError={setError}
+              onSignedIn={completePasskeySignIn}
+            />
+          ) : null}
+          {signInCopy ? <p className="app-entry-login-invite">{PASSKEY_DEVICE_HELP}</p> : null}
         </form>
 
         {localFixtureEnabled ? (

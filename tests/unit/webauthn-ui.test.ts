@@ -17,6 +17,26 @@ describe("passkey UI integration", () => {
       expect(src).toContain("PASSKEY_DEVICE_HELP");
     }
     expect(entry).toContain('data-testid="app-entry-submit"');
+    expect(entry).toContain("username webauthn");
+    expect(entry).toContain("PasskeyConditionalLogin");
+    expect(entry).toContain("passkeyLoginPriority");
+    expect(auth).toContain("username webauthn");
+    expect(auth).toContain("PasskeyConditionalLogin");
+  });
+
+  it("offers first-login enrollment with a toggle, skip, and no silent registration", () => {
+    const enroll = read("frontend/src/components/auth/passkey-enrollment-screen.tsx");
+    const gate = read("frontend/src/components/auth/passkey-enrollment-gate.tsx");
+    const shell = read("frontend/src/components/app-shell/app-shell.tsx");
+    const consoleShell = read("frontend/src/components/internal-console/console-shell.tsx");
+    expect(enroll).toContain("Enable passkeys");
+    expect(enroll).toContain("Skip for now");
+    expect(enroll).toContain("registerPasskey");
+    expect(enroll).not.toContain("startRegistration");
+    expect(enroll.toLowerCase()).not.toContain("every device uses a fingerprint");
+    expect(gate).toContain("enrollmentEligible");
+    expect(shell).toContain("PasskeyEnrollmentGate");
+    expect(consoleShell).toContain("PasskeyEnrollmentGate");
   });
 
   it("manages passkeys on the security screen and console account page", () => {
@@ -29,6 +49,8 @@ describe("passkey UI integration", () => {
     expect(manager).toContain("Rename");
     expect(manager).toContain("Remove");
     expect(manager).toContain("PASSKEY_DEVICE_HELP");
+    expect(manager).toContain("Offer passkey first");
+    expect(manager).toContain("savePasskeyFirstPreference");
     expect(manager.toLowerCase()).not.toContain("every device uses a fingerprint");
     expect(security.toLowerCase()).not.toContain("enable fingerprint or face id");
   });

@@ -4,28 +4,43 @@
  */
 import {
   browserSupportsWebAuthn,
+  browserSupportsWebAuthnAutofill,
   platformAuthenticatorIsAvailable,
   startAuthentication,
   startRegistration,
+  WebAuthnAbortService,
   WebAuthnError,
 } from "@simplewebauthn/browser";
 import { supabase } from "@/integrations/supabase/client";
-import { WEBAUTHN_PUBLIC_ERROR } from "./webauthn-policy";
 import {
+  shouldOfferPasskeyEnrollment,
+  shouldPrioritizePasskeyLogin,
+  WEBAUTHN_PUBLIC_ERROR,
+  type PasskeyOnboardingState,
+} from "./webauthn-policy";
+import {
+  dismissPasskeyOnboarding,
   getPasskeyAuthenticationOptions,
+  getPasskeyOnboardingState,
   getPasskeyRegistrationOptions,
   listPasskeys,
   removePasskey,
   renamePasskey,
+  setPasskeyFirstPreference,
   verifyPasskeyAuthentication,
   verifyPasskeyRegistration,
 } from "./webauthn.functions";
 import type { PasskeyListItem } from "./webauthn-store";
 
-export type { PasskeyListItem };
+export type { PasskeyListItem, PasskeyOnboardingState };
 
 export const PASSKEY_DEVICE_HELP =
   "Sign-in uses the passkey method this device already offers — fingerprint, face unlock, device PIN, or a security key. Sherivs never stores a fingerprint or face image.";
+
+export const PASSKEY_ENROLL_HELP =
+  "Turn this on to sign in with whatever unlock method this device already uses. Compatible devices may offer fingerprint, face unlock, a device PIN, or a security key. Sherivs never sees or stores a fingerprint or face image.";
+
+const PASSKEY_FIRST_HINT = "sherivs.passkey-first";
 
 export async function passkeysSupported(): Promise<boolean> {
   return browserSupportsWebAuthn();
@@ -40,7 +55,35 @@ export async function platformPasskeyAvailable(): Promise<boolean> {
   }
 }
 
-function mapBrowserError(err: unknown): string {
+export async function passkeyAutofillSupported(): Promise<boolean> {
+  if (!browserSupportsWebAuthn()) return false;
+  try {
+    return await browserSupportsWebAuthnAutofill();
+  } catch {
+    return false;
+  }
+}
+
+/** UX hint only. Never proof of a credential or a session. */
+export function readPasskeyFirstHint(): boolean {
+  if (typeof window === "undefined") return true;
+  try {
+    return window.localStorage.getItem(PASSKEY_FIRST_HINT) !== "0";
+  } catch {
+    return true;
+  }
+}
+
+export function writePasskeyFirstHint(enabled: boolean): void {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.setItem(PASSKEY_FIRST_HINT, enabled ? "1" : "0");
+  } catch {
+    /* private mode */
+  }
+}
+
+export function mapBrowserError(err: unknown): string {
   if (err instanceof WebAuthnError) {
     if (err.code === "ERROR_CEREMONY_ABORTED") return WEBAUTHN_PUBLIC_ERROR.cancelled;
     if (err.name === "NotAllowedError" || err.code === "ERROR_PASSTHROUGH_SEE_CAUSE_PROPERTY") {
@@ -79,7 +122,9 @@ export async function registerPasskey(label?: string): Promise<PasskeyListItem> 
   try {
     const optionsJSON = await getPasskeyRegistrationOptions();
     const response = await startRegistration({ optionsJSON });
-    return await verifyPasskeyRegistration({ data: { response, label } });
+    const created = await verifyPasskeyRegistration({ data: { response, label } });
+    writePasskeyFirstHint(true);
+    return created;
   } catch (err) {
     const mapped = mapBrowserError(err);
     throw new Error(
@@ -88,21 +133,32 @@ export async function registerPasskey(label?: string): Promise<PasskeyListItem> 
   }
 }
 
-export async function authenticateWithPasskey(): Promise<{ userId: string }> {
+export async function authenticateWithPasskey(opts?: {
+  autofill?: boolean;
+}): Promise<{ userId: string }> {
   if (!browserSupportsWebAuthn()) throw new Error(WEBAUTHN_PUBLIC_ERROR.unsupported);
   try {
     const optionsJSON = await getPasskeyAuthenticationOptions();
-    const response = await startAuthentication({ optionsJSON });
+    const response = await startAuthentication({
+      optionsJSON,
+      useBrowserAutofill: Boolean(opts?.autofill),
+      verifyBrowserAutofillInput: Boolean(opts?.autofill),
+    });
     const session = await verifyPasskeyAuthentication({ data: { response } });
     const { error } = await supabase.auth.setSession({
       access_token: session.accessToken,
       refresh_token: session.refreshToken,
     });
     if (error) throw new Error(WEBAUTHN_PUBLIC_ERROR.session_failed);
+    writePasskeyFirstHint(true);
     return { userId: session.userId };
   } catch (err) {
     throw new Error(mapBrowserError(err));
   }
+}
+
+export function cancelActivePasskeyCeremony(): void {
+  WebAuthnAbortService.cancelCeremony();
 }
 
 export async function loadPasskeys(): Promise<PasskeyListItem[]> {
@@ -118,4 +174,45 @@ export async function savePasskeyLabel(
 
 export async function deletePasskey(credentialId: string): Promise<void> {
   await removePasskey({ data: { credentialId } });
+}
+
+export async function loadPasskeyOnboardingState(): Promise<PasskeyOnboardingState> {
+  return getPasskeyOnboardingState();
+}
+
+export async function skipPasskeyOnboarding(): Promise<PasskeyOnboardingState> {
+  return dismissPasskeyOnboarding();
+}
+
+export async function savePasskeyFirstPreference(
+  passkeyFirst: boolean,
+): Promise<PasskeyOnboardingState> {
+  const state = await setPasskeyFirstPreference({ data: { passkeyFirst } });
+  writePasskeyFirstHint(passkeyFirst);
+  return state;
+}
+
+export async function enrollmentEligible(): Promise<boolean> {
+  const [supported, state] = await Promise.all([
+    passkeysSupported(),
+    loadPasskeyOnboardingState().catch((): PasskeyOnboardingState => ({
+      credentialCount: 0,
+      onboardingStatus: "dismissed",
+      passkeyFirst: true,
+      preferencesAvailable: false,
+    })),
+  ]);
+  return shouldOfferPasskeyEnrollment({
+    credentialCount: state.credentialCount,
+    onboardingStatus: state.onboardingStatus,
+    webauthnSupported: supported,
+    preferencesAvailable: state.preferencesAvailable,
+  });
+}
+
+export function passkeyLoginPriority(): boolean {
+  return shouldPrioritizePasskeyLogin({
+    webauthnSupported: browserSupportsWebAuthn(),
+    passkeyFirstPreference: readPasskeyFirstHint(),
+  });
 }

@@ -23,6 +23,8 @@ import type { RateLimiter } from "@/lib/ai-gateway.server";
 import {
   WEBAUTHN_MAX_PASSKEYS_PER_USER,
   WEBAUTHN_PUBLIC_ERROR,
+  type PasskeyOnboardingState,
+  type PasskeyOnboardingStatus,
   type WebAuthnConfig,
   type WebAuthnPublicErrorCode,
   challengeExpired,
@@ -30,6 +32,7 @@ import {
   decideSignatureCounter,
   defaultPasskeyLabel,
   originAllowedForRp,
+  parseOnboardingStatus,
   sanitizePasskeyLabel,
   userHandleFromUserId,
   userIdFromUtf8Handle,
@@ -39,6 +42,7 @@ import type {
   PasskeyListItem,
   WebAuthnCredentialRecord,
   WebAuthnDirectory,
+  WebAuthnPreferenceRecord,
   WebAuthnSessionMinter,
   WebAuthnStore,
 } from "./webauthn-store";
@@ -185,6 +189,44 @@ export function createWebAuthnService(deps: WebAuthnServiceDeps) {
     return origin;
   }
 
+  async function readPreferences(userId: string): Promise<{
+    row: WebAuthnPreferenceRecord;
+    available: boolean;
+  }> {
+    try {
+      const stored = await deps.store.getPreferences(userId);
+      return {
+        available: true,
+        row: stored ?? {
+          userId,
+          onboardingStatus: "pending",
+          passkeyFirst: true,
+        },
+      };
+    } catch {
+      return {
+        available: false,
+        row: { userId, onboardingStatus: "dismissed", passkeyFirst: true },
+      };
+    }
+  }
+
+  async function markEnrolled(
+    userId: string,
+    patch: { passkeyFirst?: boolean } = {},
+  ): Promise<void> {
+    try {
+      const current = await deps.store.getPreferences(userId);
+      await deps.store.upsertPreferences({
+        userId,
+        onboardingStatus: "enrolled",
+        passkeyFirst: patch.passkeyFirst ?? current?.passkeyFirst ?? true,
+      });
+    } catch {
+      /* preference table may be unapplied; credentials still persist */
+    }
+  }
+
   return {
     async registrationOptions(input: {
       userId: string;
@@ -323,6 +365,7 @@ export function createWebAuthnService(deps: WebAuthnServiceDeps) {
           aaguid: info.aaguid ?? null,
           label,
         });
+        await markEnrolled(input.userId, { passkeyFirst: true });
         await auditSafe({
           action: "webauthn.register.verify",
           userId: input.userId,
@@ -354,6 +397,7 @@ export function createWebAuthnService(deps: WebAuthnServiceDeps) {
       const options = await verify.generateAuthenticationOptions({
         rpID: deps.config.rpID,
         userVerification: "required",
+        timeout: deps.config.challengeTtlMs,
       });
       const now = deps.time.now();
       await deps.store.insertChallenge({
@@ -535,6 +579,93 @@ export function createWebAuthnService(deps: WebAuthnServiceDeps) {
         details: { credential_id_prefix: credentialIdPrefix(owned.credentialId) },
       });
       return { ok: true };
+    },
+
+    async onboardingState(input: { userId: string }): Promise<PasskeyOnboardingState> {
+      const profile = await deps.directory.getUser(input.userId);
+      if (!profile) throw new WebAuthnServiceError("unauthorized", 401);
+      const credentialCount = await deps.store.countCredentials(input.userId);
+      const prefs = await readPreferences(input.userId);
+      let onboardingStatus: PasskeyOnboardingStatus = parseOnboardingStatus(
+        prefs.row.onboardingStatus,
+      );
+      if (prefs.available && credentialCount > 0 && onboardingStatus === "pending") {
+        await markEnrolled(input.userId, { passkeyFirst: prefs.row.passkeyFirst });
+        onboardingStatus = "enrolled";
+      }
+      return {
+        credentialCount,
+        onboardingStatus,
+        passkeyFirst: prefs.row.passkeyFirst,
+        preferencesAvailable: prefs.available,
+      };
+    },
+
+    async dismissOnboarding(input: { userId: string }): Promise<PasskeyOnboardingState> {
+      const profile = await deps.directory.getUser(input.userId);
+      if (!profile) throw new WebAuthnServiceError("unauthorized", 401);
+      const credentialCount = await deps.store.countCredentials(input.userId);
+      if (credentialCount > 0) {
+        await markEnrolled(input.userId);
+        return this.onboardingState(input);
+      }
+      try {
+        const current = await deps.store.getPreferences(input.userId);
+        await deps.store.upsertPreferences({
+          userId: input.userId,
+          onboardingStatus: "dismissed",
+          passkeyFirst: current?.passkeyFirst ?? true,
+        });
+      } catch {
+        throw new WebAuthnServiceError("preference_failed");
+      }
+      await auditSafe({
+        action: "webauthn.onboarding.dismiss",
+        userId: input.userId,
+        tenantUserId: profile.tenantUserId,
+        schoolId: profile.schoolId,
+        actorEmail: profile.email,
+        recordId: input.userId,
+        outcome: "succeeded",
+        details: { reason: "skipped" },
+      });
+      return this.onboardingState(input);
+    },
+
+    async setPasskeyFirst(input: {
+      userId: string;
+      passkeyFirst: boolean;
+    }): Promise<PasskeyOnboardingState> {
+      const profile = await deps.directory.getUser(input.userId);
+      if (!profile) throw new WebAuthnServiceError("unauthorized", 401);
+      try {
+        const current = await deps.store.getPreferences(input.userId);
+        const credentialCount = await deps.store.countCredentials(input.userId);
+        const onboardingStatus: PasskeyOnboardingStatus =
+          current?.onboardingStatus === "dismissed"
+            ? "dismissed"
+            : credentialCount > 0
+              ? "enrolled"
+              : (current?.onboardingStatus ?? "pending");
+        await deps.store.upsertPreferences({
+          userId: input.userId,
+          onboardingStatus,
+          passkeyFirst: input.passkeyFirst,
+        });
+      } catch {
+        throw new WebAuthnServiceError("preference_failed");
+      }
+      await auditSafe({
+        action: "webauthn.preference.passkey_first",
+        userId: input.userId,
+        tenantUserId: profile.tenantUserId,
+        schoolId: profile.schoolId,
+        actorEmail: profile.email,
+        recordId: input.userId,
+        outcome: "succeeded",
+        details: { passkey_first: input.passkeyFirst },
+      });
+      return this.onboardingState(input);
     },
   };
 }

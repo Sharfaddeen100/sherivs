@@ -36,7 +36,8 @@ import {
 import { AppEntryCanvas } from "./app-entry-canvas";
 import { AppEntryWordmark } from "./app-entry-wordmark";
 import { PasskeySignInButton } from "@/components/auth/passkey-sign-in-button";
-import { PASSKEY_DEVICE_HELP } from "@/lib/auth/webauthn-client";
+import { PasskeyConditionalLogin } from "@/components/auth/passkey-conditional-login";
+import { PASSKEY_DEVICE_HELP, passkeyLoginPriority } from "@/lib/auth/webauthn-client";
 import { SignInLoading } from "./signin-loading";
 
 const backoff = createLoginBackoff(typeof window !== "undefined" ? window.localStorage : undefined);
@@ -122,6 +123,7 @@ function SignInPanel({ onSigningChange }: { onSigningChange: (signing: boolean) 
   const [captchaNonce, setCaptchaNonce] = useState(0);
   const [captchaUnavailable, setCaptchaUnavailable] = useState(false);
   const [waitMs, setWaitMs] = useState(() => backoff.remainingMs());
+  const prioritizePasskey = passkeyLoginPriority();
 
   useEffect(() => {
     if (waitMs <= 0) return;
@@ -218,6 +220,37 @@ function SignInPanel({ onSigningChange }: { onSigningChange: (signing: boolean) 
     }
   }
 
+  async function completePasskeySignIn() {
+    setRememberPreference(remember);
+    const { data } = await supabase.auth.getUser();
+    if (tenantSlug && school && data.user) {
+      const { data: u } = await supabase
+        .from("users")
+        .select("school_id, role")
+        .eq("id", data.user.id)
+        .maybeSingle();
+      if (u && u.school_id !== school.id) {
+        await supabase.auth.signOut();
+        throw new Error(INVITE_LOGIN_ERROR);
+      }
+    }
+    const customHost = resolveTenantDomain();
+    if (customHost && data.user && !(await schoolDomainLoginAllowed(customHost))) {
+      await supabase.auth.signOut();
+      throw new Error(INVITE_LOGIN_ERROR);
+    }
+    void fetch("/api/public/audit/password-reset", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        event: "login_succeeded",
+        email: data.user?.email,
+        user_id: data.user?.id,
+      }),
+    }).catch(() => {});
+    await refresh();
+  }
+
   async function handleGoogle() {
     setError(null);
     setRememberPreference(remember);
@@ -276,7 +309,7 @@ function SignInPanel({ onSigningChange }: { onSigningChange: (signing: boolean) 
             onChange={(e) => setIdentifier(e.target.value)}
             className="app-entry-login-input"
             placeholder="Email address"
-            autoComplete="username"
+            autoComplete="username webauthn"
             autoCapitalize="none"
             autoCorrect="off"
             spellCheck={false}
@@ -284,6 +317,29 @@ function SignInPanel({ onSigningChange }: { onSigningChange: (signing: boolean) 
             data-testid="app-entry-identifier"
           />
         </label>
+        <PasskeyConditionalLogin
+          enabled={waitMs <= 0}
+          onBusy={(next) => {
+            setBusy(next ? "passkey" : null);
+            onSigningChange(next);
+          }}
+          onError={setError}
+          onSignedIn={completePasskeySignIn}
+        />
+        {prioritizePasskey ? (
+          <PasskeySignInButton
+            className="app-entry-login-submit"
+            iconClassName="app-entry-glass-icon"
+            disabled={submitting || waitMs > 0}
+            onBusy={(next) => {
+              setBusy(next ? "passkey" : null);
+              onSigningChange(next);
+            }}
+            onError={setError}
+            onSignedIn={completePasskeySignIn}
+          />
+        ) : null}
+        {prioritizePasskey ? <p className="app-entry-login-or">or use your password</p> : null}
         <label className="app-entry-login-field">
           <span className="sr-only">Password</span>
           <span className="app-entry-login-field-icon">
@@ -335,13 +391,13 @@ function SignInPanel({ onSigningChange }: { onSigningChange: (signing: boolean) 
         <button
           type="submit"
           disabled={submitting || waitMs > 0}
-          className="app-entry-login-submit"
+          className={prioritizePasskey ? "app-entry-login-google" : "app-entry-login-submit"}
           data-testid="app-entry-submit"
         >
           <GlassIcon>
             <LogIn />
           </GlassIcon>
-          {busy === "password" ? "Please wait…" : "Sign in"}
+          {busy === "password" ? "Please wait…" : "Sign in with password"}
         </button>
         <button
           type="button"
@@ -355,46 +411,19 @@ function SignInPanel({ onSigningChange }: { onSigningChange: (signing: boolean) 
           </span>
           {busy === "google" ? "Opening Google…" : "Sign in with Google"}
         </button>
-        <PasskeySignInButton
-          className="app-entry-login-google"
-          iconClassName="app-entry-glass-icon"
-          disabled={submitting || waitMs > 0}
-          onBusy={(next) => {
-            setBusy(next ? "passkey" : null);
-            onSigningChange(next);
-          }}
-          onError={setError}
-          onSignedIn={async () => {
-            setRememberPreference(remember);
-            const { data } = await supabase.auth.getUser();
-            if (tenantSlug && school && data.user) {
-              const { data: u } = await supabase
-                .from("users")
-                .select("school_id, role")
-                .eq("id", data.user.id)
-                .maybeSingle();
-              if (u && u.school_id !== school.id) {
-                await supabase.auth.signOut();
-                throw new Error(INVITE_LOGIN_ERROR);
-              }
-            }
-            const customHost = resolveTenantDomain();
-            if (customHost && data.user && !(await schoolDomainLoginAllowed(customHost))) {
-              await supabase.auth.signOut();
-              throw new Error(INVITE_LOGIN_ERROR);
-            }
-            void fetch("/api/public/audit/password-reset", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                event: "login_succeeded",
-                email: data.user?.email,
-                user_id: data.user?.id,
-              }),
-            }).catch(() => {});
-            await refresh();
-          }}
-        />
+        {prioritizePasskey ? null : (
+          <PasskeySignInButton
+            className="app-entry-login-google"
+            iconClassName="app-entry-glass-icon"
+            disabled={submitting || waitMs > 0}
+            onBusy={(next) => {
+              setBusy(next ? "passkey" : null);
+              onSigningChange(next);
+            }}
+            onError={setError}
+            onSignedIn={completePasskeySignIn}
+          />
+        )}
         <p className="app-entry-login-invite">{PASSKEY_DEVICE_HELP}</p>
         <p className="app-entry-login-invite">
           Need an account? Ask your administrator to invite you.

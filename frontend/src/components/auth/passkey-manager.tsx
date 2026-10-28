@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 import { Fingerprint, ScanFace } from "lucide-react";
 import { ShellGlassIcon } from "@/components/app-shell/glass-icon";
+import { Switch } from "@/components/ui/switch";
 import {
   PASSKEY_DEVICE_HELP,
   deletePasskey,
+  loadPasskeyOnboardingState,
   loadPasskeys,
   platformPasskeyAvailable,
   registerPasskey,
+  savePasskeyFirstPreference,
   savePasskeyLabel,
   type PasskeyListItem,
 } from "@/lib/auth/webauthn-client";
@@ -28,9 +31,16 @@ export function PasskeyManager({ variant }: { variant: Variant }) {
   const [message, setMessage] = useState<string | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [draft, setDraft] = useState("");
+  const [passkeyFirst, setPasskeyFirst] = useState(true);
 
   async function refresh() {
     setItems(await loadPasskeys());
+    try {
+      const state = await loadPasskeyOnboardingState();
+      setPasskeyFirst(state.passkeyFirst);
+    } catch {
+      /* preference table may be unapplied */
+    }
   }
 
   useEffect(() => {
@@ -126,6 +136,27 @@ export function PasskeyManager({ variant }: { variant: Variant }) {
         <p className="sherivs-console-empty">{PASSKEY_DEVICE_HELP}</p>
       )}
 
+      <label className={shell ? "app-shell-passkey-item" : "sherivs-console-row"}>
+        <div>
+          <strong>Offer passkey first</strong>
+          <small>
+            Changes the sign-in layout on this account. It does not prove a passkey exists.
+          </small>
+        </div>
+        <Switch
+          checked={passkeyFirst}
+          disabled={busy !== null}
+          onCheckedChange={(next) => {
+            setPasskeyFirst(next);
+            void savePasskeyFirstPreference(next).catch(() => {
+              setPasskeyFirst(!next);
+              setMessage(WEBAUTHN_PUBLIC_ERROR.preference_failed);
+            });
+          }}
+          aria-label="Offer passkey first when signing in"
+          data-testid="passkey-first-toggle"
+        />
+      </label>
       <button
         type="button"
         className={shell ? "app-shell-primary" : "sherivs-console-btn"}

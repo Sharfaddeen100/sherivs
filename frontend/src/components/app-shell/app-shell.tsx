@@ -6,6 +6,7 @@ import { refreshPushTokenIfGranted } from "@/lib/push-client";
 import { SHELL_ACCOUNT_NAV } from "@/lib/shell/account";
 import { shellIcon } from "@/lib/shell/icon-registry";
 import { APP_SHELL_HOME, APP_SHELL_NOTIFICATIONS, APP_SHELL_PROFILE } from "@/lib/shell/paths";
+import { PasskeyEnrollmentGate } from "@/components/auth/passkey-enrollment-gate";
 import { ShellGlassIcon } from "./glass-icon";
 import { AppShellStateProvider, useAppShell } from "./shell-context";
 import "./app-shell.css";
@@ -86,7 +87,12 @@ function ShellChrome({ children }: { children: ReactNode }) {
                 <Bell />
               </ShellGlassIcon>
             </button>
-            <button type="button" className="app-shell-icon-btn" aria-label="Profile" onClick={() => go(APP_SHELL_PROFILE)}>
+            <button
+              type="button"
+              className="app-shell-icon-btn"
+              aria-label="Profile"
+              onClick={() => go(APP_SHELL_PROFILE)}
+            >
               {portrait}
             </button>
           </div>
@@ -102,7 +108,12 @@ function ShellChrome({ children }: { children: ReactNode }) {
             const Icon = slot.kind === "ai" ? Sparkles : shellIcon(slot.icon);
             const active = path === slot.href || (slot.kind === "home" && path === APP_SHELL_HOME);
             return (
-              <Link key={slot.key} to={slot.href as never} className={active ? "is-active" : undefined} aria-label={slot.label}>
+              <Link
+                key={slot.key}
+                to={slot.href as never}
+                className={active ? "is-active" : undefined}
+                aria-label={slot.label}
+              >
                 <ShellGlassIcon active={active}>
                   <Icon />
                 </ShellGlassIcon>
@@ -115,13 +126,20 @@ function ShellChrome({ children }: { children: ReactNode }) {
 
       {drawer ? (
         <>
-          <button type="button" className="app-shell-scrim" aria-label="Close menu" onClick={() => setDrawer(false)} />
+          <button
+            type="button"
+            className="app-shell-scrim"
+            aria-label="Close menu"
+            onClick={() => setDrawer(false)}
+          />
           <aside className="app-shell-drawer" data-testid="app-shell-drawer">
             <div className="app-shell-drawer-profile">
               {avatar ? (
                 <img className="app-shell-avatar app-shell-avatar-lg" src={avatar} alt="" />
               ) : (
-                <span className="app-shell-avatar app-shell-avatar-lg app-shell-avatar-fallback">{initials(display)}</span>
+                <span className="app-shell-avatar app-shell-avatar-lg app-shell-avatar-fallback">
+                  {initials(display)}
+                </span>
               )}
               <div>
                 <h2>{display}</h2>
@@ -185,11 +203,13 @@ export function AppShellLayout() {
   if (loading) return null;
   if (!authUser) return <Navigate to="/" search={{ panel: "signin" }} />;
   return (
-    <AppShellStateProvider>
-      <ShellChrome>
-        <Outlet />
-      </ShellChrome>
-    </AppShellStateProvider>
+    <PasskeyEnrollmentGate>
+      <AppShellStateProvider>
+        <ShellChrome>
+          <Outlet />
+        </ShellChrome>
+      </AppShellStateProvider>
+    </PasskeyEnrollmentGate>
   );
 }
 

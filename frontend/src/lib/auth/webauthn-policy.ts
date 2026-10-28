@@ -46,7 +46,46 @@ export const WEBAUTHN_PUBLIC_ERROR = {
   remove_failed: "The passkey could not be removed.",
   session_failed:
     "Passkey verified, but the application session could not be started. Please use your password.",
+  preference_failed: "That passkey setting could not be saved.",
 } as const;
+
+export const WEBAUTHN_ONBOARDING_STATUSES = ["pending", "dismissed", "enrolled"] as const;
+export type PasskeyOnboardingStatus = (typeof WEBAUTHN_ONBOARDING_STATUSES)[number];
+
+export type PasskeyOnboardingState = {
+  credentialCount: number;
+  onboardingStatus: PasskeyOnboardingStatus;
+  passkeyFirst: boolean;
+  preferencesAvailable: boolean;
+};
+
+/**
+ * Server credentials are the only proof of registration. Onboarding status
+ * and passkey-first are UX preferences and never authenticate the user.
+ */
+export function shouldOfferPasskeyEnrollment(input: {
+  credentialCount: number;
+  onboardingStatus: PasskeyOnboardingStatus;
+  webauthnSupported: boolean;
+  preferencesAvailable: boolean;
+}): boolean {
+  if (!input.preferencesAvailable) return false;
+  if (!input.webauthnSupported) return false;
+  if (input.credentialCount > 0) return false;
+  return input.onboardingStatus === "pending";
+}
+
+export function shouldPrioritizePasskeyLogin(input: {
+  webauthnSupported: boolean;
+  passkeyFirstPreference: boolean;
+}): boolean {
+  return input.webauthnSupported && input.passkeyFirstPreference;
+}
+
+export function parseOnboardingStatus(raw: unknown): PasskeyOnboardingStatus {
+  if (raw === "dismissed" || raw === "enrolled" || raw === "pending") return raw;
+  return "pending";
+}
 
 export type WebAuthnPublicErrorCode = keyof typeof WEBAUTHN_PUBLIC_ERROR;
 

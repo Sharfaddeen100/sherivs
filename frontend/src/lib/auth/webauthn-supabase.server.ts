@@ -6,7 +6,7 @@
 import { checkPublicRateLimit } from "@/lib/security/public-rate-limit.server";
 import type { RateLimiter } from "@/lib/ai-gateway.server";
 import { writeAuditRecord } from "@/lib/server/write-audit";
-import { parseWebAuthnConfig } from "./webauthn-policy";
+import { parseOnboardingStatus, parseWebAuthnConfig } from "./webauthn-policy";
 import {
   createSystemTimeAuthority,
   createWebAuthnService,
@@ -18,6 +18,7 @@ import type {
   WebAuthnChallengeRecord,
   WebAuthnCredentialRecord,
   WebAuthnDirectory,
+  WebAuthnPreferenceRecord,
   WebAuthnStore,
   WebAuthnUserProfile,
 } from "./webauthn-store";
@@ -27,6 +28,7 @@ type RpcResult<T> = Promise<{ data: T | null; error: { message: string } | null 
 type LooseQuery = {
   select(columns: string): LooseQuery;
   insert(row: Record<string, unknown>): LooseQuery;
+  upsert(row: Record<string, unknown>, opts?: { onConflict?: string }): LooseQuery;
   update(row: Record<string, unknown>): LooseQuery;
   delete(): LooseQuery;
   eq(column: string, value: unknown): LooseQuery;
@@ -215,6 +217,42 @@ export function createSupabaseWebAuthnStore(admin: WebAuthnAdminClient): WebAuth
     async countCredentials(userId) {
       const rows = await this.listCredentials(userId);
       return rows.length;
+    },
+
+    async getPreferences(userId) {
+      const { data, error } = await admin
+        .from("webauthn_preferences")
+        .select("user_id, onboarding_status, passkey_first")
+        .eq("user_id", userId)
+        .maybeSingle();
+      if (error) throw new Error(error.message);
+      if (!data) return null;
+      return {
+        userId: asString(data.user_id),
+        onboardingStatus: parseOnboardingStatus(data.onboarding_status),
+        passkeyFirst: data.passkey_first !== false,
+      } satisfies WebAuthnPreferenceRecord;
+    },
+
+    async upsertPreferences(row) {
+      const { data, error } = await admin
+        .from("webauthn_preferences")
+        .upsert(
+          {
+            user_id: row.userId,
+            onboarding_status: row.onboardingStatus,
+            passkey_first: row.passkeyFirst,
+          },
+          { onConflict: "user_id" },
+        )
+        .select("user_id, onboarding_status, passkey_first")
+        .single();
+      if (error || !data) throw new Error(error?.message ?? "preference persist failed");
+      return {
+        userId: asString(data.user_id),
+        onboardingStatus: parseOnboardingStatus(data.onboarding_status),
+        passkeyFirst: data.passkey_first !== false,
+      };
     },
   };
 }

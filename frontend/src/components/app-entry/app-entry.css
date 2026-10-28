@@ -776,6 +776,13 @@ a.app-entry-login-submit {
   background: linear-gradient(165deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.45));
 }
 
+.app-entry-login-or {
+  margin: 0.1rem 0 0;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--app-entry-login-muted);
+}
+
 .app-entry-login-invite {
   margin: 0.15rem 0 0;
   text-align: center;

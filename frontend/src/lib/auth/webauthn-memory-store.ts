@@ -8,6 +8,7 @@ import type {
   WebAuthnCredentialPatch,
   WebAuthnCredentialRecord,
   WebAuthnCeremony,
+  WebAuthnPreferenceRecord,
   WebAuthnStore,
 } from "./webauthn-store";
 
@@ -18,13 +19,16 @@ function id(): string {
 export function createMemoryWebAuthnStore(): WebAuthnStore & {
   challenges: WebAuthnChallengeRecord[];
   credentials: WebAuthnCredentialRecord[];
+  preferences: WebAuthnPreferenceRecord[];
 } {
   const challenges: WebAuthnChallengeRecord[] = [];
   const credentials: WebAuthnCredentialRecord[] = [];
+  const preferences: WebAuthnPreferenceRecord[] = [];
 
   return {
     challenges,
     credentials,
+    preferences,
     async insertChallenge(row) {
       if (challenges.some((c) => c.challenge === row.challenge)) {
         throw new Error("duplicate challenge");
@@ -84,6 +88,20 @@ export function createMemoryWebAuthnStore(): WebAuthnStore & {
     },
     async countCredentials(userId) {
       return credentials.filter((c) => c.userId === userId).length;
+    },
+    async getPreferences(userId) {
+      return preferences.find((row) => row.userId === userId) ?? null;
+    },
+    async upsertPreferences(row) {
+      const idx = preferences.findIndex((item) => item.userId === row.userId);
+      const next: WebAuthnPreferenceRecord = {
+        userId: row.userId,
+        onboardingStatus: row.onboardingStatus,
+        passkeyFirst: row.passkeyFirst,
+      };
+      if (idx < 0) preferences.push(next);
+      else preferences[idx] = next;
+      return next;
     },
   };
 }

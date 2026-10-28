@@ -474,4 +474,50 @@ describe("WebAuthn service ceremonies", () => {
       }),
     ).rejects.toMatchObject({ code: "unauthorized" });
   });
+
+  it("shows first-login enrollment until the user skips or registers", async () => {
+    const { service, store } = harness();
+    const before = await service.onboardingState({ userId: USER_A });
+    expect(before).toMatchObject({
+      credentialCount: 0,
+      onboardingStatus: "pending",
+      passkeyFirst: true,
+      preferencesAvailable: true,
+    });
+    const skipped = await service.dismissOnboarding({ userId: USER_A });
+    expect(skipped.onboardingStatus).toBe("dismissed");
+    expect(store.credentials).toHaveLength(0);
+    await expect(service.dismissOnboarding({ userId: USER_B })).resolves.toMatchObject({
+      onboardingStatus: "dismissed",
+    });
+  });
+
+  it("marks onboarding enrolled only after a verified registration", async () => {
+    const { service } = harness();
+    await service.dismissOnboarding({ userId: USER_A });
+    const options = await service.registrationOptions({
+      userId: USER_A,
+      origin: ORIGIN,
+      rateKey: USER_A,
+    });
+    await service.verifyRegistration({
+      userId: USER_A,
+      origin: ORIGIN,
+      rateKey: USER_A,
+      response: registrationResponse(options.challenge),
+    });
+    const state = await service.onboardingState({ userId: USER_A });
+    expect(state.credentialCount).toBe(1);
+    expect(state.onboardingStatus).toBe("enrolled");
+  });
+
+  it("keeps passkey-first preference independent of whether a credential exists", async () => {
+    const { service } = harness();
+    const updated = await service.setPasskeyFirst({ userId: USER_A, passkeyFirst: false });
+    expect(updated.passkeyFirst).toBe(false);
+    expect(updated.credentialCount).toBe(0);
+    expect(updated.onboardingStatus).toBe("pending");
+    const other = await service.onboardingState({ userId: USER_B });
+    expect(other.passkeyFirst).toBe(true);
+  });
 });

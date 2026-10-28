@@ -8,6 +8,10 @@ const sql = readFileSync(
   join(ROOT, "database/supabase/migrations/20261028001000_sherivs_webauthn_passkeys.sql"),
   "utf8",
 );
+const prefsSql = readFileSync(
+  join(ROOT, "database/supabase/migrations/20261028002000_sherivs_webauthn_preferences.sql"),
+  "utf8",
+);
 const functions = readFileSync(join(ROOT, "frontend/src/lib/auth/webauthn.functions.ts"), "utf8");
 const client = readFileSync(join(ROOT, "frontend/src/lib/auth/webauthn-client.ts"), "utf8");
 const envExample = readFileSync(join(ROOT, ".env.example"), "utf8");
@@ -62,6 +66,19 @@ describe("WebAuthn migration and wiring", () => {
     );
     expect(client).toMatch(/supabase\.auth\.setSession/);
     expect(client).toMatch(/fingerprint, face unlock, device PIN/);
+  });
+
+  it("keeps passkey preferences distinct from credentials and service-role only", () => {
+    expect(prefsSql).toMatch(/CREATE TABLE IF NOT EXISTS public\.webauthn_preferences/);
+    expect(prefsSql).toMatch(/onboarding_status\s+text NOT NULL DEFAULT 'pending'/);
+    expect(prefsSql).toMatch(/passkey_first\s+boolean NOT NULL DEFAULT true/);
+    expect(prefsSql).toMatch(/REFERENCES auth\.users\(id\) ON DELETE CASCADE/);
+    expect(prefsSql).not.toMatch(/REFERENCES public\.users/);
+    expect(prefsSql).toMatch(/FORCE ROW LEVEL SECURITY/);
+    expect(prefsSql).toMatch(
+      /REVOKE ALL ON TABLE public\.webauthn_preferences\s+FROM PUBLIC, anon, authenticated/,
+    );
+    expect(prefsSql).toMatch(/Not proof of a registered credential/);
   });
 
   it("documents server-only WebAuthn env vars without client prefixes", () => {

@@ -9,6 +9,8 @@ import {
   originAllowedForRp,
   parseWebAuthnConfig,
   sanitizePasskeyLabel,
+  shouldOfferPasskeyEnrollment,
+  shouldPrioritizePasskeyLogin,
   userIdFromUtf8Handle,
 } from "../../frontend/src/lib/auth/webauthn-policy";
 
@@ -103,5 +105,40 @@ describe("labels and helpers", () => {
       "11111111-1111-4111-8111-111111111111",
     );
     expect(userIdFromUtf8Handle("not-a-user")).toBeNull();
+  });
+});
+
+describe("passkey onboarding eligibility", () => {
+  const eligible = {
+    credentialCount: 0,
+    onboardingStatus: "pending" as const,
+    webauthnSupported: true,
+    preferencesAvailable: true,
+  };
+
+  it("offers enrollment only for a capable browser with no passkey and no skip", () => {
+    expect(shouldOfferPasskeyEnrollment(eligible)).toBe(true);
+  });
+
+  it("does not prompt after skip, enrollment, existing credentials, or unsupported browsers", () => {
+    expect(shouldOfferPasskeyEnrollment({ ...eligible, onboardingStatus: "dismissed" })).toBe(
+      false,
+    );
+    expect(shouldOfferPasskeyEnrollment({ ...eligible, onboardingStatus: "enrolled" })).toBe(false);
+    expect(shouldOfferPasskeyEnrollment({ ...eligible, credentialCount: 1 })).toBe(false);
+    expect(shouldOfferPasskeyEnrollment({ ...eligible, webauthnSupported: false })).toBe(false);
+    expect(shouldOfferPasskeyEnrollment({ ...eligible, preferencesAvailable: false })).toBe(false);
+  });
+
+  it("treats passkey-first as a UX preference, not as proof of a credential", () => {
+    expect(
+      shouldPrioritizePasskeyLogin({ webauthnSupported: true, passkeyFirstPreference: true }),
+    ).toBe(true);
+    expect(
+      shouldPrioritizePasskeyLogin({ webauthnSupported: true, passkeyFirstPreference: false }),
+    ).toBe(false);
+    expect(
+      shouldPrioritizePasskeyLogin({ webauthnSupported: false, passkeyFirstPreference: true }),
+    ).toBe(false);
   });
 });
