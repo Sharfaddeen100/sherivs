@@ -1,4 +1,4 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound, redirect } from "@tanstack/react-router";
 import { articleBySlug, publishedArticles, type PublicArticle } from "@/lib/public-site/articles";
 import { publicHead, articleJsonLd } from "@/lib/public-site/seo";
 import { JsonLd } from "@/components/public/json-ld";
@@ -8,11 +8,18 @@ export const Route = createFileRoute("/(site)/insights/$slug")({
   loader: ({ params }) => {
     const article = articleBySlug(params.slug);
     if (!article) throw notFound();
+    if (!article.published) throw redirect({ to: "/insights" });
     return { article };
   },
   head: ({ loaderData }) => {
     const article = loaderData?.article;
-    if (!article) return publicHead({ title: "Insights", description: "Article", path: "/insights", noindex: true });
+    if (!article)
+      return publicHead({
+        title: "Insights",
+        description: "Article",
+        path: "/insights",
+        noindex: true,
+      });
     return publicHead({
       title: article.seoTitle,
       description: article.seoDescription,
@@ -49,12 +56,16 @@ function InsightArticle() {
           ]}
         />
         <p className="sherivs-kicker mt-8">{article.category}</p>
-        <h1 className="sherivs-display mt-3 max-w-3xl text-3xl font-bold sm:text-4xl">{article.title}</h1>
+        <h1 className="sherivs-display mt-3 max-w-3xl text-3xl font-bold sm:text-4xl">
+          {article.title}
+        </h1>
         <p className="mt-4 max-w-2xl text-sm text-sherivs-muted">
           {article.author.name} · {article.author.role} · Published {article.publishedAt}
           {article.updatedAt !== article.publishedAt ? ` · Updated ${article.updatedAt}` : ""}
         </p>
-        <p className="mt-6 max-w-2xl text-base leading-relaxed text-sherivs-muted">{article.summary}</p>
+        <p className="mt-6 max-w-2xl text-base leading-relaxed text-sherivs-muted">
+          {article.summary}
+        </p>
         <div className="mt-10 max-w-[var(--sherivs-prose)] space-y-8">
           {article.sections.map((section, index) => (
             <section key={section.heading ?? index}>
@@ -62,7 +73,10 @@ function InsightArticle() {
                 <h2 className="font-display text-xl font-semibold">{section.heading}</h2>
               ) : null}
               {section.paragraphs.map((paragraph) => (
-                <p key={paragraph} className="mt-3 text-sm leading-relaxed text-sherivs-muted sm:text-base">
+                <p
+                  key={paragraph}
+                  className="mt-3 text-sm leading-relaxed text-sherivs-muted sm:text-base"
+                >
                   {paragraph}
                 </p>
               ))}

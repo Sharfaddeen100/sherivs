@@ -1,4 +1,4 @@
-import { createFileRoute, notFound } from "@tanstack/react-router";
+import { createFileRoute, notFound, redirect } from "@tanstack/react-router";
 import { helpBySlug, type HelpArticle } from "@/lib/public-site/help";
 import { publicHead } from "@/lib/public-site/seo";
 import { MarketingPage } from "@/components/public/marketing-page";
@@ -8,6 +8,7 @@ export const Route = createFileRoute("/(site)/help/$slug")({
   loader: ({ params }) => {
     const article = helpBySlug(params.slug);
     if (!article) throw notFound();
+    if (article.listed === false) throw redirect({ to: "/help" });
     return { article };
   },
   head: ({ loaderData }) =>
@@ -44,7 +45,10 @@ function HelpArticlePage() {
                 <h3 className="font-display text-lg font-semibold">{block.heading}</h3>
               ) : null}
               {block.paragraphs.map((paragraph) => (
-                <p key={paragraph} className="mt-2 text-sm leading-relaxed text-sherivs-muted sm:text-base">
+                <p
+                  key={paragraph}
+                  className="mt-2 text-sm leading-relaxed text-sherivs-muted sm:text-base"
+                >
                   {paragraph}
                 </p>
               ))}

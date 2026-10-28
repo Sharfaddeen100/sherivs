@@ -65,7 +65,7 @@ export function SiteFooter() {
                   <ChevronDown
                     size={16}
                     aria-hidden="true"
-                    className={`shrink-0 transition-transform duration-[var(--sherivs-motion-fast)] md:hidden ${expanded ? "rotate-180" : ""}`}
+                    className="sherivs-disclosure-icon shrink-0 md:hidden"
                   />
                 </button>
                 <ul id={panelId} hidden={!expanded} className="grid gap-2 pb-4 md:mt-4 md:pb-0">

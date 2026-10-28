@@ -81,11 +81,22 @@
   --color-sherivs-warning: var(--sherivs-warning);
 }
 
+html:has(.sherivs-public) {
+  overflow-x: hidden;
+}
+
 .sherivs-public {
   color: var(--sherivs-text);
   background: var(--sherivs-bg);
-  overflow-x: clip;
   scroll-padding-top: calc(var(--sherivs-header-offset) + 0.75rem);
+}
+
+.sherivs-disclosure-icon {
+  transition: rotate var(--sherivs-motion-fast) var(--sherivs-ease);
+}
+
+[aria-expanded="true"] .sherivs-disclosure-icon {
+  rotate: 180deg;
 }
 
 .sherivs-public :focus-visible {

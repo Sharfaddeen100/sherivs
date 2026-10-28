@@ -163,7 +163,7 @@ function AudienceSection() {
           title="One school. A more connected experience."
           lead="Give each member of the school community a clearer place to access the information and workflows relevant to them."
         />
-        <div className="mt-10 grid gap-4 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
+        <div className="mt-10 grid items-start gap-4 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
           <article className="rounded-[var(--sherivs-radius-lg)] border border-black/10 bg-white p-7 shadow-[0_20px_50px_rgba(18,24,38,0.08)] sm:p-9">
             <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#1558d6]">
               Featured

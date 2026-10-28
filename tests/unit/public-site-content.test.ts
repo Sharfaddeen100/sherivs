@@ -54,6 +54,12 @@ describe("public content honesty", () => {
   it("publishes evergreen articles with required metadata", () => {
     expect(publishedArticles().length).toBeGreaterThanOrEqual(6);
     expect(ARTICLE_CATEGORIES.length).toBe(8);
+    expect(
+      publishedArticles().some((article) => article.slug === "what-is-institutional-computing"),
+    ).toBe(false);
+    expect(
+      publishedArticles().some((article) => article.slug === "digital-twins-state-and-events"),
+    ).toBe(false);
     for (const article of publishedArticles()) {
       expect(article.slug).toMatch(/^[a-z0-9-]+$/);
       expect(article.seoTitle.length).toBeGreaterThan(0);
@@ -297,6 +303,7 @@ describe("public content honesty", () => {
     expect(PUBLIC_SITEMAP_PATHS).not.toContain("/platform");
     expect(PUBLIC_SITEMAP_PATHS).not.toContain("/blog");
     expect(PUBLIC_SITEMAP_PATHS).not.toContain("/auth");
+    expect(read("frontend/src/routes/sitemap[.]xml.ts")).toContain("listedHelpArticles");
   });
 });
 

@@ -127,17 +127,17 @@ function DesktopNavGroup({
         className={`inline-flex items-center gap-1 rounded-md px-3 py-2 text-sm transition-colors hover:bg-white/5 hover:text-sherivs-white ${open ? "bg-white/5 text-sherivs-white" : "text-sherivs-muted"}`}
         aria-expanded={open}
         aria-haspopup="true"
+        aria-controls={`${group.id}-menu`}
         onClick={onToggle}
       >
         {group.label}
-        <ChevronDown
-          size={14}
-          aria-hidden="true"
-          className={`transition-transform duration-[var(--sherivs-motion-fast)] ${open ? "rotate-180" : ""}`}
-        />
+        <ChevronDown size={14} aria-hidden="true" className="sherivs-disclosure-icon shrink-0" />
       </button>
       {open ? (
-        <div className="sherivs-nav-panel absolute left-0 top-full z-[var(--sherivs-z-overlay)] mt-2 w-80 rounded-[var(--sherivs-radius)] border border-[var(--sherivs-glass-border)] bg-[var(--sherivs-midnight)] p-2 shadow-[var(--sherivs-shadow)]">
+        <div
+          id={`${group.id}-menu`}
+          className="sherivs-nav-panel absolute left-0 top-full z-[var(--sherivs-z-overlay)] mt-2 w-80 rounded-[var(--sherivs-radius)] border border-[var(--sherivs-glass-border)] bg-[var(--sherivs-midnight)] p-2 shadow-[var(--sherivs-shadow)]"
+        >
           <ul>
             {group.items.map((item) => (
               <li key={`${group.id}-${item.href}-${item.label}`}>

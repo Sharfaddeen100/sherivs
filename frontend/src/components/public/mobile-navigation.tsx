@@ -127,7 +127,7 @@ export function MobileNavigation({
                   <ChevronDown
                     size={16}
                     aria-hidden="true"
-                    className={`shrink-0 text-sherivs-muted transition-transform duration-[var(--sherivs-motion-fast)] ${isOpen ? "rotate-180" : ""}`}
+                    className="sherivs-disclosure-icon shrink-0 text-sherivs-muted"
                   />
                 </button>
                 {isOpen ? (

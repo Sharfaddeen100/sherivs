@@ -6,7 +6,7 @@ import { fetchPublicSite, siteTarget } from "@/lib/website/public-site.functions
 import { siteSitemapUrls } from "@/lib/website/seo";
 import { PUBLIC_SITEMAP_PATHS } from "@/lib/public-site/navigation";
 import { publishedArticles } from "@/lib/public-site/articles";
-import { HELP_ARTICLES } from "@/lib/public-site/help";
+import { listedHelpArticles } from "@/lib/public-site/help";
 
 const xmlEscape = (s: string) =>
   s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -64,7 +64,7 @@ export const Route = createFileRoute("/sitemap.xml")({
             changefreq: "monthly" as const,
             priority: "0.5",
           })),
-          ...HELP_ARTICLES.map((article) => ({
+          ...listedHelpArticles().map((article) => ({
             path: `/help/${article.slug}`,
             changefreq: "monthly" as const,
             priority: "0.4",

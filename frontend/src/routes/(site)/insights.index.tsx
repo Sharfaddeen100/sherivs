@@ -38,7 +38,9 @@ function InsightsIndex() {
             is the Sherivs company publication.
           </Callout>
           <ul className="flex flex-wrap gap-2 text-xs">
-            {ARTICLE_CATEGORIES.map((category) => (
+            {ARTICLE_CATEGORIES.filter((category) =>
+              articles.some((article) => article.category === category),
+            ).map((category) => (
               <li key={category}>
                 <Link
                   to="/insights/category/$slug"

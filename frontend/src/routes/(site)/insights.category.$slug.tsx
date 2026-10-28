@@ -1,4 +1,4 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound, redirect } from "@tanstack/react-router";
 import {
   articlesByCategory,
   categoryFromSlug,
@@ -14,7 +14,9 @@ export const Route = createFileRoute("/(site)/insights/category/$slug")({
   loader: ({ params }) => {
     const category = categoryFromSlug(params.slug);
     if (!category) throw notFound();
-    return { category, articles: articlesByCategory(category) };
+    const articles = articlesByCategory(category);
+    if (articles.length === 0) throw redirect({ to: "/insights" });
+    return { category, articles };
   },
   head: ({ loaderData }) =>
     publicHead({
@@ -46,7 +48,9 @@ function InsightCategory() {
             Articles in {category}
           </h2>
           {articles.length === 0 ? (
-            <p className="text-sm text-sherivs-muted">No published articles in this category yet.</p>
+            <p className="text-sm text-sherivs-muted">
+              No published articles in this category yet.
+            </p>
           ) : (
             <ul className="grid gap-4">
               {articles.map((article) => (

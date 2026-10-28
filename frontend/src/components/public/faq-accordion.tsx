@@ -58,7 +58,7 @@ export function FaqAccordion({
                 <ChevronDown
                   size={18}
                   aria-hidden="true"
-                  className={`shrink-0 text-sherivs-muted transition-transform duration-[var(--sherivs-motion-fast)] ${expanded ? "rotate-180" : ""}`}
+                  className="sherivs-disclosure-icon shrink-0 text-sherivs-muted"
                 />
               </button>
             </h3>

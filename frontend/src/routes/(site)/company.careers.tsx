@@ -9,7 +9,8 @@ export const Route = createFileRoute("/(site)/company/careers")({
   head: () =>
     publicHead({
       title: "Careers",
-      description: "Sherivs is not listing public openings on this site. You can still write to the team.",
+      description:
+        "Sherivs is not listing public openings on this site. You can still write to the team.",
       path: "/company/careers",
     }),
 });
@@ -32,8 +33,11 @@ function CareersPage() {
             Careers
           </h2>
           <p>
-            If you want to work on institutional computing, write to{" "}
-            <a className="text-sherivs-cyan underline-offset-4 hover:underline" href={`mailto:${PUBLIC_CONTACTS.info}`}>
+            If you want to work on school software at Sherivs, write to{" "}
+            <a
+              className="text-sherivs-cyan underline-offset-4 hover:underline"
+              href={`mailto:${PUBLIC_CONTACTS.info}`}
+            >
               {PUBLIC_CONTACTS.info}
             </a>
             . We will not invent roles, locations, or headcount to fill this page.

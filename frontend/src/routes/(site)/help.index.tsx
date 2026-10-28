@@ -20,7 +20,7 @@ function HelpIndex() {
     <MarketingPage
       eyebrow="Help"
       title="Help center"
-      lead="Only instructions that match implemented functionality. Planned capabilities are labelled."
+      lead="Only instructions that match implemented Scholar functionality."
       crumbs={[
         { href: "/", label: "Home" },
         { href: "/help", label: "Help" },
