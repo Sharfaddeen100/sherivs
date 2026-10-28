@@ -63,7 +63,11 @@ export function SiteFooter() {
                 </p>
                 <ul
                   id={panelId}
-                  className={`grid gap-2 pb-4 md:mt-4 md:grid md:pb-0 ${expanded ? "" : "max-md:hidden"}`}
+                  className={
+                    expanded
+                      ? "grid gap-2 pb-4 md:mt-4 md:pb-0"
+                      : "hidden gap-2 pb-4 md:mt-4 md:grid md:pb-0"
+                  }
                 >
                   {group.items.map((item) => (
                     <li key={`${group.id}-${item.href}-${item.label}`}>
