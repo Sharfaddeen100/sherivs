@@ -9,6 +9,7 @@ import {
 } from "@/lib/experience/console-host-routing";
 import { ConsoleNotAuthorised } from "./not-authorised";
 import { ConsoleElsewhere } from "./not-authorised";
+import { ConsoleLoadingState } from "./console-primitives";
 import "./console.css";
 
 export function ConsoleGate({ children }: { children?: ReactNode }) {
@@ -18,15 +19,7 @@ export function ConsoleGate({ children }: { children?: ReactNode }) {
   const operator = isConsoleOperator(app);
 
   if (app.loading) {
-    return (
-      <div className="sherivs-console" data-testid="console-loading">
-        <div className="sherivs-console-orbs" aria-hidden="true">
-          <span className="sherivs-console-orb sherivs-console-orb-cyan" />
-          <span className="sherivs-console-orb sherivs-console-orb-blue" />
-          <span className="sherivs-console-orb sherivs-console-orb-violet" />
-        </div>
-      </div>
-    );
+    return <ConsoleLoadingState message="Signing you in to the Internal Console…" />;
   }
 
   const decision = decideHostRoute({

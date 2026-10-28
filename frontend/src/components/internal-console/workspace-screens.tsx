@@ -14,6 +14,7 @@ import {
   visibleWorkspaceNav,
   type WorkspaceExperienceKey,
 } from "@/lib/internal-console/workspace-experience";
+import { SupportTenantPanel } from "./support-access-screens";
 
 function StatusBadge({ status }: { status: ConsoleHealthState }) {
   return (
@@ -432,6 +433,7 @@ function SupportExperience({ overview }: { overview: ConsoleOverview }) {
           </Empty>
         )}
       </section>
+      <SupportTenantPanel />
       <section>
         <h2>Onboarding assistance</h2>
         <p>

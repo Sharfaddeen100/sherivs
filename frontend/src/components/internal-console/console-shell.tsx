@@ -49,7 +49,7 @@ import {
   buildConsoleVisualFixtureOverview,
   consoleVisualFixtureActive,
 } from "@/lib/internal-console/visual-fixture";
-import { ConsoleNotice } from "./console-primitives";
+import { ConsoleLoadingState, ConsoleNotice } from "./console-primitives";
 import { ConsoleNotAuthorised, ConsoleElsewhere } from "./not-authorised";
 import "./console.css";
 
@@ -612,15 +612,7 @@ export function InternalConsoleLayout() {
   }, [app.loading, app.authUser, operator, location.pathname]);
 
   if (app.loading) {
-    return (
-      <div className="sherivs-console" data-testid="console-loading">
-        <div className="sherivs-console-orbs" aria-hidden="true">
-          <span className="sherivs-console-orb sherivs-console-orb-cyan" />
-          <span className="sherivs-console-orb sherivs-console-orb-blue" />
-          <span className="sherivs-console-orb sherivs-console-orb-violet" />
-        </div>
-      </div>
-    );
+    return <ConsoleLoadingState message="Loading the Internal Console…" />;
   }
 
   const decision = decideHostRoute({

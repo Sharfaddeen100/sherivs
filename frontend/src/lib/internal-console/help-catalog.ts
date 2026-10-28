@@ -59,6 +59,13 @@ export const CONSOLE_HELP_ARTICLES: readonly ConsoleHelpArticle[] = [
     href: CONSOLE_PATHS.activityBilling,
   },
   {
+    id: "support-grants",
+    title: "Time-limited support grants",
+    description:
+      "A platform owner can grant Support staff time-limited access to one provisioned organization. The grant is audited, expires in at most eight hours, and is not tenant membership.",
+    href: CONSOLE_PATHS.teamAccess,
+  },
+  {
     id: "audit",
     title: "Audit records",
     description:
