@@ -1,12 +1,12 @@
 /**
  * Retired hardcoded application hosts (ACTIVE-V1).
  *
- * The Lovable/Scholar portal shells, Sherivs internal console chrome, and
- * gov/head/group console UIs have been removed. These hostnames must not
- * SSR the public marketing homepage (sherivs.com) and must not render a
- * prototype workspace. Canonical app.sherivs.com is the application splash
- * (not retired). Tenant websites (`<slug>.sherivs.com` and custom domains)
- * remain on the website engine.
+ * The Lovable/Scholar portal shells and gov/head/group console UIs have been
+ * removed. These hostnames must not SSR the public marketing homepage
+ * (sherivs.com) and must not render a prototype workspace. Canonical
+ * app.sherivs.com is the application splash (not retired). Canonical
+ * console.sherivs.com is the Internal Console (not retired). Tenant websites
+ * (`<slug>.sherivs.com` and custom domains) remain on the website engine.
  *
  * Hostname classification is routing, not authorization.
  */
@@ -46,7 +46,8 @@ export function isRetiredApplicationHostname(hostname: string): boolean {
   const kind = resolveExperienceHost(host);
   // Canonical app hosts render the splash / sign-in / onboarding entry.
   if (kind === "app") return false;
-  if (kind === "internal") return true;
+  // Canonical console hosts render the Internal Console, not a retired page.
+  if (kind === "internal") return false;
   if (isGovHost(host)) return true;
   if (CONSOLE_LABEL_HOST.test(host)) return true;
   if (isRetiredPlatformLabelHost(host)) return true;

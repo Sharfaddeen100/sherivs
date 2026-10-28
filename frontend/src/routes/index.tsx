@@ -5,6 +5,7 @@ import { getPublicSite } from "@/lib/website/public-site.functions";
 import { SherivsHome } from "@/components/public/sherivs-home";
 import { ApplicationUnavailable } from "@/components/public/application-unavailable";
 import { AppEntryScreen } from "@/components/app-entry/app-entry-screen";
+import { ConsoleGate } from "@/components/internal-console/console-gate";
 import { resolveTenantDomain, resolveTenantSlug } from "@/lib/tenant";
 import { PLATFORM_NAME, PLATFORM_PAGE_DESCRIPTION, PLATFORM_PAGE_TITLE, PLATFORM_URL } from "@/lib/platform";
 import { resolveExperienceHost } from "@/lib/experience/experience-host";
@@ -43,6 +44,7 @@ export const Route = createFileRoute("/")({
         hostKind,
         retired: false as const,
         appEntry: true as const,
+        consoleEntry: false as const,
         surface: "application",
         site: null,
         preview: false,
@@ -50,14 +52,30 @@ export const Route = createFileRoute("/")({
         lang: deps.lang,
       };
     }
-    // Console, gov, head, and group hosts must not SSR the public
-    // marketing homepage or a hardcoded workspace shell.
-    if (isRetiredApplicationHostname(hostname) || hostKind === "internal") {
+    // console.sherivs.com is the Internal Console — never the marketing homepage.
+    if (hostKind === "internal") {
+      return {
+        hostname,
+        hostKind,
+        retired: false as const,
+        appEntry: false as const,
+        consoleEntry: true as const,
+        surface: "internal console",
+        site: null,
+        preview: false,
+        tenant: null,
+        lang: deps.lang,
+      };
+    }
+    // Gov, head, and group hosts must not SSR the public marketing homepage
+    // or a hardcoded workspace shell.
+    if (isRetiredApplicationHostname(hostname)) {
       return {
         hostname,
         hostKind,
         retired: true as const,
         appEntry: false as const,
+        consoleEntry: false as const,
         surface: retiredSurfaceLabel(hostname),
         site: null,
         preview: false,
@@ -72,6 +90,7 @@ export const Route = createFileRoute("/")({
       hostKind,
       retired: false as const,
       appEntry: false as const,
+      consoleEntry: false as const,
       surface: null,
       site: res.site,
       preview: res.preview,
@@ -86,6 +105,14 @@ export const Route = createFileRoute("/")({
         meta: [
           { title: PLATFORM_NAME },
           { name: "description", content: `Sign in to ${PLATFORM_NAME}.` },
+          { name: "robots", content: "noindex, nofollow" },
+        ],
+      };
+    }
+    if (loaderData?.consoleEntry) {
+      return {
+        meta: [
+          { title: `Internal Console — ${PLATFORM_NAME}` },
           { name: "robots", content: "noindex, nofollow" },
         ],
       };
@@ -143,6 +170,10 @@ function Index() {
 
   if (data.appEntry) {
     return <AppEntryScreen panel={parseAppEntryPanel(search.panel)} />;
+  }
+
+  if (data.consoleEntry) {
+    return <ConsoleGate />;
   }
 
   if (data.retired) {

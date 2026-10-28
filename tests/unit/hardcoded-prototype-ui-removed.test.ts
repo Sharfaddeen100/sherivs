@@ -58,10 +58,10 @@ describe("hardcoded application shells are removed", () => {
 });
 
 describe("retired application hosts", () => {
-  it("retires console, gov, head, and group hosts — not public, tenant, or the app splash", () => {
+  it("retires gov, head, and group hosts — not public, tenant, app splash, or the Internal Console", () => {
     expect(isRetiredApplicationHostname("app.sherivs.com")).toBe(false);
-    expect(isRetiredApplicationHostname("console.sherivs.com")).toBe(true);
-    expect(isRetiredApplicationHostname("internal.sherivs.com")).toBe(true);
+    expect(isRetiredApplicationHostname("console.sherivs.com")).toBe(false);
+    expect(isRetiredApplicationHostname("internal.sherivs.com")).toBe(false);
     expect(isRetiredApplicationHostname("gov.sherivs.com")).toBe(true);
     expect(isRetiredApplicationHostname("head.sherivs.com")).toBe(true);
     expect(isRetiredApplicationHostname("group.sherivs.com")).toBe(true);
