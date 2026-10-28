@@ -42,10 +42,12 @@ test.describe("Sherivs public homepage (plane A)", () => {
     page,
   }) => {
     await page.goto("/");
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
 
     // Compact marketing chrome keeps Sign in inside the mobile drawer.
     await page.getByRole("button", { name: /open menu/i }).click();
     const menu = page.getByRole("dialog", { name: /sherivs menu/i });
+    await expect(menu).toBeVisible();
     await expect(menu.getByRole("link", { name: /sign in/i })).toBeVisible();
 
     // The sign-in link lands on the platform auth surface.

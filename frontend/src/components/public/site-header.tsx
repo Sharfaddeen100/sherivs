@@ -100,7 +100,7 @@ export function SiteHeader() {
           onClick={() => setOpen(true)}
         >
           <span className="sr-only">Open menu</span>
-          <Menu size={18} aria-hidden="true" />
+          <Menu size={18} aria-hidden="true" className="pointer-events-none" />
         </button>
       </div>
 
@@ -134,7 +134,11 @@ function DesktopNavGroup({
         onClick={onToggle}
       >
         {group.label}
-        <ChevronDown size={14} aria-hidden="true" className="sherivs-disclosure-icon shrink-0" />
+        <ChevronDown
+          size={14}
+          aria-hidden="true"
+          className="sherivs-disclosure-icon pointer-events-none shrink-0"
+        />
       </button>
       {open ? (
         <div

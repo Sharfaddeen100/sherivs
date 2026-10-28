@@ -106,7 +106,7 @@ export function MobileNavigation({
             onClick={() => close()}
           >
             <span className="sr-only">Close menu</span>
-            <X size={18} aria-hidden="true" />
+            <X size={18} aria-hidden="true" className="pointer-events-none" />
           </button>
         </div>
 
@@ -127,7 +127,7 @@ export function MobileNavigation({
                   <ChevronDown
                     size={16}
                     aria-hidden="true"
-                    className="sherivs-disclosure-icon shrink-0 text-sherivs-muted"
+                    className="sherivs-disclosure-icon pointer-events-none shrink-0 text-sherivs-muted"
                   />
                 </button>
                 {isOpen ? (

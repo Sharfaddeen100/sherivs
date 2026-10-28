@@ -55,7 +55,7 @@ export function SiteFooter() {
                   <ChevronDown
                     size={16}
                     aria-hidden="true"
-                    className="sherivs-disclosure-icon shrink-0"
+                    className="sherivs-disclosure-icon pointer-events-none shrink-0"
                   />
                 </button>
                 <p className="hidden text-xs font-semibold uppercase tracking-widest text-sherivs-muted md:block">
