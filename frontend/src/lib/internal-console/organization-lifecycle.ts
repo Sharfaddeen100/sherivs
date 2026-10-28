@@ -239,14 +239,14 @@ export const ORGANIZATION_ACCESS_EFFECTS = {
   provision: {
     sessions: "No Scholar sessions are created. The tenant is not yet authorized.",
     api: "Tenant APIs remain unauthorized until activation.",
-    runtime: "Sherivs Scholar is marked eligible on the case, not launched for the organization.",
+    runtime: "Sherivs Scholar eligibility is recorded on the case; the runtime is not launched for the organization.",
     data: "A schools row is created with is_active = false. No student or academic records are created.",
     audit: "Provisioning outcome is appended. Prior questionnaire history is kept.",
   },
   activate: {
     sessions: "Existing staff sessions are unchanged. Organization administrators sign in separately.",
     api: "Authorized Scholar requests for this tenant may proceed.",
-    runtime: "Sherivs Scholar is authorized for this organization.",
+    runtime: "Sherivs Scholar authorization applies to this organization.",
     data: "Existing records are retained. Activation does not complete academic configuration.",
     audit: "Activation is appended.",
   },
@@ -260,7 +260,7 @@ export const ORGANIZATION_ACCESS_EFFECTS = {
   restore: {
     sessions: "Restored access is evaluated on the next authorized request.",
     api: "Tenant API access may proceed again for authorized members.",
-    runtime: "Sherivs Scholar is authorized for this organization again.",
+    runtime: "Sherivs Scholar authorization applies to this organization again.",
     data: "Records remain. Restoration does not recreate deleted data because suspension never deleted it.",
     audit: "Restoration is appended.",
   },

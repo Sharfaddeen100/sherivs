@@ -32,6 +32,7 @@ import {
   signInLoadingRemainingMs,
 } from "@/lib/auth/signin-loading-wordmark";
 import { SignInLoading } from "@/components/app-entry/signin-loading";
+import { SherivsLogo } from "@/components/brand/sherivs-logo";
 import {
   activateConsoleVisualFixture,
   consoleVisualFixtureEnabled,
@@ -273,7 +274,7 @@ function AuthPage() {
       </div>
       <div className="auth-card uos-card app-entry-login-card" data-testid="auth-card">
         <div className="mb-2">
-          {school && (
+          {school ? (
             <div className="mb-4 flex items-center gap-3">
               {school.logo_url ? (
                 <img
@@ -296,6 +297,10 @@ function AuthPage() {
                 </div>
                 <div className="font-display font-bold">{school.name}</div>
               </div>
+            </div>
+          ) : (
+            <div className="mb-4">
+              <SherivsLogo size={32} wordmarkClassName="text-lg" />
             </div>
           )}
           <p className="app-entry-login-kicker">Please enter your details</p>
