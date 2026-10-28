@@ -130,6 +130,24 @@ function fixtureStaff(): PlatformStaffProfile {
   };
 }
 
+const IDENTITY_LOAD_MS = 12_000;
+
+function withTimeout<T>(promise: Promise<T>, ms: number, label: string): Promise<T> {
+  return new Promise((resolve, reject) => {
+    const timer = setTimeout(() => reject(new Error(`${label} timed out`)), ms);
+    promise.then(
+      (value) => {
+        clearTimeout(timer);
+        resolve(value);
+      },
+      (error) => {
+        clearTimeout(timer);
+        reject(error);
+      },
+    );
+  });
+}
+
 async function loadPlatformStaff(userId: string): Promise<PlatformStaffProfile | null> {
   try {
     await supabase.rpc("claim_platform_staff_invite");
@@ -152,6 +170,26 @@ async function loadPlatformStaff(userId: string): Promise<PlatformStaffProfile |
   } catch {
     return null;
   }
+}
+
+async function loadWorkforce(userId: string): Promise<{
+  superAdmin: SuperAdminProfile | null;
+  platformStaff: PlatformStaffProfile | null;
+}> {
+  const [{ data: sa }, platformStaff] = await Promise.all([
+    supabase
+      .from("super_admins")
+      .select("id, full_name, email, is_active")
+      .eq("id", userId)
+      .maybeSingle(),
+    loadPlatformStaff(userId),
+  ]);
+  const row = sa as (SuperAdminProfile & { is_active?: boolean | null }) | null;
+  const superAdmin =
+    row && row.is_active !== false
+      ? { id: row.id, full_name: row.full_name, email: row.email }
+      : null;
+  return { superAdmin, platformStaff };
 }
 
 export function AppProvider({ children }: { children: ReactNode }) {
@@ -183,14 +221,23 @@ export function AppProvider({ children }: { children: ReactNode }) {
     let nextPlatformStaff: PlatformStaffProfile | null = null;
     let nextSchool: SchoolRow | null = null;
 
+    try {
     if (currentSession?.user) {
-      // Try tenant profile first
-      const { data: profRow } = await supabase
-        .from("users")
-        .select(USER_SAFE_COLUMNS)
-        .eq("id", currentSession.user.id)
-        .maybeSingle();
-      const prof = profRow as unknown as UserProfile | null;
+      const userId = currentSession.user.id;
+      // Workforce identity is independent of a tenant membership row. A
+      // platform owner who also has an organization profile must still
+      // resolve as a console operator.
+      const [profRow, workforce] = await withTimeout(
+        Promise.all([
+          supabase.from("users").select(USER_SAFE_COLUMNS).eq("id", userId).maybeSingle(),
+          loadWorkforce(userId),
+        ]),
+        IDENTITY_LOAD_MS,
+        "identity",
+      );
+      const prof = profRow.data as unknown as UserProfile | null;
+      nextSuperAdmin = workforce.superAdmin;
+      nextPlatformStaff = workforce.platformStaff;
 
       if (prof) {
         nextProfile = prof;
@@ -200,14 +247,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
           .eq("id", prof.school_id)
           .maybeSingle();
         if (sch) nextSchool = sch as unknown as SchoolRow;
-      } else {
-        const { data: sa } = await supabase
-          .from("super_admins")
-          .select("id, full_name, email")
-          .eq("id", currentSession.user.id)
-          .maybeSingle();
-        if (sa) nextSuperAdmin = sa as SuperAdminProfile;
-        else nextPlatformStaff = await loadPlatformStaff(currentSession.user.id);
       }
 
       // Google OAuth can create an Auth user with no membership. Sign that
@@ -224,6 +263,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         nextProfile = null;
         nextSuperAdmin = null;
         nextPlatformStaff = null;
+        nextSchool = null;
       }
     }
 
@@ -272,13 +312,16 @@ export function AppProvider({ children }: { children: ReactNode }) {
         .maybeSingle();
       if (sch) nextSchool = sch as unknown as SchoolRow;
     }
-
-    setProfile(nextProfile);
-    setSuperAdmin(nextSuperAdmin);
-    setPlatformStaff(nextPlatformStaff);
-    setSchool(nextSchool);
-    applyBrandColors(nextSchool);
-    setLoading(false);
+    } catch {
+      /* Fail closed on identity errors, but never leave the console on a blank loading gradient. */
+    } finally {
+      setProfile(nextProfile);
+      setSuperAdmin(nextSuperAdmin);
+      setPlatformStaff(nextPlatformStaff);
+      setSchool(nextSchool);
+      applyBrandColors(nextSchool);
+      setLoading(false);
+    }
   }
 
   useEffect(() => {
@@ -289,11 +332,16 @@ export function AppProvider({ children }: { children: ReactNode }) {
         cancelled = true;
       };
     }
-    supabase.auth.getSession().then(({ data }) => {
-      if (cancelled) return;
-      setSession(data.session);
-      void load(data.session);
-    });
+    void withTimeout(supabase.auth.getSession(), IDENTITY_LOAD_MS, "session")
+      .then(({ data }) => {
+        if (cancelled) return;
+        setSession(data.session);
+        void load(data.session);
+      })
+      .catch(() => {
+        if (cancelled) return;
+        setLoading(false);
+      });
     const { data: sub } = supabase.auth.onAuthStateChange((event, sess) => {
       if (event !== "SIGNED_IN" && event !== "SIGNED_OUT" && event !== "USER_UPDATED") return;
       setSession(sess);
