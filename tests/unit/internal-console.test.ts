@@ -289,6 +289,30 @@ describe("console host routing for /console", () => {
     expect(isPublicConsolePath("/auth")).toBe(true);
   });
 
+  it("keeps signed-in console status copy above the background orbs", () => {
+    const css = readFileSync("frontend/src/components/internal-console/console.css", "utf8");
+    expect(css).toContain(".sherivs-console-status");
+    expect(css).toMatch(/\.sherivs-console-status\s*\{[\s\S]*z-index:\s*1/);
+    const gate = readFileSync("frontend/src/components/internal-console/console-gate.tsx", "utf8");
+    expect(gate).toContain("ConsoleLoadingState");
+    const shell = readFileSync("frontend/src/components/internal-console/console-shell.tsx", "utf8");
+    expect(shell).toContain("ConsoleLoadingState");
+    const authz = readFileSync("frontend/src/components/internal-console/not-authorised.tsx", "utf8");
+    expect(authz).toContain("ConsoleAtmosphere");
+    expect(authz).toContain("console-not-authorised");
+    expect(authz).not.toMatch(/Signing in with a school account/);
+  });
+
+  it("resolves workforce identity even when a tenant profile exists", () => {
+    const src = readFileSync("frontend/src/contexts/app-context.tsx", "utf8");
+    expect(src).toContain("loadWorkforce");
+    expect(src).toContain("IDENTITY_LOAD_MS");
+    expect(src).toContain('from("super_admins")');
+    expect(src).toContain("claim_platform_staff_invite");
+    expect(src).not.toContain("Try tenant profile first");
+    expect(src).toMatch(/finally\s*\{[\s\S]*setLoading\(false\)/);
+  });
+
   it("sends operators to /console and blocks non-staff", () => {
     expect(decideHostRoute({ hostKind: "internal", pathname: "/", ...operator })).toEqual({
       kind: "redirect",

@@ -4,6 +4,31 @@ import {
   type ConsoleStaffPresentationStatus,
 } from "@/lib/internal-console/overview";
 
+export function ConsoleAtmosphere({ children }: { children: ReactNode }) {
+  return (
+    <div className="sherivs-console">
+      <div className="sherivs-console-orbs" aria-hidden="true">
+        <span className="sherivs-console-orb sherivs-console-orb-cyan" />
+        <span className="sherivs-console-orb sherivs-console-orb-blue" />
+        <span className="sherivs-console-orb sherivs-console-orb-violet" />
+      </div>
+      <div className="sherivs-console-status">{children}</div>
+    </div>
+  );
+}
+
+export function ConsoleLoadingState({ message }: { message: string }) {
+  return (
+    <ConsoleAtmosphere>
+      <section className="sherivs-console-card" data-testid="console-loading">
+        <p className="sherivs-console-page-kicker">Internal Console</p>
+        <h1>Sherivs</h1>
+        <p>{message}</p>
+      </section>
+    </ConsoleAtmosphere>
+  );
+}
+
 export function ConsoleNotice({
   tone = "info",
   children,
