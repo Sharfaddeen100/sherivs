@@ -220,7 +220,7 @@ export function AppHelpScreen() {
           <li key={step}>{step}</li>
         ))}
       </ol>
-      <p className="app-shell-org">Enable fingerprint or Face ID</p>
+      <p className="app-shell-org">Enable passkeys</p>
       <ol className="app-shell-steps">
         {BIOMETRIC_PASKEY_STEPS.map((step) => (
           <li key={step}>{step}</li>

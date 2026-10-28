@@ -30,5 +30,6 @@ describe("passkey UI integration", () => {
     expect(manager).toContain("Remove");
     expect(manager).toContain("PASSKEY_DEVICE_HELP");
     expect(manager.toLowerCase()).not.toContain("every device uses a fingerprint");
+    expect(security.toLowerCase()).not.toContain("enable fingerprint or face id");
   });
 });
