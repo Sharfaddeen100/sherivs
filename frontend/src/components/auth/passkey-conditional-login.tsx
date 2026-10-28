@@ -31,8 +31,8 @@ export function PasskeyConditionalLogin({ enabled, onBusy, onError, onSignedIn }
     void (async () => {
       if (!(await passkeyAutofillSupported())) return;
       try {
-        await authenticateWithPasskey({ autofill: true });
-        if (!active) return;
+        const session = await authenticateWithPasskey({ autofill: true });
+        if (!active || !session) return;
         onBusyRef.current?.(true);
         await onSignedInRef.current();
       } catch (err) {

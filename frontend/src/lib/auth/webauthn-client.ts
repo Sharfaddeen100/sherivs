@@ -133,9 +133,22 @@ export async function registerPasskey(label?: string): Promise<PasskeyListItem> 
   }
 }
 
+async function finishPasskeyAssertion(
+  response: Awaited<ReturnType<typeof startAuthentication>>,
+): Promise<{ userId: string }> {
+  const session = await verifyPasskeyAuthentication({ data: { response } });
+  const { error } = await supabase.auth.setSession({
+    access_token: session.accessToken,
+    refresh_token: session.refreshToken,
+  });
+  if (error) throw new Error(WEBAUTHN_PUBLIC_ERROR.session_failed);
+  writePasskeyFirstHint(true);
+  return { userId: session.userId };
+}
+
 export async function authenticateWithPasskey(opts?: {
   autofill?: boolean;
-}): Promise<{ userId: string }> {
+}): Promise<{ userId: string } | null> {
   if (!browserSupportsWebAuthn()) throw new Error(WEBAUTHN_PUBLIC_ERROR.unsupported);
   try {
     const optionsJSON = await getPasskeyAuthenticationOptions();
@@ -144,16 +157,16 @@ export async function authenticateWithPasskey(opts?: {
       useBrowserAutofill: Boolean(opts?.autofill),
       verifyBrowserAutofillInput: Boolean(opts?.autofill),
     });
-    const session = await verifyPasskeyAuthentication({ data: { response } });
-    const { error } = await supabase.auth.setSession({
-      access_token: session.accessToken,
-      refresh_token: session.refreshToken,
-    });
-    if (error) throw new Error(WEBAUTHN_PUBLIC_ERROR.session_failed);
-    writePasskeyFirstHint(true);
-    return { userId: session.userId };
+    return await finishPasskeyAssertion(response);
   } catch (err) {
-    throw new Error(mapBrowserError(err));
+    const mapped = mapBrowserError(err);
+    if (
+      opts?.autofill &&
+      (mapped === WEBAUTHN_PUBLIC_ERROR.cancelled || mapped === WEBAUTHN_PUBLIC_ERROR.unavailable)
+    ) {
+      return null;
+    }
+    throw new Error(mapped);
   }
 }
 

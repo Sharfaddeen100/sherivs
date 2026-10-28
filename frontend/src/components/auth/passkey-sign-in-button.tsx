@@ -31,7 +31,8 @@ export function PasskeySignInButton({
         onError?.(WEBAUTHN_PUBLIC_ERROR.unsupported);
         return;
       }
-      await authenticateWithPasskey();
+      const session = await authenticateWithPasskey();
+      if (!session) return;
       await onSignedIn();
     } catch (err) {
       onError?.(err instanceof Error ? err.message : WEBAUTHN_PUBLIC_ERROR.auth_failed);
