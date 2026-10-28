@@ -11,17 +11,17 @@ describe("passkey UI integration", () => {
     const entry = read("frontend/src/components/app-entry/app-entry-screen.tsx");
     const auth = read("frontend/src/routes/auth.tsx");
     for (const src of [entry, auth]) {
-      expect(src).toContain("PasskeySignInButton");
+      expect(src).toContain("EnterpriseLoginFields");
       expect(src).toContain("Sign in with Google");
       expect(src).toContain("signInWithPassword");
-      expect(src).toContain("PASSKEY_DEVICE_HELP");
+      expect(src).not.toContain("PASSKEY_DEVICE_HELP");
     }
     expect(entry).toContain('data-testid="app-entry-submit"');
-    expect(entry).toContain("username webauthn");
-    expect(entry).toContain("PasskeyConditionalLogin");
     expect(entry).toContain("passkeyLoginPriority");
-    expect(auth).toContain("username webauthn");
-    expect(auth).toContain("PasskeyConditionalLogin");
+    const fields = read("frontend/src/components/auth/enterprise-login-fields.tsx");
+    expect(fields).toContain("username webauthn");
+    expect(fields).toContain("PasskeyConditionalLogin");
+    expect(fields).toContain("PasskeySignInButton");
   });
 
   it("offers first-login enrollment with a toggle, skip, and no silent registration", () => {

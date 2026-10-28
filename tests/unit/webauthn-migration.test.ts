@@ -12,6 +12,10 @@ const prefsSql = readFileSync(
   join(ROOT, "database/supabase/migrations/20261028002000_sherivs_webauthn_preferences.sql"),
   "utf8",
 );
+const rpSql = readFileSync(
+  join(ROOT, "database/supabase/migrations/20261028003000_sherivs_webauthn_credential_rp.sql"),
+  "utf8",
+);
 const functions = readFileSync(join(ROOT, "frontend/src/lib/auth/webauthn.functions.ts"), "utf8");
 const client = readFileSync(join(ROOT, "frontend/src/lib/auth/webauthn-client.ts"), "utf8");
 const envExample = readFileSync(join(ROOT, ".env.example"), "utf8");
@@ -65,7 +69,8 @@ describe("WebAuthn migration and wiring", () => {
       /export const getPasskeyAuthenticationOptions = createServerFn\(\{ method: "POST" \}\)\.handler/,
     );
     expect(client).toMatch(/supabase\.auth\.setSession/);
-    expect(client).toMatch(/fingerprint, face unlock, device PIN/);
+    expect(client).toMatch(/device's supported verification method/);
+    expect(client.toLowerCase()).not.toMatch(/fingerprint authentication confirmed/);
   });
 
   it("keeps passkey preferences distinct from credentials and service-role only", () => {
@@ -79,6 +84,12 @@ describe("WebAuthn migration and wiring", () => {
       /REVOKE ALL ON TABLE public\.webauthn_preferences\s+FROM PUBLIC, anon, authenticated/,
     );
     expect(prefsSql).toMatch(/Not proof of a registered credential/);
+  });
+
+  it("scopes credentials to the RP ID they were registered under without rewriting existing keys", () => {
+    expect(rpSql).toMatch(/ADD COLUMN IF NOT EXISTS rp_id text NOT NULL DEFAULT 'sherivs\.com'/);
+    expect(rpSql).toMatch(/webauthn_credentials_user_rp_idx/);
+    expect(rpSql).not.toMatch(/UPDATE public\.webauthn_credentials SET credential_id/);
   });
 
   it("documents server-only WebAuthn env vars without client prefixes", () => {

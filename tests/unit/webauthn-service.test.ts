@@ -127,6 +127,7 @@ function harness(opts?: {
   mint?: WebAuthnSessionMinter["mint"];
   verifyAuth?: WebAuthnVerifiers["verifyAuthenticationResponse"];
   verifyReg?: WebAuthnVerifiers["verifyRegistrationResponse"];
+  resolveConfig?: Parameters<typeof createWebAuthnService>[0]["resolveConfig"];
 }) {
   const parsed = parseWebAuthnConfig({
     WEBAUTHN_RP_NAME: "Sherivs",
@@ -162,6 +163,7 @@ function harness(opts?: {
     directory,
     sessions,
     config: parsed.config,
+    resolveConfig: opts?.resolveConfig,
     time: new TimeAuthority(clock),
     rateLimiter: opts?.limiter ?? allowLimiter(),
     audit: async (event) => {
@@ -519,5 +521,56 @@ describe("WebAuthn service ceremonies", () => {
     expect(updated.onboardingStatus).toBe("pending");
     const other = await service.onboardingState({ userId: USER_B });
     expect(other.passkeyFirst).toBe(true);
+  });
+
+  it("records the RP ID and never a fingerprint or face modality", async () => {
+    const { service, store } = harness();
+    const options = await service.registrationOptions({
+      userId: USER_A,
+      origin: ORIGIN,
+      rateKey: USER_A,
+    });
+    await service.verifyRegistration({
+      userId: USER_A,
+      origin: ORIGIN,
+      rateKey: USER_A,
+      response: registrationResponse(options.challenge),
+    });
+    expect(store.credentials[0]?.rpId).toBe("sherivs.com");
+    expect(JSON.stringify(store.credentials[0])).not.toMatch(
+      /fingerprint|face.?id|face.?recognition/i,
+    );
+    expect(store.credentials[0]).not.toHaveProperty("modality");
+  });
+
+  it("rejects a credential registered under a different RP ID", async () => {
+    const { service, store } = harness();
+    const options = await service.registrationOptions({
+      userId: USER_A,
+      origin: ORIGIN,
+      rateKey: USER_A,
+    });
+    await service.verifyRegistration({
+      userId: USER_A,
+      origin: ORIGIN,
+      rateKey: USER_A,
+      response: registrationResponse(options.challenge),
+    });
+    store.credentials[0]!.rpId = "school.edu.ng";
+    const auth = await service.authenticationOptions({ origin: ORIGIN, rateKey: "ip" });
+    await expect(
+      service.verifyAuthentication({
+        origin: ORIGIN,
+        rateKey: "ip",
+        response: assertionResponse(auth.challenge, store.credentials[0]!.credentialId, USER_A),
+      }),
+    ).rejects.toMatchObject({ code: "auth_failed" });
+  });
+
+  it("fails closed when the origin has no authorized relying party", async () => {
+    const { service } = harness({ resolveConfig: async () => null });
+    await expect(
+      service.authenticationOptions({ origin: "https://unverified.school.edu.ng", rateKey: "ip" }),
+    ).rejects.toMatchObject({ code: "unavailable" });
   });
 });

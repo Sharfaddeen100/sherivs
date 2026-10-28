@@ -149,8 +149,8 @@ export const listPasskeys = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
     try {
-      const { service } = await loadService();
-      return await service.list({ userId: context.userId });
+      const { service, origin } = await loadService();
+      return await service.list({ userId: context.userId, origin });
     } catch (err) {
       publicError(err);
     }
@@ -194,8 +194,8 @@ export const getPasskeyOnboardingState = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
     try {
-      const { service } = await loadService();
-      return await service.onboardingState({ userId: context.userId });
+      const { service, origin } = await loadService();
+      return await service.onboardingState({ userId: context.userId, origin });
     } catch (err) {
       publicError(err);
     }
@@ -205,8 +205,8 @@ export const dismissPasskeyOnboarding = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
     try {
-      const { service } = await loadService();
-      return await service.dismissOnboarding({ userId: context.userId });
+      const { service, origin } = await loadService();
+      return await service.dismissOnboarding({ userId: context.userId, origin });
     } catch (err) {
       publicError(err);
     }
@@ -217,10 +217,11 @@ export const setPasskeyFirstPreference = createServerFn({ method: "POST" })
   .validator((input: unknown) => z.object({ passkeyFirst: z.boolean() }).parse(input))
   .handler(async ({ data, context }) => {
     try {
-      const { service } = await loadService();
+      const { service, origin } = await loadService();
       return await service.setPasskeyFirst({
         userId: context.userId,
         passkeyFirst: data.passkeyFirst,
+        origin,
       });
     } catch (err) {
       publicError(err);

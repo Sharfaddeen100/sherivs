@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Fingerprint, ScanFace } from "lucide-react";
+import { Fingerprint, Shield } from "lucide-react";
 import { SherivsMark } from "@/components/brand/sherivs-logo";
 import { Switch } from "@/components/ui/switch";
 import {
@@ -85,10 +85,10 @@ export function PasskeyEnrollmentScreen({ onDone }: Props) {
           <div className="passkey-enroll-icon">
             <Fingerprint size={20} aria-hidden="true" />
             <strong>Unlock you already use</strong>
-            <small>Fingerprint, face unlock, or device PIN when the device offers it.</small>
+            <small>Your device chooses the available verification method.</small>
           </div>
           <div className="passkey-enroll-icon">
-            <ScanFace size={20} aria-hidden="true" />
+            <Shield size={20} aria-hidden="true" />
             <strong>Stays on the device</strong>
             <small>Sherivs stores only a public key. Never a biometric template.</small>
           </div>

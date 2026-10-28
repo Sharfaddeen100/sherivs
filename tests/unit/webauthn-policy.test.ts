@@ -11,6 +11,7 @@ import {
   sanitizePasskeyLabel,
   shouldOfferPasskeyEnrollment,
   shouldPrioritizePasskeyLogin,
+  shouldShowCompactPasskeyAction,
   userIdFromUtf8Handle,
 } from "../../frontend/src/lib/auth/webauthn-policy";
 
@@ -139,6 +140,9 @@ describe("passkey onboarding eligibility", () => {
     ).toBe(false);
     expect(
       shouldPrioritizePasskeyLogin({ webauthnSupported: false, passkeyFirstPreference: true }),
+    ).toBe(false);
+    expect(
+      shouldShowCompactPasskeyAction({ webauthnSupported: true, devicePasskeyHint: false }),
     ).toBe(false);
   });
 });

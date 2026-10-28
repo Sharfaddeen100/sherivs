@@ -14,7 +14,7 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import {
   shouldOfferPasskeyEnrollment,
-  shouldPrioritizePasskeyLogin,
+  shouldShowCompactPasskeyAction,
   WEBAUTHN_PUBLIC_ERROR,
   type PasskeyOnboardingState,
 } from "./webauthn-policy";
@@ -35,10 +35,10 @@ import type { PasskeyListItem } from "./webauthn-store";
 export type { PasskeyListItem, PasskeyOnboardingState };
 
 export const PASSKEY_DEVICE_HELP =
-  "Sign-in uses the passkey method this device already offers — fingerprint, face unlock, device PIN, or a security key. Sherivs never stores a fingerprint or face image.";
+  "Sign in securely with your passkey using your device's supported verification method.";
 
 export const PASSKEY_ENROLL_HELP =
-  "Turn this on to sign in with whatever unlock method this device already uses. Compatible devices may offer fingerprint, face unlock, a device PIN, or a security key. Sherivs never sees or stores a fingerprint or face image.";
+  "Sign in securely with your passkey using your device's supported verification method. Sherivs never sees or stores a fingerprint or face image.";
 
 const PASSKEY_FIRST_HINT = "sherivs.passkey-first";
 
@@ -71,6 +71,16 @@ export function readPasskeyFirstHint(): boolean {
     return window.localStorage.getItem(PASSKEY_FIRST_HINT) !== "0";
   } catch {
     return true;
+  }
+}
+
+/** True only after this browser recorded a successful Sherivs passkey ceremony. */
+export function deviceHasPasskeyLoginHint(): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    return window.localStorage.getItem(PASSKEY_FIRST_HINT) === "1";
+  } catch {
+    return false;
   }
 }
 
@@ -224,8 +234,8 @@ export async function enrollmentEligible(): Promise<boolean> {
 }
 
 export function passkeyLoginPriority(): boolean {
-  return shouldPrioritizePasskeyLogin({
+  return shouldShowCompactPasskeyAction({
     webauthnSupported: browserSupportsWebAuthn(),
-    passkeyFirstPreference: readPasskeyFirstHint(),
+    devicePasskeyHint: deviceHasPasskeyLoginHint(),
   });
 }

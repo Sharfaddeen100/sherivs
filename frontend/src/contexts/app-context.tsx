@@ -13,6 +13,7 @@ import {
   persistOAuthError,
   shouldRejectUninvitedGooglePrincipal,
 } from "@/lib/auth/google-sign-in";
+import { ORGANIZATION_ACCESS_DENIED } from "@/lib/auth/organization-access";
 import {
   CONSOLE_FIXTURE_OPERATOR,
   consoleVisualFixtureActive,
@@ -193,13 +194,27 @@ export function AppProvider({ children }: { children: ReactNode }) {
       const prof = profRow as unknown as UserProfile | null;
 
       if (prof) {
-        nextProfile = prof;
-        const { data: sch } = await supabase
-          .from("schools")
-          .select(SCHOOL_CLIENT_COLUMNS)
-          .eq("id", prof.school_id)
-          .maybeSingle();
-        if (sch) nextSchool = sch as unknown as SchoolRow;
+        const activeMember = (prof as UserProfile & { is_active?: boolean }).is_active !== false;
+        if (!activeMember) {
+          persistOAuthError(ORGANIZATION_ACCESS_DENIED);
+          await supabase.auth.signOut();
+          setSession(null);
+        } else {
+          nextProfile = prof;
+          const { data: sch } = await supabase
+            .from("schools")
+            .select(SCHOOL_CLIENT_COLUMNS)
+            .eq("id", prof.school_id)
+            .eq("is_active", true)
+            .maybeSingle();
+          if (sch) nextSchool = sch as unknown as SchoolRow;
+          else {
+            persistOAuthError(ORGANIZATION_ACCESS_DENIED);
+            await supabase.auth.signOut();
+            setSession(null);
+            nextProfile = null;
+          }
+        }
       } else {
         const { data: sa } = await supabase
           .from("super_admins")

@@ -7,6 +7,7 @@ type Props = {
   disabled?: boolean;
   className: string;
   iconClassName?: string;
+  compact?: boolean;
   onBusy?: (busy: boolean) => void;
   onError?: (message: string) => void;
   onSignedIn: () => Promise<void> | void;
@@ -16,6 +17,7 @@ export function PasskeySignInButton({
   disabled,
   className,
   iconClassName,
+  compact = false,
   onBusy,
   onError,
   onSignedIn,
@@ -49,11 +51,21 @@ export function PasskeySignInButton({
       disabled={disabled || busy}
       onClick={() => void handleClick()}
       data-testid="auth-passkey"
+      aria-label="Sign in with a passkey"
+      title="Sign in with a passkey"
     >
       <span className={iconClassName} aria-hidden="true">
-        <Fingerprint size={16} />
+        <Fingerprint size={compact ? 18 : 16} />
       </span>
-      {busy ? "Waiting for this device…" : "Sign in with a passkey"}
+      {compact ? (
+        <span className="sr-only">
+          {busy ? "Waiting for this device…" : "Sign in with a passkey"}
+        </span>
+      ) : busy ? (
+        "Waiting for this device…"
+      ) : (
+        "Sign in with a passkey"
+      )}
     </button>
   );
 }

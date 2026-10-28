@@ -6,7 +6,13 @@
 import { checkPublicRateLimit } from "@/lib/security/public-rate-limit.server";
 import type { RateLimiter } from "@/lib/ai-gateway.server";
 import { writeAuditRecord } from "@/lib/server/write-audit";
-import { parseOnboardingStatus, parseWebAuthnConfig } from "./webauthn-policy";
+import { originHostname, parseOnboardingStatus, parseWebAuthnConfig } from "./webauthn-policy";
+import {
+  candidateRpHosts,
+  resolveCeremonyRelyingParty,
+  selectSchoolDomainForHost,
+  type SchoolDomainRpRecord,
+} from "./webauthn-relying-party";
 import {
   createSystemTimeAuthority,
   createWebAuthnService,
@@ -32,6 +38,7 @@ type LooseQuery = {
   update(row: Record<string, unknown>): LooseQuery;
   delete(): LooseQuery;
   eq(column: string, value: unknown): LooseQuery;
+  in(column: string, values: unknown[]): LooseQuery;
   order(column: string, opts: { ascending: boolean }): LooseQuery;
   maybeSingle(): RpcResult<Record<string, unknown>>;
   single(): RpcResult<Record<string, unknown>>;
@@ -79,13 +86,14 @@ function mapCredential(row: Record<string, unknown>): WebAuthnCredentialRecord {
     transports: asStringArray(row.transports),
     aaguid: asStringOrNull(row.aaguid),
     label: asString(row.label) || "Passkey",
+    rpId: asString(row.rp_id) || "sherivs.com",
     createdAt: asString(row.created_at),
     lastUsedAt: asStringOrNull(row.last_used_at),
   };
 }
 
 const CREDENTIAL_COLUMNS =
-  "id, user_id, credential_id, public_key, counter, device_type, backed_up, transports, aaguid, label, created_at, last_used_at";
+  "id, user_id, credential_id, public_key, counter, device_type, backed_up, transports, aaguid, label, rp_id, created_at, last_used_at";
 
 export function createSupabaseWebAuthnStore(admin: WebAuthnAdminClient): WebAuthnStore {
   return {
@@ -134,12 +142,13 @@ export function createSupabaseWebAuthnStore(admin: WebAuthnAdminClient): WebAuth
       };
     },
 
-    async listCredentials(userId) {
-      const { data, error } = await admin
+    async listCredentials(userId, rpId) {
+      let query = admin
         .from("webauthn_credentials")
         .select(CREDENTIAL_COLUMNS)
-        .eq("user_id", userId)
-        .order("created_at", { ascending: false });
+        .eq("user_id", userId);
+      if (rpId) query = query.eq("rp_id", rpId);
+      const { data, error } = await query.order("created_at", { ascending: false });
       if (error) throw new Error(error.message);
       return (Array.isArray(data) ? data : []).map((row) =>
         mapCredential(row as Record<string, unknown>),
@@ -169,6 +178,7 @@ export function createSupabaseWebAuthnStore(admin: WebAuthnAdminClient): WebAuth
           transports: row.transports,
           aaguid: row.aaguid,
           label: row.label,
+          rp_id: row.rpId || "sherivs.com",
         })
         .select(CREDENTIAL_COLUMNS)
         .single();
@@ -214,8 +224,8 @@ export function createSupabaseWebAuthnStore(admin: WebAuthnAdminClient): WebAuth
       return Boolean(data);
     },
 
-    async countCredentials(userId) {
-      const rows = await this.listCredentials(userId);
+    async countCredentials(userId, rpId) {
+      const rows = await this.listCredentials(userId, rpId);
       return rows.length;
     },
 
@@ -313,6 +323,30 @@ export function createWebAuthnRateLimiter(): RateLimiter {
   };
 }
 
+export async function lookupSchoolDomainForWebAuthn(
+  admin: WebAuthnAdminClient,
+  origin: string,
+): Promise<SchoolDomainRpRecord | null> {
+  const host = originHostname(origin);
+  if (!host) return null;
+  const candidates = candidateRpHosts(host);
+  if (candidates.length === 0) return null;
+  const { data, error } = await admin
+    .from("school_domains")
+    .select("hostname, status, school_id")
+    .in("hostname", candidates);
+  if (error || !Array.isArray(data)) return null;
+  const rows: SchoolDomainRpRecord[] = data.map((row) => {
+    const record = row as Record<string, unknown>;
+    return {
+      hostname: asString(record.hostname).toLowerCase(),
+      status: asString(record.status),
+      schoolId: asString(record.school_id),
+    };
+  });
+  return selectSchoolDomainForHost(host, rows);
+}
+
 export async function createProductionWebAuthnService(): Promise<WebAuthnService> {
   const parsed = parseWebAuthnConfig(process.env, {
     fallbackLocal: process.env.NODE_ENV !== "production",
@@ -323,11 +357,16 @@ export async function createProductionWebAuthnService(): Promise<WebAuthnService
   }
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
   const admin = supabaseAdmin as unknown as WebAuthnAdminClient;
+  const platform = parsed.config;
   return createWebAuthnService({
     store: createSupabaseWebAuthnStore(admin),
     directory: createSupabaseWebAuthnDirectory(admin),
     sessions: createSupabaseWebAuthnSessionMinter(admin),
-    config: parsed.config,
+    config: platform,
+    resolveConfig: async (origin) => {
+      const domain = await lookupSchoolDomainForWebAuthn(admin, origin);
+      return resolveCeremonyRelyingParty({ origin, platform, domain });
+    },
     time: createSystemTimeAuthority(),
     rateLimiter: createWebAuthnRateLimiter(),
     audit: createWebAuthnAuditor(admin),

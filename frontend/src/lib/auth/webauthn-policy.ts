@@ -82,6 +82,19 @@ export function shouldPrioritizePasskeyLogin(input: {
   return input.webauthnSupported && input.passkeyFirstPreference;
 }
 
+/**
+ * Compact password/passkey row is a layout hint only.
+ * Proof of a credential is always a server-verified assertion.
+ * A missing device hint must not show the passkey control merely because
+ * the browser supports WebAuthn.
+ */
+export function shouldShowCompactPasskeyAction(input: {
+  webauthnSupported: boolean;
+  devicePasskeyHint: boolean;
+}): boolean {
+  return input.webauthnSupported && input.devicePasskeyHint;
+}
+
 export function parseOnboardingStatus(raw: unknown): PasskeyOnboardingStatus {
   if (raw === "dismissed" || raw === "enrolled" || raw === "pending") return raw;
   return "pending";

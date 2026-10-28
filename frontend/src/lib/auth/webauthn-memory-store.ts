@@ -51,8 +51,8 @@ export function createMemoryWebAuthnStore(): WebAuthnStore & {
       challenges.splice(idx, 1);
       return record;
     },
-    async listCredentials(userId) {
-      return credentials.filter((c) => c.userId === userId);
+    async listCredentials(userId, rpId) {
+      return credentials.filter((c) => c.userId === userId && (!rpId || c.rpId === rpId));
     },
     async getCredentialByCredentialId(credentialId) {
       return credentials.find((c) => c.credentialId === credentialId) ?? null;
@@ -63,6 +63,7 @@ export function createMemoryWebAuthnStore(): WebAuthnStore & {
       }
       const record: WebAuthnCredentialRecord = {
         ...row,
+        rpId: row.rpId || "sherivs.com",
         id: row.id ?? id(),
         createdAt: row.createdAt ?? "1970-01-01T00:00:00.000Z",
         lastUsedAt: null,
@@ -86,8 +87,8 @@ export function createMemoryWebAuthnStore(): WebAuthnStore & {
       credentials.splice(idx, 1);
       return true;
     },
-    async countCredentials(userId) {
-      return credentials.filter((c) => c.userId === userId).length;
+    async countCredentials(userId, rpId) {
+      return credentials.filter((c) => c.userId === userId && (!rpId || c.rpId === rpId)).length;
     },
     async getPreferences(userId) {
       return preferences.find((row) => row.userId === userId) ?? null;

@@ -1,10 +1,9 @@
 import { useEffect, useState, type ReactNode } from "react";
-import { Link, Navigate, useNavigate } from "@tanstack/react-router";
-import { ChevronLeft, Lock, LogIn, Mail } from "lucide-react";
+import { Navigate, useNavigate } from "@tanstack/react-router";
+import { ChevronLeft, LogIn } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useApp } from "@/contexts/app-context";
 import { Turnstile, captchaRequired } from "@/components/security/turnstile";
-import { PasswordInput } from "@/components/security/password-input";
 import { turnstileEnabled } from "@/lib/security/turnstile-config";
 import {
   GENERIC_LOGIN_ERROR,
@@ -12,16 +11,16 @@ import {
   formatSeconds,
   loginErrorMessage,
 } from "@/lib/security/auth-feedback";
-import { SherivsMark } from "@/components/brand/sherivs-logo";
 import { GoogleMark } from "@/components/auth/google-mark";
-import { resolveTenantDomain } from "@/lib/tenant";
-import { schoolDomainLoginAllowed } from "@/lib/domains/school-domains";
 import { type AppEntryPanel } from "@/lib/experience/app-entry-host";
 import {
   INVITE_LOGIN_ERROR,
   classifySignInIdentifier,
   toPasswordSignInPayload,
 } from "@/lib/auth/sign-in-identifier";
+import { signInWithOrgIdentifier } from "@/lib/auth/resolve-sign-in-identifier.functions";
+import { ACCOUNT_INVITATION_COPY } from "@/lib/auth/organization-access";
+import { assertPostAuthOrganizationAccess } from "@/lib/auth/organization-access-client";
 import {
   consumeOAuthError,
   googleSignInRedirectTo,
@@ -33,11 +32,11 @@ import {
   SHERIVS_LOADING_FLOOR_MS,
   signInLoadingRemainingMs,
 } from "@/lib/auth/signin-loading-wordmark";
+import { SherivsMark } from "@/components/brand/sherivs-logo";
 import { AppEntryCanvas } from "./app-entry-canvas";
 import { AppEntryWordmark } from "./app-entry-wordmark";
-import { PasskeySignInButton } from "@/components/auth/passkey-sign-in-button";
-import { PasskeyConditionalLogin } from "@/components/auth/passkey-conditional-login";
-import { PASSKEY_DEVICE_HELP, passkeyLoginPriority } from "@/lib/auth/webauthn-client";
+import { EnterpriseLoginFields } from "@/components/auth/enterprise-login-fields";
+import { passkeyLoginPriority } from "@/lib/auth/webauthn-client";
 import { SignInLoading } from "./signin-loading";
 
 const backoff = createLoginBackoff(typeof window !== "undefined" ? window.localStorage : undefined);
@@ -159,42 +158,50 @@ function SignInPanel({ onSigningChange }: { onSigningChange: (signing: boolean) 
     const classified = classifySignInIdentifier(identifier);
     const payload = toPasswordSignInPayload(classified, password, captchaToken ?? undefined);
     const auditEmail = classified.kind === "email" ? classified.value : undefined;
-    setRememberPreference(remember);
+    if (!prioritizePasskey) setRememberPreference(remember);
     setBusy("password");
     onSigningChange(true);
     const startedAt = Date.now();
     try {
-      const { data, error: authError } = await supabase.auth.signInWithPassword(payload);
-      if (authError) {
-        void fetch("/api/public/audit/password-reset", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ event: "login_failed", email: auditEmail }),
-        }).catch(() => {});
-        const wait = backoff.recordFailure();
-        setWaitMs(wait);
-        const mapped = loginErrorMessage(authError);
-        throw new Error(mapped === GENERIC_LOGIN_ERROR ? INVITE_LOGIN_ERROR : mapped);
+      let userId: string | undefined;
+      if (classified.kind === "username") {
+        const minted = await signInWithOrgIdentifier({
+          data: {
+            identifier,
+            password,
+            captchaToken: captchaToken ?? undefined,
+          },
+        });
+        const { error: sessionError } = await supabase.auth.setSession({
+          access_token: minted.accessToken,
+          refresh_token: minted.refreshToken,
+        });
+        if (sessionError) throw new Error(INVITE_LOGIN_ERROR);
+        userId = minted.userId;
+      } else {
+        const { data, error: authError } = await supabase.auth.signInWithPassword(payload);
+        if (authError) {
+          void fetch("/api/public/audit/password-reset", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ event: "login_failed", email: auditEmail }),
+          }).catch(() => {});
+          const wait = backoff.recordFailure();
+          setWaitMs(wait);
+          const mapped = loginErrorMessage(authError);
+          throw new Error(mapped === GENERIC_LOGIN_ERROR ? INVITE_LOGIN_ERROR : mapped);
+        }
+        userId = data.user?.id;
       }
       backoff.reset();
       setWaitMs(0);
 
-      if (tenantSlug && school && data.user) {
-        const { data: u } = await supabase
-          .from("users")
-          .select("school_id, role")
-          .eq("id", data.user.id)
-          .maybeSingle();
-        if (u && u.school_id !== school.id) {
-          await supabase.auth.signOut();
-          throw new Error(INVITE_LOGIN_ERROR);
-        }
-      }
-
-      const customHost = resolveTenantDomain();
-      if (customHost && data.user && !(await schoolDomainLoginAllowed(customHost))) {
-        await supabase.auth.signOut();
-        throw new Error(INVITE_LOGIN_ERROR);
+      if (userId) {
+        await assertPostAuthOrganizationAccess({
+          userId,
+          tenantSlug,
+          schoolId: school?.id ?? null,
+        });
       }
 
       void fetch("/api/public/audit/password-reset", {
@@ -203,7 +210,7 @@ function SignInPanel({ onSigningChange }: { onSigningChange: (signing: boolean) 
         body: JSON.stringify({
           event: "login_succeeded",
           email: auditEmail,
-          user_id: data.user?.id,
+          user_id: userId,
         }),
       }).catch(() => {});
 
@@ -221,23 +228,14 @@ function SignInPanel({ onSigningChange }: { onSigningChange: (signing: boolean) 
   }
 
   async function completePasskeySignIn() {
-    setRememberPreference(remember);
+    if (!prioritizePasskey) setRememberPreference(remember);
     const { data } = await supabase.auth.getUser();
-    if (tenantSlug && school && data.user) {
-      const { data: u } = await supabase
-        .from("users")
-        .select("school_id, role")
-        .eq("id", data.user.id)
-        .maybeSingle();
-      if (u && u.school_id !== school.id) {
-        await supabase.auth.signOut();
-        throw new Error(INVITE_LOGIN_ERROR);
-      }
-    }
-    const customHost = resolveTenantDomain();
-    if (customHost && data.user && !(await schoolDomainLoginAllowed(customHost))) {
-      await supabase.auth.signOut();
-      throw new Error(INVITE_LOGIN_ERROR);
+    if (data.user) {
+      await assertPostAuthOrganizationAccess({
+        userId: data.user.id,
+        tenantSlug,
+        schoolId: school?.id ?? null,
+      });
     }
     void fetch("/api/public/audit/password-reset", {
       method: "POST",
@@ -253,7 +251,7 @@ function SignInPanel({ onSigningChange }: { onSigningChange: (signing: boolean) 
 
   async function handleGoogle() {
     setError(null);
-    setRememberPreference(remember);
+    if (!prioritizePasskey) setRememberPreference(remember);
     setBusy("google");
     const result = await startGoogleSignIn((args) => supabase.auth.signInWithOAuth(args), {
       redirectTo: googleSignInRedirectTo(window.location.origin, "/?panel=signin"),
@@ -296,82 +294,26 @@ function SignInPanel({ onSigningChange }: { onSigningChange: (signing: boolean) 
         Welcome back
       </h2>
       <form onSubmit={handleSubmit} className="app-entry-login-form">
-        <label className="app-entry-login-field">
-          <span className="sr-only">Email address</span>
-          <span className="app-entry-login-field-icon">
-            <GlassIcon>
-              <Mail />
-            </GlassIcon>
-          </span>
-          <input
-            required
-            value={identifier}
-            onChange={(e) => setIdentifier(e.target.value)}
-            className="app-entry-login-input"
-            placeholder="Email address"
-            autoComplete="username webauthn"
-            autoCapitalize="none"
-            autoCorrect="off"
-            spellCheck={false}
-            name="username"
-            data-testid="app-entry-identifier"
-          />
-        </label>
-        <PasskeyConditionalLogin
-          enabled={waitMs <= 0}
-          onBusy={(next) => {
+        <EnterpriseLoginFields
+          identifier={identifier}
+          password={password}
+          remember={remember}
+          passkeyEligible={prioritizePasskey}
+          submitting={submitting}
+          waitMs={waitMs}
+          identifierTestId="app-entry-identifier"
+          rememberTestId="app-entry-remember"
+          forgotSearch={forgotSearch}
+          onIdentifierChange={setIdentifier}
+          onPasswordChange={setPassword}
+          onRememberChange={setRemember}
+          onPasskeyBusy={(next) => {
             setBusy(next ? "passkey" : null);
             onSigningChange(next);
           }}
-          onError={setError}
-          onSignedIn={completePasskeySignIn}
+          onPasskeyError={setError}
+          onPasskeySignedIn={completePasskeySignIn}
         />
-        {prioritizePasskey ? (
-          <PasskeySignInButton
-            className="app-entry-login-submit"
-            iconClassName="app-entry-glass-icon"
-            disabled={submitting || waitMs > 0}
-            onBusy={(next) => {
-              setBusy(next ? "passkey" : null);
-              onSigningChange(next);
-            }}
-            onError={setError}
-            onSignedIn={completePasskeySignIn}
-          />
-        ) : null}
-        {prioritizePasskey ? <p className="app-entry-login-or">or use your password</p> : null}
-        <label className="app-entry-login-field">
-          <span className="sr-only">Password</span>
-          <span className="app-entry-login-field-icon">
-            <GlassIcon>
-              <Lock />
-            </GlassIcon>
-          </span>
-          <PasswordInput
-            required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            autoComplete="current-password"
-            name="password"
-            inputClassName="app-entry-login-input app-entry-login-input-password"
-            fieldLabel="password"
-            placeholder="Password"
-          />
-        </label>
-        <div className="app-entry-login-row">
-          <label className="app-entry-login-remember">
-            <input
-              type="checkbox"
-              checked={remember}
-              onChange={(e) => setRemember(e.target.checked)}
-              data-testid="app-entry-remember"
-            />
-            Remember for 30 days
-          </label>
-          <Link to="/forgot-password" search={forgotSearch} className="app-entry-login-forgot">
-            Forgot password
-          </Link>
-        </div>
         <Turnstile
           onToken={setCaptchaToken}
           onUnavailable={() => setCaptchaUnavailable(true)}
@@ -390,14 +332,11 @@ function SignInPanel({ onSigningChange }: { onSigningChange: (signing: boolean) 
         )}
         <button
           type="submit"
+          className="sr-only"
           disabled={submitting || waitMs > 0}
-          className={prioritizePasskey ? "app-entry-login-google" : "app-entry-login-submit"}
           data-testid="app-entry-submit"
         >
-          <GlassIcon>
-            <LogIn />
-          </GlassIcon>
-          {busy === "password" ? "Please wait…" : "Sign in with password"}
+          {busy === "password" ? "Please wait…" : "Sign in"}
         </button>
         <button
           type="button"
@@ -411,23 +350,7 @@ function SignInPanel({ onSigningChange }: { onSigningChange: (signing: boolean) 
           </span>
           {busy === "google" ? "Opening Google…" : "Sign in with Google"}
         </button>
-        {prioritizePasskey ? null : (
-          <PasskeySignInButton
-            className="app-entry-login-google"
-            iconClassName="app-entry-glass-icon"
-            disabled={submitting || waitMs > 0}
-            onBusy={(next) => {
-              setBusy(next ? "passkey" : null);
-              onSigningChange(next);
-            }}
-            onError={setError}
-            onSignedIn={completePasskeySignIn}
-          />
-        )}
-        <p className="app-entry-login-invite">{PASSKEY_DEVICE_HELP}</p>
-        <p className="app-entry-login-invite">
-          Need an account? Ask your administrator to invite you.
-        </p>
+        <p className="app-entry-login-invite">{ACCOUNT_INVITATION_COPY}</p>
       </form>
     </section>
   );

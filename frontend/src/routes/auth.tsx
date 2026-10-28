@@ -1,9 +1,8 @@
 import { createFileRoute, Link, Navigate, redirect } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Lock, LogIn, Mail } from "lucide-react";
-import { PasskeySignInButton } from "@/components/auth/passkey-sign-in-button";
-import { PasskeyConditionalLogin } from "@/components/auth/passkey-conditional-login";
-import { PASSKEY_DEVICE_HELP, passkeyLoginPriority } from "@/lib/auth/webauthn-client";
+import { EnterpriseLoginFields } from "@/components/auth/enterprise-login-fields";
+import { passkeyLoginPriority } from "@/lib/auth/webauthn-client";
 import { supabase } from "@/integrations/supabase/client";
 import { useApp } from "@/contexts/app-context";
 import { Turnstile, captchaRequired } from "@/components/security/turnstile";
@@ -19,10 +18,16 @@ import {
   newPasswordServerMessage,
 } from "@/lib/security/auth-feedback";
 import { GoogleMark } from "@/components/auth/google-mark";
-import { resolveTenantDomain } from "@/lib/tenant";
-import { schoolDomainLoginAllowed } from "@/lib/domains/school-domains";
 import { currentEffectiveHostKind } from "@/lib/experience/console-host-routing";
 import { authPageExperience, effectiveAuthMode } from "@/lib/experience/auth-page-experience";
+import { ACCOUNT_INVITATION_COPY } from "@/lib/auth/organization-access";
+import { assertPostAuthOrganizationAccess } from "@/lib/auth/organization-access-client";
+import {
+  INVITE_LOGIN_ERROR,
+  classifySignInIdentifier,
+  toPasswordSignInPayload,
+} from "@/lib/auth/sign-in-identifier";
+import { signInWithOrgIdentifier } from "@/lib/auth/resolve-sign-in-identifier.functions";
 import {
   consumeOAuthError,
   googleSignInRedirectTo,
@@ -127,71 +132,54 @@ function AuthPage() {
       return setError("Please complete the security check.");
     }
     const captcha = captchaToken ?? undefined;
-    if (mode === "signin") setRememberPreference(remember);
+    if (mode === "signin" && !prioritizePasskey) setRememberPreference(remember);
     setBusy(true);
     setBusyKind("password");
     const startedAt = Date.now();
     try {
       if (mode === "signin") {
-        const { data, error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-          options: { captchaToken: captcha },
-        });
-        if (error) {
-          // Audit the failure (fire-and-forget, never block UX)
-          void fetch("/api/public/audit/password-reset", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ event: "login_failed", email }),
-          }).catch(() => {});
-          const wait = backoff.recordFailure();
-          setWaitMs(wait);
-          throw new Error(loginErrorMessage(error));
+        const classified = classifySignInIdentifier(email);
+        let userId: string | undefined;
+        if (classified.kind === "username") {
+          const minted = await signInWithOrgIdentifier({
+            data: { identifier: email, password, captchaToken: captcha },
+          });
+          const { error: sessionError } = await supabase.auth.setSession({
+            access_token: minted.accessToken,
+            refresh_token: minted.refreshToken,
+          });
+          if (sessionError) throw new Error(INVITE_LOGIN_ERROR);
+          userId = minted.userId;
+        } else {
+          const payload = toPasswordSignInPayload(classified, password, captcha);
+          const { data, error } = await supabase.auth.signInWithPassword(payload);
+          if (error) {
+            void fetch("/api/public/audit/password-reset", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ event: "login_failed", email }),
+            }).catch(() => {});
+            const wait = backoff.recordFailure();
+            setWaitMs(wait);
+            throw new Error(loginErrorMessage(error));
+          }
+          userId = data.user?.id;
         }
         backoff.reset();
         setWaitMs(0);
 
-        // Tenant-aware sign-in: if visiting on a tenant slug, verify the user
-        // belongs to that school.
-        if (tenantSlug && school && data.user) {
-          const { data: u } = await supabase
-            .from("users")
-            .select("school_id, role")
-            .eq("id", data.user.id)
-            .maybeSingle();
-          // Super admins (no `users` row) are always allowed.
-          if (u && u.school_id !== school.id) {
-            await supabase.auth.signOut();
-            void fetch("/api/public/audit/password-reset", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ event: "login_failed", email, user_id: data.user.id }),
-            }).catch(() => {});
-            throw new Error(
-              `This account does not belong to ${school.name}. Please sign in on your own school portal.`,
-            );
-          }
-        }
-
-        // SHERIVS-029: on a school's own domain only that school's members may sign in.
-        const customHost = resolveTenantDomain();
-        if (customHost && data.user && !(await schoolDomainLoginAllowed(customHost))) {
-          await supabase.auth.signOut();
-          void fetch("/api/public/audit/password-reset", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ event: "login_failed", email, user_id: data.user.id }),
-          }).catch(() => {});
-          throw new Error(
-            `This account does not belong to ${school?.name ?? "this school"}. Please sign in on your own school's address or at app.sherivs.com.`,
-          );
+        if (userId) {
+          await assertPostAuthOrganizationAccess({
+            userId,
+            tenantSlug,
+            schoolId: school?.id ?? null,
+          });
         }
 
         void fetch("/api/public/audit/password-reset", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ event: "login_succeeded", email, user_id: data.user?.id }),
+          body: JSON.stringify({ event: "login_succeeded", email, user_id: userId }),
         }).catch(() => {});
 
         await refresh();
@@ -231,27 +219,14 @@ function AuthPage() {
   }
 
   async function completePasskeySignIn() {
-    setRememberPreference(remember);
+    if (!prioritizePasskey) setRememberPreference(remember);
     const { data } = await supabase.auth.getUser();
-    if (tenantSlug && school && data.user) {
-      const { data: u } = await supabase
-        .from("users")
-        .select("school_id, role")
-        .eq("id", data.user.id)
-        .maybeSingle();
-      if (u && u.school_id !== school.id) {
-        await supabase.auth.signOut();
-        throw new Error(
-          `This account does not belong to ${school.name}. Please sign in on your own school portal.`,
-        );
-      }
-    }
-    const customHost = resolveTenantDomain();
-    if (customHost && data.user && !(await schoolDomainLoginAllowed(customHost))) {
-      await supabase.auth.signOut();
-      throw new Error(
-        `This account does not belong to ${school?.name ?? "this school"}. Please sign in on your own school's address or at app.sherivs.com.`,
-      );
+    if (data.user) {
+      await assertPostAuthOrganizationAccess({
+        userId: data.user.id,
+        tenantSlug,
+        schoolId: school?.id ?? null,
+      });
     }
     void fetch("/api/public/audit/password-reset", {
       method: "POST",
@@ -267,12 +242,12 @@ function AuthPage() {
 
   async function handleGoogle() {
     reset();
-    setRememberPreference(remember);
+    if (!prioritizePasskey) setRememberPreference(remember);
     setBusy(true);
     setBusyKind("google");
     const result = await startGoogleSignIn((args) => supabase.auth.signInWithOAuth(args), {
       redirectTo: googleSignInRedirectTo(window.location.origin, "/auth"),
-      loginHint: email,
+      loginHint: classifySignInIdentifier(email).kind === "email" ? email : undefined,
     });
     if (!result.ok) {
       setBusy(false);
@@ -344,7 +319,6 @@ function AuthPage() {
           )}
           <p className="app-entry-login-kicker">Please enter your details</p>
           <h1 className="app-entry-login-title">{signInCopy ? "Welcome back" : title}</h1>
-          <p className="mt-0 mb-4 text-sm text-muted-foreground">{experience.subtext}</p>
         </div>
 
         <form onSubmit={handleSubmit} className="app-entry-login-form">
@@ -360,89 +334,66 @@ function AuthPage() {
               />
             </Field>
           )}
-          <label className="app-entry-login-field">
-            <span className="sr-only">Email address</span>
-            <span className="app-entry-login-field-icon">
-              <span className="app-entry-glass-icon" aria-hidden="true">
-                <Mail />
-              </span>
-            </span>
-            <input
-              required
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="app-entry-login-input"
-              placeholder="Email address"
-              autoComplete={mode === "signin" ? "username webauthn" : "email"}
-            />
-          </label>
           {signInCopy ? (
-            <PasskeyConditionalLogin
-              enabled={waitMs <= 0 && !busy}
-              onBusy={(next) => {
+            <EnterpriseLoginFields
+              identifier={email}
+              password={password}
+              remember={remember}
+              passkeyEligible={prioritizePasskey}
+              submitting={busy}
+              waitMs={waitMs}
+              forgotSearch={
+                classifySignInIdentifier(email).kind === "email" ? { email: email.trim() } : {}
+              }
+              onIdentifierChange={setEmail}
+              onPasswordChange={setPassword}
+              onRememberChange={setRemember}
+              onPasskeyBusy={(next) => {
                 setBusy(next);
                 setBusyKind(next ? "passkey" : null);
               }}
-              onError={setError}
-              onSignedIn={completePasskeySignIn}
+              onPasskeyError={setError}
+              onPasskeySignedIn={completePasskeySignIn}
             />
-          ) : null}
-          {prioritizePasskey ? (
+          ) : (
             <>
-              <PasskeySignInButton
-                className="app-entry-login-submit"
-                iconClassName="app-entry-glass-icon"
-                disabled={busy || waitMs > 0}
-                onBusy={(next) => {
-                  setBusy(next);
-                  setBusyKind(next ? "passkey" : null);
-                }}
-                onError={setError}
-                onSignedIn={completePasskeySignIn}
-              />
-              <p className="app-entry-login-or">or use your password</p>
-            </>
-          ) : null}
-          <label className="app-entry-login-field">
-            <span className="sr-only">Password</span>
-            <span className="app-entry-login-field-icon">
-              <span className="app-entry-glass-icon" aria-hidden="true">
-                <Lock />
-              </span>
-            </span>
-            <PasswordInput
-              required
-              minLength={mode === "signup" ? PASSWORD_MIN_LENGTH : undefined}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              autoComplete={mode === "signin" ? "current-password" : "new-password"}
-              name="password"
-              placeholder="Password"
-              inputClassName="app-entry-login-input app-entry-login-input-password"
-            />
-          </label>
-
-          {mode === "signup" && <PasswordStrengthMeter password={password} email={email} />}
-
-          {signInCopy && (
-            <div className="app-entry-login-row">
-              <label className="app-entry-login-remember">
+              <label className="app-entry-login-field">
+                <span className="sr-only">Email address</span>
+                <span className="app-entry-login-field-icon">
+                  <span className="app-entry-glass-icon" aria-hidden="true">
+                    <Mail />
+                  </span>
+                </span>
                 <input
-                  type="checkbox"
-                  checked={remember}
-                  onChange={(e) => setRemember(e.target.checked)}
+                  required
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="app-entry-login-input"
+                  placeholder="Email address"
+                  autoComplete="email"
                 />
-                Remember for 30 days
               </label>
-              <Link
-                to="/forgot-password"
-                search={email ? { email } : {}}
-                className="app-entry-login-forgot"
-              >
-                Forgot password
-              </Link>
-            </div>
+              <label className="app-entry-login-field">
+                <span className="sr-only">Password</span>
+                <span className="app-entry-login-field-icon">
+                  <span className="app-entry-glass-icon" aria-hidden="true">
+                    <Lock />
+                  </span>
+                </span>
+                <PasswordInput
+                  required
+                  minLength={PASSWORD_MIN_LENGTH}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  autoComplete="new-password"
+                  name="password"
+                  placeholder="Password"
+                  inputClassName="app-entry-login-input app-entry-login-input-password"
+                />
+              </label>
+              <PasswordStrengthMeter password={password} email={email} />
+            </>
           )}
 
           <Turnstile
@@ -465,20 +416,18 @@ function AuthPage() {
           )}
           {info && <div className="app-entry-alert app-entry-alert-info">{info}</div>}
 
-          <button
-            type="submit"
-            disabled={busy || (mode === "signin" && waitMs > 0)}
-            className={prioritizePasskey ? "app-entry-login-google" : "app-entry-login-submit"}
-          >
-            <span className="app-entry-glass-icon" aria-hidden="true">
-              <LogIn />
-            </span>
-            {busyKind === "password"
-              ? "Please wait…"
-              : mode === "signin"
-                ? "Sign in with password"
-                : "Create account"}
-          </button>
+          {mode === "signup" ? (
+            <button type="submit" disabled={busy} className="app-entry-login-submit">
+              <span className="app-entry-glass-icon" aria-hidden="true">
+                <LogIn />
+              </span>
+              {busyKind === "password" ? "Please wait…" : "Create account"}
+            </button>
+          ) : (
+            <button type="submit" className="sr-only" disabled={busy || waitMs > 0}>
+              {busyKind === "password" ? "Please wait…" : "Sign in"}
+            </button>
+          )}
 
           {signInCopy && (
             <button
@@ -494,20 +443,6 @@ function AuthPage() {
               {busyKind === "google" ? "Opening Google…" : "Sign in with Google"}
             </button>
           )}
-          {signInCopy && !prioritizePasskey ? (
-            <PasskeySignInButton
-              className="app-entry-login-google"
-              iconClassName="app-entry-glass-icon"
-              disabled={busy || waitMs > 0}
-              onBusy={(next) => {
-                setBusy(next);
-                setBusyKind(next ? "passkey" : null);
-              }}
-              onError={setError}
-              onSignedIn={completePasskeySignIn}
-            />
-          ) : null}
-          {signInCopy ? <p className="app-entry-login-invite">{PASSKEY_DEVICE_HELP}</p> : null}
         </form>
 
         {localFixtureEnabled ? (
@@ -553,9 +488,7 @@ function AuthPage() {
             </button>
           )}
           {signInCopy && !experience.allowSignup && (
-            <p className="app-entry-login-invite">
-              Need an account? Ask your administrator to invite you.
-            </p>
+            <p className="app-entry-login-invite">{ACCOUNT_INVITATION_COPY}</p>
           )}
           <Link to="/" className="block text-xs text-muted-foreground hover:text-foreground">
             Back to site

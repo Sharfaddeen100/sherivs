@@ -131,6 +131,7 @@ export type WebAuthnServiceDeps = {
   directory: WebAuthnDirectory;
   sessions: WebAuthnSessionMinter;
   config: WebAuthnConfig;
+  resolveConfig?: (origin: string) => Promise<WebAuthnConfig | null>;
   time: TimeAuthority;
   rateLimiter: RateLimiter;
   audit: WebAuthnAuditor;
@@ -182,11 +183,23 @@ export function createWebAuthnService(deps: WebAuthnServiceDeps) {
     }
   }
 
-  async function requireOrigin(origin: string): Promise<string> {
+  async function ceremonyFor(origin: string): Promise<{ origin: string; config: WebAuthnConfig }> {
+    if (deps.resolveConfig) {
+      const config = await deps.resolveConfig(origin);
+      if (!config) throw new WebAuthnServiceError("unavailable");
+      return { origin, config };
+    }
     if (!originAllowedForRp(origin, deps.config)) {
       throw new WebAuthnServiceError("unavailable");
     }
-    return origin;
+    return { origin, config: deps.config };
+  }
+
+  async function credentialsForRp(
+    userId: string,
+    rpId: string,
+  ): Promise<WebAuthnCredentialRecord[]> {
+    return deps.store.listCredentials(userId, rpId);
   }
 
   async function readPreferences(userId: string): Promise<{
@@ -235,19 +248,19 @@ export function createWebAuthnService(deps: WebAuthnServiceDeps) {
       label?: string;
     }): Promise<PublicKeyCredentialCreationOptionsJSON> {
       await enforceRate("register", input.rateKey);
-      const origin = await requireOrigin(input.origin);
+      const { origin, config } = await ceremonyFor(input.origin);
       const profile = await deps.directory.getUser(input.userId);
       if (!profile) throw new WebAuthnServiceError("unauthorized", 401);
       if (!profile.email || !profile.emailConfirmed) {
         throw new WebAuthnServiceError("email_required");
       }
-      const existing = await deps.store.listCredentials(input.userId);
+      const existing = await credentialsForRp(input.userId, config.rpID);
       if (existing.length >= WEBAUTHN_MAX_PASSKEYS_PER_USER) {
         throw new WebAuthnServiceError("limit");
       }
       const options = await verify.generateRegistrationOptions({
-        rpName: deps.config.rpName,
-        rpID: deps.config.rpID,
+        rpName: config.rpName,
+        rpID: config.rpID,
         userName: profile.email,
         userDisplayName: profile.displayName || profile.email,
         userID: userHandleFromUserId(input.userId),
@@ -266,9 +279,9 @@ export function createWebAuthnService(deps: WebAuthnServiceDeps) {
         challenge: options.challenge,
         ceremony: "registration",
         userId: input.userId,
-        rpId: deps.config.rpID,
+        rpId: config.rpID,
         origin,
-        expiresAtMs: now.atMs + deps.config.challengeTtlMs,
+        expiresAtMs: now.atMs + config.challengeTtlMs,
       });
       await auditSafe({
         action: "webauthn.register.options",
@@ -291,7 +304,7 @@ export function createWebAuthnService(deps: WebAuthnServiceDeps) {
       label?: string;
     }): Promise<PasskeyListItem> {
       await enforceRate("register-verify", input.rateKey);
-      const origin = await requireOrigin(input.origin);
+      const { origin, config } = await ceremonyFor(input.origin);
       const profile = await deps.directory.getUser(input.userId);
       if (!profile) throw new WebAuthnServiceError("unauthorized", 401);
       const challenge = challengeFromClientDataJSON(input.response.response.clientDataJSON);
@@ -311,7 +324,11 @@ export function createWebAuthnService(deps: WebAuthnServiceDeps) {
         });
         throw new WebAuthnServiceError("expired");
       }
-      if (stored.userId !== input.userId) {
+      if (
+        stored.userId !== input.userId ||
+        stored.rpId !== config.rpID ||
+        stored.origin !== origin
+      ) {
         throw new WebAuthnServiceError("register_failed");
       }
       if (challengeExpired(stored.expiresAtMs, now.atMs)) {
@@ -323,7 +340,7 @@ export function createWebAuthnService(deps: WebAuthnServiceDeps) {
           response: input.response,
           expectedChallenge: stored.challenge,
           expectedOrigin: origin,
-          expectedRPID: deps.config.rpID,
+          expectedRPID: config.rpID,
           requireUserVerification: true,
         });
       } catch {
@@ -343,13 +360,13 @@ export function createWebAuthnService(deps: WebAuthnServiceDeps) {
         throw new WebAuthnServiceError("register_failed");
       }
       const info = verification.registrationInfo;
-      if (info.origin !== origin || (info.rpID && info.rpID !== deps.config.rpID)) {
+      if (info.origin !== origin || (info.rpID && info.rpID !== config.rpID)) {
         throw new WebAuthnServiceError("register_failed");
       }
       const credentialId = info.credential.id;
       const existing = await deps.store.getCredentialByCredentialId(credentialId);
       if (existing) throw new WebAuthnServiceError("already_registered");
-      const count = await deps.store.countCredentials(input.userId);
+      const count = await deps.store.countCredentials(input.userId, config.rpID);
       if (count >= WEBAUTHN_MAX_PASSKEYS_PER_USER) throw new WebAuthnServiceError("limit");
       const label =
         sanitizePasskeyLabel(input.label) ?? defaultPasskeyLabel(now.at, info.credentialDeviceType);
@@ -364,6 +381,7 @@ export function createWebAuthnService(deps: WebAuthnServiceDeps) {
           transports: sanitizeTransports(input.response.response.transports),
           aaguid: info.aaguid ?? null,
           label,
+          rpId: config.rpID,
         });
         await markEnrolled(input.userId, { passkeyFirst: true });
         await auditSafe({
@@ -393,20 +411,20 @@ export function createWebAuthnService(deps: WebAuthnServiceDeps) {
       rateKey: string;
     }): Promise<PublicKeyCredentialRequestOptionsJSON> {
       await enforceRate("auth", input.rateKey);
-      const origin = await requireOrigin(input.origin);
+      const { origin, config } = await ceremonyFor(input.origin);
       const options = await verify.generateAuthenticationOptions({
-        rpID: deps.config.rpID,
+        rpID: config.rpID,
         userVerification: "required",
-        timeout: deps.config.challengeTtlMs,
+        timeout: config.challengeTtlMs,
       });
       const now = deps.time.now();
       await deps.store.insertChallenge({
         challenge: options.challenge,
         ceremony: "authentication",
         userId: null,
-        rpId: deps.config.rpID,
+        rpId: config.rpID,
         origin,
-        expiresAtMs: now.atMs + deps.config.challengeTtlMs,
+        expiresAtMs: now.atMs + config.challengeTtlMs,
       });
       return options;
     },
@@ -417,14 +435,16 @@ export function createWebAuthnService(deps: WebAuthnServiceDeps) {
       response: AuthenticationResponseJSON;
     }): Promise<MintedSupabaseSession> {
       await enforceRate("auth-verify", input.rateKey);
-      const origin = await requireOrigin(input.origin);
+      const { origin, config } = await ceremonyFor(input.origin);
       const challenge = challengeFromClientDataJSON(input.response.response.clientDataJSON);
       if (!challenge) throw new WebAuthnServiceError("auth_failed");
       const now = deps.time.now();
       const stored = await deps.store.consumeChallenge(challenge, "authentication", now.atMs);
-      if (!stored) throw new WebAuthnServiceError("auth_failed");
+      if (!stored || stored.rpId !== config.rpID || stored.origin !== origin) {
+        throw new WebAuthnServiceError("auth_failed");
+      }
       const credential = await deps.store.getCredentialByCredentialId(input.response.id);
-      if (!credential) {
+      if (!credential || credential.rpId !== config.rpID) {
         await auditSafe({
           action: "webauthn.authenticate.verify",
           userId: null,
@@ -457,7 +477,7 @@ export function createWebAuthnService(deps: WebAuthnServiceDeps) {
           response: input.response,
           expectedChallenge: stored.challenge,
           expectedOrigin: origin,
-          expectedRPID: deps.config.rpID,
+          expectedRPID: config.rpID,
           credential: toWebAuthnCredential(credential),
           requireUserVerification: true,
         });
@@ -466,7 +486,7 @@ export function createWebAuthnService(deps: WebAuthnServiceDeps) {
       }
       if (!verification.verified) throw new WebAuthnServiceError("auth_failed");
       const info = verification.authenticationInfo;
-      if (info.origin !== origin || info.rpID !== deps.config.rpID) {
+      if (info.origin !== origin || info.rpID !== config.rpID) {
         throw new WebAuthnServiceError("auth_failed");
       }
       const counter = decideSignatureCounter(credential.counter, info.newCounter);
@@ -524,8 +544,9 @@ export function createWebAuthnService(deps: WebAuthnServiceDeps) {
       }
     },
 
-    async list(input: { userId: string }): Promise<PasskeyListItem[]> {
-      const rows = await deps.store.listCredentials(input.userId);
+    async list(input: { userId: string; origin?: string }): Promise<PasskeyListItem[]> {
+      const rpId = input.origin ? (await ceremonyFor(input.origin)).config.rpID : undefined;
+      const rows = await deps.store.listCredentials(input.userId, rpId);
       return rows
         .slice()
         .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
@@ -581,10 +602,14 @@ export function createWebAuthnService(deps: WebAuthnServiceDeps) {
       return { ok: true };
     },
 
-    async onboardingState(input: { userId: string }): Promise<PasskeyOnboardingState> {
+    async onboardingState(input: {
+      userId: string;
+      origin?: string;
+    }): Promise<PasskeyOnboardingState> {
       const profile = await deps.directory.getUser(input.userId);
       if (!profile) throw new WebAuthnServiceError("unauthorized", 401);
-      const credentialCount = await deps.store.countCredentials(input.userId);
+      const rpId = input.origin ? (await ceremonyFor(input.origin)).config.rpID : undefined;
+      const credentialCount = await deps.store.countCredentials(input.userId, rpId);
       const prefs = await readPreferences(input.userId);
       let onboardingStatus: PasskeyOnboardingStatus = parseOnboardingStatus(
         prefs.row.onboardingStatus,
@@ -601,10 +626,14 @@ export function createWebAuthnService(deps: WebAuthnServiceDeps) {
       };
     },
 
-    async dismissOnboarding(input: { userId: string }): Promise<PasskeyOnboardingState> {
+    async dismissOnboarding(input: {
+      userId: string;
+      origin?: string;
+    }): Promise<PasskeyOnboardingState> {
       const profile = await deps.directory.getUser(input.userId);
       if (!profile) throw new WebAuthnServiceError("unauthorized", 401);
-      const credentialCount = await deps.store.countCredentials(input.userId);
+      const rpId = input.origin ? (await ceremonyFor(input.origin)).config.rpID : undefined;
+      const credentialCount = await deps.store.countCredentials(input.userId, rpId);
       if (credentialCount > 0) {
         await markEnrolled(input.userId);
         return this.onboardingState(input);
@@ -635,12 +664,14 @@ export function createWebAuthnService(deps: WebAuthnServiceDeps) {
     async setPasskeyFirst(input: {
       userId: string;
       passkeyFirst: boolean;
+      origin?: string;
     }): Promise<PasskeyOnboardingState> {
       const profile = await deps.directory.getUser(input.userId);
       if (!profile) throw new WebAuthnServiceError("unauthorized", 401);
       try {
         const current = await deps.store.getPreferences(input.userId);
-        const credentialCount = await deps.store.countCredentials(input.userId);
+        const rpId = input.origin ? (await ceremonyFor(input.origin)).config.rpID : undefined;
+        const credentialCount = await deps.store.countCredentials(input.userId, rpId);
         const onboardingStatus: PasskeyOnboardingStatus =
           current?.onboardingStatus === "dismissed"
             ? "dismissed"

@@ -29,6 +29,7 @@ export type WebAuthnCredentialRecord = {
   transports: string[];
   aaguid: string | null;
   label: string;
+  rpId: string;
   createdAt: string;
   lastUsedAt: string | null;
 };
@@ -64,7 +65,7 @@ export interface WebAuthnStore {
     ceremony: WebAuthnCeremony,
     nowMs: number,
   ): Promise<WebAuthnChallengeRecord | null>;
-  listCredentials(userId: string): Promise<WebAuthnCredentialRecord[]>;
+  listCredentials(userId: string, rpId?: string): Promise<WebAuthnCredentialRecord[]>;
   getCredentialByCredentialId(credentialId: string): Promise<WebAuthnCredentialRecord | null>;
   insertCredential(row: WebAuthnCredentialInsert): Promise<WebAuthnCredentialRecord>;
   updateCredential(
@@ -73,7 +74,7 @@ export interface WebAuthnStore {
     patch: WebAuthnCredentialPatch,
   ): Promise<WebAuthnCredentialRecord | null>;
   deleteCredential(id: string, userId: string): Promise<boolean>;
-  countCredentials(userId: string): Promise<number>;
+  countCredentials(userId: string, rpId?: string): Promise<number>;
   getPreferences(userId: string): Promise<WebAuthnPreferenceRecord | null>;
   upsertPreferences(row: WebAuthnPreferenceRecord): Promise<WebAuthnPreferenceRecord>;
 }

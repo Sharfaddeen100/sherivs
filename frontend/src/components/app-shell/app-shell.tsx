@@ -7,6 +7,8 @@ import { SHELL_ACCOUNT_NAV } from "@/lib/shell/account";
 import { shellIcon } from "@/lib/shell/icon-registry";
 import { APP_SHELL_HOME, APP_SHELL_NOTIFICATIONS, APP_SHELL_PROFILE } from "@/lib/shell/paths";
 import { PasskeyEnrollmentGate } from "@/components/auth/passkey-enrollment-gate";
+import { OrganizationAccessDenied } from "@/components/auth/organization-access-denied";
+import { isActiveMembership } from "@/lib/auth/organization-access";
 import { ShellGlassIcon } from "./glass-icon";
 import { AppShellStateProvider, useAppShell } from "./shell-context";
 import "./app-shell.css";
@@ -199,9 +201,12 @@ function ShellChrome({ children }: { children: ReactNode }) {
 }
 
 export function AppShellLayout() {
-  const { loading, authUser } = useApp();
+  const { loading, authUser, profile, signOut } = useApp();
   if (loading) return null;
   if (!authUser) return <Navigate to="/" search={{ panel: "signin" }} />;
+  if (!isActiveMembership(profile)) {
+    return <OrganizationAccessDenied onSignOut={signOut} />;
+  }
   return (
     <PasskeyEnrollmentGate>
       <AppShellStateProvider>
