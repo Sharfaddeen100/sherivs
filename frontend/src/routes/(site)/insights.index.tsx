@@ -58,7 +58,9 @@ function InsightsIndex() {
                   params={{ slug: article.slug }}
                   className="block rounded-[var(--sherivs-radius)] border border-[var(--sherivs-border)] p-5 hover:bg-white/5"
                 >
-                  <p className="text-xs uppercase tracking-widest text-sherivs-cyan">{article.category}</p>
+                  <p className="text-xs uppercase tracking-widest text-sherivs-cyan">
+                    {article.category}
+                  </p>
                   <h3 className="mt-2 font-display text-lg font-semibold">{article.title}</h3>
                   <p className="mt-2 text-sm text-sherivs-muted">{article.summary}</p>
                   <p className="mt-3 text-xs text-sherivs-muted">

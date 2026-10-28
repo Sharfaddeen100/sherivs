@@ -36,7 +36,10 @@ function RequestDemoPage() {
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-sherivs-muted">
               Direct address:{" "}
-              <a className="text-sherivs-cyan underline-offset-4 hover:underline" href={`mailto:${PUBLIC_CONTACTS.hello}?subject=Demo%20request`}>
+              <a
+                className="text-sherivs-cyan underline-offset-4 hover:underline"
+                href={`mailto:${PUBLIC_CONTACTS.hello}?subject=Demo%20request`}
+              >
                 {PUBLIC_CONTACTS.hello}
               </a>
             </p>
@@ -44,7 +47,8 @@ function RequestDemoPage() {
               <div className="rounded-[var(--sherivs-radius)] border border-[var(--sherivs-border)] p-5">
                 <h3 className="font-display font-semibold">Start now</h3>
                 <p className="mt-2 text-sm text-sherivs-muted">
-                  The Sherivs team creates your organization&apos;s admin account. That admin then invites users by email.
+                  The Sherivs team creates your organization&apos;s admin account. That admin then
+                  invites users by email.
                 </p>
                 <PublicButton href="/onboarding" variant="secondary" className="mt-3">
                   Request an admin account

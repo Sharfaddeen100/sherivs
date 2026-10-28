@@ -70,12 +70,17 @@ export function FaqAccordion({
             >
               {expanded ? (
                 <div className="pb-5">
-                  <p className="max-w-2xl text-sm leading-relaxed text-sherivs-muted">{item.answer}</p>
+                  <p className="max-w-2xl text-sm leading-relaxed text-sherivs-muted">
+                    {item.answer}
+                  </p>
                   {item.related.length ? (
                     <ul className="mt-3 flex flex-wrap gap-3 text-sm">
                       {item.related.map((rel) => (
                         <li key={rel.href}>
-                          <PublicLink href={rel.href} className="text-sherivs-cyan underline-offset-4 hover:underline">
+                          <PublicLink
+                            href={rel.href}
+                            className="text-sherivs-cyan underline-offset-4 hover:underline"
+                          >
                             {rel.label}
                           </PublicLink>
                         </li>

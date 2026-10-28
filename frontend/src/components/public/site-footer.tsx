@@ -25,11 +25,16 @@ export function SiteFooter() {
         <div>
           <SherivsLogo size={28} wordmarkClassName="text-base" />
           <p className="mt-4 max-w-xs text-sm font-medium text-sherivs-white">{BRAND_STATEMENT}</p>
-          <p className="mt-2 max-w-sm text-sm leading-relaxed text-sherivs-muted">{BRAND_SUPPORTING}</p>
+          <p className="mt-2 max-w-sm text-sm leading-relaxed text-sherivs-muted">
+            {BRAND_SUPPORTING}
+          </p>
           <p className="mt-5 text-sm text-sherivs-muted">{LEGAL_ENTITY_NAME}</p>
           <p className="mt-4 text-sm text-sherivs-muted">
             Support{" "}
-            <a className="text-sherivs-cyan underline-offset-4 hover:underline" href={`mailto:${PUBLIC_CONTACTS.support}`}>
+            <a
+              className="text-sherivs-cyan underline-offset-4 hover:underline"
+              href={`mailto:${PUBLIC_CONTACTS.support}`}
+            >
               {PUBLIC_CONTACTS.support}
             </a>
           </p>
@@ -41,7 +46,11 @@ export function SiteFooter() {
             const expanded = desktop || openGroup === group.id;
             const panelId = `footer-${group.id}`;
             return (
-              <nav key={group.id} aria-label={group.label} className="border-b border-[var(--sherivs-border)] md:border-0">
+              <nav
+                key={group.id}
+                aria-label={group.label}
+                className="border-b border-[var(--sherivs-border)] md:border-0"
+              >
                 <button
                   type="button"
                   className="flex min-h-12 w-full items-center justify-between gap-3 py-3 text-left text-xs font-semibold uppercase tracking-widest text-sherivs-muted md:pointer-events-none md:min-h-0 md:py-0"
@@ -59,11 +68,7 @@ export function SiteFooter() {
                     className={`shrink-0 transition-transform duration-[var(--sherivs-motion-fast)] md:hidden ${expanded ? "rotate-180" : ""}`}
                   />
                 </button>
-                <ul
-                  id={panelId}
-                  hidden={!expanded}
-                  className="grid gap-2 pb-4 md:mt-4 md:pb-0"
-                >
+                <ul id={panelId} hidden={!expanded} className="grid gap-2 pb-4 md:mt-4 md:pb-0">
                   {group.items.map((item) => (
                     <li key={`${group.id}-${item.href}-${item.label}`}>
                       <PublicLink

@@ -3,7 +3,13 @@ import { PRODUCT_NAME } from "@/lib/public-site/company";
 import { SCHOLAR_AUDIENCES, SCHOLAR_CAPABILITIES } from "@/lib/public-site/scholar";
 import { publicHead } from "@/lib/public-site/seo";
 import { MarketingPage } from "@/components/public/marketing-page";
-import { FeatureCard, PageContainer, PublicButton, Section, SectionHeading } from "@/components/public/ui";
+import {
+  FeatureCard,
+  PageContainer,
+  PublicButton,
+  Section,
+  SectionHeading,
+} from "@/components/public/ui";
 
 export const Route = createFileRoute("/(site)/solutions/education")({
   component: EducationPage,

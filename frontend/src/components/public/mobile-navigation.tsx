@@ -82,15 +82,12 @@ export function MobileNavigation({
   if (!open) return null;
 
   return (
-    <div
-      className="fixed inset-0 z-[var(--sherivs-z-overlay)] lg:hidden"
-      role="presentation"
-    >
+    <div className="fixed inset-0 z-[var(--sherivs-z-overlay)] lg:hidden" role="presentation">
       <button
         type="button"
         className="absolute inset-0 bg-[color-mix(in_oklab,black_58%,transparent)] backdrop-blur-sm"
         aria-label="Close menu"
-        onClick={close}
+        onClick={() => close()}
       />
       <div
         id={menuId}
@@ -106,7 +103,7 @@ export function MobileNavigation({
             ref={closeRef}
             type="button"
             className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-[var(--sherivs-radius-sm)] border border-[var(--sherivs-border)] hover:bg-white/5"
-            onClick={close}
+            onClick={() => close()}
           >
             <span className="sr-only">Close menu</span>
             <X size={18} aria-hidden="true" />
@@ -154,7 +151,12 @@ export function MobileNavigation({
         </nav>
 
         <div className="grid gap-2 border-t border-[var(--sherivs-border)] p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
-          <PublicButton href="/auth" variant="secondary" className="w-full" onClick={() => close(false)}>
+          <PublicButton
+            href="/auth"
+            variant="secondary"
+            className="w-full"
+            onClick={() => close(false)}
+          >
             Sign in
           </PublicButton>
           <PublicButton href="/onboarding" className="w-full" onClick={() => close(false)}>

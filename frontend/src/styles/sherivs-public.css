@@ -190,7 +190,12 @@
   height: 42rem;
   right: -8rem;
   top: -10rem;
-  background: radial-gradient(circle, rgba(24, 72, 253, 0.38), rgba(130, 84, 246, 0.12) 46%, transparent 70%);
+  background: radial-gradient(
+    circle,
+    rgba(24, 72, 253, 0.38),
+    rgba(130, 84, 246, 0.12) 46%,
+    transparent 70%
+  );
   animation: sherivs-glow-shift 10s ease-in-out infinite;
 }
 

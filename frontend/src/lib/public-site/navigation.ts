@@ -70,8 +70,16 @@ export const ABOUT_NAV: NavGroup = {
   label: "About",
   href: "/about",
   items: [
-    { href: "/about", label: "Company overview", description: "Who Sherivs is and what we are introducing." },
-    { href: "/company/vision", label: "Vision and mission", description: "The direction behind Sherivs Scholar." },
+    {
+      href: "/about",
+      label: "Company overview",
+      description: "Who Sherivs is and what we are introducing.",
+    },
+    {
+      href: "/company/vision",
+      label: "Vision and mission",
+      description: "The direction behind Sherivs Scholar.",
+    },
     { href: "/contact", label: "Contact", description: "Write to the Sherivs team." },
   ],
 };
@@ -81,10 +89,22 @@ export const RESOURCES_NAV: NavGroup = {
   label: "Resources",
   href: "/help",
   items: [
-    { href: "/help", label: "Help and support", description: "Guides that match implemented functionality." },
-    { href: "/faq", label: "Frequently asked questions", description: "Short answers about Sherivs Scholar." },
+    {
+      href: "/help",
+      label: "Help and support",
+      description: "Guides that match implemented functionality.",
+    },
+    {
+      href: "/faq",
+      label: "Frequently asked questions",
+      description: "Short answers about Sherivs Scholar.",
+    },
     { href: "/docs", label: "Documentation", description: "Help, FAQs, and product references." },
-    { href: "/support", label: "Contact support", description: "Existing-customer support at support@sherivs.com." },
+    {
+      href: "/support",
+      label: "Contact support",
+      description: "Existing-customer support at support@sherivs.com.",
+    },
   ],
 };
 

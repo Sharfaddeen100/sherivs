@@ -82,10 +82,11 @@ describe("public content honesty", () => {
 
   it("does not treat technology integrations as commercial partners", () => {
     expect(publishedPartners("commercial")).toHaveLength(0);
-    expect(publishedPartners("technology_integration").map((p) => p.id).sort()).toEqual([
-      "paystack",
-      "whatsapp",
-    ]);
+    expect(
+      publishedPartners("technology_integration")
+        .map((p) => p.id)
+        .sort(),
+    ).toEqual(["paystack", "whatsapp"]);
     expect(publishedPartners("technology_partner").map((p) => p.id)).toEqual(["thinktech"]);
     expect(publishedPartners("technology_partner")[0]?.logoSrc).toBe("/partners/thinktech.png");
     expect(THINKTECH_HEADLINE).toBe("Building the next generation of intelligent technology");
@@ -96,7 +97,9 @@ describe("public content honesty", () => {
     expect(read("frontend/src/lib/public-site/partners.ts")).not.toMatch(
       /scope has not been supplied/,
     );
-    expect(read("frontend/src/routes/(site)/company.partners.tsx")).toContain("{THINKTECH_DESCRIPTION}");
+    expect(read("frontend/src/routes/(site)/company.partners.tsx")).toContain(
+      "{THINKTECH_DESCRIPTION}",
+    );
     expect(existsSync(join(ROOT, "public/partners/thinktech.png"))).toBe(true);
     expect(existsSync(join(ROOT, "public/brand/sherivs-wordmark.png"))).toBe(true);
     expect(existsSync(join(ROOT, "docs/brand/sherivs-wordmark-source.png"))).toBe(true);
@@ -131,9 +134,13 @@ describe("public content honesty", () => {
     expect(PUBLIC_CONTACTS.privacy).toBe(PUBLIC_CONTACTS.info);
     expect(PUBLIC_CONTACTS.legal).toBe(PUBLIC_CONTACTS.info);
     expect(EMAIL_ROUTING.info.purpose).toMatch(/General company and administrative/i);
-    expect(EMAIL_ROUTING.hello.purpose).toMatch(/Demo requests, prospective customers, partnerships/i);
+    expect(EMAIL_ROUTING.hello.purpose).toMatch(
+      /Demo requests, prospective customers, partnerships/i,
+    );
     expect(EMAIL_ROUTING.support.purpose).toMatch(/Existing-customer support/i);
-    expect(read("frontend/src/components/public/mailto-form.tsx")).toContain("window.location.href = href");
+    expect(read("frontend/src/components/public/mailto-form.tsx")).toContain(
+      "window.location.href = href",
+    );
     expect(read("frontend/src/components/public/mailto-form.tsx")).toContain(
       "This page does not claim a ticket was created.",
     );
@@ -151,11 +158,11 @@ describe("public content honesty", () => {
     expect(github?.published).toBe(false);
     expect(github?.href).toBe("");
     expect(github?.surface).toBe("none");
-    expect(publishedCompanySocial().map((item) => item.id).sort()).toEqual([
-      "facebook",
-      "instagram",
-      "x",
-    ]);
+    expect(
+      publishedCompanySocial()
+        .map((item) => item.id)
+        .sort(),
+    ).toEqual(["facebook", "instagram", "x"]);
     expect(publishedCompanySocial().every((item) => item.id !== "github")).toBe(true);
     expect(publishedFounderSocial()).toEqual([]);
     const instagram = PUBLIC_SOCIAL_LINKS.find((item) => item.id === "instagram");
@@ -181,16 +188,26 @@ describe("public content honesty", () => {
     expect(organizationJsonLd().sameAs).toContain("https://x.com/sherivs_");
     expect(organizationJsonLd().sameAs.join(" ")).not.toMatch(/github/i);
     expect(organizationJsonLd().sameAs.join(" ")).not.toMatch(/linkedin/i);
-    expect(read("frontend/src/lib/public-site/contacts.ts")).toContain('href: "https://x.com/sherivs_"');
+    expect(read("frontend/src/lib/public-site/contacts.ts")).toContain(
+      'href: "https://x.com/sherivs_"',
+    );
     expect(read("frontend/src/lib/public-site/contacts.ts")).not.toMatch(/linkedin\.com\/in\//i);
     expect(read("frontend/src/lib/public-site/seo.ts")).toContain('name: "twitter:site"');
     expect(read("frontend/src/routes/__root.tsx")).toContain('name: "twitter:site"');
-    expect(read("frontend/src/routes/(site)/company.vision.tsx")).toContain("{POSITIONING_STATEMENT}");
-    expect(read("frontend/src/routes/(site)/company.vision.tsx")).toContain("{POSITIONING_RETHINKING}");
+    expect(read("frontend/src/routes/(site)/company.vision.tsx")).toContain(
+      "{POSITIONING_STATEMENT}",
+    );
+    expect(read("frontend/src/routes/(site)/company.vision.tsx")).toContain(
+      "{POSITIONING_RETHINKING}",
+    );
     expect(read("frontend/src/components/public/site-footer.tsx")).toContain("CompanySocialLinks");
     expect(read("frontend/src/routes/(site)/contact.tsx")).toContain("CompanySocialLinks");
-    expect(read("frontend/src/components/public/company-social-links.tsx")).toContain("href={item.href}");
-    expect(read("frontend/src/components/public/company-social-links.tsx")).toContain("socialVisibleCaption");
+    expect(read("frontend/src/components/public/company-social-links.tsx")).toContain(
+      "href={item.href}",
+    );
+    expect(read("frontend/src/components/public/company-social-links.tsx")).toContain(
+      "socialVisibleCaption",
+    );
     expect(read("frontend/src/components/public/company-social-links.tsx")).not.toMatch(/github/i);
     expect(read("frontend/src/components/public/site-footer.tsx")).not.toMatch(/github/i);
     expect(read("frontend/src/routes/(site)/contact.tsx")).not.toMatch(/github/i);
@@ -211,10 +228,20 @@ describe("public content honesty", () => {
     expect(COMPLIANCE_CLAIMS.find((c) => c.id === "ndpa")?.wordingGate).toBe(
       "awaiting_owner_approved_wording",
     );
-    expect(awaitingWordingCompliance().map((c) => c.id).sort()).toEqual(["ndpa", "nscdc"]);
-    expect(read("frontend/src/routes/(site)/trust.tsx")).toContain("Awaiting owner-approved wording");
-    expect(read("frontend/src/routes/(site)/trust.tsx")).not.toMatch(/NSCDC certified|NDPA certified/i);
-    expect(read("frontend/src/routes/(site)/trust.tsx")).not.toMatch(/pending and are not shown as completed/);
+    expect(
+      awaitingWordingCompliance()
+        .map((c) => c.id)
+        .sort(),
+    ).toEqual(["ndpa", "nscdc"]);
+    expect(read("frontend/src/routes/(site)/trust.tsx")).toContain(
+      "Awaiting owner-approved wording",
+    );
+    expect(read("frontend/src/routes/(site)/trust.tsx")).not.toMatch(
+      /NSCDC certified|NDPA certified/i,
+    );
+    expect(read("frontend/src/routes/(site)/trust.tsx")).not.toMatch(
+      /pending and are not shown as completed/,
+    );
   });
 
   it("keeps the homepage free of customer-availability announcements", () => {
@@ -231,7 +258,9 @@ describe("public content honesty", () => {
   });
 
   it("does not publish certification badges", () => {
-    expect(COMPLIANCE_CLAIMS.filter((c) => c.status === "certified" && c.published)).toHaveLength(0);
+    expect(COMPLIANCE_CLAIMS.filter((c) => c.status === "certified" && c.published)).toHaveLength(
+      0,
+    );
   });
 
   it("keeps Scholar available and other product families not overclaimed", () => {

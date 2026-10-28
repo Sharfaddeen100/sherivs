@@ -7,7 +7,13 @@ import {
   SITE_CAPABILITIES,
 } from "./-content/site-content";
 import { publicHead } from "@/lib/public-site/seo";
-import { PageContainer, Section, SectionHeading, FeatureCard, PublicButton } from "@/components/public/ui";
+import {
+  PageContainer,
+  Section,
+  SectionHeading,
+  FeatureCard,
+  PublicButton,
+} from "@/components/public/ui";
 
 /**
  * Dedicated Sherivs Scholar product overview at /sherivs.
@@ -33,7 +39,10 @@ function SherivsPlatformPage() {
       <section aria-labelledby="scholar-hero" className="border-b border-[var(--sherivs-border)]">
         <PageContainer className="py-16 sm:py-20">
           <p className="sherivs-kicker">{PRODUCT_NAME}</p>
-          <h1 id="scholar-hero" className="sherivs-display mt-4 max-w-[16ch] text-3xl font-bold sm:text-5xl">
+          <h1
+            id="scholar-hero"
+            className="sherivs-display mt-4 max-w-[16ch] text-3xl font-bold sm:text-5xl"
+          >
             A better way to run your school.
           </h1>
           <p className="mt-5 max-w-2xl text-sm leading-relaxed text-sherivs-muted sm:text-lg">
@@ -78,7 +87,9 @@ function SherivsPlatformPage() {
             title={`${PLATFORM_NAME} ${runtime.name}`}
             lead={runtime.description}
           />
-          <p className="mt-6 max-w-2xl text-sm leading-relaxed text-sherivs-muted">{runtime.proof}</p>
+          <p className="mt-6 max-w-2xl text-sm leading-relaxed text-sherivs-muted">
+            {runtime.proof}
+          </p>
         </PageContainer>
       </Section>
 

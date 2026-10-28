@@ -38,7 +38,10 @@ function VisionPage() {
       <Section labelledBy="mission-heading">
         <PageContainer className="max-w-3xl space-y-8 py-16 text-sm leading-relaxed text-sherivs-muted sm:text-base">
           <div className="space-y-3">
-            <h2 id="mission-heading" className="font-display text-xl font-semibold text-sherivs-white">
+            <h2
+              id="mission-heading"
+              className="font-display text-xl font-semibold text-sherivs-white"
+            >
               Mission
             </h2>
             <p>{COMPANY_MISSION}</p>
@@ -53,7 +56,9 @@ function VisionPage() {
             <p>{POSITIONING_FOUNDATIONS}</p>
           </div>
           <div className="space-y-3">
-            <h2 className="font-display text-xl font-semibold text-sherivs-white">What that means today</h2>
+            <h2 className="font-display text-xl font-semibold text-sherivs-white">
+              What that means today
+            </h2>
             <p>{POSITIONING_STATEMENT}</p>
             <p>{POSITIONING_RETHINKING}</p>
             <p>{POSITIONING_PROGRAMMABLE}</p>

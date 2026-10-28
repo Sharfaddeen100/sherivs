@@ -9,12 +9,7 @@ import { SiteFooter } from "@/components/public/site-footer";
 import { HeroProductVisual } from "@/components/public/hero-product-visual";
 import { FaqAccordion } from "@/components/public/faq-accordion";
 import { JsonLd } from "@/components/public/json-ld";
-import {
-  PageContainer,
-  Section,
-  SectionHeading,
-  PublicButton,
-} from "@/components/public/ui";
+import { PageContainer, Section, SectionHeading, PublicButton } from "@/components/public/ui";
 import {
   SCHOLAR_AUDIENCES,
   SCHOLAR_CAPABILITIES,
@@ -64,7 +59,10 @@ function HeroSection() {
   return (
     <Section labelledBy="sherivs-hero" className="relative overflow-hidden">
       <div className="sherivs-hero-atmosphere sherivs-grid-fade" />
-      <PageContainer wide className="relative grid items-center gap-12 py-16 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:py-24">
+      <PageContainer
+        wide
+        className="relative grid items-center gap-12 py-16 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:py-24"
+      >
         <div>
           <p className="sherivs-kicker sherivs-enter">{PRODUCT_NAME}</p>
           <h1
@@ -142,7 +140,9 @@ function AdvantageSection() {
                 {String(index + 1).padStart(2, "0")}
               </p>
               <h3 className="mt-3 font-display text-xl font-semibold">{item.title}</h3>
-              <p className="mt-3 text-sm leading-relaxed text-sherivs-muted sm:text-base">{item.body}</p>
+              <p className="mt-3 text-sm leading-relaxed text-sherivs-muted sm:text-base">
+                {item.body}
+              </p>
             </li>
           ))}
         </ol>
@@ -164,8 +164,10 @@ function AudienceSection() {
           lead="Give each member of the school community a clearer place to access the information and workflows relevant to them."
         />
         <div className="mt-10 grid gap-4 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
-            <article className="rounded-[var(--sherivs-radius-lg)] border border-black/10 bg-white p-7 shadow-[0_20px_50px_rgba(18,24,38,0.08)] sm:p-9">
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#1558d6]">Featured</p>
+          <article className="rounded-[var(--sherivs-radius-lg)] border border-black/10 bg-white p-7 shadow-[0_20px_50px_rgba(18,24,38,0.08)] sm:p-9">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#1558d6]">
+              Featured
+            </p>
             <h3 className="mt-3 font-display text-2xl font-semibold">{featured.title}</h3>
             <p className="mt-3 max-w-xl text-sm leading-relaxed text-[var(--sherivs-ink-muted)] sm:text-base">
               {featured.body}
@@ -178,7 +180,9 @@ function AudienceSection() {
                 className="rounded-[var(--sherivs-radius)] border border-black/10 bg-white/70 p-5"
               >
                 <h3 className="font-display text-base font-semibold">{audience.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-[var(--sherivs-ink-muted)]">{audience.body}</p>
+                <p className="mt-2 text-sm leading-relaxed text-[var(--sherivs-ink-muted)]">
+                  {audience.body}
+                </p>
               </li>
             ))}
           </ul>
@@ -206,7 +210,9 @@ function PathSection() {
             >
               <p className="font-display text-sm font-bold text-sherivs-cyan">{item.step}</p>
               <h3 className="mt-3 font-display text-xl font-semibold">{item.title}</h3>
-              <p className="mt-3 max-w-sm text-sm leading-relaxed text-sherivs-muted sm:text-base">{item.body}</p>
+              <p className="mt-3 max-w-sm text-sm leading-relaxed text-sherivs-muted sm:text-base">
+                {item.body}
+              </p>
             </li>
           ))}
         </ol>
@@ -263,11 +269,17 @@ function TrustSection() {
         </ul>
         <p className="mt-6 text-sm text-sherivs-muted">
           Read the{" "}
-          <PublicLink href="/privacy-policy" className="text-sherivs-cyan underline-offset-4 hover:underline">
+          <PublicLink
+            href="/privacy-policy"
+            className="text-sherivs-cyan underline-offset-4 hover:underline"
+          >
             privacy policy
           </PublicLink>{" "}
           and the{" "}
-          <PublicLink href="/trust" className="text-sherivs-cyan underline-offset-4 hover:underline">
+          <PublicLink
+            href="/trust"
+            className="text-sherivs-cyan underline-offset-4 hover:underline"
+          >
             trust center
           </PublicLink>
           . Sherivs does not display certification badges or audit claims that are not on file.
@@ -326,4 +338,3 @@ function FinalCtaSection() {
     </Section>
   );
 }
-

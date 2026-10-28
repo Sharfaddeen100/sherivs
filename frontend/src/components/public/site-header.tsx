@@ -43,7 +43,10 @@ export function SiteHeader() {
       {PUBLIC_ANNOUNCEMENT.published && PUBLIC_ANNOUNCEMENT.text ? (
         <div className="border-b border-[var(--sherivs-border)] bg-[var(--sherivs-midnight)] px-4 py-2 text-center text-xs text-sherivs-muted">
           {PUBLIC_ANNOUNCEMENT.href ? (
-            <a href={PUBLIC_ANNOUNCEMENT.href} className="text-sherivs-cyan underline-offset-4 hover:underline">
+            <a
+              href={PUBLIC_ANNOUNCEMENT.href}
+              className="text-sherivs-cyan underline-offset-4 hover:underline"
+            >
               {PUBLIC_ANNOUNCEMENT.text}
             </a>
           ) : (
@@ -65,7 +68,9 @@ export function SiteHeader() {
               open={desktopGroup === group.id}
               onOpen={() => setDesktopGroup(group.id)}
               onClose={() => setDesktopGroup(null)}
-              onToggle={() => setDesktopGroup((current) => (current === group.id ? null : group.id))}
+              onToggle={() =>
+                setDesktopGroup((current) => (current === group.id ? null : group.id))
+              }
             />
           ))}
         </nav>
@@ -140,7 +145,9 @@ function DesktopNavGroup({
                 >
                   <span className="block text-sm font-medium text-sherivs-white">{item.label}</span>
                   {item.description ? (
-                    <span className="mt-0.5 block text-xs leading-snug text-sherivs-muted">{item.description}</span>
+                    <span className="mt-0.5 block text-xs leading-snug text-sherivs-muted">
+                      {item.description}
+                    </span>
                   ) : null}
                 </PublicLink>
               </li>

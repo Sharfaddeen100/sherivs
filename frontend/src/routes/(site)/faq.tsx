@@ -11,7 +11,8 @@ export const Route = createFileRoute("/(site)/faq")({
   head: () =>
     publicHead({
       title: "FAQs",
-      description: "Answers about Sherivs Scholar, getting started, parent access, privacy, and support.",
+      description:
+        "Answers about Sherivs Scholar, getting started, parent access, privacy, and support.",
       path: "/faq",
     }),
 });
@@ -28,7 +29,9 @@ function FaqPage() {
       ]}
     >
       <JsonLd
-        data={faqJsonLd(FAQ_ITEMS.map((item) => ({ question: item.question, answer: item.answer })))}
+        data={faqJsonLd(
+          FAQ_ITEMS.map((item) => ({ question: item.question, answer: item.answer })),
+        )}
       />
       <Section labelledBy="faq-body">
         <PageContainer className="py-16">

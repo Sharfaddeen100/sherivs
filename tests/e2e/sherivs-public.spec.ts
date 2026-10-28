@@ -32,7 +32,9 @@ test.describe("Sherivs public homepage (plane A)", () => {
     expect(body).not.toMatch(/phase \d|kernel contract|runtime binding/i);
 
     // Primary and secondary CTAs are reachable from the hero.
-    await expect(page.getByRole("link", { name: /explore sherivs scholar/i }).first()).toBeVisible();
+    await expect(
+      page.getByRole("link", { name: /explore sherivs scholar/i }).first(),
+    ).toBeVisible();
     await expect(page.getByRole("link", { name: /get started/i }).first()).toBeVisible();
   });
 
@@ -45,7 +47,10 @@ test.describe("Sherivs public homepage (plane A)", () => {
     await expect(nav.getByRole("link", { name: /sign in/i }).first()).toBeVisible();
 
     // The sign-in link lands on the platform auth surface.
-    await page.getByRole("link", { name: /sign in/i }).first().click();
+    await page
+      .getByRole("link", { name: /sign in/i })
+      .first()
+      .click();
     await expect(page).toHaveURL(/\/auth/);
     await expect(page.locator("body")).not.toContainText("Enterprise demo");
     await expect(page.locator("body")).not.toContainText("Sign in as");
@@ -53,7 +58,10 @@ test.describe("Sherivs public homepage (plane A)", () => {
 
   test("the engagement path flows: homepage → get started", async ({ page }) => {
     await page.goto("/");
-    await page.getByRole("link", { name: /get started/i }).first().click();
+    await page
+      .getByRole("link", { name: /get started/i })
+      .first()
+      .click();
     await expect(page).toHaveURL(/\/onboarding/);
     await expect(page.getByRole("heading", { name: /create an account/i })).toBeVisible();
   });

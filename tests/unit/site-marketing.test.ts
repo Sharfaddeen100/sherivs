@@ -164,7 +164,7 @@ describe("Route modules — real links, no fake submissions, landmarks", () => {
   it("keeps every heading labelled for assistive technology", () => {
     expect(page).toMatch(/aria-labelledby="scholar-hero"/);
     for (const anchor of ["capabilities", "community", "security"]) {
-      expect(page).toMatch(new RegExp(`aria-labelledby="${anchor}-heading"`));
+      expect(page).toMatch(new RegExp(`labelledBy="${anchor}-heading"`));
       expect(page).toContain(`id="${anchor}-heading"`);
     }
   });

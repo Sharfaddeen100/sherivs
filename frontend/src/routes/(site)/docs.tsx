@@ -8,7 +8,8 @@ export const Route = createFileRoute("/(site)/docs")({
   head: () =>
     publicHead({
       title: "Documentation",
-      description: "Public documentation currently covers the product help center and FAQs for Sherivs Scholar.",
+      description:
+        "Public documentation currently covers the product help center and FAQs for Sherivs Scholar.",
       path: "/docs",
     }),
 });

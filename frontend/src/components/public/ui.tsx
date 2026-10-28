@@ -165,7 +165,9 @@ export function PartnerCard({
       ) : null}
       <p className={`sherivs-kicker ${logoSrc ? "mt-4" : ""}`}>{kindLabel}</p>
       <h3 className="mt-2 font-display text-lg font-semibold">{name}</h3>
-      {summary ? <p className="mt-2 text-sm leading-relaxed text-sherivs-muted">{summary}</p> : null}
+      {summary ? (
+        <p className="mt-2 text-sm leading-relaxed text-sherivs-muted">{summary}</p>
+      ) : null}
       {href ? (
         <a
           href={href}
@@ -247,7 +249,12 @@ export function PublicButton({
     );
   }
   return (
-    <button type={type ?? "button"} className={cls} disabled={disabled || loading} onClick={onClick}>
+    <button
+      type={type ?? "button"}
+      className={cls}
+      disabled={disabled || loading}
+      onClick={onClick}
+    >
       {label}
     </button>
   );
