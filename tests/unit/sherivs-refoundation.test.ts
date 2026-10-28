@@ -31,7 +31,7 @@ const SHERIVS_HOME = "frontend/src/components/public/sherivs-home.tsx";
 describe("Platform identity", () => {
   it("presents the company as Sherivs", () => {
     expect(PLATFORM_NAME).toBe("Sherivs");
-    expect(PLATFORM_TAGLINE).toMatch(/intelligence infrastructure/i);
+    expect(PLATFORM_TAGLINE).toMatch(/better-run schools/i);
     expect(PLATFORM_DOMAIN).toBe("sherivs.com");
   });
 });
@@ -53,9 +53,9 @@ describe("Public company homepage (plane 1)", () => {
   });
 
   it("communicates the category without internal architecture", () => {
-    expect(home).toContain("{PLATFORM_TAGLINE}");
-    expect(home).toMatch(/The intelligence layer for a world that works together/);
-    expect(home).toMatch(/Request a demo/);
+    expect(home).toMatch(/A better way to run your school/);
+    expect(home).toMatch(/Sherivs Scholar/);
+    expect(home).toMatch(/Get started/);
     expect(home).not.toMatch(/phase/i);
     expect(home).not.toMatch(/kernel/i);
     expect(home).not.toMatch(/runtime binding/i);
@@ -66,9 +66,11 @@ describe("Public company homepage (plane 1)", () => {
     expect(home).not.toMatch(/customers|testimonials|case stud|awards|trusted by/i);
   });
 
-  it("positions runtimes honestly — Education available, others marked in development", () => {
-    expect(home).toMatch(/In development/);
+  it("positions Sherivs Scholar as the first product without advertising unlaunched families", () => {
     expect(home).toMatch(/Scholar/);
+    expect(home).not.toMatch(/Sherivs Enterprise/);
+    expect(home).not.toMatch(/Developer Platform/);
+    expect(home).not.toMatch(/Digital-twin runtime/);
   });
 });
 
@@ -108,9 +110,9 @@ describe("Public site engagement paths", () => {
   const header = read("frontend/src/components/public/site-header.tsx");
   const footer = read("frontend/src/components/public/site-footer.tsx");
 
-  it("offers Request a demo as the primary CTA and links the real routes", () => {
-    expect(header).toMatch(/Request a demo/);
-    expect(header).toContain('to="/request-demo"');
+  it("offers Get started and Sign in as the primary engagement paths", () => {
+    expect(header).toMatch(/Get started/);
+    expect(header).toContain('href="/onboarding"');
     expect(header).toContain('to="/auth"');
     expect(layout).toContain("<SiteHeader />");
     expect(layout).toContain("<SiteFooter />");

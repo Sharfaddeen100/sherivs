@@ -8,7 +8,7 @@ export const Route = createFileRoute("/(site)/docs")({
   head: () =>
     publicHead({
       title: "Documentation",
-      description: "Public documentation currently covers the product help center, FAQs, and honest developer status.",
+      description: "Public documentation currently covers the product help center and FAQs for Sherivs Scholar.",
       path: "/docs",
     }),
 });
@@ -18,7 +18,7 @@ function DocsPage() {
     <MarketingPage
       eyebrow="Documentation"
       title="Documentation"
-      lead="Public docs today are product guides and FAQs. Engineering runbooks in the repository are not a customer documentation site."
+      lead="Public docs today are product guides and FAQs for Sherivs Scholar. Engineering runbooks in the repository are not a customer documentation site."
       crumbs={[
         { href: "/", label: "Home" },
         { href: "/docs", label: "Docs" },
@@ -33,10 +33,10 @@ function DocsPage() {
             Instructions that match implemented functionality.
           </FeatureCard>
           <FeatureCard title="FAQs" href="/faq">
-            Product availability, twins, agents, security, and onboarding.
+            Sherivs Scholar, onboarding, parent access, privacy, and support.
           </FeatureCard>
-          <FeatureCard title="Developers" href="/developers">
-            What exists today — without an invented SDK.
+          <FeatureCard title="Support" href="/support">
+            Write to support@sherivs.com. The form opens your email client.
           </FeatureCard>
           <FeatureCard title="System status" href="/status">
             Public health from /health.json.

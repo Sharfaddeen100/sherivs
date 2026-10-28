@@ -11,7 +11,7 @@ export const Route = createFileRoute("/(site)/insights/")({
   head: () =>
     publicHead({
       title: "Insights",
-      description: `${POSITIONING_TAGLINE}. Essays on institutional computing, AI workforces, digital twins, and governed intelligence.`,
+      description: `${POSITIONING_TAGLINE}. Company essays from Sherivs.`,
       path: "/insights",
     }),
 });
@@ -22,7 +22,7 @@ function InsightsIndex() {
     <MarketingPage
       eyebrow="Insights"
       title="Insights"
-      lead={`${POSITIONING_TAGLINE}. Company essays on institutional computing, AI workforces, digital twins, and governed intelligence. Organization blogs remain on each tenant host at /blog.`}
+      lead={`${POSITIONING_TAGLINE}. Company essays. Organization blogs remain on each tenant host at /blog.`}
       crumbs={[
         { href: "/", label: "Home" },
         { href: "/insights", label: "Insights" },

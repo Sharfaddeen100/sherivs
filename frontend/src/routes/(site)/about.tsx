@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { PLATFORM_NAME, PLATFORM_TAGLINE } from "@/lib/platform";
+import { PLATFORM_NAME } from "@/lib/platform";
 import {
+  COMPANY_APPROACH,
   COMPANY_LOCATION_LINE,
   COMPANY_MISSION,
   COMPANY_VISION,
@@ -8,6 +9,7 @@ import {
   POSITIONING_PROGRAMMABLE,
   POSITIONING_RETHINKING,
   POSITIONING_STATEMENT,
+  PRODUCT_NAME,
 } from "@/lib/public-site/company";
 import { publicHead } from "@/lib/public-site/seo";
 import { MarketingPage } from "@/components/public/marketing-page";
@@ -45,9 +47,9 @@ function AboutPage() {
             About Sherivs
           </h2>
           <p>
-            The public brand and customer-facing product are Sherivs. {LEGAL_ENTITY_NAME} is the
-            company that operates them. We are based in {COMPANY_LOCATION_LINE}. This page does not
-            invent a street address, telephone number, or registration identifier.
+            The public brand is Sherivs. {PRODUCT_NAME} is the first product. {LEGAL_ENTITY_NAME} is
+            the company that operates them. We are based in {COMPANY_LOCATION_LINE}. This page does
+            not invent a street address, telephone number, or registration identifier.
           </p>
           <p>{POSITIONING_RETHINKING}</p>
           <p>{POSITIONING_PROGRAMMABLE}</p>
@@ -58,15 +60,10 @@ function AboutPage() {
             <span className="font-medium text-sherivs-white">Vision.</span> {COMPANY_VISION}
           </p>
           <p>
-            Education is an important domain — the first installed runtime is Scholar — but the
-            platform is intended for a broader range of institutions. It is not a chatbot, a
-            generic SaaS template, or a model marketplace. Directional language on this site
-            (“is building”, “is developing”) describes the work in progress, not a claim that every
-            capability is generally available today.
+            <span className="font-medium text-sherivs-white">Our approach.</span> {COMPANY_APPROACH}
           </p>
-          <p className="font-medium text-sherivs-white">{PLATFORM_TAGLINE}.</p>
           <div className="flex flex-wrap gap-3 pt-4">
-            <PublicButton href="/request-demo">Request a demo</PublicButton>
+            <PublicButton href="/onboarding">Get started</PublicButton>
             <PublicButton href="/contact" variant="secondary">
               Contact us
             </PublicButton>

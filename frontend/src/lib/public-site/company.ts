@@ -5,9 +5,15 @@
  * social URLs. Mailbox SMTP delivery was not proven; sherivs.com has MX
  * records at privateemail.com (audited 2026-10-26). Forms still use mailto
  * and never claim a ticket exists.
+ *
+ * V1 public positioning (2026-10-28): Sherivs is the company; Sherivs Scholar
+ * is the first product; schools are the initial customer segment. Directional
+ * language describes company intent, not a claim that every future capability
+ * is generally available today.
  */
 export const LEGAL_ENTITY_NAME = "Sherivs Technologies Limited";
 export const PUBLIC_BRAND_NAME = "Sherivs";
+export const PRODUCT_NAME = "Sherivs Scholar";
 export const COMPANY_LOCALITY = "Maiduguri";
 export const COMPANY_REGION = "Borno State";
 export const COMPANY_COUNTRY = "Nigeria";
@@ -21,24 +27,24 @@ export const PUBLIC_WEBSITE_HOST = "www.sherivs.com";
  */
 export const ACCEPTING_CUSTOMERS = true;
 
-/**
- * Owner-supplied public positioning (2026-10-26). Directional language
- * (“is building”, “is developing”) is intentional — not a claim that every
- * capability is generally available today.
- */
-export const POSITIONING_TAGLINE = "Intelligence infrastructure for a more connected world";
+export const POSITIONING_TAGLINE = "Thoughtful technology for better-run schools";
 export const POSITIONING_STATEMENT =
-  "Sherivs is building an AI-native institutional computing platform that brings people, organizations, AI workforces, and digital twins into a shared, governed computing environment.";
+  "Sherivs is introducing Sherivs Scholar, a school management platform that brings school administration, academic operations, and the school community into one connected environment.";
 export const POSITIONING_RETHINKING =
-  "Sherivs is rethinking how intelligence is deployed, how work is coordinated, and how digital representations of real-world entities operate across connected systems.";
+  "We focus on the people and processes that keep schools moving — administrators, teachers, students, and parents — rather than presenting a catalogue of future product families.";
 export const POSITIONING_PROGRAMMABLE =
-  "Its long-term vision is to make computing, coordination, and intelligence programmable capabilities that institutions can build upon—not isolated tools that operate in silos.";
+  "Sherivs may introduce additional products over time. The V1 public website presents the product schools can use today: Sherivs Scholar.";
 export const POSITIONING_FOUNDATIONS =
-  "From institutional applications to autonomous AI workforces and state-aware digital twins, Sherivs is developing the foundations for a world in which intelligent systems can work together with greater coherence, accountability, and control.";
+  "Sherivs Scholar focuses on practical school needs, coherent workflows, responsible access, and product experiences that respect the people who use them.";
 export const COMPANY_MISSION =
-  "Build the computing infrastructure that enables people, institutions, and intelligent systems to work together.";
+  "Build dependable software that helps schools manage their everyday responsibilities with greater clarity and coordination.";
 export const COMPANY_VISION =
-  "A world where intelligence, computation, and coordinated action are accessible capabilities for every institution.";
+  "Make school operations more connected, accessible, and organized through thoughtful technology.";
+export const COMPANY_APPROACH =
+  "We focus on practical school needs, coherent workflows, responsible access, and product experiences that respect the people who use them.";
+export const BRAND_STATEMENT = "Thoughtful technology for better-run schools.";
+export const BRAND_SUPPORTING =
+  "Sherivs builds practical software for the people and processes that keep schools moving.";
 
 export const EMAIL_ROUTING = {
   info: {

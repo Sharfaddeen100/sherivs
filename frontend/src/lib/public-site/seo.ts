@@ -1,10 +1,11 @@
-import { PLATFORM_NAME, PLATFORM_URL } from "@/lib/platform";
+import { PLATFORM_NAME, PLATFORM_PAGE_DESCRIPTION, PLATFORM_URL } from "@/lib/platform";
 import {
   COMPANY_COUNTRY_CODE,
   COMPANY_LOCALITY,
   COMPANY_REGION,
   LEGAL_ENTITY_NAME,
   POSITIONING_STATEMENT,
+  PRODUCT_NAME,
 } from "@/lib/public-site/company";
 import { PUBLIC_CONTACTS, publishedCompanySocial } from "@/lib/public-site/contacts";
 
@@ -57,6 +58,7 @@ export function organizationJsonLd() {
     "@type": "Organization",
     name: PLATFORM_NAME,
     legalName: LEGAL_ENTITY_NAME,
+    description: POSITIONING_STATEMENT,
     url: PLATFORM_URL,
     logo: `${PLATFORM_URL}/brand/sherivs-logo-512.png`,
     email: [PUBLIC_CONTACTS.info, PUBLIC_CONTACTS.hello, PUBLIC_CONTACTS.support],
@@ -74,11 +76,15 @@ export function softwareJsonLd() {
   return {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    name: PLATFORM_NAME,
-    applicationCategory: "BusinessApplication",
+    name: PRODUCT_NAME,
+    applicationCategory: "EducationalApplication",
     operatingSystem: "Web",
     url: PLATFORM_URL,
-    description: POSITIONING_STATEMENT,
+    description: PLATFORM_PAGE_DESCRIPTION,
+    creator: {
+      "@type": "Organization",
+      name: PLATFORM_NAME,
+    },
   };
 }
 

@@ -104,7 +104,7 @@ export const PRODUCT_FAMILIES: readonly ProductFamily[] = [
     name: "Sherivs Scholar",
     href: "/solutions/education",
     summary:
-      "The education runtime. Schools can create an organization, run academic operations, and publish a public site. This is the first installed runtime.",
+      "The school management platform from Sherivs. Schools can run administration, academic operations, and role workspaces for staff, students, and parents, and publish a public school site.",
     status: "available",
   },
   {

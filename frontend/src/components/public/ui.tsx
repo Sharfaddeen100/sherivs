@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import { STATUS_LABEL, type CapabilityStatus } from "@/lib/public-site/capabilities";
+import { PublicLink } from "@/components/public/public-link";
 
 export function PageContainer({
   children,
@@ -15,7 +16,8 @@ export function PageContainer({
   return (
     <div
       className={cn(
-        "mx-auto w-full px-4 sm:px-6",
+        "mx-auto w-full",
+        "px-[var(--sherivs-gutter)]",
         wide ? "max-w-[var(--sherivs-container-wide)]" : "max-w-[var(--sherivs-container)]",
         className,
       )}
@@ -36,16 +38,16 @@ export function Section({
   labelledBy: string;
   children: ReactNode;
   className?: string;
-  tone?: "default" | "muted" | "full";
+  tone?: "default" | "muted" | "full" | "paper";
 }) {
   return (
     <section
       id={id}
       aria-labelledby={labelledBy}
       className={cn(
-        "border-b border-[var(--sherivs-border)]",
-        tone === "muted" && "bg-[color-mix(in_oklab,var(--sherivs-midnight)_70%,transparent)]",
+        tone === "muted" && "bg-[color-mix(in_oklab,var(--sherivs-midnight)_72%,transparent)]",
         tone === "full" && "bg-[var(--sherivs-midnight)]",
+        tone === "paper" && "sherivs-surface-light",
         className,
       )}
     >
@@ -126,15 +128,16 @@ export function FeatureCard({
     </>
   );
   const cls = cn(
-    "rounded-[var(--sherivs-radius)] border border-[var(--sherivs-border)] bg-[color-mix(in_oklab,var(--sherivs-midnight)_55%,transparent)] p-5 transition-colors",
-    href && "block hover:border-[var(--sherivs-glass-border)] hover:bg-[var(--sherivs-navy)]",
+    "rounded-[var(--sherivs-radius)] border border-[var(--sherivs-border)] bg-[color-mix(in_oklab,var(--sherivs-midnight)_55%,transparent)] p-5 shadow-[var(--sherivs-shadow-card)] transition-[transform,border-color,background-color] duration-[var(--sherivs-motion-fast)]",
+    href &&
+      "block hover:-translate-y-0.5 hover:border-[var(--sherivs-glass-border)] hover:bg-[var(--sherivs-navy)]",
     className,
   );
   if (href) {
     return (
-      <Link to={href as never} className={cls}>
+      <PublicLink href={href} className={cls}>
         {inner}
-      </Link>
+      </PublicLink>
     );
   }
   return <div className={cls}>{inner}</div>;
@@ -220,11 +223,11 @@ export function PublicButton({
   onClick?: () => void;
 }) {
   const cls = cn(
-    "inline-flex min-h-11 items-center justify-center rounded-[var(--sherivs-radius-sm)] px-5 py-2.5 text-center text-sm font-semibold transition-opacity",
+    "inline-flex min-h-11 items-center justify-center rounded-[var(--sherivs-radius-sm)] px-5 py-2.5 text-center text-sm font-semibold transition-[opacity,transform,background-color,border-color] duration-[var(--sherivs-motion-fast)]",
     variant === "primary" &&
-      "bg-sherivs-blue text-white hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50",
+      "bg-sherivs-blue text-white hover:opacity-90 active:translate-y-px disabled:cursor-not-allowed disabled:opacity-50",
     variant === "secondary" &&
-      "border border-[var(--sherivs-border-strong)] hover:bg-white/5 disabled:cursor-not-allowed disabled:opacity-50",
+      "border border-[var(--sherivs-border-strong)] hover:bg-white/5 active:translate-y-px disabled:cursor-not-allowed disabled:opacity-50",
     variant === "text" && "px-0 text-sherivs-cyan underline-offset-4 hover:underline",
     className,
   );
@@ -232,13 +235,13 @@ export function PublicButton({
   if (href) {
     if (href.startsWith("mailto:") || href.startsWith("http")) {
       return (
-        <a href={href} className={cls}>
+        <a href={href} className={cls} onClick={onClick}>
           {label}
         </a>
       );
     }
     return (
-      <Link to={href as never} className={cls}>
+      <Link to={href as never} className={cls} onClick={onClick}>
         {label}
       </Link>
     );

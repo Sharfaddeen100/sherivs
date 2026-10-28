@@ -32,7 +32,7 @@ export function MarketingPage({
       {children}
       <div className="border-t border-[var(--sherivs-border)]">
         <PageContainer className="flex flex-col gap-3 py-12 sm:flex-row">
-          <PublicButton href="/request-demo">Request a demo</PublicButton>
+          <PublicButton href="/onboarding">Get started</PublicButton>
           <PublicButton href="/contact" variant="secondary">
             Contact Sherivs
           </PublicButton>

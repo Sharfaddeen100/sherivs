@@ -75,14 +75,12 @@ describe("Pricing tier catalog (typed module)", () => {
 });
 
 describe("Site content view-models", () => {
-  it("presents the six platform capabilities", () => {
+  it("presents the Scholar product capabilities", () => {
     expect(SITE_CAPABILITIES.map((capability) => capability.id)).toEqual([
-      "reality-model",
-      "missions",
-      "ai-workforce",
-      "evidence",
-      "governance",
-      "workspace",
+      "school-administration",
+      "academic-operations",
+      "teacher-student",
+      "parent-engagement",
     ]);
     for (const capability of SITE_CAPABILITIES) {
       expect(capability.title.length).toBeGreaterThan(0);
@@ -153,20 +151,19 @@ describe("Route modules — real links, no fake submissions, landmarks", () => {
     // Header landmarks live in the shared SiteHeader component.
     expect(header).toContain("<header");
     expect(header).toMatch(/aria-label="Site"/);
-    expect(header).toContain('to="/sherivs"');
-    expect(header).toContain('to="/request-demo"');
     expect(header).toContain('to="/auth"');
+    expect(header).toContain('href="/onboarding"');
     expect(layout).toContain("<SiteHeader />");
     expect(layout).toContain("<main");
     expect(layout).toContain("<SiteFooter />");
-    for (const anchor of ["capabilities", "runtimes", "security", "pricing"]) {
+    for (const anchor of ["capabilities", "community", "security"]) {
       expect(page).toContain(`id="${anchor}"`);
     }
   });
 
   it("keeps every heading labelled for assistive technology", () => {
-    expect(page).toMatch(/aria-labelledby="coregrid-hero"/);
-    for (const anchor of ["capabilities", "runtimes", "security", "pricing"]) {
+    expect(page).toMatch(/aria-labelledby="scholar-hero"/);
+    for (const anchor of ["capabilities", "community", "security"]) {
       expect(page).toMatch(new RegExp(`aria-labelledby="${anchor}-heading"`));
       expect(page).toContain(`id="${anchor}-heading"`);
     }

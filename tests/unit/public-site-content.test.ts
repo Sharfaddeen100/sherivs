@@ -97,7 +97,6 @@ describe("public content honesty", () => {
       /scope has not been supplied/,
     );
     expect(read("frontend/src/routes/(site)/company.partners.tsx")).toContain("{THINKTECH_DESCRIPTION}");
-    expect(read("frontend/src/lib/public-site/faq.ts")).toContain("THINKTECH_DESCRIPTION");
     expect(existsSync(join(ROOT, "public/partners/thinktech.png"))).toBe(true);
     expect(existsSync(join(ROOT, "public/brand/sherivs-wordmark.png"))).toBe(true);
     expect(existsSync(join(ROOT, "docs/brand/sherivs-wordmark-source.png"))).toBe(true);
@@ -107,29 +106,22 @@ describe("public content honesty", () => {
     expect(LEGAL_ENTITY_NAME).toBe("Sherivs Technologies Limited");
     expect(COMPANY_LOCATION_LINE).toBe("Maiduguri, Borno State, Nigeria");
     expect(ACCEPTING_CUSTOMERS).toBe(true);
-    expect(POSITIONING_TAGLINE).toBe("Intelligence infrastructure for a more connected world");
+    expect(POSITIONING_TAGLINE).toBe("Thoughtful technology for better-run schools");
     expect(PLATFORM_TAGLINE).toBe(POSITIONING_TAGLINE);
-    expect(PLATFORM_PAGE_TITLE).toBe(`Sherivs — ${POSITIONING_TAGLINE}`);
-    expect(PLATFORM_PAGE_DESCRIPTION).toBe(POSITIONING_STATEMENT);
-    expect(POSITIONING_STATEMENT).toMatch(/AI-native institutional computing platform/);
-    expect(POSITIONING_RETHINKING).toBe(
-      "Sherivs is rethinking how intelligence is deployed, how work is coordinated, and how digital representations of real-world entities operate across connected systems.",
-    );
-    expect(POSITIONING_PROGRAMMABLE).toBe(
-      "Its long-term vision is to make computing, coordination, and intelligence programmable capabilities that institutions can build upon—not isolated tools that operate in silos.",
-    );
-    expect(POSITIONING_FOUNDATIONS).toMatch(/is developing the foundations/);
+    expect(PLATFORM_PAGE_TITLE).toBe("Sherivs Scholar | School Management Platform");
+    expect(PLATFORM_PAGE_DESCRIPTION).toMatch(/Sherivs Scholar/);
+    expect(POSITIONING_STATEMENT).toMatch(/Sherivs Scholar/);
+    expect(POSITIONING_RETHINKING).toMatch(/administrators, teachers, students, and parents/);
+    expect(POSITIONING_PROGRAMMABLE).toMatch(/Sherivs Scholar/);
+    expect(POSITIONING_FOUNDATIONS).toMatch(/practical school needs/);
     expect(COMPANY_MISSION).toBe(
-      "Build the computing infrastructure that enables people, institutions, and intelligent systems to work together.",
+      "Build dependable software that helps schools manage their everyday responsibilities with greater clarity and coordination.",
     );
     expect(COMPANY_VISION).toBe(
-      "A world where intelligence, computation, and coordinated action are accessible capabilities for every institution.",
+      "Make school operations more connected, accessible, and organized through thoughtful technology.",
     );
-    expect(read("frontend/src/components/public/sherivs-home.tsx")).toContain("{POSITIONING_STATEMENT}");
-    expect(read("frontend/src/components/public/sherivs-home.tsx")).toContain("{POSITIONING_RETHINKING}");
     expect(read("frontend/src/components/public/sherivs-home.tsx")).toContain("{COMPANY_MISSION}");
     expect(read("frontend/src/components/public/sherivs-home.tsx")).toContain("{COMPANY_VISION}");
-    expect(read("frontend/src/lib/public-site/faq.ts")).toContain("POSITIONING_STATEMENT");
     expect(read("frontend/src/lib/public-site/seo.ts")).toContain("POSITIONING_STATEMENT");
     expect(read("frontend/src/routes/(site)/insights.index.tsx")).toContain("POSITIONING_TAGLINE");
     expect(read("frontend/src/lib/public-site/articles.ts")).toContain("POSITIONING_STATEMENT");
@@ -228,10 +220,10 @@ describe("public content honesty", () => {
   it("keeps the homepage free of customer-availability announcements", () => {
     const home = read("frontend/src/components/public/sherivs-home.tsx");
     expect(home).not.toMatch(/accepting customers|now accepting|open for customers/i);
-    expect(home).toContain('href="/sherivs"');
-    expect(home).toContain('href="/request-demo"');
-    expect(FAQ_PREVIEW_IDS).not.toContain("how-to-start");
-    expect(FAQ_PREVIEW_IDS).not.toContain("who-sherivs-serves");
+    expect(home).toContain('href="/solutions/education"');
+    expect(home).toContain('href="/onboarding"');
+    expect(FAQ_PREVIEW_IDS).toContain("how-to-start");
+    expect(FAQ_PREVIEW_IDS).toContain("what-is-sherivs-scholar");
     for (const id of FAQ_PREVIEW_IDS) {
       const item = FAQ_ITEMS.find((entry) => entry.id === id);
       expect(item?.answer, id).not.toMatch(/accepting customers/i);
@@ -309,7 +301,7 @@ describe("nested public layouts do not swallow children", () => {
     expect(index).toContain('createFileRoute("/(site)/product/")');
     expect(index).toContain('redirect({ to: "/sherivs" })');
     expect(read("frontend/src/routes/(site)/product.architecture.tsx")).toContain(
-      "ProductLayerPage",
+      'redirect({ to: "/sherivs" })',
     );
   });
 });

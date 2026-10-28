@@ -21,8 +21,8 @@ function RequestDemoPage() {
   return (
     <MarketingPage
       eyebrow="Request a demo"
-      title="See Sherivs on your organization's reality"
-      lead="Tell us about your organization. We will walk through how Sherivs would work for how you operate — including what is available today versus still in development."
+      title="See Sherivs Scholar with your school in mind"
+      lead="Tell us about your school. We will walk through how Sherivs Scholar would work for how you operate — including what is available today."
       crumbs={[
         { href: "/", label: "Home" },
         { href: "/request-demo", label: "Request a demo" },
