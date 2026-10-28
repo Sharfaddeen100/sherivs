@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { LEGAL_ENTITY_NAME, BRAND_STATEMENT, BRAND_SUPPORTING } from "@/lib/public-site/company";
 import { FOOTER_GROUPS } from "@/lib/public-site/navigation";
@@ -8,16 +8,7 @@ import { CompanySocialLinks } from "@/components/public/company-social-links";
 import { PublicLink } from "@/components/public/public-link";
 
 export function SiteFooter() {
-  const [desktop, setDesktop] = useState(true);
   const [openGroup, setOpenGroup] = useState<string | null>(null);
-
-  useEffect(() => {
-    const media = window.matchMedia("(min-width: 768px)");
-    const apply = () => setDesktop(media.matches);
-    apply();
-    media.addEventListener("change", apply);
-    return () => media.removeEventListener("change", apply);
-  }, []);
 
   return (
     <footer className="border-t border-[var(--sherivs-border)] bg-[var(--sherivs-midnight)] pb-[max(0px,env(safe-area-inset-bottom))]">
@@ -43,7 +34,7 @@ export function SiteFooter() {
 
         <div className="grid content-start md:grid-cols-2 lg:grid-cols-5 md:gap-6">
           {FOOTER_GROUPS.map((group) => {
-            const expanded = desktop || openGroup === group.id;
+            const expanded = openGroup === group.id;
             const panelId = `footer-${group.id}`;
             return (
               <nav
@@ -53,22 +44,27 @@ export function SiteFooter() {
               >
                 <button
                   type="button"
-                  className="flex min-h-12 w-full items-center justify-between gap-3 py-3 text-left text-xs font-semibold uppercase tracking-widest text-sherivs-muted md:pointer-events-none md:min-h-0 md:py-0"
+                  className="flex min-h-12 w-full items-center justify-between gap-3 py-3 text-left text-xs font-semibold uppercase tracking-widest text-sherivs-muted md:hidden"
                   aria-expanded={expanded}
                   aria-controls={panelId}
-                  onClick={() => {
-                    if (desktop) return;
-                    setOpenGroup((current) => (current === group.id ? null : group.id));
-                  }}
+                  onClick={() =>
+                    setOpenGroup((current) => (current === group.id ? null : group.id))
+                  }
                 >
                   {group.label}
                   <ChevronDown
                     size={16}
                     aria-hidden="true"
-                    className="sherivs-disclosure-icon shrink-0 md:hidden"
+                    className="sherivs-disclosure-icon shrink-0"
                   />
                 </button>
-                <ul id={panelId} hidden={!expanded} className="grid gap-2 pb-4 md:mt-4 md:pb-0">
+                <p className="hidden text-xs font-semibold uppercase tracking-widest text-sherivs-muted md:block">
+                  {group.label}
+                </p>
+                <ul
+                  id={panelId}
+                  className={`grid gap-2 pb-4 md:mt-4 md:grid md:pb-0 ${expanded ? "" : "max-md:hidden"}`}
+                >
                   {group.items.map((item) => (
                     <li key={`${group.id}-${item.href}-${item.label}`}>
                       <PublicLink
