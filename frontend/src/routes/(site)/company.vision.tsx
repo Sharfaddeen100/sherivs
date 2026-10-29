@@ -1,22 +1,23 @@
 import { createFileRoute } from "@tanstack/react-router";
 import {
-  COMPANY_MISSION,
-  COMPANY_VISION,
-  POSITIONING_FOUNDATIONS,
   POSITIONING_PROGRAMMABLE,
   POSITIONING_RETHINKING,
   POSITIONING_STATEMENT,
+  PRODUCT_NAME,
+  PUBLIC_EDITORIAL_APPROACH,
+  PUBLIC_EDITORIAL_MISSION,
+  PUBLIC_EDITORIAL_VISION,
 } from "@/lib/public-site/company";
 import { publicHead } from "@/lib/public-site/seo";
 import { MarketingPage } from "@/components/public/marketing-page";
-import { PageContainer, Section } from "@/components/public/ui";
+import { GlassPanel, PageContainer, Section } from "@/components/public/ui";
 
 export const Route = createFileRoute("/(site)/company/vision")({
   component: VisionPage,
   head: () =>
     publicHead({
       title: "Vision and mission",
-      description: COMPANY_VISION,
+      description: PUBLIC_EDITORIAL_VISION,
       path: "/company/vision",
     }),
 });
@@ -26,7 +27,7 @@ function VisionPage() {
     <MarketingPage
       eyebrow="Company"
       title="Vision and mission"
-      lead={COMPANY_VISION}
+      lead={PUBLIC_EDITORIAL_VISION}
       crumbs={[
         { href: "/", label: "Home" },
         { href: "/about", label: "Company" },
@@ -34,29 +35,43 @@ function VisionPage() {
       ]}
     >
       <Section labelledBy="mission-heading">
-        <PageContainer className="max-w-3xl space-y-8 py-16 text-sm leading-relaxed text-sherivs-muted sm:text-base">
-          <div className="space-y-3">
-            <h2 id="mission-heading" className="font-display text-xl font-semibold text-sherivs-white">
-              Mission
-            </h2>
-            <p>{COMPANY_MISSION}</p>
+        <PageContainer className="py-16">
+          <div className="sherivs-stagger mx-auto grid max-w-3xl gap-4 text-sm leading-relaxed text-sherivs-muted sm:text-base">
+            <GlassPanel className="space-y-3">
+              <h2
+                id="mission-heading"
+                className="font-display text-xl font-semibold text-[var(--sherivs-ink)]"
+              >
+                Mission
+              </h2>
+              <p>{PUBLIC_EDITORIAL_MISSION}</p>
+            </GlassPanel>
+            <GlassPanel className="space-y-3">
+              <h2 className="font-display text-xl font-semibold text-[var(--sherivs-ink)]">
+                Vision
+              </h2>
+              <p>{PUBLIC_EDITORIAL_VISION}</p>
+            </GlassPanel>
+            <GlassPanel className="space-y-3">
+              <h2 className="font-display text-xl font-semibold text-[var(--sherivs-ink)]">
+                Our approach
+              </h2>
+              <p>{PUBLIC_EDITORIAL_APPROACH}</p>
+            </GlassPanel>
+            <GlassPanel className="space-y-3">
+              <h2 className="font-display text-xl font-semibold text-[var(--sherivs-ink)]">
+                What that means today
+              </h2>
+              <p>{POSITIONING_STATEMENT}</p>
+              <p>{POSITIONING_RETHINKING}</p>
+              <p>{POSITIONING_PROGRAMMABLE}</p>
+              <p>
+                {PRODUCT_NAME} is the first product. Organization records and a shared workspace are
+                in the product. AI assistants, campus management screens, and supported automated
+                actions are in development.
+              </p>
+            </GlassPanel>
           </div>
-          <div className="space-y-3">
-            <h2 className="font-display text-xl font-semibold text-sherivs-white">Vision</h2>
-            <p>{COMPANY_VISION}</p>
-            <p>{POSITIONING_PROGRAMMABLE}</p>
-          </div>
-          <div className="space-y-3">
-            <h2 className="font-display text-xl font-semibold text-sherivs-white">How we think about it</h2>
-            <p>{POSITIONING_STATEMENT}</p>
-            <p>{POSITIONING_RETHINKING}</p>
-            <p>{POSITIONING_FOUNDATIONS}</p>
-          </div>
-          <p>
-            We distinguish that ambition from the current product. Education through Scholar can be
-            used today. Other runtimes, a public developer platform, and a complete twin runtime are
-            not claimed as generally available. Unlimited autonomous execution is not offered.
-          </p>
         </PageContainer>
       </Section>
     </MarketingPage>

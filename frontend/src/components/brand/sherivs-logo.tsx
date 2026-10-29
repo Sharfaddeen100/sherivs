@@ -39,33 +39,55 @@ export function SherivsMark({
   );
 }
 
+/**
+ * Owner-supplied lowercase geometric wordmark. The raster is used as a
+ * mask so the letterforms stay exact on light glass surfaces.
+ */
+export function SherivsWordmark({ className = "" }: { className?: string }) {
+  return (
+    <span className={`sherivs-wordmark ${className}`}>
+      <img
+        src="/brand/sherivs-app-wordmark.png"
+        alt={PLATFORM_NAME}
+        decoding="async"
+        draggable={false}
+      />
+    </span>
+  );
+}
+
 export function SherivsLogo({
   size = 32,
   wordmark = true,
   className = "",
   wordmarkClassName = "text-lg",
+  lettering = "text",
 }: {
   size?: number;
   wordmark?: boolean;
   className?: string;
   wordmarkClassName?: string;
+  /** `brand` uses the official wordmark letterforms; `text` is live type. */
+  lettering?: "text" | "brand";
 }) {
   return (
     <span className={`inline-flex items-center gap-2 ${className}`} data-testid="sherivs-logo">
       <SherivsMark size={size} decorative={wordmark} />
-      {wordmark && (
+      {wordmark && lettering === "brand" ? <SherivsWordmark /> : null}
+      {wordmark && lettering === "text" ? (
         <span className={`font-display font-bold leading-none tracking-tight ${wordmarkClassName}`}>
           {PLATFORM_NAME}
         </span>
-      )}
+      ) : null}
     </span>
   );
 }
 
 /**
  * Official lockup (S + typeset “Sherivs”) from the owner-supplied wordmark.
- * Letterforms are dark navy — use on light surfaces only. Dark public chrome
- * keeps <SherivsLogo> (compact S + live white text) for contrast.
+ * Letterforms are dark navy — use on light surfaces only. Public chrome uses
+ * <SherivsLogo lettering="brand"> so the lowercase geometric wordmark matches
+ * the owner-supplied letterforms on the light glass field.
  */
 export function SherivsLockup({
   height = 40,

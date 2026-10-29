@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { PRODUCT_FAMILIES } from "@/lib/public-site/capabilities";
+import { PRODUCT_NAME } from "@/lib/public-site/company";
 import { publicHead } from "@/lib/public-site/seo";
 import { MarketingPage } from "@/components/public/marketing-page";
 import { FeatureCard, PageContainer, Section } from "@/components/public/ui";
@@ -8,9 +8,9 @@ export const Route = createFileRoute("/(site)/solutions/")({
   component: SolutionsPage,
   head: () =>
     publicHead({
-      title: "Solutions",
+      title: "Solutions for schools",
       description:
-        "Education through Sherivs Scholar — available today. Enterprise, intelligence, twins, and developer offerings are labelled by actual availability.",
+        "Sherivs Scholar covers school administration, academic operations, and the school community in one organized environment.",
       path: "/solutions",
     }),
 });
@@ -19,26 +19,35 @@ function SolutionsPage() {
   return (
     <MarketingPage
       eyebrow="Solutions"
-      title="Institutional solutions"
-      lead="Product families follow the current product and roadmap. Unavailable offerings are labelled, not implied."
+      title="Built for schools."
+      lead={`${PRODUCT_NAME} is the current product. It serves schools — not a catalogue of unlaunched industries.`}
       crumbs={[
         { href: "/", label: "Home" },
         { href: "/solutions", label: "Solutions" },
       ]}
     >
-      <Section labelledBy="families-heading">
+      <Section labelledBy="solutions-heading">
         <PageContainer className="py-16">
-          <h2 id="families-heading" className="sr-only">
-            Product families
+          <h2 id="solutions-heading" className="sr-only">
+            School solutions
           </h2>
-          <ul className="grid gap-4 lg:grid-cols-2">
-            {PRODUCT_FAMILIES.map((family) => (
-              <li key={family.id}>
-                <FeatureCard title={family.name} href={family.href} status={family.status}>
-                  {family.summary}
-                </FeatureCard>
-              </li>
-            ))}
+          <ul className="sherivs-stagger grid gap-4 lg:grid-cols-3">
+            <li>
+              <FeatureCard title="Schools" href="/solutions/education">
+                A connected operating environment for the people and processes that run a school.
+              </FeatureCard>
+            </li>
+            <li>
+              <FeatureCard title="School operations" href="/#school-operations">
+                People, responsibilities, and daily operations in one organizational environment.
+              </FeatureCard>
+            </li>
+            <li>
+              <FeatureCard title="School community" href="/#community">
+                Access shaped around roles, in one shared workspace rather than a separate
+                application per role.
+              </FeatureCard>
+            </li>
           </ul>
         </PageContainer>
       </Section>

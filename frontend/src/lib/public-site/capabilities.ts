@@ -54,7 +54,8 @@ export const ARCHITECTURE_LAYERS: readonly ArchitectureLayer[] = [
     summary:
       "AI workers can be given bounded tasks inside permissions and human oversight. They are not unrestricted administrators and cannot expand their own access.",
     status: "in_development",
-    evidence: "AI gateway and worker-mission surfaces exist; live execution depends on configured model credentials.",
+    evidence:
+      "AI gateway and worker-mission surfaces exist; live execution depends on configured model credentials.",
   },
   {
     id: "digital-twin-runtime",
@@ -78,7 +79,8 @@ export const ARCHITECTURE_LAYERS: readonly ArchitectureLayer[] = [
     summary:
       "Work should move as observable events and missions, not as untracked side effects. Event processing is present in parts of the platform and still deepening.",
     status: "in_development",
-    evidence: "Missions and event paths in platform code; not a standalone customer workflow product.",
+    evidence:
+      "Missions and event paths in platform code; not a standalone customer workflow product.",
   },
   {
     id: "data-memory",
@@ -86,7 +88,8 @@ export const ARCHITECTURE_LAYERS: readonly ArchitectureLayer[] = [
     summary:
       "Canonical records stay separate from derived intelligence. Predictions must not silently overwrite verified state.",
     status: "in_development",
-    evidence: "Tenant databases and audit trails; long-term memory fabric is not a published product.",
+    evidence:
+      "Tenant databases and audit trails; long-term memory fabric is not a published product.",
   },
   {
     id: "observability",
@@ -104,7 +107,7 @@ export const PRODUCT_FAMILIES: readonly ProductFamily[] = [
     name: "Sherivs Scholar",
     href: "/solutions/education",
     summary:
-      "The education runtime. Schools can create an organization, run academic operations, and publish a public site. This is the first installed runtime.",
+      "The school product from Sherivs. Organization records and a shared workspace are in the product. Separate role applications, campus screens, and AI assistants are in development.",
     status: "available",
   },
   {

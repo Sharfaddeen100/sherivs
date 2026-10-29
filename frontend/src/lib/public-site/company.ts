@@ -5,9 +5,15 @@
  * social URLs. Mailbox SMTP delivery was not proven; sherivs.com has MX
  * records at privateemail.com (audited 2026-10-26). Forms still use mailto
  * and never claim a ticket exists.
+ *
+ * V1 public positioning (2026-10-28): Sherivs is the company; Sherivs Scholar
+ * is the first product; schools are the initial customer segment. Directional
+ * language describes company intent, not a claim that every future capability
+ * is generally available today.
  */
 export const LEGAL_ENTITY_NAME = "Sherivs Technologies Limited";
 export const PUBLIC_BRAND_NAME = "Sherivs";
+export const PRODUCT_NAME = "Sherivs Scholar";
 export const COMPANY_LOCALITY = "Maiduguri";
 export const COMPANY_REGION = "Borno State";
 export const COMPANY_COUNTRY = "Nigeria";
@@ -21,24 +27,34 @@ export const PUBLIC_WEBSITE_HOST = "www.sherivs.com";
  */
 export const ACCEPTING_CUSTOMERS = true;
 
-/**
- * Owner-supplied public positioning (2026-10-26). Directional language
- * (“is building”, “is developing”) is intentional — not a claim that every
- * capability is generally available today.
- */
-export const POSITIONING_TAGLINE = "Intelligence infrastructure for a more connected world";
+export const POSITIONING_TAGLINE = "Thoughtful technology for better-run schools";
 export const POSITIONING_STATEMENT =
-  "Sherivs is building an AI-native institutional computing platform that brings people, organizations, AI workforces, and digital twins into a shared, governed computing environment.";
+  "Bring your school's people, responsibilities, operations, and institutional knowledge into one connected digital environment—designed around how your organization actually works.";
 export const POSITIONING_RETHINKING =
-  "Sherivs is rethinking how intelligence is deployed, how work is coordinated, and how digital representations of real-world entities operate across connected systems.";
+  "From administrators and teachers to students, parents, and operational staff, Sherivs Scholar brings the school community into a shared, role-aware environment.";
 export const POSITIONING_PROGRAMMABLE =
-  "Its long-term vision is to make computing, coordination, and intelligence programmable capabilities that institutions can build upon—not isolated tools that operate in silos.";
+  "Sherivs Scholar, the first Sherivs product, keeps role-specific AI assistants, campus management screens, and supported automated actions in development. They are not generally available.";
 export const POSITIONING_FOUNDATIONS =
-  "From institutional applications to autonomous AI workforces and state-aware digital twins, Sherivs is developing the foundations for a world in which intelligent systems can work together with greater coherence, accountability, and control.";
+  "We begin with the organization, respect the responsibilities of each person, and design technology around the way institutions actually work.";
+/**
+ * Recorded V1 company constants (2026-10-28). Public pages render
+ * PUBLIC_EDITORIAL_* so the site does not publish two different missions.
+ */
 export const COMPANY_MISSION =
-  "Build the computing infrastructure that enables people, institutions, and intelligent systems to work together.";
+  "Build dependable software that helps schools manage their everyday responsibilities with greater clarity and coordination.";
 export const COMPANY_VISION =
-  "A world where intelligence, computation, and coordinated action are accessible capabilities for every institution.";
+  "Make school operations more connected, accessible, and organized through thoughtful technology.";
+export const COMPANY_APPROACH =
+  "We focus on practical school needs, coherent workflows, responsible access, and product experiences that respect the people who use them.";
+export const PUBLIC_EDITORIAL_VISION =
+  "A world where every school can operate through a digital environment that reflects its real organizational life.";
+export const PUBLIC_EDITORIAL_MISSION =
+  "To make institutional work more connected, intelligent, and accessible by bringing people, responsibilities, information, and supported AI assistance into one operating environment.";
+export const PUBLIC_EDITORIAL_APPROACH =
+  "We begin with the organization, respect the responsibilities of each person, and design technology around the way institutions actually work.";
+export const BRAND_STATEMENT = "Thoughtful technology for better-run schools.";
+export const BRAND_SUPPORTING =
+  "Sherivs builds practical software for the people and processes that keep schools moving.";
 
 export const EMAIL_ROUTING = {
   info: {

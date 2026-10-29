@@ -1,8 +1,9 @@
-import { POSITIONING_TAGLINE } from "@/lib/public-site/company";
+import { POSITIONING_TAGLINE, PRODUCT_NAME } from "@/lib/public-site/company";
 
 /**
- * Public navigation and footer model. Links only to real public routes.
- * Internal `/platform` (engineering) and console hosts are never linked.
+ * Public navigation and footer model. Links only to real public routes
+ * or homepage section anchors. Internal `/platform` (engineering) and
+ * console hosts are never linked.
  */
 export interface NavLink {
   href: string;
@@ -18,46 +19,20 @@ export interface NavGroup {
   items: readonly NavLink[];
 }
 
-export const PLATFORM_NAV: NavGroup = {
-  id: "platform",
-  label: "Platform",
-  href: "/sherivs",
+export const PRODUCT_NAV: NavGroup = {
+  id: "product",
+  label: "Product",
+  href: "/solutions/education",
   items: [
     {
+      href: "/solutions/education",
+      label: PRODUCT_NAME,
+      description: "The institutional operating environment for schools.",
+    },
+    {
       href: "/sherivs",
-      label: "Platform overview",
-      description: `${POSITIONING_TAGLINE}.`,
-    },
-    {
-      href: "/product/architecture",
-      label: "Architecture",
-      description: "The layers of the institutional computing platform.",
-    },
-    {
-      href: "/product/ai-workforce",
-      label: "AI workforce",
-      description: "Governed agents with permissions, oversight, and usage controls.",
-    },
-    {
-      href: "/product/digital-twins",
-      label: "Digital twins",
-      description: "Persistent identity, state, relationships, and events.",
-    },
-    {
-      href: "/product/institutional-computing",
-      label: "Institutional computing",
-      description: "A shared environment for organizational work.",
-    },
-    {
-      href: "/product/intelligence",
-      label: "Intelligence infrastructure",
-      description: "Model routing and grounded institutional intelligence.",
-    },
-    {
-      href: "/developers",
-      label: "Developer platform",
-      description: "What developers can use today — without invented SDKs.",
-      status: "planned",
+      label: "Product overview",
+      description: "How Sherivs Scholar organizes a school.",
     },
   ],
 };
@@ -69,138 +44,151 @@ export const SOLUTIONS_NAV: NavGroup = {
   items: [
     {
       href: "/solutions/education",
-      label: "Education",
-      description: "Sherivs Scholar — the education runtime available today.",
-      status: "available",
+      label: "Schools",
+      description: "Sherivs Scholar for a school organization.",
     },
     {
-      href: "/solutions/enterprise",
-      label: "Enterprise",
-      description: "The same platform for organizations beyond education.",
-      status: "in_development",
-    },
-    {
-      href: "/solutions/research",
-      label: "Research and innovation",
-      description: "A directional offering for research institutions.",
-      status: "planned",
+      href: "/#school-operations",
+      label: "School operations",
+      description: "People, responsibilities, and daily operations in one environment.",
     },
   ],
 };
 
-export const TECHNOLOGY_NAV: NavGroup = {
-  id: "technology",
-  label: "Technology",
-  href: "/product/architecture",
+export const ABOUT_NAV: NavGroup = {
+  id: "about",
+  label: "About",
+  href: "/about",
   items: [
-    { href: "/product/architecture", label: "Architecture" },
-    { href: "/security", label: "Security and trust" },
-    { href: "/integrations", label: "Integrations" },
-    { href: "/docs", label: "Developer documentation" },
+    {
+      href: "/about",
+      label: "About Sherivs",
+      description: "Who Sherivs is and what we are introducing.",
+    },
+    {
+      href: "/company/vision",
+      label: "Vision and mission",
+      description: "The direction behind Sherivs Scholar.",
+    },
+    { href: "/contact", label: "Contact", description: "Write to the Sherivs team." },
   ],
 };
 
 export const RESOURCES_NAV: NavGroup = {
   id: "resources",
   label: "Resources",
-  href: "/insights",
+  href: "/help",
   items: [
-    { href: "/insights", label: "Insights" },
-    { href: "/faq", label: "FAQs" },
-    { href: "/help", label: "Help center" },
+    {
+      href: "/faq",
+      label: "Frequently asked questions",
+      description: "Short answers about Sherivs Scholar.",
+    },
+    {
+      href: "/help",
+      label: "Help and support",
+      description: "Guides that match implemented functionality.",
+    },
+    { href: "/docs", label: "Documentation", description: "Help, FAQs, and product references." },
+  ],
+};
+
+export const FOOTER_PRODUCT: NavGroup = {
+  id: "footer-product",
+  label: "Product",
+  items: [
+    { href: "/solutions/education", label: PRODUCT_NAME },
+    { href: "/sherivs", label: "Product overview" },
+    { href: "/onboarding", label: "Get started" },
+  ],
+};
+
+export const FOOTER_SOLUTIONS: NavGroup = {
+  id: "footer-solutions",
+  label: "Solutions",
+  items: [
+    { href: "/solutions/education", label: "Schools" },
+    { href: "/#school-operations", label: "School operations" },
+    { href: "/#community", label: "School community" },
+  ],
+};
+
+export const FOOTER_RESOURCES: NavGroup = {
+  id: "footer-resources",
+  label: "Resources",
+  items: [
+    { href: "/faq", label: "Frequently asked questions" },
+    { href: "/help", label: "Help and support" },
     { href: "/docs", label: "Documentation" },
     { href: "/support", label: "Support" },
-    { href: "/status", label: "System status" },
   ],
 };
 
-export const COMPANY_NAV: NavGroup = {
-  id: "company",
+export const FOOTER_COMPANY: NavGroup = {
+  id: "footer-company",
   label: "Company",
-  href: "/about",
   items: [
-    { href: "/about", label: "About" },
+    { href: "/about", label: "About Sherivs" },
     { href: "/company/vision", label: "Vision and mission" },
-    { href: "/company/partners", label: "Partners" },
     { href: "/contact", label: "Contact" },
-    { href: "/company/careers", label: "Careers" },
   ],
 };
 
-export const TRUST_NAV: NavGroup = {
-  id: "trust",
-  label: "Trust",
-  href: "/trust",
-  items: [
-    { href: "/security", label: "Security" },
-    { href: "/privacy-policy", label: "Privacy" },
-    { href: "/trust", label: "Trust center" },
-    { href: "/accessibility", label: "Accessibility" },
-  ],
-};
-
-export const LEGAL_NAV: NavGroup = {
-  id: "legal",
+export const FOOTER_LEGAL: NavGroup = {
+  id: "footer-legal",
   label: "Legal",
-  href: "/privacy-policy",
   items: [
     { href: "/privacy-policy", label: "Privacy policy" },
-    { href: "/terms", label: "Terms" },
-    { href: "/legal/acceptable-use", label: "Acceptable use" },
-    { href: "/legal/cookies", label: "Cookie policy" },
-    { href: "/legal/contact", label: "Legal contact" },
+    { href: "/terms", label: "Terms of service" },
+    { href: "/legal/acceptable-use", label: "Acceptable use policy" },
   ],
 };
 
+/** Header groups for the public marketing chrome. */
 export const HEADER_GROUPS: readonly NavGroup[] = [
-  PLATFORM_NAV,
+  PRODUCT_NAV,
   SOLUTIONS_NAV,
-  TECHNOLOGY_NAV,
+  ABOUT_NAV,
   RESOURCES_NAV,
-  COMPANY_NAV,
 ];
 
 export const FOOTER_GROUPS: readonly NavGroup[] = [
-  PLATFORM_NAV,
-  SOLUTIONS_NAV,
-  RESOURCES_NAV,
-  COMPANY_NAV,
-  TRUST_NAV,
-  LEGAL_NAV,
+  FOOTER_PRODUCT,
+  FOOTER_SOLUTIONS,
+  FOOTER_RESOURCES,
+  FOOTER_COMPANY,
+  FOOTER_LEGAL,
 ];
+
+/** @deprecated Use ABOUT_NAV. Kept so older imports fail loudly in review if revived. */
+export const COMPANY_NAV = ABOUT_NAV;
+
+export const LEGAL_NAV = FOOTER_LEGAL;
 
 /** Primary public sitemap entries (indexable, canonical company site). */
 export const PUBLIC_SITEMAP_PATHS: readonly string[] = [
   "/",
-  "/sherivs",
-  "/product/architecture",
-  "/product/ai-workforce",
-  "/product/digital-twins",
-  "/product/institutional-computing",
-  "/product/intelligence",
-  "/developers",
-  "/docs",
-  "/integrations",
-  "/solutions",
   "/solutions/education",
-  "/solutions/enterprise",
-  "/solutions/research",
+  "/solutions",
+  "/sherivs",
   "/about",
   "/company/vision",
-  "/company/partners",
-  "/company/careers",
   "/contact",
   "/request-demo",
   "/insights",
   "/faq",
   "/help",
+  "/docs",
   "/support",
   "/status",
   "/security",
   "/trust",
   "/privacy-policy",
   "/terms",
+  "/legal/acceptable-use",
   "/legal/contact",
   "/accessibility",
   "/security/disclosure",
 ];
+
+export { POSITIONING_TAGLINE };

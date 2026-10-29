@@ -1,13 +1,14 @@
-import { createFileRoute, notFound } from "@tanstack/react-router";
+import { createFileRoute, notFound, redirect } from "@tanstack/react-router";
 import { helpBySlug, type HelpArticle } from "@/lib/public-site/help";
 import { publicHead } from "@/lib/public-site/seo";
 import { MarketingPage } from "@/components/public/marketing-page";
-import { PageContainer, Section, StatusBadge } from "@/components/public/ui";
+import { GlassPanel, PageContainer, Section, StatusBadge } from "@/components/public/ui";
 
 export const Route = createFileRoute("/(site)/help/$slug")({
   loader: ({ params }) => {
     const article = helpBySlug(params.slug);
     if (!article) throw notFound();
+    if (article.listed === false) throw redirect({ to: "/help" });
     return { article };
   },
   head: ({ loaderData }) =>
@@ -34,22 +35,27 @@ function HelpArticlePage() {
       actions={<StatusBadge status={article.status} />}
     >
       <Section labelledBy="help-body">
-        <PageContainer className="max-w-[var(--sherivs-prose)] space-y-8 py-16">
-          <h2 id="help-body" className="sr-only">
-            Article
-          </h2>
-          {article.body.map((block, index) => (
-            <div key={block.heading ?? index}>
-              {block.heading ? (
-                <h3 className="font-display text-lg font-semibold">{block.heading}</h3>
-              ) : null}
-              {block.paragraphs.map((paragraph) => (
-                <p key={paragraph} className="mt-2 text-sm leading-relaxed text-sherivs-muted sm:text-base">
-                  {paragraph}
-                </p>
-              ))}
-            </div>
-          ))}
+        <PageContainer className="py-16">
+          <GlassPanel className="mx-auto max-w-[var(--sherivs-prose)] space-y-8">
+            <h2 id="help-body" className="sr-only">
+              Article
+            </h2>
+            {article.body.map((block, index) => (
+              <div key={block.heading ?? index}>
+                {block.heading ? (
+                  <h3 className="font-display text-lg font-semibold">{block.heading}</h3>
+                ) : null}
+                {block.paragraphs.map((paragraph) => (
+                  <p
+                    key={paragraph}
+                    className="mt-2 text-sm leading-relaxed text-sherivs-muted sm:text-base"
+                  >
+                    {paragraph}
+                  </p>
+                ))}
+              </div>
+            ))}
+          </GlassPanel>
         </PageContainer>
       </Section>
     </MarketingPage>

@@ -31,7 +31,7 @@ function SecurityPage() {
           <h2 id="sec-list" className="sr-only">
             Security principles
           </h2>
-          <ul className="grid gap-4 sm:grid-cols-2">
+          <ul className="sherivs-stagger grid gap-4 sm:grid-cols-2">
             {SECURITY_GUARANTEES.map((item) => (
               <li key={item.id}>
                 <FeatureCard title={item.title}>{item.description}</FeatureCard>

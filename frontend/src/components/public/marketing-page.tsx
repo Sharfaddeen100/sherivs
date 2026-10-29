@@ -1,5 +1,11 @@
 import type { ReactNode } from "react";
-import { Breadcrumbs, PageContainer, PageHero, PublicButton } from "@/components/public/ui";
+import {
+  Breadcrumbs,
+  GlassPanel,
+  PageContainer,
+  PageHero,
+  PublicButton,
+} from "@/components/public/ui";
 import { JsonLd } from "@/components/public/json-ld";
 import { breadcrumbJsonLd } from "@/lib/public-site/seo";
 
@@ -23,21 +29,19 @@ export function MarketingPage({
   return (
     <>
       <JsonLd data={breadcrumbJsonLd(crumbs.map((c) => ({ name: c.label, path: c.href })))} />
-      <div className="border-b border-[var(--sherivs-border)]">
-        <PageContainer className="pt-8">
-          <Breadcrumbs items={crumbs} />
-        </PageContainer>
-      </div>
+      <PageContainer className="pt-8">
+        <Breadcrumbs items={crumbs} />
+      </PageContainer>
       <PageHero id={heroId} eyebrow={eyebrow} title={title} lead={lead} actions={actions} />
       {children}
-      <div className="border-t border-[var(--sherivs-border)]">
-        <PageContainer className="flex flex-col gap-3 py-12 sm:flex-row">
-          <PublicButton href="/request-demo">Request a demo</PublicButton>
+      <PageContainer className="py-12">
+        <GlassPanel className="flex flex-col items-center justify-center gap-3 px-6 py-8 text-center sm:flex-row sm:px-10">
+          <PublicButton href="/onboarding">Get started</PublicButton>
           <PublicButton href="/contact" variant="secondary">
             Contact Sherivs
           </PublicButton>
-        </PageContainer>
-      </div>
+        </GlassPanel>
+      </PageContainer>
     </>
   );
 }

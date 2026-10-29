@@ -36,7 +36,7 @@ function IntegrationsPage() {
             Commercial and strategic partners will appear only after the company owner supplies
             approved names and logos.
           </Callout>
-          <ul className="grid gap-4 sm:grid-cols-2">
+          <ul className="sherivs-stagger grid gap-4 sm:grid-cols-2">
             {tech.map((item) => (
               <li key={item.id}>
                 <FeatureCard title={item.name}>{item.summary}</FeatureCard>

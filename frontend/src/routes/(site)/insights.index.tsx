@@ -11,7 +11,7 @@ export const Route = createFileRoute("/(site)/insights/")({
   head: () =>
     publicHead({
       title: "Insights",
-      description: `${POSITIONING_TAGLINE}. Essays on institutional computing, AI workforces, digital twins, and governed intelligence.`,
+      description: `${POSITIONING_TAGLINE}. Company essays from Sherivs.`,
       path: "/insights",
     }),
 });
@@ -22,7 +22,7 @@ function InsightsIndex() {
     <MarketingPage
       eyebrow="Insights"
       title="Insights"
-      lead={`${POSITIONING_TAGLINE}. Company essays on institutional computing, AI workforces, digital twins, and governed intelligence. Organization blogs remain on each tenant host at /blog.`}
+      lead={`${POSITIONING_TAGLINE}. Company essays. Organization blogs remain on each tenant host at /blog.`}
       crumbs={[
         { href: "/", label: "Home" },
         { href: "/insights", label: "Insights" },
@@ -38,27 +38,31 @@ function InsightsIndex() {
             is the Sherivs company publication.
           </Callout>
           <ul className="flex flex-wrap gap-2 text-xs">
-            {ARTICLE_CATEGORIES.map((category) => (
+            {ARTICLE_CATEGORIES.filter((category) =>
+              articles.some((article) => article.category === category),
+            ).map((category) => (
               <li key={category}>
                 <Link
                   to="/insights/category/$slug"
                   params={{ slug: categoryToSlug(category) }}
-                  className="rounded-full border border-[var(--sherivs-border)] px-3 py-1 text-sherivs-muted hover:text-sherivs-white"
+                  className="sherivs-btn-secondary rounded-full px-3 py-1 text-xs text-[var(--sherivs-ink-muted)] hover:text-[var(--sherivs-ink)]"
                 >
                   {category}
                 </Link>
               </li>
             ))}
           </ul>
-          <ul className="grid gap-4">
+          <ul className="sherivs-stagger grid gap-4">
             {articles.map((article) => (
               <li key={article.slug}>
                 <Link
                   to="/insights/$slug"
                   params={{ slug: article.slug }}
-                  className="block rounded-[var(--sherivs-radius)] border border-[var(--sherivs-border)] p-5 hover:bg-white/5"
+                  className="sherivs-glass-card block rounded-[var(--sherivs-radius)] p-5 transition-transform duration-[var(--sherivs-motion-fast)] hover:-translate-y-0.5"
                 >
-                  <p className="text-xs uppercase tracking-widest text-sherivs-cyan">{article.category}</p>
+                  <p className="text-xs uppercase tracking-widest text-sherivs-cyan">
+                    {article.category}
+                  </p>
                   <h3 className="mt-2 font-display text-lg font-semibold">{article.title}</h3>
                   <p className="mt-2 text-sm text-sherivs-muted">{article.summary}</p>
                   <p className="mt-3 text-xs text-sherivs-muted">
