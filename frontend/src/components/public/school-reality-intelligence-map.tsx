@@ -281,7 +281,7 @@ function DesktopOrganism({
           className="sherivs-map-svg"
           viewBox={`0 0 ${ORGANISM.width} ${ORGANISM.height}`}
           role="img"
-          aria-hidden="true"
+          aria-describedby="school-reality-desc"
         >
           <ellipse
             className="sherivs-map-nucleus-shape"
