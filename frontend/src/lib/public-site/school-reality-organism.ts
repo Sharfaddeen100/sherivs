@@ -73,7 +73,7 @@ const LEFT_TEXT_X = 210;
 const RIGHT_TEXT_X = 790;
 const DOMAIN_Y = [130, 330, 530, 730];
 const ACTIVITY_SIZE = 12;
-const HEADING_SIZE = 11;
+const HEADING_SIZE = 13;
 const LANE_Y = [820, 844, 868];
 
 export function estimateTextWidth(text: string, fontSize: number): number {
@@ -177,7 +177,7 @@ export function organismLayout(): OrganismLayout {
 
     const headingBoxes: Box[] = [];
     branch.headingLines.forEach((line, index) => {
-      const lineY = y - 78 + index * 14;
+      const lineY = y - 86 + index * 18;
       const rect = rectFor(line, textX, lineY, anchor, HEADING_SIZE);
       headingBoxes.push(rect);
       labels.push({
@@ -201,9 +201,13 @@ export function organismLayout(): OrganismLayout {
     );
     const rightEdge = Math.max(...headingBoxes.map((box) => box.x + box.w));
     const bottomEdge = Math.max(...headingBoxes.map((box) => box.y + box.h));
+    const visual = { x: hit.x, y: hit.y, w: rightEdge - hit.x, h: bottomEdge - hit.y };
+    /* 52 viewBox units stays at least 44 CSS px when the SVG is ~944px wide at 1024. */
+    const minHit = 52;
+    const grow = Math.max(0, minHit - visual.h);
     hits.push({
       branchId: branch.id,
-      rect: { x: hit.x, y: hit.y, w: rightEdge - hit.x, h: bottomEdge - hit.y },
+      rect: { x: visual.x, y: visual.y - grow, w: visual.w, h: visual.h + grow },
     });
 
     const count = branch.previewLabels.length;
@@ -283,10 +287,10 @@ export function organismLayout(): OrganismLayout {
   });
 
   const centreLines = [
-    { id: "centre-title", text: "SCHOOL REALITY", y: NUCLEUS.cy - 16, size: 13 },
-    { id: "centre-line-1", text: "One living institution.", y: NUCLEUS.cy + 4, size: 11 },
-    { id: "centre-line-2", text: "Thousands of connected", y: NUCLEUS.cy + 18, size: 11 },
-    { id: "centre-line-3", text: "activities.", y: NUCLEUS.cy + 32, size: 11 },
+    { id: "centre-title", text: "SCHOOL REALITY", y: NUCLEUS.cy - 28, size: 13 },
+    { id: "centre-line-1", text: "One living institution.", y: NUCLEUS.cy - 8, size: 13 },
+    { id: "centre-line-2", text: "Thousands of connected", y: NUCLEUS.cy + 10, size: 13 },
+    { id: "centre-line-3", text: "activities.", y: NUCLEUS.cy + 28, size: 13 },
   ];
   for (const line of centreLines) {
     labels.push({
