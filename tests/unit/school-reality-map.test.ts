@@ -19,6 +19,11 @@ import {
   relatedBranchIds,
   tracedPathForBranch,
 } from "@/lib/public-site/school-reality-map";
+import {
+  labelOverlaps,
+  organismLayout,
+  strokeHits,
+} from "@/lib/public-site/school-reality-organism";
 
 const ROOT = fileURLToPath(new URL("../..", import.meta.url));
 const read = (ref: string) => readFileSync(join(ROOT, ref), "utf8");
@@ -170,6 +175,36 @@ describe("School Reality Intelligence Map copy", () => {
     expect(SCHOOL_REALITY_BRANCHES.find((branch) => branch.id === "governance")?.boundary).toMatch(
       /not the whole institution/,
     );
+  });
+
+  it("draws five paths between preview activity nodes and keeps strokes off the labels", () => {
+    for (const branch of SCHOOL_REALITY_BRANCHES) {
+      expect(branch.headingLines.join(" ")).toBe(branch.heading);
+      expect(branch.previewLabels.length).toBeGreaterThanOrEqual(3);
+      expect(branch.previewLabels.length).toBeLessThanOrEqual(5);
+      for (const label of branch.previewLabels) expect(branch.labels).toContain(label);
+    }
+    const attendance = SCHOOL_REALITY_PATHS.find((path) => path.id === "attendance");
+    expect(attendance?.anchors.map((anchor) => anchor.label)).toEqual([
+      "Attendance & punctuality",
+      "Student progress",
+      "Targeted interventions",
+      "Parents & guardians",
+    ]);
+    expect(SCHOOL_REALITY_PATHS).toHaveLength(5);
+    for (const path of SCHOOL_REALITY_PATHS) {
+      expect(path.anchors.length).toBeGreaterThanOrEqual(3);
+      for (const anchor of path.anchors) {
+        const branch = SCHOOL_REALITY_BRANCHES.find((item) => item.id === anchor.branchId);
+        expect(branch?.previewLabels, `${path.id} ${anchor.label}`).toContain(anchor.label);
+      }
+    }
+    const layout = organismLayout();
+    expect(layout.curves.filter((curve) => curve.kind === "arc")).toHaveLength(5);
+    expect(layout.curves.filter((curve) => curve.kind === "trunk")).toHaveLength(8);
+    expect(labelOverlaps(layout)).toEqual([]);
+    expect(strokeHits(layout)).toEqual([]);
+    expect(layout.clearOfLabels).toBe(true);
   });
 
   it("traces a small set of meaningful paths instead of a complete mesh", () => {

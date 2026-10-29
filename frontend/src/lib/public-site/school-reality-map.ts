@@ -12,8 +12,12 @@ export interface SchoolRealityBranch {
   id: string;
   index: string;
   heading: string;
+  /** Two visual lines that join, with a space, back to `heading`. */
+  headingLines: readonly [string, string];
   side: "left" | "right";
   labels: readonly string[];
+  /** Three to five labels drawn on the organism before a branch is opened. */
+  previewLabels: readonly string[];
   microcopy: string;
   /** Short boundary note. Does not replace the exact microcopy. */
   boundary?: string;
@@ -21,11 +25,18 @@ export interface SchoolRealityBranch {
   tracePathId: string;
 }
 
+export interface SchoolRealityAnchor {
+  branchId: string;
+  label: string;
+}
+
 export interface SchoolRealityPath {
   id: string;
   title: string;
   body: string;
   branchIds: readonly string[];
+  /** Activity nodes the drawn arc actually connects, in order. */
+  anchors: readonly SchoolRealityAnchor[];
 }
 
 export interface SchoolRealityCapability {
@@ -78,8 +89,10 @@ export const SCHOOL_REALITY_BRANCHES: readonly SchoolRealityBranch[] = [
     id: "people",
     index: "01",
     heading: "PEOPLE & RELATIONSHIPS",
+    headingLines: ["PEOPLE &", "RELATIONSHIPS"],
     side: "left",
     tracePathId: "attendance",
+    previewLabels: ["School leadership", "Teachers", "Students", "Parents & guardians"],
     microcopy:
       "Every person has a role, relationships, responsibilities, and a place within the institution.",
     boundary: "Not every school employs every role.",
@@ -100,8 +113,15 @@ export const SCHOOL_REALITY_BRANCHES: readonly SchoolRealityBranch[] = [
     id: "teaching",
     index: "02",
     heading: "TEACHING & LEARNING",
+    headingLines: ["TEACHING &", "LEARNING"],
     side: "left",
     tracePathId: "examination",
+    previewLabels: [
+      "Classroom teaching",
+      "Assignments & assessments",
+      "Student progress",
+      "Targeted interventions",
+    ],
     microcopy: "Learning connects teaching, progress, individual needs, and timely intervention.",
     labels: [
       "Lesson planning",
@@ -120,8 +140,15 @@ export const SCHOOL_REALITY_BRANCHES: readonly SchoolRealityBranch[] = [
     id: "operations",
     index: "03",
     heading: "DAILY OPERATIONS & WORKFLOWS",
+    headingLines: ["DAILY OPERATIONS", "& WORKFLOWS"],
     side: "left",
     tracePathId: "attendance",
+    previewLabels: [
+      "Admissions & enrolment",
+      "Attendance & punctuality",
+      "Staff assignments",
+      "Scheduling",
+    ],
     microcopy: "Work moves through people, decisions, deadlines, and responsibilities.",
     labels: [
       "Admissions & enrolment",
@@ -139,8 +166,15 @@ export const SCHOOL_REALITY_BRANCHES: readonly SchoolRealityBranch[] = [
     id: "health",
     index: "04",
     heading: "HEALTH, SAFETY & WELLBEING",
+    headingLines: ["HEALTH, SAFETY", "& WELLBEING"],
     side: "left",
     tracePathId: "health-incident",
+    previewLabels: [
+      "Nurse assessments",
+      "Incident reports",
+      "Safeguarding workflows",
+      "Intervention follow-ups",
+    ],
     microcopy:
       "Care depends on context, responsible people, timely action, and appropriate access.",
     boundary: "Health and safeguarding stay within strict access boundaries.",
@@ -159,8 +193,15 @@ export const SCHOOL_REALITY_BRANCHES: readonly SchoolRealityBranch[] = [
     id: "finance",
     index: "05",
     heading: "FINANCE & RESOURCES",
+    headingLines: ["FINANCE &", "RESOURCES"],
     side: "right",
     tracePathId: "campus",
+    previewLabels: [
+      "School fees",
+      "Payments & reconciliation",
+      "Budgets & expenditure",
+      "Resource allocation",
+    ],
     microcopy:
       "Financial activity connects obligations, resources, transactions, and accountability.",
     labels: [
@@ -178,8 +219,10 @@ export const SCHOOL_REALITY_BRANCHES: readonly SchoolRealityBranch[] = [
     id: "places",
     index: "06",
     heading: "PLACES & ENVIRONMENTS",
+    headingLines: ["PLACES &", "ENVIRONMENTS"],
     side: "right",
     tracePathId: "campus",
+    previewLabels: ["Classrooms", "Boarding houses", "School buses", "Campuses & premises"],
     microcopy:
       "A school operates across physical spaces, facilities, assets, and changing conditions.",
     boundary: "One campus or several can belong to the same institution.",
@@ -199,8 +242,10 @@ export const SCHOOL_REALITY_BRANCHES: readonly SchoolRealityBranch[] = [
     id: "events",
     index: "07",
     heading: "EVENTS, TIME & CHANGE",
+    headingLines: ["EVENTS, TIME", "& CHANGE"],
     side: "right",
     tracePathId: "examination",
+    previewLabels: ["Academic calendars", "Examinations", "School trips", "Deadlines"],
     microcopy: "Institutions evolve through events, schedules, transitions, and decisions.",
     labels: [
       "Academic calendars",
@@ -219,8 +264,16 @@ export const SCHOOL_REALITY_BRANCHES: readonly SchoolRealityBranch[] = [
     id: "governance",
     index: "08",
     heading: "GOVERNANCE, RECORDS & DECISIONS",
+    headingLines: ["GOVERNANCE,", "RECORDS & DECISIONS"],
     side: "right",
     tracePathId: "examination",
+    previewLabels: [
+      "Policies & permissions",
+      "Student records",
+      "Academic results",
+      "Communications",
+      "Institutional reports",
+    ],
     microcopy:
       "Reliable decisions depend on accurate records, authority, context, and traceable actions.",
     boundary: "Records support the institution. They are not the whole institution.",
@@ -245,30 +298,65 @@ export const SCHOOL_REALITY_PATHS: readonly SchoolRealityPath[] = [
     title: "Attendance",
     body: "Attendance leads to teacher follow-up, parent notification, and intervention.",
     branchIds: ["operations", "teaching", "people"],
+    anchors: [
+      { branchId: "operations", label: "Attendance & punctuality" },
+      { branchId: "teaching", label: "Student progress" },
+      { branchId: "teaching", label: "Targeted interventions" },
+      { branchId: "people", label: "Parents & guardians" },
+    ],
   },
   {
     id: "examination",
     title: "Examination",
     body: "An examination connects teaching, progress, scheduling, records, and reporting.",
     branchIds: ["events", "teaching", "operations", "governance"],
+    anchors: [
+      { branchId: "events", label: "Examinations" },
+      { branchId: "teaching", label: "Student progress" },
+      { branchId: "operations", label: "Scheduling" },
+      { branchId: "governance", label: "Academic results" },
+      { branchId: "governance", label: "Institutional reports" },
+    ],
   },
   {
     id: "trip",
     title: "School trip",
     body: "A school trip connects events, transport, staff assignments, permissions, safety, and communication.",
     branchIds: ["events", "places", "operations", "people", "health", "governance"],
+    anchors: [
+      { branchId: "events", label: "School trips" },
+      { branchId: "places", label: "School buses" },
+      { branchId: "operations", label: "Staff assignments" },
+      { branchId: "governance", label: "Policies & permissions" },
+      { branchId: "health", label: "Safeguarding workflows" },
+      { branchId: "governance", label: "Communications" },
+    ],
   },
   {
     id: "health-incident",
     title: "Health incident",
     body: "A health incident connects the student, authorized health personnel, safeguarding, and follow-up.",
     branchIds: ["health", "people", "governance"],
+    anchors: [
+      { branchId: "health", label: "Incident reports" },
+      { branchId: "health", label: "Nurse assessments" },
+      { branchId: "people", label: "Students" },
+      { branchId: "health", label: "Safeguarding workflows" },
+      { branchId: "governance", label: "Policies & permissions" },
+    ],
   },
   {
     id: "campus",
     title: "New campus",
     body: "A new campus connects premises, people, schedules, resources, and administration.",
     branchIds: ["places", "people", "events", "finance", "operations"],
+    anchors: [
+      { branchId: "places", label: "Campuses & premises" },
+      { branchId: "people", label: "School leadership" },
+      { branchId: "events", label: "Academic calendars" },
+      { branchId: "finance", label: "Resource allocation" },
+      { branchId: "operations", label: "Admissions & enrolment" },
+    ],
   },
 ];
 

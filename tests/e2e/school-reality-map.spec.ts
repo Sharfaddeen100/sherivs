@@ -3,13 +3,19 @@ import { expect, test, type Page } from "@playwright/test";
 const WIDTHS = [320, 360, 390, 430, 768, 1024, 1440] as const;
 const SHOTS = new Set([320, 390, 768, 1024, 1440]);
 
+test.use({ deviceScaleFactor: 1, isMobile: false, hasTouch: false });
+
 async function gotoMap(page: Page, width: number) {
   await page.setViewportSize({ width, height: 900 });
   await page.goto("/");
   const map = page.getByTestId("school-reality-map");
   await map.scrollIntoViewIfNeeded();
-  await expect(map.getByText("SCHOOL REALITY")).toBeVisible();
-  await expect(map.locator(".sherivs-map-nucleus")).toHaveCSS("opacity", "1");
+  await expect(
+    map.getByText("SCHOOL REALITY", { exact: true }).filter({ visible: true }),
+  ).toBeVisible();
+  const nucleus = map.locator(".sherivs-map-nucleus");
+  if (await nucleus.isVisible()) await expect(nucleus).toHaveCSS("opacity", "1");
+  if ((await map.getAttribute("data-motion")) === "on") await page.waitForTimeout(1300);
   return map;
 }
 
@@ -35,7 +41,7 @@ async function assertLabelsDoNotOverlap(page: Page) {
         if (rect.width < 1 || rect.height < 1) return null;
         let parent: HTMLElement | null = node.parentElement;
         while (parent) {
-          if (parent.hidden) return null;
+          if (parent.hidden || parent.classList.contains("sr-only")) return null;
           parent = parent.parentElement;
         }
         return { text: (node.textContent ?? "").trim().slice(0, 48), rect };
@@ -57,6 +63,57 @@ async function assertLabelsDoNotOverlap(page: Page) {
   expect(overlaps).toEqual([]);
 }
 
+async function assertStrokesAvoidLabels(page: Page) {
+  const hits = await page.evaluate(() => {
+    const root = document.querySelector("[data-testid='school-reality-map']");
+    const svg = root?.querySelector(".sherivs-map-svg");
+    if (!root || !svg) return ["missing organism"];
+    const labels = [...root.querySelectorAll<SVGTextElement | HTMLElement>("[data-sri-label]")]
+      .map((node) => {
+        const style = getComputedStyle(node);
+        if (
+          style.display === "none" ||
+          style.visibility === "hidden" ||
+          Number(style.opacity) === 0
+        ) {
+          return null;
+        }
+        const rect = node.getBoundingClientRect();
+        if (rect.width < 2 || rect.height < 2) return null;
+        return rect;
+      })
+      .filter((rect): rect is DOMRect => rect !== null);
+    const paths = [...svg.querySelectorAll<SVGPathElement>("[data-sri-stroke]")];
+    const found: string[] = [];
+    for (const path of paths) {
+      const length = path.getTotalLength();
+      const ctm = path.getScreenCTM();
+      if (!ctm || length === 0) continue;
+      const step = Math.max(4, length / 40);
+      for (let distance = 0; distance <= length; distance += step) {
+        const point = path.getPointAtLength(distance);
+        const screen = new DOMPoint(point.x, point.y).matrixTransform(ctm);
+        for (const rect of labels) {
+          if (
+            screen.x > rect.left + 1 &&
+            screen.x < rect.right - 1 &&
+            screen.y > rect.top + 1 &&
+            screen.y < rect.bottom - 1
+          ) {
+            found.push(
+              `${path.getAttribute("data-sri-stroke")} ${path.getAttribute("data-path") ?? ""}`,
+            );
+            distance = length + 1;
+            break;
+          }
+        }
+      }
+    }
+    return found;
+  });
+  expect(hits).toEqual([]);
+}
+
 test.describe("School Reality Intelligence Map", () => {
   for (const width of WIDTHS) {
     test(`fits at ${width}px without overflow or overlapping labels`, async ({ page }) => {
@@ -68,13 +125,14 @@ test.describe("School Reality Intelligence Map", () => {
       const map = await gotoMap(page, width);
       await assertNoHorizontalOverflow(page);
       await assertLabelsDoNotOverlap(page);
+      if (width >= 1024) await assertStrokesAvoidLabels(page);
       await expect(
         page.getByRole("heading", { name: "A school is more than a database." }),
       ).toBeVisible();
       expect(errors, errors.join("\n")).toEqual([]);
       if (SHOTS.has(width)) {
         await page.locator("#school-reality").screenshot({
-          path: `/opt/cursor/artifacts/reality-map-${width}.png`,
+          path: `/opt/cursor/artifacts/reality-map-v2-${width}.png`,
           style: "header { visibility: hidden !important; }",
         });
       }
@@ -92,7 +150,7 @@ test.describe("School Reality Intelligence Map", () => {
     await expect(people).toHaveAttribute("aria-expanded", "true");
     await expect(page.getByRole("region", { name: /PEOPLE & RELATIONSHIPS/ })).toBeVisible();
     await expect(
-      page.getByTestId("school-reality-map").getByText("School leadership"),
+      page.locator("#reality-desktop-detail").getByText("School leadership", { exact: true }),
     ).toBeVisible();
     await assertLabelsDoNotOverlap(page);
     await page.keyboard.press("Enter");
@@ -100,26 +158,51 @@ test.describe("School Reality Intelligence Map", () => {
     await expect(page.getByRole("region", { name: /PEOPLE & RELATIONSHIPS/ })).toBeHidden();
   });
 
-  test("screenshots a selected desktop branch and an expanded mobile branch", async ({ page }) => {
+  test("screenshots a highlighted path and the full section", async ({ page }) => {
     await gotoMap(page, 1440);
-    await page.getByRole("button", { name: /04\s+HEALTH, SAFETY & WELLBEING/ }).click();
-    await expect(page.getByText("strict access boundaries")).toBeVisible();
-    await assertNoHorizontalOverflow(page);
+    const progression = page.getByText(
+      "From recording what happened to helping coordinate what happens next.",
+    );
+    await expect(progression).toBeVisible();
+    const clipped = await progression.evaluate((node) => {
+      const rect = node.getBoundingClientRect();
+      let parent = node.parentElement;
+      while (parent) {
+        const style = getComputedStyle(parent);
+        if (style.overflowY === "hidden" || style.overflow === "hidden") {
+          const bounds = parent.getBoundingClientRect();
+          if (rect.bottom > bounds.bottom + 1 || rect.right > bounds.right + 1)
+            return parent.className;
+        }
+        parent = parent.parentElement;
+      }
+      return "";
+    });
+    expect(clipped).toBe("");
+    await page.locator("#school-reality").screenshot({
+      path: "/opt/cursor/artifacts/reality-map-v2-1440-full.png",
+      style: "header { visibility: hidden !important; }",
+    });
+
+    await page.getByRole("button", { name: "Examination", exact: true }).click();
+    await expect(page.getByRole("button", { name: "Examination", exact: true })).toHaveAttribute(
+      "aria-pressed",
+      "true",
+    );
+    await assertStrokesAvoidLabels(page);
     await assertLabelsDoNotOverlap(page);
     await page.locator("#school-reality").screenshot({
-      path: "/opt/cursor/artifacts/reality-map-1440-branch.png",
+      path: "/opt/cursor/artifacts/reality-map-v2-1440-path.png",
       style: "header { visibility: hidden !important; }",
     });
 
     await gotoMap(page, 390);
     await page.getByRole("button", { name: /02\s+TEACHING & LEARNING/ }).click();
-    await expect(page.getByText("Lesson planning")).toBeVisible();
+    await expect(
+      page.locator("#reality-panel-teaching").getByText("Lesson planning", { exact: true }),
+    ).toBeVisible();
     await assertNoHorizontalOverflow(page);
     await assertLabelsDoNotOverlap(page);
-    await page.locator("#school-reality").screenshot({
-      path: "/opt/cursor/artifacts/reality-map-390-expanded.png",
-      style: "header { visibility: hidden !important; }",
-    });
   });
 
   test("stays fully visible when the user prefers reduced motion", async ({ page }) => {
@@ -128,7 +211,9 @@ test.describe("School Reality Intelligence Map", () => {
     await page.goto("/");
     const map = page.getByTestId("school-reality-map");
     await map.scrollIntoViewIfNeeded();
-    await expect(map.getByText("SCHOOL REALITY")).toBeVisible();
+    await expect(
+      map.getByText("SCHOOL REALITY", { exact: true }).filter({ visible: true }),
+    ).toBeVisible();
     await expect(map).not.toHaveAttribute("data-motion", "on");
     const motion = await map.locator(".sherivs-map-nucleus").evaluate((node) => {
       const style = getComputedStyle(node);
