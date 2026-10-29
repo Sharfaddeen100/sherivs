@@ -18,7 +18,9 @@ test.describe("Sherivs public homepage (plane A)", () => {
   }) => {
     await page.goto("/");
 
-    await expect(page).toHaveTitle(/Sherivs Scholar \| One intelligent operating environment/);
+    await expect(page).toHaveTitle(
+      /Sherivs Scholar \| The Reality Operating Environment for Schools/,
+    );
 
     // The brand and the category are both present on the first screen: the
     // header carries the company name, the hero carries the category — never

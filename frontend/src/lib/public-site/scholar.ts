@@ -17,6 +17,7 @@
  * are therefore labelled In development. They are not described as operational.
  */
 import type { CapabilityStatus } from "@/lib/public-site/capabilities";
+import { PRODUCT_DESCRIPTOR } from "@/lib/public-site/company";
 
 export interface ScholarCapability {
   id: string;
@@ -97,6 +98,7 @@ export const SCHOLAR_AUDIENCES: readonly ScholarAudience[] = [
 
 export const SCHOLAR_HERO = {
   eyebrow: "SHERIVS SCHOLAR",
+  descriptor: PRODUCT_DESCRIPTOR,
   headline: "Your school. One intelligent operating environment.",
   supporting:
     "Bring your school's people, responsibilities, operations, and institutional knowledge into one connected digital environment—designed around how your organization actually works.",
