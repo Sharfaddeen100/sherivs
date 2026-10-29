@@ -31,6 +31,7 @@ import {
 } from "@/lib/public-site/scholar";
 import { organizationJsonLd, softwareJsonLd } from "@/lib/public-site/seo";
 import { PublicLink } from "@/components/public/public-link";
+import { SchoolRealityIntelligenceMap } from "@/components/public/school-reality-intelligence-map";
 import type { CapabilityStatus } from "@/lib/public-site/capabilities";
 
 /**
@@ -54,6 +55,7 @@ export function SherivsHome() {
       <SiteHeader />
       <main id="main-content" className="relative z-[1] flex-1">
         <HeroSection />
+        <SchoolRealityIntelligenceMap />
         <OrganizationSection />
         <CommunitySection />
         <IntelligenceSection />
@@ -74,7 +76,7 @@ export function SherivsHome() {
 function HeroSection() {
   return (
     <Section labelledBy="sherivs-hero">
-      <PageContainer className="grid items-center gap-8 py-8 sm:py-14 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:py-16">
+      <PageContainer className="py-8 sm:py-14 lg:py-16">
         <div className="min-w-0">
           <p className="sherivs-kicker">{SCHOLAR_HERO.eyebrow}</p>
           <h1
@@ -96,7 +98,6 @@ function HeroSection() {
             </PublicButton>
           </div>
         </div>
-        <InstitutionFigure />
       </PageContainer>
     </Section>
   );
