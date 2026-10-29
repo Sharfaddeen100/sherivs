@@ -44,6 +44,7 @@ import {
   signInLoadingRemainingMs,
 } from "@/lib/auth/signin-loading-wordmark";
 import { SignInLoading } from "@/components/app-entry/signin-loading";
+import { postSecurityAudit } from "@/lib/security/post-security-audit";
 import { SherivsLogo } from "@/components/brand/sherivs-logo";
 import {
   activateConsoleVisualFixture,
@@ -167,11 +168,7 @@ function AuthPage() {
           const payload = toPasswordSignInPayload(classified, password, captcha);
           const { data, error } = await supabase.auth.signInWithPassword(payload);
           if (error) {
-            void fetch("/api/public/audit/password-reset", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ event: "login_failed", email }),
-            }).catch(() => {});
+            void postSecurityAudit({ event: "login_failed", email }).catch(() => {});
             const wait = backoff.recordFailure();
             setWaitMs(wait);
             throw new Error(loginErrorMessage(error));
@@ -189,11 +186,7 @@ function AuthPage() {
           });
         }
 
-        void fetch("/api/public/audit/password-reset", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ event: "login_succeeded", email, user_id: userId }),
-        }).catch(() => {});
+        void postSecurityAudit({ event: "login_succeeded", email }).catch(() => {});
 
         await refresh();
         const remain = signInLoadingRemainingMs(startedAt, Date.now(), SHERIVS_LOADING_FLOOR_MS);
