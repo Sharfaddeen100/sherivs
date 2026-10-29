@@ -140,7 +140,8 @@
     "vitest": "^3.2.4"
   },
   "overrides": {
-    "tinypool": "2.2.0"
+    "tinypool": "2.2.0",
+    "seroval": "1.6.12"
   },
   "engines": {
     "node": ">=22"
