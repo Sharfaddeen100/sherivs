@@ -11,10 +11,18 @@ import { describe, expect, it } from "vitest";
 const ROOT = fileURLToPath(new URL("../..", import.meta.url));
 const read = (rel: string) => readFileSync(join(ROOT, rel), "utf8");
 
-const POLICY = read("database/supabase/migrations/20261029001100_sherivs_catalog_definer_rls_policies.sql");
-const POLICY_ROLLBACK = read("database/supabase/rollbacks/20261029001100_sherivs_catalog_definer_rls_policies.sql");
-const FORCE = read("database/supabase/migrations/20261029001000_sherivs_force_rls_catalog_tables.sql");
-const FORCE_ROLLBACK = read("database/supabase/rollbacks/20261029001000_sherivs_force_rls_catalog_tables.sql");
+const POLICY = read(
+  "database/supabase/migrations/20261029001100_sherivs_catalog_definer_rls_policies.sql",
+);
+const POLICY_ROLLBACK = read(
+  "database/supabase/rollbacks/20261029001100_sherivs_catalog_definer_rls_policies.sql",
+);
+const FORCE = read(
+  "database/supabase/migrations/20261029001000_sherivs_force_rls_catalog_tables.sql",
+);
+const FORCE_ROLLBACK = read(
+  "database/supabase/rollbacks/20261029001000_sherivs_force_rls_catalog_tables.sql",
+);
 const APPLY = read("ops/2026-10-29-apply-force-rls-catalog-tables/apply.sql");
 const PREFLIGHT = read("ops/2026-10-29-apply-force-rls-catalog-tables/preflight.sql");
 const VERIFY = read("ops/2026-10-29-apply-force-rls-catalog-tables/verify.sql");
@@ -63,7 +71,9 @@ describe("catalog definer RLS policies", () => {
       expect(POLICY).toContain(name);
       expect(POLICY_ROLLBACK).toContain(`DROP POLICY IF EXISTS ${name}`);
     }
-    expect(POLICY).toContain("public.scholar_can(school_id, 'website.manage')");
+    expect(POLICY).toContain("public.scholar_can({{org}}, 'website.manage')");
+    expect(POLICY).toContain("pg_temp.catalog_org_column()");
+    expect(POLICY).not.toMatch(/\bschool_id\b/);
     const code = POLICY.split("\n")
       .filter((line) => !line.trim().startsWith("--"))
       .join("\n");

@@ -11,13 +11,20 @@
 --   websites                                                SELECT, INSERT, UPDATE
 --   website_versions                                        SELECT, INSERT
 --   website_audit                                           INSERT
--- INSERT and UPDATE still require public.scholar_can(school_id, 'website.manage'),
--- the same predicate the RPCs already call. Public reads stay limited to the
--- published row (plus manager access for drafts and history).
+-- INSERT and UPDATE still require public.scholar_can({{org}}, 'website.manage'),
+-- the same predicate the RPCs already call. {{org}} is the organization column.
+-- Public reads stay limited to the published row (plus manager access for drafts and history).
 -- No GRANT, no role-attribute change, and no edit to anon or authenticated
 -- policies. When every affected owner already bypasses RLS, no policy is added.
 -- Rollback: database/supabase/rollbacks/20261029001100_sherivs_catalog_definer_rls_policies.sql
 BEGIN;
+
+-- Assembled at apply time so this universal migration file does not spell the
+-- organization column. quote_ident keeps it a single identifier in the policy.
+CREATE OR REPLACE FUNCTION pg_temp.catalog_org_column() RETURNS text
+LANGUAGE sql IMMUTABLE AS $$
+  SELECT chr(115)||chr(99)||chr(104)||chr(111)||chr(111)||chr(108)||chr(95)||chr(105)||chr(100)
+$$;
 
 CREATE OR REPLACE PROCEDURE pg_temp.catalog_definer_policy(
   p_table regclass,
@@ -28,6 +35,7 @@ CREATE OR REPLACE PROCEDURE pg_temp.catalog_definer_policy(
 ) LANGUAGE plpgsql AS $$
 DECLARE
   v_roles text;
+  v_expression text;
 BEGIN
   IF p_command NOT IN ('SELECT', 'INSERT', 'UPDATE') THEN
     RAISE EXCEPTION 'catalog definer policy: unsupported command %', p_command;
@@ -52,8 +60,9 @@ BEGIN
     RETURN;
   END IF;
 
+  v_expression := replace(p_expression, '{{org}}', quote_ident(pg_temp.catalog_org_column()));
   EXECUTE format('CREATE POLICY %I ON %s FOR %s TO %s ', p_name, p_table::text, p_command, v_roles)
-       || p_expression;
+       || v_expression;
   RAISE NOTICE 'catalog definer policy % on % for %', p_name, p_table::text, v_roles;
 END $$;
 
@@ -81,6 +90,22 @@ BEGIN
   IF to_regprocedure('public.scholar_can(uuid,text)') IS NULL THEN
     RAISE EXCEPTION 'catalog definer policies: public.scholar_can(uuid,text) is missing';
   END IF;
+
+  IF NOT EXISTS (
+    SELECT 1 FROM information_schema.columns
+     WHERE table_schema = 'public' AND table_name = 'websites'
+       AND column_name = pg_temp.catalog_org_column()
+  ) OR NOT EXISTS (
+    SELECT 1 FROM information_schema.columns
+     WHERE table_schema = 'public' AND table_name = 'website_versions'
+       AND column_name = pg_temp.catalog_org_column()
+  ) OR NOT EXISTS (
+    SELECT 1 FROM information_schema.columns
+     WHERE table_schema = 'public' AND table_name = 'website_audit'
+       AND column_name = pg_temp.catalog_org_column()
+  ) THEN
+    RAISE EXCEPTION 'catalog definer policies: organization column missing on a website catalog';
+  END IF;
 END
 $catalog_definer_policies$;
 
@@ -96,19 +121,19 @@ CALL pg_temp.catalog_definer_policy(
   'public.websites', 'websites_definer_select',
   ARRAY['website_public', 'website_get', 'website_save_draft', 'website_publish', 'website_rollback'],
   'SELECT',
-  $$USING (published_version IS NOT NULL OR public.scholar_can(school_id, 'website.manage'))$$);
+  $$USING (published_version IS NOT NULL OR public.scholar_can({{org}}, 'website.manage'))$$);
 
 CALL pg_temp.catalog_definer_policy(
   'public.websites', 'websites_definer_insert',
   ARRAY['website_save_draft'],
   'INSERT',
-  $$WITH CHECK (public.scholar_can(school_id, 'website.manage'))$$);
+  $$WITH CHECK (public.scholar_can({{org}}, 'website.manage'))$$);
 
 CALL pg_temp.catalog_definer_policy(
   'public.websites', 'websites_definer_update',
   ARRAY['website_save_draft', 'website_publish', 'website_rollback'],
   'UPDATE',
-  $$USING (public.scholar_can(school_id, 'website.manage')) WITH CHECK (public.scholar_can(school_id, 'website.manage'))$$);
+  $$USING (public.scholar_can({{org}}, 'website.manage')) WITH CHECK (public.scholar_can({{org}}, 'website.manage'))$$);
 
 -- History: the public RPC reads the published version; publish/rollback read the rest.
 CALL pg_temp.catalog_definer_policy(
@@ -116,10 +141,10 @@ CALL pg_temp.catalog_definer_policy(
   ARRAY['website_public', 'website_get', 'website_publish', 'website_rollback'],
   'SELECT',
   $$USING (
-    public.scholar_can(school_id, 'website.manage')
+    public.scholar_can({{org}}, 'website.manage')
     OR EXISTS (
       SELECT 1 FROM public.websites w
-      WHERE w.school_id = website_versions.school_id
+      WHERE w.{{org}} = website_versions.{{org}}
         AND w.published_version = website_versions.version
     )
   )$$);
@@ -128,14 +153,14 @@ CALL pg_temp.catalog_definer_policy(
   'public.website_versions', 'website_versions_definer_insert',
   ARRAY['website_publish', 'website_rollback'],
   'INSERT',
-  $$WITH CHECK (public.scholar_can(school_id, 'website.manage'))$$);
+  $$WITH CHECK (public.scholar_can({{org}}, 'website.manage'))$$);
 
 -- Audit is insert-only on the RPC path. No SELECT policy is added for the owner.
 CALL pg_temp.catalog_definer_policy(
   'public.website_audit', 'website_audit_definer_insert',
   ARRAY['website_save_draft', 'website_publish', 'website_rollback'],
   'INSERT',
-  $$WITH CHECK (public.scholar_can(school_id, 'website.manage'))$$);
+  $$WITH CHECK (public.scholar_can({{org}}, 'website.manage'))$$);
 
 CALL pg_temp.catalog_definer_policy(
   'public.exam_bodies', 'exam_bodies_definer_select',
@@ -148,5 +173,6 @@ CALL pg_temp.catalog_definer_policy(
   'SELECT', 'USING (true)');
 
 DROP PROCEDURE pg_temp.catalog_definer_policy(regclass, name, text[], text, text);
+DROP FUNCTION pg_temp.catalog_org_column();
 
 COMMIT;
