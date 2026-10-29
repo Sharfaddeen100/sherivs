@@ -43,13 +43,14 @@ function SherivsPlatformPage() {
             <p className="sherivs-kicker">{PRODUCT_NAME}</p>
             <h1
               id="scholar-hero"
-              className="sherivs-display sherivs-enter-2 mt-4 max-w-[16ch] text-3xl font-bold sm:text-5xl"
+              className="sherivs-display sherivs-enter-2 mt-4 max-w-[18ch] text-3xl font-bold sm:text-5xl"
             >
-              A better way to run your school.
+              Your school. One intelligent operating environment.
             </h1>
             <p className="sherivs-enter-3 mt-5 max-w-2xl text-sm leading-relaxed text-sherivs-muted sm:text-lg">
-              Bring school administration, academic operations, and your school community together
-              in one connected platform.
+              Bring your school&apos;s people, responsibilities, operations, and institutional
+              knowledge into one connected digital environment—designed around how your organization
+              actually works.
             </p>
             <div className="sherivs-enter-4 mt-8 flex flex-col gap-3 sm:flex-row">
               <PublicButton href="/onboarding">Get started</PublicButton>
@@ -67,7 +68,7 @@ function SherivsPlatformPage() {
             id="capabilities-heading"
             eyebrow="Product capabilities"
             title="Everything your school needs to stay in sync."
-            lead="The capabilities below are the Scholar workflows available in the product today."
+            lead="Organization records and a shared workspace are in the product. Separate applications for each role, campus screens, and AI assistants are in development."
           />
           <ul className="sherivs-stagger mt-10 grid gap-4 md:grid-cols-2">
             {SITE_CAPABILITIES.map((capability) => (
@@ -88,7 +89,11 @@ function SherivsPlatformPage() {
             lead={runtime.description}
           />
           <GlassPanel className="mt-6 max-w-2xl">
-            <p className="text-sm leading-relaxed text-sherivs-muted">{runtime.proof}</p>
+            <p className="text-sm leading-relaxed text-sherivs-muted">{runtime.description}</p>
+            <p className="mt-3 text-sm leading-relaxed text-sherivs-muted">
+              Role-specific AI assistants, multi-campus management screens, and supported automated
+              actions are in development. They are not operational.
+            </p>
           </GlassPanel>
         </PageContainer>
       </Section>

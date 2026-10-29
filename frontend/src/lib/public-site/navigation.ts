@@ -27,17 +27,12 @@ export const PRODUCT_NAV: NavGroup = {
     {
       href: "/solutions/education",
       label: PRODUCT_NAME,
-      description: "The school management platform from Sherivs.",
+      description: "The institutional operating environment for schools.",
     },
     {
-      href: "/#platform",
-      label: "Overview",
-      description: "How Sherivs Scholar brings school operations together.",
-    },
-    {
-      href: "/#capabilities",
-      label: "Product capabilities",
-      description: "Administration, academics, and school community workflows.",
+      href: "/sherivs",
+      label: "Product overview",
+      description: "How Sherivs Scholar organizes a school.",
     },
   ],
 };
@@ -50,17 +45,12 @@ export const SOLUTIONS_NAV: NavGroup = {
     {
       href: "/solutions/education",
       label: "Schools",
-      description: "Sherivs Scholar for the people and processes that run a school.",
+      description: "Sherivs Scholar for a school organization.",
     },
     {
-      href: "/#administration",
-      label: "School administration",
-      description: "Records, organization settings, and administrative workflows.",
-    },
-    {
-      href: "/#academic",
-      label: "Academic operations",
-      description: "Classes, subjects, attendance, and academic information.",
+      href: "/#school-operations",
+      label: "School operations",
+      description: "People, responsibilities, and daily operations in one environment.",
     },
   ],
 };
@@ -72,7 +62,7 @@ export const ABOUT_NAV: NavGroup = {
   items: [
     {
       href: "/about",
-      label: "Company overview",
+      label: "About Sherivs",
       description: "Who Sherivs is and what we are introducing.",
     },
     {
@@ -90,21 +80,16 @@ export const RESOURCES_NAV: NavGroup = {
   href: "/help",
   items: [
     {
-      href: "/help",
-      label: "Help and support",
-      description: "Guides that match implemented functionality.",
-    },
-    {
       href: "/faq",
       label: "Frequently asked questions",
       description: "Short answers about Sherivs Scholar.",
     },
-    { href: "/docs", label: "Documentation", description: "Help, FAQs, and product references." },
     {
-      href: "/support",
-      label: "Contact support",
-      description: "Existing-customer support at support@sherivs.com.",
+      href: "/help",
+      label: "Help and support",
+      description: "Guides that match implemented functionality.",
     },
+    { href: "/docs", label: "Documentation", description: "Help, FAQs, and product references." },
   ],
 };
 
@@ -113,7 +98,7 @@ export const FOOTER_PRODUCT: NavGroup = {
   label: "Product",
   items: [
     { href: "/solutions/education", label: PRODUCT_NAME },
-    { href: "/#platform", label: "Product overview" },
+    { href: "/sherivs", label: "Product overview" },
     { href: "/onboarding", label: "Get started" },
   ],
 };
@@ -122,8 +107,8 @@ export const FOOTER_SOLUTIONS: NavGroup = {
   id: "footer-solutions",
   label: "Solutions",
   items: [
-    { href: "/#administration", label: "School administration" },
-    { href: "/#academic", label: "Academic operations" },
+    { href: "/solutions/education", label: "Schools" },
+    { href: "/#school-operations", label: "School operations" },
     { href: "/#community", label: "School community" },
   ],
 };

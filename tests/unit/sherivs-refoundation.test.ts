@@ -53,9 +53,12 @@ describe("Public company homepage (plane 1)", () => {
   });
 
   it("communicates the category without internal architecture", () => {
-    expect(home).toMatch(/A better way to run your school/);
+    expect(home).toContain("SCHOLAR_HERO");
+    expect(read("frontend/src/lib/public-site/scholar.ts")).toMatch(
+      /Your school\. One intelligent operating environment\./,
+    );
     expect(home).toMatch(/Sherivs Scholar/);
-    expect(home).toMatch(/Get started/);
+    expect(read("frontend/src/lib/public-site/scholar.ts")).toMatch(/Get started/);
     expect(home).not.toMatch(/phase/i);
     expect(home).not.toMatch(/kernel/i);
     expect(home).not.toMatch(/runtime binding/i);

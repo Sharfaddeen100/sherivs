@@ -1,13 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import {
-  COMPANY_APPROACH,
-  COMPANY_MISSION,
-  COMPANY_VISION,
-  POSITIONING_FOUNDATIONS,
   POSITIONING_PROGRAMMABLE,
   POSITIONING_RETHINKING,
   POSITIONING_STATEMENT,
   PRODUCT_NAME,
+  PUBLIC_EDITORIAL_APPROACH,
+  PUBLIC_EDITORIAL_MISSION,
+  PUBLIC_EDITORIAL_VISION,
 } from "@/lib/public-site/company";
 import { publicHead } from "@/lib/public-site/seo";
 import { MarketingPage } from "@/components/public/marketing-page";
@@ -18,7 +17,7 @@ export const Route = createFileRoute("/(site)/company/vision")({
   head: () =>
     publicHead({
       title: "Vision and mission",
-      description: COMPANY_VISION,
+      description: PUBLIC_EDITORIAL_VISION,
       path: "/company/vision",
     }),
 });
@@ -28,7 +27,7 @@ function VisionPage() {
     <MarketingPage
       eyebrow="Company"
       title="Vision and mission"
-      lead={COMPANY_VISION}
+      lead={PUBLIC_EDITORIAL_VISION}
       crumbs={[
         { href: "/", label: "Home" },
         { href: "/about", label: "Company" },
@@ -45,20 +44,19 @@ function VisionPage() {
               >
                 Mission
               </h2>
-              <p>{COMPANY_MISSION}</p>
+              <p>{PUBLIC_EDITORIAL_MISSION}</p>
             </GlassPanel>
             <GlassPanel className="space-y-3">
               <h2 className="font-display text-xl font-semibold text-[var(--sherivs-ink)]">
                 Vision
               </h2>
-              <p>{COMPANY_VISION}</p>
+              <p>{PUBLIC_EDITORIAL_VISION}</p>
             </GlassPanel>
             <GlassPanel className="space-y-3">
               <h2 className="font-display text-xl font-semibold text-[var(--sherivs-ink)]">
                 Our approach
               </h2>
-              <p>{COMPANY_APPROACH}</p>
-              <p>{POSITIONING_FOUNDATIONS}</p>
+              <p>{PUBLIC_EDITORIAL_APPROACH}</p>
             </GlassPanel>
             <GlassPanel className="space-y-3">
               <h2 className="font-display text-xl font-semibold text-[var(--sherivs-ink)]">
@@ -68,8 +66,9 @@ function VisionPage() {
               <p>{POSITIONING_RETHINKING}</p>
               <p>{POSITIONING_PROGRAMMABLE}</p>
               <p>
-                {PRODUCT_NAME} is the product schools can use now. Additional products may follow.
-                This page does not treat unpublished capabilities as available.
+                {PRODUCT_NAME} is the first product. Organization records and a shared workspace are
+                in the product. AI assistants, campus management screens, and supported automated
+                actions are in development.
               </p>
             </GlassPanel>
           </div>

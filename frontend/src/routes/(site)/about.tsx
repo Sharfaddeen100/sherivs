@@ -1,15 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PLATFORM_NAME } from "@/lib/platform";
 import {
-  COMPANY_APPROACH,
   COMPANY_LOCATION_LINE,
-  COMPANY_MISSION,
-  COMPANY_VISION,
   LEGAL_ENTITY_NAME,
   POSITIONING_PROGRAMMABLE,
   POSITIONING_RETHINKING,
   POSITIONING_STATEMENT,
   PRODUCT_NAME,
+  PUBLIC_EDITORIAL_APPROACH,
+  PUBLIC_EDITORIAL_MISSION,
+  PUBLIC_EDITORIAL_VISION,
 } from "@/lib/public-site/company";
 import { publicHead } from "@/lib/public-site/seo";
 import { MarketingPage } from "@/components/public/marketing-page";
@@ -56,15 +56,15 @@ function AboutPage() {
             <p>{POSITIONING_PROGRAMMABLE}</p>
             <p>
               <span className="font-medium text-[var(--sherivs-ink)]">Mission.</span>{" "}
-              {COMPANY_MISSION}
+              {PUBLIC_EDITORIAL_MISSION}
             </p>
             <p>
               <span className="font-medium text-[var(--sherivs-ink)]">Vision.</span>{" "}
-              {COMPANY_VISION}
+              {PUBLIC_EDITORIAL_VISION}
             </p>
             <p>
               <span className="font-medium text-[var(--sherivs-ink)]">Our approach.</span>{" "}
-              {COMPANY_APPROACH}
+              {PUBLIC_EDITORIAL_APPROACH}
             </p>
             <div className="flex flex-wrap gap-3 pt-4">
               <PublicButton href="/onboarding">Get started</PublicButton>

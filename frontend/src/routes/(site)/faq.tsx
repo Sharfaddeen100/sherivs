@@ -12,7 +12,7 @@ export const Route = createFileRoute("/(site)/faq")({
     publicHead({
       title: "FAQs",
       description:
-        "Answers about Sherivs Scholar, getting started, parent access, privacy, and support.",
+        "Answers about Sherivs Scholar, campuses, AI assistance, privacy, onboarding, and support.",
       path: "/faq",
     }),
 });

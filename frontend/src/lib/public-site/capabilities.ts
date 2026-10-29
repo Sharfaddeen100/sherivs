@@ -107,7 +107,7 @@ export const PRODUCT_FAMILIES: readonly ProductFamily[] = [
     name: "Sherivs Scholar",
     href: "/solutions/education",
     summary:
-      "The school management platform from Sherivs. Schools can run administration, academic operations, and role workspaces for staff, students, and parents, and publish a public school site.",
+      "The school product from Sherivs. Organization records and a shared workspace are in the product. Separate role applications, campus screens, and AI assistants are in development.",
     status: "available",
   },
   {
