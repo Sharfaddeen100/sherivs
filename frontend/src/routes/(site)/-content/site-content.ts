@@ -46,13 +46,13 @@ export const SITE_CAPABILITIES: readonly SiteCapability[] = [
     id: "teacher-student",
     title: "Teacher and student workflows",
     description:
-      "Give teachers and students role-appropriate workspaces connected to the academic information they need.",
+      "Teachers and students sign in to the same workspace. What they can open follows membership and role. There is no separate teacher or student application.",
   },
   {
     id: "parent-engagement",
     title: "Parent engagement",
     description:
-      "Invite parents and guardians into a parent workspace for information the school has made available about their children.",
+      "Parents and guardians can be invited into the organization. They use the same workspace shell. There is no separate parent application.",
   },
 ];
 
@@ -62,7 +62,7 @@ export const SECURITY_GUARANTEES: readonly GovernanceGuarantee[] = [
     id: "tenant-isolation",
     title: "School data separation",
     description:
-      "Each organization's records are designed to stay isolated at the database layer. Application code is never treated as the only security boundary.",
+      "Tenant-sensitive records are restricted at the data layer as well as in the application. Row-level security is enabled widely and is not forced on every table.",
   },
   {
     id: "role-access",
@@ -80,7 +80,7 @@ export const SECURITY_GUARANTEES: readonly GovernanceGuarantee[] = [
     id: "invites",
     title: "Account and access management",
     description:
-      "Sherivs provisions the organization admin. That admin invites other users. Revoking membership is an administrative action inside the school.",
+      "Sherivs creates the organization admin after an account request is received. That admin invites other users. The public form does not create the account by itself. Revoking membership is an administrative action inside the school.",
   },
   {
     id: "student-records",
@@ -101,7 +101,8 @@ export const INSTALLED_RUNTIME_PROOFS: readonly RuntimeProof[] = [
   {
     manifestId: "runtime:scholar",
     name: "Scholar",
-    description: "Sherivs Scholar — the school management product available on Sherivs today.",
+    description:
+      "Sherivs Scholar, the school product on Sherivs, gives invited people one workspace shaped by membership and role.",
     proof:
       "Runtime-001 is installed as Scholar. The company remains Sherivs; the kernel stays fully valid without treating Scholar as the company platform.",
   },

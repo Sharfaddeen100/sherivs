@@ -29,19 +29,29 @@ export const ACCEPTING_CUSTOMERS = true;
 
 export const POSITIONING_TAGLINE = "Thoughtful technology for better-run schools";
 export const POSITIONING_STATEMENT =
-  "Sherivs is introducing Sherivs Scholar, a school management platform that brings school administration, academic operations, and the school community into one connected environment.";
+  "Bring your school's people, responsibilities, operations, and institutional knowledge into one connected digital environment—designed around how your organization actually works.";
 export const POSITIONING_RETHINKING =
-  "We focus on the people and processes that keep schools moving — administrators, teachers, students, and parents — rather than presenting a catalogue of future product families.";
+  "From administrators and teachers to students, parents, and operational staff, Sherivs Scholar brings the school community into a shared, role-aware environment.";
 export const POSITIONING_PROGRAMMABLE =
-  "Sherivs may introduce additional products over time. The V1 public website presents the product schools can use today: Sherivs Scholar.";
+  "Sherivs Scholar, the first Sherivs product, keeps role-specific AI assistants, campus management screens, and supported automated actions in development. They are not generally available.";
 export const POSITIONING_FOUNDATIONS =
-  "Sherivs Scholar focuses on practical school needs, coherent workflows, responsible access, and product experiences that respect the people who use them.";
+  "We begin with the organization, respect the responsibilities of each person, and design technology around the way institutions actually work.";
+/**
+ * Recorded V1 company constants (2026-10-28). Public pages render
+ * PUBLIC_EDITORIAL_* so the site does not publish two different missions.
+ */
 export const COMPANY_MISSION =
   "Build dependable software that helps schools manage their everyday responsibilities with greater clarity and coordination.";
 export const COMPANY_VISION =
   "Make school operations more connected, accessible, and organized through thoughtful technology.";
 export const COMPANY_APPROACH =
   "We focus on practical school needs, coherent workflows, responsible access, and product experiences that respect the people who use them.";
+export const PUBLIC_EDITORIAL_VISION =
+  "A world where every school can operate through a digital environment that reflects its real organizational life.";
+export const PUBLIC_EDITORIAL_MISSION =
+  "To make institutional work more connected, intelligent, and accessible by bringing people, responsibilities, information, and supported AI assistance into one operating environment.";
+export const PUBLIC_EDITORIAL_APPROACH =
+  "We begin with the organization, respect the responsibilities of each person, and design technology around the way institutions actually work.";
 export const BRAND_STATEMENT = "Thoughtful technology for better-run schools.";
 export const BRAND_SUPPORTING =
   "Sherivs builds practical software for the people and processes that keep schools moving.";

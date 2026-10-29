@@ -285,30 +285,30 @@ export const PUBLIC_ARTICLES: readonly PublicArticle[] = [
   },
   {
     slug: "what-sherivs-scholar-includes",
-    title: "What Sherivs Scholar includes today",
+    title: "What Sherivs Scholar includes",
     summary:
-      "Sherivs Scholar — the school management product from Sherivs — covers school administration, academic operations, and role workspaces for administrators, teachers, students, and parents.",
+      "Sherivs Scholar, the institutional operating environment from Sherivs. Invited people share one workspace. Separate role applications, campus screens, and AI assistants are in development.",
     author: { name: "Sherivs", role: "Editorial" },
     publishedAt: "2026-10-28",
     updatedAt: "2026-10-28",
     category: "Product Updates",
     tags: ["scholar", "schools", "product"],
-    seoTitle: "What Sherivs Scholar includes today",
+    seoTitle: "What Sherivs Scholar includes",
     seoDescription:
-      "A concise description of Sherivs Scholar: school administration, academic operations, and community workspaces.",
+      "Sherivs Scholar brings a school into one workspace. Separate role applications and AI assistants are in development.",
     relatedSlugs: ["how-schools-get-started", "school-roles-in-sherivs-scholar"],
     published: true,
     sections: [
       {
         paragraphs: [
           POSITIONING_STATEMENT,
-          "The public website describes only what schools can use now. Unlaunched runtimes and future product families are not treated as available offerings.",
+          "The public website distinguishes what is in the product from what is still in development. Unlaunched product families are not treated as available offerings.",
         ],
       },
       {
         heading: "What is in the product",
         paragraphs: [
-          "Organization administrators set up school records, academic information, and membership. Teachers, students, and parents work in role-appropriate workspaces after they are invited.",
+          "An organization admin, once provisioned, works with school records, academic information, and membership in one workspace. Teachers, students, and parents use that same workspace after they are invited. There is no separate application for each role.",
           "Paystack and messaging integrations run only when an organization has configured them. They are not automatic for every school.",
         ],
       },
@@ -318,7 +318,7 @@ export const PUBLIC_ARTICLES: readonly PublicArticle[] = [
     slug: "how-schools-get-started",
     title: "How schools get started with Sherivs Scholar",
     summary:
-      "There is no self-service sign-up. Sherivs provisions the organization's admin account. That admin then invites everyone else.",
+      "There is no self-service sign-up. Get started opens an account request by email. It does not create the organization by itself.",
     author: { name: "Sherivs", role: "Editorial" },
     publishedAt: "2026-10-28",
     updatedAt: "2026-10-28",
@@ -332,7 +332,7 @@ export const PUBLIC_ARTICLES: readonly PublicArticle[] = [
     sections: [
       {
         paragraphs: [
-          "Request an organization admin account through Get started or hello@sherivs.com. Sherivs creates that admin account. Invited people sign in with the credentials they receive — they do not create their own accounts on the public website.",
+          "The Get started form opens an email to hello@sherivs.com. It does not create the organization or an account by itself. After Sherivs receives the request and creates the admin account, invited people sign in with the credentials they receive — they do not create their own accounts on the public website.",
         ],
       },
       {
@@ -347,21 +347,20 @@ export const PUBLIC_ARTICLES: readonly PublicArticle[] = [
     slug: "school-roles-in-sherivs-scholar",
     title: "Administrators, teachers, students, and parents",
     summary:
-      "Each member of a school works in a workspace that matches their role. Access follows membership, not a hidden button.",
+      "Invited people share one workspace. Membership and role decide access. A role does not mean a separate application.",
     author: { name: "Sherivs", role: "Editorial" },
     publishedAt: "2026-10-28",
     updatedAt: "2026-10-28",
     category: "Industry Perspectives",
     tags: ["roles", "schools", "access"],
     seoTitle: "School roles in Sherivs Scholar",
-    seoDescription:
-      "How Sherivs Scholar separates administrator, teacher, student, and parent workspaces.",
+    seoDescription: "How membership and role shape access in the shared Sherivs Scholar workspace.",
     relatedSlugs: ["parent-access-in-sherivs-scholar", "how-sherivs-handles-school-information"],
     published: true,
     sections: [
       {
         paragraphs: [
-          "Administrators set up the organization and invite people. Teachers work with classes, attendance, and academic information available to their role. Students see the records the school has made available. Parents use a parent workspace after they are invited.",
+          "Administrators set up the organization and invite people. Teachers, students, and parents then sign in to the same workspace. What each person can open follows membership and role. There is no separate teacher, student, or parent application.",
         ],
       },
     ],
@@ -378,13 +377,13 @@ export const PUBLIC_ARTICLES: readonly PublicArticle[] = [
     tags: ["parents", "privacy", "access"],
     seoTitle: "Parent access in Sherivs Scholar",
     seoDescription:
-      "Parent workspaces in Sherivs Scholar are invitation-based and limited to information the school has authorized.",
+      "Parent access in Sherivs Scholar stays invitation-based and limited to information the school has authorized.",
     relatedSlugs: ["school-roles-in-sherivs-scholar", "how-sherivs-handles-school-information"],
     published: true,
     sections: [
       {
         paragraphs: [
-          "A parent or guardian can sign in after the school invites them. The parent workspace shows records the school has authorized for that family. Access ends when membership is revoked.",
+          "A parent or guardian can sign in after the school invites them. They use the same workspace as the rest of the organization. The records they can open are the ones the school has authorized for that membership. Access ends when membership is revoked. There is no separate parent application.",
         ],
       },
     ],

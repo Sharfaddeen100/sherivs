@@ -18,7 +18,7 @@ export const Route = createFileRoute("/(site)/solutions/education")({
     publicHead({
       title: PRODUCT_NAME,
       description:
-        "Sherivs Scholar brings school administration, academic operations, and the school community into one organized environment.",
+        "Sherivs Scholar, the institutional operating environment for schools. Role-specific applications, campus screens, and AI assistants are in development.",
       path: "/solutions/education",
     }),
 });
@@ -28,7 +28,7 @@ function EducationPage() {
     <MarketingPage
       eyebrow="Product"
       title={PRODUCT_NAME}
-      lead="The school management platform from Sherivs. Built for the people and processes that keep a school moving."
+      lead="The institutional operating environment from Sherivs. Built around the school as an organization, with access shaped by membership and role."
       crumbs={[
         { href: "/", label: "Home" },
         { href: "/solutions", label: "Solutions" },
@@ -50,16 +50,22 @@ function EducationPage() {
               id="scholar-detail"
               className="font-display text-xl font-semibold text-[var(--sherivs-ink)]"
             >
-              What schools can do today
+              What is in the product
             </h2>
             <p>
-              Create an organization, invite people, and run Scholar workspaces for administrators,
-              teachers, students, and parents. Schools can publish a public website on their own
-              host.
+              A school requests an organization through onboarding. That request opens an email. It
+              does not create the organization by itself. Invited people sign in to one workspace.
+              What they can open follows membership and role.
+            </p>
+            <p>
+              There are no separate teacher, parent, or bursar applications. Campus management
+              screens and role-specific AI assistants are in development. The signed-in AI page is
+              explanatory copy and is not connected to the AI gateway.
             </p>
             <p>
               Payments through Paystack and messaging through configured providers are available
               when those integrations are set up — they are not automatic for every organization.
+              Schools can publish a public website on their own host.
             </p>
           </GlassPanel>
         </PageContainer>

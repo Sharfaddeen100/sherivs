@@ -9,6 +9,7 @@
  * and UI copy must never imply Sherivs is built on top of any one runtime.
  */
 import {
+  POSITIONING_RETHINKING,
   POSITIONING_STATEMENT,
   POSITIONING_TAGLINE,
   PRODUCT_NAME,
@@ -21,8 +22,7 @@ export const PLATFORM_TAGLINE = POSITIONING_TAGLINE;
 export const PLATFORM_DOMAIN = "sherivs.com";
 export const PLATFORM_URL = "https://sherivs.com";
 
-export const PLATFORM_PAGE_TITLE = `${PRODUCT_NAME} | School Management Platform`;
-export const PLATFORM_PAGE_DESCRIPTION =
-  "Bring school administration, academic operations, and your school community together with Sherivs Scholar.";
+export const PLATFORM_PAGE_TITLE = `${PRODUCT_NAME} | One intelligent operating environment`;
+export const PLATFORM_PAGE_DESCRIPTION = `${POSITIONING_RETHINKING}`;
 
 export const PLATFORM_PRODUCT_STATEMENT = POSITIONING_STATEMENT;

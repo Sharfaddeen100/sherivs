@@ -38,13 +38,14 @@ function SolutionsPage() {
               </FeatureCard>
             </li>
             <li>
-              <FeatureCard title="School administration" href="/#administration">
-                Keep essential school records and administrative workflows organized.
+              <FeatureCard title="School operations" href="/#school-operations">
+                People, responsibilities, and daily operations in one organizational environment.
               </FeatureCard>
             </li>
             <li>
-              <FeatureCard title="Academic operations" href="/#academic">
-                Manage the academic records and everyday processes your school uses.
+              <FeatureCard title="School community" href="/#community">
+                Access shaped around roles, in one shared workspace rather than a separate
+                application per role.
               </FeatureCard>
             </li>
           </ul>

@@ -68,7 +68,7 @@ export const HELP_ARTICLES: readonly HelpArticle[] = [
     body: [
       {
         paragraphs: [
-          "Your work lives inside an organization. Data for that organization is intended to be isolated from other organizations at the database layer.",
+          "Your work lives inside an organization. Tenant-sensitive records are restricted at the data layer. Row-level security is enabled widely and is not forced on every table.",
           "If you belong to more than one organization, switch from the organization selector after sign-in. The public marketing site never selects a tenant for you.",
         ],
       },
@@ -83,7 +83,7 @@ export const HELP_ARTICLES: readonly HelpArticle[] = [
     body: [
       {
         paragraphs: [
-          "In Scholar, people work through role workspaces such as administrator, teacher, parent, or student. What someone sees follows from membership and role — not from hiding a button.",
+          "In Scholar, invited people sign in to one workspace. Membership and role decide what they can open. There are no separate teacher, parent, or student applications.",
           "Invite only people who should have access. Revoking membership is the organization's responsibility.",
         ],
       },

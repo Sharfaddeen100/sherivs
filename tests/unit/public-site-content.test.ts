@@ -9,6 +9,11 @@ import { fileURLToPath } from "node:url";
 import { PUBLIC_ANNOUNCEMENT } from "@/lib/public-site/announcement";
 import { publishedArticles, ARTICLE_CATEGORIES } from "@/lib/public-site/articles";
 import { FAQ_ITEMS, FAQ_PREVIEW_IDS } from "@/lib/public-site/faq";
+import {
+  SCHOLAR_ACTION,
+  SCHOLAR_FLEXIBILITY,
+  SCHOLAR_INTELLIGENCE,
+} from "@/lib/public-site/scholar";
 import { HELP_ARTICLES, listedHelpArticles } from "@/lib/public-site/help";
 import { LEGAL_DOCUMENTS } from "@/lib/public-site/legal";
 import { PUBLIC_SITEMAP_PATHS } from "@/lib/public-site/navigation";
@@ -119,20 +124,24 @@ describe("public content honesty", () => {
     expect(ACCEPTING_CUSTOMERS).toBe(true);
     expect(POSITIONING_TAGLINE).toBe("Thoughtful technology for better-run schools");
     expect(PLATFORM_TAGLINE).toBe(POSITIONING_TAGLINE);
-    expect(PLATFORM_PAGE_TITLE).toBe("Sherivs Scholar | School Management Platform");
+    expect(PLATFORM_PAGE_TITLE).toBe("Sherivs Scholar | One intelligent operating environment");
     expect(PLATFORM_PAGE_DESCRIPTION).toMatch(/Sherivs Scholar/);
-    expect(POSITIONING_STATEMENT).toMatch(/Sherivs Scholar/);
-    expect(POSITIONING_RETHINKING).toMatch(/administrators, teachers, students, and parents/);
-    expect(POSITIONING_PROGRAMMABLE).toMatch(/Sherivs Scholar/);
-    expect(POSITIONING_FOUNDATIONS).toMatch(/practical school needs/);
+    expect(POSITIONING_STATEMENT).toMatch(/connected digital environment/);
+    expect(POSITIONING_RETHINKING).toMatch(/Sherivs Scholar brings the school community/);
+    expect(POSITIONING_PROGRAMMABLE).toMatch(/in development/);
+    expect(POSITIONING_FOUNDATIONS).toMatch(/We begin with the organization/);
     expect(COMPANY_MISSION).toBe(
       "Build dependable software that helps schools manage their everyday responsibilities with greater clarity and coordination.",
     );
     expect(COMPANY_VISION).toBe(
       "Make school operations more connected, accessible, and organized through thoughtful technology.",
     );
-    expect(read("frontend/src/components/public/sherivs-home.tsx")).toContain("{COMPANY_MISSION}");
-    expect(read("frontend/src/components/public/sherivs-home.tsx")).toContain("{COMPANY_VISION}");
+    expect(read("frontend/src/components/public/sherivs-home.tsx")).toContain(
+      "{PUBLIC_EDITORIAL_MISSION}",
+    );
+    expect(read("frontend/src/components/public/sherivs-home.tsx")).toContain(
+      "{PUBLIC_EDITORIAL_VISION}",
+    );
     expect(read("frontend/src/lib/public-site/seo.ts")).toContain("POSITIONING_STATEMENT");
     expect(read("frontend/src/routes/(site)/insights.index.tsx")).toContain("POSITIONING_TAGLINE");
     expect(read("frontend/src/lib/public-site/articles.ts")).toContain("POSITIONING_STATEMENT");
@@ -252,12 +261,49 @@ describe("public content honesty", () => {
     );
   });
 
+  it("does not publish CoreGrid as a customer-facing name", () => {
+    const visible = [
+      "frontend/src/lib/public-site/faq.ts",
+      "frontend/src/lib/public-site/scholar.ts",
+      "frontend/src/components/public/sherivs-home.tsx",
+      "frontend/src/lib/public-site/navigation.ts",
+    ];
+    for (const ref of visible) {
+      expect(read(ref), ref).not.toMatch(/CoreGrid/);
+    }
+    expect(FAQ_ITEMS.some((item) => /coregrid/i.test(`${item.question} ${item.answer}`))).toBe(
+      false,
+    );
+    expect(read("frontend/src/routes/(site)/coregrid.tsx")).toContain('redirect({ to: "/sherivs"');
+  });
+
+  it("labels AI, campus management, and supported actions as in development", () => {
+    expect(SCHOLAR_INTELLIGENCE.status).toBe("in_development");
+    expect(SCHOLAR_INTELLIGENCE.cards.every((card) => card.status === "in_development")).toBe(true);
+    expect(SCHOLAR_ACTION.status).toBe("in_development");
+    expect(SCHOLAR_FLEXIBILITY.cards.find((card) => card.id === "campuses")?.status).toBe(
+      "in_development",
+    );
+    expect(SCHOLAR_FLEXIBILITY.cards.find((card) => card.id === "premises")?.status).toBe(
+      "in_development",
+    );
+    expect(read("frontend/src/routes/(site)/solutions.education.tsx")).not.toMatch(
+      /What schools can do today/,
+    );
+  });
+
   it("keeps the homepage free of customer-availability announcements", () => {
     const home = read("frontend/src/components/public/sherivs-home.tsx");
     expect(home).not.toMatch(/accepting customers|now accepting|open for customers/i);
     expect(home).not.toMatch(/institutional computing|AI workforce|Developer Platform/i);
-    expect(home).toContain('href="/solutions/education"');
-    expect(home).toContain('href="/onboarding"');
+    expect(home).toContain("SCHOLAR_HERO.primaryHref");
+    expect(home).toContain("SCHOLAR_HERO.secondaryHref");
+    expect(read("frontend/src/lib/public-site/scholar.ts")).toContain(
+      'primaryHref: "/solutions/education"',
+    );
+    expect(read("frontend/src/lib/public-site/scholar.ts")).toContain(
+      'secondaryHref: "/onboarding"',
+    );
     expect(FAQ_PREVIEW_IDS).toContain("how-to-start");
     expect(FAQ_PREVIEW_IDS).toContain("what-is-sherivs-scholar");
     for (const id of FAQ_PREVIEW_IDS) {

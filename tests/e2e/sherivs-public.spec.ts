@@ -18,14 +18,14 @@ test.describe("Sherivs public homepage (plane A)", () => {
   }) => {
     await page.goto("/");
 
-    await expect(page).toHaveTitle(/Sherivs Scholar \| School Management Platform/);
+    await expect(page).toHaveTitle(/Sherivs Scholar \| One intelligent operating environment/);
 
     // The brand and the category are both present on the first screen: the
     // header carries the company name, the hero carries the category — never
     // a runtime name, never internal architecture.
     await expect(page.locator("header").first()).toContainText(/sherivs/i);
     await expect(page.getByRole("heading", { level: 1 })).toContainText(
-      /a better way to run your school/i,
+      /your school\. one intelligent operating environment/i,
     );
     const body = await page.locator("body").innerText();
     expect(body).not.toMatch(/command centre|coregrid/i);

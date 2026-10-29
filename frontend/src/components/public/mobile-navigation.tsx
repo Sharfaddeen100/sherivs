@@ -95,7 +95,7 @@ export function MobileNavigation({
         aria-modal="true"
         aria-label={`${PLATFORM_NAME} menu`}
         ref={panelRef}
-        className="sherivs-glass-card absolute top-0 right-0 flex h-dvh w-[min(100%,22.5rem)] flex-col rounded-none border-l"
+        className="sherivs-glass-card sherivs-nav-drawer absolute inset-y-0 right-0 left-0 flex h-dvh flex-col rounded-none sm:left-auto sm:w-[22.5rem] sm:border-l"
       >
         <div className="flex items-center justify-between gap-3 border-b border-[var(--sherivs-border)] px-4 py-3">
           <SherivsLogo size={26} lettering="brand" />
