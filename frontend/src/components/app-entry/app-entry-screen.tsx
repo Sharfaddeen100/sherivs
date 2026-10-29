@@ -28,6 +28,7 @@ import {
   startGoogleSignIn,
 } from "@/lib/auth/google-sign-in";
 import { rememberPreferenceActive, setRememberPreference } from "@/lib/auth/remember-session";
+import { postSecurityAudit } from "@/lib/security/post-security-audit";
 import {
   SHERIVS_LOADING_FLOOR_MS,
   signInLoadingRemainingMs,
@@ -179,11 +180,7 @@ function SignInPanel({ onSigningChange }: { onSigningChange: (signing: boolean) 
       } else {
         const { data, error: authError } = await supabase.auth.signInWithPassword(payload);
         if (authError) {
-          void fetch("/api/public/audit/password-reset", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ event: "login_failed", email: auditEmail }),
-          }).catch(() => {});
+          void postSecurityAudit({ event: "login_failed", email: auditEmail }).catch(() => {});
           const wait = backoff.recordFailure();
           setWaitMs(wait);
           const mapped = loginErrorMessage(authError);
@@ -202,15 +199,7 @@ function SignInPanel({ onSigningChange }: { onSigningChange: (signing: boolean) 
         });
       }
 
-      void fetch("/api/public/audit/password-reset", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          event: "login_succeeded",
-          email: auditEmail,
-          user_id: userId,
-        }),
-      }).catch(() => {});
+      void postSecurityAudit({ event: "login_succeeded", email: auditEmail }).catch(() => {});
 
       await refresh();
       const remain = signInLoadingRemainingMs(startedAt, Date.now(), SHERIVS_LOADING_FLOOR_MS);
