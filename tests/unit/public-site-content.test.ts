@@ -124,7 +124,9 @@ describe("public content honesty", () => {
     expect(ACCEPTING_CUSTOMERS).toBe(true);
     expect(POSITIONING_TAGLINE).toBe("Thoughtful technology for better-run schools");
     expect(PLATFORM_TAGLINE).toBe(POSITIONING_TAGLINE);
-    expect(PLATFORM_PAGE_TITLE).toBe("Sherivs Scholar | One intelligent operating environment");
+    expect(PLATFORM_PAGE_TITLE).toBe(
+      "Sherivs Scholar | The Reality Operating Environment for Schools",
+    );
     expect(PLATFORM_PAGE_DESCRIPTION).toMatch(/Sherivs Scholar/);
     expect(POSITIONING_STATEMENT).toMatch(/connected digital environment/);
     expect(POSITIONING_RETHINKING).toMatch(/Sherivs Scholar brings the school community/);

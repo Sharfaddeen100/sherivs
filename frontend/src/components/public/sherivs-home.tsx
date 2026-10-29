@@ -79,6 +79,9 @@ function HeroSection() {
       <PageContainer className="py-8 sm:py-14 lg:py-16">
         <div className="min-w-0">
           <p className="sherivs-kicker">{SCHOLAR_HERO.eyebrow}</p>
+          <p className="mt-3 max-w-xl text-base font-medium leading-snug text-[var(--sherivs-ink)] sm:text-lg">
+            {SCHOLAR_HERO.descriptor}
+          </p>
           <h1
             id="sherivs-hero"
             className="sherivs-display mt-3 max-w-[18ch] text-[1.85rem] font-bold sm:text-5xl"

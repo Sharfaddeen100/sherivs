@@ -14,6 +14,8 @@
 export const LEGAL_ENTITY_NAME = "Sherivs Technologies Limited";
 export const PUBLIC_BRAND_NAME = "Sherivs";
 export const PRODUCT_NAME = "Sherivs Scholar";
+/** Approved Sherivs Scholar product descriptor. Exact wording. */
+export const PRODUCT_DESCRIPTOR = "The Reality Operating Environment for Schools";
 export const COMPANY_LOCALITY = "Maiduguri";
 export const COMPANY_REGION = "Borno State";
 export const COMPANY_COUNTRY = "Nigeria";
