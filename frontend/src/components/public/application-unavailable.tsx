@@ -1,5 +1,7 @@
 import { PLATFORM_NAME, PLATFORM_URL } from "@/lib/platform";
-import { SherivsLockup } from "@/components/brand/sherivs-logo";
+import { SherivsLogo } from "@/components/brand/sherivs-logo";
+import { PublicAtmosphere } from "@/components/public/public-atmosphere";
+import { GlassPanel, PublicButton } from "@/components/public/ui";
 
 /**
  * Replacement for deleted app / console / gov / group / head shells.
@@ -7,25 +9,23 @@ import { SherivsLockup } from "@/components/brand/sherivs-logo";
  */
 export function ApplicationUnavailable({ surface }: { surface: string }) {
   return (
-    <div className="sherivs-public flex min-h-dvh flex-col items-center justify-center bg-sherivs-obsidian px-6 text-sherivs-white">
-      <div className="max-w-md text-center">
+    <div className="sherivs-public flex min-h-dvh flex-col items-center justify-center px-6">
+      <PublicAtmosphere />
+      <GlassPanel enter className="relative z-[1] max-w-md px-6 py-10 text-center sm:px-10">
         <a href={PLATFORM_URL} aria-label={`${PLATFORM_NAME} home`} className="mb-8 inline-flex">
-          <SherivsLockup height={44} />
+          <SherivsLogo size={32} lettering="brand" />
         </a>
         <h1 className="font-display text-2xl font-semibold tracking-tight">
           This application is not available
         </h1>
         <p className="mt-3 text-sm text-sherivs-muted">
-          The hardcoded {surface} interface has been removed. The {PLATFORM_NAME} company
-          website remains at sherivs.com.
+          The hardcoded {surface} interface has been removed. The {PLATFORM_NAME} company website
+          remains at sherivs.com.
         </p>
-        <a
-          href={PLATFORM_URL}
-          className="mt-8 inline-flex items-center justify-center rounded-md bg-sherivs-blue px-4 py-2 text-sm font-semibold text-white hover:opacity-90"
-        >
+        <PublicButton href={PLATFORM_URL} className="mt-8">
           Open sherivs.com
-        </a>
-      </div>
+        </PublicButton>
+      </GlassPanel>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { LEGAL_ENTITY_NAME, BRAND_STATEMENT, BRAND_SUPPORTING } from "@/lib/public-site/company";
 import { FOOTER_GROUPS } from "@/lib/public-site/navigation";
@@ -8,23 +8,16 @@ import { CompanySocialLinks } from "@/components/public/company-social-links";
 import { PublicLink } from "@/components/public/public-link";
 
 export function SiteFooter() {
-  const [desktop, setDesktop] = useState(true);
   const [openGroup, setOpenGroup] = useState<string | null>(null);
 
-  useEffect(() => {
-    const media = window.matchMedia("(min-width: 768px)");
-    const apply = () => setDesktop(media.matches);
-    apply();
-    media.addEventListener("change", apply);
-    return () => media.removeEventListener("change", apply);
-  }, []);
-
   return (
-    <footer className="border-t border-[var(--sherivs-border)] bg-[var(--sherivs-midnight)] pb-[max(0px,env(safe-area-inset-bottom))]">
+    <footer className="sherivs-chrome relative z-[1] border-t pb-[max(0px,env(safe-area-inset-bottom))]">
       <div className="mx-auto grid w-full max-w-[var(--sherivs-container-wide)] gap-10 px-[var(--sherivs-gutter)] py-12 md:grid-cols-[minmax(0,1.2fr)_minmax(0,2fr)] md:gap-12 lg:py-16">
         <div>
-          <SherivsLogo size={28} wordmarkClassName="text-base" />
-          <p className="mt-4 max-w-xs text-sm font-medium text-sherivs-white">{BRAND_STATEMENT}</p>
+          <SherivsLogo size={28} lettering="brand" />
+          <p className="mt-4 max-w-xs text-sm font-medium text-[var(--sherivs-ink)]">
+            {BRAND_STATEMENT}
+          </p>
           <p className="mt-2 max-w-sm text-sm leading-relaxed text-sherivs-muted">
             {BRAND_SUPPORTING}
           </p>
@@ -43,7 +36,7 @@ export function SiteFooter() {
 
         <div className="grid content-start md:grid-cols-2 lg:grid-cols-5 md:gap-6">
           {FOOTER_GROUPS.map((group) => {
-            const expanded = desktop || openGroup === group.id;
+            const expanded = openGroup === group.id;
             const panelId = `footer-${group.id}`;
             return (
               <nav
@@ -53,27 +46,36 @@ export function SiteFooter() {
               >
                 <button
                   type="button"
-                  className="flex min-h-12 w-full items-center justify-between gap-3 py-3 text-left text-xs font-semibold uppercase tracking-widest text-sherivs-muted md:pointer-events-none md:min-h-0 md:py-0"
+                  className="flex min-h-12 w-full items-center justify-between gap-3 py-3 text-left text-xs font-semibold uppercase tracking-widest text-sherivs-muted md:hidden"
                   aria-expanded={expanded}
                   aria-controls={panelId}
-                  onClick={() => {
-                    if (desktop) return;
-                    setOpenGroup((current) => (current === group.id ? null : group.id));
-                  }}
+                  onClick={() =>
+                    setOpenGroup((current) => (current === group.id ? null : group.id))
+                  }
                 >
                   {group.label}
                   <ChevronDown
                     size={16}
                     aria-hidden="true"
-                    className={`shrink-0 transition-transform duration-[var(--sherivs-motion-fast)] md:hidden ${expanded ? "rotate-180" : ""}`}
+                    className="sherivs-disclosure-icon pointer-events-none shrink-0"
                   />
                 </button>
-                <ul id={panelId} hidden={!expanded} className="grid gap-2 pb-4 md:mt-4 md:pb-0">
+                <p className="hidden text-xs font-semibold uppercase tracking-widest text-sherivs-muted md:block">
+                  {group.label}
+                </p>
+                <ul
+                  id={panelId}
+                  className={
+                    expanded
+                      ? "grid gap-2 pb-4 md:mt-4 md:pb-0"
+                      : "hidden gap-2 pb-4 md:mt-4 md:grid md:pb-0"
+                  }
+                >
                   {group.items.map((item) => (
                     <li key={`${group.id}-${item.href}-${item.label}`}>
                       <PublicLink
                         href={item.href}
-                        className="block py-1 text-sm text-sherivs-muted hover:text-sherivs-white"
+                        className="block py-1 text-sm text-[var(--sherivs-ink-muted)] hover:text-[var(--sherivs-ink)]"
                       >
                         {item.label}
                       </PublicLink>
@@ -91,13 +93,13 @@ export function SiteFooter() {
           © {new Date().getFullYear()} {LEGAL_ENTITY_NAME}. All rights reserved.
         </p>
         <p className="flex flex-wrap gap-x-4 gap-y-2">
-          <PublicLink href="/privacy-policy" className="hover:text-sherivs-white">
+          <PublicLink href="/privacy-policy" className="hover:text-[var(--sherivs-ink)]">
             Privacy
           </PublicLink>
-          <PublicLink href="/terms" className="hover:text-sherivs-white">
+          <PublicLink href="/terms" className="hover:text-[var(--sherivs-ink)]">
             Terms
           </PublicLink>
-          <a href="#main-content" className="hover:text-sherivs-white">
+          <a href="#main-content" className="hover:text-[var(--sherivs-ink)]">
             Back to top
           </a>
         </p>

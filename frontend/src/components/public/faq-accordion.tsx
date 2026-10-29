@@ -40,7 +40,7 @@ export function FaqAccordion({
   };
 
   return (
-    <div className="divide-y divide-[var(--sherivs-border)] rounded-[var(--sherivs-radius)] border border-[var(--sherivs-border)] bg-[color-mix(in_oklab,var(--sherivs-midnight)_40%,transparent)]">
+    <div className="sherivs-glass-card divide-y divide-[var(--sherivs-border)] rounded-[var(--sherivs-radius)]">
       {items.map((item) => {
         const expanded = isOpen(item.id);
         const panelId = `faq-panel-${item.id}`;
@@ -49,7 +49,7 @@ export function FaqAccordion({
             <h3 className="m-0">
               <button
                 type="button"
-                className="flex min-h-14 w-full items-center justify-between gap-4 py-4 text-left text-sm font-medium text-sherivs-white sm:text-base"
+                className="flex min-h-14 w-full items-center justify-between gap-4 py-4 text-left text-sm font-medium text-[var(--sherivs-ink)] sm:text-base"
                 aria-expanded={expanded}
                 aria-controls={panelId}
                 onClick={() => toggle(item.id)}
@@ -58,7 +58,7 @@ export function FaqAccordion({
                 <ChevronDown
                   size={18}
                   aria-hidden="true"
-                  className={`shrink-0 text-sherivs-muted transition-transform duration-[var(--sherivs-motion-fast)] ${expanded ? "rotate-180" : ""}`}
+                  className="sherivs-disclosure-icon pointer-events-none shrink-0 text-sherivs-muted"
                 />
               </button>
             </h3>

@@ -39,7 +39,7 @@ export function SiteHeader() {
   }, [desktopGroup]);
 
   return (
-    <header className="sticky top-0 z-[var(--sherivs-z-nav)] border-b border-[var(--sherivs-border)] bg-[color-mix(in_oklab,var(--sherivs-obsidian)_82%,transparent)] backdrop-blur-xl">
+    <header className="sherivs-chrome sticky top-0 z-[var(--sherivs-z-nav)] border-b">
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-3 focus:z-[calc(var(--sherivs-z-nav)+1)] focus:rounded-md focus:bg-sherivs-blue focus:px-3 focus:py-2 focus:text-sm focus:text-white"
@@ -47,7 +47,7 @@ export function SiteHeader() {
         Skip to content
       </a>
       {PUBLIC_ANNOUNCEMENT.published && PUBLIC_ANNOUNCEMENT.text ? (
-        <div className="border-b border-[var(--sherivs-border)] bg-[var(--sherivs-midnight)] px-4 py-2 text-center text-xs text-sherivs-muted">
+        <div className="border-b border-[var(--sherivs-border)] px-4 py-2 text-center text-xs text-[var(--sherivs-ink-muted)]">
           {PUBLIC_ANNOUNCEMENT.href ? (
             <a
               href={PUBLIC_ANNOUNCEMENT.href}
@@ -63,14 +63,15 @@ export function SiteHeader() {
 
       <div className="mx-auto flex w-full max-w-[var(--sherivs-container-wide)] items-center justify-between gap-3 px-[var(--sherivs-gutter)] py-3">
         <Link to="/" aria-label={`${PLATFORM_NAME} home`} className="rounded-md">
-          <SherivsLogo size={28} wordmarkClassName="text-[1.05rem]" />
+          <SherivsLogo size={28} lettering="brand" />
         </Link>
 
         <nav ref={navRef} aria-label="Site" className="hidden items-center gap-0.5 lg:flex">
-          {HEADER_GROUPS.map((group) => (
+          {HEADER_GROUPS.map((group, index) => (
             <DesktopNavGroup
               key={group.id}
               group={group}
+              align={index >= HEADER_GROUPS.length - 2 ? "end" : "start"}
               open={desktopGroup === group.id}
               onClose={() => setDesktopGroup(null)}
               onToggle={() =>
@@ -83,7 +84,7 @@ export function SiteHeader() {
         <nav aria-label="Account" className="hidden items-center gap-2 text-sm lg:flex">
           <Link
             to="/auth"
-            className="rounded-md px-3 py-1.5 font-semibold text-sherivs-muted transition-colors hover:text-sherivs-white"
+            className="rounded-md px-3 py-1.5 font-semibold text-[var(--sherivs-ink-muted)] transition-colors hover:text-[var(--sherivs-ink)]"
           >
             Sign in
           </Link>
@@ -92,14 +93,14 @@ export function SiteHeader() {
 
         <button
           type="button"
-          className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-[var(--sherivs-radius-sm)] border border-[var(--sherivs-border)] text-sherivs-white transition-colors hover:bg-white/5 lg:hidden"
+          className="sherivs-btn-secondary inline-flex min-h-11 min-w-11 items-center justify-center rounded-[var(--sherivs-radius-sm)] lg:hidden"
           aria-expanded={open}
           aria-controls={menuId}
           aria-haspopup="dialog"
           onClick={() => setOpen(true)}
         >
           <span className="sr-only">Open menu</span>
-          <Menu size={18} aria-hidden="true" />
+          <Menu size={18} aria-hidden="true" className="pointer-events-none" />
         </button>
       </div>
 
@@ -111,11 +112,13 @@ export function SiteHeader() {
 
 function DesktopNavGroup({
   group,
+  align,
   open,
   onClose,
   onToggle,
 }: {
   group: NavGroup;
+  align: "start" | "end";
   open: boolean;
   onClose: () => void;
   onToggle: () => void;
@@ -124,29 +127,35 @@ function DesktopNavGroup({
     <div className="relative">
       <button
         type="button"
-        className={`inline-flex items-center gap-1 rounded-md px-3 py-2 text-sm transition-colors hover:bg-white/5 hover:text-sherivs-white ${open ? "bg-white/5 text-sherivs-white" : "text-sherivs-muted"}`}
+        className={`inline-flex items-center gap-1 rounded-md px-3 py-2 text-sm transition-colors hover:bg-white/50 hover:text-[var(--sherivs-ink)] ${open ? "bg-white/60 text-[var(--sherivs-ink)]" : "text-[var(--sherivs-ink-muted)]"}`}
         aria-expanded={open}
         aria-haspopup="true"
+        aria-controls={`${group.id}-menu`}
         onClick={onToggle}
       >
         {group.label}
         <ChevronDown
           size={14}
           aria-hidden="true"
-          className={`transition-transform duration-[var(--sherivs-motion-fast)] ${open ? "rotate-180" : ""}`}
+          className="sherivs-disclosure-icon pointer-events-none shrink-0"
         />
       </button>
       {open ? (
-        <div className="sherivs-nav-panel absolute left-0 top-full z-[var(--sherivs-z-overlay)] mt-2 w-80 rounded-[var(--sherivs-radius)] border border-[var(--sherivs-glass-border)] bg-[var(--sherivs-midnight)] p-2 shadow-[var(--sherivs-shadow)]">
+        <div
+          id={`${group.id}-menu`}
+          className={`sherivs-nav-panel sherivs-glass-card absolute top-full z-[var(--sherivs-z-overlay)] mt-2 w-80 max-w-[calc(100vw-2rem)] rounded-[var(--sherivs-radius)] p-2 ${align === "end" ? "right-0" : "left-0"}`}
+        >
           <ul>
             {group.items.map((item) => (
               <li key={`${group.id}-${item.href}-${item.label}`}>
                 <PublicLink
                   href={item.href}
-                  className="block rounded-[var(--sherivs-radius-sm)] px-3 py-2.5 hover:bg-white/5"
+                  className="block rounded-[var(--sherivs-radius-sm)] px-3 py-2.5 hover:bg-white/50"
                   onNavigate={onClose}
                 >
-                  <span className="block text-sm font-medium text-sherivs-white">{item.label}</span>
+                  <span className="block text-sm font-medium text-[var(--sherivs-ink)]">
+                    {item.label}
+                  </span>
                   {item.description ? (
                     <span className="mt-0.5 block text-xs leading-snug text-sherivs-muted">
                       {item.description}

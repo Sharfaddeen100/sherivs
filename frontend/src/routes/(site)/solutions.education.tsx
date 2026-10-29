@@ -5,6 +5,7 @@ import { publicHead } from "@/lib/public-site/seo";
 import { MarketingPage } from "@/components/public/marketing-page";
 import {
   FeatureCard,
+  GlassPanel,
   PageContainer,
   PublicButton,
   Section,
@@ -17,7 +18,7 @@ export const Route = createFileRoute("/(site)/solutions/education")({
     publicHead({
       title: PRODUCT_NAME,
       description:
-        "Sherivs Scholar brings school administration, academic operations, and the school community into one organized environment.",
+        "Sherivs Scholar, the institutional operating environment for schools. Role-specific applications, campus screens, and AI assistants are in development.",
       path: "/solutions/education",
     }),
 });
@@ -27,7 +28,7 @@ function EducationPage() {
     <MarketingPage
       eyebrow="Product"
       title={PRODUCT_NAME}
-      lead="The school management platform from Sherivs. Built for the people and processes that keep a school moving."
+      lead="The institutional operating environment from Sherivs. Built around the school as an organization, with access shaped by membership and role."
       crumbs={[
         { href: "/", label: "Home" },
         { href: "/solutions", label: "Solutions" },
@@ -43,18 +44,30 @@ function EducationPage() {
       }
     >
       <Section labelledBy="scholar-detail">
-        <PageContainer className="max-w-3xl space-y-4 py-16 text-sm leading-relaxed text-sherivs-muted sm:text-base">
-          <h2 id="scholar-detail" className="font-display text-xl font-semibold text-sherivs-white">
-            What schools can do today
-          </h2>
-          <p>
-            Create an organization, invite people, and run Scholar workspaces for administrators,
-            teachers, students, and parents. Schools can publish a public website on their own host.
-          </p>
-          <p>
-            Payments through Paystack and messaging through configured providers are available when
-            those integrations are set up — they are not automatic for every organization.
-          </p>
+        <PageContainer className="py-16">
+          <GlassPanel className="mx-auto max-w-3xl space-y-4 text-sm leading-relaxed text-sherivs-muted sm:text-base">
+            <h2
+              id="scholar-detail"
+              className="font-display text-xl font-semibold text-[var(--sherivs-ink)]"
+            >
+              What is in the product
+            </h2>
+            <p>
+              A school requests an organization through onboarding. That request opens an email. It
+              does not create the organization by itself. Invited people sign in to one workspace.
+              What they can open follows membership and role.
+            </p>
+            <p>
+              There are no separate teacher, parent, or bursar applications. Campus management
+              screens and role-specific AI assistants are in development. The signed-in AI page is
+              explanatory copy and is not connected to the AI gateway.
+            </p>
+            <p>
+              Payments through Paystack and messaging through configured providers are available
+              when those integrations are set up — they are not automatic for every organization.
+              Schools can publish a public website on their own host.
+            </p>
+          </GlassPanel>
         </PageContainer>
       </Section>
 
@@ -65,7 +78,7 @@ function EducationPage() {
             eyebrow="Capabilities"
             title="Practical school operations, in one environment."
           />
-          <ul className="mt-10 grid gap-4 md:grid-cols-2">
+          <ul className="sherivs-stagger mt-10 grid gap-4 md:grid-cols-2">
             {SCHOLAR_CAPABILITIES.map((card) => (
               <li key={card.id} id={card.id === "administration" ? undefined : card.id}>
                 <FeatureCard title={card.title}>{card.body}</FeatureCard>
@@ -82,7 +95,7 @@ function EducationPage() {
             eyebrow="School community"
             title="One school. A more connected experience."
           />
-          <ul className="mt-10 grid gap-4 sm:grid-cols-2">
+          <ul className="sherivs-stagger mt-10 grid gap-4 sm:grid-cols-2">
             {SCHOLAR_AUDIENCES.map((audience) => (
               <li key={audience.id}>
                 <FeatureCard title={audience.title}>{audience.body}</FeatureCard>

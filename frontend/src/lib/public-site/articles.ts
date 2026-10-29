@@ -43,11 +43,8 @@ export const PUBLIC_ARTICLES: readonly PublicArticle[] = [
     seoTitle: "What is institutional computing?",
     seoDescription:
       "A clear definition of institutional computing: shared identity, governed state, and coordinated work for organizations.",
-    relatedSlugs: [
-      "connected-institutional-intelligence",
-      "permissions-and-verifiable-outcomes",
-    ],
-    published: true,
+    relatedSlugs: ["connected-institutional-intelligence", "permissions-and-verifiable-outcomes"],
+    published: false,
     sections: [
       {
         paragraphs: [
@@ -83,11 +80,8 @@ export const PUBLIC_ARTICLES: readonly PublicArticle[] = [
     seoTitle: "From AI assistants to coordinated AI workforces",
     seoDescription:
       "Why Sherivs treats AI workers as governed identities rather than a single unbounded assistant.",
-    relatedSlugs: [
-      "permissions-and-verifiable-outcomes",
-      "scalable-ai-workflows",
-    ],
-    published: true,
+    relatedSlugs: ["permissions-and-verifiable-outcomes", "scalable-ai-workflows"],
+    published: false,
     sections: [
       {
         paragraphs: [
@@ -117,11 +111,8 @@ export const PUBLIC_ARTICLES: readonly PublicArticle[] = [
     seoTitle: "Why digital twins need persistent state",
     seoDescription:
       "Digital twins in Sherivs are governed models of identity, state, relationships, and events — not screenshots of a 3D scene.",
-    relatedSlugs: [
-      "what-is-institutional-computing",
-      "connected-institutional-intelligence",
-    ],
-    published: true,
+    relatedSlugs: ["what-is-institutional-computing", "connected-institutional-intelligence"],
+    published: false,
     sections: [
       {
         paragraphs: [
@@ -150,11 +141,8 @@ export const PUBLIC_ARTICLES: readonly PublicArticle[] = [
     seoTitle: "AI permissions and verifiable outcomes",
     seoDescription:
       "How Sherivs thinks about identity, policy, and evidence when AI participates in organizational work.",
-    relatedSlugs: [
-      "from-assistants-to-ai-workforces",
-      "what-is-institutional-computing",
-    ],
-    published: true,
+    relatedSlugs: ["from-assistants-to-ai-workforces", "what-is-institutional-computing"],
+    published: false,
     sections: [
       {
         paragraphs: [
@@ -183,11 +171,8 @@ export const PUBLIC_ARTICLES: readonly PublicArticle[] = [
     seoTitle: "Scalable AI workflows without always-on workers",
     seoDescription:
       "Why Sherivs prefers bounded, event-driven or scheduled work over permanently running every AI worker.",
-    relatedSlugs: [
-      "from-assistants-to-ai-workforces",
-      "digital-twins-state-and-events",
-    ],
-    published: true,
+    relatedSlugs: ["from-assistants-to-ai-workforces", "digital-twins-state-and-events"],
+    published: false,
     sections: [
       {
         paragraphs: [
@@ -221,7 +206,7 @@ export const PUBLIC_ARTICLES: readonly PublicArticle[] = [
       "permissions-and-verifiable-outcomes",
       "governed-intelligence-for-institutions",
     ],
-    published: true,
+    published: false,
     sections: [
       {
         paragraphs: [
@@ -251,11 +236,8 @@ export const PUBLIC_ARTICLES: readonly PublicArticle[] = [
     seoTitle: "Building governed intelligence for institutions",
     seoDescription:
       "Why institutions need intelligence that sits inside identity, policy, and verification — not beside them.",
-    relatedSlugs: [
-      "connected-institutional-intelligence",
-      "permissions-and-verifiable-outcomes",
-    ],
-    published: true,
+    relatedSlugs: ["connected-institutional-intelligence", "permissions-and-verifiable-outcomes"],
+    published: false,
     sections: [
       {
         paragraphs: [
@@ -284,11 +266,8 @@ export const PUBLIC_ARTICLES: readonly PublicArticle[] = [
     seoTitle: "AI agent versus autonomous engineering workforce",
     seoDescription:
       "Why Sherivs distinguishes a single agent from a governed workforce of workers with owners and limits.",
-    relatedSlugs: [
-      "from-assistants-to-ai-workforces",
-      "scalable-ai-workflows",
-    ],
-    published: true,
+    relatedSlugs: ["from-assistants-to-ai-workforces", "scalable-ai-workflows"],
+    published: false,
     sections: [
       {
         paragraphs: [
@@ -304,6 +283,156 @@ export const PUBLIC_ARTICLES: readonly PublicArticle[] = [
       },
     ],
   },
+  {
+    slug: "what-sherivs-scholar-includes",
+    title: "What Sherivs Scholar includes",
+    summary:
+      "Sherivs Scholar, the institutional operating environment from Sherivs. Invited people share one workspace. Separate role applications, campus screens, and AI assistants are in development.",
+    author: { name: "Sherivs", role: "Editorial" },
+    publishedAt: "2026-10-28",
+    updatedAt: "2026-10-28",
+    category: "Product Updates",
+    tags: ["scholar", "schools", "product"],
+    seoTitle: "What Sherivs Scholar includes",
+    seoDescription:
+      "Sherivs Scholar brings a school into one workspace. Separate role applications and AI assistants are in development.",
+    relatedSlugs: ["how-schools-get-started", "school-roles-in-sherivs-scholar"],
+    published: true,
+    sections: [
+      {
+        paragraphs: [
+          POSITIONING_STATEMENT,
+          "The public website distinguishes what is in the product from what is still in development. Unlaunched product families are not treated as available offerings.",
+        ],
+      },
+      {
+        heading: "What is in the product",
+        paragraphs: [
+          "An organization admin, once provisioned, works with school records, academic information, and membership in one workspace. Teachers, students, and parents use that same workspace after they are invited. There is no separate application for each role.",
+          "Paystack and messaging integrations run only when an organization has configured them. They are not automatic for every school.",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "how-schools-get-started",
+    title: "How schools get started with Sherivs Scholar",
+    summary:
+      "There is no self-service sign-up. Get started opens an account request by email. It does not create the organization by itself.",
+    author: { name: "Sherivs", role: "Editorial" },
+    publishedAt: "2026-10-28",
+    updatedAt: "2026-10-28",
+    category: "Product Updates",
+    tags: ["onboarding", "schools", "admin"],
+    seoTitle: "How schools get started with Sherivs Scholar",
+    seoDescription:
+      "Request an organization admin account, then invite staff, students, and families from inside Sherivs Scholar.",
+    relatedSlugs: ["what-sherivs-scholar-includes", "getting-help-from-sherivs"],
+    published: true,
+    sections: [
+      {
+        paragraphs: [
+          "The Get started form opens an email to hello@sherivs.com. It does not create the organization or an account by itself. After Sherivs receives the request and creates the admin account, invited people sign in with the credentials they receive — they do not create their own accounts on the public website.",
+        ],
+      },
+      {
+        heading: "After the admin account exists",
+        paragraphs: [
+          "The admin configures the school information the product supports, then invites administrators, teachers, students, and parents by email.",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "school-roles-in-sherivs-scholar",
+    title: "Administrators, teachers, students, and parents",
+    summary:
+      "Invited people share one workspace. Membership and role decide access. A role does not mean a separate application.",
+    author: { name: "Sherivs", role: "Editorial" },
+    publishedAt: "2026-10-28",
+    updatedAt: "2026-10-28",
+    category: "Industry Perspectives",
+    tags: ["roles", "schools", "access"],
+    seoTitle: "School roles in Sherivs Scholar",
+    seoDescription: "How membership and role shape access in the shared Sherivs Scholar workspace.",
+    relatedSlugs: ["parent-access-in-sherivs-scholar", "how-sherivs-handles-school-information"],
+    published: true,
+    sections: [
+      {
+        paragraphs: [
+          "Administrators set up the organization and invite people. Teachers, students, and parents then sign in to the same workspace. What each person can open follows membership and role. There is no separate teacher, student, or parent application.",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "parent-access-in-sherivs-scholar",
+    title: "How parent access works",
+    summary:
+      "Parents and guardians see information about their children when the school invites them with a parent role. It is not a public directory.",
+    author: { name: "Sherivs", role: "Editorial" },
+    publishedAt: "2026-10-28",
+    updatedAt: "2026-10-28",
+    category: "Industry Perspectives",
+    tags: ["parents", "privacy", "access"],
+    seoTitle: "Parent access in Sherivs Scholar",
+    seoDescription:
+      "Parent access in Sherivs Scholar stays invitation-based and limited to information the school has authorized.",
+    relatedSlugs: ["school-roles-in-sherivs-scholar", "how-sherivs-handles-school-information"],
+    published: true,
+    sections: [
+      {
+        paragraphs: [
+          "A parent or guardian can sign in after the school invites them. They use the same workspace as the rest of the organization. The records they can open are the ones the school has authorized for that membership. Access ends when membership is revoked. There is no separate parent application.",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "how-sherivs-handles-school-information",
+    title: "How Sherivs handles school information",
+    summary:
+      "School records live inside the school's organization. Sign-in establishes identity. Membership and role decide what someone may do.",
+    author: { name: "Sherivs", role: "Editorial" },
+    publishedAt: "2026-10-28",
+    updatedAt: "2026-10-28",
+    category: "Security and Governance",
+    tags: ["privacy", "access", "schools"],
+    seoTitle: "How Sherivs handles school information",
+    seoDescription:
+      "Sherivs Scholar keeps school records inside the organization and uses authenticated membership and role to decide access.",
+    relatedSlugs: ["parent-access-in-sherivs-scholar", "getting-help-from-sherivs"],
+    published: true,
+    sections: [
+      {
+        paragraphs: [
+          "Tenant-sensitive data is designed to stay isolated at the database layer so one school cannot read another school's information. This article is not a certification claim or an audit report. See the privacy policy for the current public notice.",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "getting-help-from-sherivs",
+    title: "How to get help from Sherivs",
+    summary:
+      "Existing customers can write to support@sherivs.com. Public forms open an email client and do not create a ticket until that message is received.",
+    author: { name: "Sherivs", role: "Editorial" },
+    publishedAt: "2026-10-28",
+    updatedAt: "2026-10-28",
+    category: "Product Updates",
+    tags: ["support", "help"],
+    seoTitle: "How to get help from Sherivs",
+    seoDescription: "Sherivs Scholar support uses email. The public form opens your mail client.",
+    relatedSlugs: ["how-schools-get-started", "what-sherivs-scholar-includes"],
+    published: true,
+    sections: [
+      {
+        paragraphs: [
+          "Use the help center for instructions that match implemented functionality. Write to support@sherivs.com for existing-customer issues. Check /status for public health information from /health.json.",
+        ],
+      },
+    ],
+  },
 ];
 
 export function publishedArticles() {
@@ -311,7 +440,7 @@ export function publishedArticles() {
 }
 
 export function articleBySlug(slug: string) {
-  return publishedArticles().find((article) => article.slug === slug);
+  return PUBLIC_ARTICLES.find((article) => article.slug === slug);
 }
 
 export function articlesByCategory(category: ArticleCategory) {
@@ -319,7 +448,10 @@ export function articlesByCategory(category: ArticleCategory) {
 }
 
 export function categoryToSlug(category: string) {
-  return category.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  return category
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
 }
 
 export function categoryFromSlug(slug: string) {

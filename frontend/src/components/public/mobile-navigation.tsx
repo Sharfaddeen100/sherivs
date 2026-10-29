@@ -95,18 +95,18 @@ export function MobileNavigation({
         aria-modal="true"
         aria-label={`${PLATFORM_NAME} menu`}
         ref={panelRef}
-        className="absolute top-0 right-0 flex h-dvh w-[min(100%,22.5rem)] flex-col border-l border-[var(--sherivs-border)] bg-[var(--sherivs-midnight)] shadow-[var(--sherivs-shadow)]"
+        className="sherivs-glass-card sherivs-nav-drawer absolute inset-y-0 right-0 left-0 flex h-dvh flex-col rounded-none sm:left-auto sm:w-[22.5rem] sm:border-l"
       >
         <div className="flex items-center justify-between gap-3 border-b border-[var(--sherivs-border)] px-4 py-3">
-          <SherivsLogo size={26} wordmarkClassName="text-base" />
+          <SherivsLogo size={26} lettering="brand" />
           <button
             ref={closeRef}
             type="button"
-            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-[var(--sherivs-radius-sm)] border border-[var(--sherivs-border)] hover:bg-white/5"
+            className="sherivs-btn-secondary inline-flex min-h-11 min-w-11 items-center justify-center rounded-[var(--sherivs-radius-sm)]"
             onClick={() => close()}
           >
             <span className="sr-only">Close menu</span>
-            <X size={18} aria-hidden="true" />
+            <X size={18} aria-hidden="true" className="pointer-events-none" />
           </button>
         </div>
 
@@ -127,7 +127,7 @@ export function MobileNavigation({
                   <ChevronDown
                     size={16}
                     aria-hidden="true"
-                    className={`shrink-0 text-sherivs-muted transition-transform duration-[var(--sherivs-motion-fast)] ${isOpen ? "rotate-180" : ""}`}
+                    className="sherivs-disclosure-icon pointer-events-none shrink-0 text-sherivs-muted"
                   />
                 </button>
                 {isOpen ? (
@@ -136,7 +136,7 @@ export function MobileNavigation({
                       <li key={`${group.id}-${item.href}-${item.label}`}>
                         <PublicLink
                           href={item.href}
-                          className="block rounded-[var(--sherivs-radius-sm)] px-3 py-2.5 text-sm text-sherivs-muted hover:bg-white/5 hover:text-sherivs-white"
+                          className="block rounded-[var(--sherivs-radius-sm)] px-3 py-2.5 text-sm text-[var(--sherivs-ink-muted)] hover:bg-white/50 hover:text-[var(--sherivs-ink)]"
                           onNavigate={() => close(false)}
                         >
                           {item.label}

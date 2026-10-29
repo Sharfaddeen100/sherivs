@@ -18,14 +18,14 @@ test.describe("Sherivs public homepage (plane A)", () => {
   }) => {
     await page.goto("/");
 
-    await expect(page).toHaveTitle(/Sherivs Scholar \| School Management Platform/);
+    await expect(page).toHaveTitle(/Sherivs Scholar \| One intelligent operating environment/);
 
     // The brand and the category are both present on the first screen: the
     // header carries the company name, the hero carries the category — never
     // a runtime name, never internal architecture.
     await expect(page.locator("header").first()).toContainText(/sherivs/i);
     await expect(page.getByRole("heading", { level: 1 })).toContainText(
-      /a better way to run your school/i,
+      /your school\. one intelligent operating environment/i,
     );
     const body = await page.locator("body").innerText();
     expect(body).not.toMatch(/command centre|coregrid/i);
@@ -42,15 +42,17 @@ test.describe("Sherivs public homepage (plane A)", () => {
     page,
   }) => {
     await page.goto("/");
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+    await page.waitForLoadState("networkidle");
 
-    const nav = page.locator("header, nav").first();
-    await expect(nav.getByRole("link", { name: /sign in/i }).first()).toBeVisible();
+    // Compact marketing chrome keeps Sign in inside the mobile drawer.
+    await page.getByRole("button", { name: /open menu/i }).click();
+    const menu = page.getByRole("dialog", { name: /sherivs menu/i });
+    await expect(menu).toBeVisible();
+    await expect(menu.getByRole("link", { name: /sign in/i })).toBeVisible();
 
     // The sign-in link lands on the platform auth surface.
-    await page
-      .getByRole("link", { name: /sign in/i })
-      .first()
-      .click();
+    await menu.getByRole("link", { name: /sign in/i }).click();
     await expect(page).toHaveURL(/\/auth/);
     await expect(page.locator("body")).not.toContainText("Enterprise demo");
     await expect(page.locator("body")).not.toContainText("Sign in as");

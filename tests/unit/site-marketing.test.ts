@@ -133,7 +133,7 @@ describe("Route modules — real links, no fake submissions, landmarks", () => {
 
   it("links sign-up and sign-in to the real auth surface at /auth", () => {
     expect(header).toContain('to="/auth"');
-    expect(page).toContain('to="/auth"');
+    expect(page).toMatch(/to="\/auth"|href="\/auth"/);
     // No dead platform sign-up route is invented.
     expect(layout).not.toContain('to="/signup"');
     expect(page).not.toContain('to="/signup"');

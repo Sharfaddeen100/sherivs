@@ -1,4 +1,4 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound, redirect } from "@tanstack/react-router";
 import {
   articlesByCategory,
   categoryFromSlug,
@@ -14,7 +14,9 @@ export const Route = createFileRoute("/(site)/insights/category/$slug")({
   loader: ({ params }) => {
     const category = categoryFromSlug(params.slug);
     if (!category) throw notFound();
-    return { category, articles: articlesByCategory(category) };
+    const articles = articlesByCategory(category);
+    if (articles.length === 0) throw redirect({ to: "/insights" });
+    return { category, articles };
   },
   head: ({ loaderData }) =>
     publicHead({
@@ -46,15 +48,17 @@ function InsightCategory() {
             Articles in {category}
           </h2>
           {articles.length === 0 ? (
-            <p className="text-sm text-sherivs-muted">No published articles in this category yet.</p>
+            <p className="text-sm text-sherivs-muted">
+              No published articles in this category yet.
+            </p>
           ) : (
-            <ul className="grid gap-4">
+            <ul className="sherivs-stagger grid gap-4">
               {articles.map((article) => (
                 <li key={article.slug}>
                   <Link
                     to="/insights/$slug"
                     params={{ slug: article.slug }}
-                    className="block rounded-[var(--sherivs-radius)] border border-[var(--sherivs-border)] p-5 hover:bg-white/5"
+                    className="sherivs-glass-card block rounded-[var(--sherivs-radius)] p-5 transition-transform duration-[var(--sherivs-motion-fast)] hover:-translate-y-0.5"
                   >
                     <h3 className="font-display text-lg font-semibold">{article.title}</h3>
                     <p className="mt-2 text-sm text-sherivs-muted">{article.summary}</p>

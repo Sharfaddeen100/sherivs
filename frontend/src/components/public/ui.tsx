@@ -27,6 +27,28 @@ export function PageContainer({
   );
 }
 
+export function GlassPanel({
+  children,
+  className,
+  enter = false,
+}: {
+  children: ReactNode;
+  className?: string;
+  enter?: boolean;
+}) {
+  return (
+    <div
+      className={cn(
+        "sherivs-glass-card rounded-[var(--sherivs-radius-lg)] p-6 sm:p-8",
+        enter && "sherivs-enter",
+        className,
+      )}
+    >
+      {children}
+    </div>
+  );
+}
+
 export function Section({
   id,
   labelledBy,
@@ -44,12 +66,7 @@ export function Section({
     <section
       id={id}
       aria-labelledby={labelledBy}
-      className={cn(
-        tone === "muted" && "bg-[color-mix(in_oklab,var(--sherivs-midnight)_72%,transparent)]",
-        tone === "full" && "bg-[var(--sherivs-midnight)]",
-        tone === "paper" && "sherivs-surface-light",
-        className,
-      )}
+      className={cn("relative z-[1]", tone === "paper" && "sherivs-surface-light", className)}
     >
       {children}
     </section>
@@ -128,9 +145,8 @@ export function FeatureCard({
     </>
   );
   const cls = cn(
-    "rounded-[var(--sherivs-radius)] border border-[var(--sherivs-border)] bg-[color-mix(in_oklab,var(--sherivs-midnight)_55%,transparent)] p-5 shadow-[var(--sherivs-shadow-card)] transition-[transform,border-color,background-color] duration-[var(--sherivs-motion-fast)]",
-    href &&
-      "block hover:-translate-y-0.5 hover:border-[var(--sherivs-glass-border)] hover:bg-[var(--sherivs-navy)]",
+    "sherivs-glass-card rounded-[var(--sherivs-radius)] p-5 transition-transform duration-[var(--sherivs-motion-fast)]",
+    href && "block hover:-translate-y-0.5",
     className,
   );
   if (href) {
@@ -157,7 +173,7 @@ export function PartnerCard({
   logoSrc?: string;
 }) {
   return (
-    <article className="rounded-[var(--sherivs-radius)] border border-[var(--sherivs-border)] bg-[color-mix(in_oklab,var(--sherivs-midnight)_55%,transparent)] p-5">
+    <article className="sherivs-glass-card rounded-[var(--sherivs-radius)] p-5">
       {logoSrc ? (
         <div className="flex h-28 items-center justify-center rounded-[var(--sherivs-radius-sm)] bg-white p-4">
           <img src={logoSrc} alt="" className="max-h-24 w-auto max-w-full object-contain" />
@@ -195,11 +211,11 @@ export function Callout({
       className={cn(
         "rounded-[var(--sherivs-radius)] border p-4 text-sm leading-relaxed",
         tone === "warning"
-          ? "border-sherivs-warning/40 bg-sherivs-warning/5 text-sherivs-muted"
-          : "border-[var(--sherivs-glass-border)] bg-[var(--sherivs-glass)] text-sherivs-muted",
+          ? "border-sherivs-warning/40 bg-sherivs-warning/5 text-[var(--sherivs-ink-muted)]"
+          : "sherivs-glass-card text-[var(--sherivs-ink-muted)]",
       )}
     >
-      <p className="font-semibold text-sherivs-white">{title}</p>
+      <p className="font-semibold text-[var(--sherivs-ink)]">{title}</p>
       <div className="mt-2">{children}</div>
     </aside>
   );
@@ -225,12 +241,10 @@ export function PublicButton({
   onClick?: () => void;
 }) {
   const cls = cn(
-    "inline-flex min-h-11 items-center justify-center rounded-[var(--sherivs-radius-sm)] px-5 py-2.5 text-center text-sm font-semibold transition-[opacity,transform,background-color,border-color] duration-[var(--sherivs-motion-fast)]",
-    variant === "primary" &&
-      "bg-sherivs-blue text-white hover:opacity-90 active:translate-y-px disabled:cursor-not-allowed disabled:opacity-50",
-    variant === "secondary" &&
-      "border border-[var(--sherivs-border-strong)] hover:bg-white/5 active:translate-y-px disabled:cursor-not-allowed disabled:opacity-50",
-    variant === "text" && "px-0 text-sherivs-cyan underline-offset-4 hover:underline",
+    "inline-flex min-h-11 items-center justify-center rounded-[var(--sherivs-radius-sm)] px-5 py-2.5 text-center text-sm font-semibold transition-[opacity,transform,filter] duration-[var(--sherivs-motion-fast)] disabled:cursor-not-allowed disabled:opacity-50",
+    variant === "primary" && "sherivs-btn-primary",
+    variant === "secondary" && "sherivs-btn-secondary",
+    variant === "text" && "sherivs-btn-text px-0",
     className,
   );
   const label = loading ? "Working…" : children;
@@ -268,11 +282,11 @@ export function Breadcrumbs({ items }: { items: readonly { href: string; label: 
           <li key={item.href} className="flex items-center gap-2">
             {index > 0 ? <span aria-hidden="true">/</span> : null}
             {index === items.length - 1 ? (
-              <span aria-current="page" className="text-sherivs-white">
+              <span aria-current="page" className="text-[var(--sherivs-ink)]">
                 {item.label}
               </span>
             ) : (
-              <Link to={item.href as never} className="hover:text-sherivs-white">
+              <Link to={item.href as never} className="hover:text-[var(--sherivs-ink)]">
                 {item.label}
               </Link>
             )}
@@ -297,20 +311,25 @@ export function PageHero({
   id?: string;
 }) {
   return (
-    <div className="border-b border-[var(--sherivs-border)]">
-      <PageContainer className="py-14 sm:py-20">
+    <PageContainer className="py-10 sm:py-14">
+      <GlassPanel enter className="mx-auto max-w-3xl px-6 py-10 sm:px-10 sm:py-14">
         <Eyebrow>{eyebrow}</Eyebrow>
-        <h1 id={id} className="sherivs-display mt-3 max-w-3xl text-3xl font-bold sm:text-5xl">
+        <h1
+          id={id}
+          className="sherivs-display sherivs-enter-2 mt-3 max-w-3xl text-3xl font-bold sm:text-5xl"
+        >
           {title}
         </h1>
         {lead ? (
-          <p className="mt-5 max-w-2xl text-sm leading-relaxed text-sherivs-muted sm:text-lg">
+          <p className="sherivs-enter-3 mt-5 max-w-2xl text-sm leading-relaxed text-sherivs-muted sm:text-lg">
             {lead}
           </p>
         ) : null}
-        {actions ? <div className="mt-8 flex flex-col gap-3 sm:flex-row">{actions}</div> : null}
-      </PageContainer>
-    </div>
+        {actions ? (
+          <div className="sherivs-enter-4 mt-8 flex flex-col gap-3 sm:flex-row">{actions}</div>
+        ) : null}
+      </GlassPanel>
+    </PageContainer>
   );
 }
 
@@ -344,4 +363,4 @@ export function Field({
 }
 
 export const inputClass =
-  "min-h-11 w-full rounded-[var(--sherivs-radius-sm)] border border-[var(--sherivs-border-strong)] bg-[var(--sherivs-midnight)] px-3 text-sm text-sherivs-white placeholder:text-sherivs-muted/70";
+  "min-h-11 w-full rounded-[var(--sherivs-radius-sm)] border border-[var(--sherivs-border)] bg-white/78 px-3 text-sm text-[var(--sherivs-ink)] shadow-[inset_0_1px_0_rgba(255,255,255,0.8)] backdrop-blur-md placeholder:text-[#9aa3b8]";
