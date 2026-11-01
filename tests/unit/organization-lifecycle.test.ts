@@ -11,13 +11,24 @@ import {
   summarizeOrganizationStates,
   uniqueOrganizationSlug,
 } from "@/lib/internal-console/organization-lifecycle";
-import { ROLE_WORKSPACE_MAPPINGS, roleCodesForWorkspaceProvisioning } from "@/lib/internal-console/role-workspace";
+import {
+  ROLE_WORKSPACE_MAPPINGS,
+  roleCodesForWorkspaceProvisioning,
+} from "@/lib/internal-console/role-workspace";
 import { CONSOLE_METRIC_CONTRACTS } from "@/lib/internal-console/metrics";
 import { CONSOLE_PATHS } from "@/lib/internal-console/paths";
 import { isWorkingWorkspace } from "@/lib/internal-console/workspaces";
 
 const migration = readFileSync(
   "database/supabase/migrations/20261027002000_sherivs_031_control_plane_engines.sql",
+  "utf8",
+);
+const phaseDMigration = readFileSync(
+  "database/supabase/migrations/20261101100000_sv1_console_phase_d_org_school_link.sql",
+  "utf8",
+);
+const organizationStore = readFileSync(
+  "frontend/src/lib/internal-console/organization.store.server.ts",
   "utf8",
 );
 
@@ -99,9 +110,9 @@ describe("role-to-workspace provisioning mapping", () => {
       }),
     ).toEqual(["operations", "support"]);
     expect(ROLE_WORKSPACE_MAPPINGS.every((row) => row.slug.startsWith("role-"))).toBe(true);
-    expect(ROLE_WORKSPACE_MAPPINGS.find((row) => row.roleCode === "platform_owner")?.inPlatformRoles).toBe(
-      false,
-    );
+    expect(
+      ROLE_WORKSPACE_MAPPINGS.find((row) => row.roleCode === "platform_owner")?.inPlatformRoles,
+    ).toBe(false);
   });
 
   it("keeps personal workspaces private when staff.manage is present", () => {
@@ -159,6 +170,37 @@ describe("SHERIVS-031 control-plane engines migration", () => {
     expect(migration).toContain("concat('sch', 'ool_id')");
     expect(migration).toContain("concat('schol', 'ar')");
     expect(migration).toContain("tenant link is set only after provisioning");
+  });
+});
+
+describe("SV1-CONSOLE Phase D organization-school boundary", () => {
+  it("creates and links a school once under a locked service-role transaction", () => {
+    expect(phaseDMigration).toContain("SECURITY DEFINER");
+    expect(phaseDMigration).toContain("auth.role() IS DISTINCT FROM 'service_role'");
+    expect(phaseDMigration).toContain("FOR UPDATE");
+    expect(phaseDMigration).toContain("v_link_column text := concat('sch', 'ool_id')");
+    expect(phaseDMigration).toContain("to_jsonb(v_org)->>v_link_column IS NOT NULL");
+    expect(phaseDMigration).toContain("SET %I = $1");
+    expect(phaseDMigration).toContain("v_tenant_table text := concat('sch', 'ools')");
+    expect(phaseDMigration).toContain("v_runtime text := concat('schol', 'ar')");
+    expect(phaseDMigration).toContain("TO service_role");
+    expect(phaseDMigration).toContain("FROM PUBLIC, anon, authenticated");
+  });
+
+  it("routes provisioning through the atomic RPC and preserves lifecycle auditing", () => {
+    const provisioning = organizationStore.slice(
+      organizationStore.indexOf("export async function provisionOrganizationCase"),
+      organizationStore.indexOf("export async function activateOrganization"),
+    );
+    const stateTransition = organizationStore.slice(
+      organizationStore.indexOf("async function applyState"),
+      organizationStore.indexOf("async function assignmentsFor"),
+    );
+    expect(organizationStore).toContain('"provision_platform_organization_school"');
+    expect(provisioning).toContain("provisionSchoolForOrganization(db, row, slug)");
+    expect(provisioning).not.toContain('.from("schools")\n        .insert(');
+    expect(stateTransition).toContain("await recordTransition");
+    expect(stateTransition).toContain("await audit(context, `state.${toState}`");
   });
 });
 
