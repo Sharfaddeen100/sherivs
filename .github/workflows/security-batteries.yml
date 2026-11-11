@@ -116,6 +116,18 @@ jobs:
             echo "Secret-boundary guard ran. The credentialed RLS battery and restore drill did NOT run on this PR (by design); no database posture claim is made. They run from master on schedule/dispatch inside the \`security-batteries\` environment."
           } >> "$GITHUB_STEP_SUMMARY"
 
+  reject-non-master-dispatch:
+    name: Reject non-master manual dispatch
+    # Without this, a dispatch from another ref skips every job and shows green.
+    if: github.event_name != 'pull_request' && github.ref != 'refs/heads/master'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions: {}
+    steps:
+      - run: |
+          echo "Credentialed security batteries run only from master; refusing ${GITHUB_REF}." >&2
+          exit 1
+
   rls-isolation-battery:
     name: RLS isolation battery (V1CAP-073)
     # Credentialed: never on pull_request, only from master, protected environment.
