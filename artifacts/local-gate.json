@@ -1,0 +1,44 @@
+{
+  "head": "0cc7656d7a920d5f51fff62bf06f574436a36efa",
+  "base": "origin/master",
+  "verdict": "FAIL",
+  "results": [
+    {
+      "check": "Typecheck",
+      "status": "PASS",
+      "seconds": 11
+    },
+    {
+      "check": "Unit tests",
+      "status": "PASS",
+      "seconds": 189
+    },
+    {
+      "check": "Registry, drift, neutrality, secrets guards + build",
+      "status": "PASS",
+      "seconds": 16
+    },
+    {
+      "check": "Lint (changed files)",
+      "status": "FAIL",
+      "seconds": 2
+    },
+    {
+      "check": "Secret scan (gitleaks)",
+      "status": "NOT_RUN",
+      "detail": "NOT_RUN: gitleaks not installed",
+      "seconds": 0
+    },
+    {
+      "check": "Mobile typecheck (Expo)",
+      "status": "PASS",
+      "seconds": 17
+    },
+    {
+      "check": "Migration dry-run + sim smoke",
+      "status": "NOT_RUN",
+      "detail": "NOT_RUN: needs Docker/Postgres 17 (tools/sim-lab/up.sh)",
+      "seconds": 0
+    }
+  ]
+}
