@@ -1,5 +1,9 @@
 # Infrastructure
 
+> **Deployment authority:** see [`docs/architecture/DEPLOYMENT-AUTHORITY.md`](../docs/architecture/DEPLOYMENT-AUTHORITY.md).
+> The web app is deployed to Vercel from `verify.yml`; the fabric described here is
+> authored but not applied and is not part of V1 delivery claims.
+
 Home of the **CoreGrid Cloud Fabric** — the vendor-neutral infrastructure layer
 that powers CoreGrid and every future domain runtime. Scholar is its first
 consumer, never its design input.

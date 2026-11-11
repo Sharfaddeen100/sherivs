@@ -1,5 +1,7 @@
 # SHERIVS PROGRAM STATUS
 
+> Deployment claims in this document are subordinate to [`docs/architecture/DEPLOYMENT-AUTHORITY.md`](docs/architecture/DEPLOYMENT-AUTHORITY.md).
+
 Category Formation Program — status report per master directive §46.
 Report date: 2026-10-08. Branch: `cursor/sherivs-refoundation-2507`. Every status is evidence-backed; classifications use §43 vocabulary (IMPLEMENTED / PARTIAL / VERIFIED / DEPLOYED / OPERATIONAL / BLOCKED / UNKNOWN).
 

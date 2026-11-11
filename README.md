@@ -1,5 +1,8 @@
 Sherivs
 AI-Native Institutional Computing Platform
+
+> Naming: the customer-facing product is **Sherivs / Sherivs Scholar**. "CoreGrid" below is the internal runtime and architecture name retained in historical documents, ADRs and migrations. V2 (device/IoT) and V3 (Reality Intelligence) are frozen (AGENTS.md section 45) and are not part of V1 delivery claims. Deployment authority: `docs/architecture/DEPLOYMENT-AUTHORITY.md`.
+
 Sherivs is an AI-native institutional computing platform designed to represent reality, understand complex organizations, coordinate intelligence, execute workflows, operate autonomous agents, simulate change, and continuously evolve across domains.
 Sherivs is not fundamentally a school application.
 It is a programmable institutional intelligence runtime.
