@@ -91,7 +91,8 @@ jobs:
     # Two health windows (deploy + possible auto-rollback) plus image pull
     # and substrate staging fit inside this budget.
     timeout-minutes: 15
-    # Human approval gate — Part 15/28 approval law.
+    # Human approval gate — Part 15/28 approval law. INTENDED: enforced only once
+    # required reviewers are configured on this environment (.github/governance/environments.json).
     environment: production
     steps:
       - name: Check out source

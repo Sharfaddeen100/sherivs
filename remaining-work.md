@@ -29,12 +29,13 @@ Future implementation roadmap. Phase specifications live in
    check on every PR (`.codex/pull-request-policy.md`).~~ → **DONE
    (2026-10-02)**: `.github/workflows/verify.yml` runs `npm run verify`
    (typecheck + unit tests + registry/drift/neutrality gates + secret scan
-   + production build) on pull_request and push to main;
+   + production build) on pull_request and push to `master`;
    `.github/workflows/security-batteries.yml` runs the V1CAP-073 RLS
    isolation battery and the V1CAP-074 restore/recovery drill against the
-   canonical database (weekly schedule + manual; live-credential-gated, so
-   intentionally not on pull_request; exit 2 = BLOCKED_NO_CREDENTIAL does
-   not fail the job). E2E remains a local `npm run test:e2e` (Playwright)
+   canonical database (weekly schedule + manual, from `master` only, in the
+   `security-batteries` environment). Pull requests run only an unprivileged
+   secret-boundary guard; since M0.2-A exit 2 = BLOCKED_NO_CREDENTIAL FAILS
+   the credentialed job instead of reporting success. E2E remains a local `npm run test:e2e` (Playwright)
    — not yet a CI job.
 5. ~~**Single verification command** - add `scripts/check` (PowerShell +
    bash) that runs build, unit tests, and RLS checks.~~ → **DONE, with a
