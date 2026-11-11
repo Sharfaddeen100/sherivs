@@ -14,6 +14,19 @@ const load = (name) => {
   return existsSync(file) ? JSON.parse(readFileSync(file, "utf8")) : null;
 };
 
+/** Returns reasons applying would lock out a single-approver repo. */
+export function lockoutRisks(manifests) {
+  const risks = [];
+  for (const [name, env] of Object.entries(manifests.environments?.environments ?? {})) {
+    if (env.preventSelfReview && new Set(env.reviewers ?? []).size < 2)
+      risks.push(`environment ${name}: preventSelfReview with fewer than 2 reviewers`);
+  }
+  const rule = manifests.ruleset?.rules?.find((r) => r.type === "pull_request");
+  if (rule && rule.parameters?.required_approving_review_count >= 1)
+    risks.push("ruleset: required approvals need a second reviewer who is not the PR author");
+  return risks;
+}
+
 /** Pure planner: returns [{ step, method, path, body?, resolveReviewers? }]. */
 export function buildPlan(repo, manifests, only) {
   const plan = [];
@@ -112,6 +125,10 @@ function apply(step) {
       ? gh(["-X", "PUT", `${step.path}/${existing.id}`], step.body)
       : gh(["-X", "POST", step.path], step.body);
   }
+  if (step.method === "POST" && step.path.endsWith("/deployment-branch-policies")) {
+    const existing = JSON.parse(gh([step.path])).branch_policies ?? [];
+    if (existing.some((p) => p.name === step.body.name)) return "exists";
+  }
   const body = { ...step.body };
   if (step.reviewers?.length) {
     body.reviewers = step.reviewers.map((login) => ({
@@ -145,6 +162,15 @@ function main(argv) {
     only,
   );
   const doApply = argv.includes("--apply");
+  const risks = lockoutRisks({
+    environments: load("environments.json"),
+    ruleset: load("ruleset-master.json"),
+  });
+  if (doApply && risks.length && !argv.includes("--allow-single-approver")) {
+    console.error(`Refusing to apply (lockout risk):\n- ${risks.join("\n- ")}`);
+    console.error("Name a second approver in the manifests, or pass --allow-single-approver.");
+    process.exit(2);
+  }
   console.log(`${doApply ? "APPLYING" : "DRY-RUN"} ${plan.length} step(s) against ${repo}`);
   for (const step of plan) {
     console.log(`- ${step.method} ${step.path}  [${step.step}]`);

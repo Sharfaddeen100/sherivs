@@ -3,7 +3,7 @@ import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 // @ts-expect-error plain ESM script without type declarations
-import { buildPlan } from "../../scripts/governance/apply-github-governance.mjs";
+import { buildPlan, lockoutRisks } from "../../scripts/governance/apply-github-governance.mjs";
 
 const ROOT = fileURLToPath(new URL("../..", import.meta.url));
 const WF = join(ROOT, ".github", "workflows");
@@ -65,5 +65,22 @@ describe("deployment governance manifest (M0.2-C)", () => {
       Object.keys(manifest.environments).length,
     );
     expect(plan.every((s: { path: string }) => s.path.startsWith("repos/owner/repo/"))).toBe(true);
+  });
+
+  it("flags single-approver lockout before apply", () => {
+    const risks = lockoutRisks({
+      environments: { environments: { Production: { preventSelfReview: true, reviewers: ["a"] } } },
+      ruleset: {
+        rules: [{ type: "pull_request", parameters: { required_approving_review_count: 1 } }],
+      },
+    });
+    expect(risks).toHaveLength(2);
+    expect(
+      lockoutRisks({
+        environments: {
+          environments: { Production: { preventSelfReview: true, reviewers: ["a", "b"] } },
+        },
+      }),
+    ).toHaveLength(0);
   });
 });
