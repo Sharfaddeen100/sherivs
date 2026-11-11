@@ -1,0 +1,91 @@
+{
+  "$comment": "M0.2-C desired state for GitHub Environments. Declarative only: applying it needs repository/organization admin rights (see scripts/governance/apply-github-governance.mjs). Reviewer logins are placeholders until the org owner confirms the approver roster.",
+  "schemaVersion": 1,
+  "environments": {
+    "Production": {
+      "workflows": [
+        "prod-migrate-one.yml",
+        "prod-tls-chain-probe.yml",
+        "release.yml",
+        "sv1-create-root-tenant.yml",
+        "sv1-wa-create-root-org.yml",
+        "sv1-wa-map-sender.yml",
+        "verify.yml"
+      ],
+      "reviewers": [
+        "Sharfaddeen100"
+      ],
+      "preventSelfReview": true,
+      "waitTimerMinutes": 0,
+      "canAdminsBypass": false,
+      "deploymentBranchPolicy": {
+        "protectedBranches": false,
+        "customBranchPolicies": true,
+        "branches": [
+          "master"
+        ]
+      }
+    },
+    "infrastructure-apply": {
+      "workflows": [
+        "infrastructure-plan-apply.yml"
+      ],
+      "reviewers": [
+        "Sharfaddeen100"
+      ],
+      "preventSelfReview": true,
+      "waitTimerMinutes": 0,
+      "canAdminsBypass": false,
+      "deploymentBranchPolicy": {
+        "protectedBranches": false,
+        "customBranchPolicies": true,
+        "branches": [
+          "master"
+        ]
+      }
+    },
+    "infrastructure-plan": {
+      "workflows": [
+        "infrastructure-plan-apply.yml"
+      ],
+      "reviewers": [],
+      "preventSelfReview": false,
+      "waitTimerMinutes": 0,
+      "canAdminsBypass": true,
+      "deploymentBranchPolicy": null
+    },
+    "security-batteries": {
+      "workflows": [
+        "security-batteries.yml"
+      ],
+      "reviewers": [
+        "Sharfaddeen100"
+      ],
+      "preventSelfReview": false,
+      "waitTimerMinutes": 0,
+      "canAdminsBypass": false,
+      "deploymentBranchPolicy": {
+        "protectedBranches": false,
+        "customBranchPolicies": true,
+        "branches": [
+          "master"
+        ]
+      }
+    },
+    "Preview": {
+      "workflows": [
+        "verify.yml"
+      ],
+      "reviewers": [],
+      "preventSelfReview": false,
+      "waitTimerMinutes": 0,
+      "canAdminsBypass": true,
+      "deploymentBranchPolicy": null
+    }
+  },
+  "notes": [
+    "GitHub environment names are case-insensitive: 'production' and 'Production' are the same environment.",
+    "preventSelfReview=true on Production requires at least two distinct approvers to be useful; with a single-person roster it blocks that person from approving their own deployments. The owner must add a second approver before enabling it.",
+    "Environment secrets cannot be read or moved by this repository; scoping Supabase/Vercel secrets to environments is an owner action."
+  ]
+}
