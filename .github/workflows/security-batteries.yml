@@ -6,19 +6,17 @@ name: Security Batteries
 # These batteries are LIVE-CREDENTIAL-GATED: they touch the canonical database
 # through authorized transports.
 #
-# Triggers: manual (workflow_dispatch) + weekly schedule, and — since the H3
-# C-024 extension — pull_request, PATH-SCOPED to the RLS battery's own inputs
-# (battery script, shared battery lib, posture scope files, policy migrations,
-# this workflow). The restore/recovery drill remains PR-excluded via `if:`: it
-# writes a drill table to the canonical database and must never run on PRs.
-#
-# RESIDUAL GAP (honest accounting, H3-024): fork pull requests have NO access
-# to repository secrets, so SUPABASE_URL / SUPABASE_ACCESS_TOKEN resolve empty
-# there and the RLS battery exits 2 (BLOCKED_NO_CREDENTIAL — job blocked, NOT
-# failed; no posture claim is made). Same-repo PRs receive the secret store.
-# Canonical posture proof per PR is therefore guaranteed only for same-repo
-# branches; fork PRs stay blocked until the operator credentials a fork-safe
-# read-only channel (e.g. a restricted deploy token via a merge queue).
+# M0.2-A SECURITY BOUNDARY: pull_request runs are UNPRIVILEGED. PR code (scripts,
+# lockfile, workflow edits) never executes in a job that can see production
+# credentials. The path-scoped pull_request trigger runs only `pr-static-guard`
+# (no secrets, no environment). The credentialed batteries run ONLY on
+# schedule / workflow_dispatch, ONLY from refs/heads/master, and inside the
+# `security-batteries` environment (owner must add required reviewers and a
+# master-only deployment branch policy; see docs/engineering/M0.2-MISSION-REPORT.md).
+# A credentialed battery that cannot run (exit 2, BLOCKED_NO_CREDENTIAL) FAILS
+# the job: a blocked/skipped security test must never report success.
+# The restore/recovery drill additionally never runs on PRs (it writes a drill
+# table to the canonical database).
 #
 # CONCURRENCY NOTE (interaction with A-008 design, architecture/campaigns/h3/
 # recovery-ci-wiring.md): PR runs join the run-level `canonical-db-batteries`
@@ -67,7 +65,9 @@ permissions:
   contents: read
 
 concurrency:
-  group: canonical-db-batteries
+  # Credentialed runs keep the single canonical-db-batteries lock; PR static
+  # checks use a per-PR group so they never queue behind live battery runs.
+  group: ${{ github.event_name == 'pull_request' && format('security-batteries-pr-{0}', github.event.pull_request.number) || 'canonical-db-batteries' }}
   cancel-in-progress: false
 
 env:
@@ -81,12 +81,46 @@ env:
   SHERIVS_CONFIRM_PRODUCTION: nwrflbpbhyiqdptmlccm
 
 jobs:
+  pr-static-guard:
+    name: Workflow secret-boundary guard (unprivileged)
+    # The ONLY job that runs on pull_request. No secrets, no environment, and
+    # read-only token. It proves the boundary; it makes NO database posture claim.
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - name: Check out source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install locked dependencies (no lifecycle scripts)
+        run: npm ci --ignore-scripts
+
+      - name: Verify workflow secret boundary
+        run: npx vitest run tests/unit/workflow-secret-boundary.test.ts
+
+      - name: Record outcome
+        run: |
+          {
+            echo "### Security batteries - pull_request (unprivileged)"
+            echo ""
+            echo "Secret-boundary guard ran. The credentialed RLS battery and restore drill did NOT run on this PR (by design); no database posture claim is made. They run from master on schedule/dispatch inside the \`security-batteries\` environment."
+          } >> "$GITHUB_STEP_SUMMARY"
+
   rls-isolation-battery:
     name: RLS isolation battery (V1CAP-073)
-    # C-024 (H3): runs on every trigger — workflow_dispatch, schedule, and
-    # pull_request (path-scoped; see the trigger block and the header's
-    # residual-gap note on fork PRs). No `if:` guard: this is the only job
-    # intended for pull_request.
+    # Credentialed: never on pull_request, only from master, protected environment.
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/master'
+    environment: security-batteries
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
@@ -99,11 +133,8 @@ jobs:
       # API fallback resolution. The anon key is public by design (it is the
       # credential every unauthenticated client shares).
       SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
-      # Optional and DORMANT by default: the service-role contrast section only
-      # runs when SHERIVS_BATTERY_ALLOW_SERVICE_ROLE=1 is set (opt-in). The
-      # key is mapped here so an opt-in requires no workflow edit beyond
-      # exporting that env var in the run step.
-      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      # SUPABASE_SERVICE_ROLE_KEY is intentionally NOT mapped (least privilege):
+      # the opt-in service-role contrast must be enabled by a reviewed workflow change.
     steps:
       - name: Check out source
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -132,9 +163,8 @@ jobs:
           #   0 = posture holds (deny-by-default proven for every cg_* table)
           #   1 = FINDINGS (RLS off / permissive policy / row leak / stray
           #       grants) — FAILS the build
-          #   2 = BLOCKED_NO_CREDENTIAL — battery secrets absent; job is
-          #       marked blocked, NOT failed (credentials are expected to be
-          #       configured by the operator via the secret store)
+          #   2 = BLOCKED_NO_CREDENTIAL — secrets absent; this workflow FAILS
+          #       the job (blocked must not look like success)
           set +e
           node scripts/verify-rls-isolation-battery.mjs
           code=$?
@@ -144,7 +174,8 @@ jobs:
               echo "STATUS=PASS — deny-by-default posture proven against the canonical database (project ref derives from SUPABASE_URL)."
               ;;
             2)
-              echo "STATUS=BLOCKED_NO_CREDENTIAL — SUPABASE_URL and/or SUPABASE_ACCESS_TOKEN are not available in this context (absent from the GitHub Actions secret store, or a fork pull request, which cannot access repository secrets). No posture claim is made either way."
+              echo "STATUS=BLOCKED_NO_CREDENTIAL — SUPABASE_URL and/or SUPABASE_ACCESS_TOKEN are not available in the security-batteries environment. No posture claim is made; FAILING so a blocked battery is never reported as success."
+              exit 1
               ;;
             *)
               echo "STATUS=FAIL — RLS isolation battery recorded FINDINGS (see step output and /opt/cursor/artifacts/rls-battery-results.json)."
@@ -160,7 +191,7 @@ jobs:
             echo ""
             echo "Exit code: \`${{ steps.rls.outputs.exit_code || 'no-run' }}\`"
             if [ "${{ steps.rls.outputs.exit_code }}" = "2" ]; then
-              echo "**BLOCKED on credentials** — the job did not fail: the battery could not run because secrets are absent. Configure \`SUPABASE_URL\` and \`SUPABASE_ACCESS_TOKEN\` (optionally \`SUPABASE_ANON_KEY\`) in the repository secret store. On fork pull requests this is expected: fork PRs cannot access repository secrets, so the battery stays blocked (no posture claim) rather than passing or failing."
+              echo "**BLOCKED on credentials** — the job FAILED: the battery could not run. Configure \`SUPABASE_URL\` and \`SUPABASE_ACCESS_TOKEN\` (optionally \`SUPABASE_ANON_KEY\`) as secrets of the \`security-batteries\` environment. No posture claim is made."
             elif [ "${{ steps.rls.outputs.exit_code }}" = "0" ]; then
               echo "PASS — tenant isolation posture holds (RLS on, zero permissive policies, no client grants, anon REST denied for every cg_* table)."
             else
@@ -180,9 +211,10 @@ jobs:
 
   restore-recovery-drill:
     name: Restore/recovery drill (V1CAP-074)
-    # C-024 (H3): this drill writes to the canonical database, so it must never
-    # run on pull_request. PR runs execute only rls-isolation-battery.
-    if: github.event_name != 'pull_request'
+    # Writes to the canonical database: never on pull_request; master only;
+    # protected environment.
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/master'
+    environment: security-batteries
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
@@ -215,7 +247,7 @@ jobs:
           # Exit-code contract (scripts/restore-recovery-drill.mjs):
           #   0 = PASS (row-level identity + evidence integrity verified)
           #   1 = FAIL — FAILS the build
-          #   2 = BLOCKED_NO_CREDENTIAL — job marked blocked, NOT failed
+          #   2 = BLOCKED_NO_CREDENTIAL — this workflow FAILS the job
           #
           # The drill creates and drops ONLY its own dedicated drill table
           # (no personal data; ADR-005 record families untouched) and proves
@@ -229,7 +261,8 @@ jobs:
               echo "STATUS=PASS — recovery executed and verified, not assumed."
               ;;
             2)
-              echo "STATUS=BLOCKED_NO_CREDENTIAL — SUPABASE_ACCESS_TOKEN is not configured in the GitHub Actions secret store. No recovery claim is made either way."
+              echo "STATUS=BLOCKED_NO_CREDENTIAL — SUPABASE_ACCESS_TOKEN is not configured in the security-batteries environment. No recovery claim is made; FAILING so a blocked drill is never reported as success."
+              exit 1
               ;;
             *)
               echo "STATUS=FAIL — restore/recovery drill failed (see step output and /opt/cursor/artifacts/restore-recovery-results.json)."
@@ -245,7 +278,7 @@ jobs:
             echo ""
             echo "Exit code: \`${{ steps.drill.outputs.exit_code || 'no-run' }}\`"
             if [ "${{ steps.drill.outputs.exit_code }}" = "2" ]; then
-              echo "**BLOCKED on credentials** — the job did not fail: the drill could not run because \`SUPABASE_ACCESS_TOKEN\` is absent from the repository secret store."
+              echo "**BLOCKED on credentials** — the job FAILED: the drill could not run because \`SUPABASE_ACCESS_TOKEN\` is absent from the \`security-batteries\` environment."
             elif [ "${{ steps.drill.outputs.exit_code }}" = "0" ]; then
               echo "PASS — backup/restore row-level identity and immutable evidence-store integrity verified against the canonical database."
             else
