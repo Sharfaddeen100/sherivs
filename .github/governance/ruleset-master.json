@@ -1,0 +1,37 @@
+{
+  "$comment": "M0.2-D desired master ruleset (GitHub ruleset API body). Required check contexts are job names emitted by .github/workflows/verify.yml and are verified against it by tests/unit/ci-gates.test.ts. Do NOT apply while GitHub Actions billing is locked: required checks would block every merge. Path-scoped workflows (Security Batteries, Infrastructure verify) and E2E/screenshot/Vercel jobs are intentionally NOT required.",
+  "name": "Sherivs Master Branch Protection",
+  "target": "branch",
+  "enforcement": "active",
+  "bypass_actors": [],
+  "conditions": { "ref_name": { "include": ["~DEFAULT_BRANCH"], "exclude": [] } },
+  "rules": [
+    { "type": "deletion" },
+    { "type": "non_fast_forward" },
+    {
+      "type": "pull_request",
+      "parameters": {
+        "required_approving_review_count": 1,
+        "dismiss_stale_reviews_on_push": true,
+        "require_code_owner_review": true,
+        "require_last_push_approval": true,
+        "required_review_thread_resolution": true
+      }
+    },
+    {
+      "type": "required_status_checks",
+      "parameters": {
+        "strict_required_status_checks_policy": true,
+        "required_status_checks": [
+          { "context": "Typecheck" },
+          { "context": "Lint (changed files)" },
+          { "context": "Unit tests" },
+          { "context": "Secret scan (gitleaks)" },
+          { "context": "Registry, drift, neutrality, secrets guards + build" },
+          { "context": "Migration dry-run + sim smoke" },
+          { "context": "Mobile typecheck (Expo)" }
+        ]
+      }
+    }
+  ]
+}

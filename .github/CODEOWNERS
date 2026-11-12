@@ -1,0 +1,16 @@
+# M0.2-E: ownership for review routing. Combined with the master ruleset's
+# require_code_owner_review, changes to security-critical paths need an owner's approval.
+# Replace/extend with an org team (e.g. @Sherivs/security) once the owner creates one;
+# at least two distinct owners are needed so an owner-authored PR can still be approved.
+*                          @Sharfaddeen100
+/.github/                  @Sharfaddeen100
+/.github/workflows/        @Sharfaddeen100
+/.github/governance/       @Sharfaddeen100
+/database/                 @Sharfaddeen100
+/infrastructure/           @Sharfaddeen100
+/architecture/             @Sharfaddeen100
+/scripts/governance/       @Sharfaddeen100
+/docs/security/            @Sharfaddeen100
+/AGENTS.md                 @Sharfaddeen100
+/CONSTITUTION.md           @Sharfaddeen100
+/GOVERNANCE.md             @Sharfaddeen100

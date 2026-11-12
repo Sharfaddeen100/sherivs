@@ -1,0 +1,11 @@
+{
+  "$comment": "M0.2-E desired repository security settings. Apply only with repository admin rights on the intended repo (scripts/governance/apply-github-governance.mjs --only settings). Values are additive hardening; nothing here weakens an existing control.",
+  "security_and_analysis": {
+    "secret_scanning": { "status": "enabled" },
+    "secret_scanning_push_protection": { "status": "enabled" }
+  },
+  "vulnerability_alerts": true,
+  "automated_security_fixes": true,
+  "workflow_permissions": { "default_workflow_permissions": "read", "can_approve_pull_request_reviews": false },
+  "code_scanning_default_setup": { "state": "configured", "query_suite": "default", "languages": ["javascript-typescript", "actions"] }
+}
